@@ -8,7 +8,7 @@ import {
   FieldValidationException,
 } from '@lyvely/interface';
 import { InvalidOtpException, OtpService } from '@/otp';
-import { EntityIdentity } from '@/core';
+import { DocumentIdentity } from '@/core';
 import { ConfigurationPath } from '@/config';
 import { escapeHTML, isValidEmail } from '@lyvely/common';
 import { ConfigService } from '@nestjs/config';
@@ -156,7 +156,7 @@ export class UserAccountService {
    * @param locale A valid and enabled locale.
    * @throws FieldValidationException If locale is not valid, supported or enabled.
    */
-  async setLanguage(user: EntityIdentity<User>, locale: string): Promise<void> {
+  async setLanguage(user: DocumentIdentity<User>, locale: string): Promise<void> {
     locale = locale.toLowerCase();
     if (!getEnabledLocales().includes(locale)) {
       throw new FieldValidationException([{ property: 'locale', errors: ['invalid'] }]);
@@ -172,7 +172,7 @@ export class UserAccountService {
    * @param timezone A valid timezone identifier.
    * @throws FieldValidationException If timezone is not valid.
    */
-  async setTimezone(user: EntityIdentity<User>, timezone: string): Promise<void> {
+  async setTimezone(user: DocumentIdentity<User>, timezone: string): Promise<void> {
     if (!getTimezones().includes(timezone)) {
       throw new FieldValidationException([{ property: 'timezone', errors: ['invalid'] }]);
     }

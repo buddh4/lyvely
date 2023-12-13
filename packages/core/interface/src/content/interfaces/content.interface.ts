@@ -20,6 +20,8 @@ export interface IContentAuthor<TID = any> {
 export interface IContentMetadata<TID = any> {
   mid?: TID;
   createdBy: TID;
+  managers?: TID[];
+  assignees?: TID[];
   createdAs?: IContentAuthor<TID>;
   createdAt: Date;
   updatedAt: Date;

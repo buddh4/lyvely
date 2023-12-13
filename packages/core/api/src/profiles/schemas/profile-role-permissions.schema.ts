@@ -1,6 +1,6 @@
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
 import { BaseDocument, NestedSchema, ObjectIdArrayProp, TObjectId } from '@/core';
-import { ProfileRelationRole, IProfilePermissionSetting } from '@lyvely/interface';
+import { ProfileRelationRole, IProfilePermissionSetting, ContentUserRole } from '@lyvely/interface';
 import { getStringEnumValues } from '@lyvely/common';
 
 @NestedSchema()
@@ -8,8 +8,14 @@ export class ProfilePermissionSetting
   extends BaseDocument<ProfilePermissionSetting>
   implements IProfilePermissionSetting<TObjectId>
 {
-  @Prop({ enum: getStringEnumValues(ProfileRelationRole), required: true })
-  role: ProfileRelationRole;
+  @Prop({ required: true })
+  id: string;
+
+  @Prop({
+    enum: [...getStringEnumValues(ProfileRelationRole), ...getStringEnumValues(ContentUserRole)],
+    required: true,
+  })
+  role: ProfileRelationRole | ContentUserRole;
 
   @ObjectIdArrayProp()
   groups?: TObjectId[];

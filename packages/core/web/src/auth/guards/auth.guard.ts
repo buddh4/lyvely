@@ -67,7 +67,7 @@ function handleVisitorAccess(
 ): void {
   if (to.params.handle && to.path === '/') return next(PATH_LOGIN);
 
-  const visitorStrategy = useAppConfigStore().get('visitorStrategy');
+  const visitorStrategy = useAppConfigStore().get('permissions')?.visitorStrategy;
 
   // We use Visitor as default visibility, protected routes need to be explicitly protected.
   const routeVisibility = to.meta?.visibility ?? ProfileVisibilityLevel.Visitor;

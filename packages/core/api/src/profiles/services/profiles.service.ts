@@ -18,7 +18,7 @@ import {
   assureObjectId,
   assureStringId,
   Connection,
-  EntityIdentity,
+  DocumentIdentity,
   InjectConnection,
   withTransaction,
 } from '@/core';
@@ -288,7 +288,7 @@ export class ProfilesService {
    * @throws DocumentNotFoundException if throwsExceptio is set to true and the profile could not be found.
    */
   async findProfileById(
-    identity: EntityIdentity<Profile> | null | undefined,
+    identity: DocumentIdentity<Profile> | null | undefined,
     throwsException = false,
   ): Promise<Profile | null> {
     if (!identity && throwsException) throw new DocumentNotFoundException('Profile not found.');
@@ -350,18 +350,18 @@ export class ProfilesService {
    */
   async findProfileContext(
     user: User,
-    pid: EntityIdentity<Profile>,
-    oid?: EntityIdentity<Organization>,
+    pid: DocumentIdentity<Profile>,
+    oid?: DocumentIdentity<Organization>,
   ): Promise<ProtectedProfileContext>;
   async findProfileContext(
     user: OptionalUser,
-    pid: EntityIdentity<Profile>,
-    oid?: EntityIdentity<Organization>,
+    pid: DocumentIdentity<Profile>,
+    oid?: DocumentIdentity<Organization>,
   ): Promise<ProfileContext>;
   async findProfileContext(
     user: OptionalUser,
-    pid: EntityIdentity<Profile>,
-    oid?: EntityIdentity<Organization>,
+    pid: DocumentIdentity<Profile>,
+    oid?: DocumentIdentity<Organization>,
   ): Promise<ProfileContext> {
     const { profile, organization } = await this.findProfileWithOrganization(pid, oid);
 
@@ -468,8 +468,8 @@ export class ProfilesService {
    * @throws DocumentNotFoundException if the profile cannot be found.
    */
   async findProfileWithOrganization(
-    pid: EntityIdentity<Profile>,
-    oid?: EntityIdentity<Profile>,
+    pid: DocumentIdentity<Profile>,
+    oid?: DocumentIdentity<Profile>,
   ): Promise<{ profile: Profile; organization: Organization | null }> {
     let profile: Profile | undefined | null = null;
     let organization: Organization | undefined | null = null;
@@ -514,7 +514,7 @@ export class ProfilesService {
    * @param skipEmptyRelations If set to true will exclude contexts without existing user relations
    */
   async findProfileContextsByUsers(
-    identity: EntityIdentity<Profile>,
+    identity: DocumentIdentity<Profile>,
     users: User[],
     skipEmptyRelations = false,
   ): Promise<ProtectedProfileContext[]> {
@@ -581,7 +581,7 @@ export class ProfilesService {
    * @param identity The identity (or instance) of the profile. Could be an ObjectId, string, or a Profile instance.
    * @param inc The amount to increment.
    */
-  async incrementScore(identity: EntityIdentity<Profile>, inc: number): Promise<number> {
+  async incrementScore(identity: DocumentIdentity<Profile>, inc: number): Promise<number> {
     const profile = await this.findProfileById(identity, true);
 
     if (!profile) throw new DocumentNotFoundException();

@@ -1,1 +1,1 @@
-export * from './user-permissions.service';
+export * from './user-permissions.manager';

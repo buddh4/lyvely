@@ -2,7 +2,7 @@ import {
   applyUpdateTo,
   assureObjectId,
   EntityData,
-  EntityIdentity,
+  DocumentIdentity,
   createBaseDocumentInstance,
 } from './db.utils';
 import {
@@ -89,7 +89,7 @@ export type DeleteOptions = IBaseQueryOptions;
 
 export interface IFetchQueryFilterOptions<T extends BaseDocument<T>>
   extends IBaseFetchQueryOptions<T> {
-  excludeIds?: EntityIdentity<T>[] | EntityIdentity<T>;
+  excludeIds?: DocumentIdentity<T>[] | DocumentIdentity<T>;
 }
 
 export interface IFetchQueryOptions<T extends BaseDocument<T>> extends IFetchQueryFilterOptions<T> {
@@ -308,7 +308,7 @@ export abstract class AbstractDao<T extends BaseDocument<T>> {
    * @param options
    */
   async findById(
-    identity: EntityIdentity<T>,
+    identity: DocumentIdentity<T>,
     options?: IBaseFetchQueryOptions<T>,
   ): Promise<T | null> {
     const query = this.getModel(options).findById(
@@ -333,7 +333,7 @@ export abstract class AbstractDao<T extends BaseDocument<T>> {
    * @param options
    */
   async findByIdAndFilter(
-    identity: EntityIdentity<T>,
+    identity: DocumentIdentity<T>,
     filter?: FilterQuery<T>,
     options?: IBaseFetchQueryOptions<T>,
   ): Promise<T | null> {
@@ -348,7 +348,7 @@ export abstract class AbstractDao<T extends BaseDocument<T>> {
    * @param ids
    * @param options
    */
-  async findAllByIds(ids: EntityIdentity<T>[], options?: IFetchQueryOptions<T>): Promise<T[]> {
+  async findAllByIds(ids: DocumentIdentity<T>[], options?: IFetchQueryOptions<T>): Promise<T[]> {
     return this.findAll({ _id: { $in: ids.map((id) => this.assureEntityId(id)) } }, options);
   }
 
@@ -380,7 +380,7 @@ export abstract class AbstractDao<T extends BaseDocument<T>> {
    * @param identity
    * @protected
    */
-  protected assureEntityId(identity: EntityIdentity<T>): T['_id'] {
+  protected assureEntityId(identity: DocumentIdentity<T>): T['_id'] {
     return assureObjectId(identity);
   }
 
@@ -476,7 +476,7 @@ export abstract class AbstractDao<T extends BaseDocument<T>> {
    * @param options
    */
   async findOneAndSetById(
-    id: EntityIdentity<T>,
+    id: DocumentIdentity<T>,
     updateSet: UpdateQuerySet<T>,
     options?: IFindAndUpdateQueryOptions<T>,
   ): Promise<T | null> {
@@ -490,7 +490,7 @@ export abstract class AbstractDao<T extends BaseDocument<T>> {
    * @param options
    */
   async findOneAndUpdateById(
-    id: EntityIdentity<T>,
+    id: DocumentIdentity<T>,
     update: UpdateQuery<T>,
     options?: IFindAndUpdateQueryOptions<T>,
   ): Promise<T | null> {
@@ -506,7 +506,7 @@ export abstract class AbstractDao<T extends BaseDocument<T>> {
    * @param options
    */
   async findOneAndUpdateSetByFilter(
-    id: EntityIdentity<T>,
+    id: DocumentIdentity<T>,
     update: UpdateQuerySet<T>,
     filter?: FilterQuery<T>,
     options?: IFindAndUpdateQueryOptions<T>,
@@ -522,7 +522,7 @@ export abstract class AbstractDao<T extends BaseDocument<T>> {
    * @param options
    */
   async findOneAndUpdateByFilter(
-    id: EntityIdentity<T>,
+    id: DocumentIdentity<T>,
     update: UpdateQuery<T>,
     filter?: FilterQuery<T>,
     options?: IFindAndUpdateQueryOptions<T>,
@@ -563,7 +563,7 @@ export abstract class AbstractDao<T extends BaseDocument<T>> {
    * @param options
    */
   async updateOneSetById(
-    id: EntityIdentity<T>,
+    id: DocumentIdentity<T>,
     updateSet: UpdateQuerySet<T>,
     options?: IBaseQueryOptions,
   ) {
@@ -578,7 +578,7 @@ export abstract class AbstractDao<T extends BaseDocument<T>> {
    * @param options
    */
   async updateOneUnsetById(
-    id: EntityIdentity<T>,
+    id: DocumentIdentity<T>,
     updateUnset: UpdateQueryUnset<T>,
     options?: IBaseQueryOptions,
   ) {
@@ -592,7 +592,7 @@ export abstract class AbstractDao<T extends BaseDocument<T>> {
    * @param options
    */
   async updateOneById(
-    id: EntityIdentity<T>,
+    id: DocumentIdentity<T>,
     update: UpdateQuery<T>,
     options?: IUpdateQueryOptions,
   ): Promise<boolean> {
@@ -606,7 +606,7 @@ export abstract class AbstractDao<T extends BaseDocument<T>> {
    * @param options
    */
   protected async updateOneByFilter(
-    identity: EntityIdentity<T>,
+    identity: DocumentIdentity<T>,
     update: UpdateQuery<T>,
     filter?: FilterQuery<T>,
     options?: QueryOptions,
@@ -667,7 +667,7 @@ export abstract class AbstractDao<T extends BaseDocument<T>> {
    * @protected
    */
   protected async beforeUpdate(
-    id: EntityIdentity<T>,
+    id: DocumentIdentity<T>,
     update: UpdateQuery<T>,
   ): Promise<PartialEntityData<T> | boolean> {
     return Promise.resolve(true);
@@ -679,7 +679,7 @@ export abstract class AbstractDao<T extends BaseDocument<T>> {
    * @param options
    */
   async updateSetBulk(
-    updates: { id: EntityIdentity<T>; update: UpdateQuerySet<T> }[],
+    updates: { id: DocumentIdentity<T>; update: UpdateQuerySet<T> }[],
     options?: IBaseQueryOptions,
   ) {
     await this.getModel(options).bulkWrite(
@@ -697,7 +697,7 @@ export abstract class AbstractDao<T extends BaseDocument<T>> {
    * Reloads a given entity by id or instance.
    * @param id
    */
-  async reload(id: EntityIdentity<T>): Promise<T | null> {
+  async reload(id: DocumentIdentity<T>): Promise<T | null> {
     return this.findById(id);
   }
 
@@ -706,7 +706,7 @@ export abstract class AbstractDao<T extends BaseDocument<T>> {
    * @param ids
    * @param options
    */
-  async deleteManyByIds(ids: EntityIdentity<T>[], options?: DeleteOptions): Promise<number> {
+  async deleteManyByIds(ids: DocumentIdentity<T>[], options?: DeleteOptions): Promise<number> {
     return this.deleteMany({ _id: { $in: ids.map((id) => this.assureEntityId(id)) } }, options);
   }
 

@@ -6,7 +6,7 @@ import {
   ContentTypeService,
   ContentScoreService,
   assureObjectId,
-  EntityIdentity,
+  DocumentIdentity,
   UserAssignmentStrategy,
 } from '@lyvely/api';
 import { CalendarDate, toTimingId } from '@lyvely/dates';
@@ -119,7 +119,7 @@ export class TasksService extends ContentTypeService<Task, CreateTaskModel> {
     return task;
   }
 
-  async startTimer(profile: Profile, user: EntityIdentity<User>, task: Task): Promise<Timer> {
+  async startTimer(profile: Profile, user: DocumentIdentity<User>, task: Task): Promise<Timer> {
     const timer = task.getTimer(user) || new Timer(user);
 
     if (timer.isStarted()) return timer;
@@ -130,7 +130,7 @@ export class TasksService extends ContentTypeService<Task, CreateTaskModel> {
     return timer;
   }
 
-  async stopTimer(profile: Profile, user: EntityIdentity<User>, task: Task): Promise<Timer> {
+  async stopTimer(profile: Profile, user: DocumentIdentity<User>, task: Task): Promise<Timer> {
     const timer = task.getTimer(user);
 
     if (!timer) return new Timer();
@@ -144,7 +144,7 @@ export class TasksService extends ContentTypeService<Task, CreateTaskModel> {
 
   async updateTimerValue(
     profile: Profile,
-    user: EntityIdentity<User>,
+    user: DocumentIdentity<User>,
     task: Task,
     value: number,
   ): Promise<Timer> {
@@ -158,7 +158,7 @@ export class TasksService extends ContentTypeService<Task, CreateTaskModel> {
 
   private async updateTimer(
     profile: Profile,
-    user: EntityIdentity<User>,
+    user: DocumentIdentity<User>,
     task: Task,
     timer: Timer,
   ) {

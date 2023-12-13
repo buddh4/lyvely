@@ -1,4 +1,4 @@
-import { AbstractDao, BaseDocument, EntityIdentity, MixedProp, Model } from '@/core';
+import { AbstractDao, BaseDocument, DocumentIdentity, MixedProp, Model } from '@/core';
 import { buildTest, LyvelyTestingModule } from '@/testing';
 import { SettingsService } from './settings.service';
 import { InjectModel, Schema, SchemaFactory } from '@nestjs/mongoose';
@@ -43,7 +43,7 @@ class TestSettingsService extends SettingsService<TestSettingTarget> {
     return this.settingsDao.save(model);
   }
 
-  async find(identity: EntityIdentity<TestSettingTarget>): Promise<TestSettingTarget | null> {
+  async find(identity: DocumentIdentity<TestSettingTarget>): Promise<TestSettingTarget | null> {
     return this.settingsDao.findById(identity);
   }
 }

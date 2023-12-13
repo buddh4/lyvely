@@ -1,0 +1,33 @@
+{
+  "profiles": {
+    "settings": {
+      "general": {
+        "title": "General Settings",
+        "name": "Profile Name",
+        "description": "Description",
+        "visibility": "Visibility"
+      },
+      "permissions": {
+        "header": {
+          "permission": "Permission",
+          "module": "Module",
+          "level": "Level"
+        },
+        "roles": {
+          "owner": "Owner",
+          "admin": "Administrator",
+          "manager": "Content Manager",
+          "author": "Content Author",
+          "assignee": "Assigned Users",
+          "moderator": "Moderator",
+          "member": "Member",
+          "guest": "Guest",
+          "organization": "Organization",
+          "follower": "Follower",
+          "user": "User",
+          "visitor": "Visitor"
+        }
+      }
+    }
+  }
+}

@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import {
   assureObjectId,
   BaseDocument,
-  EntityIdentity,
+  DocumentIdentity,
   NestedSchema,
   ObjectIdProp,
   TObjectId,
@@ -118,7 +118,7 @@ export class UserNotification extends BaseDocument<UserNotification> {
   @Prop({ required: true })
   sortOrder: number;
 
-  constructor(user: EntityIdentity<User>, notification: Notification) {
+  constructor(user: DocumentIdentity<User>, notification: Notification) {
     super({
       uid: assureObjectId(user),
       nid: assureObjectId(notification),

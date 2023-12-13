@@ -6,7 +6,7 @@ import { UserOtpDao } from '../daos';
 import { generateOTP } from '../utils';
 import ms from 'ms';
 import * as bcrypt from 'bcrypt';
-import { EntityIdentity } from '@/core';
+import { DocumentIdentity } from '@/core';
 
 export interface IGenerateOtpOptions<TContext = any> {
   purpose: string;
@@ -123,7 +123,7 @@ export class OtpService<TContext = any> {
     return options.contextValidator ? options.contextValidator(otpModel.context) : true;
   }
 
-  async incrementAttempt(identity: EntityIdentity<UserOtp<TContext>>) {
+  async incrementAttempt(identity: DocumentIdentity<UserOtp<TContext>>) {
     return this.userOtpDao.incrementAttempt(identity);
   }
 

@@ -1,4 +1,4 @@
-import { AbstractDao, BaseDocument, EntityIdentity } from '@/core';
+import { AbstractDao, BaseDocument, DocumentIdentity } from '@/core';
 import { SettingsRegistry } from '@/settings/settings.registry';
 import { FieldValidationException, ISetting } from '@lyvely/interface';
 import { IFieldValidationResult } from '@lyvely/common';
@@ -11,7 +11,7 @@ export abstract class SettingsService<TModel extends BaseDocument<TModel> & { se
   protected abstract settingsDao: AbstractDao<TModel>;
   protected abstract settingsRegistry: SettingsRegistry;
 
-  async updateSettings(target: EntityIdentity<TModel>, updates: ISettingUpdate) {
+  async updateSettings(target: DocumentIdentity<TModel>, updates: ISettingUpdate) {
     const validationErrors: IFieldValidationResult[] = [];
     if (!updates.length) return true;
 

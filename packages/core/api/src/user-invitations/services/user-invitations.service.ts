@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { assureStringId, EntityIdentity } from '@/core';
+import { assureStringId, DocumentIdentity } from '@/core';
 import { UserInvitation } from '../schemas';
 import { UserInvitationInfo } from '@lyvely/interface';
 import { OptionalUser, User, UsersService } from '@/users';
@@ -9,7 +9,7 @@ import { UserInvitationDao } from '../daos';
 import { AbstractInvitationsService } from './abstract-invitations.service';
 
 export type UserInvitationSearch = {
-  profile: EntityIdentity<Profile>;
+  profile: DocumentIdentity<Profile>;
   user: User;
 };
 

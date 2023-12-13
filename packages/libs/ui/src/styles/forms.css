@@ -279,13 +279,16 @@ input:where(:not([type])).floating-input,
 [type='week'].floating-input,
 [multiple].floating-input,
 textarea.floating-input,
-select.floating-input
 [type="text"].floating-input,
 .floating-input {
     padding: 1.625rem 0.75rem 0.625rem;
     height: calc(3.5rem + 6px);
     transition: border-color 0.5s;
     @apply block w-full rounded-md border border-divide shadow-sm bg-white focus:border-divide focus:ring focus:ring-blue-200 focus:ring-opacity-50;
+}
+
+select.floating-input {
+    padding: 1.625rem 1.75rem .625rem 0.75rem;
 }
 
 .floating-input:not(.bg-main) {

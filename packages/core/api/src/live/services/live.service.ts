@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Observable, fromEvent, merge } from 'rxjs';
 import { ConfigService } from '@nestjs/config';
-import { assureStringId, EntityIdentity } from '@/core';
+import { assureStringId, DocumentIdentity } from '@/core';
 import { ConfigurationPath, OperationMode } from '@/config';
 import { OptionalUser, User } from '@/users';
 import {
@@ -93,11 +93,11 @@ export class LiveService {
     }
   }
 
-  private buildLiveProfileEventName(pid: EntityIdentity<Profile>) {
+  private buildLiveProfileEventName(pid: DocumentIdentity<Profile>) {
     return `live.profile.${assureStringId(pid)}`;
   }
 
-  private buildLiveUserEventName(uid: EntityIdentity<User>) {
+  private buildLiveUserEventName(uid: DocumentIdentity<User>) {
     return `live.user.${assureStringId(uid)}`;
   }
 

@@ -1,4 +1,4 @@
-import { AbstractDao, assureObjectId, EntityIdentity, Model } from '@/core';
+import { AbstractDao, assureObjectId, DocumentIdentity, Model } from '@/core';
 import { UserInvitation } from '../schemas';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from '@/users';
@@ -8,7 +8,10 @@ export class UserInvitationDao extends AbstractDao<UserInvitation> {
   @InjectModel(UserInvitation.name)
   protected model: Model<UserInvitation>;
 
-  async findByProfileAndInvitee(profile: EntityIdentity<Profile>, invitee: EntityIdentity<User>) {
+  async findByProfileAndInvitee(
+    profile: DocumentIdentity<Profile>,
+    invitee: DocumentIdentity<User>,
+  ) {
     return this.findOne({
       pid: assureObjectId(profile),
       uid: assureObjectId(invitee),

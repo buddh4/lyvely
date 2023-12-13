@@ -1,4 +1,4 @@
-import { AbstractPermissionsService } from '@/permissions/services';
+import { AbstractPermissionsManager } from '@/permissions/services';
 import {
   IUserRelationPermission,
   IUserRelationPermissionObject,
@@ -12,7 +12,7 @@ import { BasePermissionType, getPermission } from '@/permissions';
 /**
  * A service for managing user relation permissions.
  */
-class UserPermissionsService extends AbstractPermissionsService<
+export class UserPermissionsManager extends AbstractPermissionsManager<
   IUserRelationPermission,
   IUserRelationPermissionSubject,
   IUserRelationPermissionObject
@@ -30,14 +30,14 @@ class UserPermissionsService extends AbstractPermissionsService<
   }
 
   /**
-   * Retrieves the level of a given role or -1 if the role does not exist.
+   * Retrieves the role hierarchy, which is an array of roles in which the index defines the role level and lower
+   * roles inherit the permissions of higher levels.
    *
-   * @param {ProfileRelationRole} role - The role for which to determine the level.
-   * @return {number} The level of the role or -1 if the role does not exist.
+   * @returns {UserRelationRole[]} An array containing the role hierarchy for the current user.
    */
-  override getRoleLevel(role: UserRelationRole): number {
-    return userRelationRoleHierarchy.indexOf(role);
+  override getRoleHierarchy(): UserRelationRole[] {
+    return userRelationRoleHierarchy;
   }
 }
 
-export const useUserRelationPermissionsService = useSingleton(() => new UserPermissionsService());
+export const useUserRelationPermissionsManager = useSingleton(() => new UserPermissionsManager());

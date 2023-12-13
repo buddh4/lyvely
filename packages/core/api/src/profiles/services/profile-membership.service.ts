@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Membership, Profile, ProfileRelationUserInfo } from '../schemas';
 import { MembershipsDao } from '../daos';
-import { EntityIdentity, Transaction } from '@/core';
+import { DocumentIdentity, Transaction } from '@/core';
 import { User, UsersService } from '@/users';
 import { ProfileMembershipRole, ProfileType, ForbiddenServiceException } from '@lyvely/interface';
 
@@ -9,7 +9,7 @@ import { ProfileMembershipRole, ProfileType, ForbiddenServiceException } from '@
 export class ProfileMembershipService {
   constructor(private readonly membershipDao: MembershipsDao, private usersService: UsersService) {}
 
-  async getMemberShips(profile: EntityIdentity<Profile>) {
+  async getMemberShips(profile: DocumentIdentity<Profile>) {
     return this.membershipDao.findAllByProfile(profile);
   }
 

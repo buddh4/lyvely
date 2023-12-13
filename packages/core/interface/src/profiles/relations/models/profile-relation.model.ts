@@ -48,6 +48,9 @@ export class ProfileRelationModel<
   type: string;
 
   @Expose()
+  role?: string;
+
+  @Expose()
   @PropertyType(ProfileRelationUserInfoModel)
   userInfo: ProfileRelationUserInfoModel;
 

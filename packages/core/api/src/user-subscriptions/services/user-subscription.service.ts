@@ -13,7 +13,7 @@ import {
   ProfileRelationsService,
   ProfilesService,
 } from '@/profiles';
-import { EntityIdentity } from '@/core';
+import { DocumentIdentity } from '@/core';
 import { IntegrityException } from '@lyvely/interface';
 
 @Injectable()
@@ -26,7 +26,7 @@ export class UserSubscriptionService {
 
   async getSubscriptionContext(
     subscription: UserSubscription,
-    pid?: EntityIdentity<Profile>,
+    pid?: DocumentIdentity<Profile>,
   ): Promise<Array<UserSubscriptionContext>> {
     switch (subscription.type) {
       case SingleUserSubscription.typeName:
@@ -43,7 +43,7 @@ export class UserSubscriptionService {
 
   private async getSingleUserSubscriptionContext(
     subscription: SingleUserSubscription,
-    pid?: EntityIdentity<Profile>,
+    pid?: DocumentIdentity<Profile>,
   ): Promise<UserSubscriptionContext[]> {
     if (!subscription.uid)
       throw new IntegrityException('SingleUserSubscription without uid requested.');
@@ -59,7 +59,7 @@ export class UserSubscriptionService {
 
   private async getMultiUserSubscriptionContext(
     subscription: MultiUserSubscription,
-    pid?: EntityIdentity<Profile>,
+    pid?: DocumentIdentity<Profile>,
   ): Promise<UserSubscriptionContext[]> {
     if (!subscription?.uids?.length) return [];
 
@@ -82,7 +82,7 @@ export class UserSubscriptionService {
   }
 
   private async getProfileSubscriptionContext(
-    pid: EntityIdentity<Profile>,
+    pid: DocumentIdentity<Profile>,
   ): Promise<UserSubscriptionContext[]> {
     if (!pid) return [];
 

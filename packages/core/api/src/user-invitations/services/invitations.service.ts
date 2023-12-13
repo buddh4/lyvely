@@ -6,7 +6,7 @@ import { MailInvitation, UserInvitation } from '../schemas';
 import { MailInvitationService } from './mail-invitations.service';
 import { IMailInvitationContext, InvitationIF } from '../interfaces';
 import { UserInvitationsService } from './user-invitations.service';
-import { assureObjectId, EntityIdentity } from '@/core';
+import { assureObjectId, DocumentIdentity } from '@/core';
 import { DocumentNotFoundException } from '@lyvely/interface';
 
 @Injectable()
@@ -23,7 +23,7 @@ export class InvitationsService {
     return this.mailInvitationsService.getInvitationContext(token);
   }
 
-  public async getUserInvitationContext(user: User, profile: EntityIdentity<Profile>) {
+  public async getUserInvitationContext(user: User, profile: DocumentIdentity<Profile>) {
     return this.userInvitationsService.getInvitationContext({ user, profile });
   }
 
@@ -33,7 +33,7 @@ export class InvitationsService {
 
   public async acceptUserInvitation(
     user: User,
-    profile: EntityIdentity<Profile>,
+    profile: DocumentIdentity<Profile>,
   ): Promise<Membership | undefined> {
     // TODO: invalidate notification
     const invitation = await this.userInvitationsService.getInvitation({ user, profile });
@@ -43,7 +43,7 @@ export class InvitationsService {
 
   public async declineUserInvitation(
     user: User,
-    profile: EntityIdentity<Profile>,
+    profile: DocumentIdentity<Profile>,
   ): Promise<number> {
     // TODO: invalidate notification
     return this.inviteDao.deleteMany({ uid: assureObjectId(user), pid: assureObjectId(profile) });

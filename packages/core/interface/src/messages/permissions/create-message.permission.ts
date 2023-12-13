@@ -14,10 +14,10 @@ import { BasePermissionType } from '@/permissions';
 export const CreateMessagePermission: IProfilePermission = {
   id: 'messages.create-message',
   moduleId: MESSAGES_MODULE_ID,
-  name: 'messsages.permissions.create.name',
-  description: 'messsages.permissions.create.description',
+  name: 'messages.permissions.create.name',
+  description: 'messages.permissions.create.description',
   type: BasePermissionType.Profile,
-  default: ProfileRelationRole.Member,
+  default: ProfileRelationRole.Guest,
   min: ProfileRelationRole.Moderator,
   max: ProfileRelationRole.User,
 };

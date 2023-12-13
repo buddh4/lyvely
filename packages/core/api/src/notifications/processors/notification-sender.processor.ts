@@ -6,7 +6,7 @@ import { Notification, NotificationChannelDeliveryStatus, UserNotification } fro
 import { Job } from 'bullmq';
 import { NotificationChannelRegistry, NotificationDecider } from '../components';
 import { Logger } from '@nestjs/common';
-import { EntityIdentity } from '@/core';
+import { DocumentIdentity } from '@/core';
 import { UsersService } from '@/users';
 import { ServiceException } from '@lyvely/interface';
 import { NotificationService, UserNotificationsService } from '../services';
@@ -30,7 +30,7 @@ export class NotificationSenderProcessor extends WorkerHost {
     return this.processNotification(job.data.nid).catch((err) => this.logger.error(err));
   }
 
-  async processNotification(identity: EntityIdentity<Notification>): Promise<any> {
+  async processNotification(identity: DocumentIdentity<Notification>): Promise<any> {
     const notification = await this.notificationService.findOne(identity);
 
     if (!notification) throw new ServiceException('Invalid notification id');

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import {
   AbstractDao,
-  EntityIdentity,
+  DocumentIdentity,
   FilterQuery,
   IBaseQueryOptions,
   Model,
@@ -169,7 +169,7 @@ export class UserDao extends AbstractDao<User> {
    * @param email
    * @param verification
    */
-  async setEmailVerification(user: EntityIdentity<User>, email: string, verification = true) {
+  async setEmailVerification(user: DocumentIdentity<User>, email: string, verification = true) {
     const result = await this.updateOneByFilter(
       user,
       { $set: { 'emails.$[userEmail]': new UserEmail(email, verification) } },
@@ -195,7 +195,7 @@ export class UserDao extends AbstractDao<User> {
    * @param user
    * @param email
    */
-  async removeEmail(user: EntityIdentity<User>, email: string) {
+  async removeEmail(user: DocumentIdentity<User>, email: string) {
     const result = await this.updateOneById(
       user,
       {
@@ -241,7 +241,7 @@ export class UserDao extends AbstractDao<User> {
     return this.updateOneSetById(user, { [path]: Math.max(0, count) }, options);
   }
 
-  async createRefreshToken(identity: EntityIdentity<User>, token: RefreshToken, limit = 20) {
+  async createRefreshToken(identity: DocumentIdentity<User>, token: RefreshToken, limit = 20) {
     const tokenModel = new RefreshToken({
       vid: token.vid,
       hash: token.hash,
@@ -260,7 +260,7 @@ export class UserDao extends AbstractDao<User> {
     }));
   }
 
-  async updateRefreshToken(identity: EntityIdentity<User>, token: RefreshToken) {
+  async updateRefreshToken(identity: DocumentIdentity<User>, token: RefreshToken) {
     const result = await this.updateOneByFilter(
       identity,
       {
@@ -284,7 +284,7 @@ export class UserDao extends AbstractDao<User> {
     return result;
   }
 
-  async destroyRefreshToken(identity: EntityIdentity<User>, vid: string) {
+  async destroyRefreshToken(identity: DocumentIdentity<User>, vid: string) {
     const result = await this.updateOneById(identity, {
       $pull: {
         refreshTokens: { vid: vid },
@@ -299,7 +299,7 @@ export class UserDao extends AbstractDao<User> {
     return result;
   }
 
-  async destroyExpiredRefreshTokens(identity: EntityIdentity<User>) {
+  async destroyExpiredRefreshTokens(identity: DocumentIdentity<User>) {
     const now = new Date();
     const result = await this.updateOneById(identity, {
       $pull: {
@@ -315,7 +315,11 @@ export class UserDao extends AbstractDao<User> {
     return result;
   }
 
-  async updatePassword(identity: EntityIdentity<User>, newPassword: string, resetSession: boolean) {
+  async updatePassword(
+    identity: DocumentIdentity<User>,
+    newPassword: string,
+    resetSession: boolean,
+  ) {
     const date = new Date();
     const update = { password: newPassword, passwordResetAt: date } as UpdateQuerySet<User>;
     if (resetSession) {
@@ -339,7 +343,7 @@ export class UserDao extends AbstractDao<User> {
     return 'users';
   }
 
-  pushEmail(user: EntityIdentity<User>, userEmail: UserEmail) {
+  pushEmail(user: DocumentIdentity<User>, userEmail: UserEmail) {
     return this.updateOneById(user, { $push: { emails: userEmail } });
   }
 }

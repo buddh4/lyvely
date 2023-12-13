@@ -2,7 +2,7 @@ import { Content } from '../schemas';
 import { Injectable } from '@nestjs/common';
 import { ContentTypeRegistry } from '../components';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, EntityIdentity } from '@/core';
+import { Model, DocumentIdentity } from '@/core';
 import { DeepPartial } from '@lyvely/common';
 import { ContentTypeDao } from './content-type.dao';
 import { ProfileShard } from '@/profiles';
@@ -16,11 +16,11 @@ export class ContentDao extends ContentTypeDao<Content> {
     super();
   }
 
-  incrementChildCount(context: ProfileShard, parent: EntityIdentity<Content>) {
+  incrementChildCount(context: ProfileShard, parent: DocumentIdentity<Content>) {
     return this.updateOneByProfileAndId(context, parent, { $inc: { 'meta.childCount': 1 } });
   }
 
-  decrementChildCount(context: ProfileShard, parent: EntityIdentity<Content>) {
+  decrementChildCount(context: ProfileShard, parent: DocumentIdentity<Content>) {
     return this.updateOneByProfileAndFilter(
       context,
       parent,

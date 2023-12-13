@@ -5,22 +5,24 @@ import {
   IPermissionConfig,
   registerPermissions,
 } from '../../../permissions';
-import { ProfileRelationRole } from '../interfaces';
+import { ProfileRelationRole } from '../../relations';
 import { ProfileModel } from '../../core';
 import { IntegrityException } from '../../../exceptions';
 import { UserStatus, VisitorMode } from '../../../users';
-import { useProfilePermissionsService } from './profile-permissions.service';
+import { useProfilePermissionsManager } from './profile-permissions.manager';
 
-describe('ProfilePermissionsService', function () {
+describe('ProfilePermissionsManager', function () {
   afterEach(clearPermissions);
 
-  const service = useProfilePermissionsService();
+  const manager = useProfilePermissionsManager();
 
   const registerTestPermission = (data?: Partial<IPermission<any, any>>) => {
     registerPermissions([
       {
         id: 'test',
         moduleId: 'test',
+        name: 'test',
+        description: 'test',
         min: ProfileRelationRole.Admin,
         max: ProfileRelationRole.Member,
         default: ProfileRelationRole.Member,
@@ -43,7 +45,7 @@ describe('ProfilePermissionsService', function () {
   ) => {
     profile ||= new ProfileModel();
     const permissionId = options?.id || 'test';
-    return service.verifyPermission(
+    return manager.verifyPermission(
       permissionId,
       {
         role: role,

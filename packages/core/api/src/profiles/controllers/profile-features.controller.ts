@@ -10,6 +10,7 @@ import {
 } from '@lyvely/interface';
 import { ProfileFeaturesService } from '../services';
 
+@ProfileController(API_PROFILE_FEATURES)
 @UseClassSerializer()
 export class ProfileFeaturesController implements ProfileFeaturesEndpoint {
   @Inject()

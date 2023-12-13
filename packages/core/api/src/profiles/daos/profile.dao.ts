@@ -12,7 +12,7 @@ import {
   Model,
   applyRawDataTo,
   assureObjectId,
-  EntityIdentity,
+  DocumentIdentity,
   AbstractDao,
   createObjectId,
   IBaseFetchQueryOptions,
@@ -25,11 +25,11 @@ import { IntegrityException, ProfileType } from '@lyvely/interface';
 export class ProfileDao extends AbstractDao<Profile> {
   @InjectModel(Profile.name) protected model: Model<Profile>;
 
-  async findOneByOwnerAndName(owner: EntityIdentity<User>, name: string) {
+  async findOneByOwnerAndName(owner: DocumentIdentity<User>, name: string) {
     return this.findOne({ ownerId: assureObjectId(owner), name });
   }
 
-  async findOneByOrganizationAndName(organization: EntityIdentity<Organization>, name: string) {
+  async findOneByOrganizationAndName(organization: DocumentIdentity<Organization>, name: string) {
     return this.findOne({ oid: assureObjectId(organization), name });
   }
 
@@ -47,7 +47,7 @@ export class ProfileDao extends AbstractDao<Profile> {
    * @param owner
    * @param name
    */
-  async findExistingProfileByOrganizationName(owner: EntityIdentity<User>, name: string) {
+  async findExistingProfileByOrganizationName(owner: DocumentIdentity<User>, name: string) {
     return this.findOne({
       $or: [
         { ownerId: assureObjectId(owner), name },
@@ -63,22 +63,22 @@ export class ProfileDao extends AbstractDao<Profile> {
    * @param options
    */
   async findByTypeAndId(
-    identity: EntityIdentity<Profile>,
+    identity: DocumentIdentity<Profile>,
     type: ProfileType.User,
     options?: IBaseFetchQueryOptions<Profile>,
   ): Promise<UserProfile>;
   async findByTypeAndId(
-    identity: EntityIdentity<Profile>,
+    identity: DocumentIdentity<Profile>,
     type: ProfileType.Group,
     options?: IBaseFetchQueryOptions<Profile>,
   ): Promise<GroupProfile>;
   async findByTypeAndId(
-    identity: EntityIdentity<Profile>,
+    identity: DocumentIdentity<Profile>,
     type: ProfileType.Organization,
     options?: IBaseFetchQueryOptions<Profile>,
   ): Promise<Organization>;
   async findByTypeAndId(
-    identity: EntityIdentity<Profile>,
+    identity: DocumentIdentity<Profile>,
     type: ProfileType,
     options?: IBaseFetchQueryOptions<Profile>,
   ): Promise<Profile | null> {
@@ -114,7 +114,7 @@ export class ProfileDao extends AbstractDao<Profile> {
     return this.updateOneById(profile, { $push: { tags: { $each: tags } } });
   }
 
-  async updateTag(profile: Profile, identity: EntityIdentity<Tag>, update: Partial<Tag>) {
+  async updateTag(profile: Profile, identity: DocumentIdentity<Tag>, update: Partial<Tag>) {
     const tag = profile.getTagById(assureObjectId(identity));
 
     if (!tag) return 0;
@@ -131,7 +131,7 @@ export class ProfileDao extends AbstractDao<Profile> {
     );
   }
 
-  async updateScore(identity: EntityIdentity<Profile>, newScore) {
+  async updateScore(identity: DocumentIdentity<Profile>, newScore) {
     if (typeof newScore !== 'number') {
       return;
     }

@@ -7,6 +7,6 @@ const api = useApi<IProfileFeaturesClient>(API_PROFILE_FEATURES);
 
 export default {
   async updateState(model: UpdateFeatureModel, options?: IProfileApiRequestOptions) {
-    return api.post<'updateState'>(API_PROFILE_FEATURES, model, options);
+    return api.post<'updateState'>(model, options);
   },
 };

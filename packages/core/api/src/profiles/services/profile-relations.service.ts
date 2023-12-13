@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { assureObjectId, EntityIdentity } from '@/core';
+import { assureObjectId, DocumentIdentity } from '@/core';
 import { User, UsersService } from '@/users';
 import { DocumentNotFoundException } from '@lyvely/interface';
 import { Profile, UserProfileRelation } from '../schemas';
@@ -20,7 +20,7 @@ export class ProfileRelationsService {
    * @throws DocumentNotFoundException if profile does not exist
    * @returns A Promise resolving to an object containing profile relations.
    */
-  async findProfileRelations(identity: EntityIdentity<Profile>): Promise<UserProfileRelation[]> {
+  async findProfileRelations(identity: DocumentIdentity<Profile>): Promise<UserProfileRelation[]> {
     return this.profileRelationsDao.findAllByProfile(identity);
   }
 
@@ -38,8 +38,8 @@ export class ProfileRelationsService {
    * @param uids
    */
   async findAllProfileRelationsByUsers(
-    profile: EntityIdentity<Profile>,
-    uids: EntityIdentity<User>[],
+    profile: DocumentIdentity<Profile>,
+    uids: DocumentIdentity<User>[],
   ): Promise<UserProfileRelation[]> {
     return this.profileRelationsDao.findAll({
       pid: assureObjectId(profile),
@@ -49,13 +49,13 @@ export class ProfileRelationsService {
 
   /**
    * Finds all user relations for a profile and associated organization based on the user entity.
-   * @param {EntityIdentity<User> | null | undefined} user - The user entity to search relations for. If null or undefined, function returns visitor relations.
+   * @param {DocumentIdentity<User> | null | undefined} user - The user entity to search relations for. If null or undefined, function returns visitor relations.
    * @param {Profile} profile - The profile entity to search relations for. If the profile does not have an associated organization, only profile relations are returned.
    * @returns {Promise<{ profileRelations: T[]; organizationRelations?: T[] }>} - A promise that resolves to an object containing arrays of user relations for both the profile and the organization.
    */
   async findAllProfileAndOrganizationRelationsByUser(
     profile: Profile,
-    user: EntityIdentity<User> | null | undefined,
+    user: DocumentIdentity<User> | null | undefined,
   ): Promise<{
     profileRelations: UserProfileRelation[];
     organizationRelations?: UserProfileRelation[];
@@ -70,7 +70,7 @@ export class ProfileRelationsService {
    * @param identity
    */
   async findAllUserProfileRelations(
-    identity: EntityIdentity<Profile>,
+    identity: DocumentIdentity<Profile>,
   ): Promise<IUserWithProfileRelation[]> {
     const profile = await this.findProfileByIdentity(identity);
 
@@ -87,7 +87,7 @@ export class ProfileRelationsService {
     return result;
   }
 
-  private async findProfileByIdentity(identity: EntityIdentity<Profile>) {
+  private async findProfileByIdentity(identity: DocumentIdentity<Profile>) {
     const profile =
       identity instanceof Profile ? identity : await this.profileDao.findById(identity);
     if (!profile) throw new DocumentNotFoundException();

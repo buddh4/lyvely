@@ -1,10 +1,13 @@
 import { Exclude, Expose } from 'class-transformer';
 import { BaseModel, DocumentModel, TransformObjectId, PropertyType } from '@lyvely/common';
-import { ProfileType, ProfileUsage } from '../interfaces';
-import { ProfileRelationRole } from '@/profiles/relations';
-import { IPermissionObject, IPermissionSetting } from '@/permissions';
+import { ProfileType, ProfileUsage, ProfileVisibilityLevel } from '../interfaces';
+import { IPermissionSetting } from '@/permissions';
 import { TagModel } from '@/profiles/tags';
-import { ProfilePermissionSettingModel } from '@/profiles/permissions';
+import {
+  IProfilePermissionData,
+  IProfilePermissionObject,
+  ProfilePermissionSettingModel,
+} from '@/profiles/permissions';
 
 @Expose()
 export class ProfileInfoModel extends BaseModel<ProfileInfoModel> {
@@ -23,7 +26,7 @@ export class ProfileMemberGroupModel {
 @Exclude()
 export class ProfileModel<TID = string>
   extends DocumentModel<ProfileModel<TID>>
-  implements IPermissionObject<ProfileRelationRole>
+  implements IProfilePermissionObject
 {
   @Expose()
   subscription?: string;
@@ -73,7 +76,7 @@ export class ProfileModel<TID = string>
   groups: ProfileMemberGroupModel[];
 
   @Expose()
-  visibility: number;
+  visibility: ProfileVisibilityLevel;
 
   @Expose()
   locale: string;
@@ -85,11 +88,30 @@ export class ProfileModel<TID = string>
   @PropertyType([TagModel])
   tags: TagModel[];
 
-  getPermissionSettings(): IPermissionSetting<any, ProfileRelationRole>[] {
-    return this.permissions || [];
+  /**
+   * Retrieves the permission settings for this profile.
+   *
+   * @returns {Array<IPermissionSetting<any, ProfileRelationRole | ContentUserRole>>} The permission settings.
+   */
+  getPermissionSettings(): IPermissionSetting[] {
+    return (this.permissions as IPermissionSetting[]) || [];
   }
 
+  /**
+   * Retrieves an array of permission group IDs of this profile.
+   *
+   * @return {string[]} An array of permission group IDs.
+   */
   getPermissionGroups(): string[] {
     return this.groups.map((g) => g.id);
+  }
+
+  /**
+   * Retrieves the profile visibility level.
+   *
+   * @return {ProfileVisibilityLevel} The profile visibility level.
+   */
+  getProfilePermissionData(): IProfilePermissionData {
+    return this;
   }
 }

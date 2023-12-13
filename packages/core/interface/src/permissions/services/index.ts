@@ -1,2 +1,2 @@
-export * from './abstract-permissions.service';
-export * from './global-permissions.service';
+export * from './abstract-permissions.manager';
+export * from './global-permissions.manager';

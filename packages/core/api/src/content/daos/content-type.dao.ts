@@ -1,5 +1,5 @@
 import { Content } from '../schemas';
-import { assureObjectId, EntityIdentity, UpdateQuerySet, UpdateQuery } from '@/core';
+import { assureObjectId, DocumentIdentity, UpdateQuerySet, UpdateQuery } from '@/core';
 import { BaseProfileModelDao, Profile } from '@/profiles';
 import { User } from '@/users';
 import { SortResult } from '@lyvely/interface';
@@ -35,7 +35,7 @@ export abstract class ContentTypeDao<T extends Content> extends BaseProfileModel
    * @param models
    */
   async updateSortOrder(models: T[]): Promise<SortResult[]> {
-    const updates: { id: EntityIdentity<T>; update: UpdateQuerySet<T> }[] = [];
+    const updates: { id: DocumentIdentity<T>; update: UpdateQuerySet<T> }[] = [];
     const result: SortResult[] = [];
 
     models.forEach((model, index) => {
@@ -62,7 +62,7 @@ export abstract class ContentTypeDao<T extends Content> extends BaseProfileModel
   }
 
   createUserUpdateQuery(
-    user: EntityIdentity<User>,
+    user: DocumentIdentity<User>,
     update?: UpdateQuery<Content>,
   ): UpdateQuery<Content> {
     if (!update) update = {};
@@ -73,7 +73,7 @@ export abstract class ContentTypeDao<T extends Content> extends BaseProfileModel
   }
 
   createUserUpdateQuerySet(
-    user: EntityIdentity<User>,
+    user: DocumentIdentity<User>,
     update?: UpdateQuerySet<Content>,
   ): UpdateQuerySet<Content> {
     if (!update) update = {};

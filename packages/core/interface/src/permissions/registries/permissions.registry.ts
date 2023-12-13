@@ -1,4 +1,4 @@
-import { IPermission } from './interfaces/permissions.interface';
+import { IPermission } from '../interfaces/permissions.interface';
 
 /** permission registration **/
 const permissions = new Map<string, IPermission<any, any>>();
@@ -40,7 +40,7 @@ export function getPermission<TPermission extends IPermission<any, any> = IPermi
 }
 
 /**
- * Retrieves all permissions or filtered permissions of a given type.
+ * Retrieves all permissions or filtered permissions of a given type sorted by module id.
  *
  * @param {string} [type] - Optional. The type of permissions to retrieve. If provided, only permissions of this type will be returned.
  *
@@ -49,6 +49,8 @@ export function getPermission<TPermission extends IPermission<any, any> = IPermi
 export function getAllPermissions<
   TPermission extends IPermission<any, any> = IPermission<any, any>,
 >(type?: string): TPermission[] {
-  const result = Array.from(permissions.values()) as TPermission[];
-  return type ? result.filter((p) => p.type === type) : result;
+  let result = Array.from(permissions.values()) as TPermission[];
+  result = type ? result.filter((p) => p.type === type) : result;
+  result.sort((a, b) => (a.moduleId > b.moduleId ? 1 : -1));
+  return result;
 }

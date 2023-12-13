@@ -13,7 +13,7 @@ import {
   AbstractDao,
   assureStringId,
   BaseDocument,
-  EntityIdentity,
+  DocumentIdentity,
   IFetchQueryOptions,
 } from '@/core';
 import { cloneDeep } from 'lodash';
@@ -40,7 +40,7 @@ export abstract class AbstractStreamService<
    */
   async loadEntry(
     context: TContext,
-    identity: EntityIdentity<TModel>,
+    identity: DocumentIdentity<TModel>,
     filter?: TFilter,
   ): Promise<TModel> {
     const streamEntry = await this.streamEntryDao.findByIdAndFilter(

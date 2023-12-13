@@ -1,28 +1,13 @@
-import { BasePermissionType, IGlobalPermission } from '../interfaces';
-import { getPermission } from '../permissions.registry';
+import { BasePermissionType, IGlobalPermission, IPermission } from '../interfaces';
 
 /**
- * Searches and returns a registered global permission by id or instance.
+ * Checks if the given permission is a content permission.
  *
- * @param {string | IGlobalPermission} permissionOrId - The ID or instance of the global permission.
- *
- * @return {IGlobalPermission | undefined} - The registered global permission if found, otherwise undefined.
+ * @param {IPermission<any, any>} permission - The permission to check.
+ * @return {boolean} - Returns true if the permission is a content permission, otherwise returns false.
  */
-export function getGlobalPermission(
-  permissionOrId: string | IGlobalPermission,
-): IGlobalPermission | undefined {
-  const permission = getPermission(permissionOrId);
-
-  // We call getFeature again in case the function was called wit IFeature argument
-  if (!permission) {
-    console.warn(`Global permission ${permissionOrId} is not registered.`);
-    return undefined;
-  }
-
-  if (permission.type !== BasePermissionType.Global) {
-    console.warn(`Global permission ${permission.id} can not be verified on global level.`);
-    return undefined;
-  }
-
-  return permission as IGlobalPermission;
+export function isGlobalContentPermission(
+  permission: IPermission<any, any>,
+): permission is IGlobalPermission {
+  return permission.type === BasePermissionType.Global;
 }

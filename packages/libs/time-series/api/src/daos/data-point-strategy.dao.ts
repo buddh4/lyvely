@@ -1,4 +1,4 @@
-import { User, Profile, AbstractDao, assureObjectId, EntityIdentity } from '@lyvely/api';
+import { User, Profile, AbstractDao, assureObjectId, DocumentIdentity } from '@lyvely/api';
 import { buildDiscriminatorName, DataPoint, TimeSeriesContent } from '../schemas';
 import { CalendarPlanFilter } from '@lyvely/calendar-plan-interface';
 import { getTimingIds, CalendarInterval } from '@lyvely/dates';
@@ -8,12 +8,12 @@ export abstract class DataPointStrategyDao<T extends DataPoint = DataPoint> exte
   protected abstract contentName: string;
 
   async updateDataPointValue(
-    uid: EntityIdentity<User>,
+    uid: DocumentIdentity<User>,
     dataPoint: DataPoint<any>,
     value: T['value'],
   ) {
     return await this.updateOneSetById(
-      dataPoint as EntityIdentity<T>,
+      dataPoint as DocumentIdentity<T>,
       {
         valueType: dataPoint.valueType,
         value,
@@ -34,7 +34,7 @@ export abstract class DataPointStrategyDao<T extends DataPoint = DataPoint> exte
 
   async findUserDataPointByTid(
     content: TimeSeriesContent<any>,
-    uid: EntityIdentity<User>,
+    uid: DocumentIdentity<User>,
     tid: string,
   ) {
     // TODO: (TimeSeries History) fetch interval from history
@@ -67,7 +67,7 @@ export abstract class DataPointStrategyDao<T extends DataPoint = DataPoint> exte
    */
   async findByIntervalLevel(
     profile: Profile,
-    uid: EntityIdentity<User> | null | undefined,
+    uid: DocumentIdentity<User> | null | undefined,
     filter: CalendarPlanFilter,
   ) {
     // If no uid is given we assume visitor role

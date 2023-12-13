@@ -1,14 +1,17 @@
 import { ProfileContext, ProtectedProfileContext } from '../models';
 import {
+  getPermission,
   getProfileRoleLevel,
   IProfilePermissionSetting,
+  isProfilePermission,
   ProfileRelationInfo,
   ProfileRelationInfos,
   ProfileRelationRole,
   ProfileWithRelationsModel,
-  verifyRoleLevel,
+  verifyProfileRoleLevel,
 } from '@lyvely/interface';
 import { getIntersection, registerMapping } from '@lyvely/common';
+import { ProfilePermissionSetting } from '@/profiles/schemas';
 
 /**
  * Filters out any permission information not relevant for the given user context.
@@ -19,20 +22,25 @@ import { getIntersection, registerMapping } from '@lyvely/common';
  * @param {ProfileContext} context - The profile context.
  * @returns {ProfilePermissionSetting[]} - The sanitized permission settings.
  */
-export function sanitizePermissionSettings(context: ProfileContext): IProfilePermissionSetting[] {
-  const settings = context.profile.getPermissionSettings();
+export function sanitizePermissionSettings(
+  context: ProfileContext,
+): IProfilePermissionSetting<any>[] {
+  const settings = context.profile.permissions;
 
   if (!settings?.length) return [];
 
-  const result: IProfilePermissionSetting[] = [];
+  const result: ProfilePermissionSetting[] = [];
   const userRole = context.getRole();
 
   // Do not sanitize any settings for admin and owner roles
   // TODO: If we want to enable moderators to manage users and permissions this needs to be aligned or replaced with a permission check
-  if (verifyRoleLevel(userRole, ProfileRelationRole.Admin)) return result;
+  if (verifyProfileRoleLevel(userRole, ProfileRelationRole.Admin)) {
+    return context.profile.permissions;
+  }
 
   for (const setting of settings) {
-    result.push(sanitizePermissionSetting(setting, context, userRole));
+    const sanitizedSetting = sanitizePermissionSetting(setting, context, userRole);
+    if (sanitizedSetting) result.push(sanitizedSetting);
   }
 
   return result;
@@ -52,31 +60,44 @@ export function sanitizePermissionSettings(context: ProfileContext): IProfilePer
  * @returns {IProfilePermissionSetting} - The sanitized permission setting.
  */
 function sanitizePermissionSetting(
-  setting: IProfilePermissionSetting,
+  setting: ProfilePermissionSetting,
   context: ProfileContext,
   role: ProfileRelationRole,
-): IProfilePermissionSetting {
-  const result: IProfilePermissionSetting<any> = { ...setting };
-  const userRoleLevel = getProfileRoleLevel(role);
+): ProfilePermissionSetting | null {
+  try {
+    const result: ProfilePermissionSetting = new ProfilePermissionSetting(setting);
 
-  const settingRoleLevel = getProfileRoleLevel(setting.role);
-  if (settingRoleLevel < userRoleLevel) {
-    // If the user role level is not sufficient anyway, we set the strictest role
-    result.role = ProfileRelationRole.Owner;
-  } else {
-    // If the user role level is sufficient, we set the user role as role level
-    result.role = role;
+    const permission = getPermission(setting.id);
+    if (!permission) return null;
+
+    // Sanitizing content permissions is trickier, since the role depends on the content.
+    if (isProfilePermission(permission)) {
+      const userRoleLevel = getProfileRoleLevel(role);
+      const settingRoleLevel = getProfileRoleLevel(setting.role as ProfileRelationRole);
+      if (settingRoleLevel < userRoleLevel) {
+        // If the user role level is not sufficient anyway, we set the strictest role
+        result.role = ProfileRelationRole.Owner;
+      } else {
+        // If the user role level is sufficient, we set the user role as role level
+        result.role = role;
+      }
+    }
+
+    const membership = context.getMembership();
+    if (membership) {
+      // Only include groups relevant to the user
+      const memberGroups = membership.groups || [];
+      const settingGroups = setting.groups || [];
+      result.groups = getIntersection(memberGroups, settingGroups);
+    } else {
+      result.groups = [];
+    }
+
+    return result;
+  } catch (e) {
+    console.log(e);
+    return null;
   }
-
-  const membership = context.getMembership();
-  if (membership) {
-    // Only include groups relevant to the user
-    const memberGroups = membership.groups.map((g) => g.toString()) || [];
-    const settingGroups = setting.groups || [];
-    result.groups = getIntersection(memberGroups, settingGroups);
-  }
-
-  return result;
 }
 
 export function useProfileMappings() {

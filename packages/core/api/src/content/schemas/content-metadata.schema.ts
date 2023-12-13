@@ -1,5 +1,5 @@
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
-import { BaseDocument, NestedSchema, ObjectIdProp, TObjectId } from '@/core';
+import { BaseDocument, NestedSchema, ObjectIdArrayProp, ObjectIdProp, TObjectId } from '@/core';
 import { Author, ContentAuthorSchema, CreatedAs } from './content-author.schema';
 import { getNumberEnumValues, PropertyType } from '@lyvely/common';
 import { IContentMetadata, RoleVisibilityLevel } from '@lyvely/interface';
@@ -20,6 +20,12 @@ export class ContentMetadata extends BaseDocument<ContentMetadata> implements IC
 
   @Prop({ type: ContentAuthorSchema, required: true })
   createdAs?: CreatedAs;
+
+  @ObjectIdArrayProp()
+  assignees?: TObjectId[];
+
+  @ObjectIdArrayProp()
+  managers?: TObjectId[];
 
   @Prop()
   @PropertyType(Number, { default: 0 })

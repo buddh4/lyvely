@@ -57,12 +57,23 @@ export default [
         component: () => import('../views/ProfileFeaturesSettings.vue'),
       },
       {
+        path: profilePath('/settings/permissions'),
+        name: 'ProfilePermissionsSettings',
+        meta: {
+          title: translation('profiles.settings.permissions.title'),
+          i18n: {
+            load: [{ module: PROFILES_MODULE_ID, section: 'settings' }],
+          },
+        },
+        component: () => import('../views/ProfilePermissionSettings.vue'),
+      },
+      {
         name: 'GeneralProfileSettings',
         path: profilePath('general'),
         meta: {
           title: translation('profiles.settings.general.title'),
           i18n: {
-            load: [{ module: PROFILES_MODULE_ID, section: 'general-settings' }],
+            load: [{ module: PROFILES_MODULE_ID, section: 'settings' }],
           },
         },
         component: () => import('../views/GeneralProfileSettings.vue'),

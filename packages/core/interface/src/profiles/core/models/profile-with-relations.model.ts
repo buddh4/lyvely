@@ -1,4 +1,4 @@
-import { Exclude, Expose } from 'class-transformer';
+import { Exclude, Expose, instanceToPlain, Transform } from 'class-transformer';
 import {
   isMembershipRelation,
   MembershipModel,
@@ -8,7 +8,7 @@ import {
 } from '@/profiles/relations';
 import { ProfileModel } from './profile.model';
 import { IEditableModel } from '@/common';
-import { PropertyType } from '@lyvely/common';
+import { PropertyType, TransformObjectId } from '@lyvely/common';
 import { UpdateProfileModel } from './update-profile.model';
 
 /**
@@ -25,6 +25,7 @@ export class ProfileWithRelationsModel<TID = string>
    */
   @Expose()
   @PropertyType([ProfileRelationDetailsModel])
+  @Transform(({ value }) => instanceToPlain(value))
   userRelations: ProfileRelationDetailsModel<TID>[];
 
   /**
@@ -38,6 +39,7 @@ export class ProfileWithRelationsModel<TID = string>
    */
   @Expose()
   @PropertyType([ProfileRelationDetailsModel])
+  @Transform(({ value }) => instanceToPlain(value))
   userOrganizationRelations: ProfileRelationDetailsModel<TID>[];
 
   /**
@@ -45,6 +47,7 @@ export class ProfileWithRelationsModel<TID = string>
    */
   @Expose()
   @PropertyType([ProfileRelationModel])
+  @Transform(({ value }) => instanceToPlain(value))
   profileRelations: ProfileRelationModel<TID>[];
 
   constructor(obj?: Partial<ProfileWithRelationsModel<TID>>) {

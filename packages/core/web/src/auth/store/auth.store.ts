@@ -133,7 +133,7 @@ export const useAuthStore = defineStore('user-auth', () => {
   }
 
   function isVisitorModeEnabled() {
-    return useAppConfigStore().get('visitorStrategy')?.mode === VisitorMode.Enabled;
+    return useAppConfigStore().get('permissions')?.visitorStrategy.mode === VisitorMode.Enabled;
   }
 
   return {

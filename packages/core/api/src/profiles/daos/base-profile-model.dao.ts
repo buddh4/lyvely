@@ -8,7 +8,7 @@ import {
   IUpdateQueryOptions,
   UpdateQuerySet,
   assureObjectId,
-  EntityIdentity,
+  DocumentIdentity,
   IBulkBaseQueryOptions,
   TObjectId,
   FilterQuery,
@@ -34,7 +34,7 @@ export type ProfileShard =
 export abstract class BaseProfileModelDao<T extends BaseProfileModel<T>> extends AbstractDao<T> {
   async findByProfileAndId(
     profileRelation: ProfileShard,
-    identity: EntityIdentity<T>,
+    identity: DocumentIdentity<T>,
     options?: IBaseFetchQueryOptions<T>,
   ) {
     return this.findOne(
@@ -47,7 +47,7 @@ export abstract class BaseProfileModelDao<T extends BaseProfileModel<T>> extends
 
   async findAllByProfileAndIds(
     profileRelation: ProfileShard,
-    ids: EntityIdentity<T>[],
+    ids: DocumentIdentity<T>[],
     options?: IFetchQueryOptions<T>,
   ) {
     return this.findAllByProfile(
@@ -75,7 +75,7 @@ export abstract class BaseProfileModelDao<T extends BaseProfileModel<T>> extends
 
   async updateOneByProfileAndIdSet(
     profileRelation: ProfileShard,
-    id: EntityIdentity<T>,
+    id: DocumentIdentity<T>,
     updateSet: UpdateQuerySet<T>,
     options?: IBaseQueryOptions,
   ) {
@@ -84,7 +84,7 @@ export abstract class BaseProfileModelDao<T extends BaseProfileModel<T>> extends
 
   async updateOneByProfileAndId(
     profileRelation: ProfileShard,
-    id: EntityIdentity<T>,
+    id: DocumentIdentity<T>,
     update: UpdateQuery<T>,
     options?: IUpdateQueryOptions,
   ) {
@@ -93,7 +93,7 @@ export abstract class BaseProfileModelDao<T extends BaseProfileModel<T>> extends
 
   protected async updateOneByProfileAndFilter(
     profileRelation: ProfileShard,
-    identity: EntityIdentity<T>,
+    identity: DocumentIdentity<T>,
     update: UpdateQuery<T>,
     filter?: FilterQuery<T>,
     options?: QueryOptions,
@@ -108,7 +108,7 @@ export abstract class BaseProfileModelDao<T extends BaseProfileModel<T>> extends
 
   async findOneAndSetByProfileAndId(
     profileRelation: ProfileShard,
-    id: EntityIdentity<T>,
+    id: DocumentIdentity<T>,
     updateSet: UpdateQuerySet<T>,
     options?: IFindAndUpdateQueryOptions<T>,
   ): Promise<T | null> {
@@ -122,7 +122,7 @@ export abstract class BaseProfileModelDao<T extends BaseProfileModel<T>> extends
 
   async findOneAndUpdateByProfileAndId(
     profileRelation: ProfileShard,
-    id: EntityIdentity<T>,
+    id: DocumentIdentity<T>,
     update: UpdateQuery<T>,
     options?: IFindAndUpdateQueryOptions<T>,
   ): Promise<T | null> {
@@ -136,7 +136,7 @@ export abstract class BaseProfileModelDao<T extends BaseProfileModel<T>> extends
 
   async findOneAndUpdateByProfileAndFilter(
     profileRelation: ProfileShard,
-    id: EntityIdentity<T>,
+    id: DocumentIdentity<T>,
     update: UpdateQuery<T>,
     filter?: FilterQuery<T>,
     options?: IFindAndUpdateQueryOptions<T>,
@@ -151,7 +151,7 @@ export abstract class BaseProfileModelDao<T extends BaseProfileModel<T>> extends
 
   async updateSetBulkByProfile(
     profileRelation: ProfileShard,
-    updates: { id: EntityIdentity<T>; update: UpdateQuerySet<T> }[],
+    updates: { id: DocumentIdentity<T>; update: UpdateQuerySet<T> }[],
     options?: IBulkBaseQueryOptions,
   ) {
     await this.model.bulkWrite(

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Task, UserDone } from '../schemas';
 import {
   assureObjectId,
-  EntityIdentity,
+  DocumentIdentity,
   IFetchQueryOptions,
   Model,
   OptionalUser,
@@ -78,8 +78,8 @@ export class TasksDao extends ContentTypeDao<Task> implements ICalendarPlanDao<a
 
   async updateDoneBy(
     profile: Profile,
-    id: EntityIdentity<Task>,
-    user: EntityIdentity<User>,
+    id: DocumentIdentity<Task>,
+    user: DocumentIdentity<User>,
     doneBy: UserDone,
   ) {
     return this.updateOneByProfileAndFilter(
@@ -93,7 +93,7 @@ export class TasksDao extends ContentTypeDao<Task> implements ICalendarPlanDao<a
     );
   }
 
-  async pullDoneBy(profile: Profile, id: EntityIdentity<Task>, user: EntityIdentity<User>) {
+  async pullDoneBy(profile: Profile, id: DocumentIdentity<Task>, user: DocumentIdentity<User>) {
     return this.updateOneByProfileAndId(profile, id, {
       $pull: { doneBy: { uid: assureObjectId(user) } },
     });
@@ -101,8 +101,8 @@ export class TasksDao extends ContentTypeDao<Task> implements ICalendarPlanDao<a
 
   async updateUserTimer(
     profile: Profile,
-    identity: EntityIdentity<Task>,
-    user: EntityIdentity<User>,
+    identity: DocumentIdentity<Task>,
+    user: DocumentIdentity<User>,
     timer: Timer,
   ) {
     return this.updateOneByProfileAndFilter(

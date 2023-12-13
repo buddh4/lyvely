@@ -52,7 +52,8 @@ export abstract class AbstractContentGuard<C extends Content = Content> implemen
 
     if (!content) return false;
 
-    request.context.content = request.content = profileContentContext.content = content as C;
+    request.content = profileContentContext.content = content as C;
+    request.context = new ProfileContentContext({ ...request.context, content });
 
     return (
       validateContentTypeFromContext(content, context, this.reflector) &&

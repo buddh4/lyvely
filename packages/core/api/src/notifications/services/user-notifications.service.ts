@@ -16,7 +16,7 @@ import {
   UserNotification,
   NotificationDeliveryStatus,
 } from '../schemas';
-import { FilterQuery, assureObjectId, assureStringId, EntityIdentity, TObjectId } from '@/core';
+import { FilterQuery, assureObjectId, assureStringId, DocumentIdentity, TObjectId } from '@/core';
 import { IUserContext, User, UsersService } from '@/users';
 import { NotificationDao, UserNotificationDao } from '../daos';
 import { I18n } from '@/i18n';
@@ -43,8 +43,8 @@ export class UserNotificationsService extends AbstractStreamService<
   }
 
   async findOneByNotification(
-    userIdentity: EntityIdentity<User>,
-    notificationIdentity: EntityIdentity<Notification>,
+    userIdentity: DocumentIdentity<User>,
+    notificationIdentity: DocumentIdentity<Notification>,
   ) {
     return this.streamEntryDao.findOne({
       uid: assureObjectId(userIdentity),
@@ -54,7 +54,7 @@ export class UserNotificationsService extends AbstractStreamService<
 
   async loadEntry(
     context: IUserContext,
-    identity: EntityIdentity<UserNotification>,
+    identity: DocumentIdentity<UserNotification>,
   ): Promise<UserNotification> {
     const userNotification = await this.streamEntryDao.findOneAndUpdateSetByFilter(
       identity,
@@ -69,7 +69,7 @@ export class UserNotificationsService extends AbstractStreamService<
     return userNotification;
   }
 
-  async create(identity: EntityIdentity<User>, notification: Notification) {
+  async create(identity: DocumentIdentity<User>, notification: Notification) {
     return this.streamEntryDao.save(new UserNotification(identity, notification)).then((result) => {
       this.setUpdateAvailableState(identity, true);
       return result;
@@ -92,7 +92,7 @@ export class UserNotificationsService extends AbstractStreamService<
     return response;
   }
 
-  setUpdateAvailableState(identity: EntityIdentity<User>, state: boolean) {
+  setUpdateAvailableState(identity: DocumentIdentity<User>, state: boolean) {
     this.usersService
       .updateNotificationUpdateState(identity, state)
       .catch((err) => this.logger.error(err));
@@ -181,13 +181,13 @@ export class UserNotificationsService extends AbstractStreamService<
     });
   }
 
-  async markAsSeen(user: EntityIdentity<User>, nid: EntityIdentity<UserNotification>) {
+  async markAsSeen(user: DocumentIdentity<User>, nid: DocumentIdentity<UserNotification>) {
     return this.updateSeenState(user, nid, true);
   }
 
   async markAsUnSeen(
-    user: EntityIdentity<User>,
-    nid: EntityIdentity<UserNotification>,
+    user: DocumentIdentity<User>,
+    nid: DocumentIdentity<UserNotification>,
     sortOrder?: number,
   ) {
     const result = this.updateSeenState(user, nid, false, sortOrder);
@@ -196,8 +196,8 @@ export class UserNotificationsService extends AbstractStreamService<
   }
 
   private async updateSeenState(
-    user: EntityIdentity<User>,
-    notificationIdentity: EntityIdentity<UserNotification>,
+    user: DocumentIdentity<User>,
+    notificationIdentity: DocumentIdentity<UserNotification>,
     seen: boolean,
     sortOrder?: number,
   ) {

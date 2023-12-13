@@ -1,5 +1,5 @@
 import { profileApiPrefix, StrictEndpoint } from '@/endpoints';
-import { ProfilePermissionSettingModel } from '@/profiles';
+import { ProfilePermissionSettingModel } from '../models';
 
 export interface IProfilePermissionsClient {
   updateProfilePermission(

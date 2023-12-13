@@ -33,7 +33,7 @@ const hasSub = (feature: IFeature) => {
 <template>
   <ly-content-panel>
     <div class="flex items-start gap-2">
-      <ly-icon name="info" class="info w-6" />
+      <ly-icon name="info" class="info w-4 md:w-6 shrink-0" />
       <ly-dimmed class="text-xs">
         {{ t('profiles.features.settings.info') }}
       </ly-dimmed>
@@ -42,17 +42,6 @@ const hasSub = (feature: IFeature) => {
   <ly-content-panel>
     <ly-responsive>
       <ly-table class="border-collapse">
-        <template #head>
-          <tr>
-            <th scope="col" class="px-3 py-2 md:px-5 md:py-3">
-              {{ t('profiles.settings.features.name') }}
-            </th>
-            <th scope="col" class="px-3 py-2 md:px-5 md:py-3">
-              <!-- {{ t('profiles.settings.features.actions') }} -->
-            </th>
-            <th scope="col" class="px-3 py-2 md:p-4"></th>
-          </tr>
-        </template>
         <template #body>
           <profile-feature-settings-entry
             v-for="feature in displayFeatures"

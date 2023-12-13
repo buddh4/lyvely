@@ -6,6 +6,11 @@ import {
   ProfileRelationRole,
   ProfileMembershipRole,
   getProfileRelationRole,
+  IPermissionSetting,
+  IPermissionObject,
+  IProfilePermissionObject,
+  ProfileVisibilityLevel,
+  IProfilePermissionData,
 } from '@lyvely/interface';
 import { IUserWithProfileRelation } from '../interfaces/user-with-profile-relation.interface';
 
@@ -15,9 +20,9 @@ import { IUserWithProfileRelation } from '../interfaces/user-with-profile-relati
  *
  * @template T - The type of the profile.
  */
-export class ProfileContext<T extends Profile = Profile>
+export class ProfileContext<TProfile extends Profile = Profile>
   extends BaseModel<ProfileContext & { organizationContext?: ProfileContext<Organization> }>
-  implements IOptionalUserContext
+  implements IOptionalUserContext, IProfilePermissionObject
 {
   /**
    * Represents the user of the context.
@@ -28,7 +33,7 @@ export class ProfileContext<T extends Profile = Profile>
   /**
    * The profile of this context.
    */
-  profile: T;
+  profile: TProfile;
 
   /**
    * Represents the context of the organization related to the profile (if any).
@@ -153,6 +158,33 @@ export class ProfileContext<T extends Profile = Profile>
   getMembership(...roles: ProfileMembershipRole[]): Membership | undefined {
     const membership = useUserProfileRelationHelper(this.relations).getMembership(...roles);
     if (membership) return new Membership(membership);
+  }
+
+  /**
+   * Retrieves the permission settings for the current profile.
+   *
+   * @returns {IPermissionSetting[]} An array of permission settings.
+   */
+  getPermissionSettings(): IPermissionSetting[] {
+    return this.profile.getPermissionSettings();
+  }
+
+  /**
+   * Retrieves the permission groups associated with the profile.
+   *
+   * @return {string[]} An array of strings representing the permission groups.
+   */
+  getPermissionGroups(): string[] {
+    return this.profile.getPermissionGroups();
+  }
+
+  /**
+   * Retrieves the profile visibility level.
+   *
+   * @returns {ProfileVisibilityLevel} The profile visibility level.
+   */
+  getProfilePermissionData(): IProfilePermissionData {
+    return this.profile;
   }
 }
 

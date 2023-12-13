@@ -1,6 +1,6 @@
 import { Expose } from 'class-transformer';
 import { ProfileRelationRole } from '@/profiles/relations';
-import { IsArray, IsEnum, IsString, Length } from 'class-validator';
+import { IsArray, IsEnum, IsOptional, IsString, Length } from 'class-validator';
 import { IProfilePermissionSetting } from '../interfaces';
 import { BaseModel } from '@lyvely/common';
 
@@ -16,10 +16,11 @@ export class ProfilePermissionSettingModel<TID = string>
 
   @Expose()
   @IsEnum(ProfileRelationRole)
-  role: ProfileRelationRole;
+  role: string;
 
   @Expose()
   @IsArray()
   @IsString({ each: true })
+  @IsOptional()
   groups?: TID[];
 }

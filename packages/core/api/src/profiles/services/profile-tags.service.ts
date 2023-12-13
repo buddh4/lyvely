@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { assureObjectId, EntityIdentity } from '@/core';
+import { assureObjectId, DocumentIdentity } from '@/core';
 import { DocumentNotFoundException, FieldValidationException } from '@lyvely/interface';
 import { ProfileDao } from '../daos';
 import { Profile, Tag } from '../schemas';
@@ -42,7 +42,7 @@ export class ProfileTagsService {
     return this.profileDao.addTags(profile, [Tag.create(data)]);
   }
 
-  async updateTag(profile: Profile, identity: EntityIdentity<Tag>, update: Partial<Tag>) {
+  async updateTag(profile: Profile, identity: DocumentIdentity<Tag>, update: Partial<Tag>) {
     const tag = profile.getTagById(assureObjectId(identity));
 
     if (!tag) throw new DocumentNotFoundException();
@@ -56,11 +56,11 @@ export class ProfileTagsService {
     return !!(await this.profileDao.updateTag(profile, identity, update));
   }
 
-  async archiveTag(profile: Profile, identity: EntityIdentity<Tag>) {
+  async archiveTag(profile: Profile, identity: DocumentIdentity<Tag>) {
     return this.updateTag(profile, identity, { archived: true });
   }
 
-  async restore(profile: Profile, identity: EntityIdentity<Tag>) {
+  async restore(profile: Profile, identity: DocumentIdentity<Tag>) {
     return this.updateTag(profile, identity, { archived: false });
   }
 }

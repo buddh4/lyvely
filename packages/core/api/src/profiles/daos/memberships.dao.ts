@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, assureObjectId, EntityIdentity, IBaseQueryOptions, SaveOptions } from '@/core';
+import { Model, assureObjectId, DocumentIdentity, IBaseQueryOptions, SaveOptions } from '@/core';
 import { Membership, Profile } from '../schemas';
 import { User } from '@/users';
 import { AbstractUserProfileRelationsDao } from './abstract-user-profile-relations.dao';
@@ -23,8 +23,8 @@ export class MembershipsDao extends AbstractUserProfileRelationsDao<Membership> 
   }
 
   async findByProfileAndUser(
-    profile: EntityIdentity<Profile>,
-    user: EntityIdentity<User>,
+    profile: DocumentIdentity<Profile>,
+    user: DocumentIdentity<User>,
     options?: IBaseQueryOptions,
   ): Promise<Membership | null> {
     return this.findOne(

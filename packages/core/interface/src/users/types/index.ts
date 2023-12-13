@@ -1,1 +1,1 @@
-export * from '../interfaces/visitor-strategy.interface';
+export * from '../../permissions/interfaces/visitor-strategy.interface';

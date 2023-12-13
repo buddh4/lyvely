@@ -1,4 +1,5 @@
 export * from './interfaces';
+export * from './permissions';
 export * from './models';
 export * from './endpoints';
 export * from './registries';

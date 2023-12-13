@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Milestone } from '../schemas';
 import {
   assureObjectId,
-  EntityIdentity,
+  DocumentIdentity,
   DBQuery,
   Content,
   ContentDao,
@@ -22,7 +22,7 @@ export class MilestonesRelationsService {
   public async getRelationsByMilestones(
     profile: Profile,
     user: OptionalUser,
-    milestones: EntityIdentity<Milestone>[],
+    milestones: DocumentIdentity<Milestone>[],
     date?: CalendarDateTime,
   ) {
     if (!milestones.length) return [];

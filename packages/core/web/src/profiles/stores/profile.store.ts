@@ -8,8 +8,9 @@ import {
   DocumentNotFoundException,
   getProfileRelationRole,
   IProfilePermission,
-  verifyEachProfilePermission,
   isMultiUserProfile as _isMultiUserProfile,
+  useProfilePermissionsManager,
+  IPermissionObject,
 } from '@lyvely/interface';
 import { computed, ref } from 'vue';
 import { usePageStore } from '@/ui';
@@ -18,6 +19,7 @@ import { useLiveStore } from '@/live';
 import { profileRoute } from '@/profiles/routes/profile-route.helper';
 import { LocationQueryRaw } from 'vue-router';
 import { useAuthStore } from '@/auth';
+import { useAppConfigStore } from '@/app-config';
 
 const LATEST_PROFILE_HANDLE = 'latest_profile_handle';
 export const latestProfileHandle = localStorageManager.getStoredValue(LATEST_PROFILE_HANDLE);
@@ -40,37 +42,6 @@ export const useProfileStore = defineStore('profile', () => {
     status.setStatus(Status.SUCCESS);
 
     return profile.value!;
-  }
-
-  function verifyEachPermission(...permissions: Array<string | IProfilePermission>) {
-    const currentProfile = profile.value;
-
-    if (!currentProfile) {
-      console.error('checkPermissions called without existing profile');
-      return false;
-    }
-
-    const authStore = useAuthStore();
-    const { user } = authStore;
-    const {
-      userRelations,
-      userOrganizationRelations,
-      permissions: permissionSettings,
-    } = currentProfile;
-
-    // TODO: How to handle different kinds of relation?
-    return verifyEachProfilePermission(
-      permissions,
-      {
-        settings: permissionSettings || [],
-        relationStatus: currentProfile.getMembership()?.relationStatus,
-        userStatus: user?.status,
-        role: getProfileRelationRole(user, userRelations, userOrganizationRelations),
-      },
-      {
-        visitorsAllowed: authStore.isVisitorModeEnabled(),
-      },
-    );
   }
 
   async function loadProfile(handle?: string | false): Promise<ProfileWithRelationsModel> {
@@ -228,7 +199,6 @@ export const useProfileStore = defineStore('profile', () => {
     getMemberUserInfo,
     getRoute,
     isMultiUserProfile,
-    verifyEachPermission,
     ...status,
   };
 });

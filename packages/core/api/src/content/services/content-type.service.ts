@@ -3,7 +3,7 @@ import { ContentTypeDao, ContentDao } from '../daos';
 import { User } from '@/users';
 import {
   assureObjectId,
-  EntityIdentity,
+  DocumentIdentity,
   IBaseQueryOptions,
   UpdateQuerySet,
   FilterQuery,
@@ -66,7 +66,7 @@ export abstract class ContentTypeService<
     return this.contentDao.findAllByProfile(profile, queryFilter);
   }
 
-  async findByProfileAndId(profile: Profile, id: EntityIdentity<T>): Promise<T | null> {
+  async findByProfileAndId(profile: Profile, id: DocumentIdentity<T>): Promise<T | null> {
     return this.contentDao.findByProfileAndId(profile, id);
   }
 

@@ -1,19 +1,20 @@
-import { AbstractPermissionsService } from './abstract-permissions.service';
+import { AbstractPermissionsManager } from './abstract-permissions.manager';
 import {
+  BasePermissionType,
   GlobalPermissionRole,
   globalPermissionRoleHierarchy,
   IGlobalPermission,
   IGlobalPermissionObject,
   IGlobalPermissionSubject,
 } from '../interfaces';
-import { getGlobalPermission } from '../helpers';
 import { useSingleton } from '@lyvely/common';
+import { getPermission } from '../registries';
 
 /**
  * Represents the GlobalPermissionsService class which is responsible for managing global user permissions.
  * @extends AbstractPermissionsService<IGlobalPermission, IGlobalPermissionSubject, IGlobalPermissionObject>
  */
-class GlobalPermissionsService extends AbstractPermissionsService<
+class GlobalPermissionsManager extends AbstractPermissionsManager<
   IGlobalPermission,
   IGlobalPermissionSubject,
   IGlobalPermissionObject
@@ -28,18 +29,18 @@ class GlobalPermissionsService extends AbstractPermissionsService<
   override getPermission(
     permissionOrId: string | IGlobalPermission,
   ): IGlobalPermission | undefined {
-    return getGlobalPermission(permissionOrId);
+    return getPermission(permissionOrId, BasePermissionType.Global);
   }
 
   /**
-   * Returns the permission level of a given role or -1 if the role does not exist.
+   * Retrieves the role hierarchy, which is an array of roles in which the index defines the role level and lower
+   * roles inherit the permissions of higher levels.
    *
-   * @param {GlobalPermissionRole} role - The role for which to retrieve the level.
-   * @return {number} - The level of the role or -1 if the role does not exist.
+   * @returns {GlobalPermissionRole[]} An array containing the role hierarchy for the current user.
    */
-  override getRoleLevel(role: GlobalPermissionRole): number {
-    return globalPermissionRoleHierarchy.indexOf(role);
+  override getRoleHierarchy(): GlobalPermissionRole[] {
+    return globalPermissionRoleHierarchy;
   }
 }
 
-export const useGlobalPermissionsService = useSingleton(() => new GlobalPermissionsService());
+export const useGlobalPermissionsManager = useSingleton(() => new GlobalPermissionsManager());

@@ -6,22 +6,24 @@ import {
   IPermission,
   IPermissionConfig,
   registerPermissions,
-  useGlobalPermissionsService,
+  useGlobalPermissionsManager,
 } from '../../permissions';
 import { IntegrityException } from '../../exceptions';
 import { UserStatus, VisitorMode } from '../../users';
 import { ProfileRelationRole } from '../../profiles';
 
-describe('GlobalPermissionsService', function () {
+describe('GlobalPermissionsManager', function () {
   afterEach(clearPermissions);
 
-  const service = useGlobalPermissionsService();
+  const manager = useGlobalPermissionsManager();
 
   const registerTestPermission = (data?: Partial<IPermission<any, any>>) => {
     registerPermissions([
       {
         id: 'test',
         moduleId: 'test',
+        name: 'test',
+        description: 'test',
         min: GlobalPermissionRole.Admin,
         max: GlobalPermissionRole.Moderator,
         default: GlobalPermissionRole.Moderator,
@@ -45,7 +47,7 @@ describe('GlobalPermissionsService', function () {
       getPermissionGroups: () => [],
       getPermissionSettings: () => [],
     };
-    return service.verifyPermission(
+    return manager.verifyPermission(
       'test',
       {
         role: role,

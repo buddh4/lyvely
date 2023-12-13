@@ -1,4 +1,3 @@
-import { AbstractPermissionsService } from '@/permissions/services';
 import {
   IProfilePermission,
   IProfilePermissionObject,
@@ -8,11 +7,12 @@ import {
 import { useSingleton } from '@lyvely/common';
 import { BasePermissionType, getPermission } from '@/permissions';
 import { ProfileRelationRole } from '@/profiles/relations';
+import { AbstractProfilePermissionsManager } from './abstract-profile-permissions.manager';
 
 /**
  * A service for managing profile user permissions.
  */
-class ProfilePermissionsService extends AbstractPermissionsService<
+export class ProfilePermissionsManager extends AbstractProfilePermissionsManager<
   IProfilePermission,
   IProfilePermissionSubject,
   IProfilePermissionObject
@@ -30,22 +30,22 @@ class ProfilePermissionsService extends AbstractPermissionsService<
   }
 
   /**
-   * Retrieves the level of a given role or -1 if the role does not exist.
+   * Retrieves the role hierarchy, which is an array of roles in which the index defines the role level and lower
+   * roles inherit the permissions of higher levels.
    *
-   * @param {ProfileRelationRole} role - The role for which to determine the level.
-   * @return {number} The level of the role or -1 if the role does not exist.
+   * @returns {ProfileRelationRole[]} An array containing the role hierarchy for the current user.
    */
-  override getRoleLevel(role: ProfileRelationRole): number {
-    return profileRelationRoleHierarchy.indexOf(role);
+  override getRoleHierarchy(): ProfileRelationRole[] {
+    return profileRelationRoleHierarchy;
   }
 }
 
 /**
- * Returns an instance of the ProfilePermissionsService.
- * The useProfilePermissionsService function utilizes the useSingleton higher-order function
+ * Returns an instance of the ProfilePermissionsManager.
+ * The useProfilePermissionsManager function utilizes the useSingleton higher-order function
  * to ensure that only one instance of the ProfilePermissionsService is created and shared
  * across multiple components or modules.
  *
- * @returns {ProfilePermissionsService} The instance of ProfilePermissionsService.
+ * @returns {ProfilePermissionsManager} The instance of ProfilePermissionsService.
  */
-export const useProfilePermissionsService = useSingleton(() => new ProfilePermissionsService());
+export const useProfilePermissionsManager = useSingleton(() => new ProfilePermissionsManager());

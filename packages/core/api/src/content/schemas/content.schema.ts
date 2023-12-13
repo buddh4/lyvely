@@ -1,7 +1,13 @@
 import { Prop, Schema, SchemaFactory, ModelDefinition } from '@nestjs/mongoose';
 import { DeepPartial, PropertyType, assignRawDataTo, Type, PropertiesOf } from '@lyvely/common';
-import { IContent, ContentModel } from '@lyvely/interface';
-import { BaseDocument, ObjectIdArrayProp, TObjectId } from '@/core';
+import { IContent, ContentModel, ContentUserRole } from '@lyvely/interface';
+import {
+  assureObjectId,
+  BaseDocument,
+  DocumentIdentity,
+  ObjectIdArrayProp,
+  TObjectId,
+} from '@/core';
 import { ContentLog, ContentLogSchema } from './content-log.schema';
 import { ContentMetadata, ContentMetadataSchema } from './content-metadata.schema';
 import { CreatedAs, Author } from './content-author.schema';
@@ -21,6 +27,18 @@ export class ProfileContentContext<
   TProfile extends Profile = Profile,
 > extends ProfileContext<TProfile> {
   content: TContent;
+
+  constructor(obj: Partial<ProfileContentContext>) {
+    super(obj);
+  }
+
+  getContentRole(): ContentUserRole {
+    if (!this.user) return ContentUserRole.Visitor;
+    if (!this.content.isManager(this.user)) return ContentUserRole.Manager;
+    if (!this.content.isAuthor(this.user)) return ContentUserRole.Author;
+    if (!this.content.isAssigned(this.user)) return ContentUserRole.Assignee;
+    return (<any>this.getRole()) as ContentUserRole;
+  }
 }
 
 export class ProtectedProfileContentContext<
@@ -164,6 +182,39 @@ export class Content<
    */
   setAuthor(author: Author) {
     this.meta.setAuthor(author);
+  }
+
+  /**
+   * Checks if the given user is the author of the content.
+   *
+   * @param {DocumentIdentity<User>} user - The user to check if they are the author.
+   * @returns {boolean} - True if the user is the author, false otherwise.
+   */
+  isAuthor(user: DocumentIdentity<User>) {
+    return this.meta.createdBy.equals(assureObjectId(user));
+  }
+
+  /**
+   * Checks if the given user is a manager of this content.
+   *
+   * This is the case if the user is the author of this content  there is no
+   *
+   * @param {DocumentIdentity<User>} user - The user to check if they are a manager.
+   * @returns {boolean} - Returns true if the user is a manager, false otherwise.
+   */
+  isManager(user: DocumentIdentity<User>) {
+    return this.meta.managers?.includes(assureObjectId(user));
+  }
+
+  /**
+   * Checks if a user is assigned to the content.
+   *
+   * @param {DocumentIdentity<User>} user - The user to check if assigned to the document.
+   *
+   * @return {boolean} - True if the user is assigned to the document, false otherwise.
+   */
+  isAssigned(user: DocumentIdentity<User>) {
+    return this.meta.assignees?.includes(assureObjectId(user));
   }
 
   /**

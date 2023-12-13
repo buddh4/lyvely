@@ -23,7 +23,7 @@ export const profilesModule = () => {
       base: (locale: string) => import(`./locales/base.${locale}.json`),
       features: (locale: string) => import(`./locales/features.${locale}.json`),
       i18n: (locale: string) => import(`./locales/i18n.${locale}.json`),
-      'general-settings': (locale: string) => import(`./locales/general-settings.${locale}.json`),
+      settings: (locale: string) => import(`./locales/settings.${locale}.json`),
     },
     routes,
     init: () => {
@@ -94,17 +94,24 @@ export const profilesModule = () => {
           to: { name: 'GeneralProfileSettings' },
         },
         {
+          id: 'ProfilePermissions',
+          moduleId: PROFILES_MODULE_ID,
+          text: 'profiles.settings.permissions.label',
+          sortOrder: 3000,
+          to: { name: 'ProfilePermissionsSettings' },
+        },
+        {
           id: 'ProfileFeatureSettings',
           moduleId: PROFILES_MODULE_ID,
           text: 'profiles.settings.features.label',
-          sortOrder: 3000,
+          sortOrder: 4000,
           to: { name: 'ProfileFeaturesSettings' },
         },
         {
           id: 'ProfilePreferences',
           moduleId: PROFILES_MODULE_ID,
           text: 'profiles.settings.preferences.label',
-          sortOrder: 4000,
+          sortOrder: 5000,
           to: { name: 'ProfilePreferences' },
         },
       ]);

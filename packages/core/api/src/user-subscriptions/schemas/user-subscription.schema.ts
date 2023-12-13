@@ -2,7 +2,7 @@ import { SchemaFactory } from '@nestjs/mongoose';
 import { BaseModel } from '@lyvely/common';
 import {
   assureObjectId,
-  EntityIdentity,
+  DocumentIdentity,
   NestedSchema,
   ObjectIdArrayProp,
   ObjectIdProp,
@@ -34,7 +34,7 @@ export class MultiUserSubscription extends UserSubscription {
   @ObjectIdArrayProp()
   uids?: TObjectId[];
 
-  constructor(identities: EntityIdentity<User>[]) {
+  constructor(identities: DocumentIdentity<User>[]) {
     super();
     this.uids = identities.map((identity) => assureObjectId(identity));
   }
@@ -48,7 +48,7 @@ export class SingleUserSubscription extends UserSubscription {
   @ObjectIdProp()
   uid?: TObjectId;
 
-  constructor(identity: EntityIdentity<User>) {
+  constructor(identity: DocumentIdentity<User>) {
     super();
     this.uid = assureObjectId(identity);
   }

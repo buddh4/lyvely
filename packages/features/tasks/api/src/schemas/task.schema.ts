@@ -4,7 +4,7 @@ import {
   User,
   UserAssignmentStrategy,
   assureObjectId,
-  EntityIdentity,
+  DocumentIdentity,
   NestedSchema,
   ObjectIdProp,
   ContentDataType,
@@ -33,7 +33,7 @@ export class UserDone implements UserDoneModel<TObjectId> {
   @Prop({ type: Date, required: true })
   date: Date;
 
-  constructor(uid: EntityIdentity<User>, tid: string, date?: Date) {
+  constructor(uid: DocumentIdentity<User>, tid: string, date?: Date) {
     this.uid = assureObjectId(uid);
     this.tid = tid;
     this.date = date || new Date();
@@ -95,11 +95,11 @@ export class Task
     return model;
   }
 
-  isDoneByUser(uid: EntityIdentity<User>) {
+  isDoneByUser(uid: DocumentIdentity<User>) {
     return !!this.doneBy?.find((d) => d.uid.equals(assureObjectId(uid)));
   }
 
-  isDone(uid: EntityIdentity<User>) {
+  isDone(uid: DocumentIdentity<User>) {
     if (this.config.userStrategy === UserAssignmentStrategy.Shared) {
       return !!this.doneBy.length;
     }
@@ -107,7 +107,7 @@ export class Task
     return this.isDoneByUser(uid);
   }
 
-  getTimer(uid: EntityIdentity<User>): Timer | undefined {
+  getTimer(uid: DocumentIdentity<User>): Timer | undefined {
     if (this.config.userStrategy === UserAssignmentStrategy.Shared) {
       return this.timers.length ? this.timers[0] : undefined;
     }
@@ -115,7 +115,7 @@ export class Task
     return this.timers?.find((t) => t.uid?.equals(assureObjectId(uid))) || undefined;
   }
 
-  getDoneBy(uid: EntityIdentity<User>): UserDone | undefined {
+  getDoneBy(uid: DocumentIdentity<User>): UserDone | undefined {
     if (this.config.userStrategy === UserAssignmentStrategy.Shared) {
       return this.doneBy?.[0] || undefined;
     }
@@ -123,7 +123,7 @@ export class Task
     return this.doneBy?.find((d) => d.uid.equals(assureObjectId(uid))) || undefined;
   }
 
-  setUndoneBy(uid: EntityIdentity<User>) {
+  setUndoneBy(uid: DocumentIdentity<User>) {
     if (this.config.userStrategy === UserAssignmentStrategy.Shared) {
       this.doneBy = [];
     } else {
@@ -131,7 +131,7 @@ export class Task
     }
   }
 
-  setDoneBy(uid: EntityIdentity<User>, tid: string, date?: Date) {
+  setDoneBy(uid: DocumentIdentity<User>, tid: string, date?: Date) {
     date = date || new Date();
 
     if (this.config.userStrategy === UserAssignmentStrategy.Shared) {

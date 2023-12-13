@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { UserDao } from '../daos';
 import { OptionalUser, RefreshToken, User, UserNotificationState } from '../schemas';
-import { EntityIdentity, IBaseQueryOptions } from '@/core';
+import { DocumentIdentity, IBaseQueryOptions } from '@/core';
 import { IntegrityException, UserStatus, ProfileType } from '@lyvely/interface';
 import { isEmail } from 'class-validator';
 
@@ -46,7 +46,7 @@ export class UsersService {
    * Returns a single user with the given id or null.
    * @param id
    */
-  async findUserById(id: EntityIdentity<User>): Promise<OptionalUser> {
+  async findUserById(id: DocumentIdentity<User>): Promise<OptionalUser> {
     if (!id) {
       return null;
     }
@@ -54,7 +54,7 @@ export class UsersService {
     return await this.userDao.findById(id);
   }
 
-  async findUsersById(ids: EntityIdentity<User>[]): Promise<User[]> {
+  async findUsersById(ids: DocumentIdentity<User>[]): Promise<User[]> {
     if (!ids?.length) {
       return [];
     }
@@ -90,15 +90,15 @@ export class UsersService {
     return this.userDao.destroyExpiredRefreshTokens(user);
   }
 
-  async setUserStatus(user: EntityIdentity<User>, status: UserStatus) {
+  async setUserStatus(user: DocumentIdentity<User>, status: UserStatus) {
     return this.userDao.updateOneSetById(user, { status: status });
   }
 
-  async updateNotificationState(user: EntityIdentity<User>, notification: UserNotificationState) {
+  async updateNotificationState(user: DocumentIdentity<User>, notification: UserNotificationState) {
     return this.userDao.updateOneSetById(user, { notification });
   }
 
-  async updateNotificationUpdateState(identity: EntityIdentity<User>, state: boolean) {
+  async updateNotificationUpdateState(identity: DocumentIdentity<User>, state: boolean) {
     if (identity instanceof User && identity.notification.updatesAvailable === state) return true;
 
     return this.userDao.updateOneSetById(identity, {
@@ -106,7 +106,7 @@ export class UsersService {
     });
   }
 
-  async setUserPassword(user: EntityIdentity<User>, newPassword: string, resetSession: boolean) {
+  async setUserPassword(user: DocumentIdentity<User>, newPassword: string, resetSession: boolean) {
     return this.userDao.updatePassword(user, newPassword, resetSession);
   }
 }

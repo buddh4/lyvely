@@ -2,7 +2,7 @@ import {
   IntegrityException,
   SortResult,
   assureObjectId,
-  EntityIdentity,
+  DocumentIdentity,
   QuerySort,
   Profile,
   User,
@@ -38,7 +38,7 @@ export abstract class SortableCalendarPlanService<
     user: User,
     model: TModel,
     interval?: CalendarInterval,
-    attachToId?: EntityIdentity<TModel>,
+    attachToId?: DocumentIdentity<TModel>,
   ): Promise<SortResult[]> {
     interval = interval ?? model.interval;
 

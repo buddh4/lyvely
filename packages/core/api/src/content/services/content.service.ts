@@ -3,7 +3,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { ContentDao } from '../daos';
 import { DocumentNotFoundException } from '@lyvely/interface';
 import { ProfileShard } from '@/profiles';
-import { assureObjectId, EntityIdentity, TObjectId } from '@/core';
+import { assureObjectId, DocumentIdentity, TObjectId } from '@/core';
 import { User } from '@/users';
 
 @Injectable()
@@ -25,7 +25,7 @@ export class ContentService {
     B extends boolean | undefined | null = boolean | undefined | null,
   >(
     profileRelation: ProfileShard,
-    id: EntityIdentity<Content>,
+    id: DocumentIdentity<Content>,
     throwException?: B,
   ): Promise<B extends false | undefined | null ? Content | undefined : Content> {
     const content = await this.contentDao.findByProfileAndId(profileRelation, id);
@@ -72,7 +72,7 @@ export class ContentService {
   async setMilestone(
     profileRelation: ProfileShard,
     user: User,
-    cid: EntityIdentity<Content>,
+    cid: DocumentIdentity<Content>,
     mid: TObjectId | string,
   ): Promise<boolean> {
     mid = assureObjectId(mid);

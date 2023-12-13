@@ -40,7 +40,7 @@ export function getProfileRelationRole(
   user: PropertiesOf<UserModel<any>> | null | undefined,
   relations: ProfileRelationModel<any>[],
   orgRelations?: ProfileRelationModel<any>[],
-) {
+): ProfileRelationRole {
   const membership = useRelationHelper(relations).getMembership();
 
   if (membership) return membershipToRelationRole[membership.role];

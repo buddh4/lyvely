@@ -8,6 +8,7 @@ import {
   Put,
   Req,
   Request,
+  UseGuards,
 } from '@nestjs/common';
 import { UseClassSerializer } from '@/core';
 import { mapType } from '@lyvely/common';
@@ -30,6 +31,7 @@ import { ProfileVisibilityPolicy } from '../policies';
 import { InjectPolicy } from '@/policies';
 import { ProfileRequest, ProtectedProfileRequest } from '../types';
 import { ProfileEndpoint } from '../decorators';
+import { ProfileGuard } from '../guards';
 
 /**
  * Implementation of the ProfilesEndpoint service
@@ -85,7 +87,7 @@ export class ProfilesController implements ProfilesEndpoint {
     return this.mapAndPopulateProfileWithRelations(context);
   }
 
-  @ProfileEndpoint()
+  @UseGuards(ProfileGuard)
   @Get(ProfilesEndpoints.BY_HANDLE(':handle'))
   async getProfileByHandle(
     @Param('handle') handle: string,

@@ -1,4 +1,4 @@
-import { AbstractDao, EntityIdentity, Model } from '@/core';
+import { AbstractDao, DocumentIdentity, Model } from '@/core';
 import { UserOtp } from '../schemas';
 import { InjectModel } from '@nestjs/mongoose';
 
@@ -7,7 +7,7 @@ export class UserOtpDao extends AbstractDao<UserOtp> {
     super();
   }
 
-  incrementAttempt(identity: EntityIdentity<UserOtp>) {
+  incrementAttempt(identity: DocumentIdentity<UserOtp>) {
     return this.updateOneById(identity, { $inc: { attempts: 1 } });
   }
 

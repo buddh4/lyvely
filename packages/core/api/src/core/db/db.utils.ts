@@ -10,21 +10,21 @@ import {
 } from '@lyvely/common';
 import { IntegrityException } from '@lyvely/interface';
 
-export type EntityIdentity<T extends BaseDocument<any>> = T | TObjectId | string;
+export type DocumentIdentity<T extends BaseDocument<any>> = T | TObjectId | string;
 
 export type EntityData<T> = Omit<T, '_id' | 'id' | '__v'>;
 
 // We use any here since we need to use this when defining sub documents
 export function assureObjectId<T extends BaseDocument<any> = BaseDocument<any>>(
-  identity: EntityIdentity<T> | undefined | null,
+  identity: DocumentIdentity<T> | undefined | null,
   optional?: false,
 ): TObjectId;
 export function assureObjectId<T extends BaseDocument<any> = BaseDocument<any>>(
-  identity: EntityIdentity<T> | undefined | null,
+  identity: DocumentIdentity<T> | undefined | null,
   optional: true,
 ): TObjectId | undefined;
 export function assureObjectId<T extends BaseDocument<any> = BaseDocument<any>>(
-  identity: EntityIdentity<T> | undefined | null,
+  identity: DocumentIdentity<T> | undefined | null,
   optional?: boolean,
 ): TObjectId {
   if (!identity && optional) return undefined as any;
@@ -57,7 +57,7 @@ export function assureObjectId<T extends BaseDocument<any> = BaseDocument<any>>(
 }
 
 export function applyUpdateTo<T extends BaseDocument<any>>(
-  identity: EntityIdentity<T>,
+  identity: DocumentIdentity<T>,
   update: UpdateQuery<T>,
 ) {
   if (typeof identity !== 'object') {

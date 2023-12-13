@@ -11,7 +11,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { ProfileRequest } from '../types';
-import { assureObjectId, EntityIdentity, UseClassSerializer } from '@/core';
+import { assureObjectId, DocumentIdentity, UseClassSerializer } from '@/core';
 import {
   UpdateTagModel,
   TagModel,
@@ -75,7 +75,7 @@ export class ProfileTagsController implements ProfileTagsEndpoint {
     return profile;
   }
 
-  private _getTagById(profile, id: EntityIdentity<Tag>) {
+  private _getTagById(profile, id: DocumentIdentity<Tag>) {
     const tag = profile.getTagById(assureObjectId(id));
 
     if (!tag) {

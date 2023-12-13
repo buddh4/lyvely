@@ -4,7 +4,7 @@ import { PropertyType, PropertiesOf } from '@lyvely/common';
 import {
   User,
   assureObjectId,
-  EntityIdentity,
+  DocumentIdentity,
   NestedSchema,
   ObjectIdProp,
   TObjectId,
@@ -21,7 +21,7 @@ export class TimeSpan extends TimeSpanModel implements PropertiesOf<TimeSpanMode
   @Prop()
   to?: number;
 
-  constructor(user: EntityIdentity<User>) {
+  constructor(user: DocumentIdentity<User>) {
     super(assureObjectId(user));
   }
 
@@ -43,11 +43,11 @@ export class Timer extends TimerModel<TObjectId> {
   @PropertyType([TimeSpan])
   spans: TimeSpan[] = [];
 
-  start(user?: EntityIdentity<User>) {
+  start(user?: DocumentIdentity<User>) {
     return super.start(assureObjectId(user, true));
   }
 
-  constructor(userIdentity?: EntityIdentity<any>) {
+  constructor(userIdentity?: DocumentIdentity<any>) {
     super();
     if (userIdentity) {
       this.uid = assureObjectId(userIdentity, true);

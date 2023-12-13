@@ -16,7 +16,7 @@ import {
   MailInvitation,
   SendInvitationsService,
 } from '@/user-invitations';
-import { assureObjectId, EntityIdentity } from '@/core';
+import { assureObjectId, DocumentIdentity } from '@/core';
 import { Profile } from '@/profiles';
 import { UnauthorizedException } from '@nestjs/common';
 import { contentTestPlugin } from '@/content';
@@ -326,8 +326,8 @@ describe('UserRegistrationService', () => {
 
   async function createMailInvitation(
     email: string,
-    host: EntityIdentity<User>,
-    pid?: EntityIdentity<Profile>,
+    host: DocumentIdentity<User>,
+    pid?: DocumentIdentity<Profile>,
   ) {
     return invitationDao.save(
       new MailInvitation({

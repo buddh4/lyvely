@@ -78,24 +78,41 @@ export function useStatus(status?: Ref<Status>): StoreStatusPlugin {
   };
 }
 
+/**
+ * Executes a promise while providing loading state functionality.
+ *
+ * @param {Promise<T>} promise - The promise to execute.
+ * @param {Ref<boolean>} [loading] - The loading state reference. Default is false.
+ * @param {(result: T) => R} [resolve] - The optional callback function to handle the resolved result.
+ * @param {(e: any) => any} [reject] - The optional callback function to handle the rejected error.
+ * @return {Promise<R extends void | undefined ? T : R>} A promise that resolves to the result of the resolve callback, or the original result if no resolve callback is provided.
+ */
 export async function loadingState<T = any, R = T | void>(
   promise: Promise<T>,
-  loading: Ref<boolean>,
+  loading?: Ref<boolean>,
   resolve?: (result: T) => R,
   reject?: (e: any) => any,
 ): Promise<R extends void | undefined ? T : R> {
+  loading ||= ref(false);
   loading.value = true;
   return promise
     .then((result) => {
-      loading.value = false;
+      loading!.value = false;
       if (!resolve) return result;
 
       const successResult = resolve(result);
       return successResult !== undefined ? successResult : result;
     })
     .catch((e) => {
-      if (reject) reject(e);
-      loading.value = false;
+      if (reject) {
+        reject(e);
+      } else {
+        handleError(e);
+        throw throwServiceException(e);
+      }
+    })
+    .finally(() => {
+      loading!.value = false;
     }) as Promise<R extends void | undefined ? T : R>;
 }
 
@@ -143,14 +160,14 @@ export async function loadingStatus<T = any, R = T | void>(
     }) as Promise<R extends void | undefined ? T : R>;
 }
 
-export function handleError(err: any, status: StoreStatusPlugin, validator?: ModelValidator) {
-  status.setStatus(Status.ERROR);
+export function handleError(err: any, status?: StoreStatusPlugin, validator?: ModelValidator) {
+  status?.setStatus(Status.ERROR);
   if (validator && isFieldValidationError(err)) {
     validator.setErrors(err.response.data.fields);
   } else if (validator && err instanceof FieldValidationException) {
     validator.setErrors(err.getFields());
   } else {
-    status.setError(getErrorMessage(err));
+    status?.setError(getErrorMessage(err));
   }
 }
 

@@ -113,7 +113,6 @@ export function useUpdateModelStore<
   }
 
   function setCreateModel(model: TCreateModel, ignoreBackup = false) {
-    debugger;
     isCreate.value = true;
     if (options.persistId !== false) {
       options.persistId ??= model.constructor.name;

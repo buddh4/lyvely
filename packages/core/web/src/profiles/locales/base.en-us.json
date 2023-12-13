@@ -24,6 +24,9 @@
       "general": {
         "label": "General"
       },
+      "permissions": {
+        "label": "Permissions"
+      },
       "preferences": {
         "label": "Preferences"
       },

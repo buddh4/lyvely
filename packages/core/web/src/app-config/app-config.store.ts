@@ -22,6 +22,8 @@ export const useAppConfigStore = defineStore('app-config', () => {
     eventBus.emit(EVENT_APP_CONFIG_LOADED, cfg);
   }
 
+  function get<T extends ConfigKey>(cfg: T, defaultValue: ConfigValue<T>): ConfigValue<T>;
+  function get<T extends ConfigKey>(cfg: T, defaultValue?: undefined): ConfigValue<T> | undefined;
   function get<T extends ConfigKey>(
     cfg: T,
     defaultValue?: ConfigValue<T>,

@@ -20,6 +20,7 @@ import {
   ProfileSettingsService,
   ProfileRelationsService,
   ProfileSettingsRegistry,
+  ProfilePermissionSettingsService,
 } from './services';
 import {
   ProfilesController,
@@ -27,6 +28,7 @@ import {
   ProfileRelationInfosController,
   ProfileMembershipController,
   ProfileFeaturesController,
+  ProfilePermissionsController,
 } from './controllers';
 import { UserSettingsService, UsersModule } from '@/users';
 import { ProfileDao, MembershipsDao, UserProfileRelationsDao } from './daos';
@@ -66,6 +68,7 @@ useProfileMappings();
   providers: [
     ProfileDao,
     ProfilePermissionsService,
+    ProfilePermissionSettingsService,
     UserProfileRelationsDao,
     MembershipsDao,
     ProfileMembershipService,
@@ -99,6 +102,7 @@ useProfileMappings();
     ProfileRelationInfosController,
     ProfileMembershipController,
     ProfileFeaturesController,
+    ProfilePermissionsController,
   ],
 })
 export class ProfilesModule {}

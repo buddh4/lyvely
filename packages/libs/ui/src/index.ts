@@ -51,14 +51,14 @@ import LyConditionalWrapper from './components/helpers/LyConditionalWrapper.vue'
 import LyTable from './components/tables/LyTable.vue';
 import LyMarkdownView from '@/components/markdown/LyMarkdownView.vue';
 import { App } from 'vue';
-import { LyvelySvgIconLibrary } from "@/components/icons/libraries/ly-svg-icon.library";
-import { registerSvgIcon } from "@/components/icons/registries";
+import { LyvelySvgIconLibrary } from '@/components/icons/libraries/ly-svg-icon.library';
+import { registerSvgIcon } from '@/components/icons/registries';
 import { LyvelyUiOptions, setConfigOptions } from './config';
 import { Translatable, TranslationAdapter } from './i18n';
 import LyComponentStack from '@/components/stack/LyComponentStack.vue';
 import { vMobileScrollbar } from '@/directives';
-import { registerIconLibrary } from "@/components/icons/registries";
-import { LySvgIcons} from "@/components/icons/registries";
+import { registerIconLibrary } from '@/components/icons/registries';
+import { LySvgIcons } from '@/components/icons/registries';
 
 registerIconLibrary(LyvelySvgIconLibrary);
 
@@ -142,6 +142,7 @@ export {
   LySelect,
   LyRange,
   LyCheckbox,
+  LyTable,
   LyRadio,
   LyNumberField,
   LyFormModel,
@@ -187,5 +188,5 @@ export {
   LyConditionalWrapper,
   registerSvgIcon,
   registerIconLibrary,
-  LySvgIcons
+  LySvgIcons,
 };

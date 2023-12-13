@@ -1,14 +1,17 @@
-import { profileRelationRoleHierarchy } from '../interfaces';
+import { IProfilePermission, profileRelationRoleHierarchy } from '../interfaces';
 import { ProfileRelationRole } from '@/profiles/relations';
-import { ProfileVisibilityLevel } from '@/profiles';
+import { ProfileVisibilityLevel } from '@/profiles/core/interfaces';
 import { IntegrityException } from '@/exceptions';
+import { BasePermissionType, IPermission } from '@/permissions';
 
 /**
  * Returns the profile visibility level for a given role.
  * @param role
  */
 export function getProfileRoleLevel(role: ProfileRelationRole) {
-  return profileRelationRoleHierarchy.indexOf(role);
+  const roleLevel = profileRelationRoleHierarchy.indexOf(role);
+  if (roleLevel < 0) throw new IntegrityException(`Invalid content user role level ${role}`);
+  return roleLevel;
 }
 
 /**
@@ -44,6 +47,21 @@ export function getProfileRoleLevelByProfileVisibility(visibility: ProfileVisibi
  *
  * @return {boolean} - True if the userRole has a role level equal to or lower than the minRole, otherwise false.
  */
-export function verifyRoleLevel(userRole: ProfileRelationRole, minRole: ProfileRelationRole) {
+export function verifyProfileRoleLevel(
+  userRole: ProfileRelationRole,
+  minRole: ProfileRelationRole,
+) {
   return getProfileRoleLevel(userRole) <= getProfileRoleLevel(minRole);
+}
+
+/**
+ * Checks if a given permission is a profile permission.
+ *
+ * @param {IPermission<any, any>} permission - The permission to check.
+ * @return {boolean} - True if the permission is a profile permission, false otherwise.
+ */
+export function isProfilePermission(
+  permission: IPermission<any, any>,
+): permission is IProfilePermission {
+  return permission.type === BasePermissionType.Profile;
 }

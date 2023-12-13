@@ -7,7 +7,7 @@ import {
 import {
   UserAssignmentStrategy,
   User,
-  EntityIdentity,
+  DocumentIdentity,
   Profile,
   ProfilesService,
 } from '@lyvely/api';
@@ -150,7 +150,7 @@ export abstract class DataPointService<
 
   async findByIntervalLevel(
     profile: Profile,
-    uid: EntityIdentity<User> | null | undefined,
+    uid: DocumentIdentity<User> | null | undefined,
     filter: CalendarPlanFilter,
   ): Promise<TDataPointModel[]> {
     return await this.dataPointDao.findByIntervalLevel(profile, uid, filter);

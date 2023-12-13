@@ -4,7 +4,7 @@ import {
   Profile,
   ProfileTestDataUtils,
   assureObjectId,
-  EntityIdentity,
+  DocumentIdentity,
   createBaseDocumentInstance,
   Model,
 } from '@lyvely/api';
@@ -52,7 +52,7 @@ export class HabitTestDataUtil extends ProfileTestDataUtils {
     return toTimingId(HabitTestDataUtil.getDateYesterday());
   }
 
-  async findHabitById(id: EntityIdentity<Habit>) {
+  async findHabitById(id: DocumentIdentity<Habit>) {
     const model = await this.HabitModel.findById(assureObjectId(id)).lean();
 
     if (!model) return null;

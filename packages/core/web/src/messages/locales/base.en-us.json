@@ -11,6 +11,12 @@
     },
     "update": {
       "title": "Edit Message"
+    },
+    "permissions": {
+      "create": {
+        "name": "Create Message",
+        "description": "Who is allowed to create messages?"
+      }
     }
   }
 }

@@ -5,7 +5,7 @@ import {
   ProfileTestDataUtils,
   Model,
   assureObjectId,
-  EntityIdentity,
+  DocumentIdentity,
   createBaseDocumentInstance,
 } from '@lyvely/api';
 import { CreateTaskModel } from '@lyvely/tasks-interface';
@@ -42,7 +42,7 @@ export class TaskTestDataUtil extends ProfileTestDataUtils {
     return toTimingId(TaskTestDataUtil.getDateYesterday());
   }
 
-  async findTaskById(id: EntityIdentity<Task>): Promise<Task | null> {
+  async findTaskById(id: DocumentIdentity<Task>): Promise<Task | null> {
     const raw = await this.TaskModel.findById(assureObjectId(id)).lean();
     if (!raw) return null;
     return createBaseDocumentInstance(Task, raw);

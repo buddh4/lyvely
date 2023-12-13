@@ -63,7 +63,7 @@ export function createApiUrl(path: string, queryParameters: Record<string, strin
 
   const url = new URL(_options.apiUrl);
   path = path.charAt(0) === '/' ? path : '/' + path;
-  url.pathname = path;
+  url.pathname += path;
 
   Object.keys(queryParameters).forEach((key) => {
     url.searchParams.append(key, queryParameters[key]);

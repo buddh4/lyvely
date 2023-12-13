@@ -57,7 +57,7 @@ function updateSettings() {
         </div>
       </ly-form-model>
 
-      <div class="clear-both mt-4">
+      <div class="clear-both mt-2 md:mt-4">
         <ly-button class="primary float-right text-xs" @click="updateSettings">
           {{ $t('common.update') }}
         </ly-button>

@@ -4,7 +4,7 @@ import {
   assureObjectId,
   BaseDocument,
   createObjectId,
-  EntityIdentity,
+  DocumentIdentity,
   MixedProp,
   ObjectIdProp,
   TObjectId,
@@ -12,16 +12,16 @@ import {
 import { User } from '@/users';
 import { Tag, TagSchema } from './tags.schema';
 import {
-  IPermissionObject,
   MAX_PROFILE_DESCRIPTION_LENGTH,
   ProfileModel,
-  ProfileRelationRole,
   ProfileType,
   ProfileUsage,
   ProfileVisibilityLevel,
   VALID_DISPLAY_NAME_REGEX,
   VALID_HANDLE_REGEX,
-  IProfilePermissionSetting,
+  IPermissionSetting,
+  IProfilePermissionData,
+  IProfilePermissionObject,
 } from '@lyvely/interface';
 import { BaseModel, getNumberEnumValues, PropertiesOf, PropertyType } from '@lyvely/common';
 import { Avatar, AvatarSchema } from '@/avatars';
@@ -52,7 +52,7 @@ const ProfileMetadataSchema = SchemaFactory.createForClass(ProfileMetadata);
 @Schema({ timestamps: true, discriminatorKey: 'type' })
 export class Profile
   extends BaseDocument<Profile>
-  implements PropertiesOf<ProfileModel<TObjectId>>, IPermissionObject<ProfileRelationRole>
+  implements PropertiesOf<ProfileModel<TObjectId>>, IProfilePermissionObject
 {
   /** The main owner of this profile, note that there may be additional owners registered as profile relation. **/
   @ObjectIdProp({ required: true })
@@ -162,7 +162,7 @@ export class Profile
    *
    * @return {IProfilePermissionSetting<TObjectId>[]} The array of permission settings.
    */
-  getPermissionSettings(): IProfilePermissionSetting[] {
+  getPermissionSettings(): IPermissionSetting[] {
     return (
       this.permissions?.map((p) => ({ ...p, groups: p.groups?.map((g) => g.toString()) })) || []
     );
@@ -176,6 +176,15 @@ export class Profile
    */
   getPermissionGroups(): string[] {
     return this.groups?.map((g) => g._id.toString()) || [];
+  }
+
+  /**
+   * Retrieves the profile visibility level.
+   *
+   * @returns {ProfileVisibilityLevel} The profile visibility level.
+   */
+  getProfilePermissionData(): IProfilePermissionData {
+    return this;
   }
 
   /**
@@ -241,7 +250,7 @@ export class Profile
    * Note, this will return false if the profile itself is an organization profile.
    * @param oid
    */
-  isProfileOfOrganization(oid: EntityIdentity<Profile> | null | undefined) {
+  isProfileOfOrganization(oid: DocumentIdentity<Profile> | null | undefined) {
     if (!oid || this.isOrganization()) return false;
     return assureObjectId(oid).equals(this.oid);
   }

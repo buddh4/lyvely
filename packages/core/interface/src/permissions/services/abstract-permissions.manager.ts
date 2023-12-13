@@ -7,7 +7,7 @@ import {
   IPermissionSubject,
 } from '../interfaces';
 import { UserStatus } from '@/users/interfaces/user-status.enum';
-import { VisitorMode } from '@/users/interfaces/visitor-strategy.interface';
+import { VisitorMode } from '@/permissions/interfaces/visitor-strategy.interface';
 import { IntegrityException } from '@/exceptions';
 import { isDefined } from 'class-validator';
 import { clamp, hasIntersection } from '@lyvely/common';
@@ -26,7 +26,7 @@ import { clamp, hasIntersection } from '@lyvely/common';
  *
  * @implements IPermissionsService<TPermission, TSubject, TObject, TConfig>
  */
-export abstract class AbstractPermissionsService<
+export abstract class AbstractPermissionsManager<
   TPermission extends IPermission<any, any>,
   TSubject extends IPermissionSubject<TPermission['min']>,
   TObject extends IPermissionObject<TPermission['min']>,
@@ -44,6 +44,14 @@ export abstract class AbstractPermissionsService<
   abstract getPermission(permissionOrId: TPermission | string): TPermission | undefined;
 
   /**
+   * Retrieves the role hierarchy, which is an array of roles in which the index defines the role level and lower
+   * roles inherit the permissions of higher levels.
+   *
+   * @returns {TRole[]} An array containing the role hierarchy for the current user.
+   */
+  abstract getRoleHierarchy(): TRole[];
+
+  /**
    * Retrieves the permission role level associated with a given role.
    *
    * If the given role does not exist this function must return -1.
@@ -51,7 +59,67 @@ export abstract class AbstractPermissionsService<
    * @param {TRole} role - The role to retrieve the level for.
    * @return {number} - The level associated with the role.
    */
-  abstract getRoleLevel(role: TRole): number;
+  public getRoleLevel(role: TRole) {
+    return this.getRoleHierarchy().indexOf(role);
+  }
+
+  /**
+   * Retrieves the role based on the given level.
+   *
+   * @param {number} level - The level at which the role is located in the hierarchy.
+   * @returns {string} - The role corresponding to the given level.
+   */
+  public getRoleByLevel(level: number) {
+    return this.getRoleHierarchy()[level];
+  }
+
+  /**
+   * Verify each permission or permission ID against a subject, object, and config.
+   *
+   * @param {Array<TPermission | string>} permissionOrIds - Array of permissions or permission IDs to verify.
+   * @param {TSubject} subject - Subject to perform the verification against.
+   * @param {TObject} object - Object to perform the verification against.
+   * @param {TConfig} config - Configuration for the verification.
+   *
+   * @returns {boolean} - True if all permissions or permission IDs pass the verification, false otherwise.
+   */
+  public verifyEach(
+    permissionOrIds: Array<TPermission | string>,
+    subject: TSubject,
+    object: TObject,
+    config: TConfig,
+  ) {
+    if (!permissionOrIds?.length) return true;
+    return permissionOrIds.reduce(
+      (result, permissionId) =>
+        result && this.verifyPermission(permissionId, subject, object, config),
+      true,
+    );
+  }
+
+  /**
+   * Verifies if any of the given permissions or permission ids are valid for the specified subject and object.
+   *
+   * @param {Array<TPermission | string>} permissionOrIds - An array of permissions or permission ids to verify.
+   * @param {TSubject} subject - The subject to verify the permissions against.
+   * @param {TObject} object - The object to verify the permissions against.
+   * @param {TConfig} config - Additional configuration options.
+   * @returns {boolean} - Returns true if any of the permissions or permission ids are valid, false otherwise.
+   * @private
+   */
+  private verifyAny(
+    permissionOrIds: Array<TPermission | string>,
+    subject: TSubject,
+    object: TObject,
+    config: TConfig,
+  ) {
+    if (!permissionOrIds?.length) return true;
+    return permissionOrIds.reduce(
+      (result, permissionId) =>
+        result || this.verifyPermission(permissionId, subject, object, config),
+      false,
+    );
+  }
 
   /**
    * Verifies the permission for a given subject and object
@@ -228,8 +296,49 @@ export abstract class AbstractPermissionsService<
     object: TObject,
     config: TConfig,
   ) {
+    const roleLevel = this.getRoleLevel(subject.role);
+
+    if (roleLevel === -1) {
+      throw new IntegrityException(
+        'Invalid role given provided in permission check: ' + subject.role,
+      );
+    }
+
+    return roleLevel <= this.getActiveRoleLevel(permission, object, config);
+  }
+
+  /**
+   * Retrieves the active role level for a given permission, by respecting the configuration and settings as well as
+   * min/max restrictions.
+   *
+   * @param {TPermission} permission - The permission to check the role level for.
+   * @param {TObject} object - The object to check the role level against.
+   * @param {TConfig} config - The configuration to determine the active role level.
+   * @returns {number} - The active role level for the specified permission, object, and configuration.
+   * @throws {IntegrityException} - If the configured role level is -1 (non-existent role),
+   * or if the min or max permission definition is invalid.
+   */
+  public getActiveRoleLevel(permission: TPermission, object: TObject, config: TConfig) {
     const configuredLevel = this.getConfiguredRoleLevel(permission, object, config);
-    if (configuredLevel === -1) {
+    return this.getValidRoleLevel(permission, object, config, configuredLevel);
+  }
+
+  /**
+   * Checks the validity of the given role level against the permission object and config and returns a replacement
+   * in case the check fails.
+   *
+   * @param {number} roleLevel - The current role level.
+   * @param {TObject} object - The object containing profile permission data.
+   * @param {TConfig} config - The configuration object.
+   * @return {number} - The valid role level.
+   */
+  getValidRoleLevel(
+    permission: TPermission,
+    object: TObject,
+    config: TConfig,
+    roleLevel: number,
+  ): number {
+    if (roleLevel === -1) {
       throw new IntegrityException('Can not verify permission against non existing role');
     }
 
@@ -240,15 +349,20 @@ export abstract class AbstractPermissionsService<
       throw new IntegrityException('Invalid min or max permission definition for ' + permission.id);
     }
 
-    const roleLevel = this.getRoleLevel(subject.role);
+    return clamp(roleLevel, minRoleLevel, maxRoleLevel);
+  }
 
-    if (roleLevel === -1) {
-      throw new IntegrityException(
-        'Invalid role given provided in permission check: ' + subject.role,
-      );
-    }
-
-    return roleLevel <= clamp(configuredLevel, minRoleLevel, maxRoleLevel);
+  /**
+   * Retrieves the active role for a given permission, by respecting the configuration and settings as well as
+   * min/max restrictions.
+   *
+   * @param {TPermission} permission - The permission to check.
+   * @param {TObject} object - The object to check against.
+   * @param {TConfig} config - The configuration to use.
+   * @return {TRole} - The active role.
+   */
+  public getActiveRole(permission: TPermission, object: TObject, config: TConfig) {
+    return this.getRoleByLevel(this.getActiveRoleLevel(permission, object, config));
   }
 
   /**

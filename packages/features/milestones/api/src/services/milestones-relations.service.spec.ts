@@ -7,7 +7,7 @@ import {
   ContentType,
   ContentModel,
   contentTestPlugin,
-  EntityIdentity,
+  DocumentIdentity,
   TObjectId,
   Model,
 } from '@lyvely/api';
@@ -119,7 +119,7 @@ describe('MileStonesRelationService', () => {
   describe('getRelationsByMilestones()', () => {
     it('test event data', async () => {
       const { profile, user, content, mid } = await createTestContent();
-      await service.getRelationsByMilestones(profile, user, [mid as EntityIdentity<Milestone>]);
+      await service.getRelationsByMilestones(profile, user, [mid as DocumentIdentity<Milestone>]);
       expect(testProvider?.event?.data).toBeDefined();
       expect(testProvider?.event?.data.contents.length).toEqual(1);
       expect(testProvider?.event?.data.contents[0]._id).toEqual(content._id);
@@ -129,7 +129,7 @@ describe('MileStonesRelationService', () => {
     it('test result', async () => {
       const { profile, user, content, mid } = await createTestContent();
       const result = await service.getRelationsByMilestones(profile, user, [
-        mid as EntityIdentity<Milestone>,
+        mid as DocumentIdentity<Milestone>,
       ]);
       expect(result?.length).toEqual(1);
       expect(result![0].cid).toEqual(content._id);

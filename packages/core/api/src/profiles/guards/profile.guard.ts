@@ -2,13 +2,13 @@ import { Injectable, CanActivate, ExecutionContext, Inject } from '@nestjs/commo
 import { ProfilesService, ProfilePermissionsService } from '../services';
 import { ProfileRequest } from '../types';
 import { isValidObjectId } from '@lyvely/common';
-import { DocumentNotFoundException, verifyRoleLevel } from '@lyvely/interface';
+import { verifyProfileRoleLevel } from '@lyvely/interface';
 import { ProfileVisibilityPolicy } from '../policies';
 import { ProfileDao } from '../daos';
 import { Reflector } from '@nestjs/core';
 import { InjectPolicy } from '@/policies';
 import { ProfileContext } from '../models';
-import { getProfileRoleFromContext } from '../decorators';
+import { getProfileRoleFromContext } from '../decorators/profile.role-level.decorator';
 
 /**
  * This guard is responsible for setting the `request.profile` and `request.context` fields for a given profile id.
@@ -41,8 +41,6 @@ export class ProfileGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<ProfileRequest>();
 
-    if (!isValidObjectId(request.params.pid)) throw new DocumentNotFoundException();
-
     const oid = isValidObjectId(request.query.oid) ? request.query.oid : undefined;
     const user = request.user;
 
@@ -70,6 +68,6 @@ export class ProfileGuard implements CanActivate {
   private verifyProfileRoleLevel(profileContext: ProfileContext, context: ExecutionContext) {
     const roleRestriction = getProfileRoleFromContext(context, this.reflector);
     if (!roleRestriction) return true;
-    return verifyRoleLevel(profileContext.getRole(), roleRestriction);
+    return verifyProfileRoleLevel(profileContext.getRole(), roleRestriction);
   }
 }

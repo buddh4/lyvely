@@ -1,7 +1,7 @@
 import { OptionalUser } from '@/users';
 import { ConfigService } from '@nestjs/config';
 import { ServerConfiguration } from '@/config';
-import { GlobalPermissionRole, useGlobalPermissionsService } from '@lyvely/interface';
+import { GlobalPermissionRole, useGlobalPermissionsManager } from '@lyvely/interface';
 import { IGlobalPermissionsService } from '../interfaces';
 import { Injectable } from '@nestjs/common';
 
@@ -63,7 +63,7 @@ export class GlobalPermissionsService implements IGlobalPermissionsService {
   verifyPermission(user: OptionalUser, permissionId: string): boolean {
     const role = this.getGlobalUserRole(user);
     const config = this.configService.get('permissions', {});
-    return useGlobalPermissionsService().verifyPermission(
+    return useGlobalPermissionsManager().verifyPermission(
       permissionId,
       { role, userStatus: user?.status },
       {
