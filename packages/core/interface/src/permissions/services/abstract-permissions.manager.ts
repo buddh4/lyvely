@@ -324,8 +324,8 @@ export abstract class AbstractPermissionsManager<
   }
 
   /**
-   * Checks the validity of the given role level against the permission object and config and returns a replacement
-   * in case the check fails.
+   * Checks the validity of the given role level against the permission object and config and returns a
+   * downgraded role level if required.
    *
    * @param {number} roleLevel - The current role level.
    * @param {TObject} object - The object containing profile permission data.

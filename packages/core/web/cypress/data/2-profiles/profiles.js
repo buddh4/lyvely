@@ -30,7 +30,7 @@ const createProfile = (idSeed, ownerSeed, options) => {
 };
 
 module.exports = [
-  createProfile('jan-profile', 'Jan', {
+  createProfile('owner-profile', 'owner', {
     usage: ['Private'],
     type: 'user',
     tags: [
@@ -55,9 +55,9 @@ module.exports = [
       },
     ],
   }),
-  createProfile('member-group', 'Jan', {
+  createProfile('member-group', 'owner', {
     usage: ['Project'],
-    name: 'Member Group',
+    name: 'Protected Group',
     type: 'group',
     visibility: 2, // All authenticated users
     tags: [
@@ -70,7 +70,7 @@ module.exports = [
       },
     ],
   }),
-  createProfile('public-group', 'Jan', {
+  createProfile('public-group', 'owner', {
     usage: ['Project'],
     name: 'Public Group',
     type: 'group',
@@ -84,7 +84,7 @@ module.exports = [
       },
     ],
   }),
-  createProfile('public-organization', 'Jan', {
+  createProfile('public-organization', 'owner', {
     usage: ['Business'],
     name: 'Public Organization',
     type: 'organization',
@@ -99,7 +99,7 @@ module.exports = [
       },
     ],
   }),
-  createProfile('organization-member-group', 'Jan', {
+  createProfile('organization-only-group', 'owner', {
     usage: ['Project'],
     oid: getObjectId('public-organization'),
     name: 'Organization Member Group',

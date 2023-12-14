@@ -11,6 +11,8 @@ import { IModule } from '@/core';
 import { MENU_CONTENT_DROPDOWN } from '@/content/content.constants';
 import { useContentEditStore } from '@/content/stores';
 import { getContentTypeOptions } from '@/content/registries';
+import { useContentArchive } from '@/content/composables';
+import { useConfirm } from '@/ui';
 
 export default () => {
   return {
@@ -41,22 +43,26 @@ export default () => {
         moduleId: CONTENT_MODULE_ID,
         click: () => useContentEditStore().editContent(content),
         condition:
-          getContentTypeOptions(content.type)?.interfaces?.edit !== false && !content.meta.archived,
-        features: ContentStreamFeature.id,
+          content.getTypeMeta()?.archivable &&
+          getContentTypeOptions(content.type)?.interfaces?.edit !== false &&
+          !content.meta.archived,
         sortOrder: 1000,
-        icon: 'stream',
-        text: 'content.stream.title',
+        icon: 'edit',
+        text: 'common.edit',
       }));
       registerMenuEntry<ContentModel>(MENU_CONTENT_DROPDOWN, (content: ContentModel) => ({
         id: 'content-archive',
         moduleId: CONTENT_MODULE_ID,
-        click: () => useContentEditStore().editContent(content),
-        condition:
-          getContentTypeOptions(content.type)?.interfaces?.edit !== false && !content.meta.archived,
-        features: ContentStreamFeature.id,
+        click: () =>
+          useConfirm(useContentArchive(content).toggleArchive, {
+            text: content.meta.archived
+              ? 'content.actions.confirm.restore'
+              : 'content.actions.confirm.archive',
+          }),
+        condition: content.getTypeMeta()?.archivable,
         sortOrder: 1000,
-        icon: 'stream',
-        text: 'content.stream.title',
+        icon: content.meta.archived ? 'restore' : 'archive',
+        text: content.meta.archived ? 'content.actions.restore' : 'content.actions.archive',
       }));
       registerMenuEntry(MENU_PROFILE_MOBILE_FOOTER, {
         id: 'stream-footer',

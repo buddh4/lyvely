@@ -1,24 +1,31 @@
 const { getObjectId } = require('mongo-seeding');
 const { RoleVisibilityLevel } = require('@lyvely/interface');
 
-module.exports = [
-  {
-    _id: getObjectId('jan-profile-message1'),
-    pid: getObjectId('jan-profile'),
-    oid: getObjectId('jan-profile-oid'),
+const createMessage = (idSeed, authorSeed, profileSeed, text, options) => {
+  return {
+    _id: getObjectId(idSeed),
+    pid: getObjectId(profileSeed),
+    oid: getObjectId(profileSeed + '-oid'),
     location: 'default',
-    content: {
-      text: 'First profile message!',
-    },
+    content: { text },
     meta: {
-      createdBy: getObjectId('Jan'),
-      updatedBy: getObjectId('Jan'),
+      createdBy: getObjectId(authorSeed),
+      updatedBy: getObjectId('authorSeed'),
       streamSort: Date.now(),
-      visibility: RoleVisibilityLevel.Member,
+      visibility: options.visibility || RoleVisibilityLevel.Member,
       createdAt: new Date(),
       updatedAt: new Date(),
-      childCount: 0,
+      childCount: options.childCount ?? 0,
+      archived: options.archived ?? false,
+      deleted: options.deleted ?? false,
+      locked: options.locked ?? false,
     },
     type: 'Message',
-  },
+  };
+};
+
+module.exports = [
+  createMessage('owner-profile-archived', 'owner', 'owner-profile', 'First profile message!', {
+    archived: true,
+  }),
 ];

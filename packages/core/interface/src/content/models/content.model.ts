@@ -10,11 +10,13 @@ import { Exclude, Expose, Transform } from 'class-transformer';
 import { IsString, Length, IsOptional } from 'class-validator';
 import {
   CreatedAsType,
+  getDefaultTypeMeta,
   IContent,
   IContentAuthor,
   IContentDataType,
   IContentLog,
   IContentMetadata,
+  IContentTypeMeta,
 } from '../interfaces';
 import { RoleVisibilityLevel } from '@/profiles';
 
@@ -147,5 +149,9 @@ export class ContentModel<TID = string, T extends IContent = IContent, TConfig e
 
   getSortOrder(): number | undefined {
     return this.meta.sortOrder;
+  }
+
+  getTypeMeta(): IContentTypeMeta {
+    return getDefaultTypeMeta();
   }
 }

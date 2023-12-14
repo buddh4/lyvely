@@ -7,7 +7,7 @@ import {
   ForbiddenServiceException,
   UnauthorizedServiceException,
 } from '@lyvely/interface';
-import { PATH_LOGIN, PATH_LOGOUT, useAuthStore } from '@/auth';
+import { PATH_LOGOUT } from '@/auth';
 import { PATH_403, PATH_404, PATH_500 } from '@/ui';
 
 export const ifIsMultiUserProfile = async (
@@ -24,6 +24,22 @@ export const ifIsMultiUserProfile = async (
   next();
 };
 
+/**
+ * Loads a profile based on the route parameters, either by pid or handle or the default profile unless
+ * the route is marked with the `isPublic` meta flag.
+ *
+ * If we receive a UnauthorizedServiceException this guard redirects to the login page.
+ * In case of other errors we redirect to error specific error pages.
+ *
+ * Note: We require a profile to be loaded in most cases, even for non profile routes like account, since the
+ * profile layout will still be active in such cases. Currently, only public routes marked with `isPublic` do not
+ * require a profile to be loaded.
+ *
+ * @param {RouteLocation} to – The target route that the user is navigating to.
+ * @param {RouteLocation} from – The current route that the user is navigating from.
+ * @param {NavigationGuardNext} next – The next middleware function to invoke.
+ * @returns {Promise<void>} – A Promise that resolves when the profile information is loaded.
+ */
 export const loadProfileGuard = async (
   to: RouteLocation,
   from: RouteLocation,
@@ -47,6 +63,14 @@ export const loadProfileGuard = async (
   }
 };
 
+/**
+ * Load profile by handle.
+ *
+ * @param {RouteLocation} to - The target route location.
+ * @param {RouteLocation} from - The source route location.
+ * @param {NavigationGuardNext} next - The next navigation hook.
+ * @returns {Promise<void>} - A Promise that resolves when the profile is loaded.
+ */
 const loadProfileByHandle = async (
   to: RouteLocation,
   from: RouteLocation,
@@ -59,8 +83,11 @@ const loadProfileByHandle = async (
     return next(profileStore.getRoute(null, profile.handle, { help }));
   }
 
-  const handle: string = typeof to.params.handle === 'string' ? to.params.handle : undefined;
+  const handle: string | undefined =
+    typeof to.params.handle === 'string' ? to.params.handle : undefined;
   await profileStore.loadProfile(handle);
+
+  // We need this e.g. for non profile routes otherwise we get a missing required parameter error by the router.
   to.params['handle'] = handle || ':handle';
   next();
 };
@@ -69,6 +96,7 @@ const loadProfileByHandle = async (
  * This is used for profile id path navigations like /pid/:pid?view=ViewName.
  * This is mainly used if the caller does not know the handle of the profile and don't want to manually load the profile,
  * e.g. in notifications or navigating from profile relations.
+ *
  * @param to
  * @param from
  * @param next

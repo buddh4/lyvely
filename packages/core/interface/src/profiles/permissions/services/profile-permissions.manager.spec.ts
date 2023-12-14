@@ -6,7 +6,7 @@ import {
   registerPermissions,
 } from '../../../permissions';
 import { ProfileRelationRole } from '../../relations';
-import { ProfileModel } from '../../core';
+import { ProfileModel, ProfileVisibilityLevel } from '../../core';
 import { IntegrityException } from '../../../exceptions';
 import { UserStatus, VisitorMode } from '../../../users';
 import { useProfilePermissionsManager } from './profile-permissions.manager';
@@ -73,42 +73,6 @@ describe('ProfilePermissionsManager', function () {
     expect(verifyTestPermission(ProfileRelationRole.Follower)).toEqual(false);
     expect(verifyTestPermission(ProfileRelationRole.User)).toEqual(false);
     expect(verifyTestPermission(ProfileRelationRole.Visitor)).toEqual(false);
-  });
-
-  it('assure min role is respected', () => {
-    registerTestPermission({
-      min: ProfileRelationRole.Admin,
-    });
-    const profile = new ProfileModel({
-      permissions: [{ id: 'test', role: ProfileRelationRole.Owner }],
-    });
-    expect(verifyTestPermission(ProfileRelationRole.Owner, profile)).toEqual(true);
-    expect(verifyTestPermission(ProfileRelationRole.Admin, profile)).toEqual(true);
-    expect(verifyTestPermission(ProfileRelationRole.Moderator, profile)).toEqual(false);
-    expect(verifyTestPermission(ProfileRelationRole.Member, profile)).toEqual(false);
-    expect(verifyTestPermission(ProfileRelationRole.Guest, profile)).toEqual(false);
-    expect(verifyTestPermission(ProfileRelationRole.Organization, profile)).toEqual(false);
-    expect(verifyTestPermission(ProfileRelationRole.Follower, profile)).toEqual(false);
-    expect(verifyTestPermission(ProfileRelationRole.User, profile)).toEqual(false);
-    expect(verifyTestPermission(ProfileRelationRole.Visitor, profile)).toEqual(false);
-  });
-
-  it('assure max role is respected', () => {
-    registerTestPermission({
-      max: ProfileRelationRole.Member,
-    });
-    const profile = new ProfileModel({
-      permissions: [{ id: 'test', role: ProfileRelationRole.Guest }],
-    });
-    expect(verifyTestPermission(ProfileRelationRole.Owner, profile)).toEqual(true);
-    expect(verifyTestPermission(ProfileRelationRole.Admin, profile)).toEqual(true);
-    expect(verifyTestPermission(ProfileRelationRole.Moderator, profile)).toEqual(true);
-    expect(verifyTestPermission(ProfileRelationRole.Member, profile)).toEqual(true);
-    expect(verifyTestPermission(ProfileRelationRole.Guest, profile)).toEqual(false);
-    expect(verifyTestPermission(ProfileRelationRole.Organization, profile)).toEqual(false);
-    expect(verifyTestPermission(ProfileRelationRole.Follower, profile)).toEqual(false);
-    expect(verifyTestPermission(ProfileRelationRole.User, profile)).toEqual(false);
-    expect(verifyTestPermission(ProfileRelationRole.Visitor, profile)).toEqual(false);
   });
 
   it('profile permission overwritten by profile settings', () => {
@@ -291,5 +255,135 @@ describe('ProfilePermissionsManager', function () {
     } catch (e) {
       expect(e instanceof IntegrityException).toEqual(true);
     }
+  });
+
+  describe('getValidRoleLevel', () => {
+    it('assure min role is respected', () => {
+      registerTestPermission({
+        min: ProfileRelationRole.Admin,
+      });
+      const profile = new ProfileModel({
+        permissions: [{ id: 'test', role: ProfileRelationRole.Owner }],
+      });
+      expect(verifyTestPermission(ProfileRelationRole.Owner, profile)).toEqual(true);
+      expect(verifyTestPermission(ProfileRelationRole.Admin, profile)).toEqual(true);
+      expect(verifyTestPermission(ProfileRelationRole.Moderator, profile)).toEqual(false);
+      expect(verifyTestPermission(ProfileRelationRole.Member, profile)).toEqual(false);
+      expect(verifyTestPermission(ProfileRelationRole.Guest, profile)).toEqual(false);
+      expect(verifyTestPermission(ProfileRelationRole.Organization, profile)).toEqual(false);
+      expect(verifyTestPermission(ProfileRelationRole.Follower, profile)).toEqual(false);
+      expect(verifyTestPermission(ProfileRelationRole.User, profile)).toEqual(false);
+      expect(verifyTestPermission(ProfileRelationRole.Visitor, profile)).toEqual(false);
+    });
+
+    it('assure max role is respected', () => {
+      registerTestPermission({
+        max: ProfileRelationRole.Member,
+      });
+      const profile = new ProfileModel({
+        permissions: [{ id: 'test', role: ProfileRelationRole.Guest }],
+      });
+      expect(verifyTestPermission(ProfileRelationRole.Owner, profile)).toEqual(true);
+      expect(verifyTestPermission(ProfileRelationRole.Admin, profile)).toEqual(true);
+      expect(verifyTestPermission(ProfileRelationRole.Moderator, profile)).toEqual(true);
+      expect(verifyTestPermission(ProfileRelationRole.Member, profile)).toEqual(true);
+      expect(verifyTestPermission(ProfileRelationRole.Guest, profile)).toEqual(false);
+      expect(verifyTestPermission(ProfileRelationRole.Organization, profile)).toEqual(false);
+      expect(verifyTestPermission(ProfileRelationRole.Follower, profile)).toEqual(false);
+      expect(verifyTestPermission(ProfileRelationRole.User, profile)).toEqual(false);
+      expect(verifyTestPermission(ProfileRelationRole.Visitor, profile)).toEqual(false);
+    });
+
+    it('Organization role on non sub-profile should be downgraded to guest', () => {
+      registerTestPermission({
+        type: BasePermissionType.Profile,
+        max: ProfileRelationRole.Organization,
+      });
+
+      const profile = new ProfileModel({
+        permissions: [{ id: 'test', role: ProfileRelationRole.Organization }],
+      });
+
+      expect(verifyTestPermission(ProfileRelationRole.Organization, profile)).toEqual(false);
+      expect(verifyTestPermission(ProfileRelationRole.Guest, profile)).toEqual(true);
+    });
+
+    it('Organization role with sub-profile is allowed', () => {
+      registerTestPermission({
+        type: BasePermissionType.Profile,
+        max: ProfileRelationRole.Organization,
+      });
+
+      const profile = new ProfileModel({
+        hasOrg: true,
+        permissions: [{ id: 'test', role: ProfileRelationRole.Organization }],
+      });
+
+      expect(verifyTestPermission(ProfileRelationRole.Organization, profile)).toEqual(true);
+    });
+
+    it('Organization role with visibility < Organization is downgraded to Member.', () => {
+      registerTestPermission({
+        type: BasePermissionType.Profile,
+        max: ProfileRelationRole.Organization,
+      });
+
+      const profile = new ProfileModel({
+        hasOrg: true,
+        visibility: ProfileVisibilityLevel.Member,
+        permissions: [{ id: 'test', role: ProfileRelationRole.Organization }],
+      });
+
+      expect(verifyTestPermission(ProfileRelationRole.Organization, profile)).toEqual(false);
+      expect(verifyTestPermission(ProfileRelationRole.Member, profile)).toEqual(true);
+    });
+
+    it('Follower role with visibility < Organization is downgraded to Member.', () => {
+      registerTestPermission({
+        type: BasePermissionType.Profile,
+        max: ProfileRelationRole.Follower,
+      });
+
+      const profile = new ProfileModel({
+        hasOrg: true,
+        visibility: ProfileVisibilityLevel.Organization,
+        permissions: [{ id: 'test', role: ProfileRelationRole.Follower }],
+      });
+
+      expect(verifyTestPermission(ProfileRelationRole.Follower, profile)).toEqual(false);
+      expect(verifyTestPermission(ProfileRelationRole.Member, profile)).toEqual(true);
+    });
+
+    it('User role with visibility < User is downgraded to Member.', () => {
+      registerTestPermission({
+        type: BasePermissionType.Profile,
+        max: ProfileRelationRole.User,
+      });
+
+      const profile = new ProfileModel({
+        hasOrg: true,
+        visibility: ProfileVisibilityLevel.Follower,
+        permissions: [{ id: 'test', role: ProfileRelationRole.User }],
+      });
+
+      expect(verifyTestPermission(ProfileRelationRole.User, profile)).toEqual(false);
+      expect(verifyTestPermission(ProfileRelationRole.Member, profile)).toEqual(true);
+    });
+
+    it('Visitor role with visibility < Visitor is downgraded to Member.', () => {
+      registerTestPermission({
+        type: BasePermissionType.Profile,
+        max: ProfileRelationRole.Visitor,
+      });
+
+      const profile = new ProfileModel({
+        hasOrg: true,
+        visibility: ProfileVisibilityLevel.User,
+        permissions: [{ id: 'test', role: ProfileRelationRole.Visitor }],
+      });
+
+      expect(verifyTestPermission(ProfileRelationRole.Visitor, profile)).toEqual(false);
+      expect(verifyTestPermission(ProfileRelationRole.Member, profile)).toEqual(true);
+    });
   });
 });

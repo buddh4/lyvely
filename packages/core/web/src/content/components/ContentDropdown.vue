@@ -20,9 +20,7 @@ const confirmAction = ref<() => void>();
 
 const { toggleArchive } = useContentArchive(props.content);
 
-const menuEntries = computed(
-  () => useProfileMenu(MENU_CONTENT_DROPDOWN, props.content).enabledMenuEntries,
-);
+const { enabledMenuEntries } = useProfileMenu(MENU_CONTENT_DROPDOWN, props.content);
 
 function onClickArchive() {
   confirmAction.value = toggleArchive;
@@ -45,9 +43,12 @@ const isEditable = computed(
 </script>
 
 <template>
-  <ly-dropdown button-class="item-menu-button" :data-id="'menu-' + content.id">
+  <ly-dropdown
+    v-if="enabledMenuEntries.length"
+    button-class="item-menu-button"
+    :data-id="'menu-' + content.id">
     <ly-dropdown-link
-      v-for="menuEntry in menuEntries"
+      v-for="menuEntry in enabledMenuEntries"
       :key="menuEntry.id"
       :data-id="menuEntry.id"
       :icon="menuEntry.icon"

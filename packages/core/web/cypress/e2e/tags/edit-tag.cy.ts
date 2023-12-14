@@ -1,11 +1,11 @@
 describe('User can create tags', function () {
   beforeEach(() => {
     cy.task('db:seed');
-    cy.authenticatedAs('Jan');
+    cy.authenticatedAs('owner');
   });
 
   it('Failed edit tag - unique name', () => {
-    cy.load('/p/Jan/tags');
+    cy.load('/p/owner/tags');
     cy.getByObjectId('tag-health', 'btn-edit').click();
     cy.getId('edit-tag-name').clear().type('Education');
     cy.getId('btn-modal-submit').click();
@@ -13,7 +13,7 @@ describe('User can create tags', function () {
   });
 
   it('Success edit tag', () => {
-    cy.load('/p/Jan/tags');
+    cy.load('/p/owner/tags');
     cy.getByObjectId('tag-health', 'btn-edit').click();
     cy.getId('edit-tag-name').clear().type('UpdatedTag');
     cy.getId('edit-tag-description').clear().type('A new test tag');

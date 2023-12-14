@@ -20,8 +20,9 @@ const createUserData = (username, options) => {
 };
 
 module.exports = [
-  createUserData('Jan'),
-  createUserData('Peter'),
+  createUserData('owner'),
+  createUserData('member'),
+  createUserData('moderator'),
   createUserData('no-member'),
-  createUserData('Disabled', { status: 0 }),
+  createUserData('disabled', { status: 0 }),
 ];

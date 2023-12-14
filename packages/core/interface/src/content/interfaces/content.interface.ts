@@ -30,8 +30,23 @@ export interface IContentMetadata<TID = any> {
   visibility: RoleVisibilityLevel;
   childCount?: number;
   archived?: boolean;
+  deleted?: boolean;
   locked?: boolean;
 }
+
+export interface IContentTypeMeta {
+  archivable?: boolean;
+  editable?: boolean;
+  reactable?: boolean;
+  commentable?: boolean;
+}
+
+export const getDefaultTypeMeta = (): IContentTypeMeta => ({
+  archivable: true,
+  editable: true,
+  reactable: true,
+  commentable: true,
+});
 
 export interface IContentLog<TData = any, TID = any> {
   updatedBy?: TID;
@@ -40,6 +55,14 @@ export interface IContentLog<TData = any, TID = any> {
   type: string;
 }
 
+/**
+ * Represents the base structure of content in an application.
+ *
+ * @interface IContent
+ * @template TID - The type of the content identifier.
+ * @template TConfig - The type of the content configuration object.
+ * @extends ISortable
+ */
 export interface IContent<TID = any, TConfig extends Object = any> extends ISortable {
   id: string;
   oid: TID;
@@ -50,6 +73,7 @@ export interface IContent<TID = any, TConfig extends Object = any> extends ISort
   config: TConfig;
   tagIds: TID[];
   logs: Array<IContentLog<any, TID>>;
-  getTitle(): string;
-  getText(): string;
+  getTitle: () => string;
+  getText: () => string;
+  getTypeMeta: () => IContentTypeMeta;
 }

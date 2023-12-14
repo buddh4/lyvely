@@ -1,6 +1,12 @@
 import { Prop, Schema, SchemaFactory, ModelDefinition } from '@nestjs/mongoose';
 import { DeepPartial, PropertyType, assignRawDataTo, Type, PropertiesOf } from '@lyvely/common';
-import { IContent, ContentModel, ContentUserRole } from '@lyvely/interface';
+import {
+  IContent,
+  ContentModel,
+  ContentUserRole,
+  getDefaultTypeMeta,
+  IContentTypeMeta,
+} from '@lyvely/interface';
 import {
   assureObjectId,
   BaseDocument,
@@ -215,6 +221,16 @@ export class Content<
    */
   isAssigned(user: DocumentIdentity<User>) {
     return this.meta.assignees?.includes(assureObjectId(user));
+  }
+
+  /**
+   * Retrieves the content type metadata for the content type, which is static metadata which describes the behavior
+   * of a content type.
+   *
+   * @returns {IContentTypeMeta} The metadata for the content type.
+   */
+  getTypeMeta(): IContentTypeMeta {
+    return getDefaultTypeMeta();
   }
 
   /**

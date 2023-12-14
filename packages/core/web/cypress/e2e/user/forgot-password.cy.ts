@@ -11,7 +11,7 @@ describe('Test Forgot Password', function () {
   it('Failed Passwort Reset - Captcha', () => {
     cy.visit('http://127.0.0.1:3000/reset-password');
     cy.contains('Reset your password');
-    cy.get('[data-id="send-mail-usernameoremail"]').type('Jan');
+    cy.get('[data-id="send-mail-usernameoremail"]').type('owner');
     cy.get('[data-id="reset-password-captcha"]').type('12345{enter}');
     cy.contains('The code is not valid');
   });
@@ -19,13 +19,13 @@ describe('Test Forgot Password', function () {
   it('Successful Passwort Reset - Email', () => {
     cy.visit('http://127.0.0.1:3000');
     // Login screen
-    cy.get('[data-id="login-usernameoremail"]').type('jan@test.com{enter}');
+    cy.get('[data-id="login-usernameoremail"]').type('owner@test.com{enter}');
 
     // Password screen
     cy.get('[data-id="reset-password"]').click();
 
     // Captcha screen
-    cy.get('[data-id="send-mail-usernameoremail"]').invoke('val').should('eq', 'jan@test.com');
+    cy.get('[data-id="send-mail-usernameoremail"]').invoke('val').should('eq', 'owner@test.com');
     cy.contains('Reset your password');
     cy.get('[data-id="reset-password-captcha"]').type('01234{enter}');
     cy.contains('Check your email for a link to reset your password.');
@@ -41,10 +41,10 @@ describe('Test Forgot Password', function () {
 
     // Login screen
     cy.url().should('eq', 'http://127.0.0.1:3000/login');
-    cy.get('[data-id="login-usernameoremail"]').type('Jan');
+    cy.get('[data-id="login-usernameoremail"]').type('owner');
     cy.get('[data-id="btn-to-password"]').click();
     cy.get('[data-id="login-password"]').type('NewPassword{enter}');
-    cy.url().should('include', '/p/Jan/stream');
+    cy.url().should('include', '/p/owner/stream');
     cy.getCookie('Authentication').should('exist');
     cy.getCookie('Refresh').should('exist');
   });
@@ -52,13 +52,13 @@ describe('Test Forgot Password', function () {
   it('Successful Passwort Reset - Username', () => {
     cy.visit('http://127.0.0.1:3000');
     // Login screen
-    cy.get('[data-id="login-usernameoremail"]').type('Jan{enter}');
+    cy.get('[data-id="login-usernameoremail"]').type('owner{enter}');
 
     // Password screen
     cy.get('[data-id="reset-password"]').click();
 
     // Captcha screen
-    cy.get('[data-id="send-mail-usernameoremail"]').invoke('val').should('eq', 'Jan');
+    cy.get('[data-id="send-mail-usernameoremail"]').invoke('val').should('eq', 'owner');
     cy.contains('Reset your password');
     cy.get('[data-id="reset-password-captcha"]').type('01234{enter}');
     cy.contains('Check your email for a link to reset your password.');
@@ -74,10 +74,10 @@ describe('Test Forgot Password', function () {
 
     // Login screen
     cy.url().should('eq', 'http://127.0.0.1:3000/login');
-    cy.get('[data-id="login-usernameoremail"]').type('Jan');
+    cy.get('[data-id="login-usernameoremail"]').type('owner');
     cy.get('[data-id="btn-to-password"]').click();
     cy.get('[data-id="login-password"]').type('NewPassword{enter}');
-    cy.url().should('include', '/p/Jan/stream');
+    cy.url().should('include', '/p/owner/stream');
     cy.getCookie('Authentication').should('exist');
     cy.getCookie('Refresh').should('exist');
   });

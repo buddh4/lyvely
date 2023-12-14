@@ -20,9 +20,12 @@ const createProfileRelationData = (userSeed, profileSeed, options) => {
 };
 
 module.exports = [
-  createProfileRelationData('Jan', 'jan-profile', { role: 'owner' }),
-  createProfileRelationData('Jan', 'public-group', { role: 'owner' }),
-  createProfileRelationData('Jan', 'member-group', { role: 'owner' }),
-  createProfileRelationData('Peter', 'member-group'),
-  createProfileRelationData('Peter', 'public-organization'),
+  createProfileRelationData('owner', 'owner-profile', { role: 'owner' }),
+  createProfileRelationData('owner', 'public-group', { role: 'owner' }),
+  createProfileRelationData('owner', 'member-group', { role: 'owner' }),
+  createProfileRelationData('member', 'member-group'),
+  createProfileRelationData('member', 'public-organization'),
+  createProfileRelationData('moderator', 'public-group', { role: 'moderator' }),
+  createProfileRelationData('moderator', 'member-group', { role: 'moderator' }),
+  createProfileRelationData('moderator', 'public-organization', { role: 'moderator' }),
 ];

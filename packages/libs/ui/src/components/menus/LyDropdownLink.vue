@@ -21,7 +21,7 @@ withDefaults(defineProps<IProps>(), {
 defineEmits(['click']);
 
 const classNames =
-  'dropdown-link block px-4 py-2 text-sm capitalize hover:bg-highlight dark:hover:bg-main no-underline flex no-wrap min-w-48 cursor-pointer text-main select-none';
+  'flex gap-2 px-4 py-2 text-sm capitalize hover:bg-highlight dark:hover:bg-main no-underline flex no-wrap min-w-48 cursor-pointer text-main select-none';
 </script>
 
 <template>
@@ -45,16 +45,4 @@ const classNames =
   </a>
 </template>
 
-<style scoped>
-.dropdown-link {
-  min-width: 8rem;
-}
-
-a {
-  text-decoration: none !important;
-}
-
-svg {
-  @apply mr-2;
-}
-</style>
+<style scoped></style>

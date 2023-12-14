@@ -4,19 +4,19 @@ describe('Test profile access', function () {
   });
 
   it('Visitor can not access organization only group', () => {
-    cy.loadProfile('organization-member-group/stream');
+    cy.loadProfile('organization-only-group/stream');
     cy.isForbidden();
   });
 
   it('Organization member can access organization only profile', () => {
-    cy.authenticatedAs('Peter');
-    cy.loadProfile('organization-member-group/stream');
+    cy.authenticatedAs('member');
+    cy.loadProfile('organization-only-group/stream');
     cy.getId('layout-profile').should('exist');
   });
 
   it('User can not access organization only profile', () => {
     cy.authenticatedAs('no-member');
-    cy.loadProfile('organization-member-group/stream');
+    cy.loadProfile('organization-only-group/stream');
     cy.isForbidden();
   });
 
@@ -37,13 +37,13 @@ describe('Test profile access', function () {
   });
 
   it('User can not access others private profile', () => {
-    cy.authenticatedAs('Peter');
-    cy.isForbidden(`p/jan-profile/stream`);
+    cy.authenticatedAs('member');
+    cy.isForbidden(`p/owner-profile/stream`);
   });
 
   it('Owner can access his own private profile', () => {
-    cy.authenticatedAs('Jan');
-    cy.loadProfile('jan-profile');
+    cy.authenticatedAs('owner');
+    cy.loadProfile('owner-profile');
     cy.getId('layout-profile').should('exist');
   });
 });

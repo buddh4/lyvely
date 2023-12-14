@@ -15,6 +15,7 @@ const componentDefinitions = computed<
     modelValue?: boolean;
     component: any;
     props: any;
+    on?: Record<string, (...args: any[]) => void>;
     condition?: Ref<boolean> | ComputedRef<boolean> | boolean;
   }[]
 >(() => {
@@ -26,6 +27,7 @@ const componentDefinitions = computed<
       modelValue: !!definition.props?.modelValue,
       component: resolveComponentRegistration(definition.component),
       props: definition.props || {},
+      on: definition.on || {},
       condition: typeof definition.condition === 'undefined' ? true : definition.condition,
     });
   }
@@ -40,7 +42,8 @@ const componentDefinitions = computed<
         :is="definition.component"
         v-if="definition.condition"
         v-bind="definition.props"
-        @update:model-value="(value: any) => { (definition.props.modelValue = value) }"></Component>
+        v-on="definition.on"
+        @update:model-value="(value: any) => { (definition.props.modelValue = value) }" />
     </template>
   </div>
 </template>

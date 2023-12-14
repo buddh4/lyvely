@@ -4,7 +4,7 @@ describe('User can send messages', function () {
   });
 
   it('Can not create empty message', () => {
-    cy.authenticatedAs('Jan');
+    cy.authenticatedAs('owner');
     cy.loadProfile(`public-group/stream`);
     cy.getId('stream-input').type(' ');
     cy.getId('btn-stream-submit').click();
@@ -19,11 +19,14 @@ describe('User can send messages', function () {
   });
 
   it('Member can create message per api (ACL)', () => {
-    cy.profileApiPost('public-group', '/messages', { text: 'Visitor Message' }, { as: 'Jan' }).then(
-      (response) => {
-        expect(response.status).to.eq(201);
-      },
-    );
+    cy.profileApiPost(
+      'public-group',
+      '/messages',
+      { text: 'Visitor Message' },
+      { as: 'owner' },
+    ).then((response) => {
+      expect(response.status).to.eq(201);
+    });
   });
 
   it('Visitor can not input message', () => {
@@ -33,8 +36,8 @@ describe('User can send messages', function () {
   });
 
   it('Success create message - Modal', () => {
-    cy.authenticatedAs('Jan');
-    cy.loadProfile(`jan-profile/stream`);
+    cy.authenticatedAs('owner');
+    cy.loadProfile(`owner-profile/stream`);
     cy.getId('stream-input').type('This is a test message!');
     cy.getId('btn-stream-add').click();
     cy.getId('btn-modal-submit').click();
@@ -42,8 +45,8 @@ describe('User can send messages', function () {
   });
 
   it('Success create message - Stream as member', () => {
-    cy.authenticatedAs('Jan');
-    cy.loadProfile(`jan-profile/stream`);
+    cy.authenticatedAs('owner');
+    cy.loadProfile(`owner-profile/stream`);
     cy.getId('stream-input').type('This is a test message!');
     cy.getId('btn-stream-submit').click();
     cy.get('[data-stream-entry]').contains('This is a test message!');

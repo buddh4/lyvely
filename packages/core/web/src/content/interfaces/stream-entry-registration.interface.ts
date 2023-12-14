@@ -1,7 +1,7 @@
 import { IStreamEntryProps } from './stream-entry-props.interface';
 import { IContentDetailsProps } from './content-details-props.interface';
 import { Type } from '@lyvely/common';
-import { ContentModel, CreateContentModel } from '@lyvely/interface';
+import { ContentModel, CreateContentModel, IContentTypeMeta } from '@lyvely/interface';
 import { RouteLocationRaw } from 'vue-router';
 import {
   ICreateContentModalProps,
@@ -24,13 +24,6 @@ export type RouteEdit = {
   mode: 'route';
   route: RouteLocationRaw;
 };
-
-export interface IContentTypeMeta {
-  archivable?: boolean;
-  editable?: boolean;
-  reactable?: boolean;
-  commentable?: boolean;
-}
 
 export interface IContentTypeStreamOptions {
   entry?: ComponentRegistration<IStreamEntryProps>;

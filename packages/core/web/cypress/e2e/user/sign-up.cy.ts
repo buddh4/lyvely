@@ -79,7 +79,7 @@ describe('Test Register Users', function () {
 
   it('Failed sign-up - username taken', function () {
     cy.visit('http://127.0.0.1:3000/sign-up');
-    cy.get('[data-id="user-registration-username"]').type('Jan');
+    cy.get('[data-id="user-registration-username"]').type('owner');
     cy.get('[data-id="user-registration-email"]').type('newUser@test.de');
     cy.get('[data-id="user-registration-password"]').type('testPassword');
     cy.get('[data-id="user-registration-passwordrepeat"]').type('testPassword{enter}');
@@ -90,7 +90,7 @@ describe('Test Register Users', function () {
   it('Failed sign-up - email taken', function () {
     cy.visit('http://127.0.0.1:3000/sign-up');
     cy.get('[data-id="user-registration-username"]').type('NewUser');
-    cy.get('[data-id="user-registration-email"]').type('jan@test.com');
+    cy.get('[data-id="user-registration-email"]').type('owner@test.com');
     cy.get('[data-id="user-registration-password"]').type('testPassword');
     cy.get('[data-id="user-registration-passwordrepeat"]').type('testPassword{enter}');
     cy.get('[data-id="btn-submit"]').click();
