@@ -31,11 +31,10 @@ export class MilestonePlanController implements MilestonePlanEndpoint {
     @Query(new ValidationPipe({ transform: true })) filter: CalendarPlanFilter,
     @Request() req: ProfileRequest,
   ): Promise<MilestoneSearchResponse> {
-    const { profile, user } = req;
+    const { context } = req;
 
     const { models, relations } = await this.calendarPlanService.findMilestonesWithRelations(
-      profile,
-      user,
+      context,
       filter,
     );
 
@@ -51,11 +50,10 @@ export class MilestonePlanController implements MilestonePlanEndpoint {
     @Body() dto: CalendarPlanSort,
     @Request() req: ProtectedProfileContentRequest<Milestone>,
   ) {
-    const { profile, user, content } = req;
+    const { context, content } = req;
 
     const sort = await this.calendarPlanService.sort(
-      profile,
-      user,
+      context,
       content,
       dto.interval,
       dto.attachToId,

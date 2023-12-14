@@ -41,6 +41,13 @@ export interface IContentTypeMeta {
   commentable?: boolean;
 }
 
+export interface IContentPolicies {
+  canWrite: boolean;
+  canDelete: boolean;
+  canManage: boolean;
+  canRead: boolean;
+}
+
 export const getDefaultTypeMeta = (): IContentTypeMeta => ({
   archivable: true,
   editable: true,
@@ -72,6 +79,7 @@ export interface IContent<TID = any, TConfig extends Object = any> extends ISort
   meta: IContentMetadata<TID>;
   config: TConfig;
   tagIds: TID[];
+  policies: IContentPolicies;
   logs: Array<IContentLog<any, TID>>;
   getTitle: () => string;
   getText: () => string;

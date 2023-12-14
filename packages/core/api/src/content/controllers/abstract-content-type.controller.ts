@@ -12,8 +12,7 @@ import {
   FieldValidationException,
   TagModel,
 } from '@lyvely/interface';
-import { Profile, ProtectedProfileRequest } from '@/profiles';
-import { User } from '@/users';
+import { ProtectedProfileContext, ProtectedProfileRequest } from '@/profiles';
 import { validate } from 'class-validator';
 import { Policies } from '@/policies';
 import { plainToInstance } from 'class-transformer';
@@ -38,11 +37,11 @@ export abstract class AbstractContentTypeController<
     @Request() req: ProtectedProfileRequest,
   ): Promise<ContentUpdateResponse<TModel>> {
     // TODO: check content specific write permission
-    const { user, profile } = req;
+    const { context } = req;
     const model = this.transformCreateModel(body);
     await this.validateModel(model);
-    const content = await this.contentService.createContent(profile, user, model);
-    return this.createUpdateResponse(profile, user, content);
+    const content = await this.contentService.createContent(context, model);
+    return this.createUpdateResponse(context, content);
   }
 
   private transformCreateModel(raw: PropertiesOf<TCreateModel>): TCreateModel {
@@ -57,11 +56,11 @@ export abstract class AbstractContentTypeController<
     @Body() body: PropertiesOf<TUpdateModel>,
     @Request() req: ProtectedProfileContentRequest<TContent>,
   ): Promise<ContentUpdateResponse<TModel>> {
+    const { context, content } = req;
     const model = this.transformUpdateModel(body);
     await this.validateModel(model);
-    const { user, profile, content } = req;
-    const result = await this.contentService.updateContent(profile, user, content, model);
-    return this.createUpdateResponse(profile, user, result);
+    const result = await this.contentService.updateContent(context, content, model);
+    return this.createUpdateResponse(context, result);
   }
 
   private async validateModel(model: any) {
@@ -74,10 +73,10 @@ export abstract class AbstractContentTypeController<
   }
 
   protected async createUpdateResponse(
-    profile: Profile,
-    user: User,
+    context: ProtectedProfileContext,
     content: TContent,
   ): Promise<ContentUpdateResponse<TModel>> {
+    const { user, profile } = context;
     const ResponseConstructor = this.updateResponseType;
     const response = new ResponseConstructor();
     response.model = <TModel>content.toModel(user);

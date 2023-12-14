@@ -6,11 +6,12 @@ import {
   PropertiesOf,
   TransformObjectIds,
 } from '@lyvely/common';
-import { Exclude, Expose, Transform } from 'class-transformer';
+import { Exclude, Expose } from 'class-transformer';
 import { IsString, Length, IsOptional } from 'class-validator';
-import {
+import { getDefaultTypeMeta } from '../interfaces';
+import type {
   CreatedAsType,
-  getDefaultTypeMeta,
+  IContentPolicies,
   IContent,
   IContentAuthor,
   IContentDataType,
@@ -127,6 +128,9 @@ export class ContentModel<TID = string, T extends IContent = IContent, TConfig e
 
   @Expose()
   config: TConfig;
+
+  @Expose()
+  policies: IContentPolicies;
 
   @Expose()
   getDefaults(): Partial<PropertiesOf<T>> {

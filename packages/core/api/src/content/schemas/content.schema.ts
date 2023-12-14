@@ -27,6 +27,7 @@ import {
 } from '@/profiles';
 import { ContentDataType, ContentDataTypeSchema } from './content-data-type.schema';
 import { IPolicy } from '@/policies';
+import type { IContentPolicies } from '@lyvely/interface';
 
 export class ProfileContentContext<
   TContent extends Content = Content,
@@ -112,6 +113,9 @@ export class Content<
 
   /** The type discriminator field identifies the content type. **/
   type: string;
+
+  /** Contains the users content policy results, which need to be populated manually and are not persisted. **/
+  policies: IContentPolicies;
 
   constructor(profile: Profile, createdBy: User, obj: DeepPartial<T> = {}) {
     obj.meta = obj.meta || new ContentMetadata();

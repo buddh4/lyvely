@@ -14,12 +14,15 @@ export class ContentStreamService extends AbstractStreamService<
 > {
   @Inject()
   protected streamEntryDao: ContentDao;
+
   protected logger = new Logger(ContentStreamService.name);
 
   createQueryFilter(context: ProfileContext, filter?: ContentStreamFilter): FilterQuery<Content> {
     const query = { pid: context.pid, oid: context.oid } as FilterQuery<Content>;
     return this.applyFilter(query, filter);
   }
+
+  protected prepareModel(model: Content) {}
 
   protected createLoadEntryQueryFilter(
     context: ProfileContext,

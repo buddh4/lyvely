@@ -51,12 +51,8 @@ export class JournalsController
     @Query(new ValidationPipe({ transform: true })) filter: CalendarPlanFilter,
     @Request() req: ProfileRequest,
   ): Promise<JournalSearchResponse> {
-    const { profile, user } = req;
-    const { models, dataPoints } = await this.timeSeriesService.findTimeSeries(
-      profile,
-      user,
-      filter,
-    );
+    const { context, user } = req;
+    const { models, dataPoints } = await this.timeSeriesService.findTimeSeries(context, filter);
     return new JournalSearchResponse({
       models: models.map((c) => c.toModel(user)),
       dataPoints: dataPoints.map((value) => DataPointModelConverter.toModel(value)),
@@ -69,14 +65,8 @@ export class JournalsController
     @Body() dto: CalendarPlanSort,
     @Request() req: ProtectedProfileContentRequest<Journal>,
   ): Promise<SortResponse> {
-    const { profile, user, content } = req;
-    const sort = await this.timeSeriesService.sort(
-      profile,
-      user,
-      content,
-      dto.interval,
-      dto.attachToId,
-    );
+    const { context, content } = req;
+    const sort = await this.timeSeriesService.sort(context, content, dto.interval, dto.attachToId);
     return new SortResponse({ sort });
   }
 
@@ -86,11 +76,10 @@ export class JournalsController
     @Body() dto: UpdateDataPointModel,
     @Request() req: ProtectedProfileContentRequest<Journal>,
   ): Promise<UpdateDataPointResponse> {
-    const { profile, user, content } = req;
+    const { context, content } = req;
 
     const { dataPoint } = await this.dataPointService.upsertDataPoint(
-      profile,
-      user,
+      context,
       content,
       dto.date,
       dto.value,

@@ -10,6 +10,7 @@ import {
   ContentReadPolicy,
   ContentWritePolicy,
   ContentManagePolicy,
+  ContentDeletePolicy,
 } from './policies';
 import { ContentEventPublisher, ContentTypeRegistry } from './components';
 import { DynamicModule } from '@nestjs/common/interfaces/modules/dynamic-module.interface';
@@ -40,7 +41,13 @@ const ContentScoreActionModel = MongooseModule.forFeature([
   name: 'Content',
   path: __dirname,
   features: [ContentStreamFeature],
-  policies: [ContentCreatePolicy, ContentReadPolicy, ContentWritePolicy, ContentManagePolicy],
+  policies: [
+    ContentCreatePolicy,
+    ContentReadPolicy,
+    ContentDeletePolicy,
+    ContentWritePolicy,
+    ContentManagePolicy,
+  ],
   imports: [UsersModule, ProfilesModule, ContentModel, ContentScoreActionModel, LiveModule],
   controllers: [ContentController, ContentStreamController],
   providers: [

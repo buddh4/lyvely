@@ -55,8 +55,8 @@ export class TasksController
     @Query(new ValidationPipe({ transform: true })) filter: CalendarPlanFilter,
     @Request() req: ProfileRequest,
   ): Promise<TaskSearchResponse> {
-    const { profile, user } = req;
-    const models = await this.calendarPlanService.findByFilter(profile, user, filter);
+    const { context, user } = req;
+    const models = await this.calendarPlanService.findByFilter(context, filter);
     return new TaskSearchResponse({
       models: models.map((c) => c.toModel(user)),
     });
@@ -65,10 +65,9 @@ export class TasksController
   @Post(TasksEndpoints.SORT(':cid'))
   @Policies(ContentWritePolicy)
   async sort(@Body() dto: CalendarPlanSort, @Request() req: ProtectedProfileContentRequest<Task>) {
-    const { profile, user, content } = req;
+    const { context, content } = req;
     const sort = await this.calendarPlanService.sort(
-      profile,
-      user,
+      context,
       content,
       dto.interval,
       dto.attachToId,
@@ -82,9 +81,9 @@ export class TasksController
     @Body() dto: UpdateTaskStateModel,
     @Request() req: ProtectedProfileContentRequest<Task>,
   ) {
-    const { profile, user, content } = req;
+    const { context, profile, user, content } = req;
 
-    await this.contentService.setDone(profile, user, content, dto.date);
+    await this.contentService.setDone(context, content, dto.date);
     return new UpdateTaskStateResponse({
       score: profile.score,
       done: content.getDoneBy(user)?.tid,
@@ -97,27 +96,27 @@ export class TasksController
     @Body() dto: UpdateTaskStateModel,
     @Request() req: ProtectedProfileContentRequest<Task>,
   ) {
-    const { profile, user, content } = req;
+    const { context, profile, content } = req;
 
-    await this.contentService.setUndone(profile, user, content, dto.date);
+    await this.contentService.setUndone(context, content, dto.date);
     return new UpdateTaskStateResponse({ score: profile.score, done: undefined });
   }
 
   @Post(TasksEndpoints.START_TIMER(':cid'))
   @Policies(ContentWritePolicy)
   async startTimer(@Request() req: ProtectedProfileContentRequest<Task>): Promise<TimerModel> {
-    const { profile, user, content } = req;
+    const { context, content } = req;
 
-    const timer = await this.contentService.startTimer(profile, user, content);
+    const timer = await this.contentService.startTimer(context, content);
     return new TimerModel<any>(timer);
   }
 
   @Post(TasksEndpoints.STOP_TIMER(':cid'))
   @Policies(ContentWritePolicy)
   async stopTimer(@Request() req: ProtectedProfileContentRequest<Task>): Promise<TimerModel> {
-    const { profile, user, content } = req;
+    const { context, content } = req;
 
-    const timer = await this.contentService.stopTimer(profile, user, content);
+    const timer = await this.contentService.stopTimer(context, content);
     return new TimerModel<any>(timer);
   }
 
@@ -127,9 +126,9 @@ export class TasksController
     @Body() dto: TimerValueUpdateModel,
     @Request() req: ProtectedProfileContentRequest<Task>,
   ) {
-    const { profile, user, content } = req;
+    const { context, content } = req;
 
-    const timer = await this.contentService.updateTimerValue(profile, user, content, dto.value);
+    const timer = await this.contentService.updateTimerValue(context, content, dto.value);
     return new TimerModel<any>(timer);
   }
 }

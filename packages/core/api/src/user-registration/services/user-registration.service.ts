@@ -11,7 +11,7 @@ import {
 import { escapeHTML } from '@lyvely/common';
 import { OtpService } from '@/otp';
 import { UserDao, User, UsersService } from '@/users';
-import { ProfilesService } from '@/profiles';
+import { ProfileContext, ProfilesService } from '@/profiles';
 import { MailService } from '@/mails';
 import { ConfigService } from '@nestjs/config';
 import { ConfigurationPath } from '@/config';
@@ -69,8 +69,8 @@ export class UserRegistrationService {
    * @private
    */
   private async createDefaultUserProfile(user: User) {
-    const { profile } = await this.profileService.createDefaultUserProfile(user);
-    return this.systemMessageService.createContent(profile, user, {
+    const context = await this.profileService.createDefaultUserProfile(user);
+    return this.systemMessageService.createContent(context, {
       text: 'profiles.intro.private_first',
     });
   }

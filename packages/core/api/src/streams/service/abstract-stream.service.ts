@@ -50,6 +50,8 @@ export abstract class AbstractStreamService<
 
     if (!streamEntry) throw new DocumentNotFoundException();
 
+    this.prepareModel(streamEntry, context);
+
     return streamEntry;
   }
 
@@ -78,6 +80,8 @@ export abstract class AbstractStreamService<
       limit: batchSize,
     } as IFetchQueryOptions<TModel>);
 
+    streamEntries.forEach((entry) => this.prepareModel(entry, context));
+
     const response = new StreamResponse<TModel>({
       models: streamEntries,
       state: request.state ? cloneDeep(request.state) : {},
@@ -103,6 +107,17 @@ export abstract class AbstractStreamService<
     response.state.isEnd = !response.hasMore;
 
     return response;
+  }
+
+  /**
+   * This function can be used by subclasses to do further populate or manipulate a model instance.
+   *
+   * @param {TModel} model - The model to populate.
+   * @protected
+   * @return {void}
+   */
+  protected prepareModel(model: TModel, context: TContext) {
+    // Nothing todo.
   }
 
   protected getSortValue(model: TModel): SortValue {
@@ -134,6 +149,8 @@ export abstract class AbstractStreamService<
         limit: batchSize,
       } as IFetchQueryOptions<TModel>)
     ).reverse();
+
+    streamEntries.forEach((entry) => this.prepareModel(entry, context));
 
     const response = new StreamResponse<TModel>({
       models: streamEntries,

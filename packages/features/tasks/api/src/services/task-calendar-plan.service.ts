@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Task } from '../schemas';
-import { Profile, OptionalUser } from '@lyvely/api';
+import { Profile, ProfileContext } from '@lyvely/api';
 import { CalendarInterval, getTimingIds } from '@lyvely/dates';
 import { CalendarPlanFilter, SortableCalendarPlanService } from '@lyvely/calendar-plan';
 import { TasksDao } from '../daos';
@@ -10,11 +10,8 @@ export class TaskCalendarPlanService extends SortableCalendarPlanService<Task> {
   @Inject()
   protected contentDao: TasksDao;
 
-  findByFilter(
-    profile: Profile,
-    user: OptionalUser,
-    filter: CalendarPlanFilter,
-  ): Promise<Array<Task>> {
+  findByFilter(profileContext: ProfileContext, filter: CalendarPlanFilter): Promise<Array<Task>> {
+    const { user, profile } = profileContext;
     return this.contentDao.findByProfileAndTimingIds(
       profile,
       user,

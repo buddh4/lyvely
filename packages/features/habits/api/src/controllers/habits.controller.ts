@@ -59,12 +59,8 @@ export class HabitsController
     @Query(new ValidationPipe({ transform: true })) filter: CalendarPlanFilter,
     @Request() req: ProfileRequest,
   ): Promise<HabitSearchResponse> {
-    const { profile, user } = req;
-    const { models, dataPoints } = await this.timeSeriesService.findTimeSeries(
-      profile,
-      user,
-      filter,
-    );
+    const { context } = req;
+    const { models, dataPoints } = await this.timeSeriesService.findTimeSeries(context, filter);
     return new HabitSearchResponse({
       models: models.map<HabitModel<any>>((c) => c.toModel()),
       dataPoints: dataPoints.map((value) =>
@@ -76,14 +72,8 @@ export class HabitsController
   @Post(HabitsEndpoints.SORT(':cid'))
   @Policies(ContentWritePolicy)
   async sort(@Body() dto: CalendarPlanSort, @Request() req: ProtectedProfileContentRequest<Habit>) {
-    const { profile, user, content } = req;
-    const sort = await this.timeSeriesService.sort(
-      profile,
-      user,
-      content,
-      dto.interval,
-      dto.attachToId,
-    );
+    const { context, content } = req;
+    const sort = await this.timeSeriesService.sort(context, content, dto.interval, dto.attachToId);
     return new SortResponse({ sort });
   }
 
@@ -93,11 +83,10 @@ export class HabitsController
     @Body() dto: UpdateHabitDataPointModel,
     @Request() req: ProtectedProfileContentRequest<Habit>,
   ) {
-    const { profile, user, content } = req;
+    const { context, profile, content } = req;
 
     const { dataPoint } = await this.timeSeriesService.upsertDataPoint(
-      profile,
-      user,
+      context,
       content,
       dto.date,
       dto.value,
@@ -116,8 +105,8 @@ export class HabitsController
     @Body() dto: TimerUpdateModel,
     @Request() req: ProtectedProfileContentRequest<Habit>,
   ) {
-    const { profile, user, content } = req;
-    const dataPoint = await this.timerService.startTimer(profile, user, content, dto.date);
+    const { context, content } = req;
+    const dataPoint = await this.timerService.startTimer(context, content, dto.date);
     return DataPointModelConverter.toModel<TimerDataPointModel>(dataPoint);
   }
 
@@ -127,12 +116,12 @@ export class HabitsController
     @Body() dto: TimerUpdateModel,
     @Request() req: ProtectedProfileContentRequest<Habit>,
   ) {
-    const { profile, user, content } = req;
+    const { context, content } = req;
 
-    const dataPoint = await this.timerService.stopTimer(profile, user, content, dto.date);
+    const dataPoint = await this.timerService.stopTimer(context, content, dto.date);
 
     return new UpdateHabitDataPointTimerResponse({
-      score: profile.score,
+      score: context.profile.score,
       dataPoint: DataPointModelConverter.toModel<TimerDataPointModel>(dataPoint),
     });
   }

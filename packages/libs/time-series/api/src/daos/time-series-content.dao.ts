@@ -1,4 +1,4 @@
-import { Profile, ContentTypeDao, IFetchQueryOptions, OptionalUser } from '@lyvely/api';
+import { Profile, ContentTypeDao, IFetchQueryOptions, ProfileContext } from '@lyvely/api';
 import { TimeSeriesContent } from '../schemas';
 import { CalendarInterval } from '@lyvely/dates';
 
@@ -8,18 +8,16 @@ export abstract class TimeSeriesContentDao<
   /**
    * Returns all time-series content models by given user and tids. The base implementation just returns all
    * entries related to the given profile, sub-classes may implement more sophisticated queries.
-   * @param profile
-   * @param user
+   * @param context
    * @param tIds
    * @param options
    */
   async findByProfileAndTimingIds(
-    profile: Profile,
-    user: OptionalUser,
+    context: ProfileContext,
     tIds: string[],
     options?: IFetchQueryOptions<TModel>,
   ): Promise<TModel[]> {
-    return this.findAllByProfile(profile);
+    return this.findAllByProfile(context.profile);
   }
 
   /**

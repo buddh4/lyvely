@@ -7,7 +7,7 @@ import {
   DataPointValueType,
 } from '@lyvely/time-series';
 import { HabitDataPointDao } from '../daos';
-import { ContentScoreService, Profile, User } from '@lyvely/api';
+import { ContentScoreService, ProtectedProfileContext } from '@lyvely/api';
 import { isDefined } from 'class-validator';
 
 @Injectable()
@@ -18,12 +18,12 @@ export class HabitDataPointService extends DataPointService<Habit> {
   @Inject()
   protected scoreService: ContentScoreService;
 
-  protected async postProcess(
-    profile: Profile,
-    user: User,
+  protected override async postProcess(
+    context: ProtectedProfileContext,
     habit: Habit,
     updateResult: IDataPointUpdateResult<NumberDataPoint>,
   ) {
+    const { profile, user } = context;
     const { dataPoint } = updateResult;
     const oldScore = HabitDataPointService.calculateDataPointScore(
       habit,
@@ -32,7 +32,7 @@ export class HabitDataPointService extends DataPointService<Habit> {
     const newScore = HabitDataPointService.calculateDataPointScore(habit, dataPoint.value);
 
     await Promise.all([
-      super.postProcess(profile, user, habit, updateResult),
+      super.postProcess(context, habit, updateResult),
       this.scoreService.saveScore(
         profile,
         new HabitScore({

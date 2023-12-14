@@ -55,6 +55,8 @@ export abstract class AbstractContentGuard<C extends Content = Content> implemen
     request.content = profileContentContext.content = content as C;
     request.context = new ProfileContentContext({ ...request.context, content });
 
+    await this.contentService.populateContentPolicies(request.content, request.context);
+
     return (
       validateContentTypeFromContext(content, context, this.reflector) &&
       (await this.canActivateContent(profileContentContext, context))

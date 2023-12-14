@@ -6,16 +6,33 @@ import {
   QuerySort,
   Profile,
   User,
+  ProtectedProfileContext,
 } from '@lyvely/api';
 import { CalendarInterval } from '@lyvely/dates';
 import { ICalendarPlanDao, CalendarPlanEntity } from '../interfaces';
 import { CalendarPlanService } from './calendar-plan.service';
 
+/**
+ * An abstract class that provides sorting functionality for calendar plans.
+ * This class extends the base class CalendarPlanService.
+ *
+ * @template TModel - The type of the calendar plan entity.
+ */
 export abstract class SortableCalendarPlanService<
   TModel extends CalendarPlanEntity,
 > extends CalendarPlanService<TModel> {
   protected abstract contentDao: ICalendarPlanDao<TModel>;
 
+  /**
+   * Updates the calendar interval for a given profile and model.
+   * This is used when moving a model from one interval to another, e.g. from Weekly to Daily.
+   *
+   * @param {Profile} profile - The profile to update the interval configuration for.
+   * @param {TModel} model - The model to update the interval configuration for.
+   * @param {CalendarInterval} interval - The new interval configuration.
+   * @protected
+   * @return {Promise<void>} A Promise that resolves when the interval configuration update is complete.
+   */
   protected abstract updateIntervalConfig(
     profile: Profile,
     model: TModel,
@@ -26,21 +43,21 @@ export abstract class SortableCalendarPlanService<
    * Re-sorts the given time series content entries by means of the new index and updates the sortOrder of other activities with the same
    * calendar plan accordingly.
    *
-   * @param profile
-   * @param user
+   * @param context
    * @param model
    * @param attachToId
    * @param interval
    * @throws ForbiddenServiceException
    */
   async sort(
-    profile: Profile,
-    user: User,
+    context: ProtectedProfileContext,
     model: TModel,
     interval?: CalendarInterval,
     attachToId?: DocumentIdentity<TModel>,
   ): Promise<SortResult[]> {
     interval = interval ?? model.interval;
+
+    const { profile } = context;
 
     const attachToObjectId = attachToId ? assureObjectId(attachToId) : undefined;
 
@@ -74,13 +91,5 @@ export abstract class SortableCalendarPlanService<
     modelsByInterval.splice(newIndex, 0, model);
 
     return await this.contentDao.updateSortOrder(modelsByInterval);
-
-    /*
-     *
-     *  TODO: add some optimizations e.g.:
-     *  newIndex < oldIndex => skip if currentIndex > oldIndex
-     *  newIndex < oldIndex => skip indexes < newIndex
-     *
-     */
   }
 }
