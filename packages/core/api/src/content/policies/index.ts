@@ -7,4 +7,4 @@ export * from './base-content-read.policy';
 export * from './base-content-write.policy';
 export * from './base-content-create.policy';
 export * from './base-content-manage.policy';
-export * from './base-content-delete.policy';
+export * from './content-author.policy';

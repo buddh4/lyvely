@@ -1,4 +1,4 @@
-import { Controller, Req, Post, UseGuards, Get, UnauthorizedException, Body } from '@nestjs/common';
+import { Req, Post, UseGuards, Get, UnauthorizedException, Body } from '@nestjs/common';
 import {
   LocalAuthGuard,
   JwtRefreshGuard,
@@ -20,7 +20,7 @@ import {
 } from '@lyvely/interface';
 import { ConfigService } from '@nestjs/config';
 import ms from 'ms';
-import { Public, UseClassSerializer } from '@/core';
+import { Controller, Public, UseClassSerializer } from '@/core';
 import { ConfigurationPath } from '@/config';
 
 @Controller(API_AUTH)

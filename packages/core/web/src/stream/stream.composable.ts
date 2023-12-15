@@ -7,7 +7,7 @@ import {
   StreamDirection,
   IStreamRestoreState,
 } from '@lyvely/interface';
-import { nextTick, ref, Ref } from 'vue';
+import { computed, nextTick, ref, Ref } from 'vue';
 import {
   loadingStatus,
   useStatus,
@@ -43,9 +43,17 @@ export interface IStreamViewOptions<TFilter extends IStreamFilter = any> extends
   infiniteScroll?: { distance?: number } | boolean;
 }
 
-class MockFilter implements IStreamFilter {
+class MockFilter implements IStreamFilter<any> {
   reset() {
     /* Nothing todo */
+  }
+
+  apply(items: any[]) {
+    return items;
+  }
+
+  test() {
+    return true;
   }
 }
 
@@ -324,12 +332,17 @@ export function useStream<
     return models.value.findIndex((model) => model.id === id);
   }
 
+  const isLoading = computed(() => {
+    return loadTailStatus.isStatusLoading() || loadHeadStatus.isStatusLoading();
+  });
+
   return {
     options,
     init,
     restore,
     state,
     events,
+    isLoading,
     loadTailStatus,
     loadHeadStatus,
     isInitialized,

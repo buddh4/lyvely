@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import { ContentStreamFilter } from '@lyvely/interface';
+import { ContentRequestFilter } from '@lyvely/interface';
 
 export const useContentStreamFilterStore = defineStore('content-stream-filter', () => {
-  const filter = ref(new ContentStreamFilter());
+  const filter = ref(new ContentRequestFilter());
 
   return {
     filter,

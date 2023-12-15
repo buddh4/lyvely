@@ -3,10 +3,15 @@ import { IContentPolicy } from '../interfaces';
 import { ProfileContentContext } from '../schemas';
 import { getPolicyToken } from '@/policies';
 import { BaseContentReadPolicy } from './base-content-read.policy';
-import { BaseContentManagePolicy } from './base-content-manage.policy';
-import { ContentManagePolicy } from './content-manage.policy';
 import { DocumentNotFoundException } from '@lyvely/interface';
 
+/**
+ * A policy which manages read access to content.
+ * This policy will check the user role level against the content visibility level.
+ * A content type may overwrite the default behavior of this policy by overwriting the `getReadPolicy()` function.
+ * @implements {IContentPolicy}
+ * @abstract
+ */
 @Injectable()
 export class ContentReadPolicy extends BaseContentReadPolicy {
   async verify(context: ProfileContentContext): Promise<boolean> {
@@ -14,16 +19,10 @@ export class ContentReadPolicy extends BaseContentReadPolicy {
 
     if (!content) throw new DocumentNotFoundException();
 
-    const managePolicy = this.moduleRef.get<BaseContentManagePolicy>(
-      getPolicyToken(ContentManagePolicy.name),
-    );
-
-    if (await managePolicy.verify(context)) return true;
-
-    const contentReadPolicyType = content.getReadPolicy();
-    if (contentReadPolicyType) {
+    const ContentReadPolicyType = content.getReadPolicy();
+    if (ContentReadPolicyType) {
       const contentReadPolicy = this.moduleRef.get<IContentPolicy>(
-        getPolicyToken(contentReadPolicyType.name),
+        getPolicyToken(ContentReadPolicyType.name),
         { strict: false },
       );
 

@@ -1,5 +1,5 @@
 import { IProfilePolicy } from '../interfaces';
-import { ProfileVisibilityLevel } from '@lyvely/interface';
+import { getProfileRoleLevel, getProfileRoleLevelByProfileVisibility } from '@lyvely/interface';
 import { Injectable } from '@nestjs/common';
 import { ProfileContext } from '../models';
 
@@ -10,17 +10,9 @@ export class ProfileVisibilityPolicy implements IProfilePolicy {
 
     if (!profile) return false;
 
-    switch (profile.visibility) {
-      case ProfileVisibilityLevel.Member:
-        return context.isProfileMember();
-      case ProfileVisibilityLevel.Organization:
-        return context.isProfileMember() || !!context.getOrganizationContext()?.isProfileMember();
-      case ProfileVisibilityLevel.User:
-        return context.isUser();
-      case ProfileVisibilityLevel.Visitor:
-        return true;
-      default:
-        return false;
-    }
+    return (
+      getProfileRoleLevel(context.getRole()) <=
+      getProfileRoleLevelByProfileVisibility(profile.visibility)
+    );
   }
 }

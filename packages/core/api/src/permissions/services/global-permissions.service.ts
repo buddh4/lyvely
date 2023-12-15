@@ -1,15 +1,20 @@
 import { OptionalUser } from '@/users';
 import { ConfigService } from '@nestjs/config';
 import { ServerConfiguration } from '@/config';
-import { GlobalPermissionRole, useGlobalPermissionsManager } from '@lyvely/interface';
+import {
+  GlobalPermissionRole,
+  IGlobalPermission,
+  useGlobalPermissionsManager,
+} from '@lyvely/interface';
 import { IGlobalPermissionsService } from '../interfaces';
 import { Injectable } from '@nestjs/common';
 
 /**
  * Service for handling global permissions within the application.
  *
- * This service provides methods to verify permissions based on the user's global role,
- * leveraging the application's configuration settings.
+ * This service provides methods to verify permissions of type:
+ *
+ * - BasePermissionType.Profile
  */
 @Injectable()
 export class GlobalPermissionsService implements IGlobalPermissionsService {
@@ -27,7 +32,10 @@ export class GlobalPermissionsService implements IGlobalPermissionsService {
    * @param permissions - The list of permissions to verify against.
    * @returns `true` if the user has every listed permission, otherwise `false`.
    */
-  verifyEveryPermission(user: OptionalUser, ...permissions: string[]): boolean {
+  verifyEveryPermission(
+    user: OptionalUser,
+    ...permissions: Array<string | IGlobalPermission>
+  ): boolean {
     if (!permissions?.length) return true;
     return permissions.reduce(
       (result, permissionId) => result && this.verifyPermission(user, permissionId),
@@ -42,7 +50,10 @@ export class GlobalPermissionsService implements IGlobalPermissionsService {
    * @param permissions - The list of permissions to verify against.
    * @returns `true` if the user has any of the listed permissions, otherwise `false`.
    */
-  verifyAnyPermission(user: OptionalUser, ...permissions: string[]): boolean {
+  verifyAnyPermission(
+    user: OptionalUser,
+    ...permissions: Array<string | IGlobalPermission>
+  ): boolean {
     if (!permissions?.length) return true;
     return permissions.reduce(
       (result, permissionId) => result || this.verifyPermission(user, permissionId),
@@ -57,14 +68,14 @@ export class GlobalPermissionsService implements IGlobalPermissionsService {
    * determines if the user has the required permission based on their role and status.
    *
    * @param user - The user whose permission is being checked.
-   * @param permissionId - The ID of the permission to verify.
+   * @param permissionOrId
    * @returns `true` if the user has the specified permission, otherwise `false`.
    */
-  verifyPermission(user: OptionalUser, permissionId: string): boolean {
+  verifyPermission(user: OptionalUser, permissionOrId: string | IGlobalPermission): boolean {
     const role = this.getGlobalUserRole(user);
     const config = this.configService.get('permissions', {});
     return useGlobalPermissionsManager().verifyPermission(
-      permissionId,
+      permissionOrId,
       { role, userStatus: user?.status },
       {
         getPermissionSettings: () => [],

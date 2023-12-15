@@ -1,6 +1,5 @@
 import {
   Body,
-  Controller,
   ForbiddenException,
   Get,
   Param,
@@ -10,7 +9,7 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
-import { UseClassSerializer } from '@/core';
+import { Controller, UseClassSerializer } from '@/core';
 import { mapType } from '@lyvely/common';
 import {
   API_PROFILES,

@@ -11,24 +11,30 @@ import {
   CONTENT_ID_PARAM_KEY,
   CONTENT_DEFAULT_ID_PARAM_KEY,
 } from '../content.constants';
+import { BaseProfileGuard } from '@/profiles';
+import { ContentPermissionsService } from '@/content/services/content-permissions.service';
+import { getPermissionsFromContext, getStrictPermissionsFromContext } from '@/permissions';
 
 /**
- * If the request contains a cid parameter, this guard will try to fetch and validate the given content id
- * and if valid, set the content to `request.content`.
- *
- * By default, this guard only assures there is a valid cid present in the request and that this cid is related with
- * a content of the requested profile.
+ * This guard will try to extract a content id, usually by :cid parameter and will add a ProfileContentContext to the
+ * request and a permission check supporting the @@Permissions and @StrictPermissions decorators for global, profile and content level permissions.
  *
  * Subclasses may add additional access checks by overwriting `canActivateContent`.
  *
  * Other access checks can be applied on controller level by adding policies to the endpoint.
  */
-export abstract class AbstractContentGuard<C extends Content = Content> implements CanActivate {
+export abstract class AbstractContentGuard<C extends Content = Content>
+  extends BaseProfileGuard
+  implements CanActivate
+{
   @Inject()
   protected reflector: Reflector;
 
   @Inject()
   protected contentService: ContentService;
+
+  @Inject()
+  protected contentPermissionsService: ContentPermissionsService;
 
   abstract isContentRequired(): boolean;
 
@@ -38,14 +44,19 @@ export abstract class AbstractContentGuard<C extends Content = Content> implemen
   ): Promise<boolean>;
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
+    if (!(await super.canActivate(context))) return false;
+
     const request = context.switchToHttp().getRequest<ProfileContentRequest<C>>();
-    const contentId = getContentIdFromRequest(request, context, this.reflector);
+    const contentId = this.getContentIdFromRequest(request, context);
     const { profile, context: profileContentContext } = request;
 
-    if (!request.content && !contentId && this.isContentRequired())
+    if (!request.content && !contentId && this.isContentRequired()) {
       throw new DocumentNotFoundException();
-    if (!request.content && !contentId) return true;
-    if (!request.content && !isValidObjectId(contentId)) return false;
+    } else if (!request.content && !contentId) {
+      return true;
+    } else if (!request.content && !isValidObjectId(contentId)) {
+      return false;
+    }
 
     const content =
       request.content || (await this.contentService.findContentByProfileAndId(profile, contentId));
@@ -58,53 +69,56 @@ export abstract class AbstractContentGuard<C extends Content = Content> implemen
     await this.contentService.populateContentPolicies(request.content, request.context);
 
     return (
-      validateContentTypeFromContext(content, context, this.reflector) &&
+      this.verifyPermissions(request.context, context) &&
+      this.validateContentTypeFromContext(content, context) &&
       (await this.canActivateContent(profileContentContext, context))
     );
   }
-}
 
-function validateContentTypeFromContext(
-  content: Content,
-  context: ExecutionContext,
-  reflector: Reflector,
-) {
-  const contentType = getContentTypeFromContext(context, reflector);
-
-  if (!contentType) return true;
-
-  if (typeof contentType === 'string') {
-    return content.type === contentType;
+  getContentIdFromRequest(request: Request, context: ExecutionContext): string {
+    const paramName = this.getContentIdParamFromContext(context);
+    return request.params[paramName] || (request.query[paramName] as string);
   }
 
-  if (contentType instanceof Function) {
-    return content instanceof contentType;
+  validateContentTypeFromContext(content: Content, context: ExecutionContext) {
+    const contentType = this.getContentTypeFromContext(context);
+
+    if (!contentType) return true;
+
+    if (typeof contentType === 'string') {
+      return content.type === contentType;
+    }
+
+    if (contentType instanceof Function) {
+      return content instanceof contentType;
+    }
+
+    return false;
   }
 
-  return false;
-}
+  verifyPermissions(contentContext: ProfileContentContext, context: ExecutionContext) {
+    const strictPermissions = getStrictPermissionsFromContext(context, this.reflector);
+    const permissions = getPermissionsFromContext(context, this.reflector);
 
-function getContentTypeFromContext(context: ExecutionContext, reflector: Reflector) {
-  return reflector.getAllAndOverride<string | Type<Content>>(CONTENT_TYPE_KEY, [
-    context.getHandler(),
-    context.getClass(),
-  ]);
-}
+    return (
+      this.contentPermissionsService.verifyAnyPermission(contentContext, ...permissions) &&
+      this.contentPermissionsService.verifyEveryPermission(contentContext, ...strictPermissions)
+    );
+  }
 
-function getContentIdFromRequest(
-  request: Request,
-  context: ExecutionContext,
-  reflector: Reflector,
-): string {
-  const paramName = getContentIdParamFromContext(context, reflector);
-  return request.params[paramName] || (request.query[paramName] as string);
-}
-
-function getContentIdParamFromContext(context: ExecutionContext, reflector: Reflector) {
-  return (
-    reflector.getAllAndOverride<string>(CONTENT_ID_PARAM_KEY, [
+  getContentTypeFromContext(context: ExecutionContext) {
+    return this.reflector.getAllAndOverride<string | Type<Content>>(CONTENT_TYPE_KEY, [
       context.getHandler(),
       context.getClass(),
-    ]) || CONTENT_DEFAULT_ID_PARAM_KEY
-  );
+    ]);
+  }
+
+  getContentIdParamFromContext(context: ExecutionContext) {
+    return (
+      this.reflector.getAllAndOverride<string>(CONTENT_ID_PARAM_KEY, [
+        context.getHandler(),
+        context.getClass(),
+      ]) || CONTENT_DEFAULT_ID_PARAM_KEY
+    );
+  }
 }

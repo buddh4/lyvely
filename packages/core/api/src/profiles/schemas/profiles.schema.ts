@@ -36,10 +36,6 @@ import { ProfileMemberGroup, ProfileMemberGroupSchema } from './profile-member-g
 class ProfileMetadata extends BaseModel<ProfileMetadata> {
   @PropertyType(Boolean, { default: true })
   @Prop({ required: true })
-  archivable: boolean;
-
-  @PropertyType(Boolean, { default: true })
-  @Prop({ required: true })
   deletable: boolean;
 }
 

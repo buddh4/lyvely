@@ -7,7 +7,7 @@ import {
 import { Post, HttpCode, HttpStatus, Param, Request, Body } from '@nestjs/common';
 import { Policies } from '@/policies';
 import { ContentService } from '../services';
-import { ContentWritePolicy } from '../policies';
+import { ContentDeletePolicy, ContentWritePolicy } from '../policies';
 import { ProtectedProfileContentRequest } from '../types';
 import { ContentTypeController } from '../decorators';
 
@@ -17,7 +17,7 @@ export class ContentController implements ContentEndpoint {
 
   @Post(ContentEndpoints.ARCHIVE(':cid'))
   @HttpCode(HttpStatus.NO_CONTENT)
-  @Policies(ContentWritePolicy)
+  @Policies(ContentDeletePolicy)
   async archive(@Param('cid') cid: string, @Request() req: ProtectedProfileContentRequest) {
     const { user, content } = req;
     await this.contentService.archive(user, content);

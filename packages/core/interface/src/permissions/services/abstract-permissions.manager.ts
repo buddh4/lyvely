@@ -164,11 +164,11 @@ export abstract class AbstractPermissionsManager<
     // Do not allow visitor access if visitor access is disabled
     if (!this.verifyVisitorAccess(subject, config)) return false;
 
-    this.checkCircularDependency(permissionOrId, checkedPermissions);
-
     // The permission needs to be registered.
     const permission = this.getPermission(permissionOrId);
     if (!permission) throw new IntegrityException(`Permission not registered`);
+
+    this.checkCircularDependency(permissionOrId, checkedPermissions);
 
     if (!this.verifyUserStatus(permission, subject)) return false;
 

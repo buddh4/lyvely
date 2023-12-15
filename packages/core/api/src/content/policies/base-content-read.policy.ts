@@ -4,6 +4,12 @@ import { ProfileContentContext } from '../schemas';
 import { ModuleRef } from '@nestjs/core';
 import { getProfileRoleLevel } from '@lyvely/interface';
 
+/**
+ * Represents a base content read policy.
+ * This policy will check the user role level against the content visibility level.
+ * @implements {IContentPolicy}
+ * @abstract
+ */
 @Injectable()
 export abstract class BaseContentReadPolicy implements IContentPolicy {
   @Inject()

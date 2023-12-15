@@ -2,13 +2,26 @@ import { ConfigService } from '@nestjs/config';
 import { ServerConfiguration } from '@/config';
 import { Injectable } from '@nestjs/common';
 import { ProfileContentContext } from '../schemas';
-import { VisitorMode, useContentPermissionsManager } from '@lyvely/interface';
+import {
+  VisitorMode,
+  useContentPermissionsManager,
+  IPermission,
+  getPermission,
+  isGlobalPermission,
+  isProfilePermission,
+  IntegrityException,
+} from '@lyvely/interface';
+import { GlobalPermissionsService } from '@/permissions';
+import { ProfilePermissionsService } from '@/profiles';
 
 /**
  * Service for handling content level permissions within the application.
  *
- * This service provides methods to verify permissions for on profile level,
- * based on the context, leveraging the application's configuration settings.
+ * This service provides methods to verify permissions of type:
+ *
+ * - BasePermissionType.Content
+ * - BasePermissionType.Profile
+ * - BasePermissionType.Global
  */
 @Injectable()
 export class ContentPermissionsService {
@@ -17,7 +30,11 @@ export class ContentPermissionsService {
    *
    * @param configService - The service used to fetch configuration related to permissions.
    */
-  constructor(private readonly configService: ConfigService<ServerConfiguration>) {}
+  constructor(
+    private readonly configService: ConfigService<ServerConfiguration>,
+    private readonly globalPermissionsService: GlobalPermissionsService,
+    private readonly profilePermissionsService: ProfilePermissionsService,
+  ) {}
 
   /**
    * Verifies if the profile context meets all the specified permissions.
@@ -26,7 +43,10 @@ export class ContentPermissionsService {
    * @param permissions - The list of permissions to verify against.
    * @returns `true` if the profile context meets every listed permission, otherwise `false`.
    */
-  verifyEveryPermission(context: ProfileContentContext, ...permissions: string[]): boolean {
+  verifyEveryPermission(
+    context: ProfileContentContext,
+    ...permissions: Array<string | IPermission>
+  ): boolean {
     if (!permissions?.length) return true;
     return permissions.reduce(
       (result, permissionId) => result && this.verifyPermission(context, permissionId),
@@ -41,10 +61,13 @@ export class ContentPermissionsService {
    * @param permissions - The list of permissions to verify against.
    * @returns `true` if the profile context meets any of the listed permissions, otherwise `false`.
    */
-  verifyAnyPermission(context: ProfileContentContext, ...permissions: string[]): boolean {
+  verifyAnyPermission(
+    context: ProfileContentContext,
+    ...permissions: Array<string | IPermission>
+  ): boolean {
     if (!permissions?.length) return true;
     return permissions.reduce(
-      (result, permissionId) => result || this.verifyPermission(context, permissionId),
+      (result, permissionOrId) => result || this.verifyPermission(context, permissionOrId),
       false,
     );
   }
@@ -59,8 +82,20 @@ export class ContentPermissionsService {
    * @param permissionId - The ID of the permission to verify.
    * @returns `true` if the profile context meets the specified permission, otherwise `false`.
    */
-  verifyPermission(context: ProfileContentContext, permissionId: string): boolean {
+  verifyPermission(context: ProfileContentContext, permissionOrId: string | IPermission): boolean {
     if (!context?.profile) return false;
+
+    const permission = getPermission(permissionOrId);
+
+    if (!permission) throw new IntegrityException(`Permission not registered`);
+
+    if (isGlobalPermission(permission)) {
+      return this.globalPermissionsService.verifyPermission(context.user, permission);
+    }
+
+    if (isProfilePermission(permission)) {
+      return this.profilePermissionsService.verifyPermission(context, permission);
+    }
 
     const { user } = context;
     const role = context.getContentRole();
@@ -70,7 +105,7 @@ export class ContentPermissionsService {
     });
 
     return useContentPermissionsManager().verifyPermission(
-      permissionId,
+      permission,
       {
         role,
         userStatus: user?.status,

@@ -1,16 +1,7 @@
-import {
-  Controller,
-  Get,
-  Header,
-  Query,
-  Post,
-  HttpCode,
-  Body,
-  StreamableFile,
-} from '@nestjs/common';
+import { Get, Header, Query, Post, HttpCode, Body, StreamableFile } from '@nestjs/common';
 import { CaptchaService } from '../services';
 import { Readable } from 'stream';
-import { Public } from '@/core';
+import { Controller, Public } from '@/core';
 import {
   API_CAPTCHA,
   CaptchaChallenge,

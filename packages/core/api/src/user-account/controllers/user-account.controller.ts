@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Post,
-  Req,
-  UploadedFile,
-  UseInterceptors,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Post, Req, UploadedFile, UseInterceptors, UseGuards } from '@nestjs/common';
 import {
   AddEmailDto,
   API_USER_ACCOUNT,
@@ -21,7 +13,7 @@ import {
   UserAccountEndpoints,
 } from '@lyvely/interface';
 import { UserRequest, UserThrottle, UserThrottlerGuard } from '@/users';
-import { UseClassSerializer } from '@/core';
+import { Controller, UseClassSerializer } from '@/core';
 import { UserAccountService, AccountAvatarService } from '../services';
 import { ParseFilePipeBuilder, MimeTypeValidator } from '@/files';
 import { FileInterceptor } from '@nestjs/platform-express';

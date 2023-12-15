@@ -35,10 +35,11 @@ export interface IContentMetadata<TID = any> {
 }
 
 export interface IContentTypeMeta {
-  archivable?: boolean;
-  editable?: boolean;
-  reactable?: boolean;
-  commentable?: boolean;
+  deletable: boolean;
+  editable: boolean;
+  reactable: boolean;
+  commentable: boolean;
+  taggable: boolean;
 }
 
 export interface IContentPolicies {
@@ -49,10 +50,11 @@ export interface IContentPolicies {
 }
 
 export const getDefaultTypeMeta = (): IContentTypeMeta => ({
-  archivable: true,
+  deletable: true,
   editable: true,
   reactable: true,
   commentable: true,
+  taggable: true,
 });
 
 export interface IContentLog<TData = any, TID = any> {

@@ -1,5 +1,5 @@
 import { AbstractStreamService } from '@/streams';
-import { ContentStreamFilter } from '@lyvely/interface';
+import { ContentRequestFilter } from '@lyvely/interface';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ContentDao } from '../daos';
 import { Content } from '../schemas';
@@ -9,7 +9,7 @@ import { FilterQuery, assureObjectId } from '@/core';
 @Injectable()
 export class ContentStreamService extends AbstractStreamService<
   Content,
-  ContentStreamFilter,
+  ContentRequestFilter,
   ProfileContext
 > {
   @Inject()
@@ -17,7 +17,7 @@ export class ContentStreamService extends AbstractStreamService<
 
   protected logger = new Logger(ContentStreamService.name);
 
-  createQueryFilter(context: ProfileContext, filter?: ContentStreamFilter): FilterQuery<Content> {
+  createQueryFilter(context: ProfileContext, filter?: ContentRequestFilter): FilterQuery<Content> {
     const query = { pid: context.pid, oid: context.oid } as FilterQuery<Content>;
     return this.applyFilter(query, filter);
   }
@@ -26,7 +26,7 @@ export class ContentStreamService extends AbstractStreamService<
 
   protected createLoadEntryQueryFilter(
     context: ProfileContext,
-    filter?: ContentStreamFilter,
+    filter?: ContentRequestFilter,
   ): FilterQuery<Content> {
     const query = this.createQueryFilter(context, filter);
     // In case we load a single entry we do need to remove the auto parent = null filter
@@ -36,7 +36,7 @@ export class ContentStreamService extends AbstractStreamService<
     return query;
   }
 
-  applyFilter(query: FilterQuery<Content>, filter?: ContentStreamFilter) {
+  applyFilter(query: FilterQuery<Content>, filter?: ContentRequestFilter) {
     query['meta.parentId'] = filter?.parentId ? assureObjectId(filter.parentId) : null;
 
     if (!filter) return query;
@@ -49,6 +49,12 @@ export class ContentStreamService extends AbstractStreamService<
       query['meta.archived'] = true;
     } else {
       query['meta.archived'] = { $ne: true };
+    }
+
+    if (filter.deleted) {
+      query['meta.deleted'] = true;
+    } else {
+      query['meta.deleted'] = { $ne: true };
     }
 
     if (filter.query?.length) {

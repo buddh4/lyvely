@@ -1,4 +1,4 @@
-import { ContentModel, ContentStreamFilter } from '../models';
+import { ContentModel, ContentRequestFilter } from '../models';
 import { IContentStreamClient } from './content-stream.endpoint';
 import { IStreamOptions, IStreamResponse, IStreamState } from '@/streams';
 import { useSingleton, PropertiesOf } from '@lyvely/common';
@@ -9,7 +9,7 @@ import { getContentModelType } from '../registries';
 export class ContentStreamClient implements IContentStreamClient {
   async loadEntry(
     id: string,
-    filter?: ContentStreamFilter,
+    filter?: ContentRequestFilter,
     options?: IProfileApiRequestOptions,
   ): Promise<ContentModel> {
     return this.createModel(await unwrapResponse(repositry.loadEntry(id, options)));
@@ -18,7 +18,7 @@ export class ContentStreamClient implements IContentStreamClient {
   async loadTail(
     state: IStreamState,
     options: IStreamOptions,
-    filter?: ContentStreamFilter,
+    filter?: ContentRequestFilter,
     requestOptions?: IProfileApiRequestOptions,
   ): Promise<IStreamResponse<ContentModel>> {
     const response = await unwrapResponse(
@@ -37,7 +37,7 @@ export class ContentStreamClient implements IContentStreamClient {
   async loadHead(
     state: IStreamState,
     options: IStreamOptions,
-    filter?: ContentStreamFilter,
+    filter?: ContentRequestFilter,
     requestOptions?: IProfileApiRequestOptions,
   ): Promise<IStreamResponse<ContentModel>> {
     const response = await unwrapResponse(

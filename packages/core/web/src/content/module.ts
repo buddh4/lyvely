@@ -43,7 +43,7 @@ export default () => {
         moduleId: CONTENT_MODULE_ID,
         click: () => useContentEditStore().editContent(content),
         condition:
-          content.getTypeMeta()?.archivable &&
+          content.getTypeMeta()?.deletable &&
           getContentTypeOptions(content.type)?.interfaces?.edit !== false &&
           !content.meta.archived,
         sortOrder: 1000,
@@ -59,7 +59,7 @@ export default () => {
               ? 'content.actions.confirm.restore'
               : 'content.actions.confirm.archive',
           }),
-        condition: content.getTypeMeta()?.archivable,
+        condition: content.getTypeMeta()?.deletable,
         sortOrder: 1000,
         icon: content.meta.archived ? 'restore' : 'archive',
         text: content.meta.archived ? 'content.actions.restore' : 'content.actions.archive',

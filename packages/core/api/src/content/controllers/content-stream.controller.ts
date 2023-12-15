@@ -1,4 +1,4 @@
-import { ContentModel, ContentStreamFilter, API_CONTENT_STREAM } from '@lyvely/interface';
+import { ContentModel, ContentRequestFilter, API_CONTENT_STREAM } from '@lyvely/interface';
 import { Inject } from '@nestjs/common';
 import { UseClassSerializer } from '@/core';
 import { AbstractStreamController } from '@/streams';
@@ -11,7 +11,7 @@ import { ProfileController, ProfileContext } from '@/profiles';
 export class ContentStreamController extends AbstractStreamController<
   Content,
   ContentModel<any>,
-  ContentStreamFilter,
+  ContentRequestFilter,
   ProfileContext
 > {
   @Inject()

@@ -39,6 +39,7 @@ import { CoreModule, LyvelyModule } from '@/core';
 import { PROFILES_MODULE_ID, ProfileType } from '@lyvely/interface';
 import { useProfileMappings } from './mappings';
 import { ProfilesEvents } from './profiles.events';
+import { ProfileMembershipPolicy } from '@/profiles/policies/profile-membership-policy';
 
 const ProfileModel = MongooseModule.forFeature([
   {
@@ -63,7 +64,7 @@ useProfileMappings();
   id: PROFILES_MODULE_ID,
   name: 'Profiles',
   path: __dirname,
-  policies: [ProfileVisibilityPolicy],
+  policies: [ProfileVisibilityPolicy, ProfileMembershipPolicy],
   imports: [CoreModule, UsersModule, PoliciesModule, ProfileModel],
   providers: [
     ProfileDao,

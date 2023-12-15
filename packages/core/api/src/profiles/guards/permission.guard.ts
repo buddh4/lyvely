@@ -1,7 +1,7 @@
 import { CanActivate, ExecutionContext, Inject, Injectable } from '@nestjs/common';
 import {
   getPermissionsFromContext,
-  getAnyPermissionsFromContext,
+  getStrictPermissionsFromContext,
   GlobalPermissionsService,
 } from '@/permissions';
 import { Reflector } from '@nestjs/core';
@@ -27,10 +27,13 @@ export class PermissionGuard implements CanActivate {
     const { context: requestContext, user } = request;
 
     if (!permissionIds?.length) return true;
-
     return (
-      this.verifyEach(requestContext, user, getPermissionsFromContext(context, this.reflector)) &&
-      this.verifyAny(requestContext, user, getAnyPermissionsFromContext(context, this.reflector))
+      this.verifyAny(requestContext, user, getPermissionsFromContext(context, this.reflector)) &&
+      this.verifyEach(
+        requestContext,
+        user,
+        getStrictPermissionsFromContext(context, this.reflector),
+      )
     );
   }
 

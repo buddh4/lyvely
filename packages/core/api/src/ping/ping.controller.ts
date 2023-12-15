@@ -1,5 +1,5 @@
-import { Controller, Get } from '@nestjs/common';
-import { Public } from '@/core';
+import { Get } from '@nestjs/common';
+import { Controller, Public } from '@/core';
 import { API_PING, IPingResponse, PingEndpoint } from '@lyvely/interface';
 
 @Controller(API_PING)

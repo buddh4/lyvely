@@ -1,8 +1,8 @@
 import { IStreamClient } from '@/streams';
 import { Endpoint, profileApiPrefix } from '@/endpoints';
-import { ContentModel, ContentStreamFilter } from '../models';
+import { ContentModel, ContentRequestFilter } from '../models';
 
-export interface IContentStreamClient extends IStreamClient<ContentModel, ContentStreamFilter> {}
+export interface IContentStreamClient extends IStreamClient<ContentModel, ContentRequestFilter> {}
 
 export type ContentStreamEndpoint = Endpoint<IContentStreamClient>;
 

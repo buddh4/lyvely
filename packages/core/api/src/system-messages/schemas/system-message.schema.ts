@@ -1,7 +1,9 @@
-import { ContentDataType, ContentType } from '@/content';
+import { ContentDataType, ContentType, IContentPolicy } from '@/content';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { MixedProp, NestedSchema, TObjectId } from '@/core';
-import { SystemMessageModel, SystemMessageContentModel } from '@lyvely/interface';
+import { SystemMessageModel, SystemMessageContentModel, IContentTypeMeta } from '@lyvely/interface';
+import { DeclineAllPolicy } from '@/policies';
+import { Type } from '@lyvely/common';
 
 @NestedSchema()
 export class SystemMessageContent extends ContentDataType implements SystemMessageContentModel {
@@ -21,6 +23,18 @@ export class SystemMessage
 
   toModel(): SystemMessageModel {
     return new SystemMessageModel(this);
+  }
+
+  getWritePolicy(): Type<IContentPolicy> {
+    return DeclineAllPolicy;
+  }
+
+  getTypeMeta(): IContentTypeMeta {
+    return {
+      ...super.getTypeMeta(),
+      editable: false,
+      taggable: false,
+    };
   }
 }
 

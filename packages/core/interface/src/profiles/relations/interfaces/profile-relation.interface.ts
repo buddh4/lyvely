@@ -27,6 +27,7 @@ export enum RoleVisibilityLevel {
   Member,
   Guest, // External explicitly invited guests
   Organization,
+  Follower,
   User, // Registered users
   Visitor, // Unregistered users
 }

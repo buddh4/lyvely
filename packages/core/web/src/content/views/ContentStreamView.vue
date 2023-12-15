@@ -2,7 +2,7 @@
 import ContentStreamFooter from '../components/ContentStreamFooter.vue';
 import ContentStream from '../components/ContentStream.vue';
 import {
-  ContentStreamFilter,
+  ContentRequestFilter,
   CreateMessagePermission,
   MessageModel,
   ProfileType,
@@ -15,7 +15,7 @@ import { useProfileStore } from '@/profiles';
 import { usePermissions } from '@/common';
 
 const { filter } = storeToRefs(useContentStreamFilterStore());
-filter.value = new ContentStreamFilter();
+filter.value = new ContentRequestFilter();
 filter.value.fromQuery(useRouter().currentRoute.value.query);
 
 const addButtonText =

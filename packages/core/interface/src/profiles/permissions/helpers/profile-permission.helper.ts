@@ -1,5 +1,5 @@
 import { IProfilePermission, profileRelationRoleHierarchy } from '../interfaces';
-import { ProfileRelationRole } from '@/profiles/relations';
+import { ProfileRelationRole, RoleVisibilityLevel } from '@/profiles/relations';
 import { ProfileVisibilityLevel } from '@/profiles/core/interfaces';
 import { IntegrityException } from '@/exceptions';
 import { BasePermissionType, IPermission } from '@/permissions';
@@ -33,6 +33,36 @@ export function getProfileRoleLevelByProfileVisibility(visibility: ProfileVisibi
     case ProfileVisibilityLevel.User:
       return getProfileRoleLevel(ProfileRelationRole.User);
     case ProfileVisibilityLevel.Visitor:
+      return getProfileRoleLevel(ProfileRelationRole.Visitor);
+    default:
+      throw new IntegrityException(`Invalid profile visibility level: ${visibility}`);
+  }
+}
+
+/**
+ * Returns the role level associated with the given role visibility level.
+ *
+ * @param {ProfileVisibilityLevel} visibility - The profile visibility level.
+ * @returns {number} - The role level associated with the profile visibility.
+ * @throws {IntegrityException} - If the given profile visibility level is invalid.
+ */
+export function getProfileRoleLevelByRoleVisibility(visibility: RoleVisibilityLevel): number {
+  switch (visibility) {
+    case RoleVisibilityLevel.Owner:
+      return getProfileRoleLevel(ProfileRelationRole.Owner);
+    case RoleVisibilityLevel.Admin:
+      return getProfileRoleLevel(ProfileRelationRole.Admin);
+    case RoleVisibilityLevel.Moderator:
+      return getProfileRoleLevel(ProfileRelationRole.Moderator);
+    case RoleVisibilityLevel.Member:
+      return getProfileRoleLevel(ProfileRelationRole.Member);
+    case RoleVisibilityLevel.Guest:
+      return getProfileRoleLevel(ProfileRelationRole.Guest);
+    case RoleVisibilityLevel.Organization:
+      return getProfileRoleLevel(ProfileRelationRole.Organization);
+    case RoleVisibilityLevel.User:
+      return getProfileRoleLevel(ProfileRelationRole.User);
+    case RoleVisibilityLevel.Visitor:
       return getProfileRoleLevel(ProfileRelationRole.Visitor);
     default:
       throw new IntegrityException(`Invalid profile visibility level: ${visibility}`);

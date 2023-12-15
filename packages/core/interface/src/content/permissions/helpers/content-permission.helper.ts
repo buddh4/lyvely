@@ -63,3 +63,135 @@ export function isContentPermission(
 ): permission is IContentPermission {
   return permission.type === BasePermissionType.Content;
 }
+
+/**
+ * Helper function for creating content write permission definitions.
+ *
+ * Calling this function will create a default content write permissions with the following default restrictions:
+ *
+ * - min: `ContentUserRole.Manager`
+ * - max: `ContentUserRole.Guest`
+ * - default: `ContentUserRole.Author`
+ *
+ * @param type
+ * @param moduleId
+ * @param name
+ * @param description
+ * @param options
+ */
+export function createContentWritePermission(
+  type: string,
+  moduleId: string,
+  name: string,
+  description: string,
+  options?: Partial<IContentPermission>,
+): IContentPermission {
+  return {
+    min: ContentUserRole.Manager,
+    max: ContentUserRole.Guest,
+    default: ContentUserRole.Author,
+    ...options,
+    id: getContentWritePermissionId(type),
+    moduleId,
+    name,
+    description,
+    type: BasePermissionType.Content,
+  };
+}
+
+/**
+ * Returns the write permission ID for the specified content type.
+ * @param {string} type - The content type.
+ * @return {string} The write permission ID for the specified content type.
+ */
+export function getContentWritePermissionId(type: string) {
+  return `content.${type}.write`;
+}
+
+/**
+ * Helper function for creating content delete permission definitions.
+ *
+ * Calling this function will create a default content write permissions with the following default restrictions:
+ *
+ * - min: `ContentUserRole.Manager`
+ * - max: `ContentUserRole.Member`
+ * - default: `ContentUserRole.Author`
+ *
+ * @param type
+ * @param moduleId
+ * @param name
+ * @param description
+ * @param options
+ */
+export function createContentDeletePermission(
+  type: string,
+  moduleId: string,
+  name: string,
+  description: string,
+  options?: Partial<IContentPermission>,
+): IContentPermission {
+  return {
+    min: ContentUserRole.Manager,
+    max: ContentUserRole.Member,
+    default: ContentUserRole.Author,
+    ...options,
+    id: getContentDeletePermissionId(type),
+    moduleId,
+    name,
+    description,
+    type: BasePermissionType.Content,
+  };
+}
+
+/**
+ * Returns the write permission ID for the specified content type.
+ * @param {string} type - The content type.
+ * @return {string} The write permission ID for the specified content type.
+ */
+export function getContentDeletePermissionId(type: string) {
+  return `content.${type}.delete`;
+}
+
+/**
+ * Helper function for creating content delete permission definitions.
+ *
+ * Calling this function will create a default content write permissions with the following default restrictions:
+ *
+ * - min: `ContentUserRole.Manager`
+ * - max: `ContentUserRole.Member`
+ * - default: `ContentUserRole.Author`
+ *
+ * @param type
+ * @param moduleId
+ * @param name
+ * @param description
+ * @param options
+ */
+export function createContentManagePermission(
+  type: string,
+  moduleId: string,
+  name: string,
+  description: string,
+  options?: Partial<IContentPermission>,
+): IContentPermission {
+  return {
+    min: ContentUserRole.Manager,
+    max: ContentUserRole.Member,
+    default: ContentUserRole.Author,
+    ...options,
+    id: getContentManagePermissionId(type),
+    moduleId,
+    name,
+    description,
+    type: BasePermissionType.Content,
+  };
+}
+
+/**
+ * Returns the manage permission ID for the specified content type.
+ * @param {string} type - The content type.
+ * @return {string} The write permission ID for the specified content type.
+ */
+export function getContentManagePermissionId(type: string) {
+  return `content.${type}.manage`;
+}

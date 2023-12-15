@@ -1,4 +1,4 @@
-import { Controller, Post, Req, Param, Inject } from '@nestjs/common';
+import { Post, Req, Param, Inject } from '@nestjs/common';
 import {
   API_NOTIFICATIONS,
   NotificationsEndpoint,
@@ -11,6 +11,7 @@ import { UserNotification } from '../schemas';
 import { TestNotification } from '../notifications';
 import { SingleUserSubscription } from '@/user-subscriptions';
 import { AbstractStreamController } from '@/streams';
+import { Controller } from '@/core';
 
 @Controller(API_NOTIFICATIONS)
 export class NotificationsController

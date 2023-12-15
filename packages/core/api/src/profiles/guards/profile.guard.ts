@@ -1,73 +1,40 @@
 import { Injectable, CanActivate, ExecutionContext, Inject } from '@nestjs/common';
-import { ProfilesService, ProfilePermissionsService } from '../services';
 import { ProfileRequest } from '../types';
-import { isValidObjectId } from '@lyvely/common';
-import { verifyProfileRoleLevel } from '@lyvely/interface';
-import { ProfileVisibilityPolicy } from '../policies';
-import { ProfileDao } from '../daos';
-import { Reflector } from '@nestjs/core';
-import { InjectPolicy } from '@/policies';
 import { ProfileContext } from '../models';
-import { getProfileRoleFromContext } from '../decorators/profile.role-level.decorator';
+import { getPermissionsFromContext, getStrictPermissionsFromContext } from '@/permissions';
+import { BaseProfileGuard } from './base-profile-guard.service';
+import { ProfilePermissionsService } from '@/profiles';
 
 /**
- * This guard is responsible for setting the `request.profile` and `request.context` fields for a given profile id.
- * The profile id needs to be provided as request query param with the name `pid` and requires a valid ObjectId string.
+ * Represents a guard for profile context access.
  *
- * This guard expects an AuthGuard to set the user beforehand, otherwise this guard will assume the user is a guest user.
+ * This guard will try to extract a profile id from the request usually by :pid parameter and then will add the
+ * ProfileContext to the request object.
  *
- * Furthermore, this guard validates the following policies for the given user:
+ * This guard also includes a check for the @ProfileRoleLevel decorator as well as a profile visibility check.
  *
- *  - `ProfileVisibilityPolicy`
- *  - `ProfilePermissionPolicyPolicy`
+ * This guard furthermore includes a profile permission checks supporting the @@Permissions and @StrictPermissions decorators
+ * with global and profile level permissions.
  */
 @Injectable()
-export class ProfileGuard implements CanActivate {
-  @Inject()
-  protected profileService: ProfilesService;
-
-  @InjectPolicy(ProfileVisibilityPolicy.name)
-  protected profileVisibilityPolicy: ProfileVisibilityPolicy;
-
+export class ProfileGuard extends BaseProfileGuard implements CanActivate {
   @Inject()
   protected profilePermissionService: ProfilePermissionsService;
 
-  @Inject()
-  protected profileDao: ProfileDao;
-
-  @Inject()
-  protected reflector: Reflector;
-
   async canActivate(context: ExecutionContext): Promise<boolean> {
+    if (!super.canActivate(context)) return false;
+
     const request = context.switchToHttp().getRequest<ProfileRequest>();
-
-    const oid = isValidObjectId(request.query.oid) ? request.query.oid : undefined;
-    const user = request.user;
-
-    // TODO: Request query pid is used for compatibility with pre alpha version. Can be removed as soon as all clients are merged.
-    const pid = request.params.pid || request.query.pid;
-    if (isValidObjectId(pid)) {
-      request.context = await this.profileService.findProfileContext(user, pid, oid);
-      request.profile = request.context.profile;
-    }
-
-    const handle = request.params.handle || request.query.handle;
-    if (!request.profile && typeof handle === 'string') {
-      request.context = await this.profileService.findProfileContextByHandle(user, handle);
-      request.profile = request.context.profile;
-    }
-
-    if (!request.profile) return false;
-
-    return (
-      this.verifyProfileRoleLevel(request.context, context) &&
-      this.profileVisibilityPolicy.verify(request.context)
-    );
+    return this.verifyPermissions(request.context, context);
   }
 
-  private verifyProfileRoleLevel(profileContext: ProfileContext, context: ExecutionContext) {
-    const roleRestriction = getProfileRoleFromContext(context, this.reflector);
-    if (!roleRestriction) return true;
-    return verifyProfileRoleLevel(profileContext.getRole(), roleRestriction);
+  verifyPermissions(contentContext: ProfileContext, context: ExecutionContext) {
+    const strictPermissions = getStrictPermissionsFromContext(context, this.reflector);
+    const permissions = getPermissionsFromContext(context, this.reflector);
+
+    return (
+      this.profilePermissionService.verifyAnyPermission(contentContext, ...permissions) &&
+      this.profilePermissionService.verifyEveryPermission(contentContext, ...strictPermissions)
+    );
   }
 }

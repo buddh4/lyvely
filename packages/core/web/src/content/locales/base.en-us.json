@@ -6,6 +6,9 @@
         "title": "Stream",
         "description": "If disabled, the main profile stream will be hidden."
       },
+      "filter": {
+        "title": "Stream Filter"
+      },
       "title": "Stream",
       "initError": "Something went wrong, please try again later!",
       "back-to-stream": "Back to Stream",

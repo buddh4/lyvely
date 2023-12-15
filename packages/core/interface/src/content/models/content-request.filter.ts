@@ -11,8 +11,8 @@ import { ContentModel } from './content.model';
  * @template T - The type of the content model.
  */
 @Expose()
-export class ContentStreamFilter
-  extends BaseModel<ContentStreamFilter>
+export class ContentRequestFilter
+  extends BaseModel<ContentRequestFilter>
   implements IStreamFilter<ContentModel>
 {
   /**
@@ -32,6 +32,15 @@ export class ContentStreamFilter
   @IsBoolean()
   @IsOptional()
   archived?: boolean;
+
+  /**
+   * Include or exclude deleted entries.
+   *
+   * @type {boolean}
+   */
+  @IsBoolean()
+  @IsOptional()
+  deleted?: boolean;
 
   /**
    * Full-text search.

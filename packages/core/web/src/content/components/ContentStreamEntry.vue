@@ -147,6 +147,9 @@ const maxWidth = true;
                   <template v-if="model.meta.archived" #post>
                     <ly-icon name="archive" class="w-3 text-warning ml-auto" />
                   </template>
+                  <template v-if="model.meta.locked" #post>
+                    <ly-icon name="locked" class="w-3 ml-auto" />
+                  </template>
                 </tag-list>
               </div>
               <div class="content-stream-entry-body text-sm">

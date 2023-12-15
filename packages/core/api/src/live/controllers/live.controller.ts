@@ -1,6 +1,7 @@
-import { Controller, Sse, Req, Param } from '@nestjs/common';
+import { Sse, Req, Param } from '@nestjs/common';
 import { UserRequest } from '@/users';
 import { LiveService } from '../services';
+import { Controller } from '@/core';
 
 @Controller('/live')
 export class LiveController {

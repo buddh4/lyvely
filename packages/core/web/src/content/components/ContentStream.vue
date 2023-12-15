@@ -4,7 +4,7 @@ import { t } from '@/i18n';
 import { nextTick, onMounted, onUnmounted, ref, Ref, watch, WatchStopHandle } from 'vue';
 import {
   ContentModel,
-  ContentStreamFilter,
+  ContentRequestFilter,
   ContentUpdateStateLiveEvent,
   StreamDirection,
   useContentStreamClient,
@@ -56,7 +56,7 @@ async function doScrollToHead(attempt = 0): Promise<void> {
 }
 
 const { getHistoryState, removeHistoryState, resetHistory } = useContentStreamHistoryStore();
-const stream = useStream<ContentModel, ContentStreamFilter>(
+const stream = useStream<ContentModel, ContentRequestFilter>(
   {
     root: streamRoot,
     filter: filter,
@@ -69,7 +69,7 @@ const stream = useStream<ContentModel, ContentStreamFilter>(
   useContentStreamClient(),
 );
 
-const { models, isReady, isInitialized } = stream;
+const { models, isReady, isInitialized, isLoading } = stream;
 
 const error = ref<string>();
 
@@ -174,7 +174,7 @@ onUnmounted(() => {
               @select-tag="selectTag" />
           </template>
         </div>
-        <slot v-else name="stream-empty" :stream="stream"></slot>
+        <slot v-else-if="!isLoading" name="stream-empty" :stream="stream"></slot>
       </div>
     </div>
     <div v-else-if="error" class="absolute w-full h-full bg-body z-50 p-5">

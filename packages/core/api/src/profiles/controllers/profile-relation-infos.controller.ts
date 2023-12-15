@@ -1,11 +1,4 @@
-import {
-  ClassSerializerInterceptor,
-  Controller,
-  Get,
-  Param,
-  Request,
-  UseInterceptors,
-} from '@nestjs/common';
+import { ClassSerializerInterceptor, Get, Param, Request, UseInterceptors } from '@nestjs/common';
 
 import { ProfilesService } from '../services';
 import { UserRequest, UsersService } from '@/users';
@@ -19,6 +12,7 @@ import {
 } from '@lyvely/interface';
 import { mapType } from '@lyvely/common';
 import { ProtectedProfileContext } from '../models';
+import { Controller } from '@/core';
 
 @Controller(API_PROFILE_RELATION_INFOS)
 @UseInterceptors(ClassSerializerInterceptor)

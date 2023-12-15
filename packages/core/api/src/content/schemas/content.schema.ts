@@ -17,7 +17,7 @@ import {
 import { ContentLog, ContentLogSchema } from './content-log.schema';
 import { ContentMetadata, ContentMetadataSchema } from './content-metadata.schema';
 import { CreatedAs, Author } from './content-author.schema';
-import { User } from '@/users';
+import { OptionalUser, User } from '@/users';
 import {
   Profile,
   BaseProfileModel,
@@ -200,7 +200,8 @@ export class Content<
    * @param {DocumentIdentity<User>} user - The user to check if they are the author.
    * @returns {boolean} - True if the user is the author, false otherwise.
    */
-  isAuthor(user: DocumentIdentity<User>) {
+  isAuthor(user: OptionalUser): boolean {
+    if (!user) return false;
     return this.meta.createdBy.equals(assureObjectId(user));
   }
 
@@ -212,8 +213,9 @@ export class Content<
    * @param {DocumentIdentity<User>} user - The user to check if they are a manager.
    * @returns {boolean} - Returns true if the user is a manager, false otherwise.
    */
-  isManager(user: DocumentIdentity<User>) {
-    return this.meta.managers?.includes(assureObjectId(user));
+  isManager(user: OptionalUser): boolean {
+    if (!user) return false;
+    return !!this.meta.managers?.includes(assureObjectId(user));
   }
 
   /**
@@ -223,8 +225,9 @@ export class Content<
    *
    * @return {boolean} - True if the user is assigned to the document, false otherwise.
    */
-  isAssigned(user: DocumentIdentity<User>) {
-    return this.meta.assignees?.includes(assureObjectId(user));
+  isAssigned(user: OptionalUser): boolean {
+    if (!user) return false;
+    return !!this.meta.assignees?.includes(assureObjectId(user));
   }
 
   /**

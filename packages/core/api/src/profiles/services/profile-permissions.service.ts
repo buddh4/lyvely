@@ -1,34 +1,25 @@
 import { ConfigService } from '@nestjs/config';
 import { ServerConfiguration } from '@/config';
 import { Injectable } from '@nestjs/common';
-import { Profile, ProfilePermissionSetting } from '../schemas';
 import { ProfileContext } from '../models';
 import {
-  BasePermissionType,
-  FieldValidationException,
   getPermission,
-  getProfileRoleLevel,
-  IProfilePermissionSetting,
   useProfilePermissionsManager,
   VisitorMode,
-  getProfileRoleLevelByProfileVisibility,
-  ProfileRelationRole,
   IProfilePermission,
-  isProfilePermission,
-  ContentUserRole,
-  getContentUserRoleLevel,
-  IContentPermission,
-  getContentUserRoleLevelByProfileVisibility,
+  IGlobalPermission,
+  isGlobalPermission,
+  IntegrityException,
 } from '@lyvely/interface';
-import { findAndReplace } from '@lyvely/common';
-import { assureObjectId } from '@/core';
-import { ProfileDao } from '../daos';
+import { GlobalPermissionsService } from '@/permissions';
 
 /**
  * Service for handling profile level permissions within the application.
  *
- * This service provides methods to verify permissions for on profile level,
- * based on the context, leveraging the application's configuration settings.
+ * This service provides methods to verify permissions of type:
+ *
+ * - BasePermissionType.Profile
+ * - BasePermissionType.Global
  */
 @Injectable()
 export class ProfilePermissionsService {
@@ -38,8 +29,8 @@ export class ProfilePermissionsService {
    * @param configService - The service used to fetch configuration related to permissions.
    */
   constructor(
-    private readonly profileDao: ProfileDao,
     private readonly configService: ConfigService<ServerConfiguration>,
+    private readonly globalPermissionsService: GlobalPermissionsService,
   ) {}
 
   /**
@@ -49,7 +40,10 @@ export class ProfilePermissionsService {
    * @param permissions - The list of permissions to verify against.
    * @returns `true` if the profile context meets every listed permission, otherwise `false`.
    */
-  verifyEveryPermission(context: ProfileContext, ...permissions: string[]): boolean {
+  verifyEveryPermission(
+    context: ProfileContext,
+    ...permissions: Array<string | IProfilePermission | IGlobalPermission>
+  ): boolean {
     if (!permissions?.length) return true;
     return permissions.reduce(
       (result, permissionId) => result && this.verifyPermission(context, permissionId),
@@ -64,7 +58,10 @@ export class ProfilePermissionsService {
    * @param permissions - The list of permissions to verify against.
    * @returns `true` if the profile context meets any of the listed permissions, otherwise `false`.
    */
-  verifyAnyPermission(context: ProfileContext, ...permissions: string[]): boolean {
+  verifyAnyPermission(
+    context: ProfileContext,
+    ...permissions: Array<string | IProfilePermission | IGlobalPermission>
+  ): boolean {
     if (!permissions?.length) return true;
     return permissions.reduce(
       (result, permissionId) => result || this.verifyPermission(context, permissionId),
@@ -79,11 +76,22 @@ export class ProfilePermissionsService {
    * determines if the profile context meets the required permission based on various context properties like role, user status, profile settings, and relation status.
    *
    * @param context - The profile context being checked.
-   * @param permissionId - The ID of the permission to verify.
+   * @param permissionOrId
    * @returns `true` if the profile context meets the specified permission, otherwise `false`.
    */
-  verifyPermission(context: ProfileContext, permissionId: string): boolean {
+  verifyPermission(
+    context: ProfileContext,
+    permissionOrId: string | IProfilePermission | IGlobalPermission,
+  ): boolean {
     if (!context?.profile) return false;
+
+    const permission = getPermission(permissionOrId);
+
+    if (!permission) throw new IntegrityException(`Permission not registered`);
+
+    if (isGlobalPermission(permission)) {
+      return this.globalPermissionsService.verifyPermission(context.user, permission);
+    }
 
     const { profile, user } = context;
     const role = context.getRole();
@@ -92,7 +100,7 @@ export class ProfilePermissionsService {
       visitorStrategy: { mode: VisitorMode.Disabled },
     });
     return useProfilePermissionsManager().verifyPermission(
-      permissionId,
+      permission,
       {
         role,
         userStatus: user?.status,

@@ -1,7 +1,7 @@
 import { defineStore, storeToRefs } from 'pinia';
 import { useProfileStore } from '@/profiles/stores/profile.store';
 import { watch } from 'vue';
-import { ContentModel, ContentStreamFilter, IStreamHistory } from '@lyvely/interface';
+import { ContentModel, ContentRequestFilter, IStreamHistory } from '@lyvely/interface';
 import { IStream } from '@/stream/stream.composable';
 import { useContentStore } from '@/content';
 import { findAndRemove, findAndReplace } from '@lyvely/common';
@@ -25,7 +25,7 @@ export const useContentStreamHistoryStore = defineStore('content-stream-history'
   });
 
   function setHistoryState(
-    stream: IStream<ContentModel, ContentStreamFilter>,
+    stream: IStream<ContentModel, ContentRequestFilter>,
     parent = 'root',
     scrollTop: number,
   ) {

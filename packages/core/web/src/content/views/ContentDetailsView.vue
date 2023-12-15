@@ -5,7 +5,7 @@ import {
   ContentDetails,
   ContentDetailsHeader,
 } from '../components';
-import { ContentModel, ContentStreamFilter, useContentStreamClient } from '@lyvely/interface';
+import { ContentModel, ContentRequestFilter, useContentStreamClient } from '@lyvely/interface';
 import { getContentDetailsComponent } from '../registries';
 import { useRouter } from 'vue-router';
 import { computed, ref, watch } from 'vue';
@@ -20,7 +20,7 @@ const content = ref<ContentModel>();
 const { filter } = storeToRefs(useContentStreamFilterStore());
 const contentStore = useContentStore();
 
-filter.value = new ContentStreamFilter({
+filter.value = new ContentRequestFilter({
   parentId: router.currentRoute.value.params.cid as string,
 });
 
@@ -37,7 +37,7 @@ watch(
       const cid = to.params.cid as string;
       if (content.value?.id !== cid) {
         content.value = await streamClient.loadEntry(cid);
-        filter.value = new ContentStreamFilter({ parentId: cid });
+        filter.value = new ContentRequestFilter({ parentId: cid });
         contentStore.onContentUpdated('*', onContentUpdated);
       }
     }

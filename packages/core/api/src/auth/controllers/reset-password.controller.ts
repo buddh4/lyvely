@@ -1,4 +1,4 @@
-import { Controller, Body, Post, UseGuards, Req } from '@nestjs/common';
+import { Body, Post, UseGuards, Req } from '@nestjs/common';
 import {
   API_RESET_PASSWORD,
   ResetPasswordEndpoint,
@@ -6,7 +6,7 @@ import {
   ResetPassword,
   ResetPasswordEndpoints,
 } from '@lyvely/interface';
-import { Public, UseClassSerializer } from '@/core';
+import { Controller, Public, UseClassSerializer } from '@/core';
 import { ResetPasswordService } from '../services';
 import { JwtResetPasswordGuard, LoginThrottlerGuard } from '../guards';
 import { CaptchaGuard } from '@/captcha';

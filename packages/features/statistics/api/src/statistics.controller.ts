@@ -1,4 +1,5 @@
-import { Controller, Get, Inject } from '@nestjs/common';
+import { Inject } from '@nestjs/common';
+import { Controller } from '@lyvely/api';
 import { StatisticsService } from './statistics.service';
 
 @Controller('statistics')

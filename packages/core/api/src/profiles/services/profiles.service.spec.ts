@@ -154,7 +154,7 @@ describe('ProfileService', () => {
         expect(profile.name).toEqual('SomeOrganization');
         expect(profile.hasOrg).toEqual(false);
         expect(profile.meta).toBeDefined();
-        expect(profile.meta.archivable).toEqual(true);
+        expect(profile.meta.deletable).toEqual(true);
         expect(profile.meta.deletable).toEqual(true);
         expectOwnerRelationship(relations);
       });
@@ -229,7 +229,6 @@ describe('ProfileService', () => {
       expect(profile.oid).not.toEqual(profile._id);
       expect(profile.oid).toEqual(organization._id);
       expect(profile.meta).toBeDefined();
-      expect(profile.meta.archivable).toEqual(true);
       expect(profile.meta.deletable).toEqual(true);
       expectOwnerRelationship(relations);
     });
@@ -288,7 +287,6 @@ describe('ProfileService', () => {
         expect(profile.hasOrg).toEqual(false);
         expect(profile.oid).not.toEqual(profile._id);
         expect(profile.meta).toBeDefined();
-        expect(profile.meta.archivable).toEqual(true);
         expect(profile.meta.deletable).toEqual(true);
         expectOwnerRelationship(relations);
       });
@@ -322,7 +320,6 @@ describe('ProfileService', () => {
         expect(profile.oid).not.toEqual(profile._id);
         expect(profile.oid).toEqual(organization._id);
         expect(profile.meta).toBeDefined();
-        expect(profile.meta.archivable).toEqual(true);
         expect(profile.meta.deletable).toEqual(true);
         expectOwnerRelationship(relations);
       });

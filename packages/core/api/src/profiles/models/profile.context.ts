@@ -1,16 +1,16 @@
-import { UserProfileRelation, Profile, Membership, Organization } from '../schemas';
-import { User, IOptionalUserContext, IUserContext } from '@/users';
+import { Membership, Organization, Profile, UserProfileRelation } from '../schemas';
+import { IOptionalUserContext, IUserContext, User } from '@/users';
 import { useUserProfileRelationHelper } from '../helpers';
 import { BaseModel, PropertyType } from '@lyvely/common';
 import {
-  ProfileRelationRole,
-  ProfileMembershipRole,
   getProfileRelationRole,
   IPermissionSetting,
-  IPermissionObject,
-  IProfilePermissionObject,
-  ProfileVisibilityLevel,
   IProfilePermissionData,
+  IProfilePermissionObject,
+  ProfileMembershipRole,
+  ProfileRelationRole,
+  ProfileVisibilityLevel,
+  UserStatus,
 } from '@lyvely/interface';
 import { IUserWithProfileRelation } from '../interfaces/user-with-profile-relation.interface';
 
@@ -117,6 +117,19 @@ export class ProfileContext<TProfile extends Profile = Profile>
    */
   isProfileMember(): boolean {
     return !!this.getMembership();
+  }
+
+  /**
+   * Checks if the user of this context is a member of the profile.
+   *
+   * @return {boolean} Whether the user of this context is a member of the profile.
+   */
+  isActiveProfileMember(...roles: ProfileMembershipRole[]): boolean {
+    return (
+      this.isProfileMember() &&
+      this.user!.status === UserStatus.Active &&
+      this.getMembership(...roles)?.relationStatus === UserStatus.Active
+    );
   }
 
   /**
