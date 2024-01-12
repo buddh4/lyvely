@@ -1,5 +1,5 @@
 import { getPermission, IPermission, registerPermissions } from '@lyvely/interface';
-import { useProfilePermissionsStore, useProfileStore } from '@/profiles';
+import { useProfilePermissionsStore } from '@/profiles';
 import { isPlainObject } from '@lyvely/common';
 import { computed } from 'vue';
 
@@ -17,10 +17,15 @@ export const usePermissions = (...permissions: Array<string | IPermission<any>>)
 
   // TODO: Support global user permissions
   const isAllowed = computed(() =>
+    useProfilePermissionsStore().verifyAnyPermission(...permissions),
+  );
+
+  const isAllowedStrict = computed(() =>
     useProfilePermissionsStore().verifyEachPermission(...permissions),
   );
 
   return {
     isAllowed,
+    isAllowedStrict,
   };
 };

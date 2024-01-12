@@ -96,6 +96,31 @@ export const useProfilePermissionsStore = defineStore('profile-permissions-store
     );
   }
 
+  function verifyAnyPermission(...permissions: Array<string | IProfilePermission>) {
+    const currentProfile = useProfileStore().profile;
+
+    if (!currentProfile) {
+      console.error('checkPermissions called without existing profile');
+      return false;
+    }
+
+    const authStore = useAuthStore();
+    const { user } = authStore;
+    const { userRelations, userOrganizationRelations } = currentProfile;
+
+    // TODO: How to handle different kinds of relation?
+    return useProfilePermissionsManager().verifyAny(
+      permissions,
+      {
+        relationStatus: currentProfile.getMembership()?.relationStatus,
+        userStatus: user?.status,
+        role: getProfileRelationRole(user, userRelations, userOrganizationRelations),
+      },
+      currentProfile as IProfilePermissionObject,
+      getPermissionConfig(),
+    );
+  }
+
   function getPermissionConfig() {
     return useAppConfigStore().get('permissions', {
       visitorStrategy: { mode: VisitorMode.Disabled },
@@ -127,5 +152,6 @@ export const useProfilePermissionsStore = defineStore('profile-permissions-store
     setActiveRole,
     getPermissions,
     verifyEachPermission,
+    verifyAnyPermission,
   };
 });

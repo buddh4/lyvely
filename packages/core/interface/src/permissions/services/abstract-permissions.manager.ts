@@ -107,7 +107,7 @@ export abstract class AbstractPermissionsManager<
    * @returns {boolean} - Returns true if any of the permissions or permission ids are valid, false otherwise.
    * @private
    */
-  private verifyAny(
+  public verifyAny(
     permissionOrIds: Array<TPermission | string>,
     subject: TSubject,
     object: TObject,
