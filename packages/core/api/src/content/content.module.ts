@@ -19,6 +19,7 @@ import { uniqueId } from 'lodash';
 import { ContentController, ContentStreamController } from './controllers';
 import { LyvelyModule } from '@/core';
 import { CONTENT_MODULE_ID, ContentStreamFeature } from '@lyvely/interface';
+import { ContentPermissionsService } from '@/content/services/content-permissions.service';
 
 const ContentModel = MongooseModule.forFeature([
   {
@@ -60,6 +61,7 @@ const ContentScoreActionModel = MongooseModule.forFeature([
     ContentScoreService,
     ContentScoreDao,
     ContentStreamService,
+    ContentPermissionsService,
   ],
   exports: [
     ContentService,
@@ -67,6 +69,7 @@ const ContentScoreActionModel = MongooseModule.forFeature([
     ContentScoreService,
     ContentTypeRegistry,
     ContentEventPublisher,
+    ContentPermissionsService,
   ],
 })
 export class ContentCoreModule {}

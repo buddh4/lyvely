@@ -11,7 +11,7 @@ import { UserNotification } from '../schemas';
 import { TestNotification } from '../notifications';
 import { SingleUserSubscription } from '@/user-subscriptions';
 import { AbstractStreamController } from '@/streams';
-import { Controller } from '@/core';
+import { Controller } from '@/common';
 
 @Controller(API_NOTIFICATIONS)
 export class NotificationsController

@@ -29,6 +29,8 @@ export class ContentPermissionsService {
    * Initializes a new instance of the `ProfilePermissionsService` class.
    *
    * @param configService - The service used to fetch configuration related to permissions.
+   * @param globalPermissionsService
+   * @param profilePermissionsService
    */
   constructor(
     private readonly configService: ConfigService<ServerConfiguration>,

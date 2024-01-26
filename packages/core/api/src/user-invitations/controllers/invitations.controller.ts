@@ -11,7 +11,8 @@ import {
   InvitationRequest,
   UserInvitationsEndpoints,
 } from '@lyvely/interface';
-import { Controller, Public, UseClassSerializer } from '@/core';
+import { Public, UseClassSerializer } from '@/core';
+import { Controller } from '@/common';
 import { UserRequest } from '@/users';
 
 @Controller(API_USER_INVITATIONS)

@@ -2,13 +2,13 @@ import { Injectable, CanActivate, ExecutionContext, Inject } from '@nestjs/commo
 import { ProfilesService } from '../services';
 import { ProfileRequest } from '../types';
 import { isValidObjectId } from '@lyvely/common';
-import { verifyProfileRoleLevel } from '@lyvely/interface';
+import { ProfileRelationRole, verifyProfileRoleLevel } from '@lyvely/interface';
 import { ProfileVisibilityPolicy } from '../policies';
 import { ProfileDao } from '../daos';
 import { Reflector } from '@nestjs/core';
 import { InjectPolicy } from '@/policies';
 import { ProfileContext } from '../models';
-import { getProfileRoleFromContext } from '../decorators';
+import { META_PROFILE_ROLE_LEVEL } from '../profiles.constants';
 
 /**
  * Represents a base guard for profile context access.
@@ -59,8 +59,15 @@ export class BaseProfileGuard implements CanActivate {
   }
 
   private verifyProfileRoleLevel(profileContext: ProfileContext, context: ExecutionContext) {
-    const roleRestriction = getProfileRoleFromContext(context, this.reflector);
+    const roleRestriction = this.getProfileRoleFromContext(context);
     if (!roleRestriction) return true;
     return verifyProfileRoleLevel(profileContext.getRole(), roleRestriction);
+  }
+
+  private getProfileRoleFromContext(context: ExecutionContext) {
+    return this.reflector.getAllAndOverride<ProfileRelationRole | undefined>(
+      META_PROFILE_ROLE_LEVEL,
+      [context.getHandler(), context.getClass()],
+    );
   }
 }

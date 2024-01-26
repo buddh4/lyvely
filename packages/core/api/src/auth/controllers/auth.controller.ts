@@ -20,8 +20,9 @@ import {
 } from '@lyvely/interface';
 import { ConfigService } from '@nestjs/config';
 import ms from 'ms';
-import { Controller, Public, UseClassSerializer } from '@/core';
+import { Public, UseClassSerializer } from '@/core';
 import { ConfigurationPath } from '@/config';
+import { Controller } from '@/common';
 
 @Controller(API_AUTH)
 @UseClassSerializer()

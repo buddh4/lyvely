@@ -1,9 +1,9 @@
 import { Injectable, CanActivate, ExecutionContext, Inject } from '@nestjs/common';
 import { ProfileRequest } from '../types';
 import { ProfileContext } from '../models';
-import { getPermissionsFromContext, getStrictPermissionsFromContext } from '@/permissions';
-import { BaseProfileGuard } from './base-profile-guard.service';
-import { ProfilePermissionsService } from '@/profiles';
+import { BaseProfileGuard } from './base-profile.guard';
+import { ProfilePermissionsService } from '../services';
+import { META_PERMISSIONS_SOME, META_PERMISSIONS_STRICT } from '../profiles.constants';
 
 /**
  * Represents a guard for profile context access.
@@ -29,12 +29,30 @@ export class ProfileGuard extends BaseProfileGuard implements CanActivate {
   }
 
   verifyPermissions(contentContext: ProfileContext, context: ExecutionContext) {
-    const strictPermissions = getStrictPermissionsFromContext(context, this.reflector);
-    const permissions = getPermissionsFromContext(context, this.reflector);
+    const strictPermissions = this.getStrictPermissionsFromContext(context);
+    const permissions = this.getPermissionsFromContext(context);
 
     return (
       this.profilePermissionService.verifyAnyPermission(contentContext, ...permissions) &&
       this.profilePermissionService.verifyEveryPermission(contentContext, ...strictPermissions)
+    );
+  }
+
+  private getStrictPermissionsFromContext(context: ExecutionContext) {
+    return (
+      this.reflector.getAllAndMerge<string[]>(META_PERMISSIONS_STRICT, [
+        context.getHandler(),
+        context.getClass(),
+      ]) || []
+    );
+  }
+
+  private getPermissionsFromContext(context: ExecutionContext) {
+    return (
+      this.reflector.getAllAndMerge<string[]>(META_PERMISSIONS_SOME, [
+        context.getHandler(),
+        context.getClass(),
+      ]) || []
     );
   }
 }

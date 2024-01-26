@@ -103,6 +103,7 @@ export class DataPoint<T extends DataPointEntity<T> = DataPointEntity<any>>
       assignEntityData(this, obj);
     }
 
+    this.oid = assureObjectId(content.oid);
     this.pid = assureObjectId(profile._id);
     this.uid =
       content.timeSeriesConfig.userStrategy === UserAssignmentStrategy.PerUser

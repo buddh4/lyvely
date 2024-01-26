@@ -7,13 +7,12 @@ import { DocumentNotFoundException } from '@lyvely/interface';
 import { isValidObjectId, Type } from '@lyvely/common';
 import { Content, ProfileContentContext } from '../schemas';
 import {
-  CONTENT_TYPE_KEY,
-  CONTENT_ID_PARAM_KEY,
-  CONTENT_DEFAULT_ID_PARAM_KEY,
+  META_CONTENT_TYPE,
+  META_CONTENT_ID_PARAM,
+  META_CONTENT_DEFAULT_ID_PARAM,
 } from '../content.constants';
-import { BaseProfileGuard } from '@/profiles';
+import { BaseProfileGuard, META_PERMISSIONS_SOME, META_PERMISSIONS_STRICT } from '@/profiles';
 import { ContentPermissionsService } from '@/content/services/content-permissions.service';
-import { getPermissionsFromContext, getStrictPermissionsFromContext } from '@/permissions';
 
 /**
  * This guard will try to extract a content id, usually by :cid parameter and will add a ProfileContentContext to the
@@ -97,8 +96,8 @@ export abstract class AbstractContentGuard<C extends Content = Content>
   }
 
   verifyPermissions(contentContext: ProfileContentContext, context: ExecutionContext) {
-    const strictPermissions = getStrictPermissionsFromContext(context, this.reflector);
-    const permissions = getPermissionsFromContext(context, this.reflector);
+    const strictPermissions = this.getStrictPermissionsFromContext(context);
+    const permissions = this.getPermissionsFromContext(context);
 
     return (
       this.contentPermissionsService.verifyAnyPermission(contentContext, ...permissions) &&
@@ -106,8 +105,26 @@ export abstract class AbstractContentGuard<C extends Content = Content>
     );
   }
 
+  private getStrictPermissionsFromContext(context: ExecutionContext) {
+    return (
+      this.reflector.getAllAndMerge<string[]>(META_PERMISSIONS_STRICT, [
+        context.getHandler(),
+        context.getClass(),
+      ]) || []
+    );
+  }
+
+  private getPermissionsFromContext(context: ExecutionContext) {
+    return (
+      this.reflector.getAllAndMerge<string[]>(META_PERMISSIONS_SOME, [
+        context.getHandler(),
+        context.getClass(),
+      ]) || []
+    );
+  }
+
   getContentTypeFromContext(context: ExecutionContext) {
-    return this.reflector.getAllAndOverride<string | Type<Content>>(CONTENT_TYPE_KEY, [
+    return this.reflector.getAllAndOverride<string | Type<Content>>(META_CONTENT_TYPE, [
       context.getHandler(),
       context.getClass(),
     ]);
@@ -115,10 +132,10 @@ export abstract class AbstractContentGuard<C extends Content = Content>
 
   getContentIdParamFromContext(context: ExecutionContext) {
     return (
-      this.reflector.getAllAndOverride<string>(CONTENT_ID_PARAM_KEY, [
+      this.reflector.getAllAndOverride<string>(META_CONTENT_ID_PARAM, [
         context.getHandler(),
         context.getClass(),
-      ]) || CONTENT_DEFAULT_ID_PARAM_KEY
+      ]) || META_CONTENT_DEFAULT_ID_PARAM
     );
   }
 }

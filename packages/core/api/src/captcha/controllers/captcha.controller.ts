@@ -1,13 +1,14 @@
 import { Get, Header, Query, Post, HttpCode, Body, StreamableFile } from '@nestjs/common';
 import { CaptchaService } from '../services';
 import { Readable } from 'stream';
-import { Controller, Public } from '@/core';
+import { Public } from '@/core';
 import {
   API_CAPTCHA,
   CaptchaChallenge,
   CaptchaEndpoint,
   CaptchaEndpoints,
 } from '@lyvely/interface';
+import { Controller } from '@/common';
 
 @Controller(API_CAPTCHA)
 export class CaptchaController implements CaptchaEndpoint {

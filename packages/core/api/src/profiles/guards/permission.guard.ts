@@ -1,13 +1,10 @@
 import { CanActivate, ExecutionContext, Inject, Injectable } from '@nestjs/common';
-import {
-  getPermissionsFromContext,
-  getStrictPermissionsFromContext,
-  GlobalPermissionsService,
-} from '@/permissions';
+import { GlobalPermissionsService } from '@/permissions';
 import { Reflector } from '@nestjs/core';
 import { ProfilePermissionsService } from '../services';
 import { BasePermissionType, getPermission, IntegrityException } from '@lyvely/interface';
 import { User } from '@/users';
+import { META_PERMISSIONS_SOME, META_PERMISSIONS_STRICT } from '@/profiles';
 
 @Injectable()
 export class PermissionGuard implements CanActivate {
@@ -21,19 +18,33 @@ export class PermissionGuard implements CanActivate {
   private profilePermissionsService: ProfilePermissionsService;
 
   canActivate(context: ExecutionContext): boolean {
-    const permissionIds = getPermissionsFromContext(context, this.reflector);
+    const permissionIds = this.getPermissionsFromContext(context);
     const request = context.switchToHttp().getRequest();
 
     const { context: requestContext, user } = request;
 
     if (!permissionIds?.length) return true;
     return (
-      this.verifyAny(requestContext, user, getPermissionsFromContext(context, this.reflector)) &&
-      this.verifyEach(
-        requestContext,
-        user,
-        getStrictPermissionsFromContext(context, this.reflector),
-      )
+      this.verifyAny(requestContext, user, this.getPermissionsFromContext(context)) &&
+      this.verifyEach(requestContext, user, this.getStrictPermissionsFromContext(context))
+    );
+  }
+
+  private getStrictPermissionsFromContext(context: ExecutionContext) {
+    return (
+      this.reflector.getAllAndMerge<string[]>(META_PERMISSIONS_STRICT, [
+        context.getHandler(),
+        context.getClass(),
+      ]) || []
+    );
+  }
+
+  private getPermissionsFromContext(context: ExecutionContext) {
+    return (
+      this.reflector.getAllAndMerge<string[]>(META_PERMISSIONS_SOME, [
+        context.getHandler(),
+        context.getClass(),
+      ]) || []
     );
   }
 

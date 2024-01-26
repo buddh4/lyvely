@@ -13,7 +13,8 @@ import {
   UserAccountEndpoints,
 } from '@lyvely/interface';
 import { UserRequest, UserThrottle, UserThrottlerGuard } from '@/users';
-import { Controller, UseClassSerializer } from '@/core';
+import { UseClassSerializer } from '@/core';
+import { Controller } from '@/common';
 import { UserAccountService, AccountAvatarService } from '../services';
 import { ParseFilePipeBuilder, MimeTypeValidator } from '@/files';
 import { FileInterceptor } from '@nestjs/platform-express';

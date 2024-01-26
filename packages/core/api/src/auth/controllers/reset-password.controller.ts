@@ -6,11 +6,12 @@ import {
   ResetPassword,
   ResetPasswordEndpoints,
 } from '@lyvely/interface';
-import { Controller, Public, UseClassSerializer } from '@/core';
+import { Public, UseClassSerializer } from '@/core';
 import { ResetPasswordService } from '../services';
 import { JwtResetPasswordGuard, LoginThrottlerGuard } from '../guards';
 import { CaptchaGuard } from '@/captcha';
 import { UserRequest, UserThrottle } from '@/users';
+import { Controller } from '@/common';
 
 @Controller(API_RESET_PASSWORD)
 @UseClassSerializer()

@@ -1,7 +1,7 @@
 import { Sse, Req, Param } from '@nestjs/common';
 import { UserRequest } from '@/users';
 import { LiveService } from '../services';
-import { Controller } from '@/core';
+import { Controller } from '@/common';
 
 @Controller('/live')
 export class LiveController {

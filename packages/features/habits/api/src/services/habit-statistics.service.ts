@@ -1,5 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { DocumentIdentity, IntegrityException, Model, Profile, User } from '@lyvely/api';
+import {
+  assureObjectId,
+  DocumentIdentity,
+  IntegrityException,
+  Model,
+  Profile,
+  User,
+} from '@lyvely/api';
 import { Habit } from '../schemas';
 import { CalendarInterval, getWeekOfYear } from '@lyvely/dates';
 import { DataPoint, DataPointValueType, InjectDataPointModel } from '@lyvely/time-series';
@@ -24,7 +31,11 @@ export class HabitStatisticsService {
   @InjectDataPointModel(Habit.name)
   protected model: Model<DataPoint>;
 
-  aggregateHabitValues(profile: Profile, habit: Habit, options: IHabitValueAggregateOptions) {
+  async aggregateHabitValues(
+    profile: Profile,
+    habit: Habit,
+    options: IHabitValueAggregateOptions,
+  ): Promise<Array<{ _id: number; value: number }>> {
     if (habit.timeSeriesConfig.valueType !== DataPointValueType.Number)
       throw new IntegrityException('Can not aggregate non number habit values.');
 
@@ -35,17 +46,20 @@ export class HabitStatisticsService {
 
     const { matchFilter, groupId } = this.getGroupIdAndMatchFilter(profile, habit, options);
     const group = this.getAggregationGroup(groupId, options.accumulation);
+
     return this.model
       .aggregate([
         {
           $match: {
+            oid: habit.oid,
             pid: habit.pid,
-            cid: habit.id,
+            cid: habit._id,
             ...matchFilter,
           },
         },
       ])
       .group(group)
+      .sort({ _id: 1 })
       .exec();
   }
 

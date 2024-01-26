@@ -1,10 +1,11 @@
 import { Get, Res, Param, NotFoundException, Header, Logger } from '@nestjs/common';
-import { Controller, Public, UseClassSerializer } from '@/core';
+import { Public, UseClassSerializer } from '@/core';
 import { isGuid } from '@lyvely/common';
 import { getLocalUploadFilePath } from '@/files';
 import fs from 'fs';
 import { Response } from 'express';
 import { ConfigService } from '@nestjs/config';
+import { Controller } from '@/common';
 
 @Controller('avatars')
 @UseClassSerializer()

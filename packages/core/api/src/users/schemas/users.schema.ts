@@ -21,7 +21,7 @@ import {
   GlobalPermissionRole,
   IUserRelationPermissionSetting,
 } from '@lyvely/interface';
-import { Avatar, AvatarSchema } from '@/avatars';
+import { Avatar, AvatarSchema } from '@/avatars/schemas';
 import { UserEmail, UserEmailSchema } from './user-email.schema';
 import { ProfilesCount, ProfilesCountSchema } from './profiles-count.schema';
 import {

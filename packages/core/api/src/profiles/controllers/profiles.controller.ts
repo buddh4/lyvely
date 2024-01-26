@@ -9,7 +9,8 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
-import { Controller, UseClassSerializer } from '@/core';
+import { UseClassSerializer } from '@/core';
+import { Controller } from '@/common';
 import { mapType } from '@lyvely/common';
 import {
   API_PROFILES,

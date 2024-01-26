@@ -12,7 +12,7 @@ import {
 } from '@lyvely/interface';
 import { mapType } from '@lyvely/common';
 import { ProtectedProfileContext } from '../models';
-import { Controller } from '@/core';
+import { Controller } from '@/common';
 
 @Controller(API_PROFILE_RELATION_INFOS)
 @UseInterceptors(ClassSerializerInterceptor)
