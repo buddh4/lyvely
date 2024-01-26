@@ -1,6 +1,34 @@
 import { CalendarInterval } from '../models';
-import { dateTime, CalendarDateTime, ICalendarPreferences, IDateTime } from '../interfaces';
+import {
+  dateTime,
+  CalendarDateTime,
+  ICalendarPreferences,
+  IDateTime,
+  ITiming,
+} from '../interfaces';
 
+/**
+ * Converts a CalendarDateTime object into a timing-id string.
+ *
+ * A tid can have the following format:
+ *
+ * - Daily: 'Y:2023;Q:01;M:02;D:01'
+ * - Weekly: 'Y:2023;Q:01;M:01;W:01'
+ * - Monthly: 'Y:2023;Q:01;M:01'
+ * - Quarterly: 'Y:2023;Q:01'
+ * - Yearly: 'Y:2023'
+ * - Unscheduled: 'U'
+ *
+ * Note: The week number is exclusively included in the weekly tid. This is due to the possibility of a week
+ * overlapping into a different year, quarter, or month. For instance, the last week of a year may extend into the new
+ * year.
+ *
+ * @param {CalendarDateTime} cd - The CalendarDateTime object to convert.
+ * @param {number} [level=1] - The level of detail for the timing identifier.
+ * @param {string} [locale='en'] - The locale to use for formatting the date.
+ * @param {ICalendarPreferences} [preferences] - Additional preferences for formatting the date.
+ * @returns {string} - The timing identifier string.
+ */
 export function toTimingId(
   cd: CalendarDateTime,
   level = CalendarInterval.Daily,
@@ -27,29 +55,31 @@ export function toTimingId(
   return result + `;D:${pad(d.getDate())}`;
 }
 
+/**
+ * Converts a CalendarDateTime object to a weekly timing-id string.
+ *
+ * @param {CalendarDateTime} cd - The CalendarDateTime object to convert.
+ * @param {string} locale - The locale to use for the conversion.
+ * @param {ICalendarPreferences} [preferences] - The optional calendar preferences object.
+ *
+ * @return {string} The WeekTimingId string representation of the given CalendarDateTime.
+ */
 export function toWeekTimingId(
   cd: CalendarDateTime,
   locale: string,
   preferences?: ICalendarPreferences,
 ): string {
   const date = dateTime(cd, locale, preferences);
-  let weekYear: number,
-    weekOfYear: number,
-    month: number,
-    quarter: number,
-    firstDayOfWeek: IDateTime;
+  let weekYear: number, month: number, quarter: number, firstDayOfWeek: IDateTime;
+  const weekOfYear = getWeekOfYear(date, locale, preferences);
 
   // Use ISO week date calculations if yearStart === 0
   if (preferences?.yearStart === 0) {
     weekYear = date.isoWeekYear();
-    weekOfYear = date.isoWeek();
-    // Monday
-    firstDayOfWeek = date.isoWeekday(1);
+    firstDayOfWeek = date.isoWeekday(1); // Monday
   } else {
     weekYear = date.weekYear();
-    weekOfYear = date.week();
-    // Locale aware first day of week
-    firstDayOfWeek = date.weekday(0);
+    firstDayOfWeek = date.weekday(0); // Locale aware first day of week
   }
 
   // Consider edge cases
@@ -72,6 +102,71 @@ function pad(number: number): string {
   return number.toString().padStart(2, '0');
 }
 
+/**
+ * Calculates the week of the year for the given date and preferences.
+ *
+ * @param {CalendarDateTime} cd - The calendar date and time.
+ * @param {string} locale - The locale used for formatting the date.
+ * @param {ICalendarPreferences} [preferences] - The calendar preferences.
+ *
+ * @returns {number} The week of the year.
+ */
+export function getWeekOfYear(
+  cd: CalendarDateTime,
+  locale: string,
+  preferences?: ICalendarPreferences,
+) {
+  const date = dateTime(cd, locale, preferences);
+  return preferences?.yearStart === 0 ? date.isoWeek() : date.week();
+}
+
+/**
+ * Parses a timing ID string into an object of timing values.
+ *
+ * @param {string} tid - The timing ID string to parse.
+ *
+ * @returns {ITiming} - An object representing the parsed timing values.
+ */
+export function parseTimingId(tid: string): ITiming {
+  return tid.split(';').reduce(
+    (timing, part) => {
+      const tidKey = part[0];
+      const value = +part.substring(2, part.length);
+      switch (tidKey.toUpperCase()) {
+        case 'Y':
+          timing.year = value;
+          break;
+        case 'Q':
+          timing.quarter = value;
+          break;
+        case 'M':
+          timing.month = value;
+          break;
+        case 'W':
+          timing.week = value;
+          break;
+        case 'D':
+          timing.day = value;
+          break;
+      }
+      return timing;
+    },
+    { tid } as ITiming,
+  );
+}
+
+/**
+ * Creates all possible timing-ids for a given date and level, based on the specified parameters.
+ *
+ * If the selected level is 'Unscheduled' (default), all possible 'tids' will be returned. On the contrary,
+ * if a different level is chosen, 'tids' associated with non-included levels will be excluded.
+ *
+ * @param {CalendarDateTime} d - The date for which to retrieve timing ids.
+ * @param {string} locale - The locale to use for formatting the timing ids.
+ * @param {CalendarInterval} [level=CalendarInterval.Unscheduled] - The level of timing ids to retrieve.
+ * @param {ICalendarPreferences} [preferences] - The calendar preferences to use for formatting the timing ids.
+ * @returns {string[]} - An array of timing ids for the given date.
+ */
 export function getTimingIds(
   d: CalendarDateTime,
   locale: string,

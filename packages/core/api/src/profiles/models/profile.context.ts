@@ -9,7 +9,6 @@ import {
   IProfilePermissionObject,
   ProfileMembershipRole,
   ProfileRelationRole,
-  ProfileVisibilityLevel,
   UserStatus,
 } from '@lyvely/interface';
 import { IUserWithProfileRelation } from '../interfaces/user-with-profile-relation.interface';

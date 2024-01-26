@@ -9,7 +9,7 @@ import {
 } from '@lyvely/interface';
 import { ProfileMembershipPolicy } from '@/profiles/policies/profile-membership-policy';
 import { InjectPolicy } from '@/policies';
-import { ContentPermissionsService } from '@/content/services/content-permissions.service';
+import { ContentPermissionsService } from '../services/content-permissions.service';
 
 /**
  * Represents the default ContentManagePolicy which applies to content entries unless the content type

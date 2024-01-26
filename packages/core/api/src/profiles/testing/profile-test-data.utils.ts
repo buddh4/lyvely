@@ -16,7 +16,7 @@ import {
   UserProfile,
   UserProfileRelation,
 } from '../schemas';
-import { ProtectedProfileContext } from '../models';
+import { ProfileContext, ProtectedProfileContext } from '../models';
 import { Model, createBaseDocumentInstance, createObjectId } from '@/core';
 import { getObjectId as mongoSeedingGetObjectId } from 'mongo-seeding';
 
@@ -188,12 +188,17 @@ export class ProfileTestDataUtils extends UserTestDataUtils {
   /**
    * @deprecated use createSimpleGroup instead
    */
-  async createSmallGroup(): Promise<{ owner: User; user: User; group: Profile }> {
-    const { user: owner } = await this.createUserAndProfile();
+  async createSmallGroup(): Promise<{
+    owner: User;
+    ownerContext: ProfileContext;
+    user: User;
+    group: Profile;
+  }> {
+    const { user: owner, context } = await this.createUserAndProfile();
     const { user } = await this.createUserAndProfile('user2');
     const group = await this.createGroupProfile(user);
     await this.addProfileMember(group, user);
-    return { owner, user, group };
+    return { owner, ownerContext: context, user, group };
   }
 
   async createGroupProfile(

@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { IContentPolicy } from '../interfaces';
 import { ProfileContentContext } from '../schemas';
 import { InjectPolicy } from '@/policies';
-import { ContentManagePolicy } from '@/content';
+import { ContentManagePolicy } from './content-manage.policy';
 import { ContentPermissionsService } from '@/content/services/content-permissions.service';
 import { BasePermissionType, getContentWritePermissionId, getPermission } from '@lyvely/interface';
 

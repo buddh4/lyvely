@@ -3,6 +3,7 @@ export * from './auth';
 export * from './avatars';
 export * from './captcha';
 export * from './content';
+export * from './common';
 export * from './core';
 export * from './features';
 export * from './files';

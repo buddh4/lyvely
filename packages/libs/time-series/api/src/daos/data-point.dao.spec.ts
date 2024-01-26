@@ -164,7 +164,7 @@ describe('DataPointDao', () => {
       expect(updated!.tid).toEqual(toTimingId(date));
     });
 
-    it('assure meta pid,uid,cid is not updatable', async () => {
+    it('assure pid,uid,cid is not updatable', async () => {
       const date = new Date('2022-02-20');
       const { dataPoint } = await createEntity(date, CalendarInterval.Daily);
       await dao.updateOneSetById(dataPoint._id, {

@@ -65,9 +65,10 @@ export class HabitTestDataUtil extends ProfileTestDataUtils {
     profile: Profile,
     habit: Habit,
     date: CalendarDate,
+    value?: any,
   ): Promise<NumberDataPoint> {
     const log = new this.HabitDataPointModel(
-      new NumberDataPoint(profile, user, habit, { date: toDate(date) }),
+      new NumberDataPoint(profile, user, habit, { date: toDate(date), value }),
     );
     await log.save();
     return createBaseDocumentInstance(NumberDataPoint, log.toObject());

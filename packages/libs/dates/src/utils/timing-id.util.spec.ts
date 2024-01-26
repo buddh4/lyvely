@@ -5,6 +5,7 @@ import {
   CalendarInterval,
   ICalendarPreferences,
   useDayJsLocaleManager,
+  parseTimingId,
 } from '../index';
 
 describe('time series utils', () => {
@@ -244,6 +245,75 @@ describe('time series utils', () => {
       it('last day of 2021', async () => {
         const timingId = toTimingId('2021-12-31', CalendarInterval.Daily);
         expect(timingId).toEqual('Y:2021;Q:4;M:12;D:31');
+      });
+    });
+
+    describe('parseTimingId', function () {
+      it('parse unscheduled tid', () => {
+        const timing = parseTimingId('U');
+        expect(timing).toEqual({
+          tid: 'U',
+          year: undefined,
+          quarter: undefined,
+          month: undefined,
+          week: undefined,
+          day: undefined,
+        });
+      });
+      it('parse yearly tid', () => {
+        const timing = parseTimingId('Y:2023');
+        expect(timing).toEqual({
+          tid: 'Y:2023',
+          year: 2023,
+          quarter: undefined,
+          month: undefined,
+          week: undefined,
+          day: undefined,
+        });
+      });
+      it('parse quarterly tid', () => {
+        const timing = parseTimingId('Y:2023;Q:1');
+        expect(timing).toEqual({
+          tid: 'Y:2023;Q:1',
+          year: 2023,
+          quarter: 1,
+          month: undefined,
+          week: undefined,
+          day: undefined,
+        });
+      });
+      it('parse monthly tid', () => {
+        const timing = parseTimingId('Y:2023;Q:1;M:03');
+        expect(timing).toEqual({
+          tid: 'Y:2023;Q:1;M:03',
+          year: 2023,
+          quarter: 1,
+          month: 3,
+          week: undefined,
+          day: undefined,
+        });
+      });
+      it('parse weekly tid', () => {
+        const timing = parseTimingId('Y:2023;Q:1;M:03;W:13');
+        expect(timing).toEqual({
+          tid: 'Y:2023;Q:1;M:03;W:13',
+          year: 2023,
+          quarter: 1,
+          month: 3,
+          week: 13,
+          day: undefined,
+        });
+      });
+      it('parse daily tid', () => {
+        const timing = parseTimingId('Y:2022;Q:1;M:02;D:20');
+        expect(timing).toEqual({
+          tid: 'Y:2022;Q:1;M:02;D:20',
+          year: 2022,
+          quarter: 1,
+          month: 2,
+          week: undefined,
+          day: 20,
+        });
       });
     });
   });
