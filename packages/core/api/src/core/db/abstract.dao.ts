@@ -321,7 +321,7 @@ export abstract class AbstractDao<T extends BaseDocument<T>> {
       query.collation(options.collation);
     }
 
-    const model = await query.lean();
+    const model = await query.lean().exec();
     return model ? this.constructModel(model) : null;
   }
 

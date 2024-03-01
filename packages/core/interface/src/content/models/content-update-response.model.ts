@@ -1,4 +1,4 @@
-import { Expose, Type } from 'class-transformer';
+import { Expose } from 'class-transformer';
 import { TagModel } from '@/profiles';
 import { IContent } from '../interfaces';
 import { PropertyType } from '@lyvely/common';

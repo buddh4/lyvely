@@ -8,7 +8,7 @@ import {
   DocumentNotFoundException,
   isMultiUserProfile as _isMultiUserProfile,
 } from '@lyvely/interface';
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { usePageStore } from '@/ui';
 import { findByPath } from '@lyvely/common';
 import { useLiveStore } from '@/live';
@@ -84,6 +84,14 @@ export const useProfileStore = defineStore('profile', () => {
       useLiveStore().closeGuestConnection();
     }
     status.setStatus(Status.SUCCESS);
+  }
+
+  function onSwitchProfile(
+    handler: (profile: ProfileWithRelationsModel, oldProfile?: ProfileWithRelationsModel) => void,
+  ) {
+    watch(profile, (newProfile, oldProfile) => {
+      if (newProfile && newProfile?.id !== oldProfile?.id) handler(newProfile, oldProfile);
+    });
   }
 
   function updateScore(value: number) {
@@ -193,6 +201,7 @@ export const useProfileStore = defineStore('profile', () => {
     getMemberUserInfo,
     getRoute,
     isMultiUserProfile,
+    onSwitchProfile,
     ...status,
   };
 });

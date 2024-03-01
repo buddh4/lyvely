@@ -12,7 +12,6 @@ import {
   ContentModule,
   getContentModelDefinition,
   getContentScoreDefinition,
-  PoliciesModule,
   ProfilesModule,
   LyvelyModule,
 } from '@lyvely/api';
@@ -27,9 +26,7 @@ import { ActivityHabitsFeature, HABITS_MODULE_ID, HabitsFeature } from '@lyvely/
   path: __dirname,
   features: [HabitsFeature, ActivityHabitsFeature],
   imports: [
-    CoreModule,
     UsersModule,
-    PoliciesModule,
     ProfilesModule,
     ContentModule.registerContentType(Habit),
     MongooseModule.forFeature([

@@ -125,8 +125,7 @@ function onContentUpdate(evt: ContentUpdateStateLiveEvent) {
 
 const contentStore = useContentStore();
 const onContentCreated = (content: ContentModel) => {
-  // TODO: We need to filter by all active filters here
-  if (filter.value.parentId === content.meta.parentId) {
+  if (filter.value.test(content)) {
     stream.addHead([content], true);
   }
 };

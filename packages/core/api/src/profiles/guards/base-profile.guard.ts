@@ -1,4 +1,4 @@
-import { Injectable, CanActivate, ExecutionContext, Inject } from '@nestjs/common';
+import { Injectable, CanActivate, ExecutionContext, Inject, Logger } from '@nestjs/common';
 import { ProfilesService } from '../services';
 import { ProfileRequest } from '../types';
 import { isValidObjectId } from '@lyvely/common';
@@ -30,6 +30,8 @@ export class BaseProfileGuard implements CanActivate {
 
   @Inject()
   protected reflector: Reflector;
+
+  protected logger = new Logger(BaseProfileGuard.name);
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<ProfileRequest>();

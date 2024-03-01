@@ -91,6 +91,34 @@ export const useContentStore = defineStore('content', () => {
     return offContentEvent(type, 'updated', handler);
   }
 
+  function onContentRestored<T extends ContentModel = ContentModel>(
+    type: string,
+    handler: (content: T) => void,
+  ): void {
+    return onContentEvent(type, 'restored', handler);
+  }
+
+  function offContentRestored<T extends ContentModel = ContentModel>(
+    type: string,
+    handler: (content: T) => void,
+  ): void {
+    return offContentEvent(type, 'restored', handler);
+  }
+
+  function onContentArchived<T extends ContentModel = ContentModel>(
+    type: string,
+    handler: (content: T) => void,
+  ): void {
+    return onContentEvent(type, 'archived', handler);
+  }
+
+  function offContentArchived<T extends ContentModel = ContentModel>(
+    type: string,
+    handler: (content: T) => void,
+  ): void {
+    return offContentEvent(type, 'archived', handler);
+  }
+
   function emitPostContentEvent(type: string, event: ContentEventType, content: IContent) {
     eventBus.emit(`content.${type.toLowerCase()}.${event}.post`, content);
   }
@@ -124,5 +152,9 @@ export const useContentStore = defineStore('content', () => {
     onContentUpdated,
     setMilestone,
     offContentUpdated,
+    onContentArchived,
+    offContentArchived,
+    onContentRestored,
+    offContentRestored,
   };
 });

@@ -13,7 +13,7 @@ import { META_PERMISSIONS_SOME, META_PERMISSIONS_STRICT } from '../profiles.cons
  *
  * This guard also includes a check for the @ProfileRoleLevel decorator as well as a profile visibility check.
  *
- * This guard furthermore includes a profile permission checks supporting the @@Permissions and @StrictPermissions decorators
+ * This guard furthermore includes a profile permission checks supporting the @Permissions and @StrictPermissions decorators
  * with global and profile level permissions.
  */
 @Injectable()
@@ -22,7 +22,7 @@ export class ProfileGuard extends BaseProfileGuard implements CanActivate {
   protected profilePermissionService: ProfilePermissionsService;
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    if (!super.canActivate(context)) return false;
+    if (!(await super.canActivate(context))) return false;
 
     const request = context.switchToHttp().getRequest<ProfileRequest>();
     return this.verifyPermissions(request.context, context);

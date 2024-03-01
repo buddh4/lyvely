@@ -28,6 +28,7 @@
       "always",
       [
         "api",
+        "analytics",
         "activities",
         "mixed",
         "docs",

@@ -1,0 +1,21 @@
+{
+  "analytics": {
+    "name": "Analytics",
+    "title": "Analytics",
+    "feature": {
+      "title": "Analytics",
+      "description": "If disabled, the Analytics view and content type will be unavailable."
+    },
+    "charts": {
+      "stream_entry": {
+        "text": "New Chart"
+      },
+      "create" : {
+        "title": "Create Chart"
+      },
+      "edit" : {
+        "title": "Edit Chart"
+      }
+    }
+  }
+}

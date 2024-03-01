@@ -1,0 +1,51 @@
+{
+  "analytics": {
+    "name": "Analytics",
+    "title": "Analytics",
+    "feature": {
+      "title": "Analytics",
+      "description": "If disabled, the Analytics view and content type will be unavailable."
+    },
+    "interval": {
+      "0": "Unscheduled",
+      "1": "Yearly",
+      "2": "Quarterly",
+      "3": "Monthly",
+      "4": "Weekly",
+      "5": "Daily"
+    },
+    "fields": {
+      "interval": "Interval",
+      "type": "Type"
+    },
+    "graphs": {
+      "types": {
+        "score": "Score"
+      },
+      "add": {
+        "title": "Add Data Series"
+      },
+      "fields": {
+        "type": "Type",
+        "name": "Name"
+      }
+    },
+    "charts": {
+      "name": "Chart",
+      "types": {
+        "graph": "Graph",
+        "calendar": "Calendar",
+        "pie": "Pie"
+      },
+      "stream_entry": {
+        "text": "New Chart"
+      },
+      "create" : {
+        "title": "Create Chart"
+      },
+      "edit" : {
+        "title": "Edit Chart"
+      }
+    }
+  }
+}

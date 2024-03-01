@@ -8,6 +8,6 @@ export class ContentGuard extends AbstractContentGuard {
   }
 
   isContentRequired(): boolean {
-    return true;
+    return false;
   }
 }

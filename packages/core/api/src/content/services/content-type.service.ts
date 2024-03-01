@@ -26,12 +26,15 @@ export abstract class ContentTypeService<
   TCreateModel extends CreateContentModel,
   TUpdateModel extends Partial<TCreateModel> = Partial<TCreateModel>,
 > {
+  /** Content type specific dao, used for general data access. **/
+  protected abstract contentDao: ContentTypeDao<T>;
+
+  /** Class specific logger. **/
+  protected abstract logger: Logger;
+
   /** ProfileTagsService, responsible for creating new tags assigned to content. **/
   @Inject()
   protected profileTagsService: ProfileTagsService;
-
-  /** Content type specific dao, used for general data access. **/
-  protected abstract contentDao: ContentTypeDao<T>;
 
   /** Generic content dao, e.g. used for accessing and updating parent content. **/
   @Inject()
@@ -40,9 +43,6 @@ export abstract class ContentTypeService<
   /** ContentEventPublisher, responsible for triggering content specific events. **/
   @Inject()
   protected contentEvents: ContentEventPublisher;
-
-  /** Class specific logger. **/
-  protected abstract logger: Logger;
 
   /**
    * Template function, responsible for creating an actual content model by create model.

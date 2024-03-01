@@ -6,7 +6,7 @@ import {
   getCreateContentTypes,
 } from '../registries';
 import { ICreateContentInitOptions } from '../interfaces';
-import { useProfileFeatureStore } from '@/profiles/stores/profile-feature.store';
+import { useProfileFeatureStore } from '@/profiles';
 
 export const useContentCreateStore = defineStore('content-create', () => {
   const contentType = ref<string>();

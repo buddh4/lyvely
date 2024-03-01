@@ -1,0 +1,70 @@
+{
+  "name": "@lyvely/analytics",
+  "version": "0.1.0-alpha3",
+  "description": "Lyvely policy module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "lint": "eslint --fix",
+    "format": "prettier \"lib/**/*.ts\" --write",
+    "dev": "nest start",
+    "dev:debug": "nest start --debug --watch",
+    "build": "rm -rf ./dist/* && tsc -p tsconfig.build.json",
+    "prepublish:npm": "npm run build",
+    "publish:npm": "npm publish --access public",
+    "prepublish:next": "npm run build",
+    "publish:next": "npm publish --access public --tag next",
+    "prerelease": "npm run build",
+    "test": "jest --passWithNoTests"
+  },
+  "author": "Julian Harrer",
+  "license": "AGPL-3.0",
+  "dependencies": {
+    "@nestjs/common": "^9.4.0",
+    "@nestjs/mongoose": "^9.2.2",
+    "@lyvely/api": "^0.1.0-alpha3",
+    "@lyvely/common": "^0.1.0-alpha3",
+    "@lyvely/timers": "^0.1.0-alpha3",
+    "@lyvely/time-series": "^0.1.0-alpha3",
+    "@lyvely/habits-interface": "^0.1.0-alpha3",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.0",
+    "reflect-metadata": "^0.1.13"
+  },
+  "devDependencies": {
+    "@lyvely/devtools": "^0.1.0-alpha3",
+    "@lyvely/testing": "^0.1.0-alpha3",
+    "@lyvely/dates": "^0.1.0-alpha3"
+  },
+  "jest": {
+    "rootDir": ".",
+    "setupFilesAfterEnv": [
+      "<rootDir>/jest.setup.ts"
+    ],
+    "testRegex": "[^cypress]*\\.spec\\.ts$",
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/src/$1"
+    },
+    "transform": {
+      "^.+\\.tsx?$": [
+        "ts-jest",
+        {
+          "compilerOptions": {
+            "sourceMap": true,
+            "inlineSourceMap": true
+          }
+        }
+      ]
+    },
+    "collectCoverageFrom": [
+      "src/**/*.ts"
+    ],
+    "coverageDirectory": "./coverage",
+    "testEnvironment": "node"
+  }
+}

@@ -36,9 +36,9 @@
     "packages/features/milestones/api",
     "packages/features/milestones/interface",
     "packages/features/milestones/web",
-    "packages/features/statistics/api",
-    "packages/features/statistics/interface",
-    "packages/features/statistics/web",
+    "packages/features/analytics/api",
+    "packages/features/analytics/interface",
+    "packages/features/analytics/web",
     "packages/features/tasks/api",
     "packages/features/tasks/interface",
     "packages/features/tasks/web"
@@ -63,13 +63,13 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "@nx/devkit": "^16.3.2",
-    "@nx/eslint-plugin": "^16.3.2",
-    "eslint-config-prettier": "^8.8.0",
-    "typescript": "^5.0.4",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "@nx/devkit": "^16.3.2",
+    "@nx/eslint-plugin": "^16.3.2",
+    "eslint-config-prettier": "^8.8.0",
+    "npm-watch": "^0.11.0",
     "@commitlint/cli": "^17.6.1",
     "@commitlint/config-conventional": "^17.6.1",
     "@nestjs/testing": "^9.4.0",

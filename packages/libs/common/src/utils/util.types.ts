@@ -12,6 +12,8 @@ type NonFunctionPropertyNames<T> = {
 
 export type PropertiesOf<T> = T extends T ? Pick<T, NonFunctionPropertyNames<T>> : never;
 
+export type PartialPropertiesOf<T> = Partial<PropertiesOf<T>>;
+
 type FunctionPropertyNames<T> = { [K in keyof T]: T[K] extends Function ? K : never }[keyof T];
 export type FunctionsOf<T> = Pick<T, FunctionPropertyNames<T>>;
 
