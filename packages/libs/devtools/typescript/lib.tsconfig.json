@@ -12,6 +12,7 @@
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "strictPropertyInitialization": false,
+    "noImplicitOverride": true,
     "sourceMap": true,
     "incremental": true,
     "skipLibCheck": true,

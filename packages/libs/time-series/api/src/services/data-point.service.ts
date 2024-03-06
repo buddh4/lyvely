@@ -77,7 +77,7 @@ export abstract class DataPointService<
     // TODO: Use transaction
     const result = await this.findOrCreateDataPointByDate(context, model, date, value);
     await this.updateDataPointValue(context, result.dataPoint, model, value);
-    await this.postProcess(context, model, result);
+    await this.postProcess(context, model, result, date);
     return result;
   }
 
@@ -109,6 +109,7 @@ export abstract class DataPointService<
    * @param {ProfileContext} context - The profile context.
    * @param {TModel} model - The time series model.
    * @param {IDataPointUpdateResult<TDataPointModel>} updateResult - The result of the update operation.
+   * @param updateDate - The date the update is related to.
    * @returns {Promise<void>} A Promise that resolves after the post-processing is complete.
    * @protected
    */
@@ -116,11 +117,12 @@ export abstract class DataPointService<
     context: ProtectedProfileContext,
     model: TModel,
     updateResult: IDataPointUpdateResult<TDataPointModel>,
+    updateDate: CalendarDate,
   ): Promise<void> {
     const { dataPoint } = updateResult;
     const strategy = this.getStrategy(dataPoint.valueType);
     if (strategy) {
-      const update = strategy.postProcess(context.user, model, dataPoint);
+      const update = strategy.postProcess(context.user, model, dataPoint, updateDate);
       if (isPlainObject(update)) {
         await this.dataPointDao.updateOneSetById(dataPoint._id, update);
       }

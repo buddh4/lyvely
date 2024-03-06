@@ -1,6 +1,5 @@
 import { IFeature } from '@lyvely/interface';
-import { ANALYTICS_MODULE_ID, GRAPH_TYPE_SCORE } from './analytics.constants';
-import { registerGraphType } from './registries';
+import { ANALYTICS_MODULE_ID, CHART_SERIES_TYPE_SCORE } from './analytics.constants';
 
 export const AnalyticsFeature: IFeature = {
   id: 'analytics',

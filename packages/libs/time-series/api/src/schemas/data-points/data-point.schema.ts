@@ -12,24 +12,30 @@ import {
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import {
   CalendarInterval,
-  getFullDayDate,
   toTimingId,
   ITiming,
   parseTimingId,
+  getFullDayUTCDate,
 } from '@lyvely/dates';
-import { getNumberEnumValues, DeepPartial, PropertiesOf } from '@lyvely/common';
+import { getNumberEnumValues, PropertiesOf, PartialPropertiesOf } from '@lyvely/common';
 import { DataPointModel } from '@lyvely/time-series-interface';
 import { TimeSeriesContent } from '../time-series-content.schema';
 
 export type DataPointEntity<T> = DataPointModel<TObjectId> & BaseDocument<T>;
 
 /**
- * This is a generic class representing different types of data points in a time series.
- * The subclasses derived from this class are designated to define specific value types.
- * The span of a single data point over a time interval (for example, a year, quarter, month, week, day)
- * depends on the chosen interval level. The interval is usually provided by the related time series content configuration
+ * This class serves as base class for all data point types of a time series.
+ * Subclasses derived from this class are designated to define a custom value type.
+ *
+ * The span of a single data point over a time interval (e.g., a year, quarter, month, week, day) depends on the chosen
+ * interval level. The interval is usually provided by the related time series content configuration
  * which may changes over time. An 'unscheduled' level is utilized when no specific time interval is defined, which
  * means that in this case there will only be one data point per time series.
+ *
+ * When constructing a data point instance the given date object within the initial data object will be transformed
+ * from a non-utc date to an utc date with the same date but without time information and the non-utc date object will
+ * be used to create the timing related fields like tid, year, month, week, day. This way we can use the utc date field for
+ * date aggregations and direct aggregations on the timing fields without any date conversion logic.
  */
 @Schema({ timestamps: true, discriminatorKey: 'valueType' })
 export class DataPoint<T extends DataPointEntity<T> = DataPointEntity<any>>
@@ -88,7 +94,7 @@ export class DataPoint<T extends DataPointEntity<T> = DataPointEntity<any>>
   value: any;
 
   /**
-   * Contains a utc date without time information with the same date described by tid.
+   * Contains the utc date without time information with the same date described by tid.
    * date.toISOString() should always return a date string in the format '2020-02-20T00:00:00.000Z'
    * If a date with timezone information is given in the constructor, we simply translate the given date to utc without
    * respecting timezone differences.
@@ -96,11 +102,16 @@ export class DataPoint<T extends DataPointEntity<T> = DataPointEntity<any>>
   @Prop({ type: Date, required: true, immutable: true })
   date: Date;
 
-  constructor(profile: Profile, user: User, content: TimeSeriesContent<any>, obj?: DeepPartial<T>) {
+  constructor(
+    profile: Profile,
+    user: User,
+    content: TimeSeriesContent<any>,
+    data?: PartialPropertiesOf<T>,
+  ) {
     super(false);
 
-    if (obj) {
-      assignEntityData(this, obj);
+    if (data) {
+      assignEntityData(this, data);
     }
 
     this.oid = assureObjectId(content.oid);
@@ -112,27 +123,27 @@ export class DataPoint<T extends DataPointEntity<T> = DataPointEntity<any>>
     this.cid = assureObjectId(content._id);
     this.interval = content.timeSeriesConfig.interval;
 
-    if (this.date) {
-      this.setDate(profile, this.date);
+    if (data?.date) {
+      this.setDate(profile, data.date);
     }
 
     this.afterInit();
   }
 
   /**
-   * Sets the date and date related properties as tid and timing values as:
+   * Sets the given non-utc date and date related properties as tid and timing values as:
    *
    * - date: Transforms and sets the given date to an utc date without time information.
-   * - tid: Creates and sets a tid for the given date.
+   * - tid: Creates and sets a tid for the given date (non utc).
    * - year, quarter, month, week, day: Sets the timing values according to the generated tid.
    *
    * @param profile
    * @param date
    */
-  setDate(profile: Profile, date: Date) {
+  private setDate(profile: Profile, date: Date) {
     const calendarPreferences = profile.settings?.calendar as CalendarPreferences;
-    this.date = getFullDayDate(date);
-    this.tid = toTimingId(date, this.interval, profile.locale, calendarPreferences);
+    this.date = getFullDayUTCDate(date);
+    this.tid ??= toTimingId(date, this.interval, profile.locale, calendarPreferences);
     Object.assign(this, parseTimingId(this.tid));
   }
 }

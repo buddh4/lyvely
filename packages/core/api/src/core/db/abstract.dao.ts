@@ -625,7 +625,8 @@ export abstract class AbstractDao<T extends BaseDocument<T>> {
       query.collation(options.collation);
     }
 
-    const modifiedCount = (await query.exec()).modifiedCount;
+    const result = await query.exec();
+    const { modifiedCount } = result;
 
     if (modifiedCount && (!options || options.apply !== false)) {
       /**

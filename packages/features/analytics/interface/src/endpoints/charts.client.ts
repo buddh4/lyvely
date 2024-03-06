@@ -2,6 +2,7 @@ import { IChartsEndpointClient } from './charts.endpoint';
 import {
   ChartListModel,
   ChartModel,
+  ChartSeriesDataResponse,
   CreateChartModel,
   UpdateChartModel,
   UpdateChartResponseModel,
@@ -10,6 +11,7 @@ import {
 import repository from './charts.repository';
 import { IProfileApiRequestOptions, unwrapAndTransformResponse } from '@lyvely/interface';
 import { useSingleton } from '@lyvely/common';
+import { ChartSeriesKeyValueArrayData } from '../interfaces';
 
 /**
  * A client for interacting with charts API endpoint.
@@ -103,6 +105,23 @@ export class ChartsClient implements IChartsEndpointClient {
    */
   async getCharts(options?: IProfileApiRequestOptions): Promise<ChartListModel> {
     return unwrapAndTransformResponse(repository.getCharts(options), ChartListModel);
+  }
+
+  /**
+   * Retrieve series data for a given chart id.
+   *
+   * @param {string} cid - The chart id.
+   * @param {IProfileApiRequestOptions} [options] - Optional request options.
+   * @returns {Promise<ChartSeriesDataResponse>} - A promise that resolves to the chart series data response.
+   */
+  async getSeriesData(
+    cid: string,
+    options?: IProfileApiRequestOptions,
+  ): Promise<ChartSeriesDataResponse> {
+    return unwrapAndTransformResponse(
+      repository.getSeriesData(cid, options),
+      ChartSeriesDataResponse,
+    );
   }
 }
 

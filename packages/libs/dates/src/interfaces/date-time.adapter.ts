@@ -61,6 +61,15 @@ export function getFullDayDate(date: CalendarDate): Date {
 }
 
 /**
+ * Returns a date instance without time.
+ * @param date
+ */
+export function getFullDayUTCDate(cd: CalendarDate): Date {
+  const date = getFullDayDate(cd);
+  return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0));
+}
+
+/**
  * Type guard for checking if the given object implements IDateTime
  * @param obj true if obj implements IDateTime otherwise false.
  */

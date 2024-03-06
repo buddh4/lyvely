@@ -1,6 +1,6 @@
 import { HabitsService } from './habits.service';
 import { PropertiesOf } from '@lyvely/common';
-import { UserAssignmentStrategy, User, Profile, assureStringId } from '@lyvely/api';
+import { UserAssignmentStrategy, assureStringId, ProtectedProfileContext } from '@lyvely/api';
 import { CalendarInterval } from '@lyvely/dates';
 import { DataPointValueType, DataPointInputType } from '@lyvely/time-series';
 import { UpdateHabitModel, CreateHabitModel } from '@lyvely/habits-interface';
@@ -34,8 +34,7 @@ describe('HabitService', () => {
   });
 
   const createHabit = async (
-    user: User,
-    profile: Profile,
+    context: ProtectedProfileContext,
     raw?: PropertiesOf<CreateHabitModel>,
   ) => {
     raw = raw || {
@@ -50,13 +49,13 @@ describe('HabitService', () => {
       interval: CalendarInterval.Daily,
     };
 
-    return habitsService.createContent(profile, user, new CreateHabitModel(raw));
+    return habitsService.createContent(context, new CreateHabitModel(raw));
   };
 
   describe('create Habit', () => {
     it('create', async () => {
-      const { user, profile } = await testData.createUserAndProfile();
-      const habit = await createHabit(user, profile);
+      const { context } = await testData.createUserAndProfile();
+      const habit = await createHabit(context);
 
       expect(habit.type).toBe(Habit.name);
       expect(habit.meta.createdAt).toBeDefined();
@@ -71,7 +70,7 @@ describe('HabitService', () => {
 
   describe('applyUpdate', () => {
     it('find habit by object id', async () => {
-      const { user, profile } = await testData.createUserAndProfile();
+      const { user, profile, context } = await testData.createUserAndProfile();
       const habit = await testData.createHabit(user, profile);
 
       habit.applyUpdate(
@@ -86,7 +85,7 @@ describe('HabitService', () => {
         }),
       );
 
-      await habitsService.updateContentSet(profile, user, habit, habit, {
+      await habitsService.updateContentSet(context, habit, habit, {
         tagNames: ['SomeCategory'],
       });
 
@@ -136,7 +135,7 @@ describe('HabitService', () => {
     });
 
     it('update data point config creates revision', async () => {
-      const { user, profile } = await testData.createUserAndProfile();
+      const { user, profile, context } = await testData.createUserAndProfile();
       const habit = await testData.createHabit(
         user,
         profile,
@@ -161,7 +160,7 @@ describe('HabitService', () => {
         }),
       );
 
-      await habitsService.updateContentSet(profile, user, habit, habit);
+      await habitsService.updateContentSet(context, habit, habit);
 
       const search = await habitsService.findByProfileAndId(profile, habit._id);
       expect(search).toBeDefined();
@@ -175,7 +174,7 @@ describe('HabitService', () => {
   });
 
   it('daily revision is not overwritten on same day', async () => {
-    const { user, profile } = await testData.createUserAndProfile();
+    const { user, profile, context } = await testData.createUserAndProfile();
     const habit = await testData.createHabit(
       user,
       profile,
@@ -200,7 +199,7 @@ describe('HabitService', () => {
       }),
     );
 
-    await habitsService.updateContentSet(profile, user, habit, habit);
+    await habitsService.updateContentSet(context, habit, habit);
 
     habit.applyUpdate(
       new UpdateHabitModel({
@@ -213,7 +212,7 @@ describe('HabitService', () => {
       }),
     );
 
-    await habitsService.updateContentSet(profile, user, habit, habit);
+    await habitsService.updateContentSet(context, habit, habit);
 
     const search = await habitsService.findByProfileAndId(profile, habit);
     expect(search).toBeDefined();

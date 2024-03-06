@@ -9,6 +9,7 @@ import {
 import { HabitDataPointDao } from '../daos';
 import { ContentScoreService, ProtectedProfileContext } from '@lyvely/api';
 import { isDefined } from 'class-validator';
+import { CalendarDate, getFullDayUTCDate } from '@lyvely/dates';
 
 @Injectable()
 export class HabitDataPointService extends DataPointService<Habit> {
@@ -22,6 +23,7 @@ export class HabitDataPointService extends DataPointService<Habit> {
     context: ProtectedProfileContext,
     habit: Habit,
     updateResult: IDataPointUpdateResult<NumberDataPoint>,
+    updateDate: CalendarDate,
   ) {
     const { profile, user } = context;
     const { dataPoint } = updateResult;
@@ -32,7 +34,7 @@ export class HabitDataPointService extends DataPointService<Habit> {
     const newScore = HabitDataPointService.calculateDataPointScore(habit, dataPoint.value);
 
     await Promise.all([
-      super.postProcess(context, habit, updateResult),
+      super.postProcess(context, habit, updateResult, updateDate),
       this.scoreService.saveScore(
         profile,
         new HabitScore({
@@ -41,7 +43,13 @@ export class HabitDataPointService extends DataPointService<Habit> {
           content: habit,
           userStrategy: habit.timeSeriesConfig.userStrategy,
           score: newScore - oldScore,
-          date: dataPoint.date,
+          /**
+           * Here we use the date of the update instead of the data point date.
+           * This allows fine granular aggregations even with e.g. daily score aggregations for weekly data points.
+           * The tid needs to stay as is in order to support e.g. weekly aggregations.
+           */
+          date: getFullDayUTCDate(updateDate),
+          tid: dataPoint.tid,
         }),
       ),
     ]);

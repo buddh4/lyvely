@@ -1,22 +1,39 @@
 <script setup lang="ts">
-import { ChartModel, GraphChartConfigModel } from '@lyvely/analytics-interface';
-import { computed, onMounted, ref } from 'vue';
+import {
+  ChartModel,
+  ChartType,
+  useChartsClient,
+  ChartSeriesDataResponse,
+} from '@lyvely/analytics-interface';
+import { computed, onMounted, ref, watch } from 'vue';
 import * as echarts from 'echarts/core';
-import { t } from '@lyvely/web';
 import EditGraphSeriesModal from '@/components/modals/EditGraphSeriesModal.vue';
-import { useEditGraphSeriesStore } from '@/store';
+import { useEditChartSeriesStore } from '@/store';
+import { LyButton, LyIcon } from '@lyvely/ui';
+import { isGraphChart } from '@lyvely/analytics-interface/src/models/graph-chart.model';
 
-const props = defineProps<{ model: ChartModel<string, GraphChartConfigModel> }>();
+const props = defineProps<{ model: ChartModel<string> }>();
 
 const chartRoot = ref<HTMLElement>();
 let chart: echarts.EChartsType;
 
 const hasSeries = computed(() => !!props.model.config?.series?.length);
+const chartData = ref<ChartSeriesDataResponse | undefined>();
+const error = ref<string | undefined>();
+
+watch(chartData, renderChart);
 
 function renderChart() {
+  const chart = props.model;
+
   if (!chartRoot.value) return;
-  chart = echarts.init(chartRoot.value!);
-  chart.setOption({
+  if (!isGraphChart(chart)) return;
+
+  chart.config.interval;
+
+  echart = echarts.init(chartRoot.value!);
+
+  props.model.chart.setOption({
     tooltip: {},
     legend: {
       data: [],
@@ -28,7 +45,7 @@ function renderChart() {
     series: [],
   });
 
-  /*chart!.setOption({
+  /*echart!.setOption({
     tooltip: {
       trigger: 'axis',
       position: function (pt: number[]) {
@@ -78,11 +95,11 @@ function renderChart() {
 }
 
 function addSeries() {
-  useEditGraphSeriesStore().createSeries(props.model.id);
+  useEditChartSeriesStore().addSeries(props.model.id, ChartType.Graph);
 }
 
-onMounted(() => {
-  renderChart();
+onMounted(async () => {
+  await useChartsClient().getSeriesData(props.model.id);
 });
 </script>
 

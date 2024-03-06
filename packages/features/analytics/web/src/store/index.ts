@@ -1,2 +1,2 @@
-export * from './graph-series.store';
+export * from './chart-series.store';
 export * from './charts.store';

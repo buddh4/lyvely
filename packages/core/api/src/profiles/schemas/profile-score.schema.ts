@@ -24,6 +24,7 @@ export interface ICreateProfileScore {
   profile: Profile;
   score: number;
   date?: CalendarDate;
+  tid?: string;
   tagIds?: TObjectId[];
   userStrategy?: UserAssignmentStrategy;
 }
@@ -36,28 +37,9 @@ export interface ICreateProfileScore {
 export class ProfileScore<
   C extends IProfileScoreAction = IProfileScoreAction,
 > extends BaseDocument<C> {
-  constructor(options: ICreateProfileScore, data: DeepPartial<C> = {}) {
-    const { user, profile } = options;
-    data.createdBy ||= user._id;
-    data.score = options.score;
-    data.pid = profile._id;
-    data.oid = profile.oid;
-    data.tagIds ||= options.tagIds;
-    data.date = toDate(options.date || new Date());
+  _id: TObjectId;
 
-    const strategy = options.userStrategy ?? UserAssignmentStrategy.PerUser;
-    if (strategy === UserAssignmentStrategy.PerUser) {
-      data.uid = user._id;
-    } else {
-      data.uid = undefined;
-    }
-
-    super(data);
-
-    if (this.date) {
-      this.setDate(profile, this.date);
-    }
-  }
+  id: string;
 
   @ObjectIdProp()
   oid?: TObjectId;
@@ -71,9 +53,11 @@ export class ProfileScore<
   @ObjectIdProp({ required: true })
   createdBy: TObjectId;
 
+  /** Contains the tid this score value is attributed to. **/
   @Prop({ type: String, required: true })
   tid: string;
 
+  /** Contains the tid this score value is attributed to. **/
   @Prop({ type: Date, required: true, immutable: true })
   date: Date;
 
@@ -113,19 +97,34 @@ export class ProfileScore<
     return 'profileScoreActions';
   }
 
-  /**
-   * Sets the date and date related properties as tid and timing values as:
-   *
-   * - tid: Creates and sets a tid for the given date.
-   * - year, quarter, month, week, day: Sets the timing values according to the generated tid.
-   *
-   * @param profile
-   * @param date
-   */
-  setDate(profile: Profile, date: Date) {
-    const calendarPreferences = profile.settings?.calendar as CalendarPreferences;
-    this.tid = toTimingId(date, CalendarInterval.Daily, profile.locale, calendarPreferences);
-    Object.assign(this, parseTimingId(this.tid));
+  constructor(options: ICreateProfileScore, data: DeepPartial<C> = {}) {
+    const { user, profile } = options;
+    data.createdBy ||= user._id;
+    data.score = options.score;
+    data.pid = profile._id;
+    data.oid = profile.oid;
+    data.tagIds ||= options.tagIds;
+    data.date = toDate(options.date || new Date());
+
+    const strategy = options.userStrategy ?? UserAssignmentStrategy.PerUser;
+    if (strategy === UserAssignmentStrategy.PerUser) {
+      data.uid = user._id;
+    } else {
+      data.uid = undefined;
+    }
+
+    super(data);
+
+    if (this.date) {
+      const calendarPreferences = profile.settings?.calendar as CalendarPreferences;
+      this.tid ??= toTimingId(
+        this.date,
+        CalendarInterval.Daily,
+        profile.locale,
+        calendarPreferences,
+      );
+      Object.assign(this, parseTimingId(this.tid));
+    }
   }
 
   // TODO: How to generate text, maybe use type to detect message and provide instance and user/profile to translation

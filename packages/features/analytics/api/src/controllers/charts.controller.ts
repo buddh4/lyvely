@@ -7,7 +7,7 @@ import {
   ProtectedProfileContentRequest,
   UseClassSerializer,
 } from '@lyvely/api';
-import { ChartsService, GraphService } from '../services';
+import { ChartsService, ChartSeriesService } from '../services';
 import {
   ChartEndpoint,
   CreateChartModel,
@@ -20,6 +20,7 @@ import {
   UpdateChartSeriesModel,
 } from '@lyvely/analytics-interface';
 import { Chart } from '../schemas';
+import { ChartSeriesDataResponse } from '@lyvely/analytics-interface/src';
 
 @ContentTypeController(API_ANALYTICS_CHARTS, Chart)
 @UseClassSerializer()
@@ -31,7 +32,7 @@ export class ChartsController
   protected contentService: ChartsService;
 
   @Inject()
-  protected graphService: GraphService;
+  protected chartSeriesService: ChartSeriesService;
 
   protected createModelType = CreateChartModel;
 
@@ -56,7 +57,7 @@ export class ChartsController
   ): Promise<ChartModel> {
     const { content, context } = request;
 
-    await this.graphService.addSeries(context, content, model);
+    await this.chartSeriesService.addSeriesByUpdateModel(context, content, model);
 
     return content.toModel();
   }
@@ -72,7 +73,7 @@ export class ChartsController
     return content.toModel();
   }
 
-  @Delete(':cid/series/:sid')
+  @Delete(ChartsEndpointPaths.DELETE_SERIES(':cid', ':sid'))
   async deleteSeries(
     @Param('sid') sid,
     @Request() request: ProfileContentRequest<Chart>,
@@ -80,5 +81,13 @@ export class ChartsController
     const { content } = request;
 
     return content.toModel();
+  }
+
+  @Get(ChartsEndpointPaths.SERIES_DATA(':cid'))
+  async getSeriesData(
+    @Request() request: ProfileContentRequest<Chart>,
+  ): Promise<ChartSeriesDataResponse> {
+    const { content } = request;
+    return new ChartSeriesDataResponse();
   }
 }

@@ -8,9 +8,9 @@ import {
   getMonthNameByIndex,
   isCurrentYear,
   subtractDays,
-  subtractMonth,
-  subtractQuarter,
-  subtractWeek,
+  subtractMonths,
+  subtractQuarters,
+  subtractWeeks,
   subtractYear,
   CalendarDate,
   dateTime,
@@ -156,7 +156,7 @@ export class QuarterlyPlan extends YearlyPlan {
   }
 
   decrement(date: Date, amount = 1): Date {
-    return subtractQuarter(date, amount);
+    return subtractQuarters(date, amount);
   }
 
   getDefaultWindowSize(): number {
@@ -194,7 +194,7 @@ export class MonthlyPlan extends QuarterlyPlan {
   }
 
   decrement(date: Date, amount = 1): Date {
-    return subtractMonth(date, amount);
+    return subtractMonths(date, amount);
   }
 
   getDefaultWindowSize(): number {
@@ -234,7 +234,7 @@ export class WeeklyPlan extends MonthlyPlan {
   }
 
   decrement(date: Date, amount = 1): Date {
-    return subtractWeek(date, amount);
+    return subtractWeeks(date, amount);
   }
 
   getDefaultWindowSize(): number {

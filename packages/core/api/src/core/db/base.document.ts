@@ -2,8 +2,6 @@ import { Exclude, Expose } from 'class-transformer';
 import { Document, TObjectId } from './db.type';
 import { DeepPartial, assignRawDataToAndInitProps, implementsGetDefaults } from '@lyvely/common';
 
-export type EntityType<C, ID = TObjectId> = C & IEntity<ID>;
-
 export interface IEntity<ID = TObjectId> {
   _id: ID;
 }

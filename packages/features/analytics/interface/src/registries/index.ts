@@ -1,1 +1,1 @@
-export * from './graph-type.registry';
+export * from './chart-series.registry';

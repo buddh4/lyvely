@@ -3,6 +3,7 @@ import { Profile, ProfileScore } from '../schemas';
 import { createBaseDocumentInstance } from '@/core';
 import { ProfilesService } from './profiles.service';
 import { Injectable } from '@nestjs/common';
+import { Type } from '@lyvely/common';
 
 @Injectable()
 export abstract class ProfileScoreService<E extends ProfileScore> {
@@ -20,6 +21,6 @@ export abstract class ProfileScoreService<E extends ProfileScore> {
     model.type = model.constructor.name;
     const scoreModel = await this.profileScoreDao.save(model);
     await this.profileService.incrementScore(profile, scoreModel.score);
-    return createBaseDocumentInstance(model.constructor as any, scoreModel);
+    return createBaseDocumentInstance(model.constructor as Type<T>, scoreModel);
   }
 }

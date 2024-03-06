@@ -1,5 +1,6 @@
 import { TimeSeriesContent, DataPoint } from '../schemas';
 import { UpdateQuerySet, OptionalUser } from '@lyvely/api';
+import { CalendarDate } from '@lyvely/dates';
 
 export interface IDataPointProcessorStrategy<
   TModel extends TimeSeriesContent<TModel> = TimeSeriesContent<any>,
@@ -9,5 +10,6 @@ export interface IDataPointProcessorStrategy<
     user: OptionalUser,
     model: TModel,
     dataPoint: TDataPoint,
+    updateDate: CalendarDate,
   ): UpdateQuerySet<TDataPoint> | false;
 }

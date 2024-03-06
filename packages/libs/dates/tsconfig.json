@@ -1,6 +1,6 @@
 {
   "extends": "../../libs/devtools/typescript/lib.tsconfig.json",
   "compilerOptions": {
-    "allowJs": true
+    "allowJs": true,
   }
 }

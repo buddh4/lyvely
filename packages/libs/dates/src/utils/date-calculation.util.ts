@@ -12,11 +12,11 @@ export function subtractByInterval(
     case CalendarTimeInterval.Yearly:
       return subtractYear(date, count);
     case CalendarTimeInterval.Quarterly:
-      return subtractQuarter(date, count);
+      return subtractQuarters(date, count);
     case CalendarTimeInterval.Monthly:
-      return subtractMonth(date, count);
+      return subtractMonths(date, count);
     case CalendarTimeInterval.Weekly:
-      return subtractWeek(date, count);
+      return subtractWeeks(date, count);
     case CalendarTimeInterval.Daily:
       return subtractDays(date, count);
     case CalendarTimeInterval.Hourly:
@@ -103,7 +103,7 @@ export function addWeek(date: CalendarDate, count: number): Date {
   return dateTime(date).add(count, 'week').toDate();
 }
 
-export function subtractWeek(date: CalendarDate, count: number): Date {
+export function subtractWeeks(date: CalendarDate, count: number): Date {
   return dateTime(date).subtract(count, 'week').toDate();
 }
 
@@ -111,7 +111,7 @@ export function addMonth(date: CalendarDate, count: number): Date {
   return dateTime(date).add(count, 'month').toDate();
 }
 
-export function subtractMonth(date: CalendarDate, count: number): Date {
+export function subtractMonths(date: CalendarDate, count: number): Date {
   return dateTime(date).subtract(count, 'month').toDate();
 }
 
@@ -119,7 +119,7 @@ export function addQuarter(date: CalendarDate, count: number): Date {
   return dateTime(date).add(count, 'quarter').toDate();
 }
 
-export function subtractQuarter(date: CalendarDate, count: number): Date {
+export function subtractQuarters(date: CalendarDate, count: number): Date {
   return dateTime(date).subtract(count, 'quarter').toDate();
 }
 
@@ -135,4 +135,8 @@ export function isSameDay(date1: CalendarDate, date2: CalendarDate) {
   const d1 = dateTime(date1);
   const d2 = dateTime(date2);
   return d1.year() === d2.year() && d1.month() === d2.month() && d1.date() === d2.date();
+}
+
+export function getLastDayOfYear(year: number): Date {
+  return new Date(year + 1, 0, 0);
 }

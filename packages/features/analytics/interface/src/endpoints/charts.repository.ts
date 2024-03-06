@@ -13,7 +13,6 @@ export default {
    * Fetches all charts of a profile.
    *
    * @param {IProfileApiRequestOptions} options - The options to customize the request.
-   * @return {Promise<ApiResponse<'getCharts'>>} A promise that resolves to the API response.
    */
   async getCharts(options?: IProfileApiRequestOptions) {
     return api.get<'getCharts'>(options);
@@ -24,7 +23,6 @@ export default {
    *
    * @param {CreateChartModel} model - The model object containing the data for the chart.
    * @param {IProfileApiRequestOptions} [options] - Optional request options.
-   * @returns {Promise<'create'>} - A promise that resolves to the result of the create operation.
    */
   async create(model: CreateChartModel, options?: IProfileApiRequestOptions) {
     return api.post<'create'>(model, {}, options);
@@ -35,6 +33,7 @@ export default {
    *
    * @param {string} chartId - The ID of the chart to be updated.
    * @param {UpdateChartModel} model - The chart model
+   * @param {IProfileApiRequestOptions} [options] - Optional request options.
    */
   async update(chartId: string, model: UpdateChartModel, options?: IProfileApiRequestOptions) {
     return api.put<'update'>(chartId, model, options);
@@ -46,7 +45,6 @@ export default {
    * @param {string} cid - The chart ID.
    * @param {UpdateChartSeriesModel} model - The series model to add.
    * @param {IProfileApiRequestOptions} [options] - Optional API request options.
-   * @return {Promise<'addSeries'>} A promise that resolves with the result of the API request.
    */
   async addSeries(cid: string, model: UpdateChartSeriesModel, options?: IProfileApiRequestOptions) {
     return api.post<'addSeries'>(ChartsEndpointPaths.ADD_SERIES(cid), model, options);
@@ -59,7 +57,6 @@ export default {
    * @param {string} sid - The ID of the series.
    * @param {UpdateChartSeriesModel} model - The updated series model.
    * @param {IProfileApiRequestOptions} [options] - The request options.
-   * @returns {Promise<'updateSeries'>} The promise that resolves to the result of the update operation.
    */
   async updateSeries(
     cid: string,
@@ -76,9 +73,18 @@ export default {
    * @param {string} cid - The ID of the chart.
    * @param {string} sid - The ID of the series to be deleted.
    * @param {IProfileApiRequestOptions} [options] - Optional request options.
-   * @returns {Promise<'deleteSeries'>} - A Promise that resolves to the result of the delete operation.
    */
   async deleteSeries(cid: string, sid: string, options?: IProfileApiRequestOptions) {
     return api.delete<'deleteSeries'>(ChartsEndpointPaths.DELETE_SERIES(cid, sid), options);
+  },
+
+  /**
+   * Retrieves series data for a specified chart id.
+   *
+   * @param {string} cid - The chart id.
+   * @param {IProfileApiRequestOptions} [options] - Optional request options.
+   */
+  async getSeriesData(cid: string, options?: IProfileApiRequestOptions) {
+    return api.get<'getSeriesData'>(ChartsEndpointPaths.SERIES_DATA(cid), options);
   },
 };

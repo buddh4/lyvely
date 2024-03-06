@@ -3,12 +3,13 @@ import {
   AnalyticsFeature,
   ChartModel,
   CreateChartModel,
-  GRAPH_TYPE_SCORE,
+  CHART_SERIES_TYPE_SCORE,
 } from '@lyvely/analytics-interface';
 import { registerMenuEntry, registerSvgIcon } from '@lyvely/ui';
 import { IModule, MENU_PROFILE_DRAWER, registerContentType, translation } from '@lyvely/web';
 import { analyticsRoutes } from '@/routes/analytics.routes';
-import { registerGraphTypeDefinition } from '@/registries/graph-type-definition.registry';
+import { registerChartSeriesFormDefinition } from '@/registries/chart-series-web.registry';
+import { CHART_SERIES_DEFINITION_SCORE } from '@lyvely/analytics-interface/src';
 
 export default () => {
   return {
@@ -20,8 +21,8 @@ export default () => {
     features: [AnalyticsFeature],
     routes: analyticsRoutes,
     init: () => {
-      registerGraphTypeDefinition({
-        value: GRAPH_TYPE_SCORE,
+      registerChartSeriesFormDefinition({
+        type: CHART_SERIES_DEFINITION_SCORE,
         label: 'analytics.graphs.types.score',
       });
       registerMenuEntry(MENU_PROFILE_DRAWER, () => ({
