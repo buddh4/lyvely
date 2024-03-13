@@ -16,6 +16,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Timer } from '@lyvely/timers';
 import { CalendarInterval } from '@lyvely/dates';
 import { ICalendarPlanDao } from '@lyvely/calendar-plan';
+import { findAndReplace } from '@lyvely/common/src';
 
 @Injectable()
 export class TasksDao extends ContentTypeDao<Task> implements ICalendarPlanDao<any> {
@@ -43,7 +44,7 @@ export class TasksDao extends ContentTypeDao<Task> implements ICalendarPlanDao<a
       return this.findAllByProfile(
         profile,
         {
-          $or: [{ doneBy: [] }, { doneBy: { $elemMatch: { tid: { $in: tIds } } } }],
+          $or: [{ 'state.doneBy': [] }, { 'state.doneBy': { $elemMatch: { tid: { $in: tIds } } } }],
         },
         options,
       );
@@ -56,18 +57,18 @@ export class TasksDao extends ContentTypeDao<Task> implements ICalendarPlanDao<a
       {
         $or: [
           // Not done by any user
-          { doneBy: [] },
+          { 'state.doneBy': [] },
           // Shared task done at within given tids
           {
             'config.userStrategy': UserAssignmentStrategy.Shared,
-            doneBy: { $elemMatch: { tid: { $in: tIds } } },
+            'state.doneBy': { $elemMatch: { tid: { $in: tIds } } },
           },
           // Per user task done by user within given tids
           {
             'config.userStrategy': UserAssignmentStrategy.PerUser,
             $or: [
-              { doneBy: { $elemMatch: { uid: uid, tid: { $in: tIds } } } },
-              { doneBy: { $not: { $elemMatch: { uid: uid } } } },
+              { 'state.doneBy': { $elemMatch: { uid: uid, tid: { $in: tIds } } } },
+              { 'state.doneBy': { $not: { $elemMatch: { uid: uid } } } },
             ],
           },
         ],
@@ -76,27 +77,54 @@ export class TasksDao extends ContentTypeDao<Task> implements ICalendarPlanDao<a
     );
   }
 
-  async updateDoneBy(
+  async pushDoneBy(
     profile: Profile,
-    id: DocumentIdentity<Task>,
-    user: DocumentIdentity<User>,
+    taskId: DocumentIdentity<Task>,
     doneBy: UserDone,
-  ) {
-    return this.updateOneByProfileAndFilter(
-      profile,
-      id,
-      { $set: { 'doneBy.$[elem].tid': doneBy.tid, 'doneBy.$[elem].date': doneBy.date } },
-      {},
-      {
-        arrayFilters: [{ 'elem.uid': assureObjectId(user) }],
-      },
-    );
+  ): Promise<boolean> {
+    return this.updateOneByProfileAndId(profile, taskId, { $push: { 'state.doneBy': doneBy } });
   }
 
-  async pullDoneBy(profile: Profile, id: DocumentIdentity<Task>, user: DocumentIdentity<User>) {
-    return this.updateOneByProfileAndId(profile, id, {
-      $pull: { doneBy: { uid: assureObjectId(user) } },
+  async updateDoneBy(
+    profile: Profile,
+    taskId: DocumentIdentity<Task>,
+    doneBy: UserDone,
+  ): Promise<boolean> {
+    const result = await this.updateOneByProfileAndFilter(
+      profile,
+      taskId,
+      {
+        $set: { 'state.doneBy.$[elem].tid': doneBy.tid, 'state.doneBy.$[elem].date': doneBy.date },
+      },
+      {},
+      {
+        arrayFilters: [{ 'elem.uid': doneBy.uid }],
+      },
+    );
+
+    if (result && taskId instanceof Task) {
+      findAndReplace(taskId.state.doneBy, doneBy, 'uid', true);
+    }
+
+    return result;
+  }
+
+  async pullDoneBy(
+    profile: Profile,
+    taskId: DocumentIdentity<Task>,
+    user: DocumentIdentity<User>,
+  ): Promise<boolean> {
+    const uid = assureObjectId(user);
+    const result = await this.updateOneByProfileAndId(profile, taskId, {
+      $pull: { 'state.doneBy': { uid } },
     });
+
+    // Automatic $pull is currently not supported by abstract dao
+    if (result && taskId instanceof Task) {
+      taskId.state.doneBy = taskId.state.doneBy.filter((d) => !d.uid.equals(uid));
+    }
+
+    return result;
   }
 
   async updateUserTimer(
@@ -104,11 +132,11 @@ export class TasksDao extends ContentTypeDao<Task> implements ICalendarPlanDao<a
     identity: DocumentIdentity<Task>,
     user: DocumentIdentity<User>,
     timer: Timer,
-  ) {
+  ): Promise<boolean> {
     return this.updateOneByProfileAndFilter(
       profile,
       identity,
-      { $set: { 'timers.$[elem].spans': timer.spans } },
+      { $set: { 'state.timers.$[elem].spans': timer.spans } },
       {},
       {
         arrayFilters: [{ 'elem.uid': assureObjectId(user) }],

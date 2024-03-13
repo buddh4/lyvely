@@ -1,13 +1,10 @@
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
-import { BaseDocument, NestedSchema, ObjectIdArrayProp, TObjectId } from '@/core';
+import { NestedSchema, ObjectIdArrayProp, TObjectId } from '@/core';
 import { ProfileRelationRole, IProfilePermissionSetting, ContentUserRole } from '@lyvely/interface';
-import { getStringEnumValues } from '@lyvely/common';
+import { BaseModel, getStringEnumValues, type StrictBaseModelData } from '@lyvely/common';
 
 @NestedSchema()
-export class ProfilePermissionSetting
-  extends BaseDocument<ProfilePermissionSetting>
-  implements IProfilePermissionSetting<TObjectId>
-{
+export class ProfilePermissionSetting implements IProfilePermissionSetting<TObjectId> {
   @Prop({ required: true })
   id: string;
 
@@ -19,6 +16,10 @@ export class ProfilePermissionSetting
 
   @ObjectIdArrayProp()
   groups?: TObjectId[];
+
+  constructor(data: StrictBaseModelData<ProfilePermissionSetting>) {
+    BaseModel.init(this, data);
+  }
 }
 
 export const ProfilePermissionSettingSchema =

@@ -15,23 +15,23 @@ import {
   QueryOptions,
   UpdateQuery,
 } from '@/core';
-import { BaseProfileModel } from './base-profile-model.schema';
+import { ProfileDocument } from '../daos';
 import { Profile } from '../schemas';
 
 /**
  * This type is used as compound type for different kinds of profile relation on DAO level.
- * The BaseProfileModelDao at least requires an oid and pid for most of its queries.
+ * The ProfileDocumentDao at least requires an oid and pid for most of its queries.
  */
 export type ProfileShard =
   | Profile
-  | BaseProfileModel<any>
+  | ProfileDocument
   | { oid: TObjectId; location: string; pid: TObjectId };
 
 /**
  * This Dao class serves as base class for profile related models.
  * Profile related models need to include an oid and pid field which should be used in all queries.
  */
-export abstract class BaseProfileModelDao<T extends BaseProfileModel<T>> extends AbstractDao<T> {
+export abstract class ProfileDocumentDao<T extends ProfileDocument> extends AbstractDao<T> {
   async findByProfileAndId(
     profileRelation: ProfileShard,
     identity: DocumentIdentity<T>,
@@ -97,7 +97,7 @@ export abstract class BaseProfileModelDao<T extends BaseProfileModel<T>> extends
     update: UpdateQuery<T>,
     filter?: FilterQuery<T>,
     options?: QueryOptions,
-  ) {
+  ): Promise<boolean> {
     return this.updateOneByFilter(
       identity,
       update,

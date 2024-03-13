@@ -1,6 +1,12 @@
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
-import { BaseDocument, NestedSchema, ObjectIdProp, TObjectId } from '@/core';
-import { DeepPartial, getStringEnumValues } from '@lyvely/common';
+import {
+  BaseDocument,
+  NestedSchema,
+  ObjectIdProp,
+  type StrictBaseDocumentData,
+  TObjectId,
+} from '@/core';
+import { getStringEnumValues } from '@lyvely/common';
 import { CreatedAsType } from '@lyvely/interface';
 import { User } from '@/users';
 import { Organization, Profile } from '@/profiles';
@@ -8,24 +14,28 @@ import { Organization, Profile } from '@/profiles';
 export type Author = Profile | User;
 
 @NestedSchema()
-export class CreatedAs extends BaseDocument<CreatedAs> {
-  constructor(obj?: Author | DeepPartial<CreatedAs>) {
-    if (obj instanceof User) {
-      super(createUserAuthor(obj));
-    } else if (obj instanceof Organization) {
-      super(createOrganizationAuthor(obj));
-    } else if (obj instanceof Profile) {
-      super(createProfileAuthor(obj));
-    } else {
-      super(obj);
-    }
-  }
+export class CreatedAs {
+  _id: TObjectId;
+
+  id: string;
 
   @Prop({ enum: getStringEnumValues(CreatedAsType), required: true })
   type: CreatedAsType;
 
   @ObjectIdProp({ required: true })
   authorId: TObjectId;
+
+  constructor(obj?: Author | StrictBaseDocumentData<CreatedAs>) {
+    if (obj instanceof User) {
+      BaseDocument.init(this, createUserAuthor(obj));
+    } else if (obj instanceof Organization) {
+      BaseDocument.init(this, createOrganizationAuthor(obj));
+    } else if (obj instanceof Profile) {
+      BaseDocument.init(this, createProfileAuthor(obj));
+    } else {
+      BaseDocument.init(this, obj);
+    }
+  }
 }
 
 export const ContentAuthorSchema = SchemaFactory.createForClass(CreatedAs);

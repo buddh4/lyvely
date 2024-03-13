@@ -2,16 +2,12 @@ import { Expose } from 'class-transformer';
 import { DataPointModel } from './data-point.model';
 import { DataPointValueType, ITextDataPointConfig, IDataPointConfig } from '../interfaces';
 
-export class TextDataPointModel<TID = string> extends DataPointModel<TID, TextDataPointModel<TID>> {
+export class TextDataPointModel<TID = string> extends DataPointModel<TID> {
   @Expose()
-  value: string;
+  override value = '';
 
   @Expose()
-  valueType = DataPointValueType.Text;
-
-  afterInit() {
-    this.value = this.value ?? '';
-  }
+  override valueType = DataPointValueType.Text;
 }
 
 export function isTextDataPointConfig(config: IDataPointConfig): config is ITextDataPointConfig {

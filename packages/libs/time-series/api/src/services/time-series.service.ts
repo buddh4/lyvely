@@ -32,7 +32,7 @@ import { Inject } from '@nestjs/common';
  * @template TValue - The type of value in the data points.
  */
 export abstract class TimeSeriesService<
-  TModel extends TimeSeriesContent<TModel>,
+  TModel extends TimeSeriesContent,
   TDataPointModel extends DataPoint = DataPoint,
   TValue = any,
 > extends SortableCalendarPlanService<TModel> {

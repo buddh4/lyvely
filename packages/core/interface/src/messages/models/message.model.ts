@@ -11,7 +11,7 @@ export class MessageModel<TID = string>
   static contentType = 'Message';
 
   @Expose()
-  type = MessageModel.contentType;
+  override type = MessageModel.contentType;
 
   toEditModel(): UpdateMessageModel {
     return new UpdateMessageModel({

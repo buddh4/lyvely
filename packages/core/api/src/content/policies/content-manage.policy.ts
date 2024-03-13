@@ -26,7 +26,7 @@ export class ContentManagePolicy extends BaseContentManagePolicy {
   @Inject()
   protected readonly moduleRef: ModuleRef;
 
-  async verify(context: ProfileContentContext): Promise<boolean> {
+  override async verify(context: ProfileContentContext): Promise<boolean> {
     const { content } = context;
 
     if (!content) throw new DocumentNotFoundException();

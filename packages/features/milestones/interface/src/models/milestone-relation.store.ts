@@ -28,7 +28,7 @@ export class MilestoneRelationsStore extends CalendarPlanStore<
     this.setRelations(response.relations);
   }
 
-  reset() {
+  override reset() {
     super.reset();
     this.relationsByTid = new Map();
   }

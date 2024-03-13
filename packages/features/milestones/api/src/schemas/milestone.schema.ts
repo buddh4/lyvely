@@ -2,24 +2,30 @@ import { ContentType, User, NestedSchema, TObjectId } from '@lyvely/api';
 import { CalendarInterval } from '@lyvely/dates';
 import { ICalendarPlanEntry } from '@lyvely/calendar-plan';
 import { IMilestoneConfig, MilestoneModel } from '@lyvely/milestones-interface';
-import { BaseModel, getNumberEnumValues, PropertiesOf } from '@lyvely/common';
+import { getNumberEnumValues, PropertiesOf } from '@lyvely/common';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { PropertyType } from '@lyvely/common/src';
 
 @NestedSchema()
-export class MilestoneConfig extends BaseModel<MilestoneConfig> implements IMilestoneConfig {
+export class MilestoneConfig implements IMilestoneConfig {
   @Prop({ enum: getNumberEnumValues(CalendarInterval), required: true })
   interval: CalendarInterval;
+
+  constructor(data: PropertiesOf<MilestoneConfig>) {
+    this.interval = data.interval;
+  }
 }
 
 const MilestoneConfigSchema = SchemaFactory.createForClass(MilestoneConfig);
 
 @Schema()
 export class Milestone
-  extends ContentType<Milestone>
+  extends ContentType<MilestoneConfig>
   implements PropertiesOf<MilestoneModel<TObjectId>>, ICalendarPlanEntry<TObjectId>
 {
   @Prop({ type: MilestoneConfigSchema, required: true })
-  config: MilestoneConfig;
+  @PropertyType(MilestoneConfig)
+  override config: MilestoneConfig;
 
   get interval(): CalendarInterval {
     return this.config.interval;

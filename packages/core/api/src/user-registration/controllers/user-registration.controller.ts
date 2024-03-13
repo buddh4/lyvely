@@ -30,7 +30,7 @@ export class UserRegistrationController
   constructor(
     private registerService: UserRegistrationService,
     private authService: JwtAuthService,
-    protected configService: ConfigService<ConfigurationPath & any>,
+    protected override configService: ConfigService<ConfigurationPath & any>,
   ) {
     super(configService);
   }

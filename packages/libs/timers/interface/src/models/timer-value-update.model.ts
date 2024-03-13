@@ -3,12 +3,12 @@ import { IsNumber } from 'class-validator';
 import { BaseModel } from '@lyvely/common';
 
 @Exclude()
-export class TimerValueUpdateModel extends BaseModel<TimerValueUpdateModel> {
+export class TimerValueUpdateModel {
   @Expose()
   @IsNumber()
   value: number;
 
   constructor(value: number) {
-    super({ value });
+    this.value = value;
   }
 }

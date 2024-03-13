@@ -27,7 +27,7 @@ export abstract class AbstractContentGuard<C extends Content = Content>
   implements CanActivate
 {
   @Inject()
-  protected reflector: Reflector;
+  protected override reflector: Reflector;
 
   @Inject()
   protected contentService: ContentService;
@@ -42,7 +42,7 @@ export abstract class AbstractContentGuard<C extends Content = Content>
     context: ExecutionContext,
   ): Promise<boolean>;
 
-  async canActivate(context: ExecutionContext): Promise<boolean> {
+  override async canActivate(context: ExecutionContext): Promise<boolean> {
     if (!(await super.canActivate(context))) return false;
 
     const request = context.switchToHttp().getRequest<ProfileContentRequest<C>>();
@@ -63,7 +63,7 @@ export abstract class AbstractContentGuard<C extends Content = Content>
     if (!content) return false;
 
     request.content = profileContentContext.content = content as C;
-    request.context = new ProfileContentContext({ ...request.context, content });
+    request.context = new ProfileContentContext<any>({ ...request.context, content });
 
     await this.contentService.populateContentPolicies(request.content, request.context);
 

@@ -16,14 +16,14 @@ const strategy = DataPointConfigFactory.getStrategyName(
 
 @NestedSchema()
 export class RadioSelectionDataPointConfig extends SelectionDataPointConfig {
-  strategy = strategy;
+  override strategy = strategy;
 
   @Prop({
     enum: [DataPointInputType.Radio],
     required: true,
     default: DataPointInputType.Radio,
   })
-  inputType: DataPointInputType = DataPointInputType.Radio;
+  override inputType: DataPointInputType = DataPointInputType.Radio;
 
   constructor(settings: Omit<ISelectionDataPointSettings, 'inputType'>) {
     super(DataPointInputType.Radio, settings);

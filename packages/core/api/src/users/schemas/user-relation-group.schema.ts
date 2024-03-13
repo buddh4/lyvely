@@ -1,12 +1,10 @@
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
-import { BaseDocument, NestedSchema } from '@/core';
+import { NestedSchema } from '@/core';
 import { UserRelationGroupModel } from '@lyvely/interface';
+import { BaseModel, type BaseModelData } from '@lyvely/common';
 
 @NestedSchema()
-export class UserRelationGroup
-  extends BaseDocument<UserRelationGroup>
-  implements UserRelationGroupModel
-{
+export class UserRelationGroup implements UserRelationGroupModel {
   @Prop({ required: true })
   id: string;
 
@@ -15,6 +13,10 @@ export class UserRelationGroup
 
   @Prop()
   description?: string;
+
+  constructor(data: BaseModelData<UserRelationGroup>) {
+    BaseModel.init(this, data);
+  }
 }
 
 export const UserRelationGroupSchema = SchemaFactory.createForClass(UserRelationGroup);

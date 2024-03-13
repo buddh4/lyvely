@@ -119,7 +119,7 @@ export class SendInvitationsService {
       if (existingUser) {
         invitationEntities.push(
           new UserInvitation({
-            pid,
+            pid: assureObjectId(pid),
             uid: existingUser._id,
             createdBy: assureObjectId(host),
             role: invite.role,
@@ -128,7 +128,7 @@ export class SendInvitationsService {
       } else {
         invitationEntities.push(
           new MailInvitation({
-            pid,
+            pid: assureObjectId(pid),
             email,
             createdBy: assureObjectId(host),
             role: invite.role,

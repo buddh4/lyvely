@@ -5,6 +5,9 @@ import {
   ProfileSubscription,
   SingleUserSubscription,
   MultiUserSubscription,
+  isSingleUserSubscription,
+  isMultiUserSubscription,
+  isProfileUserSubscription,
 } from '../schemas';
 import { UserSubscriptionContext } from '../interfaces';
 import {
@@ -28,14 +31,17 @@ export class UserSubscriptionService {
     subscription: UserSubscription,
     pid?: DocumentIdentity<Profile>,
   ): Promise<Array<UserSubscriptionContext>> {
-    switch (subscription.type) {
-      case SingleUserSubscription.typeName:
-        return this.getSingleUserSubscriptionContext(subscription, pid);
-      case MultiUserSubscription.typeName:
-        return this.getMultiUserSubscriptionContext(subscription, pid);
-      case ProfileSubscription.typeName:
-        if (!pid) return [];
-        return this.getProfileSubscriptionContext(pid);
+    if (isSingleUserSubscription(subscription)) {
+      return this.getSingleUserSubscriptionContext(subscription, pid);
+    }
+
+    if (isMultiUserSubscription(subscription)) {
+      return this.getMultiUserSubscriptionContext(subscription, pid);
+    }
+
+    if (isProfileUserSubscription(subscription)) {
+      if (!pid) return [];
+      return this.getProfileSubscriptionContext(pid);
     }
 
     return [];

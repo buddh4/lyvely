@@ -1,7 +1,7 @@
-import { ICreateProfileScore, IProfileScoreAction, ProfileScore } from '@/profiles';
+import { ICreateProfileScore, ProfileScore } from '@/profiles';
 import { ModelDefinition, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Content } from './content.schema';
-import { DeepPartial } from '@lyvely/common';
+import { type PartialPropertiesOf } from '@lyvely/common';
 import { IntegrityException } from '@lyvely/interface';
 import { ObjectIdProp, TObjectId } from '@/core';
 
@@ -9,23 +9,18 @@ interface ICreateContentScore extends ICreateProfileScore {
   content: Content;
 }
 
-interface IContentScore extends IProfileScoreAction {
-  cid: TObjectId;
-}
-
 @Schema({ timestamps: true, discriminatorKey: 'type' })
-export class ContentScore<T extends IContentScore = IContentScore> extends ProfileScore<T> {
+export class ContentScore extends ProfileScore {
   @ObjectIdProp()
   cid: TObjectId;
 
-  constructor(options: ICreateContentScore, data: DeepPartial<T> = {}) {
-    data.cid = options.content._id;
-
+  constructor(options: ICreateContentScore, data: PartialPropertiesOf<ContentScore> = {}) {
     if (!options.content.pid.equals(options.profile._id)) {
       throw new IntegrityException('Tried to create a content score on an unrelated profile');
     }
 
     super(options, data);
+    this.cid ??= options.content._id;
   }
 }
 

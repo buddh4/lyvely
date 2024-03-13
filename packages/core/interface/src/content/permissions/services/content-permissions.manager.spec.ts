@@ -6,12 +6,10 @@ import {
   registerPermissions,
 } from '../../../permissions';
 import { ContentUserRole } from '../interfaces';
-import { ContentModel } from '../../models';
 import { IntegrityException } from '../../../exceptions';
 import { UserStatus, VisitorMode } from '../../../users';
 import { useContentPermissionsManager } from './content-permissions.manager';
 import { ProfileModel } from '../../../profiles';
-import { ContentPermissionObject } from '../models/content-permission.object';
 
 describe('ContentPermissionsManager', function () {
   afterEach(clearPermissions);
@@ -36,7 +34,7 @@ describe('ContentPermissionsManager', function () {
 
   const verifyTestPermission = (
     role: ContentUserRole,
-    context?: Partial<ContentPermissionObject> | null,
+    profile?: ProfileModel | null,
     options?: {
       id?: string;
       config?: IPermissionConfig;
@@ -45,10 +43,6 @@ describe('ContentPermissionsManager', function () {
       groups?: string[];
     },
   ) => {
-    context ||= {};
-    context.content ||= new ContentModel<any, any, any>();
-    context.profile ||= new ProfileModel();
-    context = new ContentPermissionObject(context);
     const permissionId = options?.id || 'test';
     return manager.verifyPermission(
       permissionId,
@@ -58,7 +52,7 @@ describe('ContentPermissionsManager', function () {
         relationStatus: options?.relationStatus ?? UserStatus.Active,
         groups: options?.groups || [],
       },
-      new ContentPermissionObject(context),
+      profile || new ProfileModel({}),
       options?.config || { visitorStrategy: { mode: VisitorMode.Disabled } },
     );
   };
@@ -89,17 +83,17 @@ describe('ContentPermissionsManager', function () {
     const profile = new ProfileModel({
       permissions: [{ id: 'test', role: ContentUserRole.Owner }],
     });
-    expect(verifyTestPermission(ContentUserRole.Owner, { profile })).toEqual(true);
-    expect(verifyTestPermission(ContentUserRole.Admin, { profile })).toEqual(true);
-    expect(verifyTestPermission(ContentUserRole.Manager, { profile })).toEqual(false);
-    expect(verifyTestPermission(ContentUserRole.Assignee, { profile })).toEqual(false);
-    expect(verifyTestPermission(ContentUserRole.Moderator, { profile })).toEqual(false);
-    expect(verifyTestPermission(ContentUserRole.Member, { profile })).toEqual(false);
-    expect(verifyTestPermission(ContentUserRole.Guest, { profile })).toEqual(false);
-    expect(verifyTestPermission(ContentUserRole.Organization, { profile })).toEqual(false);
-    expect(verifyTestPermission(ContentUserRole.Follower, { profile })).toEqual(false);
-    expect(verifyTestPermission(ContentUserRole.User, { profile })).toEqual(false);
-    expect(verifyTestPermission(ContentUserRole.Visitor, { profile })).toEqual(false);
+    expect(verifyTestPermission(ContentUserRole.Owner, profile)).toEqual(true);
+    expect(verifyTestPermission(ContentUserRole.Admin, profile)).toEqual(true);
+    expect(verifyTestPermission(ContentUserRole.Manager, profile)).toEqual(false);
+    expect(verifyTestPermission(ContentUserRole.Assignee, profile)).toEqual(false);
+    expect(verifyTestPermission(ContentUserRole.Moderator, profile)).toEqual(false);
+    expect(verifyTestPermission(ContentUserRole.Member, profile)).toEqual(false);
+    expect(verifyTestPermission(ContentUserRole.Guest, profile)).toEqual(false);
+    expect(verifyTestPermission(ContentUserRole.Organization, profile)).toEqual(false);
+    expect(verifyTestPermission(ContentUserRole.Follower, profile)).toEqual(false);
+    expect(verifyTestPermission(ContentUserRole.User, profile)).toEqual(false);
+    expect(verifyTestPermission(ContentUserRole.Visitor, profile)).toEqual(false);
   });
 
   it('assure max role is respected', () => {
@@ -109,17 +103,17 @@ describe('ContentPermissionsManager', function () {
     const profile = new ProfileModel({
       permissions: [{ id: 'test', role: ContentUserRole.Guest }],
     });
-    expect(verifyTestPermission(ContentUserRole.Owner, { profile })).toEqual(true);
-    expect(verifyTestPermission(ContentUserRole.Admin, { profile })).toEqual(true);
-    expect(verifyTestPermission(ContentUserRole.Manager, { profile })).toEqual(true);
-    expect(verifyTestPermission(ContentUserRole.Assignee, { profile })).toEqual(true);
-    expect(verifyTestPermission(ContentUserRole.Moderator, { profile })).toEqual(true);
-    expect(verifyTestPermission(ContentUserRole.Member, { profile })).toEqual(true);
-    expect(verifyTestPermission(ContentUserRole.Guest, { profile })).toEqual(false);
-    expect(verifyTestPermission(ContentUserRole.Organization, { profile })).toEqual(false);
-    expect(verifyTestPermission(ContentUserRole.Follower, { profile })).toEqual(false);
-    expect(verifyTestPermission(ContentUserRole.User, { profile })).toEqual(false);
-    expect(verifyTestPermission(ContentUserRole.Visitor, { profile })).toEqual(false);
+    expect(verifyTestPermission(ContentUserRole.Owner, profile)).toEqual(true);
+    expect(verifyTestPermission(ContentUserRole.Admin, profile)).toEqual(true);
+    expect(verifyTestPermission(ContentUserRole.Manager, profile)).toEqual(true);
+    expect(verifyTestPermission(ContentUserRole.Assignee, profile)).toEqual(true);
+    expect(verifyTestPermission(ContentUserRole.Moderator, profile)).toEqual(true);
+    expect(verifyTestPermission(ContentUserRole.Member, profile)).toEqual(true);
+    expect(verifyTestPermission(ContentUserRole.Guest, profile)).toEqual(false);
+    expect(verifyTestPermission(ContentUserRole.Organization, profile)).toEqual(false);
+    expect(verifyTestPermission(ContentUserRole.Follower, profile)).toEqual(false);
+    expect(verifyTestPermission(ContentUserRole.User, profile)).toEqual(false);
+    expect(verifyTestPermission(ContentUserRole.Visitor, profile)).toEqual(false);
   });
 
   it('profile permission overwritten by profile settings', () => {
@@ -127,17 +121,17 @@ describe('ContentPermissionsManager', function () {
     const profile = new ProfileModel({
       permissions: [{ id: 'test', role: ContentUserRole.Moderator }],
     });
-    expect(verifyTestPermission(ContentUserRole.Owner, { profile })).toEqual(true);
-    expect(verifyTestPermission(ContentUserRole.Admin, { profile })).toEqual(true);
-    expect(verifyTestPermission(ContentUserRole.Manager, { profile })).toEqual(true);
-    expect(verifyTestPermission(ContentUserRole.Assignee, { profile })).toEqual(true);
-    expect(verifyTestPermission(ContentUserRole.Moderator, { profile })).toEqual(true);
-    expect(verifyTestPermission(ContentUserRole.Member, { profile })).toEqual(false);
-    expect(verifyTestPermission(ContentUserRole.Guest, { profile })).toEqual(false);
-    expect(verifyTestPermission(ContentUserRole.Organization, { profile })).toEqual(false);
-    expect(verifyTestPermission(ContentUserRole.Follower, { profile })).toEqual(false);
-    expect(verifyTestPermission(ContentUserRole.User, { profile })).toEqual(false);
-    expect(verifyTestPermission(ContentUserRole.Visitor, { profile })).toEqual(false);
+    expect(verifyTestPermission(ContentUserRole.Owner, profile)).toEqual(true);
+    expect(verifyTestPermission(ContentUserRole.Admin, profile)).toEqual(true);
+    expect(verifyTestPermission(ContentUserRole.Manager, profile)).toEqual(true);
+    expect(verifyTestPermission(ContentUserRole.Assignee, profile)).toEqual(true);
+    expect(verifyTestPermission(ContentUserRole.Moderator, profile)).toEqual(true);
+    expect(verifyTestPermission(ContentUserRole.Member, profile)).toEqual(false);
+    expect(verifyTestPermission(ContentUserRole.Guest, profile)).toEqual(false);
+    expect(verifyTestPermission(ContentUserRole.Organization, profile)).toEqual(false);
+    expect(verifyTestPermission(ContentUserRole.Follower, profile)).toEqual(false);
+    expect(verifyTestPermission(ContentUserRole.User, profile)).toEqual(false);
+    expect(verifyTestPermission(ContentUserRole.Visitor, profile)).toEqual(false);
   });
 
   it('profile permission overwritten by configuration', () => {
@@ -256,10 +250,10 @@ describe('ContentPermissionsManager', function () {
       groups: [{ id: testGroup, name: testGroup }],
     });
 
-    expect(
-      verifyTestPermission(ContentUserRole.Member, { profile }, { groups: [testGroup] }),
-    ).toEqual(true);
-    expect(verifyTestPermission(ContentUserRole.Member, { profile })).toEqual(false);
+    expect(verifyTestPermission(ContentUserRole.Member, profile, { groups: [testGroup] })).toEqual(
+      true,
+    );
+    expect(verifyTestPermission(ContentUserRole.Member, profile)).toEqual(false);
   });
 
   it('test non existing group will be ignored', () => {
@@ -276,9 +270,9 @@ describe('ContentPermissionsManager', function () {
       groups: [],
     });
 
-    expect(
-      verifyTestPermission(ContentUserRole.Member, { profile }, { groups: [testGroup] }),
-    ).toEqual(false);
+    expect(verifyTestPermission(ContentUserRole.Member, profile, { groups: [testGroup] })).toEqual(
+      false,
+    );
   });
 
   it('test circular dependency check', () => {

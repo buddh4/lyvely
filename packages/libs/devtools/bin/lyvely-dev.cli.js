@@ -53,6 +53,7 @@ const buildModuleWeb = (options) => {
   // const vueTscCommand = 'vue-tsc -p tsconfig.build.json --declaration --emitDeclarationOnly';
   const tailwindCommand = 'npx postcss ./src/styles/tailwind.css -o ./dist/tailwind.css';
 
+  runCommand('vue-tsc --project tsconfig.build.json --noEmit');
   runCommand(viteCommand);
   // runCommand(vueTscCommand);
   runCommand(tailwindCommand);

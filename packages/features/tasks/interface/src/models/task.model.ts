@@ -1,28 +1,42 @@
 import { Exclude, Expose } from 'class-transformer';
-import { IEditableModel, ContentModel } from '@lyvely/interface';
-import { PropertyType } from '@lyvely/common';
+import { IEditableModel, ContentModel, ContentDataTypeModel } from '@lyvely/interface';
+import { BaseModel, type BaseModelData, PropertyType } from '@lyvely/common';
 import { CalendarInterval } from '@lyvely/dates';
 import { TimerModel } from '@lyvely/timers-interface';
 import { UpdateTaskModel } from './update-task.model';
-import { ITaskConfig } from '../interfaces';
+import { type ITaskConfig } from '../interfaces';
 import { ICalendarPlanEntry } from '@lyvely/calendar-plan-interface';
 
 @Exclude()
-export class TaskModel<TID = string>
-  extends ContentModel<TID, TaskModel<TID>, ITaskConfig>
-  implements IEditableModel<UpdateTaskModel>, ICalendarPlanEntry<TID>
-{
-  static contentType = 'Task';
-
-  @Expose()
-  type = TaskModel.contentType;
-
+export class SingleUserTaskStateModel {
   @Expose()
   done?: string;
 
   @Expose()
   @PropertyType(TimerModel)
   timer: TimerModel;
+
+  constructor(data: BaseModelData<SingleUserTaskStateModel>) {
+    BaseModel.init(this, data);
+  }
+}
+
+@Exclude()
+export class TaskModel<TID = string>
+  extends ContentModel<TID, ITaskConfig, ContentDataTypeModel, SingleUserTaskStateModel>
+  implements IEditableModel<UpdateTaskModel>, ICalendarPlanEntry<TID>
+{
+  static contentType = 'Task';
+
+  @Expose()
+  override type = TaskModel.contentType;
+
+  @Expose()
+  override config: ITaskConfig;
+
+  @Expose()
+  @PropertyType(SingleUserTaskStateModel)
+  override state: SingleUserTaskStateModel;
 
   get interval(): CalendarInterval {
     return this.config.interval;
@@ -51,11 +65,7 @@ export class UserDoneModel<TID = string> {
 }
 
 @Exclude()
-export class TaskWithUsersModel<TID = string> extends ContentModel<
-  TID,
-  TaskWithUsersModel<TID>,
-  ITaskConfig
-> {
+export class MultiUserTaskStateModel<TID> {
   @Expose()
   @PropertyType([UserDoneModel])
   doneBy?: UserDoneModel<TID>[];
@@ -64,8 +74,24 @@ export class TaskWithUsersModel<TID = string> extends ContentModel<
   @PropertyType([TaskModel])
   timers?: TimerModel<TID>[];
 
+  constructor(data: BaseModelData<MultiUserTaskStateModel<any>>) {
+    BaseModel.init(this, data);
+  }
+}
+
+@Exclude()
+export class TaskWithUsersModel<TID = string> extends ContentModel<
+  TID,
+  ITaskConfig,
+  ContentDataTypeModel,
+  MultiUserTaskStateModel<TID>
+> {
   @Expose()
-  type = TaskModel.contentType;
+  override type = TaskModel.contentType;
+
+  @Expose()
+  @PropertyType(MultiUserTaskStateModel)
+  override state: MultiUserTaskStateModel<TID>;
 }
 
 export function isTask(content: any): content is TaskModel {

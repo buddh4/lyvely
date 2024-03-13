@@ -19,13 +19,10 @@ import {
   Min,
 } from 'class-validator';
 import { UserAssignmentStrategy } from '@lyvely/interface';
-import { BaseModel, Gte, Lte, Trim } from '@lyvely/common';
+import { BaseModel, type BaseModelData, Gte, Lte, type PropertiesOf, Trim } from '@lyvely/common';
 
 @Expose()
-export class CreateHabitModel
-  extends BaseModel<CreateHabitModel>
-  implements INumberDataPointSettings, ITimerDataPointSettings
-{
+export class CreateHabitModel implements INumberDataPointSettings, ITimerDataPointSettings {
   @IsString()
   @IsNotEmpty()
   @Trim()
@@ -81,6 +78,10 @@ export class CreateHabitModel
   @MaxLength(20, { each: true })
   @IsOptional()
   tagNames?: string[];
+
+  constructor(data?: BaseModelData<CreateHabitModel>) {
+    BaseModel.init(this, data);
+  }
 
   getDefaults() {
     return {

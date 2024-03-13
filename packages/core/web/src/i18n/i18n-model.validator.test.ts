@@ -1,5 +1,5 @@
 import { test, expect, beforeAll } from 'vitest';
-import { BaseModel } from '@lyvely/common';
+import { BaseModel, type PropertiesOf } from '@lyvely/common';
 import { I18nModelValidator } from './i18n-model.validator';
 import { setMessages } from './i18n';
 import { Length } from 'class-validator';
@@ -16,8 +16,12 @@ beforeAll(() => {
 });
 
 test('translate error without context set with setErrors', () => {
-  class TestModel extends BaseModel<TestModel> {
+  class TestModel {
     uniqueField: string;
+
+    constructor(data?: PropertiesOf<TestModel>) {
+      BaseModel.init(this, data);
+    }
   }
 
   const validator = new I18nModelValidator(new TestModel(), {
@@ -28,9 +32,13 @@ test('translate error without context set with setErrors', () => {
 });
 
 test('translate error with context set with setErrors', () => {
-  class TestModel extends BaseModel<TestModel> {
+  class TestModel {
     @Length(3, 5)
     field: string;
+
+    constructor(data?: PropertiesOf<TestModel>) {
+      BaseModel.init(this, data);
+    }
   }
 
   const validator = new I18nModelValidator(new TestModel(), {
@@ -42,9 +50,13 @@ test('translate error with context set with setErrors', () => {
 });
 
 test('translate field with context', async () => {
-  class TestModel extends BaseModel<TestModel> {
+  class TestModel {
     @Length(3, 5)
     field: string;
+
+    constructor(data?: PropertiesOf<TestModel>) {
+      BaseModel.init(this, data);
+    }
   }
 
   const validator = new I18nModelValidator(new TestModel(), {

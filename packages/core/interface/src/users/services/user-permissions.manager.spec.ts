@@ -7,18 +7,21 @@ import {
 } from '../../permissions';
 import { UserRelationRole } from '../interfaces';
 import { IntegrityException } from '../../exceptions';
-import { UserModel, UserStatus, useUserRelationPermissionsService, VisitorMode } from '../../users';
+import { UserModel, UserStatus, VisitorMode } from '../../users';
+import { useUserRelationPermissionsManager } from './user-permissions.manager';
 import { ProfileRelationRole } from '../../profiles';
 
 describe('UserPermissionsService', function () {
   afterEach(clearPermissions);
 
-  const service = useUserRelationPermissionsService();
+  const service = useUserRelationPermissionsManager();
 
   const registerTestPermission = (data?: Partial<IPermission<any, any>>) => {
     registerPermissions([
       {
         id: 'test',
+        name: 'Test',
+        description: 'Test',
         moduleId: 'test',
         min: UserRelationRole.Friend,
         max: UserRelationRole.User,
@@ -39,7 +42,7 @@ describe('UserPermissionsService', function () {
       groups?: string[];
     },
   ) => {
-    user ||= new UserModel();
+    user ||= new UserModel({} as any);
     return service.verifyPermission(
       'test',
       {

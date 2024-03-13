@@ -16,14 +16,14 @@ const strategy = DataPointConfigFactory.getStrategyName(
 
 @NestedSchema()
 export class TextareaTextDataPointConfig extends TextDataPointConfig {
-  strategy = strategy;
+  override strategy = strategy;
 
   @Prop({
     enum: [DataPointInputType.Textarea],
     required: true,
     default: DataPointInputType.Textarea,
   })
-  inputType: DataPointInputType = DataPointInputType.Textarea;
+  override inputType: DataPointInputType = DataPointInputType.Textarea;
 
   constructor(settings: Omit<ITextDataPointSettings, 'inputType'>) {
     super(DataPointInputType.Textarea, settings);

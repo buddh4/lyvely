@@ -114,5 +114,14 @@ describe('DbUtils', () => {
       expect(model.arr?.[1]).toEqual('b');
       expect(model.arr?.[2]).toEqual('c');
     });
+
+    it('push to sub path', () => {
+      const model = { sub: { arr: ['a', 'b'] } };
+      applyPush(model, { 'sub.arr': 'c' });
+      expect(model.sub.arr?.length).toEqual(3);
+      expect(model.sub.arr?.[0]).toEqual('a');
+      expect(model.sub.arr?.[1]).toEqual('b');
+      expect(model.sub.arr?.[2]).toEqual('c');
+    });
   });
 });

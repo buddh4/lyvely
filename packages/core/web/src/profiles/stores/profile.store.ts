@@ -157,7 +157,7 @@ export const useProfileStore = defineStore('profile', () => {
   function getSetting<TResult = any>(key: string, defaultValue: TResult): TResult;
   function getSetting<TResult = any>(key: string, defaultValue?: undefined): TResult | undefined;
   function getSetting<TResult = any>(key: string, defaultValue?: TResult): TResult | undefined {
-    return findByPath(profile.value?.settings || {}, key, false, false) ?? defaultValue;
+    return findByPath(profile.value?.settings || {}, key, { defaultValue });
   }
 
   /**

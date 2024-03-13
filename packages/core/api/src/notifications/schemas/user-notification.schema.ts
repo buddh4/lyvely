@@ -17,7 +17,7 @@ export enum DeliveryStatus {
 }
 
 @NestedSchema()
-export class StatusError extends BaseModel<StatusError> {
+export class StatusError {
   @Prop()
   message: string;
 
@@ -26,16 +26,16 @@ export class StatusError extends BaseModel<StatusError> {
 
   constructor(error: any) {
     if (error instanceof Error) {
-      super({
+      BaseModel.init(this, {
         message: error.message,
         stack: error.stack,
       });
     } else if (typeof error === 'string') {
-      super({
+      BaseModel.init({
         message: error,
       });
     } else {
-      super({
+      BaseModel.init({
         message: error?.message || 'Unknown error',
         stack: error?.stack,
       });
@@ -46,7 +46,7 @@ export class StatusError extends BaseModel<StatusError> {
 const StatusErrorSchema = SchemaFactory.createForClass(StatusError);
 
 @NestedSchema()
-export class NotificationChannelDeliveryStatus extends BaseModel<NotificationChannelDeliveryStatus> {
+export class NotificationChannelDeliveryStatus {
   @Prop({ requried: true })
   channel: string;
 
@@ -63,10 +63,10 @@ export class NotificationChannelDeliveryStatus extends BaseModel<NotificationCha
   @Prop()
   date: Date;
 
-  constructor(init: Partial<NotificationChannelDeliveryStatus> = {}) {
-    init.attempts = 0;
-    init.date = new Date();
-    super(init);
+  constructor(data: Partial<NotificationChannelDeliveryStatus> = {}) {
+    data.attempts = 0;
+    data.date = new Date();
+    BaseModel.init(this, data);
   }
 }
 
@@ -75,7 +75,7 @@ const NotificationChannelDeliveryStatusSchema = SchemaFactory.createForClass(
 );
 
 @NestedSchema()
-export class NotificationDeliveryStatus extends BaseModel<NotificationDeliveryStatus> {
+export class NotificationDeliveryStatus {
   @Prop()
   success: boolean;
 
@@ -89,18 +89,16 @@ export class NotificationDeliveryStatus extends BaseModel<NotificationDeliverySt
   channels: NotificationChannelDeliveryStatus[];
 
   constructor() {
-    super({
-      success: false,
-      attempts: 0,
-      channels: [],
-    });
+    this.success = false;
+    this.attempts = 0;
+    this.channels = [];
   }
 }
 
 const NotificationDeliveryStatusSchema = SchemaFactory.createForClass(NotificationDeliveryStatus);
 
 @Schema()
-export class UserNotification extends BaseDocument<UserNotification> {
+export class UserNotification {
   @ObjectIdProp({ required: true })
   uid: TObjectId;
 
@@ -118,8 +116,12 @@ export class UserNotification extends BaseDocument<UserNotification> {
   @Prop({ required: true })
   sortOrder: number;
 
+  _id: TObjectId;
+
+  id: string;
+
   constructor(user: DocumentIdentity<User>, notification: Notification) {
-    super({
+    BaseDocument.init<UserNotification>(this, {
       uid: assureObjectId(user),
       nid: assureObjectId(notification),
       seen: false,

@@ -102,11 +102,16 @@ export class TasksService extends ContentTypeService<Task, CreateTaskModel> {
     const isDoneByUser = task.isDoneByUser(user);
 
     if (task.config.userStrategy === UserAssignmentStrategy.Shared) {
-      await this.updateContentSet(context, task, { doneBy: [doneBy] }, { streamSort: true });
+      await this.updateContentSet(
+        context,
+        task,
+        { 'state.doneBy': [doneBy] },
+        { streamSort: true },
+      );
     } else if (!isDoneByUser) {
-      await this.contentDao.updateOneByProfileAndId(profile, task, { $push: { doneBy: doneBy } });
+      await this.contentDao.pushDoneBy(profile, task, doneBy);
     } else {
-      await this.contentDao.updateDoneBy(profile, task, user, doneBy);
+      await this.contentDao.updateDoneBy(profile, task, doneBy);
     }
 
     if (!wasDone) {

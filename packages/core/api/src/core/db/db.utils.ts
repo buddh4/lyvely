@@ -90,6 +90,8 @@ export function applyUpdateTo<T extends BaseDocument<any>>(
  */
 export function applyInc<T extends object = object>(model: T, incData: Record<string, number>) {
   Object.keys(incData).forEach((path) => {
+    // Make sure we do not try to push complex query strings
+    if (path.indexOf('$') >= 0) return;
     if (typeof incData[path] !== 'number') return;
 
     let modelToInc: T | undefined = model;
@@ -97,7 +99,7 @@ export function applyInc<T extends object = object>(model: T, incData: Record<st
 
     if (path.includes('.') && path.lastIndexOf('.') !== path.length - 1) {
       fieldToInc = path.slice(path.lastIndexOf('.') + 1);
-      modelToInc = findByPath<T>(model, path, true);
+      modelToInc = findByPath<T>(model, path, { returnParent: true });
     }
 
     if (modelToInc && typeof modelToInc[fieldToInc] === 'number') {
@@ -106,20 +108,22 @@ export function applyInc<T extends object = object>(model: T, incData: Record<st
   });
 }
 
-export function applyPush<T>(model: T, pushData: { [key in keyof T]?: any }): T {
-  // TODO: support path
+export function applyPush<T extends object>(
+  model: T,
+  pushData: { [key in string | `${string}.${string}`]?: any },
+): T {
   Object.keys(pushData).forEach((key) => {
-    if (typeof model[key] === 'undefined') {
-      model[key] = [];
-    }
+    // Make sure we do not try to push complex query strings
+    if (key.indexOf('$') >= 0) return;
+    const arrayToPush = findByPath<Array<any>>(model, key, { create: true, defaultValue: [] });
 
     if (
       hasOwnNonNullableProperty(pushData[key], '$each') &&
       Array.isArray(pushData[key][`$each`])
     ) {
-      model[key] = [...model[key], ...pushData[key][`$each`]];
+      arrayToPush.push(...pushData[key][`$each`]);
     } else {
-      model[key].push(pushData[key]);
+      arrayToPush.push(pushData[key]);
     }
     // TODO: support $sort and $slice
   });
@@ -163,10 +167,6 @@ export function assureStringId(obj: any | undefined, optional?: boolean): string
 
 export function createBaseDocumentInstance<T>(constructor: Type<T>, data: DeepPartial<T>) {
   const model = Object.create(constructor.prototype);
-  if (typeof model.init === 'function') {
-    model.init(data);
-  } else {
-    assignEntityData(model, data);
-  }
+  BaseDocument.init(model, data);
   return model;
 }

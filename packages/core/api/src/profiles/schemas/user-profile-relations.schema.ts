@@ -1,5 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { assignEntityData, BaseDocument, assureObjectId, TObjectId, ObjectIdProp } from '@/core';
+import {
+  assignEntityData,
+  BaseDocument,
+  assureObjectId,
+  TObjectId,
+  ObjectIdProp,
+  type BaseDocumentData,
+} from '@/core';
 import { Profile } from './profiles.schema';
 import { User } from '@/users';
 import { getNumberEnumValues, PropertyType, validateEmail } from '@lyvely/common';
@@ -57,10 +64,7 @@ type UserRelation = {
 };
 
 @Schema({ timestamps: true, discriminatorKey: 'type' })
-export class UserProfileRelation<C extends UserRelation = UserRelation>
-  extends BaseDocument<C>
-  implements ProfileRelationModel<TObjectId>
-{
+export class UserProfileRelation implements ProfileRelationModel<TObjectId> {
   @ObjectIdProp({ required: true })
   uid: TObjectId;
 
@@ -85,6 +89,14 @@ export class UserProfileRelation<C extends UserRelation = UserRelation>
   createdAt: Date;
 
   updatedAt: Date;
+
+  id: string;
+
+  _id: TObjectId;
+
+  constructor(data: BaseDocumentData<UserProfileRelation>) {
+    BaseDocument.init(this, data);
+  }
 
   static create(data: ICreateProfileRelation & any): UserProfileRelation {
     return new UserProfileRelation({

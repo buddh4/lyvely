@@ -22,7 +22,7 @@ export class PolicyRegistry extends AbstractTypeRegistry<IPolicy<any>> {
     );
   }
 
-  registerType(type: Type<IPolicy<any>>, token?: InjectionToken) {
+  override registerType(type: Type<IPolicy<any>>, token?: InjectionToken) {
     token ??= type;
     token = token instanceof Function ? getPolicyToken(token.name) : token;
     super.registerType(type, token, { provide: token, useClass: type });

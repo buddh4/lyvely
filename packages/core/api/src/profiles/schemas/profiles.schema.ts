@@ -33,10 +33,14 @@ import { createHash } from 'crypto';
 import { ProfileMemberGroup, ProfileMemberGroupSchema } from './profile-member-group.schema';
 
 @Schema({ _id: false })
-class ProfileMetadata extends BaseModel<ProfileMetadata> {
+class ProfileMetadata {
   @PropertyType(Boolean, { default: true })
   @Prop({ required: true })
   deletable: boolean;
+
+  constructor(data?: PropertiesOf<ProfileMetadata>) {
+    BaseModel.init(this, data);
+  }
 }
 
 const ProfileMetadataSchema = SchemaFactory.createForClass(ProfileMetadata);
@@ -46,10 +50,7 @@ const ProfileMetadataSchema = SchemaFactory.createForClass(ProfileMetadata);
  * Note, it is not intended to create custom profile types beside the types defined in ProfileTypes.
  */
 @Schema({ timestamps: true, discriminatorKey: 'type' })
-export class Profile
-  extends BaseDocument<Profile>
-  implements PropertiesOf<ProfileModel<TObjectId>>, IProfilePermissionObject
-{
+export class Profile implements PropertiesOf<ProfileModel<TObjectId>>, IProfilePermissionObject {
   /** The main owner of this profile, note that there may be additional owners registered as profile relation. **/
   @ObjectIdProp({ required: true })
   ownerId: TObjectId;
@@ -152,6 +153,45 @@ export class Profile
   /** Profile discriminator type **/
   type: ProfileType;
 
+  id: string;
+
+  _id: TObjectId;
+
+  /**
+   * Crates a profile for the given initial owner user.
+   * If not overwritten by the given data object, this constructor sets the following defaults:
+   *
+   * - visibility: By default a profile is only visible by its members.
+   * - oid: If no oid was set we create one, even if this profile is not connected to an organization.
+   * - hasOrg: If no oid was provided, we assume this profile is not connected to an organization.
+   * - locale: We fall back to the owners locale or a default locale value in the uncommon case the owner has no locale.
+   * @param owner The initial owner of this profile.
+   * @param data Initial profile data.
+   */
+  constructor(owner: User, data?: Partial<Profile>) {
+    BaseDocument.init(this, data);
+
+    this.ownerId = assureObjectId(owner)!;
+    this.visibility ??= ProfileVisibilityLevel.Member;
+
+    // We need to assign an oid even if this profile is not connected to an organizations for sharding and query index.
+    // This OID can later be used to create an organization out of this profile
+    if (!this.oid) {
+      this.oid = createObjectId();
+      this.hasOrg = false;
+    } else {
+      this.hasOrg = true;
+    }
+
+    if (!this.guid) {
+      this.guid = createHash('sha256').update(createObjectId().toString()).digest('hex');
+    }
+
+    this.settings ||= {};
+
+    this.locale ??= owner.locale || getDefaultLocale();
+  }
+
   /**
    * Retrieves the permission settings.
    * This function is part of the IPermissionObject interface.
@@ -181,41 +221,6 @@ export class Profile
    */
   getProfilePermissionData(): IProfilePermissionData {
     return this;
-  }
-
-  /**
-   * Crates a profile for the given initial owner user.
-   * If not overwritten by the given data object, this constructor sets the following defaults:
-   *
-   * - visibility: By default a profile is only visible by its members.
-   * - oid: If no oid was set we create one, even if this profile is not connected to an organization.
-   * - hasOrg: If no oid was provided, we assume this profile is not connected to an organization.
-   * - locale: We fall back to the owners locale or a default locale value in the uncommon case the owner has no locale.
-   * @param owner The initial owner of this profile.
-   * @param obj Initial profile data.
-   */
-  constructor(owner: User, obj?: Partial<Profile>) {
-    super(obj);
-
-    this.ownerId = assureObjectId(owner)!;
-    this.visibility ??= ProfileVisibilityLevel.Member;
-
-    // We need to assign an oid even if this profile is not connected to an organizations for sharding and query index.
-    // This OID can later be used to create an organization out of this profile
-    if (!this.oid) {
-      this.oid = createObjectId();
-      this.hasOrg = false;
-    } else {
-      this.hasOrg = true;
-    }
-
-    if (!this.guid) {
-      this.guid = createHash('sha256').update(createObjectId().toString()).digest('hex');
-    }
-
-    this.settings ||= {};
-
-    this.locale ??= owner.locale || getDefaultLocale();
   }
 
   /**

@@ -1,5 +1,4 @@
 import { SchemaFactory } from '@nestjs/mongoose';
-import { BaseModel } from '@lyvely/common';
 import {
   assureObjectId,
   DocumentIdentity,
@@ -11,10 +10,7 @@ import {
 import { User } from '@/users';
 
 @NestedSchema({ discriminatorKey: 'type' })
-export class UserSubscription extends BaseModel<UserSubscription> {
-  @ObjectIdProp()
-  pid?: TObjectId;
-
+export class UserSubscription {
   type: string;
 }
 
@@ -23,16 +19,30 @@ export const UserSubscriptionSchema = SchemaFactory.createForClass(UserSubscript
 @NestedSchema()
 export class ProfileSubscription extends UserSubscription {
   static typeName = 'profile';
-  type = ProfileSubscription.typeName;
+  override type = ProfileSubscription.typeName;
+
+  @ObjectIdProp()
+  pid: TObjectId;
+
+  constructor(pid: TObjectId) {
+    super();
+    this.pid = pid;
+  }
+}
+
+export function isProfileUserSubscription(
+  subscription: UserSubscription,
+): subscription is ProfileSubscription {
+  return subscription.type === ProfileSubscription.typeName;
 }
 
 @NestedSchema()
 export class MultiUserSubscription extends UserSubscription {
   static typeName = 'users';
-  type = MultiUserSubscription.typeName;
+  override type = MultiUserSubscription.typeName;
 
   @ObjectIdArrayProp()
-  uids?: TObjectId[];
+  uids: TObjectId[];
 
   constructor(identities: DocumentIdentity<User>[]) {
     super();
@@ -40,18 +50,30 @@ export class MultiUserSubscription extends UserSubscription {
   }
 }
 
+export function isMultiUserSubscription(
+  subscription: UserSubscription,
+): subscription is MultiUserSubscription {
+  return subscription.type === MultiUserSubscription.typeName;
+}
+
 @NestedSchema()
 export class SingleUserSubscription extends UserSubscription {
   static typeName = 'user';
-  type = SingleUserSubscription.typeName;
+  override type = SingleUserSubscription.typeName;
 
   @ObjectIdProp()
-  uid?: TObjectId;
+  uid: TObjectId;
 
   constructor(identity: DocumentIdentity<User>) {
     super();
     this.uid = assureObjectId(identity);
   }
+}
+
+export function isSingleUserSubscription(
+  subscription: UserSubscription,
+): subscription is SingleUserSubscription {
+  return subscription.type === SingleUserSubscription.typeName;
 }
 
 export type Subscription = ProfileSubscription | SingleUserSubscription | MultiUserSubscription;

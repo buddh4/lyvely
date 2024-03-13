@@ -1,22 +1,12 @@
 import { Exclude, Expose } from 'class-transformer';
-import {
-  IsNotEmpty,
-  IsString,
-  Length,
-  IsEnum,
-  IsOptional,
-  IsInt,
-  Max,
-  Min,
-  IsArray,
-  MaxLength,
-} from 'class-validator';
+import { IsEnum, IsInt, IsNotEmpty, IsOptional, IsString, Length, Max, Min } from 'class-validator';
 import { CalendarInterval } from '@lyvely/dates';
-import { UserAssignmentStrategy, CreateContentModel } from '@lyvely/interface';
-import { Trim } from '@lyvely/common';
+import { CreateContentModel, UserAssignmentStrategy } from '@lyvely/interface';
+import { BaseModel, Trim } from '@lyvely/common';
+import type { StrictBaseModelData } from '@lyvely/common/src';
 
 @Exclude()
-export class CreateTaskModel extends CreateContentModel<CreateTaskModel> {
+export class CreateTaskModel extends CreateContentModel {
   @Expose()
   @IsString()
   @IsNotEmpty()
@@ -33,36 +23,20 @@ export class CreateTaskModel extends CreateContentModel<CreateTaskModel> {
 
   @Expose()
   @IsEnum(CalendarInterval)
-  interval: CalendarInterval;
+  interval: CalendarInterval = CalendarInterval.Daily;
 
   @Expose()
   @IsEnum(UserAssignmentStrategy)
-  userStrategy: UserAssignmentStrategy;
+  userStrategy: UserAssignmentStrategy = UserAssignmentStrategy.Shared;
 
   @Expose()
   @IsInt()
   @Max(100)
   @Min(-100)
-  score: number;
+  score = 2;
 
-  @Expose()
-  @IsArray()
-  @MaxLength(20, { each: true })
-  @IsOptional()
-  tagNames?: string[];
-
-  constructor(obj?: Partial<CreateTaskModel>, init = true) {
-    obj = init
-      ? Object.assign(
-          {
-            interval: CalendarInterval.Daily,
-            score: 2,
-            userStrategy: UserAssignmentStrategy.Shared,
-            tagNames: [],
-          },
-          obj || {},
-        )
-      : obj;
-    super(obj);
+  constructor(data: StrictBaseModelData<CreateTaskModel>) {
+    super(false);
+    BaseModel.init(this, data);
   }
 }

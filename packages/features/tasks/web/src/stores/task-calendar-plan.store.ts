@@ -48,7 +48,7 @@ export const useTaskCalendarPlanStore = defineStore('taskCalendarPlan', () => {
     const tasks: TaskModel[] = [];
     let doneCount = 0;
     allTasks.forEach((task) => {
-      if (!task.done || doneCount++ < MAX_DONE_TASKS) {
+      if (!task.state.done || doneCount++ < MAX_DONE_TASKS) {
         tasks.push(task);
       }
     });
@@ -65,7 +65,7 @@ export const useTaskCalendarPlanStore = defineStore('taskCalendarPlan', () => {
   async function setTaskDone(task: TaskModel) {
     try {
       const result = await client.setDone(task.id, calendarPlanStore.date);
-      task.done = result.done;
+      task.state.done = result.done;
       task.meta.updatedAt = new Date();
       profileStore.updateScore(result.score);
     } catch (e) {
@@ -76,7 +76,7 @@ export const useTaskCalendarPlanStore = defineStore('taskCalendarPlan', () => {
   async function setTaskUndone(task: TaskModel) {
     try {
       const result = await client.setUndone(task.id, calendarPlanStore.date);
-      task.done = undefined;
+      task.state.done = undefined;
       task.meta.updatedAt = new Date();
       profileStore.updateScore(result.score);
     } catch (e) {
@@ -86,7 +86,7 @@ export const useTaskCalendarPlanStore = defineStore('taskCalendarPlan', () => {
 
   async function startTimer(task: TaskModel) {
     try {
-      task.timer = await client.startTimer(task.id);
+      task.state.timer = await client.startTimer(task.id);
     } catch (e) {
       dialog.showUnknownError();
     }
@@ -94,7 +94,7 @@ export const useTaskCalendarPlanStore = defineStore('taskCalendarPlan', () => {
 
   async function stopTimer(task: TaskModel) {
     try {
-      task.timer = await client.stopTimer(task.id);
+      task.state.timer = await client.stopTimer(task.id);
     } catch (e) {
       dialog.showUnknownError();
     }
@@ -102,7 +102,7 @@ export const useTaskCalendarPlanStore = defineStore('taskCalendarPlan', () => {
 
   async function updateTimer(task: TaskModel, value: number) {
     try {
-      task.timer = await client.updateTimer(task.id, value);
+      task.state.timer = await client.updateTimer(task.id, value);
     } catch (e) {
       dialog.showUnknownError();
     }

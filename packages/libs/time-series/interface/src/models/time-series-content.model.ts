@@ -1,6 +1,6 @@
-import { ContentModel, ISortable } from '@lyvely/interface';
+import { ContentModel, ISortable, ContentDataTypeModel } from '@lyvely/interface';
 import { PropertyType } from '@lyvely/common';
-import { ITimeSeriesContentConfig, ITimeSeriesContent } from '../interfaces';
+import { ITimeSeriesContentConfig } from '../interfaces';
 import { Expose } from 'class-transformer';
 import { ICalendarPlanEntry } from '@lyvely/calendar-plan-interface';
 import { CalendarInterval } from '@lyvely/dates';
@@ -21,15 +21,18 @@ export class TimeSeriesSummaryModel {
 @Expose()
 export class TimeSeriesContentModel<
     TID = string,
-    TModel extends ITimeSeriesContent<TID> = ITimeSeriesContent<TID>,
     TConfig extends ITimeSeriesContentConfig = ITimeSeriesContentConfig,
+    TData extends ContentDataTypeModel = ContentDataTypeModel,
+    TState extends Object | undefined = undefined,
   >
-  extends ContentModel<TID, TModel, TConfig>
+  extends ContentModel<TID, TConfig, TData, TState>
   implements ISortable, ICalendarPlanEntry<TID>
 {
   @Expose()
   @PropertyType(TimeSeriesSummaryModel)
   timeSeriesSummary: TimeSeriesSummaryModel;
+
+  override config: TConfig;
 
   get interval(): CalendarInterval {
     return this.timeSeriesConfig.interval;

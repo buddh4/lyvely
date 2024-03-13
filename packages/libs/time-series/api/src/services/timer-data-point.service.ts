@@ -11,9 +11,7 @@ import { DataPoint, TimerDataPoint, TimeSeriesContent } from '../schemas';
 /**
  * A service responsible for updating data point values supporting a timer.
  */
-export abstract class TimerDataPointService<
-  T extends TimeSeriesContent<T> = TimeSeriesContent<any>,
-> {
+export abstract class TimerDataPointService<T extends TimeSeriesContent = TimeSeriesContent<any>> {
   /** The data point service, responsible for updating the data point value. **/
   abstract dataPointService: DataPointService<T>;
 

@@ -1,4 +1,4 @@
-import { Expose, Type } from 'class-transformer';
+import { Expose } from 'class-transformer';
 import { DataPointModel } from './data-point.model';
 import {
   DataPointValueType,
@@ -6,13 +6,11 @@ import {
   ITimerDataPointConfig,
   NumericDataPointInterface,
 } from '../interfaces';
-import { BaseModel, PropertyType } from '@lyvely/common';
+import { BaseModel, type PropertiesOf, PropertyType } from '@lyvely/common';
 import { TimerModel } from '@lyvely/timers-interface';
 import { IsNumber, Min, ValidateNested } from 'class-validator';
 
-export class TimerDataPointValueModel<TID = string> extends BaseModel<
-  TimerDataPointValueModel<TID>
-> {
+export class TimerDataPointValueModel<TID = string> {
   @Expose()
   @PropertyType(TimerModel)
   @ValidateNested()
@@ -23,22 +21,26 @@ export class TimerDataPointValueModel<TID = string> extends BaseModel<
   @Min(0)
   @PropertyType(Number, { default: 0 })
   ms: number;
+
+  constructor(data: PropertiesOf<TimerDataPointValueModel<any>>) {
+    BaseModel.init(this, data);
+  }
 }
 
 export class TimerDataPointModel<TID = string>
-  extends DataPointModel<TID, TimerDataPointModel<TID>>
+  extends DataPointModel<TID>
   implements NumericDataPointInterface
 {
   @Expose()
   @PropertyType(TimerDataPointValueModel)
-  value: TimerDataPointValueModel<TID>;
+  override value: TimerDataPointValueModel<TID>;
+
+  @Expose()
+  override valueType = DataPointValueType.Timer;
 
   get numericValue() {
     return this.value.ms;
   }
-
-  @Expose()
-  valueType = DataPointValueType.Timer;
 }
 
 export function isTimerDataPointConfig(config: IDataPointConfig): config is ITimerDataPointConfig {

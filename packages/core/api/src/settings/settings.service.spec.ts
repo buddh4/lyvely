@@ -1,18 +1,33 @@
-import { AbstractDao, BaseDocument, DocumentIdentity, MixedProp, Model } from '@/core';
+import {
+  AbstractDao,
+  BaseDocument,
+  DocumentIdentity,
+  MixedProp,
+  Model,
+  type TObjectId,
+} from '@/core';
 import { buildTest, LyvelyTestingModule } from '@/testing';
 import { SettingsService } from './settings.service';
 import { InjectModel, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { SettingsRegistry } from './settings.registry';
-import { Constructor, DeepPartial } from '@lyvely/common';
+import { type BaseModelData, Constructor, DeepPartial } from '@lyvely/common';
 import { FieldValidationException } from '@lyvely/interface';
 
 const settingRegistry = new SettingsRegistry();
 
 @Schema()
-class TestSettingTarget extends BaseDocument<TestSettingTarget> {
+class TestSettingTarget {
   @MixedProp({ default: {} })
   settings: Record<string, any>;
+
+  id: string;
+
+  _id: TObjectId;
+
+  constructor(data: BaseModelData<TestSettingTarget>) {
+    BaseDocument.init(this, data);
+  }
 }
 
 const TestSettingTargetSchema = SchemaFactory.createForClass(TestSettingTarget);
@@ -72,7 +87,7 @@ describe('SettingsService', () => {
   describe('updateSettings', () => {
     it('update valid setting', async () => {
       settingRegistry.registerSettings([{ key: 'test.key', type: String }]);
-      const model = await settingsService.save(new TestSettingTarget());
+      const model = await settingsService.save(new TestSettingTarget({}));
       const result = await settingsService.updateSettings(model, [
         { key: 'test.key', value: 'testValue' },
       ]);
@@ -86,7 +101,7 @@ describe('SettingsService', () => {
 
     it('try update invalid setting type', async () => {
       settingRegistry.registerSettings([{ key: 'test.key', type: String }]);
-      const model = await settingsService.save(new TestSettingTarget());
+      const model = await settingsService.save(new TestSettingTarget({}));
 
       expect.assertions(2);
 
@@ -106,7 +121,7 @@ describe('SettingsService', () => {
           validator: (val: any) => ['test1', 'test2'].includes(val),
         },
       ]);
-      const model = await settingsService.save(new TestSettingTarget());
+      const model = await settingsService.save(new TestSettingTarget({}));
 
       expect.assertions(2);
 
@@ -126,7 +141,7 @@ describe('SettingsService', () => {
           validator: (val: any) => ['test1', 'test2'].includes(val),
         },
       ]);
-      const model = await settingsService.save(new TestSettingTarget());
+      const model = await settingsService.save(new TestSettingTarget({}));
 
       const result = await settingsService.updateSettings(model, [
         { key: 'test.key', value: 'test2' },

@@ -1,7 +1,7 @@
 import { Membership, Organization, Profile, UserProfileRelation } from '../schemas';
 import { IOptionalUserContext, IUserContext, User } from '@/users';
 import { useUserProfileRelationHelper } from '../helpers';
-import { BaseModel, PropertyType } from '@lyvely/common';
+import { BaseModel, type BaseModelData, PropertyType } from '@lyvely/common';
 import {
   getProfileRelationRole,
   IPermissionSetting,
@@ -13,6 +13,10 @@ import {
 } from '@lyvely/interface';
 import { IUserWithProfileRelation } from '../interfaces/user-with-profile-relation.interface';
 
+export type ProfileContextData<T extends ProfileContext = ProfileContext> = BaseModelData<
+  Omit<T, 'oid' | 'pid' | 'organization'>
+> & { organizationContext?: ProfileContext<Organization> };
+
 /**
  * This composite class holds information about the relation between a user and a profile and provides some utility
  * access functions. This class is mainly used in the controller and service layer for access and permission checks.
@@ -20,7 +24,6 @@ import { IUserWithProfileRelation } from '../interfaces/user-with-profile-relati
  * @template T - The type of the profile.
  */
 export class ProfileContext<TProfile extends Profile = Profile>
-  extends BaseModel<ProfileContext & { organizationContext?: ProfileContext<Organization> }>
   implements IOptionalUserContext, IProfilePermissionObject
 {
   /**
@@ -37,7 +40,7 @@ export class ProfileContext<TProfile extends Profile = Profile>
   /**
    * Represents the context of the organization related to the profile (if any).
    */
-  protected organizationContext?: ProfileContext<Organization>;
+  organizationContext?: ProfileContext<Organization>;
 
   /**
    * The relations between the user and the profile of this context.
@@ -45,8 +48,15 @@ export class ProfileContext<TProfile extends Profile = Profile>
   @PropertyType([UserProfileRelation])
   relations: UserProfileRelation[];
 
+  constructor(data: ProfileContextData<ProfileContext<TProfile>>) {
+    BaseModel.init(this, data);
+    if (!this.organizationContext && this.profile instanceof Organization) {
+      this.organizationContext = this as ProfileContext<Organization>;
+    }
+  }
+
   /**
-   * Retrieves the organizatoin id of the profile.
+   * Retrieves the organization id of the profile.
    * Note, every profile has an organization id, even if the organization does not exist.
    */
   get oid() {
@@ -207,5 +217,10 @@ export class ProtectedProfileContext<T extends Profile = Profile>
   extends ProfileContext<T>
   implements IUserContext, IUserWithProfileRelation
 {
-  user: User;
+  override user: User;
+
+  constructor(data: ProfileContextData<ProtectedProfileContext<T>>) {
+    super(false);
+    BaseModel.init(this, data);
+  }
 }

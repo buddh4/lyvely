@@ -1,12 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { BaseDocument, ObjectIdArrayProp, ObjectIdProp, TObjectId } from '@/core';
-import { DeepPartial } from '@lyvely/common';
+import { type PartialPropertiesOf } from '@lyvely/common';
 import { CalendarPreferences, UserAssignmentStrategy } from '@lyvely/interface';
 import { User } from '@/users';
 import { Profile } from './profiles.schema';
 import { CalendarDate, CalendarInterval, parseTimingId, toDate, toTimingId } from '@lyvely/dates';
 
-export interface IProfileScoreAction {
+export interface IProfileScore {
   _id: TObjectId;
   oid?: TObjectId;
   pid: TObjectId;
@@ -34,13 +34,7 @@ export interface ICreateProfileScore {
  * as user the uid should be set, otherwise the action is linked to the whole profile.
  */
 @Schema({ timestamps: true, discriminatorKey: 'type' })
-export class ProfileScore<
-  C extends IProfileScoreAction = IProfileScoreAction,
-> extends BaseDocument<C> {
-  _id: TObjectId;
-
-  id: string;
-
+export class ProfileScore {
   @ObjectIdProp()
   oid?: TObjectId;
 
@@ -87,6 +81,10 @@ export class ProfileScore<
   @Prop({ required: true, default: 0 })
   score: number;
 
+  id: string;
+
+  _id: TObjectId;
+
   type: string;
 
   createdAt: Date;
@@ -97,7 +95,7 @@ export class ProfileScore<
     return 'profileScoreActions';
   }
 
-  constructor(options: ICreateProfileScore, data: DeepPartial<C> = {}) {
+  constructor(options: ICreateProfileScore, data: PartialPropertiesOf<ProfileScore> = {}) {
     const { user, profile } = options;
     data.createdBy ||= user._id;
     data.score = options.score;
@@ -113,7 +111,7 @@ export class ProfileScore<
       data.uid = undefined;
     }
 
-    super(data);
+    BaseDocument.init(this, data);
 
     if (this.date) {
       const calendarPreferences = profile.settings?.calendar as CalendarPreferences;

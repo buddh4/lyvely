@@ -5,9 +5,9 @@ import { Document } from '@lyvely/common';
 import { IChartSeriesConfig } from '../interfaces';
 
 @Exclude()
-export class ChartSeriesConfigModel<TID = string> implements IChartSeriesConfig<TID> {
+export class ChartSeriesConfigModel implements IChartSeriesConfig {
   @Expose()
-  id: TID;
+  id: string;
 
   @Expose()
   type: string;

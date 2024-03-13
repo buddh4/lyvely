@@ -1,23 +1,26 @@
-import { BaseModel } from '@lyvely/common';
+import { BaseModel, type PropertiesOf } from '@lyvely/common';
 import { Expose } from 'class-transformer';
+import type { BaseModelData } from '@lyvely/common/src';
 
-export interface ILegalSection {
+@Expose()
+export class LegalSection {
   id: string;
   label: string;
   url?: string;
   version: string;
+
+  constructor(data?: BaseModelData<LegalSection>) {
+    BaseModel.init(this, data);
+  }
 }
 
 @Expose()
-export class LegalSection<T extends ILegalSection = ILegalSection> extends BaseModel<T> {
-  id: string;
-  label: string;
-  url?: string;
-  version: string;
-}
-
-@Expose()
-export class LegalSectionDetails extends LegalSection<LegalSectionDetails> {
-  content: string;
+export class LegalSectionDetails extends LegalSection {
+  content?: string;
   format?: 'html' | 'markdown';
+
+  constructor(data: PropertiesOf<LegalSectionDetails>) {
+    super(false);
+    BaseModel.init(this, data);
+  }
 }

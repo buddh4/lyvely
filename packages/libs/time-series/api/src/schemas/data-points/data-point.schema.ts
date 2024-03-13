@@ -8,6 +8,7 @@ import {
   User,
   Profile,
   CalendarPreferences,
+  type BaseDocumentData,
 } from '@lyvely/api';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import {
@@ -38,10 +39,7 @@ export type DataPointEntity<T> = DataPointModel<TObjectId> & BaseDocument<T>;
  * date aggregations and direct aggregations on the timing fields without any date conversion logic.
  */
 @Schema({ timestamps: true, discriminatorKey: 'valueType' })
-export class DataPoint<T extends DataPointEntity<T> = DataPointEntity<any>>
-  extends BaseDocument<T>
-  implements PropertiesOf<DataPointModel<TObjectId, T>>, ITiming
-{
+export class DataPoint implements PropertiesOf<DataPointModel<TObjectId>>, ITiming {
   /** Related organization id. **/
   @ObjectIdProp({ immutable: true })
   oid: TObjectId;
@@ -89,10 +87,6 @@ export class DataPoint<T extends DataPointEntity<T> = DataPointEntity<any>>
   @Prop({ immutable: true })
   week?: number;
 
-  valueType: string;
-
-  value: any;
-
   /**
    * Contains the utc date without time information with the same date described by tid.
    * date.toISOString() should always return a date string in the format '2020-02-20T00:00:00.000Z'
@@ -102,17 +96,21 @@ export class DataPoint<T extends DataPointEntity<T> = DataPointEntity<any>>
   @Prop({ type: Date, required: true, immutable: true })
   date: Date;
 
+  valueType: string;
+
+  value: any;
+
+  id: string;
+
+  _id: TObjectId;
+
   constructor(
     profile: Profile,
     user: User,
     content: TimeSeriesContent<any>,
-    data?: PartialPropertiesOf<T>,
+    data?: BaseDocumentData<DataPoint>,
   ) {
-    super(false);
-
-    if (data) {
-      assignEntityData(this, data);
-    }
+    BaseDocument.init(this, data);
 
     this.oid = assureObjectId(content.oid);
     this.pid = assureObjectId(profile._id);
@@ -123,11 +121,9 @@ export class DataPoint<T extends DataPointEntity<T> = DataPointEntity<any>>
     this.cid = assureObjectId(content._id);
     this.interval = content.timeSeriesConfig.interval;
 
-    if (data?.date) {
+    if (data !== false && data?.date) {
       this.setDate(profile, data.date);
     }
-
-    this.afterInit();
   }
 
   /**

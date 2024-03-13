@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { BaseDocument } from '@/core';
+import { BaseDocument, type StrictBaseDocumentData, type TObjectId } from '@/core';
 import { PropertyType, Type } from '@lyvely/common';
 import { UrlRoute } from '@lyvely/interface';
 import { Translatable } from '@/i18n';
@@ -29,10 +29,7 @@ export interface INotificationType {
 
 export type TNotificationType = Type<NotificationType> & { typeName: string };
 
-export abstract class NotificationType<T extends INotificationType = INotificationType>
-  extends BaseDocument<T>
-  implements INotificationType
-{
+export abstract class NotificationType implements INotificationType {
   static typeName: string;
 
   @Prop()
@@ -48,7 +45,15 @@ export abstract class NotificationType<T extends INotificationType = INotificati
 
   type: string;
 
-  mergeWith(notification: T) {
+  _id: TObjectId;
+
+  id: string;
+
+  constructor(data: StrictBaseDocumentData<Omit<NotificationType, 'type'>>) {
+    BaseDocument.init(this, data);
+  }
+
+  mergeWith(notification: NotificationType) {
     // Nothing todo
   }
 

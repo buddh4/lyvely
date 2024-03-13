@@ -101,7 +101,7 @@ export class ProfileTestDataUtils extends UserTestDataUtils {
     };
   }
 
-  async createUser(username = 'test', userData: Partial<User> = {}): Promise<User> {
+  override async createUser(username = 'test', userData: Partial<User> = {}): Promise<User> {
     userData.username = username;
     userData.email = userData.email || `${username}@test.de`;
     userData.emails ||= [
@@ -138,7 +138,7 @@ export class ProfileTestDataUtils extends UserTestDataUtils {
       user: owner,
       profile,
       organizationContext: organization
-        ? this.createOrganizationContet(owner, organization, ProfileMembershipRole.Owner)
+        ? this.createOrganizationContext(owner, organization, ProfileMembershipRole.Owner)
         : undefined,
       relations: [
         Membership.create({
@@ -153,7 +153,7 @@ export class ProfileTestDataUtils extends UserTestDataUtils {
       user: member,
       profile,
       organizationContext: organization
-        ? this.createOrganizationContet(member, organization, ProfileMembershipRole.Member)
+        ? this.createOrganizationContext(member, organization, ProfileMembershipRole.Member)
         : undefined,
       relations: [
         Membership.create({
@@ -167,7 +167,7 @@ export class ProfileTestDataUtils extends UserTestDataUtils {
     return { owner, ownerContext, member, memberContext, profile };
   }
 
-  createOrganizationContet(
+  createOrganizationContext(
     user: User,
     organization: Organization,
     role: ProfileMembershipRole = ProfileMembershipRole.Member,

@@ -1,4 +1,11 @@
-import { BaseModel, DocumentModel, PropertyType } from '@lyvely/common';
+import {
+  BaseModel,
+  DocumentModel,
+  type PropertiesOf,
+  PropertyType,
+  TransformObjectId,
+  TransformObjectIds,
+} from '@lyvely/common';
 import { AvatarModel } from '@/avatars';
 import { Exclude, Expose } from 'class-transformer';
 import { UserNotificationStateModel } from './user-notification-state.model';
@@ -8,44 +15,73 @@ import {
   IPermissionObject,
   IPermissionSetting,
 } from '@/permissions/interfaces';
+import { Document } from 'postcss';
 
 @Exclude()
-export class UserEmailModel extends BaseModel<UserEmailModel> {
+export class UserEmailModel {
   @Expose()
   email: string;
 
   @Expose()
   verified: boolean;
+
+  constructor(data: PropertiesOf<UserEmailModel>) {
+    BaseModel.init(this, data);
+  }
 }
 
-@Expose()
-export class UserInfoModel extends BaseModel<UserInfoModel> {
-  uid: string;
+@Exclude()
+export class UserInfoModel<TID = string> {
+  @Expose()
+  @TransformObjectId()
+  uid: TID;
+
+  @Expose()
   imageGuid?: string;
+
+  @Expose()
   name: string;
+
+  constructor(data: PropertiesOf<UserInfoModel<any>>) {
+    BaseModel.init(this, data);
+  }
 }
 
-@Expose()
+@Exclude()
 export class UserPermissionSetting<TID = string>
   implements IPermissionSetting<TID, UserRelationRole>
 {
+  @Expose()
   id: string;
+
+  @Expose()
   role: UserRelationRole;
+
+  @Expose()
+  @TransformObjectIds()
   groups?: TID[];
+
+  constructor(data: PropertiesOf<UserPermissionSetting<any>>) {
+    BaseModel.init(this, data);
+  }
 }
 
 @Expose()
 export class UserRelationGroupModel {
+  @Expose()
   id: string;
+  @Expose()
   name: string;
+  @Expose()
   description?: string;
+
+  constructor(data: PropertiesOf<UserRelationGroupModel>) {
+    BaseModel.init(this, data);
+  }
 }
 
 @Exclude()
-export class UserModel<TID = string>
-  extends DocumentModel<UserModel<any>>
-  implements IPermissionObject<UserRelationRole>
-{
+export class UserModel<TID = string> implements IPermissionObject<UserRelationRole> {
   @Expose()
   id: string;
 
@@ -97,6 +133,10 @@ export class UserModel<TID = string>
   @Expose()
   @PropertyType([UserRelationGroupModel])
   groups: UserRelationGroupModel[];
+
+  constructor(data: Partial<UserModel<any>>) {
+    DocumentModel.init(this, data);
+  }
 
   getPermissionSettings(): IPermissionSetting<any, UserRelationRole>[] {
     return this.permissions;

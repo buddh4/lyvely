@@ -1,13 +1,16 @@
 import { Exclude, Expose } from 'class-transformer';
-import { BaseModel, PropertyType, TransformObjectId } from '@lyvely/common';
+import {
+  BaseModel,
+  type BaseModelData,
+  type PropertiesOf,
+  PropertyType,
+  TransformObjectId,
+} from '@lyvely/common';
 import { IProfileRelation, IProfileRelationUserInfo } from '../interfaces';
 import { UserStatus } from '@/users';
 
 @Exclude()
-export class ProfileRelationUserInfoModel
-  extends BaseModel<ProfileRelationUserInfoModel>
-  implements IProfileRelationUserInfo
-{
+export class ProfileRelationUserInfoModel implements IProfileRelationUserInfo {
   @Expose()
   displayName: string;
 
@@ -19,16 +22,14 @@ export class ProfileRelationUserInfoModel
 
   @Expose()
   guid?: string;
+
+  constructor(data: PropertiesOf<ProfileRelationUserInfoModel>) {
+    BaseModel.init(this, data);
+  }
 }
 
 @Exclude()
-export class ProfileRelationModel<
-    TID = string,
-    T extends IProfileRelation<TID> = IProfileRelation<TID>,
-  >
-  extends BaseModel<T & { pid: TID; oid: TID; uid: TID }>
-  implements IProfileRelation<TID>
-{
+export class ProfileRelationModel<TID = string> implements IProfileRelation<TID> {
   @Expose()
   id: string;
 
@@ -56,10 +57,11 @@ export class ProfileRelationModel<
 
   @Expose()
   relationStatus: UserStatus;
+
+  constructor(data: BaseModelData<ProfileRelationModel<any>>) {
+    BaseModel.init(this, data);
+  }
 }
 
 @Exclude()
-export class ProfileRelationDetailsModel<
-  TID = string,
-  T extends IProfileRelation<TID> = IProfileRelation<TID>,
-> extends ProfileRelationModel<TID, T> {}
+export class ProfileRelationDetailsModel<TID = string> extends ProfileRelationModel<TID> {}

@@ -14,7 +14,7 @@ import { DocumentNotFoundException } from '@lyvely/interface';
  */
 @Injectable()
 export class ContentReadPolicy extends BaseContentReadPolicy {
-  async verify(context: ProfileContentContext): Promise<boolean> {
+  override async verify(context: ProfileContentContext): Promise<boolean> {
     const { content } = context;
 
     if (!content) throw new DocumentNotFoundException();

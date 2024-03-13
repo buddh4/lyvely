@@ -7,5 +7,5 @@ import { PropertyType } from '@lyvely/common';
 export class NotificationStreamResponse extends StreamResponse<IWebNotification> {
   @Expose()
   @PropertyType([WebNotification])
-  models: IWebNotification[];
+  override models: IWebNotification[];
 }

@@ -42,7 +42,7 @@ export class OtpService<TContext = any> {
         otp: hashedOtp,
         remember: options.remember,
         purpose: options.purpose,
-        context: options.context as any,
+        context: options.context,
         issuedAt: new Date(),
         expiresIn: ms(options.expiresIn || DEFAULT_OTP_EXPIRATION),
       }),

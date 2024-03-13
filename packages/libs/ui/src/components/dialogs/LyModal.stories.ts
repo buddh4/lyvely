@@ -27,7 +27,7 @@ const Template = (args: any) => ({
 });
 
 export const Modal = Template.bind({});
-Modal.args = {
+(<any>Modal).args = {
   modelValue: true,
   form: true,
   title: 'Modal Title',

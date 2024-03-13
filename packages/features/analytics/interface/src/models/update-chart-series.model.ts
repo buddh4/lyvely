@@ -1,5 +1,4 @@
 import { Model } from '@lyvely/common';
-import type { PartialPropertiesOf } from '@lyvely/common';
 import { Exclude, Expose, Type } from 'class-transformer';
 import { getChartSeriesConfigTypes } from '../registries/chart-series.registry';
 import { ChartSeriesConfigModel } from './chart-series-config.model';

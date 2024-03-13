@@ -4,10 +4,10 @@ import { UpdateDataPointResponse, DataPointModel } from '@lyvely/time-series-int
 import { JournalModel } from './journal.model';
 
 @Expose()
-export class UpdateJournalDataPointResponse extends UpdateDataPointResponse<UpdateJournalDataPointResponse> {
+export class UpdateJournalDataPointResponse extends UpdateDataPointResponse {
   @PropertyType(DataPointModel)
-  dataPoint: DataPointModel;
+  override dataPoint: DataPointModel;
 
   @PropertyType(JournalModel)
-  model: JournalModel;
+  override model: JournalModel;
 }

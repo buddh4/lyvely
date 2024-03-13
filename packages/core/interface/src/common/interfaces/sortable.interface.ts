@@ -1,5 +1,5 @@
 import { Exclude, Expose } from 'class-transformer';
-import { PropertyType, BaseModel } from '@lyvely/common';
+import { PropertyType, BaseModel, type PropertiesOf } from '@lyvely/common';
 
 export type SortValue = number | undefined;
 
@@ -9,18 +9,27 @@ export interface ISortable {
 }
 
 @Exclude()
-export class SortResult extends BaseModel<SortResult> {
+export class SortResult {
   @Expose()
   id: string;
 
   @Expose()
   sortOrder: number;
+
+  constructor(data: PropertiesOf<SortResult>) {
+    this.id = data.id;
+    this.sortOrder = data.sortOrder;
+  }
 }
 
 @Expose()
-export class SortResponse extends BaseModel<SortResponse> {
+export class SortResponse {
   @PropertyType([SortResult])
   sort: SortResult[];
+
+  constructor(data?: PropertiesOf<SortResponse>) {
+    BaseModel.init(this, data);
+  }
 }
 
 export function getSortOrder(obj: any) {

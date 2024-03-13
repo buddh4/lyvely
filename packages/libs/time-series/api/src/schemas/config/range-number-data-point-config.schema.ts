@@ -16,13 +16,13 @@ const strategy = DataPointConfigFactory.getStrategyName(
 
 @NestedSchema()
 export class RangeNumberDataPointConfig extends NumberDataPointConfig {
-  strategy = strategy;
+  override strategy = strategy;
 
   @Prop({ enum: [DataPointInputType.Range] })
-  inputType: DataPointInputType;
+  override inputType: DataPointInputType;
 
   @Prop({ required: true })
-  max: number;
+  override max: number;
 
   constructor(settings: Omit<INumberDataPointSettings, 'inputType'>) {
     super(DataPointInputType.Range, settings);

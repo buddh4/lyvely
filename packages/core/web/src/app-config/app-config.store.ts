@@ -74,7 +74,7 @@ export const useAppConfigStore = defineStore('app-config', () => {
     if (!moduleConfig) return defaultValue;
     if (!path) return moduleConfig as TResult;
 
-    return findByPath<TResult>(moduleConfig, path as string) ?? defaultValue;
+    return findByPath<TResult>(moduleConfig, path as string, { defaultValue });
   }
 
   return {

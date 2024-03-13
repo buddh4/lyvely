@@ -9,7 +9,7 @@ import { User } from '@/users';
 @Injectable()
 export class ContentScoreService extends ProfileScoreService<ContentScore> {
   @Inject()
-  protected profileScoreDao: ContentScoreDao;
+  protected override profileScoreDao: ContentScoreDao;
 
   // TODO: Implement deleteScoreByContent and overwriteScoreByContent (or upsert)
 

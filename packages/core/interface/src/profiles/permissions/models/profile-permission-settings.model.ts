@@ -5,10 +5,7 @@ import { IProfilePermissionSetting } from '../interfaces';
 import { BaseModel } from '@lyvely/common';
 
 @Expose()
-export class ProfilePermissionSettingModel<TID = string>
-  extends BaseModel<ProfilePermissionSettingModel<any>>
-  implements IProfilePermissionSetting<TID>
-{
+export class ProfilePermissionSettingModel<TID = string> implements IProfilePermissionSetting<TID> {
   @Expose()
   @IsString()
   @Length(1, 250)
@@ -23,4 +20,8 @@ export class ProfilePermissionSettingModel<TID = string>
   @IsString({ each: true })
   @IsOptional()
   groups?: TID[];
+
+  constructor(data: ProfilePermissionSettingModel<any>) {
+    BaseModel.init(this, data);
+  }
 }

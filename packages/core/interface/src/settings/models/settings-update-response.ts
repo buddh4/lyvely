@@ -1,7 +1,11 @@
 import { Expose } from 'class-transformer';
-import { BaseModel } from '@lyvely/common';
+import { type PropertiesOf } from '@lyvely/common';
 
 @Expose()
-export class SettingsUpdateResponse extends BaseModel<SettingsUpdateResponse> {
+export class SettingsUpdateResponse {
   settings: Record<string, any>;
+
+  constructor(data: PropertiesOf<SettingsUpdateResponse>) {
+    this.settings = data.settings;
+  }
 }

@@ -7,7 +7,7 @@ export class TestContentScore extends ContentScore {}
 export const TestContentScoreSchema = SchemaFactory.createForClass(TestContentScore);
 
 @Schema()
-export class ExtendedTestContentScore extends ContentScore<ExtendedTestContentScore> {
+export class ExtendedTestContentScore extends ContentScore {
   @Prop({ type: String, required: true })
   special: string;
 

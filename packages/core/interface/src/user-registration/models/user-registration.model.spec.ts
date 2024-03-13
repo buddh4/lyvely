@@ -14,6 +14,7 @@ describe('RegisterDto', () => {
         email: 'test@mail.de',
         locale: 'de',
         password: 'password',
+        timezone: 'Europe/Berlin',
         passwordRepeat: 'password',
       });
 
@@ -29,6 +30,7 @@ describe('RegisterDto', () => {
         email: 'test@mail.de',
         locale: 'de',
         password: 'password',
+        timezone: 'Europe/Berlin',
         passwordRepeat: 'password',
       });
 
@@ -42,24 +44,13 @@ describe('RegisterDto', () => {
         email: 'test@mail',
         locale: 'de',
         password: 'password',
+        timezone: 'Europe/Berlin',
         passwordRepeat: 'password',
       });
 
       const errors = await validate(model);
       expect(errors.length).toEqual(1);
       expect(errors[0].property).toEqual('email');
-    });
-
-    it('locale is optional', async () => {
-      const model = new UserRegistration({
-        username: 'MyUser',
-        email: 'test@mail.de',
-        password: 'password',
-        passwordRepeat: 'password',
-      });
-
-      const errors = await validate(model);
-      expect(errors.length).toEqual(0);
     });
 
     it('locale is not enabled', async () => {
@@ -69,6 +60,7 @@ describe('RegisterDto', () => {
         email: 'test@mail.de',
         password: 'password',
         locale: 'de',
+        timezone: 'Europe/Berlin',
         passwordRepeat: 'password',
       });
 
@@ -77,11 +69,28 @@ describe('RegisterDto', () => {
       expect(errors[0].property).toEqual('locale');
     });
 
+    it('validation fails due to invalid timezone', async () => {
+      setEnabledLocales(['en-us']);
+      const model = new UserRegistration({
+        username: 'MyUser',
+        email: 'test@mail.de',
+        password: 'password',
+        locale: 'en-us',
+        timezone: 'Europe/BBerlin',
+        passwordRepeat: 'password',
+      });
+
+      const errors = await validate(model);
+      expect(errors.length).toEqual(1);
+      expect(errors[0].property).toEqual('timezone');
+    });
+
     it('validation fails due to empty username', async () => {
       const model = new UserRegistration({
         username: '',
         email: 'test@mail.de',
         locale: 'de',
+        timezone: 'Europe/Berlin',
         password: 'password',
         passwordRepeat: 'password',
       });

@@ -29,7 +29,7 @@ import { Controller } from '@/common';
 export class AuthController extends AbstractJwtAuthController implements AuthEndpoint {
   constructor(
     private authService: JwtAuthService,
-    protected configService: ConfigService<ConfigurationPath>,
+    protected override configService: ConfigService<ConfigurationPath>,
   ) {
     super(configService);
   }

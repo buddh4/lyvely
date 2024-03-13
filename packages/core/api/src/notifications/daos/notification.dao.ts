@@ -21,7 +21,7 @@ export class NotificationDao extends AbstractDao<Notification> {
     return Notification;
   }
 
-  protected constructModel(lean: DeepPartial<Notification>): Notification {
+  protected override constructModel(lean: DeepPartial<Notification>): Notification {
     const result = super.constructModel(lean);
     if (result.data?.type) {
       result.data = createBaseDocumentInstance(

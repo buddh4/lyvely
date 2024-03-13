@@ -16,14 +16,14 @@ const strategy = DataPointConfigFactory.getStrategyName(
 
 @NestedSchema()
 export class CheckboxSelectionDataPointConfig extends SelectionDataPointConfig {
-  strategy = strategy;
+  override strategy = strategy;
 
   @Prop({
     enum: [DataPointInputType.Checkbox],
     required: true,
     default: DataPointInputType.Checkbox,
   })
-  inputType: DataPointInputType = DataPointInputType.Checkbox;
+  override inputType: DataPointInputType = DataPointInputType.Checkbox;
 
   constructor(settings: Omit<ISelectionDataPointSettings, 'inputType'>) {
     super(DataPointInputType.Checkbox, settings);

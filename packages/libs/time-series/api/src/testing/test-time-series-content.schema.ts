@@ -8,7 +8,7 @@ import {
   TextareaTextDataPointConfig,
   TimerDataPointConfig,
 } from '../';
-import { NestedSchema, ContentModel, IContent } from '@lyvely/api';
+import { NestedSchema, ContentModel } from '@lyvely/api';
 import {
   DataPointInputType,
   ITimeSeriesContentConfig,
@@ -36,14 +36,14 @@ const TestTimeSeriesConfigSchema = TimeSeriesConfigSchemaFactory.createForClass(
 );
 
 @Schema()
-export class TestTimeSeriesContent extends TimeSeriesContent<TestTimeSeriesContent> {
+export class TestTimeSeriesContent extends TimeSeriesContent {
   @Prop({ type: TestTimeSeriesConfigSchema })
-  config: TestTimeSeriesConfig;
+  override config: TestTimeSeriesConfig;
 
   @Prop()
   someTestField: string;
 
-  toModel(): ContentModel<string, IContent<any, any>, any> {
+  toModel(): ContentModel<string> {
     throw new Error('Method not implemented.');
   }
 }

@@ -8,23 +8,17 @@ import { TObjectId } from '@lyvely/api';
 
 @Schema()
 export class NumberDataPoint
-  extends DataPoint<NumberDataPoint>
+  extends DataPoint
   implements PropertiesOf<NumberDataPointModel<TObjectId>>
 {
   @Prop({ type: Number, required: true, default: 0 })
-  value: number;
+  override value = 0;
+
+  override valueType: typeof DataPointValueType.Number = DataPointValueType.Number;
 
   @Prop({ type: TimerSchema })
   @PropertyType(Timer)
   timer?: Timer;
-
-  valueType: typeof DataPointValueType.Number;
-
-  afterInit() {
-    this.value = this.value ?? 0;
-    this.valueType = DataPointValueType.Number;
-    super.afterInit();
-  }
 
   get numericValue() {
     return this.value;

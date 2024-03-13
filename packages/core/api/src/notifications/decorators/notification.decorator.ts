@@ -7,7 +7,7 @@ export function Notification() {
     Schema({ _id: false })(constructor);
 
     const TypeConstructor = class extends constructor {
-      type = constructor.name;
+      override type = constructor.name;
       static typeName = constructor.name;
     };
 

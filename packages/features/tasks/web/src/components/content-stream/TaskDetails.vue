@@ -11,7 +11,7 @@ export interface IProps {
 
 const props = defineProps<IProps>();
 
-const isDone = computed(() => props.model.done);
+const isDone = computed(() => props.model.state.done);
 
 const taskStore = useTaskCalendarPlanStore();
 
@@ -42,10 +42,10 @@ const updateTimer = async (value: number) => taskStore.updateTimer(props.model, 
       </div>
       <div class="flex justify-end">
         <timer-state
-          :key="model.timer.calculateTotalSpan()"
-          :startable="!model.done"
-          :model="model.timer"
-          :show-time-on-init="!!model.done"
+          :key="model.state.timer.calculateTotalSpan()"
+          :startable="!model.state.done"
+          :model="model.state.timer"
+          :show-time-on-init="!!model.state.done"
           @start="startTimer"
           @stop="stopTimer"
           @update="updateTimer" />

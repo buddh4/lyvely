@@ -1,13 +1,10 @@
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
 import { NestedSchema } from '@/core';
-import { IContentDataType, IRenderable } from '@lyvely/interface';
-import { BaseModel } from '@lyvely/common';
+import { IContentDataType, IRenderable, RenderableType } from '@lyvely/interface';
+import { BaseModel, type BaseModelData } from '@lyvely/common';
 
 @NestedSchema()
-export class ContentDataType<T extends IContentDataType = any>
-  extends BaseModel<T>
-  implements IContentDataType, IRenderable
-{
+export class ContentDataType implements IContentDataType, IRenderable {
   @Prop()
   title?: string;
 
@@ -15,7 +12,7 @@ export class ContentDataType<T extends IContentDataType = any>
   text?: string;
 
   @Prop()
-  renderType: string;
+  renderType: string = RenderableType.markdown;
 
   getTitle(): string {
     return this.title || '';
@@ -23,6 +20,10 @@ export class ContentDataType<T extends IContentDataType = any>
 
   getTextContent(): string {
     return this.text || '';
+  }
+
+  constructor(data: BaseModelData<ContentDataType>) {
+    BaseModel.init(this, data);
   }
 }
 

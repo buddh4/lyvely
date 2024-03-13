@@ -1,10 +1,12 @@
 import {
   BaseModel,
   DocumentModel,
+  type PropertiesOf,
   PropertyType,
   TransformObjectId,
-  PropertiesOf,
   TransformObjectIds,
+  type PartialPropertiesOf,
+  type BaseModelData,
 } from '@lyvely/common';
 import { Exclude, Expose } from 'class-transformer';
 import { IsString, Length, IsOptional } from 'class-validator';
@@ -21,10 +23,7 @@ import type {
 } from '../interfaces';
 import { RoleVisibilityLevel } from '@/profiles';
 
-export class ContentDataTypeModel<T extends IContentDataType = IContentDataType>
-  extends BaseModel<T>
-  implements IContentDataType
-{
+export class ContentDataTypeModel implements IContentDataType {
   @IsString()
   @Length(1, 80)
   @IsOptional()
@@ -34,24 +33,28 @@ export class ContentDataTypeModel<T extends IContentDataType = IContentDataType>
   @Length(1, 500)
   @IsOptional()
   text?: string;
+
+  constructor(data?: PropertiesOf<ContentDataTypeModel>) {
+    if (!data) return;
+    this.title = data.title;
+    this.text = data.text;
+  }
 }
 
 @Expose()
-export class ContentAuthor<TID = string>
-  extends BaseModel<ContentAuthor>
-  implements IContentAuthor
-{
+export class ContentAuthor<TID = string> implements IContentAuthor {
   type: CreatedAsType;
 
   @TransformObjectId()
   authorId: TID;
+
+  constructor(data: ContentAuthor<any>) {
+    BaseModel.init(this, data);
+  }
 }
 
 @Expose()
-export class ContentMetadataModel<TID = string>
-  extends BaseModel<ContentMetadataModel>
-  implements IContentMetadata<TID>
-{
+export class ContentMetadataModel<TID = string> implements IContentMetadata<TID> {
   @TransformObjectId()
   mid?: TID;
 
@@ -76,25 +79,33 @@ export class ContentMetadataModel<TID = string>
   archived?: boolean;
   childCount?: number;
   locked?: boolean;
+
+  constructor(data?: PropertiesOf<ContentMetadataModel<any>>) {
+    BaseModel.init(this, data);
+  }
 }
 
 @Expose()
-export class ContentLogModel<TData = any, TID = string>
-  extends BaseModel<IContentLog<TData, TID>>
-  implements IContentLog<TData, TID>
-{
+export class ContentLogModel<TData = any, TID = string> implements IContentLog<TData, TID> {
   @TransformObjectId()
   updatedBy?: TID;
 
   updatedAt: Date;
   data?: TData;
   type: string;
+
+  constructor(data?: ContentLogModel<TData, any>) {
+    BaseModel.init(this, data);
+  }
 }
 
 @Exclude()
-export class ContentModel<TID = string, T extends IContent = IContent, TConfig extends Object = any>
-  extends DocumentModel<T>
-  implements IContent<TID>
+export class ContentModel<
+  TID = string,
+  TConfig extends Object | undefined = any,
+  TData extends ContentDataTypeModel = ContentDataTypeModel,
+  TState extends Object | undefined = any,
+> implements IContent<TID, TConfig, TData, TState>
 {
   @Expose()
   id: string;
@@ -112,7 +123,7 @@ export class ContentModel<TID = string, T extends IContent = IContent, TConfig e
 
   @Expose()
   @PropertyType(ContentDataTypeModel, {})
-  content: ContentDataTypeModel;
+  content: TData;
 
   @Expose()
   @PropertyType(ContentMetadataModel)
@@ -130,13 +141,29 @@ export class ContentModel<TID = string, T extends IContent = IContent, TConfig e
   config: TConfig;
 
   @Expose()
-  policies: IContentPolicies;
+  state: TState;
 
   @Expose()
-  getDefaults(): Partial<PropertiesOf<T>> {
+  policies: IContentPolicies;
+
+  constructor(data: BaseModelData<ContentModel<any, TConfig, TData, TState>>) {
+    DocumentModel.init(this, data);
+  }
+
+  @Expose()
+  getDefaults(): PartialPropertiesOf<ContentModel<TID, TConfig>> {
     return <any>{
       config: this.getDefaultConfig(),
+      state: this.getDefaultState(),
     };
+  }
+
+  getDefaultConfig(): TConfig | undefined {
+    return undefined;
+  }
+
+  getDefaultState(): TState | undefined {
+    return undefined;
   }
 
   getTitle() {
@@ -145,10 +172,6 @@ export class ContentModel<TID = string, T extends IContent = IContent, TConfig e
 
   getText() {
     return this.content.text || '';
-  }
-
-  getDefaultConfig(): TConfig | undefined {
-    return undefined;
   }
 
   getSortOrder(): number | undefined {

@@ -54,10 +54,13 @@ export class NumberDataPointConfig
     required: true,
     default: DataPointValueType.Number,
   })
-  valueType: typeof DataPointValueType.Number = DataPointValueType.Number;
+  override valueType: typeof DataPointValueType.Number = DataPointValueType.Number;
 
   @Prop({ enum: SupportedNumberDataPointInputTypes })
-  inputType: DataPointInputType;
+  override inputType: DataPointInputType;
+
+  @Prop({ type: [NumberDataPointConfigRevisionSchema], default: [] })
+  override history: NumberDataPointConfigRevision[];
 
   @Prop()
   min?: number;
@@ -68,11 +71,11 @@ export class NumberDataPointConfig
   @Prop()
   optimal?: number;
 
-  @Prop({ type: [NumberDataPointConfigRevisionSchema], default: [] })
-  history: NumberDataPointConfigRevision[];
-
   constructor(inputType?: DataPointInputType, settings?: INumberDataPointSettings) {
     super(DataPointValueType.Number, inputType!, settings);
+    this.min = settings?.min;
+    this.max = settings?.max;
+    this.optimal = settings?.optimal;
   }
 
   setSettings(settings?: INumberDataPointSettings) {

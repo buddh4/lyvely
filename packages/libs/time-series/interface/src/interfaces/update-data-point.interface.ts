@@ -1,5 +1,4 @@
 import { IDataPoint } from './data-point.interface';
-import { BaseModel } from '@lyvely/common';
 import { ITimeSeriesContent } from './time-series-content.interface';
 
 export interface IUpdateDataPoint<TValue = any> {
@@ -7,7 +6,7 @@ export interface IUpdateDataPoint<TValue = any> {
   value: TValue;
 }
 
-export interface IUpdateDataPointResponse<T = { dataPoint: IDataPoint }> extends BaseModel<T> {
+export interface IUpdateDataPointResponse {
   dataPoint: IDataPoint;
   model: ITimeSeriesContent;
 }

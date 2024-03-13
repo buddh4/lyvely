@@ -3,7 +3,7 @@ import { Content } from '../schemas';
 import { ContentTypeService } from '../services';
 import { ProtectedProfileContentRequest } from '../types';
 import { ContentCreatePolicy, ContentWritePolicy } from '../policies';
-import { Type, BaseModel, PropertiesOf, createAndAssign } from '@lyvely/common';
+import { Type, PropertiesOf, createAndAssign } from '@lyvely/common';
 import {
   ContentTypeEndpoint,
   ContentModel,
@@ -25,8 +25,8 @@ export abstract class AbstractContentTypeController<
 > implements ContentTypeEndpoint<TModel, TCreateModel, TUpdateModel>
 {
   // We need those models, since the validation pipeline can not determine the type of generic body types
-  protected abstract createModelType: Type<BaseModel<any>>;
-  protected abstract updateModelType: Type<BaseModel<any>>;
+  protected abstract createModelType: Type;
+  protected abstract updateModelType: Type;
   protected abstract updateResponseType: Type<ContentUpdateResponse<TModel>>;
   protected abstract contentService: ContentTypeService<TContent, TCreateModel>;
 

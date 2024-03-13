@@ -1,9 +1,13 @@
-import { BaseModel } from '@lyvely/common';
+import { BaseModel, type PropertiesOf } from '@lyvely/common';
 import { Expose } from 'class-transformer';
 import { IsString } from 'class-validator';
 
-export class StringFieldValidityRequest extends BaseModel<StringFieldValidityRequest> {
+export class StringFieldValidityRequest {
   @Expose()
   @IsString()
   value?: string;
+
+  constructor(data: PropertiesOf<StringFieldValidityRequest>) {
+    BaseModel.init(this, data);
+  }
 }

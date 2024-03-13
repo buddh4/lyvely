@@ -52,7 +52,7 @@ export class UserNotificationsService extends AbstractStreamService<
     });
   }
 
-  async loadEntry(
+  override async loadEntry(
     context: IUserContext,
     identity: DocumentIdentity<UserNotification>,
   ): Promise<UserNotification> {
@@ -76,7 +76,7 @@ export class UserNotificationsService extends AbstractStreamService<
     });
   }
 
-  async loadTail(
+  override async loadTail(
     context: IUserContext,
     request: StreamRequest,
   ): Promise<IStreamResponse<UserNotification>> {
@@ -107,7 +107,7 @@ export class UserNotificationsService extends AbstractStreamService<
     });
   }
 
-  async loadHead(
+  override async loadHead(
     context: IUserContext,
     request: StreamRequest,
   ): Promise<StreamResponse<UserNotification>> {

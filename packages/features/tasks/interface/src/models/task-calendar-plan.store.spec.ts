@@ -1,4 +1,4 @@
-import { TaskModel } from './task.model';
+import { SingleUserTaskStateModel, TaskModel } from './task.model';
 import { CalendarInterval, toTimingId } from '@lyvely/dates';
 import { TaskCalendarPlanStore } from './task-calendar-plan.store';
 import { ContentMetadataModel, UserAssignmentStrategy } from '@lyvely/interface';
@@ -14,20 +14,24 @@ describe('ActivityDataPointStore', () => {
 
   describe('sort', function () {
     it('sort done tasks after', async () => {
-      store.setModel(new TaskModel({ id: 't3', meta: new ContentMetadataModel({ sortOrder: 3 }) }));
-      store.setModel(new TaskModel({ id: 't2', meta: new ContentMetadataModel({ sortOrder: 2 }) }));
+      store.setModel(
+        new TaskModel({ id: 't3', meta: new ContentMetadataModel({ sortOrder: 3 } as any) }),
+      );
+      store.setModel(
+        new TaskModel({ id: 't2', meta: new ContentMetadataModel({ sortOrder: 2 } as any) }),
+      );
       store.setModel(
         new TaskModel({
           id: 't1',
-          meta: new ContentMetadataModel({ sortOrder: 1 }),
-          done: timingId,
+          meta: new ContentMetadataModel({ sortOrder: 1 } as any),
+          state: new SingleUserTaskStateModel({ done: timingId }),
         }),
       );
       store.setModel(
         new TaskModel({
           id: 't0',
-          meta: new ContentMetadataModel({ sortOrder: 0 }),
-          done: timingId,
+          meta: new ContentMetadataModel({ sortOrder: 0 } as any),
+          state: new SingleUserTaskStateModel({ done: timingId }),
         }),
       );
       const sorted = store.sort(store.getModels());
@@ -55,14 +59,14 @@ describe('ActivityDataPointStore', () => {
         new TaskModel({
           id: 't2',
           config,
-          done: timingId,
+          state: new SingleUserTaskStateModel({ done: timingId }),
         }),
       );
       store.setModel(
         new TaskModel({
           id: 't1',
           config,
-          done: 'anotherday...',
+          state: new SingleUserTaskStateModel({ done: 'anotherday...' }),
         }),
       );
 

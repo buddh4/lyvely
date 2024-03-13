@@ -27,6 +27,7 @@ export class SelectionDataPointConfigRevision
     super(config);
     this.valueType = DataPointValueType.Selection;
     this.allowOther ??= false;
+    this.options ??= config.options;
   }
 }
 
@@ -46,13 +47,13 @@ export class SelectionDataPointConfig
     default: DataPointValueType.Selection,
   })
   @PropertyType(String, { default: DataPointValueType.Selection })
-  valueType: typeof DataPointValueType.Selection = DataPointValueType.Selection;
+  override valueType: typeof DataPointValueType.Selection = DataPointValueType.Selection;
 
   @Prop({ enum: getStringEnumValues(DataPointSelectionInputType) })
-  inputType: DataPointInputType;
+  override inputType: DataPointInputType;
 
   @Prop({ type: [SelectionDataPointConfigRevisionSchema], default: [] })
-  history: SelectionDataPointConfigRevision[];
+  override history: SelectionDataPointConfigRevision[];
 
   @Prop({ type: [String], required: true })
   options: Array<string>;

@@ -54,7 +54,7 @@ export class ContentFilter<
     this.additions.push(tagAddition);
   }
 
-  protected getDefaultOptions(): TOptions {
+  protected override getDefaultOptions(): TOptions {
     return <TOptions>{ archived: false };
   }
 

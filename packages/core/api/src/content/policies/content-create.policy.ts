@@ -4,7 +4,7 @@ import { ProfileContext } from '@/profiles';
 
 @Injectable()
 export class ContentCreatePolicy extends BaseContentCreatePolicy {
-  async verify(context: ProfileContext): Promise<boolean> {
+  override async verify(context: ProfileContext): Promise<boolean> {
     return super.verify(context);
   }
 }

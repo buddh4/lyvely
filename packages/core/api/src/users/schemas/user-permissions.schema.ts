@@ -1,13 +1,11 @@
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
-import { BaseDocument, NestedSchema, TObjectId } from '@/core';
+import { NestedSchema, TObjectId } from '@/core';
 import { IUserRelationPermissionSetting, UserRelationRole } from '@lyvely/interface';
-import { getStringEnumValues } from '@lyvely/common';
+import { BaseModel, type BaseModelData, getStringEnumValues } from '@lyvely/common';
 
 @NestedSchema()
-export class UserRolePermission
-  extends BaseDocument<UserRolePermission>
-  implements IUserRelationPermissionSetting<TObjectId>
-{
+export class UserRolePermission implements IUserRelationPermissionSetting<TObjectId> {
+  // TODO: this should not be a base document
   @Prop({ required: true })
   id: string;
 
@@ -16,6 +14,10 @@ export class UserRolePermission
 
   @Prop()
   groups?: TObjectId[];
+
+  constructor(data: BaseModelData<UserRolePermission>) {
+    BaseModel.init(this, data);
+  }
 }
 
 export const UserRolePermissionSchema = SchemaFactory.createForClass(UserRolePermission);

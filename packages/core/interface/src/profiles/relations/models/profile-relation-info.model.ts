@@ -1,5 +1,5 @@
 import { Exclude, Expose } from 'class-transformer';
-import { BaseModel, PropertyType } from '@lyvely/common';
+import { BaseModel, type PropertiesOf, PropertyType } from '@lyvely/common';
 import { BaseUserProfileRelationType } from '../interfaces';
 import { ProfileType } from '@/profiles/core/interfaces';
 
@@ -22,10 +22,9 @@ export class ProfileRelationSummary {
  * This is used in profile selections and overviews and does not contain detailed information.
  *
  * @class ProfileRelationInfo
- * @extends BaseModel
  */
 @Exclude()
-export class ProfileRelationInfo extends BaseModel<ProfileRelationInfo> {
+export class ProfileRelationInfo {
   /** The id of the profile. **/
   @Expose()
   id: string;
@@ -36,7 +35,7 @@ export class ProfileRelationInfo extends BaseModel<ProfileRelationInfo> {
 
   /** The description of the profile. **/
   @Expose()
-  description: string;
+  description?: string;
 
   /** The current score of the profile. **/
   @Expose()
@@ -54,6 +53,10 @@ export class ProfileRelationInfo extends BaseModel<ProfileRelationInfo> {
   @PropertyType([ProfileRelationSummary])
   relations: ProfileRelationSummary[];
 
+  constructor(data: PropertiesOf<ProfileRelationInfo>) {
+    BaseModel.init(this, data);
+  }
+
   /**
    * Checks if the user is a member of this profile.
    * @param role
@@ -70,12 +73,15 @@ export class ProfileRelationInfo extends BaseModel<ProfileRelationInfo> {
 /**
  * A class representing multiple profile relation infos.
  * @class
- * @extends BaseModel
  * @template TID - The type of the profile identifier.
  */
 @Exclude()
-export class ProfileRelationInfos extends BaseModel<ProfileRelationInfos> {
+export class ProfileRelationInfos {
   @Expose()
   @PropertyType([ProfileRelationInfo])
   profiles: ProfileRelationInfo[];
+
+  constructor(data: PropertiesOf<ProfileRelationInfos>) {
+    BaseModel.init(this, data);
+  }
 }

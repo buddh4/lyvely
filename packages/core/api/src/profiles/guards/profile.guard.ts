@@ -21,7 +21,7 @@ export class ProfileGuard extends BaseProfileGuard implements CanActivate {
   @Inject()
   protected profilePermissionService: ProfilePermissionsService;
 
-  async canActivate(context: ExecutionContext): Promise<boolean> {
+  override async canActivate(context: ExecutionContext): Promise<boolean> {
     if (!(await super.canActivate(context))) return false;
 
     const request = context.switchToHttp().getRequest<ProfileRequest>();

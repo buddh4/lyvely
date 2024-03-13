@@ -1,11 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { BaseDocument } from '@/core';
+import { BaseDocument, type BaseDocumentData, type TObjectId } from '@/core';
 import { REGEX_HEX_COLOR, PropertiesOf } from '@lyvely/common';
 import { TagModel } from '@lyvely/interface';
 import randomColor from 'randomcolor';
 
 @Schema()
-export class Tag extends BaseDocument<Tag> implements PropertiesOf<TagModel> {
+export class Tag implements PropertiesOf<TagModel> {
   @Prop({ required: true })
   name: string;
 
@@ -23,12 +23,19 @@ export class Tag extends BaseDocument<Tag> implements PropertiesOf<TagModel> {
 
   isNew: boolean;
 
+  id: string;
+
+  _id: TObjectId;
+
+  constructor(data: BaseDocumentData<Tag>) {
+    BaseDocument.init(this, data);
+  }
+
   static create(obj: Partial<Tag>) {
     return new Tag({ isNew: true, ...obj });
   }
 
   afterInit() {
-    super.afterInit();
     // TODO: currently we need to add all new default values since missing values won't be updated at the moment
     this.archived = this.archived ?? false;
     this.description = this.description || '';

@@ -1,5 +1,5 @@
 import { Exclude, Expose } from 'class-transformer';
-import { BaseModel, PropertyType } from '@lyvely/common';
+import { BaseModel, type PropertiesOf, PropertyType } from '@lyvely/common';
 import { IsEnum, IsString, IsOptional, IsArray, Length, IsNumber, Matches } from 'class-validator';
 import { ProfileType, ProfileUsage, ProfileVisibilityLevel } from '../interfaces';
 import {
@@ -10,7 +10,7 @@ import {
 import { VALID_DISPLAY_NAME_REGEX } from '@/validation';
 
 @Exclude()
-export class CreateProfileModel extends BaseModel<CreateProfileModel> {
+export class CreateProfileModel {
   @Expose()
   @IsString()
   @Length(MIN_PROFILE_NAME_LENGTH, MAX_PROFILE_NAME_LENGTH)
@@ -38,4 +38,8 @@ export class CreateProfileModel extends BaseModel<CreateProfileModel> {
   @IsEnum(ProfileType)
   @PropertyType(String, { default: ProfileType.User })
   type: ProfileType;
+
+  constructor(data?: PropertiesOf<CreateProfileModel>) {
+    BaseModel.init(this, data);
+  }
 }

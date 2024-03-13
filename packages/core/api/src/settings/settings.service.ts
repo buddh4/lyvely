@@ -6,7 +6,7 @@ import { Logger } from '@nestjs/common';
 import { ISettingUpdate } from '@/settings/settings.interface';
 import { isBoolean, isDefined, isNumber, isString } from 'class-validator';
 
-export abstract class SettingsService<TModel extends BaseDocument<TModel> & { settings: any }> {
+export abstract class SettingsService<TModel extends BaseDocument & { settings: any }> {
   protected abstract logger: Logger;
   protected abstract settingsDao: AbstractDao<TModel>;
   protected abstract settingsRegistry: SettingsRegistry;

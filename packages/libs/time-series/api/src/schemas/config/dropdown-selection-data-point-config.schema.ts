@@ -16,14 +16,14 @@ const strategy = DataPointConfigFactory.getStrategyName(
 
 @NestedSchema()
 export class DropdownSelectionDataPointConfig extends SelectionDataPointConfig {
-  strategy = strategy;
+  override strategy = strategy;
 
   @Prop({
     enum: [DataPointInputType.Dropdown],
     required: true,
     default: DataPointInputType.Dropdown,
   })
-  inputType: DataPointInputType = DataPointInputType.Dropdown;
+  override inputType: DataPointInputType = DataPointInputType.Dropdown;
 
   constructor(settings: Omit<ISelectionDataPointSettings, 'inputType'>) {
     super(DataPointInputType.Dropdown, settings);

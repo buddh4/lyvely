@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { assureObjectId, Model, Profile, ProfileScore } from '@lyvely/api';
-import { CalendarInterval, getWeekOfYear } from '@lyvely/dates';
-import * as mongoose from 'mongoose';
+import { Model, Profile, ProfileScore } from '@lyvely/api';
+import { CalendarInterval } from '@lyvely/dates';
 import { InjectModel } from '@nestjs/mongoose';
 import { createIntervalAggregation } from '../aggregations/interval-aggregation.factory';
 import { ChartSeriesAccumulation } from '@lyvely/analytics-interface';

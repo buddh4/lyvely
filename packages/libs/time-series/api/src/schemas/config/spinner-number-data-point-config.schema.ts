@@ -16,10 +16,10 @@ const strategy = DataPointConfigFactory.getStrategyName(
 
 @NestedSchema()
 export class SpinnerNumberDataPointConfig extends NumberDataPointConfig {
-  strategy = strategy;
+  override strategy = strategy;
 
   @Prop({ enum: [DataPointInputType.Spinner] })
-  inputType: DataPointInputType;
+  override inputType: DataPointInputType;
 
   constructor(settings: Omit<INumberDataPointSettings, 'inputType'>) {
     super(DataPointInputType.Spinner, settings);

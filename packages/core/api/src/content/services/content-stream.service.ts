@@ -22,9 +22,11 @@ export class ContentStreamService extends AbstractStreamService<
     return this.applyFilter(query, filter);
   }
 
-  protected prepareModel(model: Content) {}
+  protected override prepareModel(model: Content) {
+    // Nothing to do.
+  }
 
-  protected createLoadEntryQueryFilter(
+  protected override createLoadEntryQueryFilter(
     context: ProfileContext,
     filter?: ContentRequestFilter,
   ): FilterQuery<Content> {

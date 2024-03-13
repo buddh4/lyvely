@@ -13,8 +13,8 @@ export class SystemMessageModel<TID = string> extends ContentModel<TID> {
 
   @Expose()
   @PropertyType(SystemMessageContentModel)
-  content: SystemMessageContentModel;
+  override content: SystemMessageContentModel;
 
   @Expose()
-  type = SystemMessageModel.contentType;
+  override type = SystemMessageModel.contentType;
 }

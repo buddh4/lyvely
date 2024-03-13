@@ -97,19 +97,62 @@ export function getNonNullableProperty<T extends object = any, K extends keyof T
   return hasNonNullableProperty<T, K>(value, property) ? value[property] : defaultValue || null;
 }
 
+interface FindByPathOptions {
+  returnParent?: boolean;
+  create?: boolean;
+  defaultValue?: any;
+}
+
+interface FindByPathCreateOptions {
+  returnParent?: boolean;
+  create?: true;
+  defaultValue?: any;
+}
+
+/**
+ * Finds a value in the given model object using the specified path.
+ *
+ * By setting the create option to true, the given path will be created by means of plain objects and the
+ * defaultValue if given (otherwise only plain objects).
+ *
+ * If the returnParent option is set to true this function will not directly return the value of the path but the parent.
+ *
+ * When setting a defaultValue, this function will return the defaultValue in case the path does not exist on the model
+ * and furthermore set the defaultValue in case the create option is set to true.
+ *
+ * @param {Record<string, any> | undefined | null} model - The model object to search.
+ * @param {string} path - The path to the value.
+ * @param {FindByPathCreateOptions} options - The options to customize the search behavior.
+ * @returns {T} The value found at the specified path.
+ */
 export function findByPath<T>(
-  model: any,
+  model: Record<string, any> | undefined | null,
   path: string,
-  parent = false,
-  create = true,
+  options: FindByPathCreateOptions,
+): T;
+export function findByPath<T>(
+  model: Record<string, any> | undefined | null,
+  path: string,
+  options?: FindByPathOptions,
+): T | undefined;
+export function findByPath<T>(
+  model: Record<string, any> | undefined | null,
+  path: string,
+  options?: FindByPathOptions,
 ): T | undefined {
   if (!path.includes('.')) {
-    return parent ? model : model[path];
+    if (isBlacklistedProperty(path)) throw new Error('Tried to access blacklisted property');
+    const result = options?.returnParent ? model : model?.[path];
+    if (result || !options?.create) return result || options?.defaultValue;
+    model ??= {};
+    model[path] = options?.defaultValue || {};
+    return options?.returnParent ? model : model[path];
   }
 
-  path = parent ? path.replace(/\.[^/.]+$/, '') : path;
+  path = options?.returnParent ? path.replace(/\.[^/.]+$/, '') : path;
 
-  let result = model as any | undefined;
+  let result = (model || {}) as any | undefined | null;
+
   const subPaths = path.split('.');
   subPaths.forEach((sub, index) => {
     if (isBlacklistedProperty(sub)) throw new Error('Tried to access blacklisted property');
@@ -117,12 +160,13 @@ export function findByPath<T>(
     if ((sub && sub.length && sub.charAt(0) === '$') || /^[0-9]+$/.test(sub)) {
       // we do not support mongodb special cases e.g. array etc.
       result = undefined;
-    } else if (result && !result[sub] && create && index !== subPaths.length) {
-      result[sub] = {};
+    } else if (result && !result[sub] && options?.create && index !== subPaths.length) {
+      result[sub] = index !== subPaths.length - 1 ? {} : options?.defaultValue || {};
     }
     result = isDefined(result?.[sub]) ? result[sub] : undefined;
   });
-  return result;
+
+  return result || options?.defaultValue;
 }
 
 export function isObjectId(value: any): value is object {

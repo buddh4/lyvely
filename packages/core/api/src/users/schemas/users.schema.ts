@@ -1,7 +1,14 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { hash } from 'bcrypt';
 import { UpdateQuery, Document } from 'mongoose';
-import { BaseDocument, createObjectId, getDefaultLocale, MixedProp, TObjectId } from '@/core';
+import {
+  BaseDocument,
+  type BaseDocumentData,
+  createObjectId,
+  getDefaultLocale,
+  MixedProp,
+  TObjectId,
+} from '@/core';
 import {
   PropertiesOf,
   getNumberEnumValues,
@@ -39,7 +46,6 @@ import { UserRelationGroup, UserRelationGroupSchema } from './user-relation-grou
  */
 @Schema({ timestamps: true })
 export class User
-  extends BaseDocument<User>
   implements PropertiesOf<UserModel<TObjectId>>, IPermissionObject<UserRelationRole>
 {
   /** The main email of this user. **/
@@ -135,8 +141,14 @@ export class User
   @PropertyType([UserRelationGroup])
   groups: UserRelationGroup[];
 
+  id: string;
+  _id: TObjectId;
   createdAt: Date;
   updatedAt: Date;
+
+  constructor(data: BaseDocumentData<User>) {
+    BaseDocument.init(this, data);
+  }
 
   /**
    * Hook, which runs after initialization. used for certain defaults as:

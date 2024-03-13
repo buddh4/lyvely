@@ -2,15 +2,19 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { useCaptchaClient, CaptchaChallenge } from '@lyvely/interface';
 import { IsNotEmpty, Matches } from 'class-validator';
-import { BaseModel, PropertyType, IFieldValidationResult } from '@lyvely/common';
+import { BaseModel, PropertyType, IFieldValidationResult, type PropertiesOf } from '@lyvely/common';
 import { useStatus, loadingStatus } from '@/core';
 import { I18nModelValidator, translation } from '@/i18n';
 
-class CaptchaModel extends BaseModel<CaptchaModel> {
+class CaptchaModel {
   @IsNotEmpty()
   @Matches(/^[a-zA-Z0-9]{5}$/, { message: translation('validation.isCaptcha') })
   @PropertyType(String, { default: '' })
   captcha: string;
+
+  constructor(data?: PropertiesOf<CaptchaModel>) {
+    BaseModel.init(this, data);
+  }
 }
 
 export const useCaptchaStore = defineStore('captcha', () => {

@@ -15,11 +15,11 @@ import {
 } from 'class-validator';
 import { CalendarInterval } from '@lyvely/dates';
 import { UserAssignmentStrategy, CreateContentModel } from '@lyvely/interface';
-import { Gte, Lte } from '@lyvely/common';
+import { BaseModel, Gte, Lte, type StrictBaseModelData } from '@lyvely/common';
 import { DataPointInputType, DataPointValueType } from '@lyvely/time-series-interface';
 
 @Expose()
-export class CreateJournalModel extends CreateContentModel<CreateJournalModel> {
+export class CreateJournalModel extends CreateContentModel {
   @IsString()
   @IsNotEmpty()
   @Length(0, 100)
@@ -90,12 +90,12 @@ export class CreateJournalModel extends CreateContentModel<CreateJournalModel> {
   @ValidateIf((o) => o.type === DataPointValueType.Text)
   required?: boolean;
 
-  @IsArray()
-  @MaxLength(20, { each: true })
-  @IsOptional()
-  tagNames?: string[];
+  constructor(data: StrictBaseModelData<CreateJournalModel>) {
+    super(false);
+    BaseModel.init(this, data);
+  }
 
-  getDefaults() {
+  getDefaults(): Partial<CreateJournalModel> {
     return {
       interval: CalendarInterval.Daily,
       inputType: DataPointInputType.Range,

@@ -124,8 +124,12 @@ export class UserRegistrationService {
    * @throws FieldValidationException if user is invalid or does already exist
    */
   async validateUserName(username: string): Promise<boolean> {
-    const model = new UserRegistration({ username });
-    const errors = await validate(model, { skipMissingProperties: true });
+    const validationModel: UserRegistration = Object.assign(Object.create(UserRegistration), {
+      username,
+    });
+    const errors = await validate(validationModel, {
+      skipMissingProperties: true,
+    });
 
     if (errors.length) {
       throw new FieldValidationException([
@@ -149,8 +153,10 @@ export class UserRegistrationService {
    * @throws FieldValidationException if user is invalid or does already exist
    */
   async validateEmail(email: string): Promise<boolean> {
-    const model = new UserRegistration({ email });
-    const errors = await validate(model, { skipMissingProperties: true });
+    const validationModel: UserRegistration = Object.assign(Object.create(UserRegistration), {
+      email,
+    });
+    const errors = await validate(validationModel, { skipMissingProperties: true });
 
     if (errors.length) {
       throw new FieldValidationException([

@@ -3,7 +3,10 @@ import { Expose, Exclude } from 'class-transformer';
 import randomColor from 'randomcolor';
 
 @Exclude()
-export class TagModel extends DocumentModel<TagModel> {
+export class TagModel {
+  @Expose()
+  id: string;
+
   @Expose()
   name: string;
 
@@ -19,8 +22,8 @@ export class TagModel extends DocumentModel<TagModel> {
   @Expose()
   includeOnFilter?: boolean;
 
-  constructor(obj?: Partial<TagModel>) {
-    super(obj);
-    this.color = this.color || randomColor({ luminosity: 'dark' });
+  constructor(data?: Partial<TagModel>) {
+    DocumentModel.init(this, data);
+    this.color ||= randomColor({ luminosity: 'dark' });
   }
 }

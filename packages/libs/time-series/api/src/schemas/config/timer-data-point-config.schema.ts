@@ -50,7 +50,7 @@ export class TimerDataPointConfig
   extends DataPointConfig<ITimerDataPointSettings>
   implements ITimerDataPointConfig
 {
-  strategy = strategy;
+  override strategy = strategy;
 
   @Prop({
     type: String,
@@ -58,10 +58,13 @@ export class TimerDataPointConfig
     required: true,
     default: DataPointValueType.Timer,
   })
-  valueType: typeof DataPointValueType.Timer = DataPointValueType.Timer;
+  override valueType: typeof DataPointValueType.Timer = DataPointValueType.Timer;
 
   @Prop({ enum: [DataPointInputType.Timer] })
-  inputType: DataPointInputType.Timer = DataPointInputType.Timer;
+  override inputType: DataPointInputType.Timer = DataPointInputType.Timer;
+
+  @Prop({ type: [TimerDataPointConfigRevisionSchema], default: [] })
+  override history: TimerDataPointConfigRevision[];
 
   @Prop()
   min?: number;
@@ -72,11 +75,11 @@ export class TimerDataPointConfig
   @Prop()
   optimal?: number;
 
-  @Prop({ type: [TimerDataPointConfigRevisionSchema], default: [] })
-  history: TimerDataPointConfigRevision[];
-
   constructor(settings?: ITimerDataPointSettings) {
     super(DataPointValueType.Timer, DataPointInputType.Timer, settings);
+    this.min ??= settings?.min;
+    this.max ??= settings?.max;
+    this.optimal ??= settings?.optimal;
   }
 
   setSettings(settings?: ITimerDataPointSettings) {

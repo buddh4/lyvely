@@ -10,30 +10,31 @@ import { NestedSchema, TObjectId } from '@lyvely/api';
 import { DataPointSchemaFactory } from './data-point-schema.factory';
 
 @NestedSchema()
-export class SelectionDataPointValue
-  extends BaseModel<SelectionDataPointValue>
-  implements ISelectionDataPointValue
-{
+export class SelectionDataPointValue implements ISelectionDataPointValue {
   @Prop({ type: [String], required: true })
   @PropertyType([String])
   selection: Array<string>;
 
   @Prop()
   otherValue?: string;
+
+  constructor(data: PropertiesOf<SelectionDataPointValue>) {
+    BaseModel.init(this, data);
+  }
 }
 
 const SelectionDataPointValueSchema = SchemaFactory.createForClass(SelectionDataPointValue);
 
 @Schema()
 export class SelectionDataPoint
-  extends DataPoint<SelectionDataPoint>
+  extends DataPoint
   implements PropertiesOf<SelectionDataPointModel<TObjectId>>
 {
   @Prop({ type: SelectionDataPointValueSchema, required: true })
   @PropertyType(SelectionDataPointValue)
-  value: SelectionDataPointValue;
+  override value: SelectionDataPointValue;
 
-  valueType: typeof DataPointValueType.Selection;
+  override valueType: typeof DataPointValueType.Selection = DataPointValueType.Selection;
 }
 
 export const SelectionDataPointSchema = DataPointSchemaFactory.createForClass(

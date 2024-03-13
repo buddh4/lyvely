@@ -43,7 +43,7 @@ describe('ProfilePermissionsManager', function () {
       groups?: string[];
     },
   ) => {
-    profile ||= new ProfileModel();
+    profile ||= new ProfileModel({});
     const permissionId = options?.id || 'test';
     return manager.verifyPermission(
       permissionId,

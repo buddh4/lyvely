@@ -10,7 +10,7 @@ import {
 import { createBaseDocumentInstance, Schema, Subdocument } from '@/core';
 import { PropertiesOf } from '@lyvely/common';
 
-const SubscriptionTypes = {
+const SubscriptionTypes: Record<string, Type<UserSubscription>> = {
   [ProfileSubscription.typeName]: ProfileSubscription,
   [SingleUserSubscription.typeName]: SingleUserSubscription,
   [MultiUserSubscription.typeName]: MultiUserSubscription,

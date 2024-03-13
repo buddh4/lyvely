@@ -1,8 +1,7 @@
 import { InjectModel, Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { AbstractDao } from './abstract.dao';
 import { ModelSaveEvent } from './dao.events';
-import { BaseDocument } from './base.document';
-import { Model } from './db.type';
+import { Model, TObjectId } from './db.type';
 import {
   createCoreTestingModule,
   EventTester,
@@ -13,6 +12,8 @@ import {
 import { ModelDefinition } from '@nestjs/mongoose/dist/interfaces';
 import { Injectable } from '@nestjs/common';
 import { TestingModule } from '@nestjs/testing';
+import { BaseDocument, type BaseDocumentData, type StrictBaseDocumentData } from '@/core';
+import type { DeepPartial } from '@lyvely/common';
 
 interface ITestEntity {
   requiredField: string;
@@ -21,7 +22,11 @@ interface ITestEntity {
 }
 
 @Schema({ discriminatorKey: 'type' })
-class TestEntity<T extends ITestEntity = ITestEntity> extends BaseDocument<T> {
+class TestEntity {
+  _id: TObjectId;
+
+  id: string;
+
   @Prop({ required: true })
   requiredField: string;
 
@@ -29,14 +34,23 @@ class TestEntity<T extends ITestEntity = ITestEntity> extends BaseDocument<T> {
   numberField: number;
 
   type: string;
+
+  constructor(data: BaseDocumentData<TestEntity>) {
+    BaseDocument.init(this, data);
+  }
 }
 
 const TestEntitySchema = SchemaFactory.createForClass(TestEntity);
 
 @Schema()
-class SubTestEntity extends TestEntity<SubTestEntity> {
+class SubTestEntity extends TestEntity {
   @Prop()
   specialField?: string;
+
+  constructor(data: BaseDocumentData<SubTestEntity>) {
+    super(false);
+    BaseDocument.init(this, data);
+  }
 }
 
 const SubTestEntitySchema = SchemaFactory.createForClass(SubTestEntity);

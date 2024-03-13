@@ -1,4 +1,3 @@
-import { BaseModel } from '@lyvely/common';
 import { MilestoneRelationModel } from '@lyvely/milestones-interface';
 import { CalendarDateTime, formatDate } from '@lyvely/dates';
 import { Content, User, TObjectId } from '@lyvely/api';
@@ -9,25 +8,20 @@ export interface IMilestoneRelationEventData<TContent extends Content = Content>
   user?: User | null;
 }
 
-export class MilestoneRelationEvent<
-  TContent extends Content = Content,
-> extends BaseModel<MilestoneRelationEvent> {
-  static getKeyByContentType(contentType: string) {
-    return `milestones.fetch.${contentType}`;
-  }
-
+export class MilestoneRelationEvent<TContent extends Content = Content> {
   private result: MilestoneRelationModel<TObjectId>[] = [];
 
   data: IMilestoneRelationEventData<TContent>;
 
   constructor(data: IMilestoneRelationEventData<TContent>) {
-    super({ data });
-  }
-
-  afterInit() {
+    this.data = data;
     if (!this.data.date) {
       this.data.date = formatDate(new Date());
     }
+  }
+
+  static getKeyByContentType(contentType: string) {
+    return `milestones.fetch.${contentType}`;
   }
 
   addResult(model: MilestoneRelationModel<TObjectId>) {

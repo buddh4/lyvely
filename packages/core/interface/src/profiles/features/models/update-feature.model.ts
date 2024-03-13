@@ -1,9 +1,9 @@
-import { BaseModel } from '@lyvely/common';
+import { type PropertiesOf } from '@lyvely/common';
 import { Expose, Exclude } from 'class-transformer';
 import { IsBoolean, IsString } from 'class-validator';
 
 @Exclude()
-export class UpdateFeatureModel extends BaseModel<UpdateFeatureModel> {
+export class UpdateFeatureModel {
   @Expose()
   @IsString()
   featureId: string;
@@ -11,4 +11,9 @@ export class UpdateFeatureModel extends BaseModel<UpdateFeatureModel> {
   @Expose()
   @IsBoolean()
   state: boolean;
+
+  constructor(data: PropertiesOf<UpdateFeatureModel>) {
+    this.featureId = data.featureId;
+    this.state = data.state;
+  }
 }

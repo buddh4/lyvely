@@ -2,7 +2,7 @@ import { DocumentModel } from '../index';
 import { Exclude, Expose, instanceToPlain } from 'class-transformer';
 
 class MockObjectId {
-  constructor(value) {
+  constructor(value: any) {
     this.value = value;
   }
 
@@ -12,22 +12,26 @@ class MockObjectId {
   }
 }
 
-interface ITestBaseDto {
-  id?: string;
-  value: number;
-  secret?: string;
-}
-
 @Exclude()
-class TestBaseDto extends DocumentModel<ITestBaseDto> {
+class TestBaseDto {
+  @Expose()
+  id: string;
+
   @Expose()
   value: number;
 
   secret: 'string';
+
+  constructor(data: Partial<TestBaseDto>) {
+    DocumentModel.init(this, data);
+  }
 }
 
 @Exclude()
-class TestDocumentDto extends DocumentModel<TestDocumentDto> {
+class TestDocumentDto {
+  @Expose()
+  id: string;
+
   @Expose()
   stringValue?: string;
 
@@ -39,13 +43,17 @@ class TestDocumentDto extends DocumentModel<TestDocumentDto> {
 
   secret?: string;
 
+  constructor(data: Partial<TestDocumentDto>) {
+    DocumentModel.init(this, data);
+  }
+
   someFunction() {
     return 'yes';
   }
 }
 
 describe('Base Model', () => {
-  describe('BaseModel constructor', function () {
+  describe('constructor', function () {
     it('basic constructor', async () => {
       const baseModel = new TestDocumentDto({
         stringValue: 'Test',

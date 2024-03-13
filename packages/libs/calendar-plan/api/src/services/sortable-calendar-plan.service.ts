@@ -5,7 +5,6 @@ import {
   DocumentIdentity,
   QuerySort,
   Profile,
-  User,
   ProtectedProfileContext,
 } from '@lyvely/api';
 import { CalendarInterval } from '@lyvely/dates';
@@ -21,7 +20,7 @@ import { CalendarPlanService } from './calendar-plan.service';
 export abstract class SortableCalendarPlanService<
   TModel extends CalendarPlanEntity,
 > extends CalendarPlanService<TModel> {
-  protected abstract contentDao: ICalendarPlanDao<TModel>;
+  protected abstract override contentDao: ICalendarPlanDao<TModel>;
 
   /**
    * Updates the calendar interval for a given profile and model.

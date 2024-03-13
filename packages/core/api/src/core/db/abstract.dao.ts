@@ -30,18 +30,18 @@ interface IPagination {
 }
 type ContainsDot = `${string}.${string}`;
 
-export type UpdateQuerySet<T extends BaseDocument<T>> = UpdateQuery<T>['$set'];
-export type UpdateQueryUnset<T extends BaseDocument<T>> = UpdateQuery<T>['$unset'];
+export type UpdateQuerySet<T extends BaseDocument> = UpdateQuery<T>['$set'];
+export type UpdateQueryUnset<T extends BaseDocument> = UpdateQuery<T>['$unset'];
 
-type SortableRecord<T extends BaseDocument<T>> = Partial<Omit<T, '__v' | 'id'>> & {
+type SortableRecord<T extends BaseDocument> = Partial<Omit<T, '__v' | 'id'>> & {
   [key: ContainsDot]: any;
 };
 
-export type QuerySort<T extends BaseDocument<T>> = {
+export type QuerySort<T extends BaseDocument> = {
   [P in keyof SortableRecord<T>]: 1 | -1 | 'asc' | 'desc';
 };
 
-type EntityQuery<T extends BaseDocument<T>> = QueryWithHelpers<
+type EntityQuery<T extends BaseDocument> = QueryWithHelpers<
   // eslint-disable-next-line @typescript-eslint/ban-types
   Array<HydratedDocument<T, any, any>>,
   // eslint-disable-next-line @typescript-eslint/ban-types
@@ -70,13 +70,13 @@ export interface IUpdateQueryOptions extends IBaseQueryOptions {
   collation?: CollationOptions;
 }
 
-export interface IBaseFetchQueryOptions<T extends BaseDocument<T>> extends IBaseQueryOptions {
+export interface IBaseFetchQueryOptions<T extends BaseDocument> extends IBaseQueryOptions {
   projection?: ProjectionType<T>;
   sort?: QuerySort<T>;
   collation?: CollationOptions;
 }
 
-export interface IFindAndUpdateQueryOptions<T extends BaseDocument<T>>
+export interface IFindAndUpdateQueryOptions<T extends BaseDocument>
   extends IBaseFetchQueryOptions<T>,
     IUpdateQueryOptions {
   new?: boolean;
@@ -87,12 +87,12 @@ export interface IFindAndUpdateQueryOptions<T extends BaseDocument<T>>
 export type SaveOptions = IBaseQueryOptions;
 export type DeleteOptions = IBaseQueryOptions;
 
-export interface IFetchQueryFilterOptions<T extends BaseDocument<T>>
+export interface IFetchQueryFilterOptions<T extends BaseDocument>
   extends IBaseFetchQueryOptions<T> {
   excludeIds?: DocumentIdentity<T>[] | DocumentIdentity<T>;
 }
 
-export interface IFetchQueryOptions<T extends BaseDocument<T>> extends IFetchQueryFilterOptions<T> {
+export interface IFetchQueryOptions<T extends BaseDocument> extends IFetchQueryFilterOptions<T> {
   pagination?: IPagination;
   limit?: number;
 }
@@ -106,7 +106,7 @@ export const defaultFetchOptions = {
   },
 };
 
-export type PartialEntityData<T extends BaseDocument<T>> = Partial<EntityData<T>>;
+export type PartialEntityData<T extends BaseDocument> = Partial<EntityData<T>>;
 
 /**
  * Abstract Data Access Object provides basic data access features for sub classes.
@@ -134,7 +134,7 @@ export type PartialEntityData<T extends BaseDocument<T>> = Partial<EntityData<T>
  *   }
  * }
  */
-export abstract class AbstractDao<T extends BaseDocument<T>> {
+export abstract class AbstractDao<T extends BaseDocument> {
   /**
    * The mongoose model, which is usually injected with @InjectModel()
    * @protected
@@ -601,8 +601,9 @@ export abstract class AbstractDao<T extends BaseDocument<T>> {
 
   /**
    * Updates the first document which matches the given filter and applies the given update.
-   * @param id
+   * @param identity
    * @param update
+   * @param filter
    * @param options
    */
   protected async updateOneByFilter(

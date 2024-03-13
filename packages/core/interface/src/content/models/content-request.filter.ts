@@ -1,5 +1,5 @@
 import { Expose } from 'class-transformer';
-import { BaseModel, hasIntersection } from '@lyvely/common';
+import { BaseModel, hasIntersection, type PropertiesOf } from '@lyvely/common';
 import { IsBoolean, IsMongoId, IsOptional, IsString } from 'class-validator';
 import { IStreamFilter } from '@/streams';
 import { ContentModel } from './content.model';
@@ -11,10 +11,7 @@ import { ContentModel } from './content.model';
  * @template T - The type of the content model.
  */
 @Expose()
-export class ContentRequestFilter
-  extends BaseModel<ContentRequestFilter>
-  implements IStreamFilter<ContentModel>
-{
+export class ContentRequestFilter implements IStreamFilter<ContentModel> {
   /**
    * Filter by parent content id.
    *
@@ -59,6 +56,10 @@ export class ContentRequestFilter
   @IsMongoId({ each: true })
   @IsOptional()
   tagIds?: Array<string>;
+
+  constructor(data?: PropertiesOf<ContentRequestFilter>) {
+    BaseModel.init(this, data);
+  }
 
   /**
    * Toggles the specified tag.

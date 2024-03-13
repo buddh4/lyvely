@@ -54,12 +54,12 @@ export const HabitConfigSchema = TimeSeriesConfigSchemaFactory.createForClass(Ha
 
 @Schema()
 export class Habit
-  extends TimeSeriesContent<Habit, HabitDataPointConfig>
+  extends TimeSeriesContent<HabitDataPointConfig>
   implements PropertiesOf<HabitModel<TObjectId>>
 {
   @Prop({ type: HabitConfigSchema, required: true })
   @PropertyType(HabitConfig)
-  config: HabitConfig;
+  override config: HabitConfig;
 
   public static create(profile: Profile, owner: User, update: PropertiesOf<CreateHabitModel>) {
     const { title, text } = update;
@@ -72,7 +72,8 @@ export class Habit
       ),
     });
   }
-  getDefaultConfig(): HabitConfig {
+
+  override getDefaultConfig(): HabitConfig {
     return new HabitConfig(
       DataPointConfigFactory.initializeConfig<CheckboxNumberDataPointConfig>(
         DataPointValueType.Number,
@@ -86,8 +87,8 @@ export class Habit
     );
   }
 
-  toModel(): HabitModel<any> {
-    return new HabitModel<any>(this);
+  toModel(user?: User): HabitModel {
+    return new HabitModel(this);
   }
 
   applyUpdate(update: UpdateHabitModel) {

@@ -1,5 +1,12 @@
-import { Exclude, Expose } from 'class-transformer';
-import { BaseModel, DocumentModel, TransformObjectId, PropertyType } from '@lyvely/common';
+import { Exclude, Expose, Transform } from 'class-transformer';
+import {
+  BaseModel,
+  TransformObjectId,
+  PropertyType,
+  DocumentModel,
+  PropertiesOf,
+} from '@lyvely/common';
+import type { PartialPropertiesOf } from '@lyvely/common';
 import { ProfileType, ProfileUsage, ProfileVisibilityLevel } from '../interfaces';
 import { IPermissionSetting } from '@/permissions';
 import { TagModel } from '@/profiles/tags';
@@ -10,10 +17,16 @@ import {
 } from '@/profiles/permissions';
 
 @Expose()
-export class ProfileInfoModel extends BaseModel<ProfileInfoModel> {
+export class ProfileInfoModel {
   pid: string;
   imageGuid?: string;
   name: string;
+
+  constructor(data: ProfileInfoModel) {
+    this.pid = data.pid;
+    this.imageGuid = data.imageGuid;
+    this.name = data.name;
+  }
 }
 
 @Expose()
@@ -24,10 +37,10 @@ export class ProfileMemberGroupModel {
 }
 
 @Exclude()
-export class ProfileModel<TID = string>
-  extends DocumentModel<ProfileModel<TID>>
-  implements IProfilePermissionObject
-{
+export class ProfileModel<TID = string> implements IProfilePermissionObject {
+  @Expose()
+  id: string;
+
   @Expose()
   subscription?: string;
 
@@ -87,6 +100,10 @@ export class ProfileModel<TID = string>
   @Expose()
   @PropertyType([TagModel])
   tags: TagModel[];
+
+  constructor(data: PartialPropertiesOf<ProfileModel<any>>) {
+    DocumentModel.init(this, data);
+  }
 
   /**
    * Retrieves the permission settings for this profile.

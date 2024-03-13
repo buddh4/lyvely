@@ -17,7 +17,7 @@ const { selectTag } = taskStore;
 const { isDisabled, moveUp, moveDown } = useCalendarPlanItem(props.model, taskStore);
 
 const selection = computed({
-  get: () => +!!props.model.done,
+  get: () => +!!props.model.state.done,
   set: (selection: number) => taskStore.setTaskSelection(props.model, !!selection),
 });
 
@@ -47,10 +47,10 @@ const updateTimer = async (value: number) => taskStore.updateTimer(props.model, 
 
     <template #rating>
       <timer-state
-        :key="model.timer.calculateTotalSpan()"
-        :startable="!model.done"
-        :model="model.timer"
-        :show-time-on-init="!!model.done"
+        :key="model.state.timer.calculateTotalSpan()"
+        :startable="!model.state.done"
+        :model="model.state.timer"
+        :show-time-on-init="!!model.state.done"
         @start="startTimer"
         @stop="stopTimer"
         @update="updateTimer" />

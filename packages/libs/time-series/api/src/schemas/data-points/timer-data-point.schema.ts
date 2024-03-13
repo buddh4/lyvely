@@ -7,7 +7,7 @@ import { User, DocumentIdentity, NestedSchema, TObjectId } from '@lyvely/api';
 import { DataPointSchemaFactory } from './data-point-schema.factory';
 
 @NestedSchema()
-export class TimerDataPointValue extends BaseModel<TimerDataPointValue> {
+export class TimerDataPointValue {
   @Prop({ type: TimerSchema, required: true })
   @PropertyType(Timer)
   timer: Timer;
@@ -15,24 +15,24 @@ export class TimerDataPointValue extends BaseModel<TimerDataPointValue> {
   @Prop({ required: true, default: 0 })
   @PropertyType(Number, { default: 0 })
   ms: number;
+
+  constructor(data: TimerDataPointValue) {
+    BaseModel.init(this, data);
+  }
 }
 
 const TimerDataPointValueSchema = SchemaFactory.createForClass(TimerDataPointValue);
 
 @Schema()
 export class TimerDataPoint
-  extends DataPoint<TimerDataPoint>
+  extends DataPoint
   implements PropertiesOf<TimerDataPointModel<TObjectId>>
 {
   @Prop({ type: TimerDataPointValueSchema, required: true })
   @PropertyType(TimerDataPointValue)
-  value: TimerDataPointValue;
+  override value: TimerDataPointValue;
 
-  valueType: typeof DataPointValueType.Timer;
-
-  afterInit() {
-    this.valueType = DataPointValueType.Timer;
-  }
+  override valueType: typeof DataPointValueType.Timer = DataPointValueType.Timer;
 
   get numericValue() {
     return this.value.ms;

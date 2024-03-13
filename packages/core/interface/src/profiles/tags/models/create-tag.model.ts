@@ -1,10 +1,10 @@
 import { Expose, Exclude } from 'class-transformer';
 import { IsNotEmpty, IsHexColor, IsString, IsOptional, IsBoolean } from 'class-validator';
 import randomColor from 'randomcolor';
-import { BaseModel } from '@lyvely/common';
+import { BaseModel, type PropertiesOf } from '@lyvely/common';
 
 @Exclude()
-export class CreateTagModel extends BaseModel<CreateTagModel> {
+export class CreateTagModel {
   @Expose()
   @IsString()
   @IsNotEmpty()
@@ -25,8 +25,8 @@ export class CreateTagModel extends BaseModel<CreateTagModel> {
   @IsOptional()
   includeOnFilter?: boolean;
 
-  constructor(obj?: Partial<CreateTagModel>) {
-    super(obj);
+  constructor(obj?: PropertiesOf<CreateTagModel>) {
+    BaseModel.init(this, obj);
     this.includeOnFilter = this.includeOnFilter ?? false;
     this.color = this.color || randomColor({ luminosity: 'dark' });
   }

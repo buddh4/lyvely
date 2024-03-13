@@ -1,11 +1,18 @@
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
-import { BaseDocument, NestedSchema, ObjectIdArrayProp, ObjectIdProp, TObjectId } from '@/core';
+import {
+  BaseDocument,
+  NestedSchema,
+  ObjectIdArrayProp,
+  ObjectIdProp,
+  type StrictBaseDocumentData,
+  TObjectId,
+} from '@/core';
 import { Author, ContentAuthorSchema, CreatedAs } from './content-author.schema';
 import { getNumberEnumValues, PropertyType } from '@lyvely/common';
 import { IContentMetadata, RoleVisibilityLevel } from '@lyvely/interface';
 
 @NestedSchema()
-export class ContentMetadata extends BaseDocument<ContentMetadata> implements IContentMetadata {
+export class ContentMetadata implements IContentMetadata {
   @ObjectIdProp()
   mid?: TObjectId;
 
@@ -60,6 +67,14 @@ export class ContentMetadata extends BaseDocument<ContentMetadata> implements IC
 
   @Prop()
   locked?: boolean;
+
+  id: string;
+
+  _id: TObjectId;
+
+  constructor(data: StrictBaseDocumentData<ContentMetadata>) {
+    BaseDocument.init(this, data);
+  }
 
   afterInit() {
     this.streamSort ??= Date.now();

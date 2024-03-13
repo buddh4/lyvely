@@ -1,4 +1,4 @@
-import { Post, Req, Body } from '@nestjs/common';
+import { Post, Req, Body, ForbiddenException } from '@nestjs/common';
 import { ProfileController } from '../decorators';
 import { ProfileRequest } from '../types';
 import { UseClassSerializer } from '@/core';
@@ -21,7 +21,8 @@ export class ProfileMembershipController implements ProfileMembershipEndpoint {
     @Req() req: ProfileRequest,
   ): Promise<MembershipModel> {
     const membership = req.context.getMembership();
-    await this.membershipService.updateMembershipInfo(membership!, update);
+    if (!membership) throw new ForbiddenException();
+    await this.membershipService.updateMembershipInfo(membership, update);
     return new MembershipModel<any>(membership);
   }
 }

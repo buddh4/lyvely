@@ -1,12 +1,12 @@
 import { IWebNotification } from '../interfaces';
 import { Expose } from 'class-transformer';
 import { UrlRoute } from '@/common';
-import { BaseModel, PropertyType } from '@lyvely/common';
+import { BaseModel, type PropertiesOf, PropertyType } from '@lyvely/common';
 import { ProfileInfoModel } from '@/profiles';
 import { UserInfoModel } from '@/users';
 
 @Expose()
-export class WebNotification extends BaseModel<WebNotification> implements IWebNotification {
+export class WebNotification implements IWebNotification {
   id: string;
   type: string;
   body: string;
@@ -22,4 +22,8 @@ export class WebNotification extends BaseModel<WebNotification> implements IWebN
 
   @PropertyType(UserInfoModel, { optional: true })
   userInfo?: UserInfoModel;
+
+  constructor(data: PropertiesOf<WebNotification>) {
+    BaseModel.init(this, data);
+  }
 }

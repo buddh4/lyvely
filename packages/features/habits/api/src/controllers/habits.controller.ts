@@ -104,7 +104,7 @@ export class HabitsController
   async startTimer(
     @Body() dto: TimerUpdateModel,
     @Request() req: ProtectedProfileContentRequest<Habit>,
-  ) {
+  ): Promise<TimerDataPointModel> {
     const { context, content } = req;
     const dataPoint = await this.timerService.startTimer(context, content, dto.date);
     return DataPointModelConverter.toModel<TimerDataPointModel>(dataPoint);
@@ -115,7 +115,7 @@ export class HabitsController
   async stopTimer(
     @Body() dto: TimerUpdateModel,
     @Request() req: ProtectedProfileContentRequest<Habit>,
-  ) {
+  ): Promise<UpdateHabitDataPointTimerResponse> {
     const { context, content } = req;
 
     const dataPoint = await this.timerService.stopTimer(context, content, dto.date);

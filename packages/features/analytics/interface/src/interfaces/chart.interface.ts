@@ -28,8 +28,8 @@ export interface IChart {
   status: IChartStatus;
 }
 
-export interface IChartSeriesConfig<TID = string> {
-  id: TID;
+export interface IChartSeriesConfig {
+  id: string;
   name: string;
   type: string;
 }

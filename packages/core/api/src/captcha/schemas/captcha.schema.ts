@@ -1,12 +1,17 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import { BaseDocument } from '@/core';
+import { BaseDocument, type StrictBaseDocumentData, type TObjectId } from '@/core';
 import { addMilliSeconds } from '@lyvely/dates';
 import ms from 'ms';
+import type { StrictBaseModelData } from '@lyvely/common';
 
 export const TOKEN_EXPIRES_IN = '2m';
 
 @Schema()
-export class Captcha extends BaseDocument<Captcha> {
+export class Captcha {
+  _id: TObjectId;
+
+  id: string;
+
   @Prop({ required: true })
   identity: string;
 
@@ -15,6 +20,10 @@ export class Captcha extends BaseDocument<Captcha> {
 
   @Prop({ type: Date, required: true })
   issuedAt: Date;
+
+  constructor(data: StrictBaseDocumentData<Captcha>) {
+    BaseDocument.init(this, data);
+  }
 
   isExpired() {
     return addMilliSeconds(this.issuedAt, ms(TOKEN_EXPIRES_IN)) < new Date();

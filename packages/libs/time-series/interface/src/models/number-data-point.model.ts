@@ -8,21 +8,17 @@ import {
 } from '../interfaces';
 
 export class NumberDataPointModel<TID = string>
-  extends DataPointModel<TID, NumberDataPointModel<TID>>
+  extends DataPointModel<TID>
   implements NumericDataPointInterface
 {
   @Expose()
-  value: number;
+  override value = 0;
+
+  @Expose()
+  override valueType = DataPointValueType.Number;
 
   get numericValue() {
     return this.value;
-  }
-
-  @Expose()
-  valueType = DataPointValueType.Number;
-
-  afterInit() {
-    this.value = this.value ?? 0;
   }
 }
 

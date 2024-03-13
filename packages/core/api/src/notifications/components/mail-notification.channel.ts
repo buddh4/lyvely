@@ -11,7 +11,6 @@ import {
 } from '../schemas';
 import { Injectable, Logger } from '@nestjs/common';
 import { MailService } from '@/mails';
-import { BaseUserProfileRelationType } from '@lyvely/interface';
 import { CalendarTimeInterval } from '@lyvely/dates';
 import { I18n, Translatable } from '@/i18n';
 import { NotificationChannelRegistry } from './notification-channel.registry';

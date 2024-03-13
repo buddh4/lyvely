@@ -4,10 +4,10 @@ import { Exclude, Expose } from 'class-transformer';
 import { IDataPoint } from '../interfaces';
 
 @Exclude()
-export class DataPointModel<TID = string, T extends DataPointModel<TID> = any>
-  extends DocumentModel<T>
-  implements IDataPoint
-{
+export class DataPointModel<TID = string> implements IDataPoint {
+  @Expose()
+  id: string;
+
   @Expose()
   @TransformObjectId()
   cid: TID;
@@ -30,4 +30,8 @@ export class DataPointModel<TID = string, T extends DataPointModel<TID> = any>
 
   @Expose()
   value: any;
+
+  constructor(data: Partial<DataPointModel<any>>) {
+    DocumentModel.init(this, data);
+  }
 }

@@ -10,9 +10,9 @@ export class TestContentData extends ContentDataType {
 export const TestContentDataSchema = SchemaFactory.createForClass(TestContentData);
 
 @Schema()
-export class TestContent extends Content<TestContent> {
+export class TestContent extends Content {
   @Prop({ type: TestContentDataSchema, required: true })
-  content: TestContentData;
+  override content: TestContentData;
 }
 
 export const TestContentSchema = SchemaFactory.createForClass(TestContent);
@@ -28,7 +28,7 @@ export const TestContentDataBSchema = SchemaFactory.createForClass(TestContentDa
 @Schema()
 export class TestContentB extends Content<TestContent> {
   @Prop({ type: TestContentDataBSchema, required: true })
-  content: TestContentDataB;
+  override content: TestContentDataB;
 }
 
 export const TestContentBSchema = SchemaFactory.createForClass(TestContentB);

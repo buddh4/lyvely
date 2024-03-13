@@ -5,17 +5,19 @@ import { UrlRoute } from '@lyvely/interface';
 import { formatDateWithTime } from '@lyvely/dates';
 import { Prop } from '@nestjs/mongoose';
 import { TestNotificationCategory } from './test.notification-category';
+import { BaseDocument, type BaseDocumentData } from '@/core';
 
 @Notification()
-export class TestNotification extends NotificationType<TestNotification> {
+export class TestNotification extends NotificationType {
   @Prop()
   testValue: string;
 
   @Prop()
   date: Date;
 
-  constructor(props) {
-    super(props);
+  constructor(data: BaseDocumentData<TestNotification>) {
+    super(false);
+    BaseDocument.init(this, data);
     this.date ||= new Date();
   }
 

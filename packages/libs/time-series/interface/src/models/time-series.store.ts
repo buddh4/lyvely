@@ -41,7 +41,7 @@ export class TimeSeriesStore<
     });
   }
 
-  reset() {
+  override reset() {
     super.reset();
     this.dataPoints = new Map();
   }

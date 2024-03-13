@@ -1,5 +1,5 @@
-import { Exclude, Type, Expose } from 'class-transformer';
-import { BaseModel, PropertyType } from '@lyvely/common';
+import { Exclude, Expose } from 'class-transformer';
+import { BaseModel, type PropertiesOf, PropertyType } from '@lyvely/common';
 import {
   DataPointModel,
   ITimeSeriesCalendarPlanResponse,
@@ -8,10 +8,7 @@ import {
 import { HabitModel } from './habit.model';
 
 @Exclude()
-export class HabitSearchResponse
-  extends BaseModel<HabitSearchResponse>
-  implements ITimeSeriesCalendarPlanResponse<HabitModel>
-{
+export class HabitSearchResponse implements ITimeSeriesCalendarPlanResponse<HabitModel> {
   @Expose()
   @PropertyType([HabitModel])
   models: HabitModel[];
@@ -19,4 +16,8 @@ export class HabitSearchResponse
   @Expose()
   @PropertyType([NumberDataPointModel])
   dataPoints: DataPointModel[];
+
+  constructor(data: PropertiesOf<HabitSearchResponse>) {
+    BaseModel.init(this, data);
+  }
 }

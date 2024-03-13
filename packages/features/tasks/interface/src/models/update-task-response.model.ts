@@ -1,5 +1,5 @@
-import { Exclude, Expose, Type } from 'class-transformer';
-import { TagModel, ContentUpdateResponse } from '@lyvely/interface';
+import { Exclude, Expose } from 'class-transformer';
+import { ContentUpdateResponse } from '@lyvely/interface';
 import { PropertyType } from '@lyvely/common';
 import { TaskModel } from './task.model';
 
@@ -8,8 +8,4 @@ export class UpdateTaskResponse extends ContentUpdateResponse<TaskModel> {
   @Expose()
   @PropertyType(TaskModel)
   model: TaskModel;
-
-  @Expose()
-  @PropertyType([TagModel])
-  tags: TagModel[];
 }

@@ -1,13 +1,24 @@
+export enum RenderableType {
+  text = 'text',
+  translation = 'translation',
+  markdown = 'markdown',
+}
+
 export interface IRenderable {
   renderType: string;
 }
 
 export type RenderableText = {
-  renderType: 'text';
+  renderType: RenderableType.text;
+  text?: string;
+};
+
+export type RenderableTranslation = {
+  renderType: RenderableType.translation;
   text?: string;
 };
 
 export type RenderableMarkdown = {
-  renderType: 'markdown';
+  renderType: RenderableType.markdown;
   text?: string;
 };

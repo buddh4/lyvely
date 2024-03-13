@@ -21,7 +21,7 @@ import { DEFAULT_BATCH_SIZE } from '../stream.constants';
 
 @Injectable()
 export abstract class AbstractStreamService<
-  TModel extends BaseDocument<TModel>,
+  TModel extends BaseDocument,
   TFilter extends IStreamFilter = any,
   TContext = any,
 > {
@@ -154,7 +154,7 @@ export abstract class AbstractStreamService<
 
     const response = new StreamResponse<TModel>({
       models: streamEntries,
-      state: cloneDeep(request.state),
+      state: cloneDeep(request.state) || {},
       hasMore: true,
     });
 

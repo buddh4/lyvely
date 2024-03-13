@@ -96,18 +96,18 @@ export class UnscheduledPlan extends CalendarPlan {
 }
 
 export class YearlyPlan extends UnscheduledPlan {
-  protected id = CalendarInterval.Yearly;
+  protected override id = CalendarInterval.Yearly;
 
-  getLabel(): string {
+  override getLabel(): string {
     return 'Yearly';
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  getTitle(date: Date, locale: string, preferences?: ICalendarPreferences): ITranslatable {
+  override getTitle(date: Date, locale: string, preferences?: ICalendarPreferences): ITranslatable {
     return dateTime(date).format('YYYY');
   }
 
-  getAccessibleTitle(
+  override getAccessibleTitle(
     date: Date,
     locale: string,
     preferences?: ICalendarPreferences,
@@ -115,35 +115,35 @@ export class YearlyPlan extends UnscheduledPlan {
     return this.getTitle(date, locale, preferences);
   }
 
-  increment(date: Date, amount = 1): Date {
+  override increment(date: Date, amount = 1): Date {
     return addYear(date, amount);
   }
 
-  decrement(date: Date, amount = 1): Date {
+  override decrement(date: Date, amount = 1): Date {
     return subtractYear(date, amount);
   }
 
-  getDefaultWindowSize(): number {
+  override getDefaultWindowSize(): number {
     return 5;
   }
 }
 
 export class QuarterlyPlan extends YearlyPlan {
-  protected id = CalendarInterval.Quarterly;
+  protected override id = CalendarInterval.Quarterly;
 
-  getLabel(): string {
+  override getLabel(): string {
     return 'Quarterly';
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  getTitle(date: Date, locale: string, preferences?: ICalendarPreferences): ITranslatable {
+  override getTitle(date: Date, locale: string, preferences?: ICalendarPreferences): ITranslatable {
     const momentDate = dateTime(date);
     const quarter =
       momentDate.quarter() + (!isCurrentYear(date) ? momentDate.format(' · YYYY') : '');
     return { key: 'calendar-plan.titles.quarterly', params: { quarter } };
   }
 
-  getAccessibleTitle(
+  override getAccessibleTitle(
     date: Date,
     locale: string,
     preferences?: ICalendarPreferences,
@@ -151,37 +151,37 @@ export class QuarterlyPlan extends YearlyPlan {
     return this.getTitle(date, locale, preferences);
   }
 
-  increment(date: Date, amount = 1): Date {
+  override increment(date: Date, amount = 1): Date {
     return addQuarter(date, amount);
   }
 
-  decrement(date: Date, amount = 1): Date {
+  override decrement(date: Date, amount = 1): Date {
     return subtractQuarters(date, amount);
   }
 
-  getDefaultWindowSize(): number {
+  override getDefaultWindowSize(): number {
     return 8;
   }
 }
 
 export class MonthlyPlan extends QuarterlyPlan {
-  protected id = CalendarInterval.Monthly;
+  protected override id = CalendarInterval.Monthly;
 
-  getLabel(): string {
+  override getLabel(): string {
     return 'Monthly';
   }
 
-  getLabelById(id: any): string {
+  override getLabelById(id: any): string {
     return getMonthNameByIndex(id);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  getTitle(date: Date, locale: string, preferences?: ICalendarPreferences): ITranslatable {
+  override getTitle(date: Date, locale: string, preferences?: ICalendarPreferences): ITranslatable {
     const format = isCurrentYear(date) ? 'MMMM' : 'MMM · YYYY';
     return dateTime(date).format(format);
   }
 
-  getAccessibleTitle(
+  override getAccessibleTitle(
     date: Date,
     locale: string,
     preferences?: ICalendarPreferences,
@@ -189,27 +189,27 @@ export class MonthlyPlan extends QuarterlyPlan {
     return this.getTitle(date, locale, preferences);
   }
 
-  increment(date: Date, amount = 1): Date {
+  override increment(date: Date, amount = 1): Date {
     return addMonth(date, amount);
   }
 
-  decrement(date: Date, amount = 1): Date {
+  override decrement(date: Date, amount = 1): Date {
     return subtractMonths(date, amount);
   }
 
-  getDefaultWindowSize(): number {
+  override getDefaultWindowSize(): number {
     return 12;
   }
 }
 
 export class WeeklyPlan extends MonthlyPlan {
-  protected id = CalendarInterval.Weekly;
+  protected override id = CalendarInterval.Weekly;
 
-  getLabel(): string {
+  override getLabel(): string {
     return 'Weekly';
   }
 
-  getTitle(date: Date, locale: string, preferences?: ICalendarPreferences): ITranslatable {
+  override getTitle(date: Date, locale: string, preferences?: ICalendarPreferences): ITranslatable {
     const tid = this.getTimingId(date, locale, preferences);
     const splitTid = tid.split(';');
     const weekOfYear = parseInt(splitTid.at(-1)!.split(':')[1]);
@@ -221,7 +221,7 @@ export class WeeklyPlan extends MonthlyPlan {
     return { key: 'calendar-plan.titles.weekly', params: { week } };
   }
 
-  getAccessibleTitle(
+  override getAccessibleTitle(
     date: Date,
     locale: string,
     preferences?: ICalendarPreferences,
@@ -229,38 +229,38 @@ export class WeeklyPlan extends MonthlyPlan {
     return this.getTitle(date, locale, preferences);
   }
 
-  increment(date: Date, amount = 1): Date {
+  override increment(date: Date, amount = 1): Date {
     return addWeek(date, amount);
   }
 
-  decrement(date: Date, amount = 1): Date {
+  override decrement(date: Date, amount = 1): Date {
     return subtractWeeks(date, amount);
   }
 
-  getDefaultWindowSize(): number {
+  override getDefaultWindowSize(): number {
     return 10;
   }
 }
 
 export class DailyPlan extends WeeklyPlan {
-  protected id = CalendarInterval.Daily;
+  protected override id = CalendarInterval.Daily;
 
-  getLabel(): string {
+  override getLabel(): string {
     return 'Daily';
   }
 
-  getLabelById(id: any): string {
+  override getLabelById(id: any): string {
     return getDayNameByIndex(id);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  getTitle(date: Date, locale: string, preferences?: ICalendarPreferences): ITranslatable {
+  override getTitle(date: Date, locale: string, preferences?: ICalendarPreferences): ITranslatable {
     const format = isCurrentYear(date) ? 'ddd D MMM ' : 'ddd D MMM  · YYYY';
     return dateTime(date).format(format);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  getAccessibleTitle(
+  override getAccessibleTitle(
     date: Date,
     locale: string,
     preferences?: ICalendarPreferences,
@@ -269,15 +269,15 @@ export class DailyPlan extends WeeklyPlan {
     return dateTime(date).format(format);
   }
 
-  increment(date: Date, amount = 1): Date {
+  override increment(date: Date, amount = 1): Date {
     return addDays(date, amount);
   }
 
-  decrement(date: Date, amount = 1): Date {
+  override decrement(date: Date, amount = 1): Date {
     return subtractDays(date, amount);
   }
 
-  getDefaultWindowSize(): number {
+  override getDefaultWindowSize(): number {
     return 14;
   }
 }

@@ -1,9 +1,9 @@
-import { ContentTypeService } from '@/content';
+import { ContentType, ContentTypeService } from '@/content';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { SystemMessagesDao } from '../daos';
 import { ProtectedProfileContext } from '@/profiles';
 import { UnsupportedOperationException } from '@lyvely/interface';
-import { SystemMessage } from '../schemas';
+import { SystemMessage, SystemMessageContent } from '../schemas';
 import { UpdateQuerySet } from '@/core';
 import { ICreateSystemMessage } from '../interfaces';
 
@@ -38,7 +38,7 @@ export class SystemMessagesService extends ContentTypeService<SystemMessage, ICr
     const { profile, user } = context;
     const { text, title, params } = model;
     return new SystemMessage(profile, user, {
-      content: { text, title, params },
+      content: new SystemMessageContent({ text, title, params }),
     });
   }
 

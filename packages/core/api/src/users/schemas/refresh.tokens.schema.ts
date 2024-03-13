@@ -1,10 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Exclude } from 'class-transformer';
-import { BaseDocument } from '@/core';
+import { BaseDocument, type StrictBaseDocumentData, type TObjectId } from '@/core';
 
 @Exclude()
 @Schema({ timestamps: true })
-export class RefreshToken extends BaseDocument<RefreshToken> {
+export class RefreshToken {
   @Prop({ required: true })
   vid: string;
 
@@ -16,6 +16,14 @@ export class RefreshToken extends BaseDocument<RefreshToken> {
 
   @Prop()
   remember?: boolean;
+
+  id: string;
+
+  _id: TObjectId;
+
+  constructor(data: StrictBaseDocumentData<RefreshToken>) {
+    BaseDocument.init(this, data);
+  }
 }
 
 export const RefreshTokenSchema = SchemaFactory.createForClass(RefreshToken);

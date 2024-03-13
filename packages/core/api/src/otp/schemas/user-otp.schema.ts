@@ -1,10 +1,16 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { BaseDocument, MixedProp, ObjectIdProp, TObjectId } from '@/core';
+import {
+  BaseDocument,
+  MixedProp,
+  ObjectIdProp,
+  type StrictBaseDocumentData,
+  TObjectId,
+} from '@/core';
 import { addMilliSeconds } from '@lyvely/dates';
 import { OtpInfo, DEFAULT_MAX_OTP_ATTEMPTS } from '@lyvely/interface';
 
 @Schema()
-export class UserOtp<TContext = any> extends BaseDocument<UserOtp> {
+export class UserOtp<TContext = any> {
   @ObjectIdProp({ required: true })
   uid: TObjectId;
 
@@ -28,6 +34,14 @@ export class UserOtp<TContext = any> extends BaseDocument<UserOtp> {
 
   @Prop({ default: 0 })
   attempts: 0;
+
+  _id: TObjectId;
+
+  id: string;
+
+  constructor(data: StrictBaseDocumentData<Omit<UserOtp, 'attempts'>>) {
+    BaseDocument.init(this, data);
+  }
 
   getOtpClientInfo(attemptsLeft?: number) {
     return new OtpInfo({

@@ -18,13 +18,13 @@ export interface IJournalConfig {
 
 @Expose()
 export class JournalModel<TID = string>
-  extends TimeSeriesContentModel<TID, JournalModel<TID>, IJournalConfig>
+  extends TimeSeriesContentModel<TID, IJournalConfig>
   implements IEditableModel<UpdateJournalModel>
 {
   static contentType = 'Journal';
-  type = JournalModel.contentType;
+  override type = JournalModel.contentType;
 
-  getDefaultConfig(): IJournalConfig {
+  override getDefaultConfig(): IJournalConfig {
     return {
       timeSeries: {
         interval: CalendarInterval.Daily,

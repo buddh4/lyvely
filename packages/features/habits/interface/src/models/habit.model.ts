@@ -1,6 +1,6 @@
 import { Expose } from 'class-transformer';
 import { UpdateHabitModel } from './update-habit.model';
-import { IEditableModel, UserAssignmentStrategy } from '@lyvely/interface';
+import { ContentModel, IEditableModel, UserAssignmentStrategy } from '@lyvely/interface';
 import { CalendarInterval } from '@lyvely/dates';
 import {
   DataPointInputType,
@@ -12,13 +12,14 @@ import { IHabitConfig } from '../interfaces';
 
 @Expose()
 export class HabitModel<TID = string>
-  extends TimeSeriesContentModel<TID, HabitModel<TID>, IHabitConfig>
-  implements IEditableModel<UpdateHabitModel>
+  extends TimeSeriesContentModel<TID, IHabitConfig>
+  implements IEditableModel<UpdateHabitModel>, ContentModel<TID, IHabitConfig>
 {
   static contentType = 'Habit';
-  type = HabitModel.contentType;
 
-  getDefaultConfig(): IHabitConfig {
+  override type = HabitModel.contentType;
+
+  override getDefaultConfig(): IHabitConfig {
     return {
       score: 0,
       timeSeries: {

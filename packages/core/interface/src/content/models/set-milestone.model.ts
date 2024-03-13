@@ -1,10 +1,14 @@
 import { Exclude, Expose } from 'class-transformer';
 import { IsMongoId } from 'class-validator';
-import { BaseModel } from '@lyvely/common';
+import { type PropertiesOf } from '@lyvely/common';
 
 @Exclude()
-export class SetMilestoneModel extends BaseModel<SetMilestoneModel> {
+export class SetMilestoneModel {
   @Expose()
   @IsMongoId()
   mid: string;
+
+  constructor(data: PropertiesOf<SetMilestoneModel>) {
+    this.mid = data.mid;
+  }
 }

@@ -6,7 +6,7 @@ import { ProfileScore } from '../schemas';
 export abstract class ProfileScoreDao<
   T extends ProfileScore = ProfileScore,
 > extends AbstractDao<T> {
-  protected getModelType(): string | null {
+  protected override getModelType(): string | null {
     return 'userprofileaction';
   }
 }

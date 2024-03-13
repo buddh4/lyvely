@@ -1,20 +1,32 @@
-import { mapType, registerMapping, BaseModel, PropertyType } from '../index';
+import { mapType, registerMapping, BaseModel, PropertyType, type PropertiesOf } from '../index';
 
-class User extends BaseModel<User> {
+class User {
   forename: string;
   lastname: string;
+
+  constructor(data: PropertiesOf<User>) {
+    BaseModel.init(this, data);
+  }
 }
 
-class UserInfos extends BaseModel<UserInfos> {
+class UserInfos {
   @PropertyType([User])
   userInfos: User[];
+
+  constructor(data: PropertiesOf<UserInfos>) {
+    BaseModel.init(this, data);
+  }
 }
 
 describe('object mapping', () => {
   describe('mapType()', function () {
     it('simple object mapping', async () => {
-      class UserInfo extends BaseModel<UserInfo> {
+      class UserInfo {
         fullName: string;
+
+        constructor(data: PropertiesOf<UserInfo>) {
+          BaseModel.init(this, data);
+        }
       }
 
       registerMapping(

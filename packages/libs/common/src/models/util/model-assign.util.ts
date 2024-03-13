@@ -49,7 +49,7 @@ function _assignRawDataTo<T extends Object>(
   Object.keys(data).forEach((key) => {
     const path = key as keyof T & string;
     if (path.includes('.')) {
-      const subPathRoot = findByPath(model, path, true, !strict);
+      const subPathRoot = findByPath(model, path, { returnParent: true, create: !strict });
       if (subPathRoot) {
         const field = path.slice(path.lastIndexOf('.') + 1);
         if (field.startsWith('$')) return;

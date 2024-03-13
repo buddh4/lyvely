@@ -59,6 +59,66 @@ describe('object util', () => {
   });
 
   describe('findByPath', function () {
+    describe('defaultValue', () => {
+      it('default value should be returned for unknown shallow path without create', () => {
+        const model = {};
+        const value = findByPath(model, 'sub', { defaultValue: { test: 'value' } });
+        expect(value).toEqual({ test: 'value' });
+        expect(model).toEqual({});
+      });
+
+      it('default value should be returned for unknown shallow path with create', () => {
+        const model = {};
+        const value = findByPath(model, 'sub', { create: true, defaultValue: { test: 'value' } });
+        expect(value).toEqual({ test: 'value' });
+        expect(model).toEqual({ sub: { test: 'value' } });
+      });
+
+      it('default value should be returned for unknown deep path without create', () => {
+        const model = {};
+        const value = findByPath(model, 'sub.path', { defaultValue: { test: 'value' } });
+        expect(value).toEqual({ test: 'value' });
+        expect(model).toEqual({});
+      });
+
+      it('default value should be returned for unknown deep path with create', () => {
+        const model = {};
+        const value = findByPath(model, 'sub.path', {
+          create: true,
+          defaultValue: { test: 'value' },
+        });
+        expect(value).toEqual({ test: 'value' });
+        expect(model).toEqual({ sub: { path: { test: 'value' } } });
+      });
+    });
+    describe('with create', () => {
+      it('create on undefined model', () => {
+        const value = findByPath(undefined, 'sub', { returnParent: true, create: true });
+        expect(value).toEqual({ sub: {} });
+      });
+
+      it('create without sub path', () => {
+        const model = {};
+        const value = findByPath(model, 'sub', { create: true });
+        expect(value).toEqual({});
+        expect(model).toEqual({ sub: {} });
+      });
+
+      it('create on sub', () => {
+        const model = {};
+        const value = findByPath(model, 'sub.sub.field');
+        expect(value).toEqual({});
+        expect(model).toEqual({ sub: { sub: { field: {} } } });
+      });
+
+      it('create on sub with default', () => {
+        const model = {};
+        const value = findByPath(model, 'sub.sub.field', { create: true, defaultValue: [] });
+        expect(value).toEqual([]);
+        expect(model).toEqual({ sub: { sub: { field: [] } } });
+      });
+    });
+
     it('find sub field', () => {
       const model = { sub: { sub: { field: 'value' } } };
       const value = findByPath(model, 'sub.sub.field');
@@ -67,7 +127,7 @@ describe('object util', () => {
 
     it('find parent of field', () => {
       const model = { sub: { sub: { field: 'value' } } };
-      const value = findByPath<{ field: string }>(model, 'sub.sub.field', true);
+      const value = findByPath<{ field: string }>(model, 'sub.sub.field', { returnParent: true });
       expect(value!.field).toEqual('value');
     });
 
@@ -79,7 +139,7 @@ describe('object util', () => {
 
     it('find root by root path', () => {
       const model = { sub: { sub: { field: 'value' } } };
-      const value = findByPath(model, 'sub', true);
+      const value = findByPath(model, 'sub', { returnParent: true });
       expect(value === model);
     });
 

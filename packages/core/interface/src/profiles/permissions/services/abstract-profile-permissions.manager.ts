@@ -23,7 +23,7 @@ export abstract class AbstractProfilePermissionsManager<
    * @param {TConfig} config - The configuration object.
    * @return {number} - The valid role level.
    */
-  getValidRoleLevel(
+  override getValidRoleLevel(
     permission: TPermission,
     object: TObject,
     config: TConfig,

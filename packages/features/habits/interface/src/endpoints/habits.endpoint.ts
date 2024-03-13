@@ -6,6 +6,7 @@ import {
   CreateHabitModel,
   UpdateHabitDataPointModel,
   UpdateHabitDataPointResponse,
+  UpdateHabitDataPointTimerResponse,
 } from '../models';
 import { TimerUpdateModel } from '@lyvely/timers-interface';
 
@@ -17,7 +18,7 @@ export interface IHabitsEndpointClient
     update: UpdateHabitDataPointModel,
   ): Promise<UpdateHabitDataPointResponse>;
   startTimer(cid: string, dto: TimerUpdateModel): Promise<TimerDataPointModel>;
-  stopTimer(cid: string, dto: TimerUpdateModel): Promise<UpdateHabitDataPointResponse>;
+  stopTimer(cid: string, dto: TimerUpdateModel): Promise<UpdateHabitDataPointTimerResponse>;
 }
 
 export type HabitsEndpoint = Endpoint<IHabitsEndpointClient>;

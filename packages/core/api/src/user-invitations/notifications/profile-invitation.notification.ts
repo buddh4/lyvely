@@ -9,14 +9,14 @@ import { InvitationsNotificationCategory } from './invitations.notification-cate
 import { assureStringId } from '@/core';
 
 @Notification()
-export class ProfileInvitationNotification extends NotificationType<ProfileInvitationNotification> {
+export class ProfileInvitationNotification extends NotificationType {
   @Prop({ type: ProfileInfoSchema })
   @PropertyType(ProfileInfo)
-  profileInfo: ProfileInfo;
+  override profileInfo: ProfileInfo;
 
   @Prop({ type: UserInfoSchema })
   @PropertyType(UserInfo)
-  userInfo: UserInfo;
+  override userInfo: UserInfo;
 
   constructor(profile: Profile, host: User) {
     super({

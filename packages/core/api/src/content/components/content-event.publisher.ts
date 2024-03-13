@@ -17,18 +17,19 @@ export class ContentEventPublisher {
     private readonly liveService: LiveService,
     @InjectModel(Content.name) private readonly contentModel: Model<Content>,
   ) {
-    if (configService.get('mongodb.replicaSet')) {
+    /*if (configService.get('mongodb.replicaSet')) {
       const changeStream = contentModel.watch([{ $match: { operationType: 'insert' } }]);
       changeStream.on('change', (doc: ChangeStreamInsertDocument<Content>) => {
-        /* liveService.emit(LIVE_EVENT_CONTENT_NEW, {
+        * liveService.emit(LIVE_EVENT_CONTENT_NEW, {
           id: assureStringId(doc.fullDocument._id),
           type: doc.fullDocument.type,
-        });*/
+        });*
         this.emitCreateEvents = false;
       });
     } else {
       this.emitCreateEvents = true;
-    }
+    }*/
+    this.emitCreateEvents = true;
   }
 
   emitContentCreated(content: Content) {

@@ -2,10 +2,10 @@ import { Exclude, Expose } from 'class-transformer';
 import { IsNotEmpty, IsString, Length, IsEnum, IsOptional } from 'class-validator';
 import { CalendarInterval } from '@lyvely/dates';
 import { CreateContentModel } from '@lyvely/interface';
-import { Trim } from '@lyvely/common';
+import { BaseModel, type BaseModelData, Trim } from '@lyvely/common';
 
 @Exclude()
-export class CreateMilestoneModel extends CreateContentModel<CreateMilestoneModel> {
+export class CreateMilestoneModel extends CreateContentModel {
   @Expose()
   @IsString()
   @IsNotEmpty()
@@ -23,6 +23,11 @@ export class CreateMilestoneModel extends CreateContentModel<CreateMilestoneMode
   @Expose()
   @IsEnum(CalendarInterval)
   interval: CalendarInterval;
+
+  constructor(data: BaseModelData<CreateMilestoneModel>) {
+    super(false);
+    BaseModel.init(this, data);
+  }
 
   getDefaults() {
     return {

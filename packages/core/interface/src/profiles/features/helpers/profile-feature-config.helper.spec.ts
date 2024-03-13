@@ -39,7 +39,7 @@ describe('mergeFeatureConfig', function () {
     };
     const definition = mergeFeatureConfig(profile, {
       profiles: {
-        UserProfile: { default: defaultConfig },
+        user: { default: defaultConfig },
       },
     });
     expect(definition).toEqual(defaultConfig);
@@ -50,11 +50,11 @@ describe('mergeFeatureConfig', function () {
     const definition = mergeFeatureConfig(profile, {
       profiles: {
         default: { installable: ['test1'] },
-        UserProfile: { default: { installable: ['^', 'test2'] } },
+        user: { default: { installable: ['^', 'test2'] } },
       },
     });
-    expect(definition.installable.includes('test1')).toEqual(true);
-    expect(definition.installable.includes('test2')).toEqual(true);
+    expect(definition.installable!.includes('test1')).toEqual(true);
+    expect(definition.installable!.includes('test2')).toEqual(true);
   });
 
   it('not merge defaults with profile type defaults', () => {
@@ -62,11 +62,11 @@ describe('mergeFeatureConfig', function () {
     const definition = mergeFeatureConfig(profile, {
       profiles: {
         default: { installable: ['test1'] },
-        UserProfile: { default: { installable: ['test2'] } },
+        user: { default: { installable: ['test2'] } },
       },
     });
-    expect(definition.installable.includes('test1')).toEqual(false);
-    expect(definition.installable.includes('test2')).toEqual(true);
+    expect(definition.installable!.includes('test1')).toEqual(false);
+    expect(definition.installable!.includes('test2')).toEqual(true);
   });
 
   it('subscription match', () => {
@@ -84,37 +84,38 @@ describe('mergeFeatureConfig', function () {
     const profile = new ProfileModel({ type: ProfileType.User, subscription: 'prime' });
     const definition = mergeFeatureConfig(profile, {
       profiles: {
-        UserProfile: { default: { installable: ['test1'] } },
+        user: { default: { installable: ['test1'] } },
         subscription: { prime: { installable: ['^', 'test2'] } },
       },
     });
-    expect(definition.installable.includes('test1')).toEqual(true);
-    expect(definition.installable.includes('test2')).toEqual(true);
+    expect(definition.installable!.includes('test1')).toEqual(true);
+    expect(definition.installable!.includes('test2')).toEqual(true);
   });
 
   it('not merge subscription with profile type defaults', () => {
     const profile = new ProfileModel({ type: ProfileType.User, subscription: 'prime' });
     const definition = mergeFeatureConfig(profile, {
       profiles: {
-        UserProfile: { default: { installable: ['test1'] } },
+        user: { default: { installable: ['test1'] } },
         subscription: { prime: { installable: ['test2'] } },
       },
     });
-    expect(definition.installable.includes('test1')).toEqual(false);
-    expect(definition.installable.includes('test2')).toEqual(true);
+    expect(definition.installable!.includes('test1')).toEqual(false);
+    expect(definition.installable!.includes('test2')).toEqual(true);
   });
 
   it('organization profile type match', () => {
     const profile = new ProfileModel({
       oid: 'xy',
       id: 'xx',
+      hasOrg: true,
       type: ProfileType.User,
     });
     const defaultConfig = { installable: ['test'] };
     const definition = mergeFeatureConfig(profile, {
       profiles: {
-        Organization: {
-          UserProfile: { default: defaultConfig },
+        organization: {
+          user: { default: defaultConfig },
         },
       },
     });
@@ -126,18 +127,19 @@ describe('mergeFeatureConfig', function () {
       oid: 'xy',
       id: 'xx',
       type: ProfileType.User,
+      hasOrg: true,
       subscription: 'prime',
     });
     const definition = mergeFeatureConfig(profile, {
       profiles: {
         subscription: { prime: { installable: ['test1'] } },
-        Organization: {
-          UserProfile: { default: { installable: ['^', 'test2'] } },
+        organization: {
+          user: { default: { installable: ['^', 'test2'] } },
         },
       },
     });
-    expect(definition.installable.includes('test1')).toEqual(true);
-    expect(definition.installable.includes('test2')).toEqual(true);
+    expect(definition.installable!.includes('test1')).toEqual(true);
+    expect(definition.installable!.includes('test2')).toEqual(true);
   });
 
   it('not merge organization profile type with subscription', () => {
@@ -145,18 +147,19 @@ describe('mergeFeatureConfig', function () {
       oid: 'xy',
       id: 'xx',
       type: ProfileType.User,
+      hasOrg: true,
       subscription: 'prime',
     });
     const definition = mergeFeatureConfig(profile, {
       profiles: {
         subscription: { prime: { installable: ['test1'] } },
-        Organization: {
-          UserProfile: { default: { installable: ['test2'] } },
+        organization: {
+          user: { default: { installable: ['test2'] } },
         },
       },
     });
-    expect(definition.installable.includes('test1')).toEqual(false);
-    expect(definition.installable.includes('test2')).toEqual(true);
+    expect(definition.installable!.includes('test1')).toEqual(false);
+    expect(definition.installable!.includes('test2')).toEqual(true);
   });
 
   it('organization profile type subscription match', () => {
@@ -164,13 +167,14 @@ describe('mergeFeatureConfig', function () {
       oid: 'xy',
       id: 'xx',
       subscription: 'prime',
+      hasOrg: true,
       type: ProfileType.User,
     });
     const defaultConfig = { installable: ['test'] };
     const definition = mergeFeatureConfig(profile, {
       profiles: {
-        Organization: {
-          UserProfile: {
+        organization: {
+          user: {
             subscription: { prime: defaultConfig },
           },
         },
@@ -184,6 +188,7 @@ describe('mergeFeatureConfig', function () {
       oid: 'xy',
       id: 'xx',
       subscription: 'prime',
+      hasOrg: true,
       type: ProfileType.User,
     });
     const definition = mergeFeatureConfig(profile, {
@@ -199,10 +204,32 @@ describe('mergeFeatureConfig', function () {
       },
     });
 
-    expect(definition.installable.includes('org_subscription')).toEqual(true);
-    expect(definition.installable.includes('subscription')).toEqual(true);
-    expect(definition.installable.includes('userprofile')).toEqual(true);
-    expect(definition.installable.includes('default')).toEqual(true);
+    expect(definition.installable!.includes('org_subscription')).toEqual(true);
+    expect(definition.installable!.includes('subscription')).toEqual(true);
+    expect(definition.installable!.includes('userprofile')).toEqual(true);
+    expect(definition.installable!.includes('default')).toEqual(true);
+  });
+
+  it('merge multiple usage suggestions', () => {
+    const profile = new ProfileModel({
+      oid: 'xy',
+      id: 'xx',
+      subscription: 'prime',
+      usage: [<any>'health', <any>'sport'],
+      hasOrg: true,
+      type: ProfileType.User,
+    });
+    const definition = mergeFeatureConfig(profile, {
+      profiles: {
+        usage: {
+          health: { suggested: ['f1'] },
+          sport: { suggested: ['f2'] },
+        },
+      },
+    });
+
+    expect(definition.suggested!.includes('f1')).toEqual(true);
+    expect(definition.suggested!.includes('f2')).toEqual(true);
   });
 
   it('merge usage all levels', () => {
@@ -210,27 +237,29 @@ describe('mergeFeatureConfig', function () {
       oid: 'xy',
       id: 'xx',
       subscription: 'prime',
+      usage: [<any>'health'],
+      hasOrg: true,
       type: ProfileType.User,
     });
     const definition = mergeFeatureConfig(profile, {
       profiles: {
         usage: { health: { suggested: ['default'] } },
-        UserProfile: {
+        user: {
           usage: { health: { suggested: ['^', 'userprofile'] } },
         },
-        subscription: { prime: { installable: ['^', 'subscription'] } },
-        Organization: {
-          UserProfile: {
+        subscription: { prime: { suggested: ['^', 'subscription'] } },
+        organization: {
+          user: {
             usage: { health: { suggested: ['^', 'org_profile_type'] } },
           },
         },
       },
     });
 
-    expect(definition.suggested.includes('org_profile_type')).toEqual(true);
-    expect(definition.suggested.includes('subscription')).toEqual(true);
-    expect(definition.suggested.includes('userprofile')).toEqual(true);
-    expect(definition.suggested.includes('default')).toEqual(true);
+    expect(definition.suggested!.includes('org_profile_type')).toEqual(true);
+    expect(definition.suggested!.includes('subscription')).toEqual(true);
+    expect(definition.suggested!.includes('userprofile')).toEqual(true);
+    expect(definition.suggested!.includes('default')).toEqual(true);
   });
 
   it('organization profile subscription match', () => {
@@ -243,7 +272,7 @@ describe('mergeFeatureConfig', function () {
     const defaultConfig = { installable: ['test'] };
     const definition = mergeFeatureConfig(profile, {
       profiles: {
-        Organization: {
+        organization: {
           subscription: { prime: defaultConfig },
         },
       },

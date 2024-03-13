@@ -4,7 +4,7 @@ import { ContentUpdateResponse, CreateContentModel } from '../models';
 import { IContent } from '../interfaces';
 
 export interface IContentTypeClient<
-  TModel extends IContent,
+  TModel extends IContent<string>,
   TCreateModel extends CreateContentModel,
   TUpdateModel extends Partial<CreateContentModel> = Partial<TCreateModel>,
   TResponse extends ContentUpdateResponse<TModel> = ContentUpdateResponse<TModel>,
@@ -14,7 +14,7 @@ export interface IContentTypeClient<
 }
 
 export type ContentTypeEndpoint<
-  TModel extends IContent,
+  TModel extends IContent<string>,
   TCreateModel extends CreateContentModel,
   TUpdateModel extends Partial<CreateContentModel> = Partial<TCreateModel>,
 > = Endpoint<IContentTypeClient<TModel, TCreateModel, TUpdateModel>>;

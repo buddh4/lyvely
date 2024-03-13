@@ -1,14 +1,14 @@
 import { BaseModel, PropertyType, SameAs } from '@lyvely/common';
 import { IsBoolean, IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
 
-export class SendResetPasswordMail extends BaseModel<SendResetPasswordMail> {
+export class SendResetPasswordMail {
   @IsString()
   @IsNotEmpty()
   @MaxLength(255)
   usernameOrEmail: string;
 }
 
-export class ResetPassword extends BaseModel<ResetPassword> {
+export class ResetPassword {
   @IsNotEmpty()
   @MinLength(6)
   @MaxLength(64)
@@ -23,6 +23,10 @@ export class ResetPassword extends BaseModel<ResetPassword> {
   token: string;
 
   @IsBoolean()
-  @PropertyType(Boolean, { default: true })
   resetSessions: boolean;
+
+  constructor(data?: ResetPassword) {
+    BaseModel.init(this, data);
+    this.resetSessions ??= true;
+  }
 }

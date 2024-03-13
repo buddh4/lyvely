@@ -19,7 +19,7 @@ import { IDataPointUpdateResult } from '../interfaces/data-point-update-result.i
  * @template TValue - The type of the data point value. Defaults to `any`.
  */
 export abstract class DataPointService<
-  TModel extends TimeSeriesContent<TModel>,
+  TModel extends TimeSeriesContent,
   TDataPointModel extends DataPoint = DataPoint,
   TValue = any,
 > {

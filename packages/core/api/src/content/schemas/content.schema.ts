@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory, ModelDefinition } from '@nestjs/mongoose';
-import { DeepPartial, PropertyType, assignRawDataTo, Type, PropertiesOf } from '@lyvely/common';
+import { PropertyType, assignRawDataTo, Type, PropertiesOf, BaseModel } from '@lyvely/common';
 import {
   IContent,
   ContentModel,
@@ -10,7 +10,7 @@ import {
 import {
   assureObjectId,
   BaseDocument,
-  DocumentIdentity,
+  type BaseDocumentData,
   ObjectIdArrayProp,
   TObjectId,
 } from '@/core';
@@ -20,10 +20,11 @@ import { CreatedAs, Author } from './content-author.schema';
 import { OptionalUser, User } from '@/users';
 import {
   Profile,
-  BaseProfileModel,
+  ProfileDocument,
   Tag,
   ProfileContext,
   ProtectedProfileContext,
+  type ProfileContextData,
 } from '@/profiles';
 import { ContentDataType, ContentDataTypeSchema } from './content-data-type.schema';
 import { IPolicy } from '@/policies';
@@ -35,8 +36,11 @@ export class ProfileContentContext<
 > extends ProfileContext<TProfile> {
   content: TContent;
 
-  constructor(obj: Partial<ProfileContentContext>) {
-    super(obj);
+  constructor(
+    data: ProfileContextData<ProfileContentContext<TContent, TProfile>> & { content: TContent },
+  ) {
+    super(false);
+    BaseModel.init(this, data);
   }
 
   getContentRole(): ContentUserRole {
@@ -53,6 +57,11 @@ export class ProtectedProfileContentContext<
   TProfile extends Profile = Profile,
 > extends ProtectedProfileContext<TProfile> {
   content: TContent;
+
+  constructor(data: PropertiesOf<ProtectedProfileContentContext<TContent, TProfile>>) {
+    super(false);
+    BaseModel.init(this, data);
+  }
 }
 
 type IGetModelConstructor = {
@@ -79,12 +88,13 @@ export type ContentEntity<T, TConfig extends Object = any> = IContent<TObjectId,
  */
 @Schema({ discriminatorKey: 'type' })
 export class Content<
-    T extends ContentEntity<T, TConfig> = any,
-    TConfig extends Object = any,
+    TConfig extends Object | undefined = any,
     TData extends ContentDataType = ContentDataType,
+    TStatus extends Object | undefined = any,
+    TModel extends ContentModel<string> = ContentModel<string, any, any, any>,
   >
-  extends BaseProfileModel<T>
-  implements IContent<TObjectId, TConfig>
+  extends ProfileDocument
+  implements IContent<TObjectId, TConfig, TData, TStatus>
 {
   /** The content field holds the core data for the content instance. **/
   @Prop({ type: ContentDataTypeSchema })
@@ -106,10 +116,10 @@ export class Content<
   tagIds: TObjectId[];
 
   /** Additional configuration data (may vary by content type) **/
-  config: any;
+  config: TConfig;
 
   /** The state field (optional) represents content-specific state information. **/
-  state?: any;
+  state: any;
 
   /** The type discriminator field identifies the content type. **/
   type: string;
@@ -117,13 +127,19 @@ export class Content<
   /** Contains the users content policy results, which need to be populated manually and are not persisted. **/
   policies: IContentPolicies;
 
-  constructor(profile: Profile, createdBy: User, obj: DeepPartial<T> = {}) {
-    obj.meta = obj.meta || new ContentMetadata();
-    obj.meta.createdBy = createdBy._id;
-    obj.meta.createdAs = obj.meta.createdAs || new CreatedAs(createdBy);
-    obj.pid = profile._id;
-    obj.oid = profile.oid;
-    super(obj);
+  constructor(
+    profile: Profile,
+    createdBy: User,
+    obj?: BaseDocumentData<Content<TConfig, TData, TStatus>>,
+  ) {
+    super(false);
+
+    BaseDocument.init(this, obj);
+
+    this.pid = profile._id;
+    this.oid = profile.oid;
+    this.meta.createdBy = createdBy._id;
+    this.meta.createdAs ??= new CreatedAs(createdBy);
   }
 
   static collectionName() {
@@ -141,11 +157,26 @@ export class Content<
   /**
    * Prepares default values of a new content instance.
    */
-  getDefaults(): Partial<PropertiesOf<T>> {
+  getDefaults(): Partial<Content<TConfig, TData, TStatus>> {
     // not really sure why the cast is required...
-    return <any>{
+    return {
       config: this.getDefaultConfig(),
+      state: this.getDefaultState(),
     };
+  }
+
+  /**
+   * Returns the default configuration of this content.
+   */
+  getDefaultConfig(): TConfig | undefined {
+    return undefined;
+  }
+
+  /**
+   * Returns the default state of this content.
+   */
+  getDefaultState(): TConfig | undefined {
+    return undefined;
   }
 
   /**
@@ -160,13 +191,6 @@ export class Content<
    */
   getParentId() {
     return this.meta.parentId;
-  }
-
-  /**
-   * Returns the default configuration of this content.
-   */
-  getDefaultConfig(): TConfig | undefined {
-    return undefined;
   }
 
   /**
@@ -246,12 +270,12 @@ export class Content<
    * of the model.
    * @param user The user for which this model should be created.
    */
-  toModel(user?: User): ContentModel<any> {
+  toModel(user?: User): TModel {
     const ModelConstructor: Type<ContentModel> = implementsGetModelConstructor(this)
       ? this.getModelConstructor()
       : ContentModel;
 
-    return new ModelConstructor(this);
+    return new ModelConstructor(this) as TModel;
   }
 
   /**
@@ -301,12 +325,12 @@ export class Content<
  * This class serves as base class for all custom content types.
  */
 export abstract class ContentType<
-  T extends ContentEntity<T, TConfig>,
-  TConfig extends Object = any,
+  TConfig extends Object | undefined = any,
   TData extends ContentDataType = ContentDataType,
-  TModel extends ContentModel<any> = ContentModel<any>,
-> extends Content<T, TConfig, TData> {
-  abstract toModel(user?: User): TModel;
+  TState extends Object | undefined = any,
+  TModel extends ContentModel<string> = ContentModel<string, any, any>,
+> extends Content<TConfig, TData, TState, TModel> {
+  abstract override toModel(user?: User): TModel;
 }
 
 export const ContentSchema = SchemaFactory.createForClass(Content);

@@ -5,11 +5,11 @@ import { sortTasks } from './task.sort';
 import { CalendarPlanStore } from '@lyvely/calendar-plan-interface';
 
 export class TaskCalendarPlanStore extends CalendarPlanStore<TaskModel> {
-  sort(models: TaskModel[]): TaskModel[] {
+  override sort(models: TaskModel[]): TaskModel[] {
     return sortTasks(models);
   }
 
-  getModelsByIntervalFilter(
+  override getModelsByIntervalFilter(
     interval: CalendarInterval,
     filter?: TaskFilter,
     tid?: string,
@@ -17,7 +17,7 @@ export class TaskCalendarPlanStore extends CalendarPlanStore<TaskModel> {
     return <TaskModel[]>this.filterModels((entry) => {
       return (
         entry.interval === interval &&
-        (!entry.done || entry.done === tid) &&
+        (!entry.state.done || entry.state.done === tid) &&
         (!filter || filter.check(entry))
       );
     });

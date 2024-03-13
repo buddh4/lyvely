@@ -72,14 +72,20 @@ export interface IContentLog<TData = any, TID = any> {
  * @template TConfig - The type of the content configuration object.
  * @extends ISortable
  */
-export interface IContent<TID = any, TConfig extends Object = any> extends ISortable {
+export interface IContent<
+  TID = any,
+  TConfig extends Object | undefined = any,
+  TData extends IContentDataType = IContentDataType,
+  TState extends Object | undefined = any,
+> extends ISortable {
   id: string;
   oid: TID;
   pid: TID;
   type: string;
-  content: IContentDataType;
+  content: TData;
   meta: IContentMetadata<TID>;
   config: TConfig;
+  state: TState;
   tagIds: TID[];
   policies: IContentPolicies;
   logs: Array<IContentLog<any, TID>>;

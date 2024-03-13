@@ -1,5 +1,5 @@
 import { IsNumber, IsOptional, Max, Min } from 'class-validator';
-import { BaseModel } from '@lyvely/common';
+import { type PropertiesOf } from '@lyvely/common';
 import { Expose } from 'class-transformer';
 import { ICalendarPreferences } from '@lyvely/dates';
 
@@ -7,10 +7,7 @@ import { ICalendarPreferences } from '@lyvely/dates';
  * This class defines calendar preferences, which can be used to overwrite locale specific behavior.
  */
 @Expose()
-export class CalendarPreferences
-  extends BaseModel<CalendarPreferences>
-  implements ICalendarPreferences
-{
+export class CalendarPreferences implements ICalendarPreferences {
   /**
    * Defines the start of a week. If the value is 1, Monday will be the start of week instead of Sunday
    */
@@ -29,4 +26,9 @@ export class CalendarPreferences
   @Min(0)
   @Max(6)
   yearStart?: number;
+
+  constructor(data: PropertiesOf<CalendarPreferences>) {
+    this.weekStart = data.weekStart;
+    this.yearStart = data.yearStart;
+  }
 }

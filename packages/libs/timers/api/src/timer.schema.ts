@@ -1,6 +1,6 @@
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
 import { TimerModel, TimeSpanModel } from '@lyvely/timers-interface';
-import { PropertyType, PropertiesOf } from '@lyvely/common';
+import { PropertyType } from '@lyvely/common';
 import {
   User,
   assureObjectId,
@@ -11,24 +11,18 @@ import {
 } from '@lyvely/api';
 
 @NestedSchema()
-export class TimeSpan extends TimeSpanModel implements PropertiesOf<TimeSpanModel> {
+export class TimeSpan extends TimeSpanModel<TObjectId> {
   @ObjectIdProp({ immutable: true })
-  uid?: TObjectId;
+  override uid?: TObjectId;
 
   @Prop({ required: true })
-  from: number;
+  override from: number;
 
   @Prop()
-  to?: number;
+  override to?: number;
 
   constructor(user: DocumentIdentity<User>) {
     super(assureObjectId(user));
-  }
-
-  afterInit() {
-    if (this.uid) {
-      this.uid = assureObjectId(this.uid);
-    }
   }
 }
 
@@ -37,13 +31,13 @@ export const TimeSpanSchema = SchemaFactory.createForClass(TimeSpan);
 @NestedSchema()
 export class Timer extends TimerModel<TObjectId> {
   @ObjectIdProp({ immutable: true })
-  uid?: TObjectId;
+  override uid?: TObjectId;
 
   @Prop({ type: [TimeSpanSchema] })
   @PropertyType([TimeSpan])
-  spans: TimeSpan[] = [];
+  override spans: TimeSpan[] = [];
 
-  start(user?: DocumentIdentity<User>) {
+  override start(user?: DocumentIdentity<User>) {
     return super.start(assureObjectId(user, true));
   }
 

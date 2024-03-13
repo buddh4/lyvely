@@ -1,5 +1,5 @@
-import { BaseDocument, NestedSchema } from '@/core';
-import { PropertyType } from '@lyvely/common';
+import { NestedSchema } from '@/core';
+import { BaseModel, PropertyType } from '@lyvely/common';
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
 import { addByInterval, CalendarTimeInterval } from '@lyvely/dates';
 import { UserNotificationStateModel } from '@lyvely/interface';
@@ -11,7 +11,7 @@ export interface INotificationRateLimit {
 }
 
 @NestedSchema()
-export class NotificationRateLimit extends BaseDocument<NotificationRateLimit> {
+export class NotificationRateLimit {
   @Prop({ type: Date })
   firstDelivery?: Date;
 
@@ -22,7 +22,7 @@ export class NotificationRateLimit extends BaseDocument<NotificationRateLimit> {
   count: number;
 
   constructor({ channel }: INotificationRateLimit) {
-    super({ channel });
+    BaseModel.init<NotificationRateLimit>(this, { channel });
   }
 
   increment({ interval }: INotificationRateLimit) {
@@ -56,7 +56,7 @@ export class UserNotificationState extends UserNotificationStateModel {
 
   @Prop()
   @PropertyType(Boolean, { default: false })
-  updatesAvailable: boolean;
+  override updatesAvailable: boolean;
 
   incrementRateLimitCounter(rateLimit: INotificationRateLimit) {
     return this.getOrCreateRateLimit(rateLimit).increment(rateLimit);

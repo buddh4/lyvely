@@ -7,17 +7,13 @@ import { DataPointSchemaFactory } from './data-point-schema.factory';
 
 @Schema()
 export class TextDataPoint
-  extends DataPoint<TextDataPoint>
+  extends DataPoint
   implements PropertiesOf<TextDataPointModel<TObjectId>>
 {
   @Prop({ required: true })
-  value: string;
+  override value: string;
 
-  valueType: typeof DataPointValueType.Text;
-
-  afterInit() {
-    this.valueType = DataPointValueType.Text;
-  }
+  override valueType: typeof DataPointValueType.Text = DataPointValueType.Text;
 }
 
 export const TextDataPointSchema = DataPointSchemaFactory.createForClass(

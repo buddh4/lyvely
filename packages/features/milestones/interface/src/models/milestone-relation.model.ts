@@ -3,7 +3,7 @@ import { Exclude, Expose } from 'class-transformer';
 import type { IContent } from '@lyvely/interface';
 
 @Exclude()
-export class MilestoneRelationModel<TID = string> extends BaseModel<MilestoneRelationModel<any>> {
+export class MilestoneRelationModel<TID = string> {
   @Expose()
   @TransformObjectId()
   pid: TID;
@@ -32,7 +32,7 @@ export class MilestoneRelationModel<TID = string> extends BaseModel<MilestoneRel
   progress?: number;
 
   constructor(content: IContent<any>, progress?: { progress: number; tid?: string } | number) {
-    super({
+    BaseModel.init<MilestoneRelationModel<any>>(this, {
       pid: content.pid,
       cid: content.id,
       mid: content.meta.mid,

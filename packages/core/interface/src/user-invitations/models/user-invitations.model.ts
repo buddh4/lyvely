@@ -1,4 +1,4 @@
-import { Exclude, Expose, Type } from 'class-transformer';
+import { Exclude, Expose } from 'class-transformer';
 import {
   ArrayNotEmpty,
   IsArray,
@@ -9,11 +9,11 @@ import {
   IsString,
   ValidateNested,
 } from 'class-validator';
-import { BaseModel, PropertyType } from '@lyvely/common';
+import { BaseModel, type PropertiesOf, PropertyType } from '@lyvely/common';
 import { ProfileMembershipRole } from '@/profiles';
 
 @Exclude()
-export class MailInvite extends BaseModel<MailInvite> {
+export class MailInvite {
   @Expose()
   @IsString()
   @IsEmail()
@@ -23,10 +23,14 @@ export class MailInvite extends BaseModel<MailInvite> {
   @IsEnum([ProfileMembershipRole.Member, ProfileMembershipRole.Guest])
   @IsOptional()
   role?: ProfileMembershipRole.Member | ProfileMembershipRole.Guest;
+
+  constructor(data: PropertiesOf<MailInvite>) {
+    BaseModel.init(this, data);
+  }
 }
 
 @Exclude()
-export class InvitationRequest extends BaseModel<InvitationRequest> {
+export class InvitationRequest {
   @Expose()
   @IsArray()
   @ArrayNotEmpty()
@@ -38,10 +42,14 @@ export class InvitationRequest extends BaseModel<InvitationRequest> {
   @IsMongoId()
   @IsOptional()
   pid?: string;
+
+  constructor(data: PropertiesOf<InvitationRequest>) {
+    BaseModel.init(this, data);
+  }
 }
 
 @Exclude()
-export class MailInvitationInfo extends BaseModel<MailInvitationInfo> {
+export class MailInvitationInfo {
   @Expose()
   email: string;
 
@@ -65,10 +73,14 @@ export class MailInvitationInfo extends BaseModel<MailInvitationInfo> {
 
   @Expose()
   isVerifiedMail: boolean;
+
+  constructor(data: PropertiesOf<MailInvitationInfo>) {
+    BaseModel.init(this, data);
+  }
 }
 
 @Exclude()
-export class UserInvitationInfo extends BaseModel<UserInvitationInfo> {
+export class UserInvitationInfo {
   @Expose()
   pid: string;
 
@@ -86,4 +98,8 @@ export class UserInvitationInfo extends BaseModel<UserInvitationInfo> {
 
   @Expose()
   hostGuid: string;
+
+  constructor(data: PropertiesOf<UserInvitationInfo>) {
+    BaseModel.init(this, data);
+  }
 }

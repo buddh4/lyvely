@@ -67,7 +67,7 @@ export class MailInvitationService extends AbstractInvitationsService<
     });
   }
 
-  async validateInvitationContext(metaData: IMailInvitationContext): Promise<boolean> {
+  override async validateInvitationContext(metaData: IMailInvitationContext): Promise<boolean> {
     return (
       (await super.validateInvitationContext(metaData)) && (await this.verifyToken(metaData.token))
     );

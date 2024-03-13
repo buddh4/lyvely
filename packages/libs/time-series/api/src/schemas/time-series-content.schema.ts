@@ -1,4 +1,4 @@
-import { BaseModel, PropertyType } from '@lyvely/common';
+import { PropertyType } from '@lyvely/common';
 import { CalendarInterval } from '@lyvely/dates';
 import {
   ITimeSeriesContent,
@@ -6,21 +6,14 @@ import {
   ITimeSeriesSummary,
   ITimeSeriesSummaryWindowEntry,
 } from '@lyvely/time-series-interface';
-import { ContentEntity, ContentType, NestedSchema, TObjectId } from '@lyvely/api';
+import { ContentModel, ContentType, NestedSchema, TObjectId, ContentDataType } from '@lyvely/api';
 import { DataPointConfigFactory } from './data-point-config.factory';
 import { DataPointConfig, DefaultDataPointConfig } from './config/data-point-config.schema';
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
-
-export type TimeSeriesContentEntity<
-  T,
-  TConfig extends ITimeSeriesContentConfig = any,
-> = ContentEntity<T, TConfig>;
+import type { ICalendarPlanEntry } from '@lyvely/calendar-plan';
 
 @NestedSchema()
-export class TimeSeriesSummaryWindowEntry
-  extends BaseModel<TimeSeriesSummaryWindowEntry>
-  implements ITimeSeriesSummaryWindowEntry
-{
+export class TimeSeriesSummaryWindowEntry implements ITimeSeriesSummaryWindowEntry {
   @Prop({ required: true })
   tid: string;
 
@@ -28,7 +21,8 @@ export class TimeSeriesSummaryWindowEntry
   value: number;
 
   constructor(tid: string, value: number) {
-    super({ tid, value });
+    this.tid = tid;
+    this.value = value;
   }
 }
 
@@ -51,26 +45,28 @@ const TimeSeriesSummarySchema = SchemaFactory.createForClass(TimeSeriesSummary);
  * `dataPointConfigHistory` schema.
  */
 export abstract class TimeSeriesContent<
-    TContent extends TimeSeriesContentEntity<TContent, TConfig>,
     TDataPointConfig extends DefaultDataPointConfig = DefaultDataPointConfig,
     TConfig extends ITimeSeriesContentConfig<TDataPointConfig> = ITimeSeriesContentConfig<TDataPointConfig>,
+    TData extends ContentDataType = ContentDataType,
+    TState extends Object | undefined = undefined,
+    TModel extends ContentModel<string> = ContentModel<string, any, any, any>,
   >
-  extends ContentType<TContent, TConfig>
-  implements ITimeSeriesContent<TObjectId, TDataPointConfig>
+  extends ContentType<TConfig, TData, TState, TModel>
+  implements ITimeSeriesContent<TObjectId, TDataPointConfig>, ICalendarPlanEntry<TObjectId>
 {
   @Prop({ type: TimeSeriesSummarySchema })
   @PropertyType(TimeSeriesSummary)
   timeSeriesSummary: TimeSeriesSummary;
 
   get timeSeriesConfig() {
-    return this.config?.timeSeries;
+    return this.config!.timeSeries;
   }
 
   set timeSeriesConfig(config: TDataPointConfig) {
     if (!this.config) {
       this.config = <any>{};
     }
-    this.config.timeSeries = config;
+    this.config!.timeSeries = config;
   }
 
   get interval() {
@@ -86,7 +82,5 @@ export abstract class TimeSeriesContent<
     if (this.timeSeriesConfig && !(this.timeSeriesConfig instanceof DataPointConfig)) {
       this.timeSeriesConfig = DataPointConfigFactory.instantiateConfig(this.timeSeriesConfig);
     }
-
-    super.afterInit();
   }
 }

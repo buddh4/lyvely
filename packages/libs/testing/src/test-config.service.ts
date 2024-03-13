@@ -15,8 +15,7 @@ export class TestConfigService {
   }
 
   get(key: string, def: any) {
-    const result = findByPath(this.internalConfig, key);
-    return result || def;
+    return findByPath(this.internalConfig, key, { defaultValue: def });
   }
 
   set(key: string, val: any) {

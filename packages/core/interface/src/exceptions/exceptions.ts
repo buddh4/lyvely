@@ -69,7 +69,7 @@ export class ModelValidationException extends ServiceException {
     this.status = 400;
   }
 
-  public getResponse() {
+  public override getResponse() {
     return { result: this.result || {} };
   }
 

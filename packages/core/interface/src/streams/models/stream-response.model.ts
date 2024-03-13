@@ -1,11 +1,10 @@
-import { BaseModel, PropertyType } from '@lyvely/common';
+import { BaseModel, type PropertiesOf, PropertyType } from '@lyvely/common';
 import { IStreamResponse, IStreamState } from '../interfaces';
 import { StreamState } from './stream-state.model';
 import { Exclude, Expose, instanceToPlain, Transform } from 'class-transformer';
 
 @Exclude()
 export class StreamResponse<TModel, TState extends IStreamState = IStreamState>
-  extends BaseModel<StreamResponse<TModel, TState>>
   implements IStreamResponse<TModel, TState>
 {
   @Expose()
@@ -18,4 +17,8 @@ export class StreamResponse<TModel, TState extends IStreamState = IStreamState>
 
   @Expose()
   hasMore?: boolean;
+
+  constructor(data: PropertiesOf<StreamResponse<TModel, TState>>) {
+    BaseModel.init(this, data);
+  }
 }

@@ -1,13 +1,10 @@
-import { BaseModel } from '@lyvely/common';
 import { IStreamState } from '../interfaces';
 import { IsArray, IsBoolean, IsMongoId, IsNumber, IsOptional, Min } from 'class-validator';
 import { Exclude, Expose } from 'class-transformer';
+import { BaseModel } from '@lyvely/common';
 
 @Exclude()
-export class StreamState<T extends IStreamState = IStreamState>
-  extends BaseModel<T>
-  implements IStreamState
-{
+export class StreamState implements IStreamState {
   @Expose()
   @IsNumber()
   @Min(0)
@@ -36,4 +33,8 @@ export class StreamState<T extends IStreamState = IStreamState>
   @IsBoolean()
   @IsOptional()
   isEnd?: boolean;
+
+  constructor(data: StreamState) {
+    BaseModel.init(this, data);
+  }
 }

@@ -11,7 +11,7 @@ import { BaseDocument } from '@/core';
 import { PropertiesOf } from '@lyvely/common';
 
 export abstract class AbstractStreamController<
-  TModel extends BaseDocument<TModel>,
+  TModel extends BaseDocument,
   TResult,
   TFilter extends IStreamFilter = any,
   TContext = any,

@@ -20,6 +20,8 @@ import {
   TaskWithUsersModel,
   ITaskConfig,
   UserDoneModel,
+  MultiUserTaskStateModel,
+  SingleUserTaskStateModel,
 } from '@lyvely/tasks-interface';
 
 @Schema({ _id: false })
@@ -43,7 +45,7 @@ export class UserDone implements UserDoneModel<TObjectId> {
 const UserDoneSchema = SchemaFactory.createForClass(UserDone);
 
 @NestedSchema()
-export class TaskConfig extends BaseModel<TaskConfig> implements ITaskConfig {
+export class TaskConfig implements ITaskConfig {
   @Prop({ type: Number })
   @PropertyType(Number, { default: 0 })
   score: number;
@@ -57,19 +59,16 @@ export class TaskConfig extends BaseModel<TaskConfig> implements ITaskConfig {
     required: true,
   })
   userStrategy: UserAssignmentStrategy;
+
+  constructor(data: PropertiesOf<TaskConfig>) {
+    BaseModel.init(this, data);
+  }
 }
 
 const TaskConfigSchema = SchemaFactory.createForClass(TaskConfig);
 
-@Schema()
-export class Task
-  extends ContentType<Task, TaskConfig>
-  implements PropertiesOf<TaskWithUsersModel<TObjectId>>
-{
-  @Prop({ type: TaskConfigSchema, required: true })
-  @PropertyType(TaskConfig)
-  config: TaskConfig;
-
+@NestedSchema()
+export class TaskState implements PropertiesOf<MultiUserTaskStateModel<any>> {
   @Prop({ type: [UserDoneSchema] })
   @PropertyType([UserDone])
   doneBy: UserDone[];
@@ -77,6 +76,26 @@ export class Task
   @Prop({ type: [TimerSchema] })
   @PropertyType([Timer])
   timers: Timer[];
+
+  constructor(data: PropertiesOf<TaskState>) {
+    BaseModel.init(this, data);
+  }
+}
+
+const TaskStateSchema = SchemaFactory.createForClass(TaskState);
+
+@Schema()
+export class Task
+  extends ContentType<TaskConfig, ContentDataType, TaskState>
+  implements PropertiesOf<TaskWithUsersModel<TObjectId>>
+{
+  @Prop({ type: TaskConfigSchema, required: true })
+  @PropertyType(TaskConfig)
+  override config: TaskConfig;
+
+  @Prop({ type: TaskStateSchema, required: true })
+  @PropertyType(TaskState)
+  override state: TaskState;
 
   get interval() {
     return this.config.interval;
@@ -87,21 +106,21 @@ export class Task
   }
 
   toModel(user?: User): TaskModel<any> {
-    const model = new TaskModel<TObjectId>(this);
+    const model = new TaskModel<TObjectId>({ ...this, state: new SingleUserTaskStateModel(false) });
     if (user) {
-      model.done = this.getDoneBy(user)?.tid;
-      model.timer = this.getTimer(user) as TimerModel;
+      model.state.done = this.getDoneBy(user)?.tid;
+      model.state.timer = this.getTimer(user) as TimerModel;
     }
     return model;
   }
 
   isDoneByUser(uid: DocumentIdentity<User>) {
-    return !!this.doneBy?.find((d) => d.uid.equals(assureObjectId(uid)));
+    return !!this.state.doneBy?.find((d) => d.uid.equals(assureObjectId(uid)));
   }
 
   isDone(uid: DocumentIdentity<User>) {
     if (this.config.userStrategy === UserAssignmentStrategy.Shared) {
-      return !!this.doneBy.length;
+      return !!this.state.doneBy.length;
     }
 
     return this.isDoneByUser(uid);
@@ -109,25 +128,25 @@ export class Task
 
   getTimer(uid: DocumentIdentity<User>): Timer | undefined {
     if (this.config.userStrategy === UserAssignmentStrategy.Shared) {
-      return this.timers.length ? this.timers[0] : undefined;
+      return this.state.timers.length ? this.state.timers[0] : undefined;
     }
 
-    return this.timers?.find((t) => t.uid?.equals(assureObjectId(uid))) || undefined;
+    return this.state.timers?.find((t) => t.uid?.equals(assureObjectId(uid))) || undefined;
   }
 
   getDoneBy(uid: DocumentIdentity<User>): UserDone | undefined {
     if (this.config.userStrategy === UserAssignmentStrategy.Shared) {
-      return this.doneBy?.[0] || undefined;
+      return this.state.doneBy?.[0] || undefined;
     }
 
-    return this.doneBy?.find((d) => d.uid.equals(assureObjectId(uid))) || undefined;
+    return this.state.doneBy?.find((d) => d.uid.equals(assureObjectId(uid))) || undefined;
   }
 
   setUndoneBy(uid: DocumentIdentity<User>) {
     if (this.config.userStrategy === UserAssignmentStrategy.Shared) {
-      this.doneBy = [];
+      this.state.doneBy = [];
     } else {
-      this.doneBy = this.doneBy.filter((d) => !d.uid.equals(assureObjectId(uid)));
+      this.state.doneBy = this.state.doneBy.filter((d) => !d.uid.equals(assureObjectId(uid)));
     }
   }
 
@@ -135,14 +154,14 @@ export class Task
     date = date || new Date();
 
     if (this.config.userStrategy === UserAssignmentStrategy.Shared) {
-      this.doneBy = [new UserDone(uid, tid, date)];
+      this.state.doneBy = [new UserDone(uid, tid, date)];
     } else {
-      const doneBy = this.doneBy?.find((d) => d.uid.equals(assureObjectId(uid)));
+      const doneBy = this.state.doneBy?.find((d) => d.uid.equals(assureObjectId(uid)));
       if (doneBy) {
         doneBy.tid = tid;
         doneBy.date = date;
       } else {
-        this.doneBy.push(new UserDone(uid, tid, date));
+        this.state.doneBy.push(new UserDone(uid, tid, date));
       }
     }
   }

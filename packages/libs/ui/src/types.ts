@@ -1,4 +1,4 @@
-import { IconDefinitionIF, IconName } from './components/icons/ly-icon.library';
+import { LySvgIconDefinitionIF, IconName } from './components/icons/registries';
 import { Component } from 'vue';
 import { Lazy } from '@lyvely/common';
 
@@ -18,7 +18,7 @@ export interface IconOptionsIF {
   color?: Omit<Color, 'inverted'>;
   fill?: string;
   name?: IconName;
-  definition: IconDefinitionIF;
+  definition: LySvgIconDefinitionIF;
 }
 
 export enum TextSize {

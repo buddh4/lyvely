@@ -4,9 +4,13 @@ import { plainToClass } from 'class-transformer';
 
 describe('PropertyType', () => {
   it('test primitive value', async () => {
-    class PlainSubModel extends BaseModel<PlainSubModel> {
+    class PlainSubModel {
       @PropertyType(String, { default: 'defaultValue' })
       value: string;
+
+      constructor(data?: PlainSubModel) {
+        BaseModel.init(data);
+      }
     }
 
     const model = new PlainSubModel();
@@ -14,9 +18,13 @@ describe('PropertyType', () => {
   });
 
   it('test string default value', async () => {
-    class PlainSubModel extends BaseModel<PlainSubModel> {
+    class PlainSubModel {
       @PropertyType(String)
       value: string;
+
+      constructor(data?: PlainSubModel) {
+        BaseModel.init(data);
+      }
     }
 
     const model = new PlainSubModel();
@@ -24,9 +32,13 @@ describe('PropertyType', () => {
   });
 
   it('test number default value', async () => {
-    class PlainSubModel extends BaseModel<PlainSubModel> {
+    class PlainSubModel {
       @PropertyType(Number)
       value: number;
+
+      constructor(data?: PlainSubModel) {
+        BaseModel.init(data);
+      }
     }
 
     const model = new PlainSubModel();
@@ -34,9 +46,13 @@ describe('PropertyType', () => {
   });
 
   it('test boolean default value', async () => {
-    class PlainSubModel extends BaseModel<PlainSubModel> {
+    class PlainSubModel {
       @PropertyType(Boolean)
       value: boolean;
+
+      constructor(data?: PlainSubModel) {
+        BaseModel.init(data);
+      }
     }
 
     const model = new PlainSubModel();
@@ -48,11 +64,15 @@ describe('PropertyType', () => {
       value: string;
     }
 
-    class TestModel extends BaseModel<TestModel> {
+    class TestModel {
       @PropertyType(PlainSubModel)
       sub: PlainSubModel;
 
       secret: 'string';
+
+      constructor(data?: TestModel) {
+        BaseModel.init(data);
+      }
     }
     const model = new TestModel({ sub: { value: 'test' } });
     expect(model.sub instanceof PlainSubModel).toEqual(true);
@@ -68,35 +88,17 @@ describe('PropertyType', () => {
       sub: ValueModel;
     }
 
-    class TestModel extends BaseModel<TestModel> {
+    class TestModel {
       @PropertyType(PlainSubModel)
       sub: PlainSubModel;
+
+      constructor(data?: TestModel) {
+        BaseModel.init(data);
+      }
     }
     const model = new TestModel({ sub: { sub: { value: 'test' } } });
     expect(model.sub instanceof PlainSubModel).toEqual(true);
     expect(model.sub.sub instanceof ValueModel).toEqual(true);
-  });
-
-  it('assure afterInit is called', async () => {
-    class ValueModel {
-      value: string;
-
-      afterInit() {
-        this.value = this.value || 'default';
-      }
-    }
-
-    class PlainSubModel {
-      @PropertyType<PlainSubModel, 'sub'>(ValueModel)
-      sub: ValueModel;
-    }
-
-    class TestModel extends BaseModel<TestModel> {
-      @PropertyType(PlainSubModel)
-      sub: PlainSubModel;
-    }
-    const model = new TestModel({ sub: { sub: <any>{} } });
-    expect(model.sub.sub.value).toEqual('default');
   });
 
   it('assure optional property is not initialized by default', async () => {
@@ -104,49 +106,17 @@ describe('PropertyType', () => {
       value: string;
     }
 
-    class TestModel extends BaseModel<TestModel> {
+    class TestModel {
       @PropertyType(ValueModel, { optional: true })
       sub?: ValueModel;
+
+      constructor(data?: TestModel) {
+        BaseModel.init(data);
+      }
     }
 
     const model = new TestModel();
     expect(model.sub).toBeUndefined();
-  });
-
-  it('assure non optional property is initialized by default', async () => {
-    class ValueModel {
-      value: string;
-
-      afterInit() {
-        this.value = this.value || 'defaultValue';
-      }
-    }
-
-    class TestModel extends BaseModel<TestModel> {
-      @PropertyType(ValueModel)
-      sub: ValueModel;
-    }
-
-    const model = new TestModel();
-    expect(model.sub).toBeDefined();
-    expect(model.sub.value).toEqual('defaultValue');
-  });
-
-  it('assure afterInit is not called for existing property', async () => {
-    let counter = 0;
-    class ValueModel {
-      afterInit() {
-        counter++;
-      }
-    }
-
-    class TestModel extends BaseModel<TestModel> {
-      @PropertyType(ValueModel)
-      sub: ValueModel;
-    }
-
-    new TestModel({ sub: new ValueModel() });
-    expect(counter).toEqual(1);
   });
 
   it('assure empty default value is assigned', async () => {
@@ -161,9 +131,13 @@ describe('PropertyType', () => {
       sub: ValueModel;
     }
 
-    class TestModel extends BaseModel<TestModel> {
+    class TestModel {
       @PropertyType(PlainSubModel)
       sub: PlainSubModel;
+
+      constructor(data?: TestModel) {
+        BaseModel.init(data);
+      }
     }
 
     const model = new TestModel({ sub: <any>{} });
@@ -171,9 +145,13 @@ describe('PropertyType', () => {
   });
 
   it('assure properties are inherited', async () => {
-    class MyModel extends BaseModel<MyModel> {
+    class MyModel {
       @PropertyType(String, { default: 'Test' })
       field: string;
+
+      constructor(data?: MyModel) {
+        BaseModel.init(data);
+      }
     }
 
     class SubSubModel extends MyModel {}
@@ -183,9 +161,13 @@ describe('PropertyType', () => {
   });
 
   it('assure property types are overwritten by parent', async () => {
-    class Parent extends BaseModel<Parent> {
+    class Parent {
       @PropertyType(String, { default: 'Parent' })
       field: string;
+
+      constructor(data?: Parent) {
+        BaseModel.init(data);
+      }
     }
 
     class SubModel extends Parent {}
@@ -195,9 +177,13 @@ describe('PropertyType', () => {
   });
 
   it('assure property types are overwritten by child', async () => {
-    class Parent extends BaseModel<Parent> {
+    class Parent {
       @PropertyType(String, { default: 'Parent' })
       field: string;
+
+      constructor(data?: Parent) {
+        BaseModel.init(data);
+      }
     }
 
     class SubModel extends Parent {
@@ -210,9 +196,13 @@ describe('PropertyType', () => {
   });
 
   it('test array without default', async () => {
-    class TestModel extends BaseModel<TestModel> {
+    class TestModel {
       @PropertyType(String)
       arr: string[];
+
+      constructor(data?: TestModel) {
+        BaseModel.init(data);
+      }
     }
 
     const model = new TestModel();
@@ -221,9 +211,13 @@ describe('PropertyType', () => {
   });
 
   it('test string array without default', async () => {
-    class TestModel extends BaseModel<TestModel> {
+    class TestModel {
       @PropertyType([String])
       arr: string[];
+
+      constructor(data?: TestModel) {
+        BaseModel.init(data);
+      }
     }
 
     const model = new TestModel();
@@ -232,9 +226,13 @@ describe('PropertyType', () => {
   });
 
   it('test string array with init value', async () => {
-    class TestModel extends BaseModel<TestModel> {
+    class TestModel {
       @PropertyType([String])
       arr: string[];
+
+      constructor(data?: TestModel) {
+        BaseModel.init(data);
+      }
     }
 
     const model = new TestModel({ arr: ['test'] });
@@ -248,9 +246,13 @@ describe('PropertyType', () => {
       value: string;
     }
 
-    class TestModel extends BaseModel<TestModel> {
+    class TestModel {
       @PropertyType([SubModel])
       arr: SubModel[];
+
+      constructor(data?: TestModel) {
+        BaseModel.init(data);
+      }
     }
 
     const model = new TestModel({ arr: [{ value: 'v1' }, { value: 'v2' }] });
@@ -264,9 +266,13 @@ describe('PropertyType', () => {
   });
 
   it('test string to date conversion', async () => {
-    class TestModel extends BaseModel<TestModel> {
+    class TestModel {
       @PropertyType(Date)
       date: Date;
+
+      constructor(data?: TestModel) {
+        BaseModel.init(data);
+      }
     }
 
     const model = new TestModel({ date: <any>'2022-07-23T15:47:51.518Z' });
@@ -277,9 +283,13 @@ describe('PropertyType', () => {
   });
 
   it('transform to null', async () => {
-    class TestModel extends BaseModel<TestModel> {
+    class TestModel {
       @PropertyType(null)
       val: null;
+
+      constructor(data?: TestModel) {
+        BaseModel.init(data);
+      }
     }
 
     const model = new TestModel({ val: <any>1 });
@@ -287,9 +297,13 @@ describe('PropertyType', () => {
   });
 
   it('transform to undefined', async () => {
-    class TestModel extends BaseModel<TestModel> {
+    class TestModel {
       @PropertyType(undefined)
       val: null;
+
+      constructor(data?: TestModel) {
+        BaseModel.init(data);
+      }
     }
 
     const model = new TestModel({ val: <any>1 });
@@ -297,9 +311,13 @@ describe('PropertyType', () => {
   });
 
   it('transform number to string', async () => {
-    class TestModel extends BaseModel<TestModel> {
+    class TestModel {
       @PropertyType(String)
       val: string;
+
+      constructor(data?: TestModel) {
+        BaseModel.init(data);
+      }
     }
 
     const model = new TestModel({ val: <any>1 });
@@ -307,9 +325,13 @@ describe('PropertyType', () => {
   });
 
   it('transform true to string', async () => {
-    class TestModel extends BaseModel<TestModel> {
+    class TestModel {
       @PropertyType(String)
       val: string;
+
+      constructor(data?: TestModel) {
+        BaseModel.init(data);
+      }
     }
 
     const model = new TestModel({ val: <any>true });
@@ -317,9 +339,13 @@ describe('PropertyType', () => {
   });
 
   it('transform false to string', async () => {
-    class TestModel extends BaseModel<TestModel> {
+    class TestModel {
       @PropertyType(String)
       val: string;
+
+      constructor(data?: TestModel) {
+        BaseModel.init(data);
+      }
     }
 
     const model = new TestModel({ val: <any>false });
@@ -327,9 +353,13 @@ describe('PropertyType', () => {
   });
 
   it('transform bigint to string', async () => {
-    class TestModel extends BaseModel<TestModel> {
+    class TestModel {
       @PropertyType(String)
       val: string;
+
+      constructor(data?: TestModel) {
+        BaseModel.init(data);
+      }
     }
 
     const model = new TestModel({ val: <any>BigInt(123) });
@@ -337,9 +367,13 @@ describe('PropertyType', () => {
   });
 
   it('transform bigint to string', async () => {
-    class TestModel extends BaseModel<TestModel> {
+    class TestModel {
       @PropertyType(String)
       val: string;
+
+      constructor(data?: TestModel) {
+        BaseModel.init(data);
+      }
     }
 
     const model = new TestModel({ val: <any>BigInt(123) });
@@ -347,9 +381,13 @@ describe('PropertyType', () => {
   });
 
   it('transform object to string results in empty string if not optional', async () => {
-    class TestModel extends BaseModel<TestModel> {
+    class TestModel {
       @PropertyType(String)
       val: string;
+
+      constructor(data?: TestModel) {
+        BaseModel.init(data);
+      }
     }
 
     const model = new TestModel({ val: <any>{ test: 'test' } });
@@ -357,9 +395,13 @@ describe('PropertyType', () => {
   });
 
   it('transform object to string results in null if optional', async () => {
-    class TestModel extends BaseModel<TestModel> {
+    class TestModel {
       @PropertyType(String, { optional: true })
       val?: string;
+
+      constructor(data?: TestModel) {
+        BaseModel.init(data);
+      }
     }
 
     const model = new TestModel({ val: <any>{ test: 'test' } });
@@ -367,9 +409,13 @@ describe('PropertyType', () => {
   });
 
   it('transform number to true', async () => {
-    class TestModel extends BaseModel<TestModel> {
+    class TestModel {
       @PropertyType(Boolean)
       val: string;
+
+      constructor(data?: TestModel) {
+        BaseModel.init(data);
+      }
     }
 
     const model = new TestModel({ val: <any>1 });
@@ -377,9 +423,13 @@ describe('PropertyType', () => {
   });
 
   it('transform number to false', async () => {
-    class TestModel extends BaseModel<TestModel> {
+    class TestModel {
       @PropertyType(Boolean)
       val: string;
+
+      constructor(data?: TestModel) {
+        BaseModel.init(data);
+      }
     }
 
     const model = new TestModel({ val: <any>0 });
@@ -387,9 +437,13 @@ describe('PropertyType', () => {
   });
 
   it('transform string to int', async () => {
-    class TestModel extends BaseModel<TestModel> {
+    class TestModel {
       @PropertyType(Number)
       val: number;
+
+      constructor(data?: TestModel) {
+        BaseModel.init(data);
+      }
     }
 
     const model = new TestModel({ val: <any>'123' });
@@ -397,9 +451,13 @@ describe('PropertyType', () => {
   });
 
   it('transform string to float', async () => {
-    class TestModel extends BaseModel<TestModel> {
+    class TestModel {
       @PropertyType(Number)
       val: number;
+
+      constructor(data?: TestModel) {
+        BaseModel.init(data);
+      }
     }
 
     const model = new TestModel({ val: <any>'1.2' });
@@ -407,9 +465,13 @@ describe('PropertyType', () => {
   });
 
   it('transform string invalid float', async () => {
-    class TestModel extends BaseModel<TestModel> {
+    class TestModel {
       @PropertyType(Number, { optional: true })
       val?: number;
+
+      constructor(data?: TestModel) {
+        BaseModel.init(data);
+      }
     }
 
     const model = new TestModel({ val: <any>'1,2' });
@@ -417,13 +479,21 @@ describe('PropertyType', () => {
   });
 
   it('class transformer type', async () => {
-    class NestedModel extends BaseModel<NestedModel> {
+    class NestedModel {
       nested?: number;
+
+      constructor(data?: NestedModel) {
+        BaseModel.init(data);
+      }
     }
 
-    class TestModel extends BaseModel<TestModel> {
+    class TestModel {
       @PropertyType(NestedModel)
       val: NestedModel;
+
+      constructor(data?: TestModel) {
+        BaseModel.init(data);
+      }
     }
 
     const model = plainToClass(TestModel, { val: { nested: 3 } });
@@ -433,13 +503,21 @@ describe('PropertyType', () => {
   });
 
   it('class transformer array type', async () => {
-    class NestedModel extends BaseModel<NestedModel> {
+    class NestedModel {
       nested?: number;
+
+      constructor(data?: NestedModel) {
+        BaseModel.init(data);
+      }
     }
 
-    class TestModel extends BaseModel<TestModel> {
+    class TestModel {
       @PropertyType([NestedModel])
       val: NestedModel[];
+
+      constructor(data?: TestModel) {
+        BaseModel.init(data);
+      }
     }
 
     const model = plainToClass(TestModel, { val: [{ nested: 1 }, { nested: 2 }] });

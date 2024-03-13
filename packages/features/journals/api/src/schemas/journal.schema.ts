@@ -61,11 +61,11 @@ export const JournalConfigSchema = TimeSeriesConfigSchemaFactory.createForClass(
  */
 @Schema()
 export class Journal
-  extends TimeSeriesContent<Journal, JournalDataPointConfig>
+  extends TimeSeriesContent<JournalDataPointConfig>
   implements PropertiesOf<JournalModel<TObjectId>>
 {
   @Prop({ type: JournalConfigSchema, required: true })
-  config: JournalConfig;
+  override config: JournalConfig;
 
   public static create(profile: Profile, owner: User, model: PropertiesOf<CreateJournalModel>) {
     const { title, text } = model;

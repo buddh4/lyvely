@@ -7,13 +7,13 @@ import { ICalendarPlanEntry } from '@lyvely/calendar-plan-interface';
 
 @Exclude()
 export class MilestoneModel<TID = string>
-  extends ContentModel<TID, MilestoneModel<TID>, IMilestoneConfig>
+  extends ContentModel<TID, IMilestoneConfig>
   implements IEditableModel<UpdateMilestoneModel>, ICalendarPlanEntry<TID>
 {
   static contentType = 'Milestone';
 
   @Expose()
-  type = MilestoneModel.contentType;
+  override type = MilestoneModel.contentType;
 
   get interval(): CalendarInterval {
     return this.config.interval;
@@ -23,7 +23,7 @@ export class MilestoneModel<TID = string>
     this.config.interval = interval;
   }
 
-  getDefaultConfig(): IMilestoneConfig {
+  override getDefaultConfig(): IMilestoneConfig {
     return {
       interval: CalendarInterval.Daily,
     };

@@ -4,14 +4,14 @@ import { ObjectIdProp, TObjectId } from '@/core';
 import { IUserInvitation } from '../interfaces';
 
 @Schema({ timestamps: true })
-export class UserInvitation extends Invitation<UserInvitation> implements IUserInvitation {
+export class UserInvitation extends Invitation implements IUserInvitation {
   @ObjectIdProp({ required: true })
-  uid: TObjectId;
+  override uid: TObjectId;
 
   @ObjectIdProp({ required: true })
-  pid: TObjectId;
+  override pid: TObjectId;
 
-  type = UserInvitation.name;
+  override type = UserInvitation.name;
 }
 
 export const UserInvitationSchema = SchemaFactory.createForClass(UserInvitation);

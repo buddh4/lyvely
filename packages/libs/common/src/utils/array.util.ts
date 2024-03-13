@@ -1,3 +1,5 @@
+import { isEqual } from 'lodash';
+
 export function chunkArray(array: Array<any>, size: number) {
   if (!array.length) return [];
   if (array.length < size) return [array];
@@ -28,7 +30,7 @@ export function findAndReplace<T>(
   const check =
     typeof condition === 'function'
       ? condition
-      : (element: T) => element[condition as keyof T] === replacement[condition as keyof T];
+      : (element: T) => isEqual(element[condition as keyof T], replacement[condition as keyof T]);
   const index = arr.findIndex(check);
   if (index !== -1) {
     arr[index] = replacement;

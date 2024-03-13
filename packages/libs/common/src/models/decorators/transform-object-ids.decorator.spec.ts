@@ -1,12 +1,16 @@
-import { TransformObjectId, TransformObjectIds } from './transform-object-id.decorator';
+import { TransformObjectIds } from './transform-object-id.decorator';
 import { BaseModel } from '../base.model';
 import { instanceToPlain } from 'class-transformer';
 
 describe('TransformObjectIdDecorator', () => {
   it('string to string', async () => {
-    class TestModel<TID = string> extends BaseModel<TestModel> {
+    class TestModel<TID = string> {
       @TransformObjectIds()
       ids: TID[];
+
+      constructor(data?: TestModel) {
+        BaseModel.init(data);
+      }
     }
 
     const model = new TestModel({ ids: ['test'] });
@@ -14,9 +18,13 @@ describe('TransformObjectIdDecorator', () => {
   });
 
   it('string to string transform', async () => {
-    class TestModel<TID = string> extends BaseModel<TestModel> {
+    class TestModel<TID = string> {
       @TransformObjectIds()
       ids: TID[];
+
+      constructor(data?: TestModel) {
+        BaseModel.init(data);
+      }
     }
 
     const model = new TestModel({ ids: ['test'] });
@@ -25,9 +33,13 @@ describe('TransformObjectIdDecorator', () => {
   });
 
   it('object to string', async () => {
-    class TestModel<TID = string> extends BaseModel<TestModel> {
+    class TestModel<TID = string> {
       @TransformObjectIds()
       ids: TID[];
+
+      constructor(data?: TestModel) {
+        BaseModel.init(data);
+      }
     }
 
     const model = new TestModel({
@@ -41,9 +53,13 @@ describe('TransformObjectIdDecorator', () => {
   });
 
   it('object to string transform', async () => {
-    class TestModel<TID = string> extends BaseModel<TestModel> {
+    class TestModel<TID = string> {
       @TransformObjectIds()
       ids: TID[];
+
+      constructor(data?: TestModel) {
+        BaseModel.init(data);
+      }
     }
 
     const model = new TestModel();
@@ -57,9 +73,13 @@ describe('TransformObjectIdDecorator', () => {
   });
 
   it('default', async () => {
-    class TestModel<TID = string> extends BaseModel<TestModel> {
+    class TestModel<TID = string> {
       @TransformObjectIds()
       ids: TID[];
+
+      constructor(data?: TestModel) {
+        BaseModel.init(data);
+      }
     }
 
     const model = new TestModel();
@@ -67,9 +87,13 @@ describe('TransformObjectIdDecorator', () => {
   });
 
   it('optional', async () => {
-    class TestModel<TID = string> extends BaseModel<TestModel> {
+    class TestModel<TID = string> {
       @TransformObjectIds({ optional: true })
       ids: TID[];
+
+      constructor(data?: TestModel) {
+        BaseModel.init(data);
+      }
     }
 
     const model = new TestModel();

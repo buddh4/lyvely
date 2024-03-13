@@ -4,12 +4,12 @@ import { ISendMailOptions, MailService } from '../services';
 
 @Injectable()
 export class TestMailService extends MailService {
-  protected readonly logger = new Logger(TestMailService.name);
+  protected override readonly logger = new Logger(TestMailService.name);
 
   static sentMailOptions: ISendMailOptions[] = [];
   static messageInfos: SentMessageInfo[] = [];
 
-  async sendMail(
+  override async sendMail(
     sendMailOptions: ISendMailOptions,
   ): Promise<SentMessageInfo & { messageFile?: Promise<void> }> {
     TestMailService.sentMailOptions.push(sendMailOptions);

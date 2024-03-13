@@ -44,19 +44,20 @@ export class TextDataPointConfig
     default: DataPointValueType.Text,
   })
   @PropertyType(String, { default: DataPointValueType.Text })
-  valueType: typeof DataPointValueType.Text = DataPointValueType.Text;
+  override valueType: typeof DataPointValueType.Text = DataPointValueType.Text;
 
   @Prop({ enum: SupportedTextDataPointInputTypes })
-  inputType: DataPointInputType;
+  override inputType: DataPointInputType;
+
+  @Prop({ type: [TextDataPointConfigRevisionSchema], default: [] })
+  override history: TextDataPointConfigRevision[];
 
   @Prop({ default: false })
   required: boolean;
 
-  @Prop({ type: [TextDataPointConfigRevisionSchema], default: [] })
-  history: TextDataPointConfigRevision[];
-
   constructor(inputType?: DataPointInputType, settings?: ITextDataPointSettings) {
     super(DataPointValueType.Text, inputType!, settings);
+    this.required ??= settings?.required || false;
   }
 
   getSettings(): ITextDataPointSettings {

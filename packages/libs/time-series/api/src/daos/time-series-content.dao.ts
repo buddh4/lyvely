@@ -3,7 +3,7 @@ import { TimeSeriesContent } from '../schemas';
 import { CalendarInterval } from '@lyvely/dates';
 
 export abstract class TimeSeriesContentDao<
-  TModel extends TimeSeriesContent<TModel>,
+  TModel extends TimeSeriesContent,
 > extends ContentTypeDao<TModel> {
   /**
    * Returns all time-series content models by given user and tids. The base implementation just returns all

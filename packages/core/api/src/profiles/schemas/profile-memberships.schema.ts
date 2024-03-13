@@ -17,22 +17,19 @@ export interface ICreateMembership extends ICreateProfileRelation {
 }
 
 @Schema({ timestamps: true })
-export class Membership
-  extends UserProfileRelation<Membership>
-  implements MembershipModel<TObjectId>
-{
+export class Membership extends UserProfileRelation implements MembershipModel<TObjectId> {
   @Prop({
     required: true,
     enum: getStringEnumValues(ProfileMembershipRole),
     default: ProfileMembershipRole.Member,
   })
   @PropertyType(String, { default: ProfileMembershipRole.Member })
-  role: ProfileMembershipRole;
+  override role: ProfileMembershipRole;
 
   @ObjectIdArrayProp({ default: [] })
   groups: TObjectId[];
 
-  static create(data: ICreateMembership): Membership {
+  static override create(data: ICreateMembership): Membership {
     return new Membership({
       uid: assureObjectId(data.user),
       pid: assureObjectId(data.profile),

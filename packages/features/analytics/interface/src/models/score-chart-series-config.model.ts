@@ -7,11 +7,11 @@ import { ChartType, IChartSeriesDefinition } from '../interfaces';
 import { CHART_SERIES_TYPE_SCORE } from '../analytics.constants';
 
 @Exclude()
-export class ScoreChartSeriesConfigModel<TID = string> extends ChartSeriesConfigModel<TID> {
+export class ScoreChartSeriesConfigModel<TID = string> extends ChartSeriesConfigModel {
   @IsMongoId()
   @IsOptional()
   @Expose()
-  uid?: string;
+  uids?: TID[];
 
   @IsBoolean()
   @IsOptional()

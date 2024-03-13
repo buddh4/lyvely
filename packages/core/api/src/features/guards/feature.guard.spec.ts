@@ -2,7 +2,7 @@ import { buildTest, createTestExecutionContext, LyvelyTestingModule } from '@/te
 import { ExecutionContext } from '@nestjs/common';
 import { Feature, FeatureGuard, FeaturesModule } from '../';
 import { clearFeatures, registerFeatures } from '@lyvely/interface';
-import { ProfileTestDataUtils } from '../../profiles';
+import { ProfileTestDataUtils } from '@/profiles';
 
 describe('ProfileGuard', () => {
   let testingModule: LyvelyTestingModule;

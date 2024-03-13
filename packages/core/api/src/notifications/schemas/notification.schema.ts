@@ -12,7 +12,11 @@ import {
 export class Notification<
   T extends NotificationType = NotificationType,
   TSubscription extends Subscription = Subscription,
-> extends BaseDocument<Notification> {
+> {
+  _id: TObjectId;
+
+  id: string;
+
   @Prop({ type: UserSubscriptionSchema, required: true })
   subscription: TSubscription;
 
@@ -28,11 +32,11 @@ export class Notification<
   @Prop({ required: true })
   category: string;
 
-  constructor(data: T, subscription: Subscription, pid?: TObjectId) {
-    super({
-      data,
+  constructor(data: T, subscription: TSubscription, pid?: TObjectId) {
+    BaseDocument.init<Notification>(this, {
       subscription,
       pid,
+      data,
       sortOrder: Date.now(),
       category: data.getCategory(),
     });

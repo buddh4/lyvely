@@ -1,25 +1,22 @@
 import { BaseModel, PropertyType, TransformObjectId } from '@lyvely/common';
-import { Expose, Type } from 'class-transformer';
+import { Expose } from 'class-transformer';
 import { ValidateNested } from 'class-validator';
 
-function compareSpans(a: TimeSpanModel, b: TimeSpanModel) {
+function compareSpans(a: TimeSpanModel<any>, b: TimeSpanModel<any>) {
   if (a.from < b.from) return -1;
   if (a.from > b.from) return 1;
   return 0;
 }
 
 @Expose()
-export class TimeSpanModel extends BaseModel<TimeSpanModel> {
+export class TimeSpanModel<TID = string> {
   @TransformObjectId()
-  uid?: any;
+  uid?: TID;
   from: number;
   to?: number;
 
   constructor(uid?: any) {
-    super();
-    if (!this.from) {
-      this.from = Date.now();
-    }
+    this.from ??= Date.now();
 
     if (uid) {
       this.uid = uid;
@@ -28,17 +25,21 @@ export class TimeSpanModel extends BaseModel<TimeSpanModel> {
 }
 
 @Expose()
-export class TimerModel<TID = string> extends BaseModel<TimerModel<TID>> {
+export class TimerModel<TID = string> {
   @TransformObjectId()
   uid?: TID;
 
   @PropertyType([TimeSpanModel])
   @ValidateNested()
-  spans: TimeSpanModel[];
+  spans: TimeSpanModel<TID>[];
+
+  constructor(data?: TimerModel<any>) {
+    BaseModel.init(this, data);
+  }
 
   start(uid?: TID) {
     if (this.isStarted()) return;
-    const span = new TimeSpanModel(uid);
+    const span = new TimeSpanModel<TID>(uid);
     this.spans.push(span);
     return span;
   }
@@ -73,7 +74,7 @@ export class TimerModel<TID = string> extends BaseModel<TimerModel<TID>> {
       }
     } else {
       let currentValue = 0;
-      const newSpans: TimeSpanModel[] = [];
+      const newSpans: TimeSpanModel<TID>[] = [];
       for (let i = 0; i < this.spans.length; i++) {
         const currSpan = this.spans[i];
         const timeSpan = this.calculateSpan(this.spans[i], false);
@@ -106,7 +107,7 @@ export class TimerModel<TID = string> extends BaseModel<TimerModel<TID>> {
     );
   }
 
-  private calculateSpan(span: TimeSpanModel, includeOpenSpan = true) {
+  private calculateSpan(span: TimeSpanModel<any>, includeOpenSpan = true) {
     if (span.to) {
       return span.to - span.from;
     } else if (includeOpenSpan) {

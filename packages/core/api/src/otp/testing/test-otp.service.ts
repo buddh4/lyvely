@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 
 @Injectable()
 export class TestOtpService extends OtpService {
-  protected async generateOtp(options: IGenerateOtpOptions) {
+  protected override async generateOtp(options: IGenerateOtpOptions) {
     const otp = '000000';
     const hashedOtp = await bcrypt.hash(otp, 10);
     return { otp, hashedOtp };

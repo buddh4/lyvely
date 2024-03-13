@@ -10,16 +10,20 @@ describe('ContentResponseModel', () => {
       class TestContentDataType extends ContentDataTypeModel {
         field: string;
       }
-      class TestContentModel<TID = string> extends ContentModel<TID, TestContentModel> {
+      class TestContentModel<TID = string> extends ContentModel<
+        TID,
+        undefined,
+        TestContentDataType
+      > {
         @PropertyType(TestContentDataType)
-        content: TestContentDataType;
+        override content: TestContentDataType;
 
-        type = 'test';
+        override type = 'test';
       }
 
       registerContentModelType('test', TestContentModel);
       const content = new TestContentModel({ content: { field: 'value' } });
-      const response = new StreamResponse({ models: [content] });
+      const response = new StreamResponse<TestContentModel>({ models: [content], state: {} });
       const result = instanceToPlain(response);
       expect(result.models[0].content.field).toEqual('value');
     });
@@ -28,16 +32,20 @@ describe('ContentResponseModel', () => {
         @Exclude()
         secret: string;
       }
-      class TestContentModel<TID = string> extends ContentModel<TID, TestContentModel> {
+      class TestContentModel<TID = string> extends ContentModel<
+        TID,
+        undefined,
+        TestContentDataType
+      > {
         @PropertyType(TestContentDataType)
-        content: TestContentDataType;
+        override content: TestContentDataType;
 
-        type = 'test';
+        override type = 'test';
       }
 
       registerContentModelType('test', TestContentModel);
       const content = new TestContentModel({ content: { secret: 'secret!' } });
-      const response = new StreamResponse({ models: [content] });
+      const response = new StreamResponse({ models: [content], state: {} });
       const result = instanceToPlain(response);
       expect(result.models[0].content.secret).toBeUndefined();
     });

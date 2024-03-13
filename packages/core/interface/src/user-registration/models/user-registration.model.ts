@@ -7,14 +7,15 @@ import {
   Length,
   MaxLength,
   Matches,
+  IsTimeZone,
 } from 'class-validator';
-import { BaseModel, IsIn, SameAs, NotSameAs } from '@lyvely/common';
+import { BaseModel, IsIn, SameAs, NotSameAs, type PropertiesOf } from '@lyvely/common';
 import { MAX_USER_NAME_LENGTH, MIN_USER_NAME_LENGTH, USER_NAME_REGEX } from '@/users';
 import { Exclude, Expose } from 'class-transformer';
 import { getEnabledLocales, getTimezones } from '@lyvely/dates';
 
 @Exclude()
-export class UserRegistration extends BaseModel<UserRegistration> {
+export class UserRegistration {
   @Expose()
   @IsString()
   @Length(MIN_USER_NAME_LENGTH, MAX_USER_NAME_LENGTH)
@@ -35,7 +36,7 @@ export class UserRegistration extends BaseModel<UserRegistration> {
   locale: string;
 
   @Expose()
-  @IsIn(() => getTimezones())
+  @IsTimeZone()
   @IsString()
   timezone: string;
 
@@ -63,4 +64,8 @@ export class UserRegistration extends BaseModel<UserRegistration> {
   @IsOptional()
   @IsBoolean()
   remember?: boolean;
+
+  constructor(data?: PropertiesOf<UserRegistration>) {
+    BaseModel.init(this, data);
+  }
 }
