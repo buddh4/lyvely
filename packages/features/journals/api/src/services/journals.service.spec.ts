@@ -57,10 +57,9 @@ describe('JournalService', () => {
   });
 
   async function createJournal(obj: Partial<CreateJournalModel> = {}) {
-    const { user, profile } = await testData.createUserAndProfile();
+    const { user, profile, context } = await testData.createUserAndProfile();
     const journal = await journalsService.createContent(
-      profile,
-      user,
+      context,
       new CreateJournalModel({
         title: 'Test Journal Title',
         text: 'Test Journal Text',
@@ -72,7 +71,7 @@ describe('JournalService', () => {
       }),
     );
 
-    return { user, profile, journal };
+    return { user, profile, context, journal };
   }
 
   describe('create Journal', () => {
@@ -159,9 +158,9 @@ describe('JournalService', () => {
   describe('update Journal', () => {
     it('update journal with invalid strategy should throw error', async () => {
       expect.assertions(2);
-      const { profile, user, journal } = await createJournal();
+      const { context, journal } = await createJournal();
       try {
-        await journalsService.updateContent(profile, user, journal, {
+        await journalsService.updateContent(context, journal, {
           valueType: DataPointValueType.Number,
           inputType: DataPointInputType.Radio,
         });

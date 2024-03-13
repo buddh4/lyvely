@@ -6,8 +6,17 @@ import {
   ISelectionDataPointValue,
   SelectionDataPointModel,
 } from '@lyvely/time-series-interface';
-import { NestedSchema, TObjectId } from '@lyvely/api';
+import {
+  BaseDocument,
+  BaseDocumentData,
+  NestedSchema,
+  Profile,
+  TObjectId,
+  User,
+} from '@lyvely/api';
 import { DataPointSchemaFactory } from './data-point-schema.factory';
+import { TimeSeriesContent } from '../time-series-content.schema';
+import { pick } from 'lodash';
 
 @NestedSchema()
 export class SelectionDataPointValue implements ISelectionDataPointValue {
@@ -35,6 +44,16 @@ export class SelectionDataPoint
   override value: SelectionDataPointValue;
 
   override valueType: typeof DataPointValueType.Selection = DataPointValueType.Selection;
+
+  constructor(
+    profile: Profile,
+    user: User,
+    content: TimeSeriesContent<any>,
+    data?: BaseDocumentData<SelectionDataPoint>,
+  ) {
+    super(profile, user, content, data);
+    BaseDocument.init(this, pick(data, 'value'));
+  }
 }
 
 export const SelectionDataPointSchema = DataPointSchemaFactory.createForClass(

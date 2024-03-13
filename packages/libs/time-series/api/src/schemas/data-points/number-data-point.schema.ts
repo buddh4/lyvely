@@ -4,7 +4,9 @@ import { DataPointValueType, NumberDataPointModel } from '@lyvely/time-series-in
 import { PropertiesOf, PropertyType } from '@lyvely/common';
 import { Timer, TimerSchema } from '@lyvely/timers';
 import { DataPointSchemaFactory } from './data-point-schema.factory';
-import { TObjectId } from '@lyvely/api';
+import { BaseDocument, BaseDocumentData, Profile, TObjectId, User } from '@lyvely/api';
+import { TimeSeriesContent } from '../time-series-content.schema';
+import { pick } from 'lodash';
 
 @Schema()
 export class NumberDataPoint
@@ -19,6 +21,16 @@ export class NumberDataPoint
   @Prop({ type: TimerSchema })
   @PropertyType(Timer)
   timer?: Timer;
+
+  constructor(
+    profile: Profile,
+    user: User,
+    content: TimeSeriesContent<any>,
+    data?: BaseDocumentData<NumberDataPoint>,
+  ) {
+    super(profile, user, content, data);
+    BaseDocument.init(this, pick(data, 'value', 'timer'));
+  }
 
   get numericValue() {
     return this.value;

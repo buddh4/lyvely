@@ -11,7 +11,13 @@ import {
   ContentType,
   TObjectId,
 } from '@lyvely/api';
-import { PropertiesOf, PropertyType, getNumberEnumValues, BaseModel } from '@lyvely/common';
+import {
+  PropertiesOf,
+  PropertyType,
+  getNumberEnumValues,
+  BaseModel,
+  PartialPropertiesOf,
+} from '@lyvely/common';
 import { CalendarInterval } from '@lyvely/dates';
 import { Timer, TimerModel, TimerSchema } from '@lyvely/timers';
 import {
@@ -77,7 +83,7 @@ export class TaskState implements PropertiesOf<MultiUserTaskStateModel<any>> {
   @PropertyType([Timer])
   timers: Timer[];
 
-  constructor(data: PropertiesOf<TaskState>) {
+  constructor(data: PartialPropertiesOf<TaskState>) {
     BaseModel.init(this, data);
   }
 }

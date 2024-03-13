@@ -1,7 +1,7 @@
 import { buildTest, getObjectId, LyvelyTestingModule } from '@lyvely/testing';
 import {
-  DataPointValueType,
   CheckboxNumberDataPointConfig,
+  DataPointValueType,
   getDataPointModelDefinition,
   NumberDataPoint,
 } from '../index';
@@ -11,11 +11,12 @@ import {
   CalendarInterval,
   dateTime,
   formatDate,
-  getFullDayDate,
   toTimingId,
+  useDayJsLocaleManager,
 } from '@lyvely/dates';
 import { TestDataPointDao, TestTimeSeriesContent } from '../testing';
-import { Profile, profilesTestPlugin, User, contentTestPlugin } from '@lyvely/api';
+import { contentTestPlugin, Profile, profilesTestPlugin, User } from '@lyvely/api';
+import { getFullDayUTCDate } from '@lyvely/dates/src';
 
 const DataPointModelDefinition = [
   getDataPointModelDefinition(TestTimeSeriesContent.name, [DataPointValueType.Number]),
@@ -105,7 +106,7 @@ describe('DataPointDao', () => {
       expect(dataPoint.id).toBeDefined();
       expect(dataPoint.value).toEqual(2);
       expect(dataPoint.tid).toEqual(toTimingId(date));
-      expect(dataPoint.date.toISOString()).toEqual(getFullDayDate(date).toISOString());
+      expect(dataPoint.date.toISOString()).toEqual(getFullDayUTCDate(date).toISOString());
     });
 
     it('create data point with timezone', async () => {
@@ -153,7 +154,7 @@ describe('DataPointDao', () => {
       const { dataPoint } = await createEntity(date, CalendarInterval.Daily);
       await dao.updateOneSetById(dataPoint._id, { value: 3, date: new Date() });
       const updated = await dao.reload(dataPoint);
-      expect(updated!.date.toISOString()).toEqual(getFullDayDate(date).toISOString());
+      expect(updated!.date.toISOString()).toEqual(getFullDayUTCDate(date).toISOString());
     });
 
     it('assure tid is not updatable', async () => {
@@ -246,13 +247,13 @@ describe('DataPointDao', () => {
 
     it('do not include date before', async () => {
       // Sunday
-      const { profile, uid } = await createEntity('2022-02-20', CalendarInterval.Weekly);
+      const { profile, uid } = await createEntity('2022-02-19', CalendarInterval.Weekly);
 
       const result = await dao.findByIntervalLevel(
         profile,
         uid,
-        // Monday
-        new CalendarPlanFilter(dateTime('2022-02-21').toDate()),
+        // Sunday
+        new CalendarPlanFilter(dateTime('2022-02-20').toDate()),
       );
       expect(result.length).toEqual(0);
     });
@@ -708,6 +709,7 @@ describe('DataPointDao', () => {
 
   describe('mixed intervals', () => {
     it('find mixed entries', async () => {
+      await useDayJsLocaleManager().loadLocale('de');
       const entries = await createEntities([
         { date: '2022-02-20', interval: CalendarInterval.Daily },
         { date: '2022-02-14', interval: CalendarInterval.Weekly },

@@ -41,34 +41,30 @@ describe('HabitTimeSeriesService', () => {
 
   describe('findByFilter', () => {
     it('find habit', async () => {
-      const { user, profile } = await testData.createUserAndProfile('user1');
+      const { user, profile, context } = await testData.createUserAndProfile('user1');
       const habit = await testData.createHabit(user, profile);
       const filter = new CalendarPlanFilter('2021-01-01');
-      const { models: habits } = await habitsTimeSeriesService.findTimeSeries(
-        profile,
-        user,
-        filter,
-      );
+      const { models: habits } = await habitsTimeSeriesService.findTimeSeries(context, filter);
       expect(habits.length).toEqual(1);
       expect(habits[0].id).toEqual(habit.id);
     });
 
     it('find habit log within filter range', async () => {
-      const { user, profile } = await testData.createUserAndProfile('user1');
+      const { user, profile, context } = await testData.createUserAndProfile('user1');
       const habit = await testData.createHabit(user, profile);
       const log = await testData.createDataPoint(user, profile, habit, new Date());
       const filter = new CalendarPlanFilter(new Date());
-      const { dataPoints } = await habitsTimeSeriesService.findTimeSeries(profile, user, filter);
+      const { dataPoints } = await habitsTimeSeriesService.findTimeSeries(context, filter);
       expect(dataPoints.length).toEqual(1);
       expect(dataPoints[0].id).toEqual(log.id);
     });
 
     it('do not find habit log outside of filter range', async () => {
-      const { user, profile } = await testData.createUserAndProfile('user1');
+      const { user, profile, context } = await testData.createUserAndProfile('user1');
       const habit = await testData.createHabit(user, profile);
       await testData.createDataPoint(user, profile, habit, HabitTestDataUtil.getDateTomorrow());
       const filter = new CalendarPlanFilter(HabitTestDataUtil.getDateYesterday());
-      const { dataPoints } = await habitsTimeSeriesService.findTimeSeries(profile, user, filter);
+      const { dataPoints } = await habitsTimeSeriesService.findTimeSeries(context, filter);
       expect(dataPoints.length).toEqual(0);
     });
   });
@@ -140,20 +136,19 @@ describe('HabitTimeSeriesService', () => {
     };
 
     it('sort between', async () => {
-      const { user, profile } = await testData.createUserAndProfile();
+      const { user, profile, context } = await testData.createUserAndProfile();
 
       const habits = await createHabits(user, profile);
 
       await habitsTimeSeriesService.sort(
-        profile,
-        user,
+        context,
         habits[1],
         habits[1].timeSeriesConfig.interval,
         habits[3],
       );
 
       const filter = new CalendarPlanFilter(HabitTestDataUtil.getDateTomorrow());
-      const { models } = await habitsTimeSeriesService.findTimeSeries(profile, user, filter);
+      const { models } = await habitsTimeSeriesService.findTimeSeries(context, filter);
       sortHabits(models);
       expect(models.length).toEqual(5);
       expect(models[0].content.title).toEqual('h0');
@@ -164,20 +159,19 @@ describe('HabitTimeSeriesService', () => {
     });
 
     it('sort first entry to second entry', async () => {
-      const { user, profile } = await testData.createUserAndProfile();
+      const { user, profile, context } = await testData.createUserAndProfile();
 
       const habits = await createHabits(user, profile);
 
       await habitsTimeSeriesService.sort(
-        profile,
-        user,
+        context,
         habits[0],
         habits[0].timeSeriesConfig.interval,
         habits[1],
       );
 
       const filter = new CalendarPlanFilter(HabitTestDataUtil.getDateTomorrow());
-      const { models } = await habitsTimeSeriesService.findTimeSeries(profile, user, filter);
+      const { models } = await habitsTimeSeriesService.findTimeSeries(context, filter);
       sortHabits(models);
       expect(models.length).toEqual(5);
       expect(models[0].content.title).toEqual('h1');
@@ -188,19 +182,14 @@ describe('HabitTimeSeriesService', () => {
     });
 
     it('sort to top', async () => {
-      const { user, profile } = await testData.createUserAndProfile();
+      const { user, profile, context } = await testData.createUserAndProfile();
 
       const habits = await createHabits(user, profile);
 
-      await habitsTimeSeriesService.sort(
-        profile,
-        user,
-        habits[3],
-        habits[3].timeSeriesConfig.interval,
-      );
+      await habitsTimeSeriesService.sort(context, habits[3], habits[3].timeSeriesConfig.interval);
 
       const filter = new CalendarPlanFilter(HabitTestDataUtil.getDateTomorrow());
-      const { models } = await habitsTimeSeriesService.findTimeSeries(profile, user, filter);
+      const { models } = await habitsTimeSeriesService.findTimeSeries(context, filter);
       sortHabits(models);
       expect(models.length).toEqual(5);
       expect(models[0].content.title).toEqual('h3');
@@ -211,19 +200,18 @@ describe('HabitTimeSeriesService', () => {
     });
 
     it('sort to bottom', async () => {
-      const { user, profile } = await testData.createUserAndProfile();
+      const { user, profile, context } = await testData.createUserAndProfile();
       const habits = await createHabits(user, profile);
 
       await habitsTimeSeriesService.sort(
-        profile,
-        user,
+        context,
         habits[1],
         habits[1].timeSeriesConfig.interval,
         habits[4],
       );
 
       const filter = new CalendarPlanFilter(HabitTestDataUtil.getDateTomorrow());
-      const { models } = await habitsTimeSeriesService.findTimeSeries(profile, user, filter);
+      const { models } = await habitsTimeSeriesService.findTimeSeries(context, filter);
       sortHabits(models);
       expect(models.length).toEqual(5);
       expect(models[0].content.title).toEqual('h0');
@@ -234,19 +222,18 @@ describe('HabitTimeSeriesService', () => {
     });
 
     it('sort to same index', async () => {
-      const { user, profile } = await testData.createUserAndProfile();
+      const { user, profile, context } = await testData.createUserAndProfile();
       const habits = await createHabits(user, profile);
 
       await habitsTimeSeriesService.sort(
-        profile,
-        user,
+        context,
         habits[2],
         habits[2].timeSeriesConfig.interval,
         habits[2],
       );
 
       const filter = new CalendarPlanFilter(HabitTestDataUtil.getDateTomorrow());
-      const { models } = await habitsTimeSeriesService.findTimeSeries(profile, user, filter);
+      const { models } = await habitsTimeSeriesService.findTimeSeries(context, filter);
       sortHabits(models);
       expect(models.length).toEqual(5);
       expect(models[0].content.title).toEqual('h0');
@@ -257,12 +244,11 @@ describe('HabitTimeSeriesService', () => {
     });
 
     it('sort between another interval', async () => {
-      const { user, profile } = await testData.createUserAndProfile();
+      const { user, profile, context } = await testData.createUserAndProfile();
       const habits = await createMultiIntervalHabits(user, profile);
 
       await habitsTimeSeriesService.sort(
-        profile,
-        user,
+        context,
         habits[0],
         habits[2].timeSeriesConfig.interval,
         habits[2],
@@ -273,7 +259,7 @@ describe('HabitTimeSeriesService', () => {
       expect(habits[0].timeSeriesConfig.history[0].interval).toEqual(CalendarInterval.Daily);
 
       const filter = new CalendarPlanFilter(HabitTestDataUtil.getDateTomorrow());
-      let { models } = await habitsTimeSeriesService.findTimeSeries(profile, user, filter);
+      let { models } = await habitsTimeSeriesService.findTimeSeries(context, filter);
       models = models.filter(
         (model) => model.timeSeriesConfig.interval === CalendarInterval.Weekly,
       );
@@ -288,18 +274,13 @@ describe('HabitTimeSeriesService', () => {
     });
 
     it('sort on top of another interval', async () => {
-      const { user, profile } = await testData.createUserAndProfile();
+      const { user, profile, context } = await testData.createUserAndProfile();
       const habits = await createMultiIntervalHabits(user, profile);
 
-      await habitsTimeSeriesService.sort(
-        profile,
-        user,
-        habits[0],
-        habits[2].timeSeriesConfig.interval,
-      );
+      await habitsTimeSeriesService.sort(context, habits[0], habits[2].timeSeriesConfig.interval);
 
       const filter = new CalendarPlanFilter(HabitTestDataUtil.getDateTomorrow());
-      let { models } = await habitsTimeSeriesService.findTimeSeries(profile, user, filter);
+      let { models } = await habitsTimeSeriesService.findTimeSeries(context, filter);
       models = models.filter(
         (model) => model.timeSeriesConfig.interval === CalendarInterval.Weekly,
       );
@@ -314,19 +295,18 @@ describe('HabitTimeSeriesService', () => {
     });
 
     it('sort to end of another interval', async () => {
-      const { user, profile } = await testData.createUserAndProfile();
+      const { user, profile, context } = await testData.createUserAndProfile();
       const habits = await createMultiIntervalHabits(user, profile);
 
       await habitsTimeSeriesService.sort(
-        profile,
-        user,
+        context,
         habits[0],
         habits[4].timeSeriesConfig.interval,
         habits[4],
       );
 
       const filter = new CalendarPlanFilter(HabitTestDataUtil.getDateTomorrow());
-      let { models } = await habitsTimeSeriesService.findTimeSeries(profile, user, filter);
+      let { models } = await habitsTimeSeriesService.findTimeSeries(context, filter);
       models = models.filter(
         (model) => model.timeSeriesConfig.interval === CalendarInterval.Weekly,
       );

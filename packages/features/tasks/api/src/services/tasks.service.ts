@@ -148,7 +148,7 @@ export class TasksService extends ContentTypeService<Task, CreateTaskModel> {
         context,
         task,
         {
-          doneBy: [],
+          'state.doneBy': [],
         },
         { streamSort: true },
       );
@@ -247,12 +247,14 @@ export class TasksService extends ContentTypeService<Task, CreateTaskModel> {
   private async updateTimer(context: ProtectedProfileContext, task: Task, timer: Timer) {
     const { user, profile } = context;
     if (task.config.userStrategy === UserAssignmentStrategy.Shared) {
-      return this.contentDao.updateOneByProfileAndIdSet(profile, task, { timers: [timer] });
+      return this.contentDao.updateOneByProfileAndIdSet(profile, task, { 'state.timers': [timer] });
     }
 
     const hasTimer = !!task.getTimer(user);
     if (!hasTimer) {
-      return this.contentDao.updateOneByProfileAndId(profile, task, { $push: { timers: timer } });
+      return this.contentDao.updateOneByProfileAndId(profile, task, {
+        $push: { 'state.timers': timer },
+      });
     }
 
     return this.contentDao.updateUserTimer(profile, task, user, timer);

@@ -22,8 +22,8 @@ import { MilestoneRelationEvent } from '../';
 import { Milestone } from '../schemas';
 
 @Schema()
-class TestContent extends ContentType<TestContent> {
-  toModel(): ContentModel<TestContent> {
+class TestContent extends ContentType {
+  toModel(): ContentModel {
     return new ContentModel(this);
   }
 }
@@ -105,21 +105,27 @@ describe('MileStonesRelationService', () => {
   });
 
   const createTestContent = async () => {
-    const { profile, user } = await testData.createUserAndProfile();
+    const { profile, user, context } = await testData.createUserAndProfile();
     const mid = getObjectId(Date.now().toString());
     const doc = await new TestContentModel(
       new TestContent(profile, user, {
-        meta: new ContentMetadata({ mid }),
+        meta: new ContentMetadata(<ContentMetadata>{ mid }),
       }),
     ).save();
 
-    return { mid, profile, user, content: new TestContent(profile, user, <any>doc.toJSON()) };
+    return {
+      mid,
+      profile,
+      user,
+      content: new TestContent(profile, user, <any>doc.toJSON()),
+      context,
+    };
   };
 
   describe('getRelationsByMilestones()', () => {
     it('test event data', async () => {
-      const { profile, user, content, mid } = await createTestContent();
-      await service.getRelationsByMilestones(profile, user, [mid as DocumentIdentity<Milestone>]);
+      const { context, content, mid } = await createTestContent();
+      await service.getRelationsByMilestones(context, [mid as DocumentIdentity<Milestone>]);
       expect(testProvider?.event?.data).toBeDefined();
       expect(testProvider?.event?.data.contents.length).toEqual(1);
       expect(testProvider?.event?.data.contents[0]._id).toEqual(content._id);
@@ -127,8 +133,8 @@ describe('MileStonesRelationService', () => {
     });
 
     it('test result', async () => {
-      const { profile, user, content, mid } = await createTestContent();
-      const result = await service.getRelationsByMilestones(profile, user, [
+      const { context, content, mid } = await createTestContent();
+      const result = await service.getRelationsByMilestones(context, [
         mid as DocumentIdentity<Milestone>,
       ]);
       expect(result?.length).toEqual(1);
