@@ -1,13 +1,13 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import {
-  IDataPointConfig,
   DataPointInputType,
   DataPointValueType,
+  IDataPointConfig,
   IDataPointConfigRevision,
   IDataPointSettings,
 } from '@lyvely/time-series-interface';
 import { UserAssignmentStrategy } from '@lyvely/api';
-import { getStringEnumValues, getNumberEnumValues } from '@lyvely/common';
+import { getNumberEnumValues, getStringEnumValues } from '@lyvely/common';
 import { CalendarInterval } from '@lyvely/dates';
 import { isEqual } from 'lodash';
 
@@ -68,7 +68,7 @@ export abstract class DataPointConfig<
   constructor(DataPointValueType: string, inputType: DataPointInputType, settings?: TSettings) {
     this.valueType = DataPointValueType;
     this.inputType = inputType;
-    this.interval = settings?.interval || this.interval;
+    this.interval ??= settings?.interval || CalendarInterval.Daily;
     this.history = [];
     if (settings) {
       this.setSettings(settings);

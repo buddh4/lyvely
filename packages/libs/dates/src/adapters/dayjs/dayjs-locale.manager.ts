@@ -344,7 +344,7 @@ class DayjsLocaleManager implements ILocaleManager<IDayJsLocale> {
     // https://github.com/iamkun/dayjs/issues/2506
     const localeObj = dayjs.Ls[resolvedLocale];
     return {
-      weekStart: localeObj?.weekStart || 1,
+      weekStart: localeObj?.weekStart || 0,
       yearStart: (<any>localeObj)?.yearStart || 1,
     };
   }

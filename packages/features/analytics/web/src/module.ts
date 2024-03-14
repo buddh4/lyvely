@@ -4,12 +4,12 @@ import {
   ChartModel,
   CreateChartModel,
   CHART_SERIES_TYPE_SCORE,
+  CHART_SERIES_DEFINITION_SCORE,
 } from '@lyvely/analytics-interface';
 import { registerMenuEntry, registerSvgIcon } from '@lyvely/ui';
 import { IModule, MENU_PROFILE_DRAWER, registerContentType, translation } from '@lyvely/web';
 import { analyticsRoutes } from '@/routes/analytics.routes';
 import { registerChartSeriesFormDefinition } from '@/registries/chart-series-web.registry';
-import { CHART_SERIES_DEFINITION_SCORE } from '@lyvely/analytics-interface/src';
 
 export default () => {
   return {

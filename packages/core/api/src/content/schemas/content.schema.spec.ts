@@ -35,7 +35,9 @@ describe('Content Model', () => {
     });
 
     it('content meta overwrite createdAs', async () => {
-      const content = new Content(profile, user, { meta: { createdAs: new CreatedAs(profile) } });
+      const content = new Content(profile, user, {
+        meta: new ContentMetadata({ createdAs: new CreatedAs(profile) }),
+      });
       expect(content.meta instanceof ContentMetadata).toEqual(true);
       expect(content.meta.createdAs).toBeDefined();
       expect(content.meta.createdAs?.authorId).toEqual(profile._id);
@@ -43,7 +45,9 @@ describe('Content Model', () => {
     });
 
     it('constructor with user, profile and data object', async () => {
-      const content = new Content(profile, user, { content: { title: 'test title' } });
+      const content = new Content(profile, user, {
+        content: new ContentDataType({ title: 'test title' }),
+      });
       expect(content.meta.createdBy).toEqual(user._id);
       expect(content.content instanceof ContentDataType);
       expect(content.content.title).toEqual('test title');
@@ -53,7 +57,7 @@ describe('Content Model', () => {
     });
 
     it('constructor with logs', async () => {
-      const content = new Content(profile, user, { logs: [{ type: 'test' }] });
+      const content = new Content(profile, user, { logs: [new ContentLog({ type: 'test' })] });
       expect(content.logs).toBeTruthy();
       expect(content.logs.length).toEqual(1);
       expect(content.logs[0] instanceof ContentLog).toEqual(true);

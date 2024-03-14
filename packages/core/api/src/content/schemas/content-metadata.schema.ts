@@ -1,6 +1,7 @@
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
 import {
   BaseDocument,
+  type BaseDocumentData,
   NestedSchema,
   ObjectIdArrayProp,
   ObjectIdProp,
@@ -72,7 +73,7 @@ export class ContentMetadata implements IContentMetadata {
 
   _id: TObjectId;
 
-  constructor(data: StrictBaseDocumentData<ContentMetadata>) {
+  constructor(data: BaseDocumentData<ContentMetadata>) {
     BaseDocument.init(this, data);
   }
 

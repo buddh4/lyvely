@@ -14,7 +14,7 @@ export class NumberDataPoint
   implements PropertiesOf<NumberDataPointModel<TObjectId>>
 {
   @Prop({ type: Number, required: true, default: 0 })
-  override value = 0;
+  override value: number;
 
   override valueType: typeof DataPointValueType.Number = DataPointValueType.Number;
 

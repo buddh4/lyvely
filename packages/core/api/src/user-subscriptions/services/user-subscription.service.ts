@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { UsersService } from '@/users';
 import {
   UserSubscription,
-  ProfileSubscription,
   SingleUserSubscription,
   MultiUserSubscription,
   isSingleUserSubscription,

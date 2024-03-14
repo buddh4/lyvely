@@ -6,16 +6,23 @@ import {
   IDataPointConfig,
   NumericDataPointInterface,
 } from '../interfaces';
+import { type BaseModelData, DocumentModel, PropertyType } from '@lyvely/common';
 
 export class NumberDataPointModel<TID = string>
   extends DataPointModel<TID>
   implements NumericDataPointInterface
 {
   @Expose()
-  override value = 0;
+  @PropertyType(Number, { default: 0 })
+  override value: number;
 
   @Expose()
   override valueType = DataPointValueType.Number;
+
+  constructor(data: BaseModelData<DataPointModel<any>>) {
+    super(false);
+    DocumentModel.init(this, data);
+  }
 
   get numericValue() {
     return this.value;

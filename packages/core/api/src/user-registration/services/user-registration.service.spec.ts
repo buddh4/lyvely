@@ -167,6 +167,8 @@ describe('UserRegistrationService', () => {
             email: 'testertest.de',
             password: 'testpw',
             locale: 'de',
+            passwordRepeat: 'testpw',
+            timezone: 'Europe/Berlin',
           }),
         );
       } catch (err) {
@@ -280,7 +282,7 @@ describe('UserRegistrationService', () => {
       const { user } = await registerService.verifyEmail(
         new VerifyEmailDto({
           otp: '000000',
-          email: validRegistration.email,
+          emailOrUsername: validRegistration.email,
         }),
       );
 
@@ -296,7 +298,7 @@ describe('UserRegistrationService', () => {
         await registerService.verifyEmail(
           new VerifyEmailDto({
             otp: '001111',
-            email: validRegistration.email,
+            emailOrUsername: validRegistration.email,
           }),
         );
       } catch (e) {
@@ -314,6 +316,8 @@ describe('UserRegistrationService', () => {
           password: 'testpw',
           remember: true,
           locale: 'de',
+          passwordRepeat: 'testpw',
+          timezone: 'Europe/Berlin',
         },
         raw,
       ),

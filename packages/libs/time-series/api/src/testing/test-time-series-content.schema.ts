@@ -22,7 +22,7 @@ type TestDataPointConfig =
 
 @NestedSchema()
 class TestTimeSeriesConfig implements ITimeSeriesContentConfig {
-  @Prop({ type: DataPointConfigSchema })
+  @Prop({ type: DataPointConfigSchema, required: true })
   timeSeries: TestDataPointConfig;
 }
 

@@ -1,5 +1,5 @@
 import { CalendarInterval } from '@lyvely/dates';
-import { DocumentModel, TransformObjectId } from '@lyvely/common';
+import { type BaseModelData, DocumentModel, TransformObjectId } from '@lyvely/common';
 import { Exclude, Expose } from 'class-transformer';
 import { IDataPoint } from '../interfaces';
 
@@ -31,7 +31,7 @@ export class DataPointModel<TID = string> implements IDataPoint {
   @Expose()
   value: any;
 
-  constructor(data: Partial<DataPointModel<any>>) {
+  constructor(data: BaseModelData<DataPointModel<any>>) {
     DocumentModel.init(this, data);
   }
 }

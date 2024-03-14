@@ -5,7 +5,7 @@ import {
   implementsGetDefaults,
   implementsAfterInit,
 } from '@lyvely/common';
-import { PartialPropertiesOf, type PropertiesOf } from '@lyvely/common/src';
+import { PartialPropertiesOf, type PropertiesOf } from '@lyvely/common';
 
 export interface IEntity<ID = TObjectId> {
   _id: ID;

@@ -13,10 +13,10 @@ import {
   formatDate,
   toTimingId,
   useDayJsLocaleManager,
+  getFullDayUTCDate,
 } from '@lyvely/dates';
 import { TestDataPointDao, TestTimeSeriesContent } from '../testing';
 import { contentTestPlugin, Profile, profilesTestPlugin, User } from '@lyvely/api';
-import { getFullDayUTCDate } from '@lyvely/dates/src';
 
 const DataPointModelDefinition = [
   getDataPointModelDefinition(TestTimeSeriesContent.name, [DataPointValueType.Number]),

@@ -106,7 +106,7 @@ describe('object util', () => {
 
       it('create on sub', () => {
         const model = {};
-        const value = findByPath(model, 'sub.sub.field');
+        const value = findByPath(model, 'sub.sub.field', { create: true });
         expect(value).toEqual({});
         expect(model).toEqual({ sub: { sub: { field: {} } } });
       });
@@ -145,21 +145,21 @@ describe('object util', () => {
 
     it('create unknown path', () => {
       const model = <any>{};
-      const value = findByPath(model, 'sub.sub');
+      const value = findByPath(model, 'sub.sub', { create: true });
       expect(model.sub.sub).toBeDefined();
       expect(value === model.sub.sub).toEqual(true);
     });
 
     it('create path starting with reserved character', () => {
       const model = <any>{};
-      findByPath(model, 'sub.$.whatever');
+      findByPath(model, 'sub.$.whatever', { create: true });
       expect(model.sub).toBeDefined();
       expect(model.sub.$).toBeUndefined();
     });
 
     it('create path starting with reserved character', () => {
       const model = <any>{};
-      findByPath(model, 'sub.1.whatever');
+      findByPath(model, 'sub.1.whatever', { create: true });
       expect(model.sub).toBeDefined();
       expect(model.sub['1']).toBeUndefined();
     });

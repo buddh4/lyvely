@@ -63,30 +63,30 @@ describe('TimeSeriesContentSchema', () => {
     it('create content without logging config should fail', async () => {
       const { user, profile } = await testData.createUserAndProfile();
       const model = new TestTimeSeriesContent(profile, user, {
-        someTestField: 'Testing...',
-        timeSeriesConfig: new CheckboxNumberDataPointConfig({
-          interval: CalendarInterval.Daily,
-          min: 0,
-          max: 5,
-          optimal: 3,
-        }),
+        config: {
+          timeSeries: new CheckboxNumberDataPointConfig({
+            interval: CalendarInterval.Daily,
+            min: 0,
+            max: 5,
+            optimal: 3,
+          }),
+        },
       });
 
-      delete (<any>model).timeSeriesConfig;
+      delete (<any>model).config.timeSeries;
 
-      const entity = new TestTimeSeriesContentModel(model);
+      expect.assertions(1);
 
       try {
-        await entity.save();
+        await new TestTimeSeriesContentModel(model).save();
       } catch (e) {
-        expect((e as any).errors?.config).toBeDefined();
+        expect((e as any).errors['config.timeSeries']).toBeDefined();
       }
     });
 
     it('create content with valid data point config', async () => {
       const { user, profile } = await testData.createUserAndProfile();
       const model = new TestTimeSeriesContent(profile, user, {
-        someTestField: 'Testing...',
         config: {
           timeSeries: new CheckboxNumberDataPointConfig({
             interval: CalendarInterval.Daily,
@@ -118,7 +118,6 @@ describe('TimeSeriesContentSchema', () => {
     it('construct data series content model from entity', async () => {
       const { user, profile } = await testData.createUserAndProfile();
       const model = new TestTimeSeriesContent(profile, user, {
-        someTestField: 'Testing...',
         config: {
           timeSeries: new CheckboxNumberDataPointConfig({
             interval: CalendarInterval.Daily,
@@ -151,7 +150,6 @@ describe('TimeSeriesContentSchema', () => {
     it('construct data series content model from entity', async () => {
       const { user, profile } = await testData.createUserAndProfile();
       const model = new TestTimeSeriesContent(profile, user, {
-        someTestField: 'Testing...',
         config: {
           timeSeries: <CheckboxNumberDataPointConfig>{
             interval: CalendarInterval.Daily,

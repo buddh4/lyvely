@@ -1,6 +1,7 @@
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
 import {
   BaseDocument,
+  type BaseDocumentData,
   MixedProp,
   NestedSchema,
   ObjectIdProp,
@@ -39,10 +40,6 @@ export enum BaseContentLogTypes {
 
 @NestedSchema()
 export class ContentLog<TData = undefined> {
-  _id: TObjectId;
-
-  id: string;
-
   @ObjectIdProp({ required: true })
   updatedBy?: TObjectId;
 
@@ -56,7 +53,11 @@ export class ContentLog<TData = undefined> {
   @Prop({ required: true })
   type: string;
 
-  constructor(data: StrictBaseDocumentData<ContentLog<TData>>) {
+  _id: TObjectId;
+
+  id: string;
+
+  constructor(data: BaseDocumentData<ContentLog<TData>>) {
     BaseDocument.init(this, data);
   }
 }

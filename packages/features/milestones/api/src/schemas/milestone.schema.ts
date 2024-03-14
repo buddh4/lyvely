@@ -2,9 +2,8 @@ import { ContentType, User, NestedSchema, TObjectId } from '@lyvely/api';
 import { CalendarInterval } from '@lyvely/dates';
 import { ICalendarPlanEntry } from '@lyvely/calendar-plan';
 import { IMilestoneConfig, MilestoneModel } from '@lyvely/milestones-interface';
-import { getNumberEnumValues, PropertiesOf } from '@lyvely/common';
+import { getNumberEnumValues, PropertiesOf, PropertyType } from '@lyvely/common';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { PropertyType } from '@lyvely/common/src';
 
 @NestedSchema()
 export class MilestoneConfig implements IMilestoneConfig {

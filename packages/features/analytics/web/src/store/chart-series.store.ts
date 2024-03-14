@@ -4,13 +4,13 @@ import {
   ChartModel,
   ChartType,
   useChartsClient,
+  ChartSeriesConfigModel,
 } from '@lyvely/analytics-interface';
 import { I18nModelValidator, loadingStatus, useStatus } from '@lyvely/web';
 import { getChartSeriesFormDefinition } from '@/registries';
 import { ComponentRegistration } from '@lyvely/ui';
 import { UpdateChartSeriesModel } from '@/models';
 import { useChartsStore } from '@/store/charts.store';
-import { ChartSeriesConfigModel } from '@lyvely/analytics-interface/src';
 
 const showModal = ref(false);
 const status = useStatus();

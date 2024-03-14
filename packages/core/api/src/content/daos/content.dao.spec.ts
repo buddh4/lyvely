@@ -1,7 +1,7 @@
 import { buildTest, LyvelyTestingModule } from '@/testing';
 import { ContentDao } from './index';
 import { Content, ContentSchema } from '../schemas';
-import { TestContent, TestContentSchema } from '../testing';
+import { contentTestPlugin, TestContent, TestContentData, TestContentSchema } from '../testing';
 import { Model } from '@/core';
 import { User } from '@/users';
 import { Profile, ProfileTestDataUtils } from '@/profiles';
@@ -26,6 +26,7 @@ describe('content dao', () => {
 
   beforeEach(async () => {
     testingModule = await buildTest(TEST_KEY)
+      .plugins([contentTestPlugin])
       .providers([ContentDao, ContentTypeRegistry])
       .models(ContentModel)
       .compile();
@@ -43,7 +44,9 @@ describe('content dao', () => {
   });
 
   async function createTestContent(user: User, profile: Profile, testData = 'Testing...') {
-    const testContent = new TestContent(profile, user, { content: { testData: testData } });
+    const testContent = new TestContent(profile, user, {
+      content: new TestContentData({ testData: testData }),
+    });
     const entity = await testContentModel.create(testContent);
     return new TestContent(profile, user, entity.toObject());
   }

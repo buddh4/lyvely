@@ -14,6 +14,7 @@ import {
 } from '@lyvely/interface';
 import { MembershipsDao, ProfileDao } from '../daos';
 import { ProfileContext, ProtectedProfileContext } from '../models';
+import slugify from 'slugify';
 import {
   assureObjectId,
   assureStringId,
@@ -223,9 +224,10 @@ export class ProfilesService {
    * @private
    */
   private async findUniqueHandle(profile: Profile): Promise<string> {
-    const { name, guid, handle } = profile;
+    const { guid, handle } = profile;
 
-    const fallBackHandle = profile.name + Date.now();
+    const name = slugify(profile.name);
+    const fallBackHandle = name + Date.now();
     const handles = [name, fallBackHandle];
     if (handle) handles.push(handle);
 

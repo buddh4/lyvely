@@ -88,23 +88,23 @@ describe('TimerDataPointService', () => {
 
   describe('startTimer()', () => {
     it('start new timer', async () => {
-      const { user, profile } = await testData.createUserAndProfile();
+      const { user, profile, context } = await testData.createUserAndProfile();
       const content = await createTimeSeriesContent(user, profile);
       const date = new Date();
 
-      const dataPoint = await service.startTimer(profile, user, content, date);
+      const dataPoint = await service.startTimer(context, content, date);
       expect(dataPoint.timer).toBeDefined();
       expect(dataPoint.timer.spans.length).toEqual(1);
       expect(dataPoint.timer.isStarted()).toEqual(true);
     });
 
     it('start already started timer', async () => {
-      const { user, profile } = await testData.createUserAndProfile();
+      const { user, profile, context } = await testData.createUserAndProfile();
       const content = await createTimeSeriesContent(user, profile);
       const date = new Date();
 
-      await service.startTimer(profile, user, content, date);
-      const dataPoint = await service.startTimer(profile, user, content, date);
+      await service.startTimer(context, content, date);
+      const dataPoint = await service.startTimer(context, content, date);
 
       expect(dataPoint.timer).toBeDefined();
       expect(dataPoint.timer.spans.length).toEqual(1);
@@ -112,13 +112,13 @@ describe('TimerDataPointService', () => {
     });
 
     it('restart stopped timer', async () => {
-      const { user, profile } = await testData.createUserAndProfile();
+      const { user, profile, context } = await testData.createUserAndProfile();
       const content = await createTimeSeriesContent(user, profile);
       const date = new Date();
 
-      await service.startTimer(profile, user, content, date);
-      await service.stopTimer(profile, user, content, date);
-      const dataPoint = await service.startTimer(profile, user, content, date);
+      await service.startTimer(context, content, date);
+      await service.stopTimer(context, content, date);
+      const dataPoint = await service.startTimer(context, content, date);
 
       expect(dataPoint.timer).toBeDefined();
       expect(dataPoint.timer.spans.length).toEqual(2);

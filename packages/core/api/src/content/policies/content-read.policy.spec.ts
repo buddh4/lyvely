@@ -1,6 +1,6 @@
 import { buildTest, LyvelyTestingModule } from '@/testing';
 import { Content, ContentSchema, ProfileContentContext } from '../schemas';
-import { TestContent, TestContentSchema } from '../testing';
+import { contentTestPlugin, TestContent, TestContentSchema } from '../testing';
 import { profilesTestPlugin, ProfileTestDataUtils } from '@/profiles';
 import { RoleVisibilityLevel } from '@lyvely/interface';
 import { getPolicyToken, IPolicy, policyTestPlugin } from '@/policies';
@@ -10,7 +10,7 @@ import { LyvelyModule } from '@/core';
 import { ContentReadPolicy } from './content-read.policy';
 
 class TestContentReadPolicy extends BaseContentReadPolicy {
-  async verify(context: ProfileContentContext<any>): Promise<boolean> {
+  override async verify(context: ProfileContentContext<any>): Promise<boolean> {
     return context.content.value === 'test';
   }
 }
@@ -41,7 +41,7 @@ describe('ContentReadPolicy', () => {
 
   beforeEach(async () => {
     testingModule = await buildTest(TEST_KEY)
-      .plugins([profilesTestPlugin, policyTestPlugin])
+      .plugins([profilesTestPlugin, policyTestPlugin, contentTestPlugin])
       .imports([TestModule])
       .models(ContentModel)
       .compile();
@@ -61,7 +61,7 @@ describe('ContentReadPolicy', () => {
   it('test custom content read policy', async () => {
     class TestContent extends Content<TestContent> {
       value: string;
-      getReadPolicy(): Type<IPolicy<ProfileContentContext>> {
+      override getReadPolicy(): Type<IPolicy<ProfileContentContext>> {
         // This policy only grants read access if value === 'test'
         return TestContentReadPolicy;
       }
@@ -69,8 +69,8 @@ describe('ContentReadPolicy', () => {
 
     const { owner, profile, memberContext } = await testData.createSimpleGroup();
 
-    const content1 = new TestContent(profile, owner, { value: 'shouldFail' });
-    const content2 = new TestContent(profile, owner, { value: 'test' });
+    const content1 = new TestContent(profile, owner, <any>{ value: 'shouldFail' });
+    const content2 = new TestContent(profile, owner, <any>{ value: 'test' });
 
     (<ProfileContentContext>memberContext).content = content1;
 

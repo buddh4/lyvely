@@ -11,15 +11,21 @@ import { escapeHtmlIf } from '@lyvely/common';
 import { UrlRoute } from '@lyvely/interface';
 import { TestNotificationCategory } from '../notifications';
 import { notificationTestPlugin } from '../testing';
+import { BaseDocument, type StrictBaseDocumentData } from '@/core';
 
 const TEST_KEY = 'NotificationDao';
 
 @NotificationDecorator()
-export class MyTestNotification extends NotificationType<MyTestNotification> {
+export class MyTestNotification extends NotificationType {
   @Prop()
   testProp: string;
 
   nonProp: string;
+
+  constructor(data: StrictBaseDocumentData<Omit<MyTestNotification, 'type'>>) {
+    super(false);
+    BaseDocument.init(this, data);
+  }
 
   getBody(context: NotificationContext): Translatable {
     return {
@@ -76,6 +82,8 @@ describe('NotificationDao', () => {
           new MyTestNotification({
             userInfo: new UserInfo(user),
             profileInfo: new ProfileInfo(profile),
+            testProp: 'testProp',
+            nonProp: 'nonProb',
           }),
           new SingleUserSubscription(user),
         ),
@@ -101,6 +109,7 @@ describe('NotificationDao', () => {
             userInfo: new UserInfo(user),
             profileInfo: new ProfileInfo(profile),
             testProp: 'testValue',
+            nonProp: 'nonProb',
           }),
           new SingleUserSubscription(user),
         ),

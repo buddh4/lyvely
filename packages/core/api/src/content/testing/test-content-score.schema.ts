@@ -1,5 +1,7 @@
-import { ContentScore } from '../schemas';
+import { ContentScore, type ICreateContentScore } from '../schemas';
 import { Schema, SchemaFactory, Prop } from '@nestjs/mongoose';
+import type { PartialPropertiesOf } from '@lyvely/common';
+import { IntegrityException } from '@lyvely/interface';
 
 @Schema()
 export class TestContentScore extends ContentScore {}
@@ -8,8 +10,18 @@ export const TestContentScoreSchema = SchemaFactory.createForClass(TestContentSc
 
 @Schema()
 export class ExtendedTestContentScore extends ContentScore {
-  @Prop({ type: String, required: true })
+  @Prop({ required: true })
   special: string;
+
+  constructor(
+    options: ICreateContentScore,
+    data: PartialPropertiesOf<ExtendedTestContentScore> = {},
+  ) {
+    super(options, data);
+    if (data?.special) {
+      this.special = data.special;
+    }
+  }
 
   getSpecialValue() {
     return '_' + this.special + '_';

@@ -2,6 +2,7 @@ import { buildTest, getObjectId, LyvelyTestingModule } from '@/testing';
 import { Tag } from '../schemas';
 import { ProfileTagsService, ProfilesService } from './index';
 import { profilesTestPlugin, ProfileTestDataUtils } from '../testing';
+import { DocumentNotFoundException } from '@lyvely/interface';
 
 describe('ProfileTagsService', () => {
   let testingModule: LyvelyTestingModule;
@@ -72,8 +73,11 @@ describe('ProfileTagsService', () => {
     it('update non existing tag', async () => {
       const { profile } = await testData.createUserAndProfile();
       const tag = new Tag({ _id: getObjectId('testtag'), name: 'Test' });
-      const result = await profileTagsService.updateTag(profile, tag, { name: 'healthy' });
-      expect(result).toEqual(false);
+
+      expect.assertions(1);
+      await profileTagsService.updateTag(profile, tag, { name: 'healthy' }).catch((e) => {
+        expect(e instanceof DocumentNotFoundException).toEqual(true);
+      });
     });
   });
 

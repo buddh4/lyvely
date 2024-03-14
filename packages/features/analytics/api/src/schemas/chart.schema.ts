@@ -1,6 +1,11 @@
 import { ContentType, NestedSchema, User } from '@lyvely/api';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { getStringEnumValues, BaseModel, type PropertiesOf } from '@lyvely/common';
+import {
+  getStringEnumValues,
+  BaseModel,
+  type PropertiesOf,
+  type BaseModelData,
+} from '@lyvely/common';
 import { ChartModel, ChartState, ChartType, IChartStatus } from '@lyvely/analytics-interface';
 import { ChartSeriesConfig, ChartSeriesConfigSchema } from './chart-series-config.schema';
 
@@ -23,7 +28,7 @@ export class ChartConfig {
   @Prop({ type: [ChartSeriesConfigSchema] })
   series: ChartSeriesConfig[];
 
-  constructor(data?: PropertiesOf<ChartConfig>) {
+  constructor(data?: BaseModelData<ChartConfig>) {
     BaseModel.init(this, data);
   }
 }
@@ -31,7 +36,7 @@ export class ChartConfig {
 const ChartConfigSchema = SchemaFactory.createForClass(ChartConfig);
 
 @Schema()
-export class Chart<TConfig extends ChartConfig = ChartConfig> extends ContentType<Chart> {
+export class Chart<TConfig extends ChartConfig = ChartConfig> extends ContentType<TConfig> {
   @Prop({ type: ChartStatusSchema })
   status: IChartStatus;
 

@@ -102,11 +102,11 @@ describe('TimeSeriesService', () => {
 
   describe('upsertDataPoint()', () => {
     it('update creates new summary entry', async () => {
-      const { user, profile } = await testData.createUserAndProfile();
+      const { user, profile, context } = await testData.createUserAndProfile();
       const content = await createTimeSeriesContent(user, profile);
       const date = new Date();
 
-      await service.upsertDataPoint(profile, user, content, date, 5);
+      await service.upsertDataPoint(context, content, date, 5);
       const updatedContent = await contentDao.reload(content);
 
       expect(updatedContent!.timeSeriesSummary).toBeDefined();
@@ -118,11 +118,11 @@ describe('TimeSeriesService', () => {
     });
 
     it('out of window update does not creates new summary entry', async () => {
-      const { user, profile } = await testData.createUserAndProfile();
+      const { user, profile, context } = await testData.createUserAndProfile();
       const content = await createTimeSeriesContent(user, profile);
       const date = subtractDays(new Date(), 100);
 
-      await service.upsertDataPoint(profile, user, content, date, 5);
+      await service.upsertDataPoint(context, content, date, 5);
       const updatedContent = await contentDao.reload(content);
 
       expect(updatedContent!.timeSeriesSummary).toBeDefined();
@@ -130,11 +130,11 @@ describe('TimeSeriesService', () => {
     });
 
     it('boundary of window update creates new summary entry', async () => {
-      const { user, profile } = await testData.createUserAndProfile();
+      const { user, profile, context } = await testData.createUserAndProfile();
       const content = await createTimeSeriesContent(user, profile);
       const date = subtractDays(new Date(), 6);
 
-      await service.upsertDataPoint(profile, user, content, date, 5);
+      await service.upsertDataPoint(context, content, date, 5);
       const updatedContent = await contentDao.reload(content);
 
       expect(updatedContent!.timeSeriesSummary).toBeDefined();
@@ -146,13 +146,13 @@ describe('TimeSeriesService', () => {
     });
 
     it('summary window is sorted', async () => {
-      const { user, profile } = await testData.createUserAndProfile();
+      const { user, profile, context } = await testData.createUserAndProfile();
       const content = await createTimeSeriesContent(user, profile);
       const today = new Date();
       const yesterday = subtractDays(today, 1);
 
-      await service.upsertDataPoint(profile, user, content, today, 5);
-      await service.upsertDataPoint(profile, user, content, yesterday, 3);
+      await service.upsertDataPoint(context, content, today, 5);
+      await service.upsertDataPoint(context, content, yesterday, 3);
       const updatedContent = await contentDao.reload(content);
 
       expect(updatedContent!.timeSeriesSummary.window?.length).toEqual(2);

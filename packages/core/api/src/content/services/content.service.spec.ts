@@ -1,6 +1,6 @@
 import { buildTest, LyvelyTestingModule } from '@/testing';
-import { Content, ContentSchema } from '../schemas';
-import { TestContent, TestContentSchema, contentTestPlugin } from '../testing';
+import { Content, ContentMetadata, ContentSchema } from '../schemas';
+import { TestContent, TestContentSchema, contentTestPlugin, TestContentData } from '../testing';
 import { Model } from '@/core';
 import { User } from '@/users';
 import { Profile, profilesTestPlugin, ProfileTestDataUtils } from '@/profiles';
@@ -43,8 +43,8 @@ describe('content dao', () => {
 
   async function createTestContent(user: User, profile: Profile, archived = false) {
     const testContent = new TestContent(profile, user, {
-      content: { testData: 'test' },
-      meta: { archived },
+      content: new TestContentData({ testData: 'test' }),
+      meta: new ContentMetadata({ archived }),
     });
     const entity = await testContentModel.create(testContent);
     return new TestContent(profile, user, entity.toObject());

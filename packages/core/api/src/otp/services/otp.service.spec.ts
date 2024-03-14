@@ -118,7 +118,7 @@ describe('OtpService', () => {
         purpose: 'test',
         expiresIn: '2m',
       });
-      otpModel!.issuedAt = subtractSeconds(new Date(), 121, false);
+      otpModel!.issuedAt = subtractSeconds(new Date(), 121);
       expect(await userOtpService.validateOtp(user, 'test', otp, otpModel!)).toEqual(false);
     });
   });

@@ -16,7 +16,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Timer } from '@lyvely/timers';
 import { CalendarInterval } from '@lyvely/dates';
 import { ICalendarPlanDao } from '@lyvely/calendar-plan';
-import { findAndReplace } from '@lyvely/common/src';
+import { findAndReplace } from '@lyvely/common';
 
 @Injectable()
 export class TasksDao extends ContentTypeDao<Task> implements ICalendarPlanDao<any> {

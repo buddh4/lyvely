@@ -23,7 +23,7 @@ import { notificationTestPlugin } from '../testing';
 const TEST_KEY = 'UserNotificationsService';
 
 @Notification()
-export class MyTestNotification extends NotificationType<MyTestNotification> {
+export class MyTestNotification extends NotificationType {
   @Prop()
   testProp: string;
 

@@ -2,7 +2,13 @@ import { Expose } from 'class-transformer';
 import { DataPointModel } from './data-point.model';
 import { DataPointValueType, IDataPointConfig, ISelectionDataPointConfig } from '../interfaces';
 import type { ISelectionDataPointValue } from '../interfaces';
-import { BaseModel, type PropertiesOf, PropertyType } from '@lyvely/common';
+import {
+  BaseModel,
+  type BaseModelData,
+  DocumentModel,
+  type PropertiesOf,
+  PropertyType,
+} from '@lyvely/common';
 import { IsEnum, IsOptional, IsString, MaxLength } from 'class-validator';
 
 @Expose()
@@ -29,6 +35,11 @@ export class SelectionDataPointModel<TID = string> extends DataPointModel<TID> {
 
   @IsEnum([DataPointValueType.Selection])
   override valueType = DataPointValueType.Selection;
+
+  constructor(data: BaseModelData<SelectionDataPointModel<any>>) {
+    super(false);
+    DocumentModel.init(this, data);
+  }
 }
 
 export function isSelectionDataPointConfig(

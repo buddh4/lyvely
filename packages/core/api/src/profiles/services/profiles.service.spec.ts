@@ -238,10 +238,21 @@ describe('ProfileService', () => {
       await profileService.createGroupProfile(user, { name: 'Some Profile' });
 
       expect.assertions(2);
-      return profileService.createGroupProfile(user, { name: 'Some Profile' }).catch((e) => {
+      try {
+        await profileService.createGroupProfile(user, { name: 'Some Profile' });
+      } catch (e) {
         expect(e instanceof UniqueConstraintException).toEqual(true);
-        expect(e.data.fields[0].property).toEqual('name');
+        expect((<any>e).data.fields[0].property).toEqual('name');
+      }
+    });
+
+    it('group profile with guid handle', async () => {
+      const user = await testData.createUser('User1');
+      const context = await profileService.createGroupProfile(user, {
+        name: 'Some Profile',
+        handle: user.guid,
       });
+      expect(context.profile.handle).toEqual(user.guid);
     });
 
     it('group profile name is unique per organization', async () => {

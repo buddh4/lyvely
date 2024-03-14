@@ -8,8 +8,8 @@ describe('TransformObjectIdDecorator', () => {
       @TransformObjectIds()
       ids: TID[];
 
-      constructor(data?: TestModel) {
-        BaseModel.init(data);
+      constructor(data?: TestModel<any>) {
+        BaseModel.init(this, data);
       }
     }
 
@@ -22,8 +22,8 @@ describe('TransformObjectIdDecorator', () => {
       @TransformObjectIds()
       ids: TID[];
 
-      constructor(data?: TestModel) {
-        BaseModel.init(data);
+      constructor(data?: TestModel<any>) {
+        BaseModel.init(this, data);
       }
     }
 
@@ -37,8 +37,8 @@ describe('TransformObjectIdDecorator', () => {
       @TransformObjectIds()
       ids: TID[];
 
-      constructor(data?: TestModel) {
-        BaseModel.init(data);
+      constructor(data?: TestModel<any>) {
+        BaseModel.init(this, data);
       }
     }
 
@@ -57,8 +57,8 @@ describe('TransformObjectIdDecorator', () => {
       @TransformObjectIds()
       ids: TID[];
 
-      constructor(data?: TestModel) {
-        BaseModel.init(data);
+      constructor(data?: TestModel<any>) {
+        BaseModel.init(this, data);
       }
     }
 
@@ -77,8 +77,8 @@ describe('TransformObjectIdDecorator', () => {
       @TransformObjectIds()
       ids: TID[];
 
-      constructor(data?: TestModel) {
-        BaseModel.init(data);
+      constructor(data?: TestModel<any>) {
+        BaseModel.init(this, data);
       }
     }
 
@@ -91,8 +91,8 @@ describe('TransformObjectIdDecorator', () => {
       @TransformObjectIds({ optional: true })
       ids: TID[];
 
-      constructor(data?: TestModel) {
-        BaseModel.init(data);
+      constructor(data?: TestModel<any>) {
+        BaseModel.init(this, data);
       }
     }
 

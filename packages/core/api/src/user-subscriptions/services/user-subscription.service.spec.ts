@@ -116,18 +116,10 @@ describe('UserSubscriptionService', () => {
       expect(userContexts[1].profileRelations).toEqual([]);
     });
 
-    it('test profile subscription without given profile', async () => {
-      await testData.createSimpleGroup();
-      const userContexts = await userSubscriptionService.getSubscriptionContext(
-        new ProfileSubscription(),
-      );
-      expect(userContexts.length).toEqual(0);
-    });
-
     it('test profile subscription with given profile', async () => {
       const { member, owner, profile } = await testData.createSimpleGroup();
       const userContexts = await userSubscriptionService.getSubscriptionContext(
-        new ProfileSubscription(),
+        new ProfileSubscription(profile),
         profile,
       );
 

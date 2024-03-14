@@ -9,7 +9,7 @@ describe('PropertyType', () => {
       value: string;
 
       constructor(data?: PlainSubModel) {
-        BaseModel.init(data);
+        BaseModel.init(this, data);
       }
     }
 
@@ -23,7 +23,7 @@ describe('PropertyType', () => {
       value: string;
 
       constructor(data?: PlainSubModel) {
-        BaseModel.init(data);
+        BaseModel.init(this, data);
       }
     }
 
@@ -37,7 +37,7 @@ describe('PropertyType', () => {
       value: number;
 
       constructor(data?: PlainSubModel) {
-        BaseModel.init(data);
+        BaseModel.init(this, data);
       }
     }
 
@@ -51,7 +51,7 @@ describe('PropertyType', () => {
       value: boolean;
 
       constructor(data?: PlainSubModel) {
-        BaseModel.init(data);
+        BaseModel.init(this, data);
       }
     }
 
@@ -71,10 +71,10 @@ describe('PropertyType', () => {
       secret: 'string';
 
       constructor(data?: TestModel) {
-        BaseModel.init(data);
+        BaseModel.init(this, data);
       }
     }
-    const model = new TestModel({ sub: { value: 'test' } });
+    const model = new TestModel(<any>{ sub: { value: 'test' } });
     expect(model.sub instanceof PlainSubModel).toEqual(true);
   });
 
@@ -93,7 +93,7 @@ describe('PropertyType', () => {
       sub: PlainSubModel;
 
       constructor(data?: TestModel) {
-        BaseModel.init(data);
+        BaseModel.init(this, data);
       }
     }
     const model = new TestModel({ sub: { sub: { value: 'test' } } });
@@ -111,7 +111,7 @@ describe('PropertyType', () => {
       sub?: ValueModel;
 
       constructor(data?: TestModel) {
-        BaseModel.init(data);
+        BaseModel.init(this, data);
       }
     }
 
@@ -136,7 +136,7 @@ describe('PropertyType', () => {
       sub: PlainSubModel;
 
       constructor(data?: TestModel) {
-        BaseModel.init(data);
+        BaseModel.init(this, data);
       }
     }
 
@@ -150,7 +150,7 @@ describe('PropertyType', () => {
       field: string;
 
       constructor(data?: MyModel) {
-        BaseModel.init(data);
+        BaseModel.init(this, data);
       }
     }
 
@@ -166,7 +166,7 @@ describe('PropertyType', () => {
       field: string;
 
       constructor(data?: Parent) {
-        BaseModel.init(data);
+        BaseModel.init(this, data);
       }
     }
 
@@ -182,13 +182,13 @@ describe('PropertyType', () => {
       field: string;
 
       constructor(data?: Parent) {
-        BaseModel.init(data);
+        BaseModel.init(this, data);
       }
     }
 
     class SubModel extends Parent {
       @PropertyType(String, { default: 'Child' })
-      field: string;
+      override field: string;
     }
 
     const model = new SubModel();
@@ -201,7 +201,7 @@ describe('PropertyType', () => {
       arr: string[];
 
       constructor(data?: TestModel) {
-        BaseModel.init(data);
+        BaseModel.init(this, data);
       }
     }
 
@@ -216,7 +216,7 @@ describe('PropertyType', () => {
       arr: string[];
 
       constructor(data?: TestModel) {
-        BaseModel.init(data);
+        BaseModel.init(this, data);
       }
     }
 
@@ -231,7 +231,7 @@ describe('PropertyType', () => {
       arr: string[];
 
       constructor(data?: TestModel) {
-        BaseModel.init(data);
+        BaseModel.init(this, data);
       }
     }
 
@@ -251,7 +251,7 @@ describe('PropertyType', () => {
       arr: SubModel[];
 
       constructor(data?: TestModel) {
-        BaseModel.init(data);
+        BaseModel.init(this, data);
       }
     }
 
@@ -271,7 +271,7 @@ describe('PropertyType', () => {
       date: Date;
 
       constructor(data?: TestModel) {
-        BaseModel.init(data);
+        BaseModel.init(this, data);
       }
     }
 
@@ -288,7 +288,7 @@ describe('PropertyType', () => {
       val: null;
 
       constructor(data?: TestModel) {
-        BaseModel.init(data);
+        BaseModel.init(this, data);
       }
     }
 
@@ -302,7 +302,7 @@ describe('PropertyType', () => {
       val: null;
 
       constructor(data?: TestModel) {
-        BaseModel.init(data);
+        BaseModel.init(this, data);
       }
     }
 
@@ -316,7 +316,7 @@ describe('PropertyType', () => {
       val: string;
 
       constructor(data?: TestModel) {
-        BaseModel.init(data);
+        BaseModel.init(this, data);
       }
     }
 
@@ -330,7 +330,7 @@ describe('PropertyType', () => {
       val: string;
 
       constructor(data?: TestModel) {
-        BaseModel.init(data);
+        BaseModel.init(this, data);
       }
     }
 
@@ -344,7 +344,7 @@ describe('PropertyType', () => {
       val: string;
 
       constructor(data?: TestModel) {
-        BaseModel.init(data);
+        BaseModel.init(this, data);
       }
     }
 
@@ -358,7 +358,7 @@ describe('PropertyType', () => {
       val: string;
 
       constructor(data?: TestModel) {
-        BaseModel.init(data);
+        BaseModel.init(this, data);
       }
     }
 
@@ -372,7 +372,7 @@ describe('PropertyType', () => {
       val: string;
 
       constructor(data?: TestModel) {
-        BaseModel.init(data);
+        BaseModel.init(this, data);
       }
     }
 
@@ -386,7 +386,7 @@ describe('PropertyType', () => {
       val: string;
 
       constructor(data?: TestModel) {
-        BaseModel.init(data);
+        BaseModel.init(this, data);
       }
     }
 
@@ -400,7 +400,7 @@ describe('PropertyType', () => {
       val?: string;
 
       constructor(data?: TestModel) {
-        BaseModel.init(data);
+        BaseModel.init(this, data);
       }
     }
 
@@ -414,7 +414,7 @@ describe('PropertyType', () => {
       val: string;
 
       constructor(data?: TestModel) {
-        BaseModel.init(data);
+        BaseModel.init(this, data);
       }
     }
 
@@ -428,7 +428,7 @@ describe('PropertyType', () => {
       val: string;
 
       constructor(data?: TestModel) {
-        BaseModel.init(data);
+        BaseModel.init(this, data);
       }
     }
 
@@ -442,7 +442,7 @@ describe('PropertyType', () => {
       val: number;
 
       constructor(data?: TestModel) {
-        BaseModel.init(data);
+        BaseModel.init(this, data);
       }
     }
 
@@ -456,7 +456,7 @@ describe('PropertyType', () => {
       val: number;
 
       constructor(data?: TestModel) {
-        BaseModel.init(data);
+        BaseModel.init(this, data);
       }
     }
 
@@ -470,7 +470,7 @@ describe('PropertyType', () => {
       val?: number;
 
       constructor(data?: TestModel) {
-        BaseModel.init(data);
+        BaseModel.init(this, data);
       }
     }
 
@@ -483,7 +483,7 @@ describe('PropertyType', () => {
       nested?: number;
 
       constructor(data?: NestedModel) {
-        BaseModel.init(data);
+        BaseModel.init(this, data);
       }
     }
 
@@ -492,7 +492,7 @@ describe('PropertyType', () => {
       val: NestedModel;
 
       constructor(data?: TestModel) {
-        BaseModel.init(data);
+        BaseModel.init(this, data);
       }
     }
 
@@ -507,7 +507,7 @@ describe('PropertyType', () => {
       nested?: number;
 
       constructor(data?: NestedModel) {
-        BaseModel.init(data);
+        BaseModel.init(this, data);
       }
     }
 
@@ -516,7 +516,7 @@ describe('PropertyType', () => {
       val: NestedModel[];
 
       constructor(data?: TestModel) {
-        BaseModel.init(data);
+        BaseModel.init(this, data);
       }
     }
 

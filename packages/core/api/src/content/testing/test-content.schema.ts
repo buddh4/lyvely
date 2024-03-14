@@ -1,10 +1,16 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Content, ContentDataType } from '../schemas';
+import { BaseModel, type BaseModelData, type PropertiesOf } from '@lyvely/common';
 
 @Schema()
 export class TestContentData extends ContentDataType {
   @Prop({ required: true })
   testData: string;
+
+  constructor(data: BaseModelData<TestContentData>) {
+    super(false);
+    BaseModel.init(this, data);
+  }
 }
 
 export const TestContentDataSchema = SchemaFactory.createForClass(TestContentData);

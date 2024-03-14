@@ -5,7 +5,7 @@ import { type PartialPropertiesOf } from '@lyvely/common';
 import { IntegrityException } from '@lyvely/interface';
 import { ObjectIdProp, TObjectId } from '@/core';
 
-interface ICreateContentScore extends ICreateProfileScore {
+export interface ICreateContentScore extends ICreateProfileScore {
   content: Content;
 }
 

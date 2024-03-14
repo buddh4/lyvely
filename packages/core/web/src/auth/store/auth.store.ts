@@ -68,7 +68,7 @@ export const useAuthStore = defineStore('user-auth', () => {
   function getSetting<TResult = any>(key: string, defaultValue: TResult): TResult;
   function getSetting<TResult = any>(key: string, defaultValue?: undefined): TResult | undefined;
   function getSetting<TResult = any>(key: string, defaultValue?: TResult): TResult | undefined {
-    return findByPath(user.value?.settings || {}, key, { defaultValue });
+    return findByPath(user.value?.settings, key, { defaultValue });
   }
 
   function isAwaitingEmailVerification() {

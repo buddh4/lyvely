@@ -1,11 +1,11 @@
-import { Model } from '@lyvely/common';
+import { BaseModel } from '@lyvely/common';
 import { Exclude, Expose, Type } from 'class-transformer';
 import { getChartSeriesConfigTypes } from '../registries/chart-series.registry';
 import { ChartSeriesConfigModel } from './chart-series-config.model';
 
 @Exclude()
 export class UpdateChartSeriesModel<
-  TConfig extends ChartSeriesConfigModel<undefined> = ChartSeriesConfigModel<undefined>,
+  TConfig extends ChartSeriesConfigModel = ChartSeriesConfigModel,
 > {
   @Expose()
   @Type(() => ChartSeriesConfigModel, {
@@ -17,7 +17,7 @@ export class UpdateChartSeriesModel<
   })
   config: TConfig;
 
-  constructor(config?: ChartSeriesConfigModel<undefined>) {
-    Model.init<UpdateChartSeriesModel>(this, { config });
+  constructor(config: ChartSeriesConfigModel) {
+    BaseModel.init<UpdateChartSeriesModel>(this, { config });
   }
 }

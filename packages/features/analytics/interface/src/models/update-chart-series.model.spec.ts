@@ -1,21 +1,21 @@
 import { registerChartSeries, resetChartSeries } from '../registries';
 import { ChartType } from '../interfaces';
 import { ChartSeriesConfigModel } from './chart-series-config.model';
-import { Document, PartialPropertiesOf } from '@lyvely/common';
 import { UpdateChartSeriesModel } from './update-chart-series.model';
 import { Expose, plainToClass } from 'class-transformer';
+import { BaseModel, type BaseModelData } from '@lyvely/common';
 
-class TestSeriesConfig<TID = string> extends ChartSeriesConfigModel<TID> {
+class TestSeriesConfig extends ChartSeriesConfigModel {
   static seriesType = 'TestSeries';
 
-  type = TestSeriesConfig.seriesType;
+  override type = TestSeriesConfig.seriesType;
 
   @Expose()
   testField: string;
 
-  constructor(data: PartialPropertiesOf<TestSeriesConfig<any>>) {
-    super();
-    Document.init(this, data);
+  constructor(data: BaseModelData<TestSeriesConfig>) {
+    super(false);
+    BaseModel.init(this, data);
   }
 }
 

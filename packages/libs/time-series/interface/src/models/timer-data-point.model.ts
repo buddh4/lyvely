@@ -6,7 +6,13 @@ import {
   ITimerDataPointConfig,
   NumericDataPointInterface,
 } from '../interfaces';
-import { BaseModel, type PropertiesOf, PropertyType } from '@lyvely/common';
+import {
+  BaseModel,
+  type BaseModelData,
+  DocumentModel,
+  type PropertiesOf,
+  PropertyType,
+} from '@lyvely/common';
 import { TimerModel } from '@lyvely/timers-interface';
 import { IsNumber, Min, ValidateNested } from 'class-validator';
 
@@ -37,6 +43,11 @@ export class TimerDataPointModel<TID = string>
 
   @Expose()
   override valueType = DataPointValueType.Timer;
+
+  constructor(data: BaseModelData<TimerDataPointModel<any>>) {
+    super(false);
+    DocumentModel.init(this, data);
+  }
 
   get numericValue() {
     return this.value.ms;

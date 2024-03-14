@@ -99,7 +99,11 @@ export function applyInc<T extends object = object>(model: T, incData: Record<st
 
     if (path.includes('.') && path.lastIndexOf('.') !== path.length - 1) {
       fieldToInc = path.slice(path.lastIndexOf('.') + 1);
-      modelToInc = findByPath<T>(model, path, { returnParent: true });
+      modelToInc = findByPath<T>(model, path, {
+        returnParent: true,
+        create: true,
+        defaultValue: 0,
+      });
     }
 
     if (modelToInc && typeof modelToInc[fieldToInc] === 'number') {

@@ -8,7 +8,7 @@ import { UserInfo } from '@/users';
 import { Prop } from '@nestjs/mongoose';
 import { Translatable } from '@/i18n';
 import { UrlRoute } from '@lyvely/interface';
-import { escapeHtmlIf } from '@lyvely/common';
+import { BaseModel, type BaseModelData, escapeHtmlIf } from '@lyvely/common';
 import { TestNotificationCategory } from '../notifications';
 import { profilesTestPlugin, ProfileTestDataUtils } from '@/profiles';
 import { notificationTestPlugin } from '../testing';
@@ -16,11 +16,16 @@ import { notificationTestPlugin } from '../testing';
 const TEST_KEY = 'NotificationSendProcessor';
 
 @NotificationDecorator()
-export class MyTestNotification extends NotificationType<MyTestNotification> {
+export class MyTestNotification extends NotificationType {
   @Prop()
   testProp: string;
 
   nonProp: string;
+
+  constructor(data: BaseModelData<MyTestNotification>) {
+    super(false);
+    BaseModel.init(this, data);
+  }
 
   getBody(context: NotificationContext): Translatable {
     return {

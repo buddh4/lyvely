@@ -8,6 +8,7 @@ import {
   TObjectId,
 } from '@/core';
 import { User } from '@/users';
+import { Profile } from '@/profiles';
 
 @NestedSchema({ discriminatorKey: 'type' })
 export class UserSubscription {
@@ -24,9 +25,9 @@ export class ProfileSubscription extends UserSubscription {
   @ObjectIdProp()
   pid: TObjectId;
 
-  constructor(pid: TObjectId) {
+  constructor(profile: DocumentIdentity<Profile>) {
     super();
-    this.pid = pid;
+    this.pid = assureObjectId(profile);
   }
 }
 

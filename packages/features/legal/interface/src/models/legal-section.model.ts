@@ -1,6 +1,5 @@
-import { BaseModel, type PropertiesOf } from '@lyvely/common';
+import { BaseModel, type PropertiesOf, BaseModelData } from '@lyvely/common';
 import { Expose } from 'class-transformer';
-import type { BaseModelData } from '@lyvely/common/src';
 
 @Expose()
 export class LegalSection {

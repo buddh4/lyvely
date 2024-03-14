@@ -101,11 +101,11 @@ describe('DataPointService', () => {
 
   describe('updateOrCreateDataPoint()', () => {
     it('non existing log is created', async () => {
-      const { user, profile } = await testData.createUserAndProfile();
+      const { user, profile, context } = await testData.createUserAndProfile();
       const content = await createTimeSeriesContent(user, profile);
       const date = new Date();
 
-      const { dataPoint } = await service.upsertDataPoint(profile, user, content, date, 5);
+      const { dataPoint } = await service.upsertDataPoint(context, content, date, 5);
       expect(dataPoint._id).toBeDefined();
       expect(dataPoint.pid).toEqual(profile._id);
       expect(dataPoint.pid).toEqual(profile._id);
@@ -114,41 +114,40 @@ describe('DataPointService', () => {
     });
 
     it('update existing log value', async () => {
-      const { user, profile } = await testData.createUserAndProfile();
+      const { user, profile, context } = await testData.createUserAndProfile();
       const content = await createTimeSeriesContent(user, profile);
       const date = new Date();
 
-      await service.upsertDataPoint(profile, user, content, date, 5);
-      await service.findByIntervalLevel(profile, user, {
+      await service.upsertDataPoint(context, content, date, 5);
+      await service.findByIntervalLevel(context, {
         date: formatDate(date),
         level: CalendarInterval.Unscheduled,
       });
-      await service.upsertDataPoint(profile, user, content, date, 3);
+      await service.upsertDataPoint(context, content, date, 3);
 
-      await service.findByIntervalLevel(profile, user, {
+      await service.findByIntervalLevel(context, {
         date: formatDate(date),
         level: CalendarInterval.Unscheduled,
       });
-      const dataPoint = await service.findDataPointByDate(profile, user, content, date);
+      const dataPoint = await service.findDataPointByDate(context, content, date);
       expect(dataPoint!.value).toEqual(3);
     });
   });
 
   describe('shared vs per user', () => {
     it('create per user strategy content', async () => {
-      const { owner, member, profile } = await testData.createSimpleGroup();
+      const { owner, ownerContext, member, memberContext, profile } =
+        await testData.createSimpleGroup();
       const date = new Date();
       const content = await createTimeSeriesContent(owner, profile, UserAssignmentStrategy.PerUser);
       const { dataPoint: ownerDataPoint } = await service.upsertDataPoint(
-        profile,
-        owner,
+        ownerContext,
         content,
         date,
         1,
       );
       const { dataPoint: memberDataPoint } = await service.upsertDataPoint(
-        profile,
-        member,
+        memberContext,
         content,
         date,
         2,
@@ -157,8 +156,8 @@ describe('DataPointService', () => {
       expect(ownerDataPoint._id).not.toEqual(memberDataPoint._id);
 
       const filter = new CalendarPlanFilter(date);
-      const ownerDataPoints = await service.findByIntervalLevel(profile, owner, filter);
-      const memberDataPoints = await service.findByIntervalLevel(profile, member, filter);
+      const ownerDataPoints = await service.findByIntervalLevel(ownerContext, filter);
+      const memberDataPoints = await service.findByIntervalLevel(memberContext, filter);
 
       expect(ownerDataPoints.length).toEqual(1);
       expect(ownerDataPoints[0]._id).toEqual(ownerDataPoint._id);
@@ -170,19 +169,18 @@ describe('DataPointService', () => {
     });
 
     it('create shared user strategy content', async () => {
-      const { owner, member, profile } = await testData.createSimpleGroup();
+      const { owner, ownerContext, member, memberContext, profile } =
+        await testData.createSimpleGroup();
       const date = new Date();
       const content = await createTimeSeriesContent(owner, profile);
       const { dataPoint: ownerDataPoint } = await service.upsertDataPoint(
-        profile,
-        owner,
+        ownerContext,
         content,
         date,
         1,
       );
       const { dataPoint: memberDataPoint } = await service.upsertDataPoint(
-        profile,
-        member,
+        memberContext,
         content,
         date,
         2,
@@ -191,8 +189,8 @@ describe('DataPointService', () => {
       expect(ownerDataPoint._id).toEqual(memberDataPoint._id);
 
       const filter = new CalendarPlanFilter(date);
-      const ownerDataPoints = await service.findByIntervalLevel(profile, owner, filter);
-      const memberDataPoints = await service.findByIntervalLevel(profile, member, filter);
+      const ownerDataPoints = await service.findByIntervalLevel(ownerContext, filter);
+      const memberDataPoints = await service.findByIntervalLevel(memberContext, filter);
 
       expect(ownerDataPoints.length).toEqual(1);
       expect(ownerDataPoints[0]._id).toEqual(memberDataPoints[0]._id);

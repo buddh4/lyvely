@@ -3,7 +3,7 @@ import { IsEnum, IsInt, IsNotEmpty, IsOptional, IsString, Length, Max, Min } fro
 import { CalendarInterval } from '@lyvely/dates';
 import { CreateContentModel, UserAssignmentStrategy } from '@lyvely/interface';
 import { BaseModel, Trim } from '@lyvely/common';
-import type { StrictBaseModelData } from '@lyvely/common/src';
+import type { StrictBaseModelData } from '@lyvely/common';
 
 @Exclude()
 export class CreateTaskModel extends CreateContentModel {

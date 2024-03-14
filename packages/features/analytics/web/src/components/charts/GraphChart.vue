@@ -4,13 +4,13 @@ import {
   ChartType,
   useChartsClient,
   ChartSeriesDataResponse,
+  isGraphChart,
 } from '@lyvely/analytics-interface';
 import { computed, onMounted, ref, watch } from 'vue';
 import * as echarts from 'echarts/core';
 import EditGraphSeriesModal from '@/components/modals/EditGraphSeriesModal.vue';
 import { useEditChartSeriesStore } from '@/store';
 import { LyButton, LyIcon } from '@lyvely/ui';
-import { isGraphChart } from '@lyvely/analytics-interface/src/models/graph-chart.model';
 
 const props = defineProps<{ model: ChartModel<string> }>();
 

@@ -45,9 +45,9 @@ describe('Habits DAO', () => {
 
   describe('findByProfileAndTimingIds', () => {
     it('find habit', async () => {
-      const { user, profile } = await testData.createUserAndProfile();
+      const { user, profile, context } = await testData.createUserAndProfile();
       const habit = await testData.createHabit(user, profile);
-      const search = await habitsDao.findByProfileAndTimingIds(profile, user, []);
+      const search = await habitsDao.findByProfileAndTimingIds(context, []);
       expect(search.length).toEqual(1);
       expect(search.find((c) => c.content.title === habit.content.title)).toBeDefined();
     });

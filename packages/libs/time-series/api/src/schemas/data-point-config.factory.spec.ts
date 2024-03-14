@@ -119,7 +119,10 @@ describe('DataPointConfigFactory', () => {
       );
       expect(config.inputType).toEqual(DataPointInputType.Textarea);
       expect(config.valueType).toEqual(DataPointValueType.Text);
-      expect(config.getSettings()).toEqual({});
+      expect(config.getSettings()).toEqual({
+        interval: CalendarInterval.Daily,
+        required: false,
+      });
     });
 
     function expectConfig(
