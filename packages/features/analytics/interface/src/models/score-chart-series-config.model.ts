@@ -1,10 +1,10 @@
 import { Exclude, Expose } from 'class-transformer';
 import { IsBoolean, IsMongoId, IsOptional } from 'class-validator';
-import type { PartialPropertiesOf } from '@lyvely/common';
-import { Document } from '@lyvely/common';
+import type { BaseModelData } from '@lyvely/common';
 import { ChartSeriesConfigModel } from './chart-series-config.model';
 import { ChartType, IChartSeriesDefinition } from '../interfaces';
 import { CHART_SERIES_TYPE_SCORE } from '../analytics.constants';
+import { BaseModel } from '@lyvely/common';
 
 @Exclude()
 export class ScoreChartSeriesConfigModel<TID = string> extends ChartSeriesConfigModel {
@@ -17,9 +17,9 @@ export class ScoreChartSeriesConfigModel<TID = string> extends ChartSeriesConfig
   @IsOptional()
   currentUser?: boolean;
 
-  constructor(data?: PartialPropertiesOf<ScoreChartSeriesConfigModel<any>>) {
-    super();
-    Document.init(this, data);
+  constructor(data?: BaseModelData<ScoreChartSeriesConfigModel<any>>) {
+    super(false);
+    BaseModel.init(this, data);
   }
 }
 

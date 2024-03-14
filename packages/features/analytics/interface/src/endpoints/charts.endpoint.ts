@@ -7,7 +7,6 @@ import {
   UpdateChartModel,
   UpdateChartSeriesModel,
 } from '../models';
-import { ChartSeriesKeyValueArrayData } from '../interfaces';
 
 export interface IChartsEndpointClient
   extends IContentTypeClient<ChartModel, CreateChartModel, UpdateChartModel> {

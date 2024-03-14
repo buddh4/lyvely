@@ -1,4 +1,4 @@
-import { BaseModel, type PropertiesOf, BaseModelData } from '@lyvely/common';
+import { BaseModel, type PropertiesOf, type BaseModelData } from '@lyvely/common';
 import { Expose } from 'class-transformer';
 
 @Expose()

@@ -1,12 +1,13 @@
 import type { IChartConfig } from '../interfaces';
 import { ChartType } from '../interfaces';
-import type { PartialPropertiesOf } from '@lyvely/common';
-import { Model } from '@lyvely/common';
+import type { BaseModelData } from '@lyvely/common';
+import { BaseModel } from '@lyvely/common';
 import { CalendarInterval } from '@lyvely/dates';
 import { ChartSeriesConfigModel } from './chart-series-config.model';
-import { Expose } from 'class-transformer';
+import { Exclude, Expose } from 'class-transformer';
 import { ChartModel } from './chart.model';
 
+@Exclude()
 export class GraphChartConfigModel implements IChartConfig {
   type = ChartType.Graph;
 
@@ -16,8 +17,8 @@ export class GraphChartConfigModel implements IChartConfig {
   @Expose()
   series: ChartSeriesConfigModel[];
 
-  constructor(data: PartialPropertiesOf<GraphChartConfigModel>) {
-    Model.init(this, data);
+  constructor(data: BaseModelData<GraphChartConfigModel>) {
+    BaseModel.init(this, data);
   }
 }
 

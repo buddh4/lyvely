@@ -1,8 +1,10 @@
 {
   "extends": "./typescript/lib.tsconfig.json",
   "compilerOptions": {
+    "lib": ["es5", "dom"],
     "allowSyntheticDefaultImports": true,
-    "baseUrl": "./"
+    "baseUrl": "./",
+    "types": ["cypress", "node"]
   },
   "exclude": [
     "node_modules", "dist", "src/**/tests/**/*", "**/*.spec.ts"]

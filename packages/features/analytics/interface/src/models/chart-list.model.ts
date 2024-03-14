@@ -1,5 +1,5 @@
 import { ChartModel } from './chart.model';
-import { Model, PropertyType, PartialPropertiesOf } from '@lyvely/common';
+import { PropertyType, BaseModel, type BaseModelData } from '@lyvely/common';
 import { Expose } from 'class-transformer';
 
 export class ChartListModel<TID = string> {
@@ -7,7 +7,7 @@ export class ChartListModel<TID = string> {
   @PropertyType([ChartModel])
   charts: ChartModel<TID>[];
 
-  constructor(data: PartialPropertiesOf<ChartListModel<any>>) {
-    Model.init(this, data);
+  constructor(data: BaseModelData<ChartListModel<any>>) {
+    BaseModel.init(this, data);
   }
 }

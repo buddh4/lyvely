@@ -22,7 +22,7 @@ export class ContentDataType implements IContentDataType, IRenderable {
     return this.text || '';
   }
 
-  constructor(data: BaseModelData<Omit<ContentDataType, 'renderType'>>) {
+  constructor(data: BaseModelData<ContentDataType>) {
     BaseModel.init(this, data);
   }
 }

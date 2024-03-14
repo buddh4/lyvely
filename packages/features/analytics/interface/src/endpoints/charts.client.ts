@@ -11,7 +11,6 @@ import {
 import repository from './charts.repository';
 import { IProfileApiRequestOptions, unwrapAndTransformResponse } from '@lyvely/interface';
 import { useSingleton } from '@lyvely/common';
-import { ChartSeriesKeyValueArrayData } from '../interfaces';
 
 /**
  * A client for interacting with charts API endpoint.

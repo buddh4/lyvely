@@ -1,13 +1,12 @@
 import { Exclude, Expose } from 'class-transformer';
 import { CreateContentModel } from '@lyvely/interface';
 import { IsEnum, IsNotEmpty, IsOptional, IsString, Length, MaxLength } from 'class-validator';
-import { Trim, Model } from '@lyvely/common';
-import type { PartialPropertiesOf } from '@lyvely/common';
+import { Trim, type BaseModelData, BaseModel } from '@lyvely/common';
 import { ChartType } from '../interfaces';
 import { CalendarInterval } from '@lyvely/dates';
 
 @Exclude()
-export class CreateChartModel extends CreateContentModel<CreateChartModel> {
+export class CreateChartModel extends CreateContentModel {
   @Expose()
   @IsString()
   @IsNotEmpty()
@@ -30,10 +29,8 @@ export class CreateChartModel extends CreateContentModel<CreateChartModel> {
   @IsEnum(ChartType)
   type: ChartType = ChartType.Graph;
 
-  constructor(data?: PartialPropertiesOf<CreateChartModel> | false) {
-    super();
-    if (data !== false) {
-      Model.init(this, data);
-    }
+  constructor(data?: BaseModelData<CreateChartModel>) {
+    super(false);
+    BaseModel.init(this, data);
   }
 }

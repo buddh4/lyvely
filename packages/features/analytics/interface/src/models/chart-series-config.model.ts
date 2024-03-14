@@ -16,7 +16,7 @@ export class ChartSeriesConfigModel implements IChartSeriesConfig {
   @MaxLength(255)
   name: string;
 
-  constructor(data?: BaseModelData<ChartSeriesConfigModel>) {
+  constructor(data: BaseModelData<ChartSeriesConfigModel>) {
     BaseModel.init(this, data);
   }
 }
