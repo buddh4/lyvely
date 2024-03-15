@@ -6,7 +6,7 @@ import {
   IDataPointConfig,
   NumericDataPointInterface,
 } from '../interfaces';
-import { type BaseModelData, DocumentModel, PropertyType } from '@lyvely/common';
+import { type BaseModelData, BaseModel, PropertyType } from '@lyvely/common';
 
 export class NumberDataPointModel<TID = string>
   extends DataPointModel<TID>
@@ -21,7 +21,7 @@ export class NumberDataPointModel<TID = string>
 
   constructor(data: BaseModelData<DataPointModel<any>>) {
     super(false);
-    DocumentModel.init(this, data);
+    BaseModel.init(this, data);
   }
 
   get numericValue() {

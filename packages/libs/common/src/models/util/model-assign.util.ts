@@ -1,49 +1,68 @@
 import { findByPath, isBlacklistedProperty, isObjectId, isPlainObject, Type } from '../../utils';
 import { initPropertyTypes } from './model-property-type.util';
 import { getPropertyTypeDefinition } from '../decorators';
-import { implementsAfterInit } from './model-interfaces.helper';
+import { implementsAfterInit, implementsGetDefaults } from './model-interfaces.helper';
 
 type WithTransformation = ((model: any, field: string) => undefined | any) | undefined;
-interface IAssignOptions {
+interface InitModelDataOptions {
   maxDepth?: number;
   strict?: boolean;
+  skipGetDefaults?: boolean;
+  skipAfterInit?: boolean;
+  skipInitProps?: boolean;
   transform?: WithTransformation;
 }
 
-export function createAndAssign<T, C extends Type<T> = Type<T>>(
+export function createBaseModelAndInit<T, C extends Type<T> = Type<T>>(
   type: C,
   data?: { [key in keyof T]?: any } & any,
-  options: IAssignOptions = {},
+  options: InitModelDataOptions = {},
 ) {
-  return assignRawDataToAndInitProps(Object.create(type.prototype), data, options);
+  return initBaseModelData(Object.create(type.prototype), data, options);
 }
 
-export function assignRawDataToAndInitProps<T extends Object>(
+export function initBaseModelData<T extends Object>(
   model: T,
   data?: { [key in keyof T]?: any } & any,
-  options: IAssignOptions = {},
+  options: InitModelDataOptions = {},
 ) {
-  assignRawDataTo(model, data, options);
-  initPropertyTypes(model);
-  return model;
+  return _initBaseModelData(model, data, 0, options);
 }
 
 export function assignRawDataTo<T extends Object>(
   model: T,
   data: { [key in keyof T]?: any } & any,
-  { maxDepth = 100, strict = false, transform = undefined as WithTransformation } = {},
+  options?: InitModelDataOptions,
 ): T {
-  return _assignRawDataTo(model, data, 0, { maxDepth, strict, transform });
+  return _initBaseModelData(model, data, 0, {
+    ...options,
+    skipInitProps: true,
+    skipGetDefaults: true,
+    skipAfterInit: true,
+  });
 }
 
-function _assignRawDataTo<T extends Object>(
+function _initBaseModelData<T extends object>(
   model: T,
   data: { [key in keyof T]?: any } & any,
   level = 0,
-  { maxDepth = 100, strict = false, transform = undefined as WithTransformation } = {},
+  options?: InitModelDataOptions,
 ): T {
-  if (!data || level > maxDepth) {
-    return model;
+  options = {
+    maxDepth: 100,
+    transform: undefined as WithTransformation,
+    ...options,
+  } as InitModelDataOptions;
+
+  const { maxDepth, transform, skipGetDefaults, skipInitProps, skipAfterInit, strict } = options;
+
+  if (!skipGetDefaults && implementsGetDefaults(model)) {
+    data = data ? Object.assign(model.getDefaults(), data) : model.getDefaults();
+  }
+
+  if (!data || level > maxDepth!) {
+    initPropertyTypes(model);
+    return _initModel(model, data, options);
   }
 
   Object.keys(data).forEach((key) => {
@@ -53,7 +72,7 @@ function _assignRawDataTo<T extends Object>(
       if (subPathRoot) {
         const field = path.slice(path.lastIndexOf('.') + 1);
         if (field.startsWith('$')) return;
-        _assignRawDataTo(subPathRoot, { [field]: data[path] });
+        _initBaseModelData(subPathRoot, { [field]: data[path] }, level + 1, options);
       }
       return;
     }
@@ -69,11 +88,9 @@ function _assignRawDataTo<T extends Object>(
       let arrayData = data[path];
       const arrayType = getPropertyTypeDefinition(model.constructor as Type, path)?.type;
       if (arrayType && Array.isArray(arrayType) && arrayType.length) {
-        arrayData = data[path].map((entry: any) => _transformType(entry, arrayType[0]));
+        arrayData = data[path].map((entry: any) => _transformType(entry, arrayType[0], options));
       }
-      model[path] = <T[keyof T & string]>(
-        _assignRawDataTo([], arrayData, level + 1, { maxDepth, strict, transform })
-      );
+      model[path] = <T[keyof T & string]>_initBaseModelData([], arrayData, level + 1, options);
     } else if (isObjectId(data[path])) {
       // TODO: Handle cases in which propertyType is not String && != ObjectId
       const propertyTypeDefinition = getPropertyTypeDefinition(model.constructor as Type, path);
@@ -95,16 +112,12 @@ function _assignRawDataTo<T extends Object>(
       } else if (PRIMITIVE_TYPES.includes(propertyType)) {
         model[path] = <T[keyof T & string]>null; // We do not want to convert objects to primitives
       } else {
-        model[path] = _assignRawDataTo(
+        model[path] = _initBaseModelData(
           Object.assign(Object.create(propertyType.prototype), model[path]),
           data[path],
           level + 1,
-          { maxDepth, strict, transform },
+          options,
         );
-      }
-      const modelValue = model[path];
-      if (implementsAfterInit(modelValue)) {
-        modelValue.afterInit();
       }
     } else if (typeof data[path] !== 'function') {
       const propertyTypeDefinition = getPropertyTypeDefinition(model.constructor as Type, path);
@@ -123,6 +136,26 @@ function _assignRawDataTo<T extends Object>(
       }
     }
   });
+
+  return _initModel(model, data, options);
+}
+
+function _initModel<T extends object>(
+  model: T,
+  data: { [key in keyof T]?: any } & any,
+  options: Pick<InitModelDataOptions, 'skipInitProps' | 'skipAfterInit'> = {},
+) {
+  if (isPlainObject(data) && '_id' in data && isPlainObject(data._id)) {
+    (<any>model).id = data._id.toString();
+  }
+
+  if (!options.skipInitProps) {
+    initPropertyTypes(model);
+  }
+
+  if (!options.skipAfterInit && implementsAfterInit(model)) {
+    model.afterInit();
+  }
 
   return model;
 }
@@ -148,7 +181,7 @@ function _isPrimitiveType(type: any) {
   return PRIMITIVE_TYPES.includes(type);
 }
 
-function _transformType(value: any, type: any) {
+function _transformType(value: any, type: any, options?: InitModelDataOptions) {
   if (value === undefined || value === null || _isOfType(value, type)) return value;
   if (type === null || type === undefined) return type;
   if (_isPrimitiveType(type)) {
@@ -187,7 +220,7 @@ function _transformType(value: any, type: any) {
     return null;
   }
 
-  return Object.assign(Object.create(type.prototype), value);
+  return createBaseModelAndInit(type, value, options);
 }
 
 function getSpecificConstructor(a: any, b: any) {

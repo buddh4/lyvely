@@ -25,7 +25,7 @@ const appName = useAppConfigStore().get('appName');
     <template #title>
       <slot name="title">
         <span class="font-bold">{{
-          model.getTitle() ? $t(model.getTitle(), model.content.params || {}) : appName
+          model.getTitle() ? t(model.getTitle(), model.content.params || {}) : appName
         }}</span>
         <relative-time :ts="model.meta.createdAt.getTime()"></relative-time>
       </slot>

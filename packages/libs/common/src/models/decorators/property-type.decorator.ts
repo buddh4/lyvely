@@ -65,7 +65,7 @@ export function getPropertyTypeDefinition(type: Type, propertyKey: string) {
  * Note, this does not work with class-validator plainToInstance.
  *
  * @param options IPropertyDefinitionOption passed to PropertyType decorator.
- * @see assignRawDataToAndInitProps for the actual implementation.
+ * @see initBaseModelData for the actual implementation.
  * @constructor
  */
 export function PropertyType<

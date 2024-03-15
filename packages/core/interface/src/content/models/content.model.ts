@@ -1,6 +1,5 @@
 import {
   BaseModel,
-  DocumentModel,
   type PropertiesOf,
   PropertyType,
   TransformObjectId,
@@ -147,7 +146,7 @@ export class ContentModel<
   policies: IContentPolicies;
 
   constructor(data: BaseModelData<ContentModel<any, TConfig, TData, TState>>) {
-    DocumentModel.init(this, data);
+    BaseModel.init(this, data);
   }
 
   @Expose()

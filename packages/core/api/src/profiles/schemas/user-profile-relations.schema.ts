@@ -1,15 +1,21 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import {
-  assignEntityData,
   BaseDocument,
   assureObjectId,
   TObjectId,
   ObjectIdProp,
   type BaseDocumentData,
+  NestedSchema,
 } from '@/core';
 import { Profile } from './profiles.schema';
 import { User } from '@/users';
-import { getNumberEnumValues, PropertyType, validateEmail } from '@lyvely/common';
+import {
+  BaseModel,
+  getNumberEnumValues,
+  PropertyType,
+  type StrictBaseModelData,
+  validateEmail,
+} from '@lyvely/common';
 import { IProfileRelationUserInfo, UserStatus, ProfileRelationModel } from '@lyvely/interface';
 
 export interface ICreateProfileRelation {
@@ -23,22 +29,22 @@ export interface ICreateProfileRelation {
   role: string;
 }
 
-@Schema({ _id: false })
+@NestedSchema()
 export class ProfileRelationUserInfo implements IProfileRelationUserInfo {
-  @Prop({ required: true, type: String })
+  @Prop({ required: true })
   displayName: string;
 
   @Prop({ required: true, validate: { validator: validateEmail } })
   email: string;
 
-  @Prop({ type: String })
+  @Prop()
   guid: string;
 
   @Prop()
   description?: string;
 
-  constructor(obj?: Partial<ProfileRelationUserInfo>) {
-    assignEntityData(this, obj);
+  constructor(data: StrictBaseModelData<ProfileRelationUserInfo>) {
+    BaseModel.init(this, data);
   }
 
   static create(data: ICreateProfileRelation) {

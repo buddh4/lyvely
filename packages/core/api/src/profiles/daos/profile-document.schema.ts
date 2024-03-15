@@ -14,8 +14,4 @@ export abstract class ProfileDocument {
   _id: TObjectId;
 
   id: string;
-
-  protected constructor(data: StrictBaseDocumentData<ProfileDocument>) {
-    BaseDocument.init(this, data);
-  }
 }

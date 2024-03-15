@@ -132,7 +132,7 @@ export class Content<
     createdBy: User,
     obj?: BaseDocumentData<Content<TConfig, TData, TStatus>>,
   ) {
-    super(false);
+    super();
 
     BaseDocument.init(this, obj);
 

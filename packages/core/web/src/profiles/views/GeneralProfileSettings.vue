@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { useProfileStore } from '@/profiles/stores/profile.store';
 import { ProfileAvatar } from '../components';
+import { t } from '@/i18n';
 import { useUpdateProfileStore } from '../stores';
 import { storeToRefs } from 'pinia';
 import { ISelectOptions, LyListPageSection } from '@lyvely/ui';
@@ -47,7 +48,7 @@ setTimeout(() => {
             class="primary text-xs ml-auto"
             :loading="status.isStatusLoading()"
             @click="submit">
-            {{ $t('common.update') }}
+            {{ t('common.update') }}
           </ly-button>
         </div>
       </ly-form-model>
@@ -58,7 +59,7 @@ setTimeout(() => {
         <ly-button
           class="danger text-xs ml-auto"
           :confirm="{ text: 'profiles.settings.archive.confirm' }">
-          {{ $t('common.archive') }}
+          {{ t('common.archive') }}
         </ly-button>
       </div>
     </ly-list-page-section>

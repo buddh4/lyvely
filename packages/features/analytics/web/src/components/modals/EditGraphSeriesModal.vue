@@ -1,16 +1,16 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 import { LyModal, LyFormModel, LySelect, LyTextField } from '@lyvely/ui';
-import { useEditGraphSeriesStore } from '@/store';
+import { useEditChartSeriesStore } from '@/store';
 import { getChartSeriesFormDefinitions } from '@/registries/chart-series-web.registry';
 
 export interface IProps {
   cid?: string;
 }
 
-const props = defineProps<IProps>();
+defineProps<IProps>();
 
-const editGraphStore = useEditGraphSeriesStore();
+const editGraphStore = useEditChartSeriesStore();
 const { reset, submit, isCreate, showModal, baseModel, baseValidator } = editGraphStore;
 const graphTypes = getChartSeriesFormDefinitions();
 const title = computed(() =>

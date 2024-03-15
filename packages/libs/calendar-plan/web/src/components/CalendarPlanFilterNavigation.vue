@@ -1,8 +1,7 @@
 <script lang="ts" setup>
-import { IContentFilter } from '@lyvely/interface';
+import { IContentFilter, useContentFilter, t } from '@lyvely/web';
 import { LocationQuery, onBeforeRouteLeave, useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
-import { useContentFilter } from '@lyvely/web';
 import { useCalendarPlanStore } from '@/stores';
 import {
   LyButton,
@@ -46,14 +45,14 @@ onBeforeRouteLeave(stopWatch);
     <ly-button
       :class="roundButton"
       :active="dragActive"
-      :aria-label="$t('calendar-plan.aria.drag-toggle-button')"
+      :aria-label="t('calendar-plan.aria.drag-toggle-button')"
       @click="dragActive = !dragActive">
       <ly-icon name="drag" />
     </ly-button>
 
     <ly-slider-menu class="tag-filter-selection">
       <ly-button :class="pillButton" :active="!activeTagId" @click="setTagFilter()">
-        {{ $t('filter.all') }}
+        {{ t('filter.all') }}
       </ly-button>
 
       <ly-button
@@ -89,7 +88,7 @@ onBeforeRouteLeave(stopWatch);
           ref="search"
           v-model="queryFilter"
           class="search w-full mb-4 py-1"
-          :placeholder="$t('common.filter.search')"
+          :placeholder="t('common.filter.search')"
           type="text" />
         <ly-icon name="search" class="absolute right-2.5 top-2 text-dimmed pointer-events-none" />
       </div>

@@ -5,7 +5,7 @@ describe('User can create tags', function () {
   });
 
   it('Success archive tag', () => {
-    cy.load('/p/owner/tags');
+    cy.loadProfile('owner-profile', '/tags');
     cy.getByObjectId('tag-health', 'btn-archive').click();
     cy.contains('Confirm action');
     cy.getId('btn-modal-submit').click();
@@ -13,7 +13,7 @@ describe('User can create tags', function () {
   });
 
   it('Restore tag', () => {
-    cy.load('/p/owner/tags');
+    cy.loadProfile('owner-profile', '/tags');
     cy.getByObjectId('tag-social').should('not.exist');
     cy.getId('btn-toggle-archived').click();
     cy.getByObjectId('tag-social').should('exist');

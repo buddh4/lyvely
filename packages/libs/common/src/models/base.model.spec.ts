@@ -1,5 +1,5 @@
-import { DocumentModel } from '../index';
 import { Exclude, Expose, instanceToPlain } from 'class-transformer';
+import { BaseModel } from './base.model';
 
 class MockObjectId {
   constructor(value: any) {
@@ -23,7 +23,7 @@ class TestBaseDto {
   secret: 'string';
 
   constructor(data: Partial<TestBaseDto>) {
-    DocumentModel.init(this, data);
+    BaseModel.init(this, data);
   }
 }
 
@@ -44,7 +44,7 @@ class TestDocumentDto {
   secret?: string;
 
   constructor(data: Partial<TestDocumentDto>) {
-    DocumentModel.init(this, data);
+    BaseModel.init(this, data);
   }
 
   someFunction() {

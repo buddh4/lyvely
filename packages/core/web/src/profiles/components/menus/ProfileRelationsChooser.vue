@@ -8,6 +8,7 @@ import { useCreateProfileStore } from '@/profiles/stores/create-profile.store';
 import { isMultiUserProfile, ProfileRelationInfo } from '@lyvely/interface';
 import LyProfileAvatar from '../ProfileAvatar.vue';
 import { profileIdRoute } from '@/profiles/routes';
+import { t } from '@/i18n';
 
 const profileRelationInfosStore = useProfileRelationInfosStore();
 const profileStore = useProfileStore();
@@ -49,7 +50,7 @@ function getProfileIcon(relation: ProfileRelationInfo) {
     <li class="py-3 px-4">
       <div class="flex items-center">
         <span class="text-sm font-bold">
-          {{ $t('profiles.labels.profiles') }}
+          {{ t('profiles.labels.profiles') }}
         </span>
         <ly-add-button class="m-auto" @click="showCreateProfile = true" />
       </div>
@@ -81,13 +82,13 @@ function getProfileIcon(relation: ProfileRelationInfo) {
     <!-- li class="py-3 px-4">
       <div class="flex items-center">
         <span class="text-sm font-bold">
-          {{ $t('profiles.labels.organizations') }}
+          {{ t('profiles.labels.organizations') }}
         </span>
         <ly-add-button class="m-auto" />
       </div>
     </li>
     <li class="py-3 px-4 text-dimmed text-sm">
-      <ly-text-dimmed :text="$t('profile.content-stream.no-organization-relation')" />
+      <ly-text-dimmed :text="t('profile.content-stream.no-organization-relation')" />
     </li -->
   </ul>
 </template>

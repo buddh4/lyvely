@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { RouteLocationRaw, useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
+import { t } from '@/i18n';
 import { onUnmounted, ref, watch } from 'vue';
 import { useLoginStore } from '@/auth/store/login.store';
 import { useSendResetPasswordMailStore } from '@/auth/store/send-reset-password-mail.store';
@@ -12,7 +13,6 @@ import {
   UserRegistrationMode,
 } from '@lyvely/interface';
 import { PATH_SIGN_UP } from '@/user-registration/user-registration.constants';
-import { t } from '@/i18n';
 import { useAuthStore } from '@/auth';
 import { profileRoot } from '@/profiles';
 
@@ -134,7 +134,7 @@ onUnmounted(loginStore.reset);
               data-id="reset-password"
               class="no-underline font-bold text-xs cursor-pointer"
               @click="setResetPassword">
-              {{ $t('auth.login.reset_password') }}
+              {{ t('auth.login.reset_password') }}
             </router-link>
           </div>
 
@@ -143,8 +143,8 @@ onUnmounted(loginStore.reset);
             id="remember-me-info"
             class="mt-2 text-xs"
             type="info">
-            <p class="mb-1">{{ $t('auth.remember_me_info.p1') }}</p>
-            <p>{{ $t('auth.remember_me_info.p2') }}</p>
+            <p class="mb-1">{{ t('auth.remember_me_info.p1') }}</p>
+            <p>{{ t('auth.remember_me_info.p2') }}</p>
           </ly-alert>
         </div>
       </ly-form-model>
@@ -153,14 +153,14 @@ onUnmounted(loginStore.reset);
     <template #footer>
       <div v-if="stage === 'usernameOrEmail'">
         <ly-button data-id="btn-to-password" class="primary w-full" @click="toPasswordStage">
-          {{ $t('common.next') }}
+          {{ t('common.next') }}
         </ly-button>
 
         <div v-if="isPublicRegistration" class="text-center mt-4">
           <small>
-            {{ $t('auth.login.not_a_member') }}
+            {{ t('auth.login.not_a_member') }}
             <router-link :to="PATH_SIGN_UP" class="no-underline font-bold">
-              {{ $t('auth.login.to_sign_up') }}
+              {{ t('auth.login.to_sign_up') }}
             </router-link>
           </small>
         </div>
@@ -198,7 +198,7 @@ onUnmounted(loginStore.reset);
         form="login"
         :loading="loginStore.status.isStatusLoading()"
         @click="submit">
-        {{ $t('auth.login.sign_in') }}
+        {{ t('auth.login.sign_in') }}
       </ly-button>
     </template>
   </ly-centered-panel>

@@ -8,7 +8,7 @@ import {
 } from '@/profiles/relations';
 import { ProfileModel } from './profile.model';
 import { IEditableModel } from '@/common';
-import { PropertyType, TransformObjectId } from '@lyvely/common';
+import { PropertyType } from '@lyvely/common';
 import { UpdateProfileModel } from './update-profile.model';
 
 /**

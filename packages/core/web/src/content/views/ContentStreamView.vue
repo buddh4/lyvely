@@ -8,13 +8,13 @@ import {
   ProfileType,
 } from '@lyvely/interface';
 import { useRouter } from 'vue-router';
-import { useContentCreateStore, useContentStreamFilterStore } from '../stores';
+import { useContentCreateStore, useContentStreamFilter } from '../stores';
 import { storeToRefs } from 'pinia';
 import emptyImageUrl from '@/assets/empty.png';
 import { useProfileStore } from '@/profiles';
 import { usePermissions } from '@/common';
 
-const { filter } = storeToRefs(useContentStreamFilterStore());
+const { filter } = useContentStreamFilter();
 filter.value = new ContentRequestFilter();
 filter.value.fromQuery(useRouter().currentRoute.value.query);
 

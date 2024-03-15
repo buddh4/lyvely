@@ -182,7 +182,7 @@ export class ContentRequestFilter implements IStreamFilter<ContentModel> {
    *
    * @private
    */
-  private mergeQuery(query: Record<string, any>) {
+  mergeQuery(query: Record<string, any>) {
     const result = { ...query } as Record<string, any>;
     const filterQuery = this.getQuery();
     this.getQueryKeys().forEach((key) => {
@@ -211,7 +211,7 @@ export class ContentRequestFilter implements IStreamFilter<ContentModel> {
    * @param {Record<string, any>} query - The query object containing filters to be activated.
    * @returns {void}
    */
-  protected fromQuery(query: Record<string, any>) {
+  fromQuery(query: Pick<ContentRequestFilter, 'archived' | 'query' | 'tagIds'>) {
     if (query.archived) this.archived = true;
     if (query.query?.length) this.query = query.query;
     if (query.tagIds?.length)

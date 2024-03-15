@@ -1,5 +1,5 @@
 import { UpdateQuery, createObjectId, isObjectId, TObjectId } from './db.type';
-import { BaseDocument, assignEntityData } from './base.document';
+import { BaseDocument } from './base.document';
 import {
   isValidObjectId,
   DeepPartial,
@@ -7,6 +7,7 @@ import {
   findByPath,
   assignRawDataTo,
   hasOwnNonNullableProperty,
+  initBaseModelData,
 } from '@lyvely/common';
 import { IntegrityException } from '@lyvely/interface';
 
@@ -69,7 +70,7 @@ export function applyUpdateTo<T extends BaseDocument<any>>(
   }
 
   if ('$set' in update) {
-    applyRawDataTo(identity, update['$set'] as any);
+    assignRawDataTo(identity, update['$set']);
   }
 
   if ('$push' in update) {
@@ -135,14 +136,6 @@ export function applyPush<T extends object>(
   return model;
 }
 
-export function applyRawDataTo<T extends Object>(
-  model: T,
-  data: { [key in keyof T]?: any },
-  { maxDepth = 100, strict = false } = {},
-): T {
-  return assignRawDataTo(model, data, { maxDepth, strict });
-}
-
 export function assureStringId(obj: any | undefined, optional?: false): string;
 export function assureStringId(obj: any | undefined, optional: true): string | undefined;
 export function assureStringId(obj: any | undefined, optional?: boolean): string {
@@ -170,7 +163,5 @@ export function assureStringId(obj: any | undefined, optional?: boolean): string
 }
 
 export function createBaseDocumentInstance<T>(constructor: Type<T>, data: DeepPartial<T>) {
-  const model = Object.create(constructor.prototype);
-  BaseDocument.init(model, data);
-  return model;
+  return BaseDocument.init(Object.create(constructor.prototype), data);
 }

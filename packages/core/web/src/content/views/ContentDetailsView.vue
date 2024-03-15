@@ -9,15 +9,14 @@ import { ContentModel, ContentRequestFilter, useContentStreamClient } from '@lyv
 import { getContentDetailsComponent } from '../registries';
 import { useRouter } from 'vue-router';
 import { computed, ref, watch } from 'vue';
-import { useContentStreamFilterStore, useContentStore } from '../stores';
-import { storeToRefs } from 'pinia';
+import { useContentStreamFilter, useContentStore } from '../stores';
 import { contentRoute } from '../routes/content-route.helper';
 import { t } from '@/i18n';
 
 const router = useRouter();
 const streamClient = useContentStreamClient();
 const content = ref<ContentModel>();
-const { filter } = storeToRefs(useContentStreamFilterStore());
+const { filter } = useContentStreamFilter();
 const contentStore = useContentStore();
 
 filter.value = new ContentRequestFilter({
@@ -95,7 +94,7 @@ function backToStream() {
           v-if="!stream.state.value.isEnd"
           class="secondary uppercase text-xxs py-1 font-semibold text-secondary dark:text-secondary"
           @click="stream.loadTail().then(() => stream.scrollToTail())"
-          >{{ $t('common.load_more') }}</ly-button
+          >{{ t('common.load_more') }}</ly-button
         >
       </div>
     </template>

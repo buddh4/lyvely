@@ -6,6 +6,7 @@ import { useEditTagStore } from '@/tags/stores/edit-tag.store';
 import { TagModel, UpdateTagModel, CreateTagModel, TagFilter } from '@lyvely/interface';
 import { accessibilityFocus } from '@/accessibility';
 import TagBadge from '../components/TagBadge.vue';
+import { t } from '@/i18n';
 
 const filter = ref(new TagFilter({ archived: false }));
 
@@ -49,7 +50,7 @@ onMounted(() => accessibilityFocus('.list-page-headline'));
               ref="search"
               v-model="filter.query"
               type="text"
-              :placeholder="$t('tags.view.search')"
+              :placeholder="t('tags.view.search')"
               class="search pl-2 w-full border-divide text-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 rounded-r-3xl p-1 bg-main" />
             <ly-icon
               name="search"
@@ -59,7 +60,7 @@ onMounted(() => accessibilityFocus('.list-page-headline'));
             data-id="btn-toggle-archived"
             :active="filter.archived"
             class="secondary outlined text-xs px-1.5 py-1 ml-auto"
-            :title="$t('filter.archive')"
+            :title="t('filter.archive')"
             @click="filter.archived = !filter.archived">
             <ly-icon name="archive" class="p-0.5"></ly-icon>
           </ly-button>
@@ -74,7 +75,7 @@ onMounted(() => accessibilityFocus('.list-page-headline'));
           <div class="align-middle">
             <tag-badge :tag="tag" class="px-3 py-2 text-base" @click="setEditTag(tag)" />
             <ly-badge v-if="tag.archived" class="bg-danger ml-2">
-              {{ $t('common.archived') }}
+              {{ t('common.archived') }}
             </ly-badge>
           </div>
           <div class="mr-auto"></div>
@@ -84,7 +85,7 @@ onMounted(() => accessibilityFocus('.list-page-headline'));
               :data-id="`btn-restore-${tag.id}`"
               class="secondary outlined"
               :confirm="confirmArchive(tag)"
-              :title="$t('common.restore')"
+              :title="t('common.restore')"
               @click="restore(tag)">
               <ly-icon name="restore" />
             </ly-button>
@@ -93,22 +94,22 @@ onMounted(() => accessibilityFocus('.list-page-headline'));
               :data-id="`btn-archive-${tag.id}`"
               class="secondary outlined"
               :confirm="confirmArchive(tag)"
-              :title="$t('common.archive')"
+              :title="t('common.archive')"
               @click="archive(tag)">
               <ly-icon name="archive" />
             </ly-button>
             <ly-button
               class="secondary outlined mr-1"
               :data-id="`btn-edit-${tag.id}`"
-              :title="$t('common.edit')"
+              :title="t('common.edit')"
               @click="setEditTag(tag)">
               <ly-icon name="edit" />
             </ly-button>
           </div>
         </div>
         <div v-if="!tags.length" class="p-5 border-divide bg-main text-xs">
-          <span v-if="filter.isActive()">{{ $t('filter.empty') }}</span>
-          <span v-else>{{ $t('list.empty') }}</span>
+          <span v-if="filter.isActive()">{{ t('filter.empty') }}</span>
+          <span v-else>{{ t('list.empty') }}</span>
         </div>
       </ly-list-page-section>
     </ly-list-page>

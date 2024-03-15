@@ -5,6 +5,7 @@ import { useProfileStore } from '@/profiles/stores/profile.store';
 import ProfileRelationsChooser from './ProfileRelationsChooser.vue';
 import { getScaledProgress } from '@lyvely/interface';
 import ProfileAvatar from '@/profiles/components/ProfileAvatar.vue';
+import { t } from '@/i18n';
 
 const profileStore = useProfileStore();
 const pageStore = usePageStore();
@@ -40,7 +41,7 @@ const progressStyle = computed(() => {
         <div
           role="button"
           class="border-none px-0"
-          :aria-label="$t('layout.aria.toggle-sidebar')"
+          :aria-label="t('layout.aria.toggle-sidebar')"
           aria-controls="sidebar"
           @click="toggleSidebar">
           <div class="border border-divide px-3 p-2 flex justify-center items-center gap-2">

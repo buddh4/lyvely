@@ -1,5 +1,5 @@
 import { Exclude, Expose } from 'class-transformer';
-import { BaseModel, type PropertiesOf, PropertyType } from '@lyvely/common';
+import { BaseModel, type BaseModelData, type PropertiesOf, PropertyType } from '@lyvely/common';
 import { BaseUserProfileRelationType } from '../interfaces';
 import { ProfileType } from '@/profiles/core/interfaces';
 
@@ -53,7 +53,7 @@ export class ProfileRelationInfo {
   @PropertyType([ProfileRelationSummary])
   relations: ProfileRelationSummary[];
 
-  constructor(data: PropertiesOf<ProfileRelationInfo>) {
+  constructor(data: BaseModelData<ProfileRelationInfo>) {
     BaseModel.init(this, data);
   }
 

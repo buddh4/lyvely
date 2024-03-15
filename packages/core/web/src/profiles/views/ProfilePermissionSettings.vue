@@ -30,7 +30,7 @@ const filterModuleId = (moduleId: string) => (search.value = moduleId);
           <input
             v-model="search"
             type="text"
-            :placeholder="$t('profiles.settings.permissions.search')"
+            :placeholder="t('profiles.settings.permissions.search')"
             class="search w-full pl-2 border-divide text-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 rounded-r-3xl p-1 bg-main" />
           <ly-icon
             :name="!search.length ? 'search' : 'close'"

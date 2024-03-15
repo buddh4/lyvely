@@ -53,7 +53,7 @@ const isEditable = computed(
       :data-id="menuEntry.id"
       :icon="menuEntry.icon"
       :label="menuEntry.text"
-      :route="menuEntry.route"
+      :route="menuEntry.to"
       @click="menuEntry?.click" />
     <slot></slot>
   </ly-dropdown>

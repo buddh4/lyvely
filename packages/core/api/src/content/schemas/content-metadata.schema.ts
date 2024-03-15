@@ -51,6 +51,7 @@ export class ContentMetadata implements IContentMetadata {
   updatedBy: TObjectId;
 
   @Prop({ required: true })
+  @PropertyType(Number, { default: Date.now() })
   streamSort: number;
 
   @Prop({ enum: getNumberEnumValues(RoleVisibilityLevel) })
@@ -58,6 +59,7 @@ export class ContentMetadata implements IContentMetadata {
   visibility: RoleVisibilityLevel;
 
   @Prop({ type: Number, min: 0 })
+  @PropertyType(Number, { default: Date.now() })
   sortOrder?: number;
 
   @Prop()
@@ -75,11 +77,6 @@ export class ContentMetadata implements IContentMetadata {
 
   constructor(data: BaseDocumentData<ContentMetadata>) {
     BaseDocument.init(this, data);
-  }
-
-  afterInit() {
-    this.streamSort ??= Date.now();
-    this.sortOrder ??= Date.now();
   }
 
   setAuthor(author: Author) {

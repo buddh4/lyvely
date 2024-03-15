@@ -5,6 +5,7 @@ import { useSendResetPasswordMailStore } from '@/auth/store/send-reset-password-
 import { storeToRefs } from 'pinia';
 import { useRouter, RouteLocationRaw } from 'vue-router';
 import { PATH_LOGIN } from '@/auth';
+import { t } from '@/i18n';
 import { onUnmounted, ref } from 'vue';
 import { useResetPasswordStore } from '@/auth/store/reset-password.store';
 
@@ -69,7 +70,7 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
 
       <div class="text-right mt-4">
         <router-link :to="loginRoute" data-id="to-login" class="items-center text-xs">
-          {{ $t('auth.reset_password.to_login') }}
+          {{ t('auth.reset_password.to_login') }}
         </router-link>
       </div>
     </template>
@@ -78,7 +79,7 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
   <ly-centered-panel v-if="stage === 'sent'" title="auth.reset_password.sent.title" width="sm">
     <template #body>
       <p class="text-sm">
-        {{ $t('auth.reset_password.sent.text') }}
+        {{ t('auth.reset_password.sent.text') }}
       </p>
     </template>
 
@@ -133,7 +134,7 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
 
       <div class="text-right mt-4">
         <router-link :to="loginRoute" class="items-center text-xs">
-          {{ $t('auth.reset_password.to_login') }}
+          {{ t('auth.reset_password.to_login') }}
         </router-link>
       </div>
     </template>

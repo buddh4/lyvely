@@ -51,7 +51,7 @@ function toDocs() {
       </template>
       <template #introductionLink>
         <a class="cursor-pointer" @click="startIntroTour">{{
-          $t('help.modal.introductionLinkText')
+          t('help.modal.introductionLinkText')
         }}</a>
       </template>
       <template #docLink>
@@ -62,7 +62,7 @@ function toDocs() {
     <div class="flex flex-col space-y-1">
       <ly-button text="help.modal.buttons.intro" class="primary" @click="startIntroTour" />
       <ly-button class="primary flex items-center justify-center" @click="toDocs">
-        {{ $t('help.modal.buttons.to_docs') }}
+        {{ t('help.modal.buttons.to_docs') }}
         <ly-icon name="external_link" class="ml-1" />
       </ly-button>
     </div>

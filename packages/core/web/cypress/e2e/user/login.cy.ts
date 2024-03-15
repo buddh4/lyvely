@@ -1,7 +1,7 @@
-describe('Test User Login/Logout', function () {
+describe('Test User Login', function () {
   beforeEach(() => {
     cy.task('db:seed');
-    cy.visit('http://127.0.0.1:3000');
+    cy.load('/login');
   });
 
   it('Welcome - Greeting & Content', () => {
@@ -50,7 +50,7 @@ describe('Test User Login/Logout', function () {
     cy.get('[data-id="btn-to-password"]').click();
     cy.get('[data-id="login-password"]').type('TestPassword123');
     cy.get('[data-id="btn-login"]').click();
-    cy.url().should('include', '/p/owner/stream');
+    cy.url().should('include', '/p/owner-profile/stream');
     cy.getCookie('Authentication').should('exist');
     cy.getCookie('Refresh').should('exist');
   });
@@ -60,7 +60,7 @@ describe('Test User Login/Logout', function () {
     cy.get('[data-id="btn-to-password"]').click();
     cy.get('[data-id="login-password"]').type('TestPassword123');
     cy.get('[data-id="btn-login"]').click();
-    cy.url().should('include', '/p/owner/stream');
+    cy.url().should('include', '/p/owner-profile/stream');
     cy.getCookie('Authentication').should('exist');
     cy.getCookie('Refresh').should('exist');
   });
@@ -68,7 +68,7 @@ describe('Test User Login/Logout', function () {
   it('Successful Login - enter', function () {
     cy.get('[data-id="login-usernameoremail"]').type('owner@test.com{enter}');
     cy.get('[data-id="login-password"]').type('TestPassword123{enter}');
-    cy.url().should('include', '/p/owner/stream');
+    cy.url().should('include', '/p/owner-profile/stream');
     cy.getCookie('Authentication').should('exist');
     cy.getCookie('Refresh').should('exist');
   });
@@ -79,7 +79,7 @@ describe('Test User Login/Logout', function () {
     cy.get('[data-id="login-password"]').type('TestPassword123');
     cy.get('[data-id="login-remember"]').click();
     cy.get('[data-id="btn-login"]').click();
-    cy.url().should('include', '/p/owner/stream');
+    cy.url().should('include', '/p/owner-profile/stream');
     cy.getCookie('Refresh')
       .then((cookie) => cy.task('jwt:decode', cookie.value))
       .then((payLoad: any) => cy.wrap(payLoad.remember).should('equal', true));
@@ -90,7 +90,7 @@ describe('Test User Login/Logout', function () {
     cy.get('[data-id="btn-to-password"]').click();
     cy.get('[data-id="login-password"]').type('TestPassword123');
     cy.get('[data-id="btn-login"]').click();
-    cy.url().should('include', '/p/owner/stream');
+    cy.url().should('include', '/p/owner-profile/stream');
     cy.getCookie('Refresh')
       .then((cookie) => cy.task('jwt:decode', cookie.value))
       .then((payLoad: any) => cy.wrap(payLoad.remember).should('equal', false));

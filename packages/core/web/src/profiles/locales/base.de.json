@@ -8,7 +8,8 @@
       "owner": "owner",
       "member": "member",
       "moderator": "moderator",
-      "admin": "administrator"
+      "admin": "administrator",
+      "visitor": "visitor"
     },
     "messages": {
       "no-organization-relation": "You are not a member of any organization."

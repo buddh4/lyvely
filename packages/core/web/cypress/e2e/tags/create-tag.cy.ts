@@ -5,7 +5,7 @@ describe('User can create tags', function () {
   });
 
   it('Failed create tag - Tag name exists', () => {
-    cy.visit(`http://127.0.0.1:3000/p/owner/tags`);
+    cy.loadProfile('owner-profile', '/tags');
     cy.getId('btn-floating-add').click();
     cy.getId('edit-tag-name').type('Health');
     cy.getId('btn-modal-submit').click();
@@ -13,7 +13,7 @@ describe('User can create tags', function () {
   });
 
   it('Success create tag', () => {
-    cy.visit(`http://127.0.0.1:3000/p/owner/tags`);
+    cy.loadProfile('owner-profile', '/tags');
     cy.getId('btn-floating-add').click();
     cy.getId('edit-tag-name').type('Business');
     cy.getId('edit-tag-description').type('Everything to do with business');

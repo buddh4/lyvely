@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useProfileStore, useUpdateProfileMembershipSettingsStore } from '@/profiles/stores';
-import { I18nModelValidator } from '@/i18n';
+import { I18nModelValidator, t } from '@/i18n';
 
 const profileStore = useProfileStore();
 const updateProfileMembershipSettingsStore = useUpdateProfileMembershipSettingsStore();
@@ -30,7 +30,7 @@ function updateSettings() {
           tag="span"
           class="text-center text-dimmed text-sm">
           <template #role>
-            <b>{{ $t(`profiles.roles.${membership.role}`) }}</b>
+            <b v-if="membership">{{ t(`profiles.roles.${membership.role}`) }}</b>
           </template>
         </i18n-t>
       </div>
@@ -59,7 +59,7 @@ function updateSettings() {
 
       <div class="flex mt-2 md:mt-4">
         <ly-button class="primary text-xs ml-auto" @click="updateSettings">
-          {{ $t('common.update') }}
+          {{ t('common.update') }}
         </ly-button>
       </div>
     </ly-list-page-section>
@@ -69,7 +69,7 @@ function updateSettings() {
         <ly-button
           class="danger text-xs ml-auto"
           :confirm="{ text: 'profiles.settings.archive.confirm' }">
-          {{ $t('profiles.settings.membership.archive') }}
+          {{ t('profiles.settings.membership.archive') }}
         </ly-button>
       </div>
     </ly-list-page-section>

@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { useAuthStore } from '@/auth/store/auth.store';
+import { t } from '@/i18n';
 import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useAddEmailStore } from '@/user-account/stores/add-email.store';
@@ -33,7 +34,7 @@ const verifyEmail = (email: string) => {
     <table class="border-collapse text-sm w-full bg-main rounded">
       <tr>
         <th class="p-3 text-left border-b border-divide">
-          {{ $t('user-account.my-account.info.username') }}
+          {{ t('user-account.my-account.info.username') }}
         </th>
         <td class="p-3 text-left border-b border-divide">
           {{ user.username }}
@@ -41,7 +42,7 @@ const verifyEmail = (email: string) => {
       </tr>
       <tr>
         <th class="p-3 text-left border-b border-divide">
-          {{ $t('user-account.my-account.info.member-since') }}
+          {{ t('user-account.my-account.info.member-since') }}
         </th>
         <td class="p-3 text-left border-b border-divide">
           <ly-formatted-date :date="user.createdAt" />
@@ -49,7 +50,7 @@ const verifyEmail = (email: string) => {
       </tr>
       <tr>
         <th class="p-3 text-left">
-          {{ $t('user-account.my-account.info.locale') }}
+          {{ t('user-account.my-account.info.locale') }}
         </th>
         <td class="bg-main p-3 text-left">
           {{ user.locale }}
@@ -91,7 +92,7 @@ const verifyEmail = (email: string) => {
         <ly-button
           v-if="!userEmail.verified"
           class="secondary outlined mr-1"
-          :title="$t('common.resend')"
+          :title="t('common.resend')"
           @click="verifyEmail(userEmail.email)">
           <ly-icon name="send" />
         </ly-button>

@@ -1,10 +1,6 @@
 import { Exclude, Expose } from 'class-transformer';
 import { Document, TObjectId } from './db.type';
-import {
-  assignRawDataToAndInitProps,
-  implementsGetDefaults,
-  implementsAfterInit,
-} from '@lyvely/common';
+import { initBaseModelData } from '@lyvely/common';
 import { PartialPropertiesOf, type PropertiesOf } from '@lyvely/common';
 
 export interface IEntity<ID = TObjectId> {
@@ -14,7 +10,6 @@ export interface IEntity<ID = TObjectId> {
 interface InitOptions {
   strict?: boolean;
   skipGetDefaults?: boolean;
-  skipAfterInit?: boolean;
 }
 
 export type NonPersistedDocument<TModel extends BaseDocument> = Omit<
@@ -79,36 +74,19 @@ export abstract class BaseDocument<ID = TObjectId> implements IEntity<ID> {
     options?: InitOptions,
   ) {
     if (data === false) return;
-    if (implementsGetDefaults(instance) && !options?.skipGetDefaults) {
-      const defaultValues = instance.getDefaults();
-      if (defaultValues) {
-        data = Object.assign(defaultValues, data);
-      }
-    }
-
-    assignEntityData(instance, data);
-
-    if (implementsAfterInit(instance) && !options?.skipAfterInit) {
-      instance.afterInit();
-    }
+    return assignEntityData(instance, data, options);
   }
 }
 
 // Note: We do not use db.utils.ts to prevent circular dependency...
-export function assignEntityData<T extends Record<string, any>, U>(instance: T, obj?: U) {
-  if (obj) {
-    if (obj instanceof Document) {
-      assignRawDataToAndInitProps(instance, obj.toObject());
-    } else {
-      assignRawDataToAndInitProps(instance, obj);
-    }
-  } else {
-    assignRawDataToAndInitProps(instance);
+export function assignEntityData<T extends Record<string, any>, U>(
+  instance: T,
+  obj?: U,
+  options?: InitOptions,
+) {
+  if (obj instanceof Document) {
+    return initBaseModelData(instance, obj.toObject(), options);
   }
 
-  if (instance._id && !instance.id) {
-    (<any>instance).id = instance._id.toString();
-  }
-
-  return instance;
+  return initBaseModelData(instance, obj, options);
 }

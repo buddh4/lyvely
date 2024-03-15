@@ -1,7 +1,7 @@
 describe('Test User Logout', function () {
   beforeEach(() => {
     cy.task('db:seed');
-    cy.authenticatedAs();
+    cy.authenticatedAs('owner');
   });
 
   afterEach(() => {

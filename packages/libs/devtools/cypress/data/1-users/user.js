@@ -7,6 +7,7 @@ const createUserData = (username, options) => {
     _id: getObjectId(username),
     username: username,
     displayName: options.displayName || username,
+    // TestPassword123
     password: options.password || '$2b$10$dAFtho9KZlHjvkQ3IDEK8.zY6xasozqQC8agu5ICMqIXeVLCWQx3W',
     status: options.status ?? 1, // Enabled by default
     email: options.email || username.toLowerCase() + '@test.com',

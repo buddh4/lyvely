@@ -9,7 +9,7 @@ import {
 import { JournalModel } from '@lyvely/journals-interface';
 import { computed, onMounted, ref } from 'vue';
 import { useDebounceFn } from '@vueuse/core';
-import { ContentDropdown } from '@lyvely/web';
+import { ContentDropdown, t } from '@lyvely/web';
 import { LyEditableText } from '@lyvely/ui';
 import { useJournalPlanStore } from '@/stores';
 import { useCalendarPlanItem, CalendarPlanItem } from '@lyvely/calendar-plan-web';
@@ -67,7 +67,7 @@ const updateSelection = useDebounceFn((selection: any) => {
         <ly-editable-text
           v-model="selection"
           class="text-sm pt-2"
-          :placeholder="$t('journals.plan.text.placeholder')" />
+          :placeholder="t('journals.plan.text.placeholder')" />
       </div>
       <div v-else-if="isSelectionDataPointConfig(model.timeSeriesConfig)">
         <time-series-selection-input

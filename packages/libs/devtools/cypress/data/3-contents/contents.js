@@ -1,5 +1,4 @@
 const { getObjectId } = require('mongo-seeding');
-const { RoleVisibilityLevel } = require('@lyvely/interface');
 
 const createMessage = (idSeed, authorSeed, profileSeed, text, options) => {
   options ||= {};
@@ -13,7 +12,8 @@ const createMessage = (idSeed, authorSeed, profileSeed, text, options) => {
       createdBy: getObjectId(authorSeed),
       updatedBy: getObjectId('authorSeed'),
       streamSort: options.streamSort ?? Date.now(),
-      visibility: options.visibility || RoleVisibilityLevel.Member,
+      // RoleVisibilityLevel.Member
+      visibility: options.visibility || 3,
       createdAt: new Date(),
       updatedAt: new Date(),
       childCount: options.childCount ?? 0,

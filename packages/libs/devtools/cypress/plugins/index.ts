@@ -32,7 +32,7 @@ async function seed() {
   };
 
   const seeder = new Seeder(config);
-  const collections = seeder.readCollectionsFromPath(path.resolve('./cypress/data'), {
+  const collections = seeder.readCollectionsFromPath(path.resolve(__dirname, '../data'), {
     transformers: [
       //Seeder.Transformers.replaceDocumentIdWithUnderscoreId,
       Seeder.Transformers.setCreatedAtTimestamp,
@@ -40,13 +40,27 @@ async function seed() {
     ],
   });
 
+  const localPath = path.resolve('./cypress/data');
+
+  if (typeof localPath === 'string' && fs.existsSync(localPath)) {
+    collections.push(
+      ...seeder.readCollectionsFromPath(localPath, {
+        transformers: [
+          //Seeder.Transformers.replaceDocumentIdWithUnderscoreId,
+          Seeder.Transformers.setCreatedAtTimestamp,
+          Seeder.Transformers.setUpdatedAtTimestamp,
+        ],
+      }),
+    );
+  }
+
   await seeder.import(collections);
   return true;
 }
 
 async function deleteMails() {
   // Specify the relative path to the directory
-  const absoluteDirectoryPath = path.resolve(__dirname, '../mails');
+  const absoluteDirectoryPath = path.resolve('./cypress/mails');
 
   try {
     // Create the directory if it doesn't exist
@@ -72,7 +86,7 @@ async function deleteMails() {
 
 function getLatestMailContent(): string {
   try {
-    const mailDir = path.resolve(__dirname, '../mails');
+    const mailDir = path.resolve('./cypress/mails');
     const files = fs.readdirSync(mailDir);
 
     if (files.length === 0) {
@@ -143,7 +157,7 @@ function _getObjectId(seed: string): string {
 /**
  * @type {Cypress.PluginConfig}
  */
-module.exports = (on: any, config: any) => {
+export default (on: any, config: any) => {
   // `config` is the resolved Cypress config
   config.env.MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/lyvely-e2e';
 

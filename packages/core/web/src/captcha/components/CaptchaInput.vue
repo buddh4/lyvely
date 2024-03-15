@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import CaptchaCode from '@/captcha/components/CaptchaCode.vue';
+import { t } from '@/i18n';
 import { storeToRefs } from 'pinia';
 import { uniqueId } from 'lodash';
 import { computed } from 'vue';
@@ -37,7 +38,7 @@ defineExpose({ validate });
   <div class="rounded">
     <div :class="['flex border border-b-0 rounded-t', borderColorClass]">
       <label :for="id" class="text-sm opacity-70 px-3 py-2">
-        {{ $t('captcha.label') }}
+        {{ t('captcha.label') }}
       </label>
 
       <ly-icon

@@ -7,7 +7,7 @@ import {
   TimeSeriesTimerInput,
   TimeSeriesSummary,
 } from '@lyvely/time-series-web';
-import { ContentDetails } from '@lyvely/web';
+import { ContentDetails, t } from '@lyvely/web';
 import { useHabitCalendarPlanStore } from '@/stores';
 import { onMounted, onUnmounted, ref, watch } from 'vue';
 import {
@@ -84,7 +84,7 @@ onUnmounted(unwatchDate);
           <ly-button
             v-if="leftCaret"
             tabindex="0"
-            :aria-label="$t('calendar-plan.aria.nav-back', { time: prevTitle })"
+            :aria-label="t('calendar-plan.aria.nav-back', { time: prevTitle })"
             class="switch-timing no-underline py-0"
             @click="decrementTiming">
             {{ leftCaret }}
@@ -99,7 +99,7 @@ onUnmounted(unwatchDate);
           <ly-button
             v-if="rightCaret"
             tabindex="0"
-            :aria-label="$t('calendar-plan.aria.nav-next', { time: nextTitle })"
+            :aria-label="t('calendar-plan.aria.nav-next', { time: nextTitle })"
             class="switch-timing no-underline py-0"
             @click="incrementTiming">
             {{ rightCaret }}
@@ -122,10 +122,7 @@ onUnmounted(unwatchDate);
             @stop-timer="stopTimer" />
         </div>
         <div>
-          <button
-            v-if="showTodayIcon"
-            :title="$t('calendar-plan.nav-today')"
-            @click="switchToToday">
+          <button v-if="showTodayIcon" :title="t('calendar-plan.nav-today')" @click="switchToToday">
             <ly-icon role="button" name="today" />
           </button>
         </div>

@@ -21,7 +21,8 @@
     "@lyvely/common": "^0.1.0-alpha3",
     "@lyvely/interface": "^0.1.0-alpha3",
     "@lyvely/dates": "^0.1.0-alpha3",
-    "@lyvely/analytics-interface": "^0.1.0-alpha3"
+    "@lyvely/analytics-interface": "^0.1.0-alpha3",
+    "echarts": "^5.4.2"
   },
   "devDependencies": {
     "@lyvely/devtools": "^0.1.0-alpha3",

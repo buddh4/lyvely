@@ -59,7 +59,7 @@ module.exports = [
     usage: ['Project'],
     name: 'Protected Group',
     type: 'group',
-    visibility: 2, // All authenticated users
+    visibility: 3, // All authenticated users
     tags: [
       {
         _id: getObjectId('tag-bugs'),
@@ -74,7 +74,7 @@ module.exports = [
     usage: ['Project'],
     name: 'Public Group',
     type: 'group',
-    visibility: 3, // All users including visitors
+    visibility: 4, // All users including visitors
     tags: [
       {
         _id: getObjectId('tag-bugs'),

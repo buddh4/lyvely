@@ -1,13 +1,13 @@
 <script lang="ts" setup>
 import { useProfileStore } from '@/profiles/stores/profile.store';
+import { t } from '@/i18n';
 import { computed, ref, watch } from 'vue';
 import { TagFilter } from '@lyvely/interface';
 import { onBeforeRouteLeave, useRouter } from 'vue-router';
 import { useDebounceFn } from '@vueuse/core';
-import { useContentStreamFilterStore } from '../stores';
-import { storeToRefs } from 'pinia';
+import { useContentStreamFilter } from '../stores';
 
-const { filter } = storeToRefs(useContentStreamFilterStore());
+const { filter } = useContentStreamFilter();
 const query = ref(filter.value.query);
 
 const updateQuery = useDebounceFn((value: string) => {
@@ -60,7 +60,7 @@ onBeforeRouteLeave(unwatchFilter);
   <nav data-id="stream-filter-nav" class="flex flex-row gap-0.5 content-left clearfix">
     <ly-slider-menu class="tag-filter-selection">
       <ly-button :class="pillButton" :active="!activeTagId" @click="setTagFilter()">
-        {{ $t('filter.all') }}
+        {{ t('filter.all') }}
       </ly-button>
 
       <ly-button
@@ -96,7 +96,7 @@ onBeforeRouteLeave(unwatchFilter);
           ref="search"
           v-model.trim="query"
           class="search w-full mb-4 py-1"
-          :placeholder="$t('common.filter.search')"
+          :placeholder="t('common.filter.search')"
           type="text" />
         <ly-icon name="search" class="absolute right-2.5 top-2 text-dimmed pointer-events-none" />
       </div>

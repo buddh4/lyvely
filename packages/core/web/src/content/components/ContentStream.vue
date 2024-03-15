@@ -12,11 +12,7 @@ import {
 import { useLiveStore } from '@/live/stores/live.store';
 import { useProfileStore } from '@/profiles/stores/profile.store';
 import { storeToRefs } from 'pinia';
-import {
-  useContentStreamHistoryStore,
-  useContentStreamFilterStore,
-  useContentStore,
-} from '../stores';
+import { useContentStreamHistoryStore, useContentStreamFilter, useContentStore } from '../stores';
 import { onBeforeRouteLeave } from 'vue-router';
 import { useStream } from '@/stream/stream.composable';
 import { scrollToBottom } from '@/core';
@@ -34,7 +30,7 @@ const props = withDefaults(defineProps<IProps>(), {
   infiniteScroll: true,
 });
 
-const { filter } = storeToRefs(useContentStreamFilterStore());
+const { filter } = useContentStreamFilter();
 const streamRoot = ref<HTMLElement>() as Ref<HTMLElement>;
 const { profile } = storeToRefs(useProfileStore());
 const live = useLiveStore();

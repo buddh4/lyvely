@@ -1,6 +1,5 @@
 import {
   BaseModel,
-  DocumentModel,
   type PropertiesOf,
   PropertyType,
   TransformObjectId,
@@ -135,7 +134,7 @@ export class UserModel<TID = string> implements IPermissionObject<UserRelationRo
   groups: UserRelationGroupModel[];
 
   constructor(data: Partial<UserModel<any>>) {
-    DocumentModel.init(this, data);
+    BaseModel.init(this, data);
   }
 
   getPermissionSettings(): IPermissionSetting<any, UserRelationRole>[] {

@@ -2,7 +2,6 @@ import {
   UserAssignmentStrategy,
   assureObjectId,
   ObjectIdProp,
-  assignEntityData,
   BaseDocument,
   TObjectId,
   User,

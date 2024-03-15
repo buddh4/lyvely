@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { ref, computed, watchEffect } from 'vue';
 import { isEmail } from 'class-validator';
+import { t } from '@/i18n';
 
 export interface IProps {
   modelValue: string;
@@ -104,7 +105,7 @@ const text = computed(() =>
           :data-otp="i - 1"
           :data-id="'otp-' + (i - 1)"
           inputmode="numeric"
-          :aria-label="$t('otp.aria.input_label')"
+          :aria-label="t('otp.aria.input_label')"
           aria-invlaid="false"
           :class="[
             'rounded w-10 border-divide',

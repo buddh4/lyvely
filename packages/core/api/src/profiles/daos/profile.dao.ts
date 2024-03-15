@@ -10,7 +10,6 @@ import {
 } from '../schemas';
 import {
   Model,
-  applyRawDataTo,
   assureObjectId,
   DocumentIdentity,
   AbstractDao,
@@ -18,7 +17,7 @@ import {
   IBaseFetchQueryOptions,
 } from '@/core';
 import { User } from '@/users';
-import { Constructor, DeepPartial } from '@lyvely/common';
+import { assignRawDataTo, Constructor, DeepPartial } from '@lyvely/common';
 import { IntegrityException, ProfileType } from '@lyvely/interface';
 
 @Injectable()
@@ -119,7 +118,7 @@ export class ProfileDao extends AbstractDao<Profile> {
 
     if (!tag) return 0;
 
-    applyRawDataTo(tag, update, { strict: false });
+    assignRawDataTo(tag, update);
 
     return this.updateOneByFilter(
       profile,

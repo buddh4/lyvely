@@ -1,21 +1,15 @@
-import { assignRawDataToAndInitProps, implementsToJson } from './util';
+import { initBaseModelData, implementsToJson } from './util';
 import { PartialPropertiesOf, type PropertiesOf } from '../utils/util.types';
 import { hasOwnNonNullableProperty } from '../utils/object.util';
-import { implementsGetDefaults } from './util/model-interfaces.helper';
-
-interface IDocument {
-  _id?: any;
-  id?: string;
-}
 
 interface InitOptions {
   strict?: boolean;
   skipGetDefaults?: boolean;
 }
 
-export type StrictBaseModelData<TModel extends Object> = PropertiesOf<TModel> | TModel | false;
+export type StrictBaseModelData<TModel extends object> = PropertiesOf<TModel> | TModel | false;
 
-export type BaseModelData<TModel extends Object> =
+export type BaseModelData<TModel extends object> =
   | StrictBaseModelData<TModel>
   | PartialPropertiesOf<TModel>
   | Partial<TModel>
@@ -53,32 +47,6 @@ export const BaseModel = {
     options?: InitOptions,
   ) {
     if (data === false) return;
-    if (implementsGetDefaults(instance) && !options?.skipGetDefaults) {
-      data = data ? Object.assign(instance.getDefaults(), data) : instance.getDefaults();
-    }
-
-    assignRawDataToAndInitProps(instance, data, options);
-  },
-};
-
-export const DocumentModel = {
-  init<TModel extends Object = any>(
-    instance: TModel,
-    data?: BaseModelData<TModel>,
-    options?: InitOptions,
-  ) {
-    if (!data) {
-      return BaseModel.init(instance, data, options);
-    }
-
-    if (implementsToJson(data)) {
-      data = data.toJSON();
-    }
-
-    if (hasOwnNonNullableProperty<IDocument>(data, '_id')) {
-      data['id'] = (data['_id'] as object).toString();
-    }
-
-    BaseModel.init(instance, data, options);
+    return initBaseModelData(instance, data, options);
   },
 };

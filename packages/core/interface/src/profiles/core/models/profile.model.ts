@@ -1,11 +1,5 @@
-import { Exclude, Expose, Transform } from 'class-transformer';
-import {
-  BaseModel,
-  TransformObjectId,
-  PropertyType,
-  DocumentModel,
-  PropertiesOf,
-} from '@lyvely/common';
+import { Exclude, Expose } from 'class-transformer';
+import { BaseModel, TransformObjectId, PropertyType } from '@lyvely/common';
 import type { PartialPropertiesOf } from '@lyvely/common';
 import { ProfileType, ProfileUsage, ProfileVisibilityLevel } from '../interfaces';
 import { IPermissionSetting } from '@/permissions';
@@ -102,7 +96,7 @@ export class ProfileModel<TID = string> implements IProfilePermissionObject {
   tags: TagModel[];
 
   constructor(data: PartialPropertiesOf<ProfileModel<any>>) {
-    DocumentModel.init(this, data);
+    BaseModel.init(this, data);
   }
 
   /**

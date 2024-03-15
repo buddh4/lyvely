@@ -5,11 +5,11 @@ import {
   ChartType,
   useChartsClient,
   ChartSeriesConfigModel,
+  UpdateChartSeriesModel,
 } from '@lyvely/analytics-interface';
 import { I18nModelValidator, loadingStatus, useStatus } from '@lyvely/web';
 import { getChartSeriesFormDefinition } from '@/registries';
 import { ComponentRegistration } from '@lyvely/ui';
-import { UpdateChartSeriesModel } from '@/models';
 import { useChartsStore } from '@/store/charts.store';
 
 const showModal = ref(false);
@@ -17,8 +17,8 @@ const status = useStatus();
 const isCreate = ref(false);
 const cid = ref('');
 const sid = ref('');
-const model = ref(new ChartSeriesConfigModel<undefined>());
-const validator = reactive(new I18nModelValidator<ChartSeriesConfigModel<undefined>>());
+const model = ref(new ChartSeriesConfigModel({}));
+const validator = reactive(new I18nModelValidator<ChartSeriesConfigModel>());
 const formComponent = ref<ComponentRegistration>();
 
 export const useEditChartSeriesStore = () => {
@@ -29,7 +29,7 @@ export const useEditChartSeriesStore = () => {
   });
 
   function reset() {
-    model.value = new ChartSeriesConfigModel<undefined>();
+    model.value = new ChartSeriesConfigModel({});
     validator.setModel(model.value);
     formComponent.value = undefined;
     showModal.value = false;

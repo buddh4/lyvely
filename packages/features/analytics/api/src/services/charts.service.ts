@@ -37,7 +37,7 @@ export class ChartsService extends ContentTypeService<Chart, CreateChartModel, U
   private createChartConfigByType(type: ChartType): ChartConfig | undefined {
     switch (type) {
       case ChartType.Graph:
-        return new GraphChartConfig();
+        return new GraphChartConfig({});
     }
   }
 

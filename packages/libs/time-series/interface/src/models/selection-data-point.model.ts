@@ -5,7 +5,7 @@ import type { ISelectionDataPointValue } from '../interfaces';
 import {
   BaseModel,
   type BaseModelData,
-  DocumentModel,
+  BaseModel,
   type PropertiesOf,
   PropertyType,
 } from '@lyvely/common';
@@ -38,7 +38,7 @@ export class SelectionDataPointModel<TID = string> extends DataPointModel<TID> {
 
   constructor(data: BaseModelData<SelectionDataPointModel<any>>) {
     super(false);
-    DocumentModel.init(this, data);
+    BaseModel.init(this, data);
   }
 }
 

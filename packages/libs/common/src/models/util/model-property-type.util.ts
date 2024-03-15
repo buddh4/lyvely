@@ -1,6 +1,7 @@
 import { Type } from '../../utils/util.types';
 import { getPropertyTypeDefinitions } from '../decorators';
 import { isPlainObject } from '../../utils';
+import { BaseModel, type BaseModelData } from '../base.model';
 
 interface InitPropertiesOptionsIF {
   maxDepth?: number;
@@ -34,7 +35,7 @@ function _initPropertyTypes<T>(model: T, level = 0, { maxDepth = 100 } = {}) {
     Object.keys(propertyDefinitions).forEach((key) => {
       const propertyKey = key as keyof T & string;
       const propertyDefinition = propertyDefinitions[propertyKey];
-      // Instantiate empty non optional properties or if the type does not match the configured type
+      // Instantiate empty non-optional properties or if the type does not match the configured type
       if (!model[propertyKey] && !propertyDefinition.optional) {
         if (propertyDefinition.default) {
           model[propertyKey] =
@@ -48,17 +49,10 @@ function _initPropertyTypes<T>(model: T, level = 0, { maxDepth = 100 } = {}) {
         } else if (propertyDefinition.type === Date) {
           model[propertyKey] = new Date() as any;
         } else if (!primitivePrototypes.includes(propertyDefinition.type.prototype)) {
-          model[propertyKey] = Object.assign(
-            Object.create(propertyDefinition.type.prototype),
-            model[propertyKey],
+          model[propertyKey] = createBaseModel(
+            propertyDefinition.type,
+            model[propertyKey] as BaseModelData<any>,
           );
-          if (
-            !propertyDefinition.default &&
-            'afterInit' in (<any>model)[propertyKey] &&
-            typeof (<any>model)[propertyKey]['afterInit'] === 'function'
-          ) {
-            (<any>model)[propertyKey].afterInit();
-          }
         } else {
           model[propertyKey] = primitiveDefaults.get(propertyDefinition.type);
         }
@@ -68,4 +62,8 @@ function _initPropertyTypes<T>(model: T, level = 0, { maxDepth = 100 } = {}) {
   }
 
   return model;
+}
+
+export function createBaseModel<T extends object>(constructor: Type<T>, data: BaseModelData<T>) {
+  return BaseModel.init(Object.create(constructor.prototype), data);
 }

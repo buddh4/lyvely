@@ -32,7 +32,7 @@ export class ProfileTagsController implements ProfileTagsEndpoint {
   async create(@Body() dto: CreateTagModel, @Request() req: ProfileRequest) {
     const profile = this._getMemberProfile(req);
     await this.tagService.addTag(profile, dto);
-    return new TagModel(profile.getTagByName(dto.name));
+    return new TagModel(profile.getTagByName(dto.name)!);
   }
 
   @Put(':id')

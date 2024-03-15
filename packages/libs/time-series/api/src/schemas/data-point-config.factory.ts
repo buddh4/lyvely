@@ -1,7 +1,7 @@
 import { DataPointConfig } from './config/data-point-config.schema';
-import { assignEntityData, IntegrityException } from '@lyvely/api';
+import { IntegrityException } from '@lyvely/api';
 import { useDataPointStrategyFacade } from '@lyvely/time-series-interface';
-import { Type, PropertiesOf } from '@lyvely/common';
+import { Type, PropertiesOf, initBaseModelData } from '@lyvely/common';
 
 const register = {};
 
@@ -53,6 +53,6 @@ export class DataPointConfigFactory {
       );
     }
 
-    return assignEntityData(new ConfigType(), config);
+    return initBaseModelData(new ConfigType(), config);
   }
 }

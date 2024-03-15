@@ -36,7 +36,7 @@ export const errorDialogErrorInterceptor = (error: any) => {
       error.response.data.message === 'invalid csrf token'
     ) {
       useGlobalDialogStore().showError({
-        icon: LyIconLibrary.error_network.name,
+        icon: LySvgIcons.error_network.name,
         title: 'error.csrf.title',
         message: 'error.csrf.message',
         buttonType: 'reload',

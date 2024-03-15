@@ -133,7 +133,7 @@ function setInputType(inputType: DataPointInputType) {
             <ly-icon name="info" class="text-info-light" />
           </div>
           <div>
-            {{ $t('time-series.timer_score_info') }}
+            {{ t('time-series.timer_score_info') }}
           </div>
         </div>
       </div>

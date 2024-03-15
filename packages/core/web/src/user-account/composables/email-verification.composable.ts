@@ -22,7 +22,7 @@ export function useEmailVerificationStore(options: IEmailVerificationOptions) {
   );
   const attempts = ref(0);
   const errorMsg = ref<undefined | string>();
-  const otpInfo = ref(new OtpInfo());
+  const otpInfo = ref(new OtpInfo(false));
 
   const startVerificationOf = async (
     emailOrUsername: string,
@@ -45,7 +45,7 @@ export function useEmailVerificationStore(options: IEmailVerificationOptions) {
   const softReset = () => {
     model.value.otp = '';
     validator.value.reset();
-    otpInfo.value = new OtpInfo();
+    otpInfo.value = new OtpInfo(false);
     attempts.value = 0;
     errorMsg.value = undefined;
   };

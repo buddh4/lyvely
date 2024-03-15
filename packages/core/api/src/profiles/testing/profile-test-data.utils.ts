@@ -103,6 +103,7 @@ export class ProfileTestDataUtils extends UserTestDataUtils {
 
   override async createUser(username = 'test', userData: Partial<User> = {}): Promise<User> {
     userData.username = username;
+    userData.displayName ??= username;
     userData.email = userData.email || `${username}@test.de`;
     userData.emails ||= [
       new UserEmail(`${username}@test.de`, true),

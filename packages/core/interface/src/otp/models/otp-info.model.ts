@@ -1,6 +1,12 @@
 import { Exclude, Expose } from 'class-transformer';
-import { BaseModel, type PartialPropertiesOf, PropertyType } from '@lyvely/common';
+import {
+  BaseModel,
+  type PartialPropertiesOf,
+  PropertyType,
+  type StrictBaseModelData,
+} from '@lyvely/common';
 import { addMilliSeconds } from '@lyvely/dates';
+import type { Optional } from '@lyvely/common/src';
 
 export const DEFAULT_MAX_OTP_ATTEMPTS = 4;
 
@@ -20,7 +26,7 @@ export class OtpInfo {
   @PropertyType(Number, { default: 0 })
   attempts: number;
 
-  constructor(data: PartialPropertiesOf<OtpInfo>) {
+  constructor(data: StrictBaseModelData<Optional<OtpInfo, 'maxAttempts' | 'attempts'>>) {
     BaseModel.init(this, data);
   }
 

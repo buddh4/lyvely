@@ -3,7 +3,7 @@ import { Content } from '../schemas';
 import { ContentTypeService } from '../services';
 import { ProtectedProfileContentRequest } from '../types';
 import { ContentCreatePolicy, ContentWritePolicy } from '../policies';
-import { Type, PropertiesOf, createAndAssign } from '@lyvely/common';
+import { Type, PropertiesOf, createBaseModelAndInit } from '@lyvely/common';
 import {
   ContentTypeEndpoint,
   ContentModel,
@@ -46,7 +46,7 @@ export abstract class AbstractContentTypeController<
 
   private transformCreateModel(raw: PropertiesOf<TCreateModel>): TCreateModel {
     const test = plainToInstance(this.createModelType, raw);
-    return createAndAssign(this.createModelType, test);
+    return createBaseModelAndInit(this.createModelType, test);
   }
 
   @Put(':cid')
@@ -69,7 +69,7 @@ export abstract class AbstractContentTypeController<
   }
 
   private transformUpdateModel(raw: PropertiesOf<TUpdateModel>): TUpdateModel {
-    return createAndAssign(this.updateModelType, raw);
+    return createBaseModelAndInit(this.updateModelType, raw);
   }
 
   protected async createUpdateResponse(

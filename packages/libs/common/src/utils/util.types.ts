@@ -20,3 +20,5 @@ export type FunctionsOf<T> = Pick<T, FunctionPropertyNames<T>>;
 export type Constructor<T> = new (...args: any[]) => T;
 
 export type Lazy<T> = () => Promise<{ default: T }>;
+
+export type Optional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;

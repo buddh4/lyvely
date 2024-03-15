@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { CalendarInterval } from '@lyvely/dates';
+import { t } from '@lyvely/web';
 import { computed, ref } from 'vue';
 import { onClickOutside } from '@vueuse/core';
 import { useCalendarPlanPlanNavigation } from '../composables';
@@ -62,7 +63,7 @@ const isEmptyUnscheduled = computed(
     ref="header"
     :data-id="headerId"
     tabindex="0"
-    :aria-label="$t('calendar-plan.aria.header', { time: accessibleTitle })"
+    :aria-label="t('calendar-plan.aria.header', { time: accessibleTitle })"
     :data-count="count"
     :class="[
       'relative py-2 px-3 bg-shadow text-center',
@@ -75,7 +76,7 @@ const isEmptyUnscheduled = computed(
     <button
       v-if="showTodayIcon"
       class="today-button absolute left-2.5"
-      :title="$t('calendar-plan.nav-today')"
+      :title="t('calendar-plan.nav-today')"
       :aria-controls="itemsId"
       @click="switchToToday">
       <ly-icon role="button" name="today" />
@@ -84,7 +85,7 @@ const isEmptyUnscheduled = computed(
     <ly-button
       v-if="leftCaret"
       tabindex="0"
-      :aria-label="$t('calendar-plan.aria.nav-back', { time: prevTitle })"
+      :aria-label="t('calendar-plan.aria.nav-back', { time: prevTitle })"
       class="inline-block py-0 select-none"
       :aria-controls="itemsId"
       @click="decrementTiming">
@@ -107,7 +108,7 @@ const isEmptyUnscheduled = computed(
     <ly-button
       v-if="rightCaret"
       tabindex="0"
-      :aria-label="$t('calendar-plan.aria.nav-next', { time: nextTitle })"
+      :aria-label="t('calendar-plan.aria.nav-next', { time: nextTitle })"
       class="inline-block py-0 select-none"
       :aria-controls="itemsId"
       @click="incrementTiming">

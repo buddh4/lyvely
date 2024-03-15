@@ -128,7 +128,6 @@ export class ProfilesController implements ProfilesEndpoint {
     @Req() req: ProtectedProfileRequest,
   ): Promise<SettingsUpdateResponse> {
     const { profile, context } = req;
-    // TODO: Use ACL
     if (!context.getMembership(ProfileMembershipRole.Admin, ProfileMembershipRole.Owner)) {
       throw new ForbiddenException();
     }

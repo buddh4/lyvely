@@ -1,4 +1,4 @@
-import { applyInc, applyPush, applyRawDataTo } from './db.utils';
+import { applyInc, applyPush } from './db.utils';
 
 class SubModel {
   public fieldA?: string;
@@ -20,40 +20,6 @@ class TestModel {
 }
 
 describe('DbUtils', () => {
-  describe('applyRawDataTo', function () {
-    it('top level field is applied', () => {
-      const model = new TestModel({ value: 'TestValue' });
-      applyRawDataTo(model, { value: 'NewTestValue' });
-      expect(model.value).toEqual('NewTestValue');
-    });
-
-    it('apply array values', () => {
-      const model = new TestModel({ arr: ['a', 'b'] });
-      applyRawDataTo(model, { arr: ['c', 'd', 'e'] });
-      expect(model.arr).toEqual(['c', 'd', 'e']);
-    });
-
-    it('sub level field is applied', () => {
-      const model = new TestModel({ sub: new SubModel({ fieldA: 'a' }) });
-      applyRawDataTo(model, { sub: { fieldA: 'NewA' } });
-      expect(model.sub?.fieldA).toEqual('NewA');
-      expect(model.sub instanceof SubModel).toEqual(true);
-    });
-
-    it('sub level2 field is applied', () => {
-      const model = new TestModel({ sub: new SubModel({ sub: new SubModel({ fieldA: 'subA' }) }) });
-      applyRawDataTo(model, { sub: { sub: { fieldA: 'newSubA' } } });
-      expect(model.sub?.sub?.fieldA).toEqual('newSubA');
-      expect(model.sub?.sub instanceof SubModel).toEqual(true);
-    });
-
-    it('do not apply unknown field if strict = true', () => {
-      const model = new TestModel({ sub: new SubModel({ sub: new SubModel({ fieldA: 'subA' }) }) });
-      applyRawDataTo(model, <any>{ doesNotExist: 'whatever' }, { strict: true });
-      expect((<any>model).doesNotExist).toBeUndefined();
-    });
-  });
-
   describe('applyInc', function () {
     it('apply root path inc', () => {
       const model = { field: 0 };

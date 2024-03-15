@@ -5,9 +5,10 @@ import { useCreateMessageStore } from '@/messages/stores/message.store';
 import { storeToRefs } from 'pinia';
 import { useProfileStore } from '@/profiles/stores/profile.store';
 import { onMounted, ref } from 'vue';
-import { useContentStreamFilterStore, useContentCreateStore } from '../stores';
+import { useContentStreamFilter, useContentCreateStore } from '../stores';
 import { focusIfNotTouchScreen } from '@lyvely/ui';
 import { usePermissions } from '@/common';
+import { t } from '@/i18n';
 
 export interface IProps {
   parent?: ContentModel;
@@ -15,7 +16,7 @@ export interface IProps {
 
 const props = defineProps<IProps>();
 
-const { filter } = storeToRefs(useContentStreamFilterStore());
+const { filter } = useContentStreamFilter();
 const emits = defineEmits(['contentCreated']);
 
 const messageInput = ref<HTMLTextAreaElement>();
@@ -34,7 +35,7 @@ async function submitMessage(evt: KeyboardEvent) {
 }
 
 async function openCreateContentModal() {
-  const tagNames = useProfileStore().tagIdsToNames(useContentStreamFilterStore().filter.tagIds);
+  const tagNames = useProfileStore().tagIdsToNames(filter.value.tagIds);
   useContentCreateStore().createAnyContent({
     title: model.value.text,
     tagNames,
@@ -97,7 +98,7 @@ onMounted(() => {
             rows="1"
             type="text"
             class="plain w-full bg-transparent resize-none overflow-auto disabled:cursor-pointer scrollbar-thin border-0 p-0 focus-hidden focus:ring-none focus:outline-none focus:shadow-none"
-            :placeholder="$t(placeholderKey)"
+            :placeholder="t(placeholderKey)"
             @keyup.enter="submitMessage"
             @keydown="onInputKeydown"
             @paste="autoAlignHeight" />
