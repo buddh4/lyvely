@@ -4,16 +4,12 @@ Model classes primarily find their use within the interface layer of a module, s
 Transfer Objects (DTOs) or domain models. To facilitate the creation and management of these model classes, 
 the `@lyvely/common` package offers a set of utilities, which will be detailed in the upcoming sections.
 
-## BaseModel & DocumentModel
+## `BaseModel.init`
 
-The `BaseModel` class within the `@lyvely/common` package can be extended to create new model classes. 
-It offers functionalities for initializing and transforming model instances. `BaseModel` classes often mirror
-the structure of a backend document schema and can also serve as interfaces for such schema models, ensuring strict type safety.
-In such instances, it is advisable to append the `Model` suffix to the class name to avoid naming conflicts.
-
-A `DocumentModel` is a specialized type of model designed for mirroring database schema models. Similar to the
-`BaseModel`, the `DocumentModel` supports the same features, but furthermore includes an `id` field that is automatically
-set if the constructor argument contains an `_id` field, which is common in most schema models.
+The `BaseModel.init` function within the `@lyvely/common` package offers functionalities for initializing and transforming 
+model instances. Model classes often mirror the structure of a backend document schema and can also serve as interfaces 
+for such schema models, ensuring strict type safety. In such instances, it is advisable to append the `Model` 
+suffix to the class name to avoid naming conflicts.
 
 Some transformation rules mentioned in the following sections facilitate using a document schema object as a constructor 
 argument of a model class, provided that the structures of both models are equivalent, except for the id type.
@@ -21,21 +17,29 @@ argument of a model class, provided that the structures of both models are equiv
 For example, let's consider a hypothetical `UserModel` as an illustration:
 
 ```typescript
-import {Exclude} from "class-transformer";
-import {BaseModel, DocumentModel, PropertyType} from "@lyvely/common";
+import { Exclude } from "class-transformer";
+import { BaseModel, PropertyType } from "@lyvely/common";
 
 @Exclude()
-export class UserContactModel<TID = string> extends BaseModel<UserContact<any>> {
+export class UserContactModel<TID = string> {
     @Expose()
     name: string;
 
     @Expose()
     @TransformObjectId()
     uid: TID;
+    
+    constructor(data: StrictBaseModelData<UserContactModel<any>>) {
+      BaseModel.init(this, data);
+    }
 }
 
 @Exclude()
-export class UserModel<TID = string> extends DocumentModel<UserModel<any>> {
+export class UserModel<TID = string> {
+
+    @Expose()
+    id: string;
+  
     @Expose()
     username: string;
 
@@ -45,26 +49,35 @@ export class UserModel<TID = string> extends DocumentModel<UserModel<any>> {
     @Expose()
     @PropertyType([UserContactModel])
     contacts: UserContactModel<TID>[];
+
+    constructor(data: StrictBaseModelData<UserModel<any>>) {
+      BaseModel.init(this, data);
+    }
 }
 
 @Exclude()
-export class UsersResponse<TID = string> extends BaseModel<UserRepsonse<any>> {
+export class UsersResponse<TID = string> {
     @PropertyType([UserModel])
     users: UserModel<TID>[];
+
+    constructor(data: StrictBaseModelData<UsersResponse<any>>) {
+      BaseModel.init(this, data);
+    }
 }
 ```
+
 - To control which fields are included when serializing or deserializing a model, you can use the `@Expose` and `@Exclude`
   decorators. In most scenarios, especially when dealing with models that may contain sensitive data, it is advisable to
   use `@Exclude` at the class level to exclude all fields by default and then explicitly `@Expose` the fields that are safe to
   transmit to the client or server.
 - The `@PropertyType` decorator is used to specify the data type of a property for the purpose of auto-transformation,
-  and it will be explored in greater depth in an upcoming section.
+  and will be explored in greater depth in an upcoming section.
 - The `@TransformObjectId` decorator will automatically transform `ObjectId` values to `string`.
   This is useful if our schema implements our model (beside the type of ids) we can simply use schema model instances as
   constructor argument when creating models.
 - For transforming arrays of `ObjectIds` to string arrays use the `@TransformObjectIds` decorator.
 
-In this example our backend schema implements the model properties as follows:
+In this example our backend schema can implement the model properties as follows:
 
 ```typescript
 export class User extends BaseDocument<User> implements PropertiesOf<UserModel<TObjectId>> {
@@ -87,8 +100,7 @@ export class UsersController {
 ```
 
 ### Constructor
-
-The generic type of the `BaseModel` class specifies the type of the constructor argument. 
+ 
 To create an instance of our `UserModel`, you can use the following approach:
 
 ```typescript
@@ -104,6 +116,31 @@ const user = new UserModel({
 The `UserModel` constructor automatically converts the plain contacts array into an array of `UserContactModel` instances,
 based on the `@PropertyType` decorator while respecting our transformation rules.
 
+When extending a class using `BaseModel.init` in its constructor, you should call the parent constructor with `false`,
+which is included in the `StrictBaseModelData` and `BaseModelData` types, and manually call `BaseModel.init` in the subclass.
+This is required if the subclass adds or overwrites properties since ES2020 class fields do not support setting fields
+of a subclass within the super constructor:
+
+```typescript
+import {BaseModel, type StrictBaseModelData} from "@lyvely/common";
+
+class SuperUserModel<TID = string> extends UserModel<TID> {
+  @Expose()
+  extraField: string;
+
+  constructor(data: StrictBaseModelData<any>) {
+    super(false);
+    BaseModel.init(this, data);
+  }
+}
+```
+
+:::tip 
+You can control the strictness of your constructor by switching from `StrictBaseModelData` to `BaseModelData`, which will
+also allow partial constructor data. Generally, it is advisable to use `StrictBaseModelData` and if required manually
+use the `Omit` or `Optional` utility types to refine the constructor data object.
+:::
+
 :::warning
 A model constructor will not respect `@Expose`, `@Exclude` and `@Transform` rules, those transformations rules are usually applied when using
 the `@UseClassSerializer` interceptor in our controller or manually transforming a model with the `instanceToPlain` function.
@@ -111,12 +148,12 @@ the `@UseClassSerializer` interceptor in our controller or manually transforming
 
 ### getDefaults
 
-The `BaseModel` allows you to define a `getDefaults` function, which can be used to specify default values for a model. 
+The `BaseModel` utility allows you to define a `getDefaults` function, which can be used to specify default values for a model. 
 These defaults are automatically merged into the values provided to the model constructor, as demonstrated in the following example:
 
 ```typescript
 @Exclude()
-export class UserModel extends BaseModel<ProfileRelations> {
+export class UserModel<TID = string> {
     @Expose()
     username: string;
 
@@ -126,7 +163,11 @@ export class UserModel extends BaseModel<ProfileRelations> {
     @Expose()
     @Type(() => UserContactModel)
     @PropertyType([UserContactModel])
-    contacts: UserContactModel[];
+    contacts: UserContactModel<TID>[];
+
+    constructor(data: StrictBaseModelData<UserModel<any>>) {
+      BaseModel.init(this, data);
+    }
 
     getDefaults() {
         return {
@@ -148,7 +189,7 @@ This function is invoked at the very end of our constructor call.
 
 ```typescript
 @Exclude()
-export class UserModel extends BaseModel<ProfileRelations> {
+export class UserModel<TID = string> {
     @Expose()
     username: string;
 
@@ -158,7 +199,11 @@ export class UserModel extends BaseModel<ProfileRelations> {
     @Expose()
     @Type(() => UserContactModel)
     @PropertyType([UserContactModel])
-    contacts: UserContactModel[];
+    contacts: UserContactModel<TID>[];
+
+    constructor(data: StrictBaseModelData<UserModel<any>>) {
+      BaseModel.init(this, data);
+    }
 
     afterInit() {
         this.status ??= UserStatus.Active;
@@ -176,7 +221,7 @@ types, as well as primitive or array types. You can also set `default` values or
 ```typescript
 import {PropertyType} from "@lyvely/common";
 
-export class TestModel extends BaseModel<TestModel> {
+export class TestModel {
     // Will default to 3
     @PropertyType(Number, { default: 3 })
     numberValue1: number;
@@ -204,12 +249,12 @@ export class TestModel extends BaseModel<TestModel> {
     // Works for dates also
     @PropertyType(Date, { default: new Date() })
     dateValue: Date;
+
+    constructor(data: StrictBaseModelData<Optional<TestModel<any>, 'dateValue' | 'numberValue1' | 'arrayValue1'>>) {
+      BaseModel.init(this, data);
+    }
 }
 ```
-
-:::note
-Some features as default value initialization are not available when using `class-transformer` utilities as  `plainToInstance`.
-:::
 
 :::info
 Unless a property is explicitly marked as `optional`, it will either automatically create an instance of the 

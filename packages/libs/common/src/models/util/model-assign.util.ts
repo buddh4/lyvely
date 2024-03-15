@@ -146,7 +146,7 @@ function _initModel<T extends object>(
   data: { [key in keyof T]?: any } & any,
   options: Pick<InitModelDataOptions, 'skipInitProps' | 'skipAfterInit'> = {},
 ) {
-  if (isPlainObject(data) && '_id' in data && isPlainObject(data._id)) {
+  if (isPlainObject(data) && '_id' in data && isObjectId(data._id)) {
     (<any>model).id = data._id.toString();
   }
 

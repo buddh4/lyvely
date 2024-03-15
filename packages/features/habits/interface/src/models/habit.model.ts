@@ -1,4 +1,4 @@
-import { Expose } from 'class-transformer';
+import { Exclude, Expose } from 'class-transformer';
 import { UpdateHabitModel } from './update-habit.model';
 import { ContentModel, IEditableModel, UserAssignmentStrategy } from '@lyvely/interface';
 import { CalendarInterval } from '@lyvely/dates';
@@ -10,13 +10,14 @@ import {
 } from '@lyvely/time-series-interface';
 import { IHabitConfig } from '../interfaces';
 
-@Expose()
+@Exclude()
 export class HabitModel<TID = string>
   extends TimeSeriesContentModel<TID, IHabitConfig>
   implements IEditableModel<UpdateHabitModel>, ContentModel<TID, IHabitConfig>
 {
   static contentType = 'Habit';
 
+  @Expose()
   override type = HabitModel.contentType;
 
   override getDefaultConfig(): IHabitConfig {

@@ -59,6 +59,7 @@ function switchCreateContentType(type: string) {
               :key="contentTypeOption.type">
               <ly-button
                 class="select-none button no-underline text-center rounded inline-block secondary outlined inline-flex items-center text-xs py-1 px-1 text-xs px-2 rounded"
+                :data-id="`btn-content-type-${contentTypeOption.type.toLowerCase()}`"
                 :active="contentTypeOption.type === contentType"
                 @click="switchCreateContentType(contentTypeOption.type)">
                 {{ translate(contentTypeOption.name) }}

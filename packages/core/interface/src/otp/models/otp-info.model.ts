@@ -4,9 +4,9 @@ import {
   type PartialPropertiesOf,
   PropertyType,
   type StrictBaseModelData,
+  Optional,
 } from '@lyvely/common';
 import { addMilliSeconds } from '@lyvely/dates';
-import type { Optional } from '@lyvely/common/src';
 
 export const DEFAULT_MAX_OTP_ATTEMPTS = 4;
 

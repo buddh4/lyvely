@@ -2,7 +2,6 @@
   "name": "@lyvely/habits-web",
   "version": "0.1.0-alpha3",
   "description": "core-web package",
-  "type": "module",
   "module": "dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
@@ -16,6 +15,9 @@
   },
   "scripts": {
     "dev": "vite",
+    "dev:e2e": "cross-env NODE_ENV=e2e npm run dev",
+    "cypress:open": "cross-env NODE_ENV=e2e cypress open",
+    "cypress:run": "cross-env NODE_ENV=e2e cypress run",
     "build": "lyvely-dev build:web",
     "lint": "eslint \"{src,apps,libs,test}/**/*.{ts,vue}\" --fix",
     "format": "prettier .  --write"

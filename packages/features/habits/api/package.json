@@ -9,6 +9,8 @@
     "format": "prettier \"lib/**/*.ts\" --write",
     "dev": "nest start",
     "dev:debug": "nest start --debug --watch",
+    "dev:e2e": "cross-env NODE_ENV=e2e nest start",
+    "dev:e2e:debug": "cross-env NODE_ENV=e2e nest start --debug --watch",
     "build": "rm -rf ./dist/* && tsc -p tsconfig.build.json",
     "prepublish:npm": "npm run build",
     "publish:npm": "npm publish --access public",

@@ -54,6 +54,7 @@ const modalTitle = computed(() => {
     @cancel="$emit('cancel')">
     <template #preHeader><slot name="navigation"></slot></template>
     <ly-form-model
+      id="habit-form"
       v-model="model"
       :validator="validator"
       :status="status"

@@ -16,16 +16,15 @@ import fs, { readdirSync } from 'fs';
 import { sign, decode, JwtPayload } from 'jsonwebtoken';
 import dotenv from 'dotenv';
 
-const { getObjectId } = require('mongo-seeding');
+const { Seeder, getObjectId } = require('mongo-seeding');
 
 dotenv.config({ path: '.e2e.env' });
 const path = require('path');
-const { Seeder } = require('mongo-seeding');
 
 async function seed() {
   console.log('Seeding ' + process.env.MONGODB_URI_E2E);
   const config = {
-    database: process.env.MONGODB_URI_E2E,
+    database: process.env.MONGODB_URI_E2E || 'mongodb://localhost/lyvely-e2e',
     dropDatabase: false,
     dropCollections: false,
     removeAllDocuments: true,
@@ -42,7 +41,7 @@ async function seed() {
 
   const localPath = path.resolve('./cypress/data');
 
-  if (typeof localPath === 'string' && fs.existsSync(localPath)) {
+  if (fs.existsSync(localPath)) {
     collections.push(
       ...seeder.readCollectionsFromPath(localPath, {
         transformers: [

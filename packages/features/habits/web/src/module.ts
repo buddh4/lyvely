@@ -28,8 +28,8 @@ export default () => {
     },
     dependencies: [calendarPlanModule(), timeSeriesModule()],
     features: [HabitsFeature, ActivityHabitsFeature],
+    routes: habitRoutes,
     init: () => {
-      const { isFeatureEnabled } = useProfileFeatureStore();
       registerMenuEntry(MENU_PROFILE_DRAWER, () => ({
         id: 'profile-habits',
         moduleId: HABITS_MODULE_ID,
@@ -37,7 +37,7 @@ export default () => {
         sortOrder: 1501,
         features: HabitsFeature.id,
         icon: 'activity',
-        condition: isFeatureEnabled(ActivityHabitsFeature.id),
+        condition: !useProfileFeatureStore().isFeatureEnabled(ActivityHabitsFeature.id),
         to: { name: 'Habits' },
       }));
       registerMenuEntry(MENU_PROFILE_MOBILE_FOOTER, () => ({
@@ -47,10 +47,9 @@ export default () => {
         sortOrder: 1501,
         features: HabitsFeature.id,
         icon: 'activity',
-        condition: isFeatureEnabled(ActivityHabitsFeature.id),
+        condition: useProfileFeatureStore().isFeatureEnabled(ActivityHabitsFeature.id),
         to: { name: 'Habits' },
       }));
-      registerRoutes(habitRoutes);
       registerContentType({
         type: HabitModel.contentType,
         moduleId: HABITS_MODULE_ID,

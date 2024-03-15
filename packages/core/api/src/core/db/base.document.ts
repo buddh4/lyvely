@@ -1,8 +1,7 @@
 import { Exclude, Expose } from 'class-transformer';
 import { Document, TObjectId } from './db.type';
 import { initBaseModelData } from '@lyvely/common';
-import { PartialPropertiesOf, type PropertiesOf } from '@lyvely/common';
-import type { InitModelDataOptions } from '@lyvely/common/src';
+import { PartialPropertiesOf, type PropertiesOf, InitModelDataOptions } from '@lyvely/common';
 
 export interface IEntity<ID = TObjectId> {
   _id: ID;

@@ -19,6 +19,8 @@ lerna-debug.log*
 /.nyc_output
 /cypress/integration/examples
 /cypress/screenshots
+/cypress/downloads
+/cypress/mails
 /cypress/videos
 
 # IDEs and editors

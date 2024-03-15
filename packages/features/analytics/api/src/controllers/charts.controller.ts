@@ -18,9 +18,9 @@ import {
   ChartModel,
   ChartsEndpointPaths,
   UpdateChartSeriesModel,
+  ChartSeriesDataResponse,
 } from '@lyvely/analytics-interface';
 import { Chart } from '../schemas';
-import { ChartSeriesDataResponse } from '@lyvely/analytics-interface/src';
 
 @ContentTypeController(API_ANALYTICS_CHARTS, Chart)
 @UseClassSerializer()

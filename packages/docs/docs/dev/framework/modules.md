@@ -6,7 +6,6 @@ In Lyvely, modules are typically organized into three distinct packages, all man
 - `interface`: In this package, you'll find shared logic as models with validation rules, API endpoint interfaces, and endpoint clients.
 - `web`: The web package is responsible for implementing the user interface.
 
-
 Within a modules monorepo, both the `web` and `api` packages have the capability to run their own development servers
 right out of the box. This feature is designed to simplify the process of testing and debugging your custom features.
 
@@ -97,6 +96,49 @@ If your module becomes more complex as it evolves, it is advisable to organize y
 their specific types, e.g. `controllers`, `schemas`, `daos`, `services`.
 :::
 
+### API Module
+
+The `@LyvelyModule` decorator extends the functionality of a standard [NestJS Module](https://docs.nestjs.com/modules) 
+by incorporating Lyvely-specific configuration options.
+
+The `@LyvelyModule` decorator offers the following additional options:
+
+| Option      | Type        | Description                                       |
+|-------------|-------------|---------------------------------------------------|
+| id          | string      | A unique module identifier.                       |
+| path        | string      | The file path of the module (usually __dirname).  |
+| name        | string      | An optional display name for the module.          |
+| description | string      | An optional description for the module.           |
+| features    | IFeature    | An array of feature definitions.                  |
+| permissions | IPermission | An array of permission definitions.               |
+| policies    | IPolicy     | An array of policy definitions.                   |
+
+:::note
+ Other modules may support additional configuration options.
+:::
+
+#### Example
+
+```typescript
+@LyvelyModule({
+  id: POLLS_MODULE_ID,
+  name: 'Polls',
+  path: __dirname,
+  features: [PollsFeature],
+  policies: [], // Could contain poll specific policies
+  permissions: [
+    CreatePollPermission, 
+    ManagePollPermission, 
+    WritePollPermission
+  ],
+  imports: [],
+  controllers: [PollsController],
+  providers: [ PollsService ],
+  exports: [ PollsService ],
+})
+export class ContentCoreModule {}
+```
+
 ### API Testing
 
 To initiate the test environment for an `api` package, run the `npm run dev -w my-module-api` command. 
@@ -123,6 +165,110 @@ This package will typically rely on the following packages:
 For added convenience, the `@lyvely/web` module re-exports the `@lyvely/interface` module, eliminating the need for
 explicit imports of the core `interface` package within a modules `web` package.
 :::
+
+### Web Module
+
+A frontend module consists of the following properties:
+
+| Option       | Description                                             |
+|--------------|---------------------------------------------------------|
+| id           | A unique module identifier.                             |
+| i18n         | Locale file registration.                               |
+| dependencies | Array of dependent modules.                             |
+| features     | An array of feature definitions.                        |
+| permissions  | An array of permission definitions.                     |
+| routes       | An array of `RouteRecordRaw` or function returning one. |
+| init         | An initializer function for manual installation logic.  |
+| install      | Can be used to install vue app extensions and plugins.  |
+
+#### Module `init`
+
+The `init` function can be used to manually initialize aspects of your module as registering menu entries or
+new content types.
+
+:::warning
+The `init` function is called right before creating the vue application, which means you should not
+use any pinia stores directly within this function. (This may change in the future)
+:::
+
+#### Locales
+
+The `i18n` option can be used to register locale files. This allows you to create and load specific translations
+on demand. There are two special keys to consider:
+
+- `base`: This locale file will be loaded once the application starts and may contain translations that need to be 
+available on startup, such as menu entries or notification texts.
+- `locale`: This is the default locale file of the module and may be loaded when accessing module-related routes as 
+in the following route configuration:
+
+```typescript
+export const pollsRoutes: RouteRecordRaw[] = [
+  {
+    name: 'Polls',
+    path: profilePath('/polls'),
+    meta: {
+      i18n: { load: ['polls'] }, // This will load the the default locale when entering the route.
+      layout: LAYOUT_PROFILE,
+      title: () => t('habits.title'),
+    },
+    component: () => import('../views/PollsView.vue'),
+  },
+];
+```
+
+#### Example:
+
+```typescript
+export const pollsModule = () => {
+  return {
+    id: POLLS_MODULE_ID,
+    i18n: {
+      base: (locale: string) => import(`./locales/base.${locale}.json`),
+      locale: (locale: string) => import(`./locales/${locale}.json`),
+    },
+    dependencies: [someOtherModule()],
+    features: [PollsFeature],
+    routes: habitRoutes,
+    init: () => {
+      registerMenuEntry(MENU_PROFILE_DRAWER, () => ({
+        id: 'profile-polls',
+        moduleId: POLLS_MODULE_ID,
+        text: 'polls.title',
+        sortOrder: 1501,
+        features: PollsFeature.id,
+        icon: 'polls',
+        condition: useProfileFeatureStore().isFeatureEnabled(PollsFeature.id),
+        to: { name: 'Polls' },
+      }));
+      
+      registerContentType({
+        type: PollsModel.contentType,
+        moduleId: POLLS_MODULE_ID,
+        name: translation('polls.name'),
+        icon: 'polls',
+        feature: PollsFeature.id,
+        modelClass: PollsModel,
+        interfaces: {
+          create: {
+            mode: 'modal',
+            modelClass: CreatePollModel,
+            component: () => import('./components/modals/EditPollModal.vue'),
+          },
+          edit: {
+            mode: 'modal',
+            component: () => import('./components/modals/EditPollModal.vue'),
+          },
+          stream: {
+            details: () => import('./components/content-stream/PollsDetails.vue'),
+            entry: () => import('./components/content-stream/PollsStreamEntry.vue'),
+          },
+        },
+      });
+    },
+  } as IModule;
+};
+```
+
 
 ### Web Testing
 
