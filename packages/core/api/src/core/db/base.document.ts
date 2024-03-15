@@ -2,14 +2,10 @@ import { Exclude, Expose } from 'class-transformer';
 import { Document, TObjectId } from './db.type';
 import { initBaseModelData } from '@lyvely/common';
 import { PartialPropertiesOf, type PropertiesOf } from '@lyvely/common';
+import type { InitModelDataOptions } from '@lyvely/common/src';
 
 export interface IEntity<ID = TObjectId> {
   _id: ID;
-}
-
-interface InitOptions {
-  strict?: boolean;
-  skipGetDefaults?: boolean;
 }
 
 export type NonPersistedDocument<TModel extends BaseDocument> = Omit<
@@ -71,7 +67,7 @@ export abstract class BaseDocument<ID = TObjectId> implements IEntity<ID> {
   static init<T extends BaseDocument>(
     instance: T,
     data?: BaseDocumentData<T>,
-    options?: InitOptions,
+    options?: InitModelDataOptions,
   ) {
     if (data === false) return;
     return assignEntityData(instance, data, options);
@@ -82,7 +78,7 @@ export abstract class BaseDocument<ID = TObjectId> implements IEntity<ID> {
 export function assignEntityData<T extends Record<string, any>, U>(
   instance: T,
   obj?: U,
-  options?: InitOptions,
+  options?: InitModelDataOptions,
 ) {
   if (obj instanceof Document) {
     return initBaseModelData(instance, obj.toObject(), options);

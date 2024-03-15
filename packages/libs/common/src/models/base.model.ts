@@ -1,11 +1,6 @@
-import { initBaseModelData, implementsToJson } from './util';
+import { initBaseModelData, implementsToJson, type InitModelDataOptions } from './util';
 import { PartialPropertiesOf, type PropertiesOf } from '../utils/util.types';
 import { hasOwnNonNullableProperty } from '../utils/object.util';
-
-interface InitOptions {
-  strict?: boolean;
-  skipGetDefaults?: boolean;
-}
 
 export type StrictBaseModelData<TModel extends object> = PropertiesOf<TModel> | TModel | false;
 
@@ -44,7 +39,7 @@ export const BaseModel = {
   init<TModel extends Object = any>(
     instance: TModel,
     data?: BaseModelData<TModel>,
-    options?: InitOptions,
+    options?: InitModelDataOptions,
   ) {
     if (data === false) return;
     return initBaseModelData(instance, data, options);

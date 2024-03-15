@@ -4,7 +4,8 @@ import { getPropertyTypeDefinition } from '../decorators';
 import { implementsAfterInit, implementsGetDefaults } from './model-interfaces.helper';
 
 type WithTransformation = ((model: any, field: string) => undefined | any) | undefined;
-interface InitModelDataOptions {
+
+export interface InitModelDataOptions {
   maxDepth?: number;
   strict?: boolean;
   skipGetDefaults?: boolean;
