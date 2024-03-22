@@ -93,7 +93,7 @@ export class User
   timezone: string;
 
   /** Module and other settings. **/
-  @MixedProp({ default: () => {} })
+  @MixedProp({ default: () => ({}) })
   settings: Record<string, any>;
 
   /** Known refresh tokens of this user. **/

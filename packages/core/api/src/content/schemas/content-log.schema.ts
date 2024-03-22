@@ -5,11 +5,9 @@ import {
   MixedProp,
   NestedSchema,
   ObjectIdProp,
-  type StrictBaseDocumentData,
   TObjectId,
 } from '@/core';
 import { PropertyType } from '@lyvely/common';
-import { IContentLog } from '@lyvely/interface';
 
 /**
  * Examples:

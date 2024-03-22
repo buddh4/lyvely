@@ -5,7 +5,6 @@ import {
   NestedSchema,
   ObjectIdArrayProp,
   ObjectIdProp,
-  type StrictBaseDocumentData,
   TObjectId,
 } from '@/core';
 import { Author, ContentAuthorSchema, CreatedAs } from './content-author.schema';

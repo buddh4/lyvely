@@ -113,7 +113,7 @@ export class Profile implements PropertiesOf<ProfileModel<TObjectId>>, IProfileP
   usage: ProfileUsage[];
 
   /** Module and other settings. **/
-  @MixedProp({ default: () => {} })
+  @MixedProp({ default: () => ({}) })
   settings: Record<string, any>;
 
   /** Explicitly enabled features. **/
