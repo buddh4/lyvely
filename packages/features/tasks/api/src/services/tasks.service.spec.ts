@@ -52,10 +52,12 @@ describe('TaskService', () => {
   }
 
   it('create', async () => {
-    const { user, profile, context } = await testData.createUserAndProfile();
+    const { context } = await testData.createUserAndProfile();
+    const preCreateTs = Date.now();
     const task = await createTask(context, UserAssignmentStrategy.Shared);
     expect(task.type).toBe(Task.name);
-    expect(task.meta.sortOrder).toEqual(0);
+    expect(task.meta.sortOrder).toBeGreaterThanOrEqual(preCreateTs);
+    expect(task.meta.sortOrder).toBeLessThanOrEqual(Date.now());
     expect(task.meta.createdAt).toBeDefined();
     expect(task.meta.updatedAt).toBeDefined();
     expect(task.config.interval).toEqual(CalendarInterval.Monthly);
