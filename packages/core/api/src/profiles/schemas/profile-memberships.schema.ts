@@ -26,7 +26,7 @@ export class Membership extends UserProfileRelation implements MembershipModel<T
   @PropertyType(String, { default: ProfileMembershipRole.Member })
   override role: ProfileMembershipRole;
 
-  @ObjectIdArrayProp({ default: [] })
+  @ObjectIdArrayProp({ default: () => [] })
   groups: TObjectId[];
 
   static override create(data: ICreateMembership): Membership {

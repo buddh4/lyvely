@@ -40,18 +40,18 @@ export class ContentMetadata implements IContentMetadata {
   childCount: number;
 
   @Prop({ type: Date })
-  @PropertyType(Date, { default: new Date() })
+  @PropertyType(Date, { default: () => new Date() })
   createdAt: Date;
 
   @Prop({ type: Date })
-  @PropertyType(Date, { default: new Date() })
+  @PropertyType(Date, { default: () => new Date() })
   updatedAt: Date;
 
   @ObjectIdProp()
   updatedBy: TObjectId;
 
   @Prop({ required: true })
-  @PropertyType(Number, { default: Date.now() })
+  @PropertyType(Number, { default: () => Date.now() })
   streamSort: number;
 
   @Prop({ enum: getNumberEnumValues(RoleVisibilityLevel) })
@@ -59,7 +59,7 @@ export class ContentMetadata implements IContentMetadata {
   visibility: RoleVisibilityLevel;
 
   @Prop({ type: Number, min: 0 })
-  @PropertyType(Number, { default: Date.now() })
+  @PropertyType(Number, { default: () => Date.now() })
   sortOrder?: number;
 
   @Prop()

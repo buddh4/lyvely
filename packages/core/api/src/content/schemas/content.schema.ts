@@ -107,12 +107,12 @@ export class Content<
   meta: ContentMetadata;
 
   /** The logs field stores event data related to the content instance (planned for future use). **/
-  @Prop({ type: [ContentLogSchema], default: [] })
+  @Prop({ type: [ContentLogSchema], default: () => [] })
   @PropertyType([ContentLog])
   logs: ContentLog[];
 
   /** Array of tag ids attached to this content **/
-  @ObjectIdArrayProp({ default: [] })
+  @ObjectIdArrayProp({ default: () => [] })
   tagIds: TObjectId[];
 
   /** Additional configuration data (may vary by content type) **/

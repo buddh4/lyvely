@@ -93,11 +93,11 @@ export class User
   timezone: string;
 
   /** Module and other settings. **/
-  @MixedProp({ default: {} })
+  @MixedProp({ default: () => {} })
   settings: Record<string, any>;
 
   /** Known refresh tokens of this user. **/
-  @Prop({ type: [RefreshTokenSchema], default: [] })
+  @Prop({ type: [RefreshTokenSchema], default: () => [] })
   refreshTokens: RefreshToken[];
 
   /** The status of this user. **/
@@ -133,11 +133,11 @@ export class User
   notification: UserNotificationState;
 
   /** User relation role permission settings. **/
-  @Prop({ type: [UserRolePermissionSchema], default: [] })
+  @Prop({ type: [UserRolePermissionSchema], default: () => [] })
   @PropertyType([UserRolePermission])
   permissions: UserRolePermission[];
 
-  @Prop({ type: [UserRelationGroupSchema], default: [] })
+  @Prop({ type: [UserRelationGroupSchema], default: () => [] })
   @PropertyType([UserRelationGroup])
   groups: UserRelationGroup[];
 

@@ -44,7 +44,7 @@ export class ContentLog<TData = undefined> {
   updatedBy?: TObjectId;
 
   @Prop({ type: Date, required: true })
-  @PropertyType(Date, { default: new Date() })
+  @PropertyType(Date, { default: () => new Date() })
   updatedAt: Date;
 
   @MixedProp()

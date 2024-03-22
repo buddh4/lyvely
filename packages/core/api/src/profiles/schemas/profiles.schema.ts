@@ -113,7 +113,7 @@ export class Profile implements PropertiesOf<ProfileModel<TObjectId>>, IProfileP
   usage: ProfileUsage[];
 
   /** Module and other settings. **/
-  @MixedProp({ default: {} })
+  @MixedProp({ default: () => {} })
   settings: Record<string, any>;
 
   /** Explicitly enabled features. **/
@@ -134,15 +134,15 @@ export class Profile implements PropertiesOf<ProfileModel<TObjectId>>, IProfileP
   visibility: ProfileVisibilityLevel;
 
   /** Profile role permission settings. **/
-  @Prop({ type: [ProfilePermissionSettingSchema], default: [] })
+  @Prop({ type: [ProfilePermissionSettingSchema], default: () => [] })
   permissions: ProfilePermissionSetting[];
 
-  @Prop({ type: [ProfileMemberGroupSchema], default: [] })
+  @Prop({ type: [ProfileMemberGroupSchema], default: () => [] })
   @PropertyType([ProfileMemberGroup])
   groups: ProfileMemberGroup[];
 
   /** Stores all tags created by this profile. **/
-  @Prop({ type: [TagSchema], default: [] })
+  @Prop({ type: [TagSchema], default: () => [] })
   @PropertyType([Tag])
   tags: Tag[];
 
