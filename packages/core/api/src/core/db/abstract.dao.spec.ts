@@ -12,8 +12,7 @@ import {
 import { ModelDefinition } from '@nestjs/mongoose/dist/interfaces';
 import { Injectable } from '@nestjs/common';
 import { TestingModule } from '@nestjs/testing';
-import { BaseDocument, type BaseDocumentData, type StrictBaseDocumentData } from '@/core';
-import type { DeepPartial } from '@lyvely/common';
+import { BaseDocument, type BaseDocumentData, type LeanDoc } from '@/core';
 
 interface ITestEntity {
   requiredField: string;
@@ -59,7 +58,7 @@ const SubTestEntitySchema = SchemaFactory.createForClass(SubTestEntity);
 class TestEntityDao extends AbstractDao<TestEntity> {
   @InjectModel(TestEntity.name) protected model: Model<TestEntity>;
 
-  getModelConstructor(model: Partial<TestEntity>) {
+  getModelConstructor(model: LeanDoc<TestEntity>) {
     return model.type === SubTestEntity.name ? SubTestEntity : TestEntity;
   }
 
