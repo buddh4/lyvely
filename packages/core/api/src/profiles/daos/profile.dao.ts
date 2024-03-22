@@ -15,9 +15,10 @@ import {
   AbstractDao,
   createObjectId,
   IBaseFetchQueryOptions,
+  LeanDoc,
 } from '@/core';
 import { User } from '@/users';
-import { assignRawDataTo, Constructor, DeepPartial } from '@lyvely/common';
+import { assignRawDataTo, Constructor } from '@lyvely/common';
 import { IntegrityException, ProfileType } from '@lyvely/interface';
 
 @Injectable()
@@ -141,7 +142,7 @@ export class ProfileDao extends AbstractDao<Profile> {
     return 'profiles';
   }
 
-  getModelConstructor(model: DeepPartial<Profile>): Constructor<Profile> {
+  getModelConstructor(model: LeanDoc<Profile>): Constructor<Profile> {
     if (!model.type) throw new IntegrityException();
     const ProfileType = getProfileConstructorByType(model.type);
     if (!ProfileType) {

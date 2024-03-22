@@ -39,7 +39,7 @@ export abstract class ProfileDocumentDao<T extends ProfileDocument> extends Abst
   ) {
     return this.findOne(
       applyShardQueryFilter(profileRelation, {
-        _id: this.assureEntityId(identity),
+        _id: this.assureDocumentId(identity),
       }),
       options,
     );
@@ -52,7 +52,7 @@ export abstract class ProfileDocumentDao<T extends ProfileDocument> extends Abst
   ) {
     return this.findAllByProfile(
       profileRelation,
-      { _id: { $in: ids.map((id) => this.assureEntityId(id)) } },
+      { _id: { $in: ids.map((id) => this.assureDocumentId(id)) } },
       options,
     );
   }
@@ -158,7 +158,7 @@ export abstract class ProfileDocumentDao<T extends ProfileDocument> extends Abst
       updates.map((update) => ({
         updateOne: <any>{
           filter: applyShardQueryFilter(profileRelation, {
-            _id: this.assureEntityId(update.id),
+            _id: this.assureDocumentId(update.id),
           }),
           update: { $set: update.update },
         },

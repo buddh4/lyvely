@@ -2,6 +2,7 @@ import {
   AbstractDao,
   BaseDocument,
   DocumentIdentity,
+  LeanDoc,
   MixedProp,
   Model,
   type TObjectId,
@@ -11,14 +12,14 @@ import { SettingsService } from './settings.service';
 import { InjectModel, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { SettingsRegistry } from './settings.registry';
-import { type BaseModelData, Constructor, DeepPartial } from '@lyvely/common';
+import { type BaseModelData, Constructor } from '@lyvely/common';
 import { FieldValidationException } from '@lyvely/interface';
 
 const settingRegistry = new SettingsRegistry();
 
 @Schema()
 class TestSettingTarget {
-  @MixedProp({ default: {} })
+  @MixedProp({ default: () => ({}) })
   settings: Record<string, any>;
 
   id: string;
@@ -37,7 +38,7 @@ class TestSettingTargetDao extends AbstractDao<TestSettingTarget> {
   @InjectModel(TestSettingTarget.name)
   protected model: Model<TestSettingTarget>;
 
-  getModelConstructor(model: DeepPartial<TestSettingTarget>): Constructor<TestSettingTarget> {
+  getModelConstructor(model: LeanDoc<TestSettingTarget>): Constructor<TestSettingTarget> {
     return TestSettingTarget;
   }
 

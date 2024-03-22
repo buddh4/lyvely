@@ -186,7 +186,7 @@ export abstract class DataPointService<
 
     if (dataPoint) return { dataPoint, isNew: false, oldValue: dataPoint.value };
 
-    const DataPointConstructor = this.dataPointDao.getModelConstructor({
+    const DataPointConstructor = this.dataPointDao.getModelConstructor(<any>{
       valueType: content.timeSeriesConfig.valueType,
     });
 

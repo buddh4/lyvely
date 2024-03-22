@@ -1,9 +1,8 @@
-import { AbstractDao, DocumentIdentity, Model } from '@/core';
+import { AbstractDao, DocumentIdentity, LeanDoc, Model } from '@/core';
 import { Invitation, MailInvitation, UserInvitation } from '../schemas';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from '@/users';
 import { subtractDays } from '@lyvely/dates';
-import { DeepPartial } from '@lyvely/common';
 
 export class InvitationDao extends AbstractDao<Invitation> {
   @InjectModel(Invitation.name)
@@ -15,7 +14,7 @@ export class InvitationDao extends AbstractDao<Invitation> {
     });
   }
 
-  getModelConstructor(model: DeepPartial<Invitation>) {
+  getModelConstructor(model: LeanDoc<Invitation>) {
     if (model.type === MailInvitation.name) return MailInvitation;
     if (model.type === UserInvitation.name) return UserInvitation;
     return Invitation;

@@ -17,12 +17,14 @@ import {
   MongooseBulkWriteOptions,
 } from 'mongoose';
 import { BaseDocument } from './base.document';
-import { CollationOptions } from 'mongodb';
+import { BulkWriteResult, CollationOptions } from 'mongodb';
 import { Inject, Logger } from '@nestjs/common';
 import { ModelSaveEvent } from './dao.events';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { DeepPartial, Constructor } from '@lyvely/common';
+import { Constructor, PropertiesOf } from '@lyvely/common';
 import { cloneDeep } from 'lodash';
+import type { IDocumentTransformation } from './document.transformation';
+import type { LeanDoc } from './lean-doc.interface';
 
 interface IPagination {
   page: number;
@@ -125,7 +127,7 @@ export type PartialEntityData<T extends BaseDocument> = Partial<EntityData<T>>;
  *   protected model: Model<MyModel>;
  *
  *   // This function is used to instantiate your model, you can return other constructors if required.
- *   getModelConstructor(model: DeepPartial<T>) {
+ *   getModelConstructor(model: LeanDoc<T>) {
  *     return model.type === 'special' ? MySpecialModel : MyModel;
  *   }
  *
@@ -134,7 +136,7 @@ export type PartialEntityData<T extends BaseDocument> = Partial<EntityData<T>>;
  *   }
  * }
  */
-export abstract class AbstractDao<T extends BaseDocument> {
+export abstract class AbstractDao<T extends BaseDocument, TVersions extends BaseDocument = T> {
   /**
    * The mongoose model, which is usually injected with @InjectModel()
    * @protected
@@ -146,6 +148,15 @@ export abstract class AbstractDao<T extends BaseDocument> {
    * @protected
    */
   protected logger: Logger;
+
+  /**
+   * Document transformation registry for the given document type.
+   *
+   * @template T - The type of documents being transformed.
+   * @param {Array<IDocumentTransformation<T>>} transformations - An array of document transformations.
+   * @returns {void}
+   */
+  protected transformations: Array<IDocumentTransformation<TVersions>> = [];
 
   /**
    * Base constructor, sets up the logger by default.
@@ -169,12 +180,21 @@ export abstract class AbstractDao<T extends BaseDocument> {
    * want to overwrite `constructModel` instead, otherwise it is recommended to only overwrite this function.
    * @param leanModel
    */
-  abstract getModelConstructor(leanModel: DeepPartial<T>): Constructor<T>;
+  abstract getModelConstructor(leanModel: LeanDoc<T>): Constructor<T>;
 
   /**
    * Subclasses should return the related module id used for logging and potentially restrictions and policies.
    */
   abstract getModuleId(): string;
+
+  /**
+   * Registers document transformations.
+   *
+   * @param {...IDocumentTransformation<TVersions>[]} transformations - An array of document transformations to register.
+   */
+  registerTransformations(...transformations: IDocumentTransformation<TVersions>[]) {
+    this.transformations.push(...transformations);
+  }
 
   /**
    * Builds an event name for this type of model used when emitting data access related events.
@@ -205,23 +225,84 @@ export abstract class AbstractDao<T extends BaseDocument> {
   }
 
   /**
+   * Passes the given lean document through all available transformations and updates the whole document if at least
+   * one transformation was applied.
+   * @protected
+   * @param leanDoc
+   */
+  protected async transformOne(leanDoc: LeanDoc<TVersions> | null): Promise<LeanDoc<T> | null> {
+    if (!leanDoc) return null;
+    const [transformedDoc] = await this._transformDocument(leanDoc, true);
+    return transformedDoc;
+  }
+
+  /**
+   * Passes the given lean document through all available transformations and updates the whole document if at least
+   * one transformation was applied.
+   * @protected
+   * @param leanDocs
+   */
+  protected async transformAll(leanDocs: LeanDoc<TVersions>[]): Promise<LeanDoc<T>[]> {
+    const updates: Array<{ id: DocumentIdentity<T>; update: LeanDoc<T> }> = [];
+    const result: LeanDoc<T>[] = [];
+    for (const leanDoc of leanDocs) {
+      const [transformResult, wasTransformed] = await this._transformDocument(leanDoc, false);
+      if (wasTransformed)
+        updates.push({ id: transformResult._id as T['_id'], update: transformResult });
+      result.push(transformResult);
+    }
+
+    await this.updateBulk(updates);
+    return result;
+  }
+
+  /**
+   * Passes the given lean document through all available transformations and updates the whole document if the update
+   * argument is set to true and at least one transformation was applied.
+   * @param lean
+   * @param update
+   * @protected
+   */
+  private async _transformDocument(
+    lean: LeanDoc<TVersions>,
+    update: boolean,
+  ): Promise<[LeanDoc<T>, boolean]> {
+    let wasTransformed = false;
+    const result = this.transformations.reduce((transformed, transformation) => {
+      const { _id } = transformed;
+      if (transformation.condition(transformed)) {
+        wasTransformed = true;
+        transformed = transformation.transform(transformed);
+        transformed._id = _id;
+      }
+      return transformed;
+    }, lean);
+
+    if (update && wasTransformed) {
+      await this.updateOneById(result._id as T['_id'], result);
+    }
+
+    return [(<unknown>result) as LeanDoc<T>, wasTransformed];
+  }
+
+  /**
    * This function is used to create model instances from lean objects by facilitating the `getModelConstructor` function.
    * This function may be overwritten by subclasses in rare cases where the `getModelConstructor` is not sufficient e.g.
    * in cases we need to create the model by a factory.
    * @param lean
    * @protected
    */
-  protected constructModel(lean: DeepPartial<T>): T {
+  protected constructModel(lean: LeanDoc<T>): T {
     return createBaseDocumentInstance(this.getModelConstructor(lean), lean);
   }
 
   /**
    * This function is used to create multiple model instances from lean objects by facilitating the `constructModel` function
    * and is usually called by fetch queries.
-   * @param lean
    * @protected
+   * @param leanArr
    */
-  protected constructModels(leanArr: Partial<T>[]): T[] {
+  protected constructModels(leanArr: LeanDoc<T>[]): T[] {
     return leanArr.map((lean) => this.constructModel(lean)) || [];
   }
 
@@ -246,10 +327,12 @@ export abstract class AbstractDao<T extends BaseDocument> {
     await this.beforeSave(entityData);
     this.emit('save.pre', new ModelSaveEvent(this, entityData, this.getModelName()));
     const entityModel = this.getModel(options);
-    const result = await new entityModel(entityData).save(options);
-    const model = this.constructModel(
-      result.toObject({ virtuals: true, aliases: true, getters: true }),
-    );
+    const leanDoc = (await new entityModel(entityData).save(options)).toObject<PropertiesOf<T>>({
+      virtuals: true,
+      aliases: true,
+      getters: true,
+    });
+    const model = this.constructModel(leanDoc);
     entityData._id = model._id;
     entityData.id = model.id;
     this.emit(`save.post`, new ModelSaveEvent(this, model, this.getModelName()));
@@ -311,8 +394,8 @@ export abstract class AbstractDao<T extends BaseDocument> {
     identity: DocumentIdentity<T>,
     options?: IBaseFetchQueryOptions<T>,
   ): Promise<T | null> {
-    const query = this.getModel(options).findById(
-      this.assureEntityId(identity),
+    const query = this.getModel(options).findById<PropertiesOf<TVersions>>(
+      this.assureDocumentId(identity),
       options?.projection,
       options,
     );
@@ -321,8 +404,30 @@ export abstract class AbstractDao<T extends BaseDocument> {
       query.collation(options.collation);
     }
 
-    const model = await query.lean().exec();
-    return model ? this.constructModel(model) : null;
+    const leanDoc = <LeanDoc<TVersions> | null>await query.lean().exec();
+    return this.transformAndConstructModel(leanDoc);
+  }
+
+  /**
+   * Transforms and constructs a model instance based on the given lean document.
+   *
+   * @param {LeanDoc<TVersions>} leanDoc - The lean document to transform and construct the model from.
+   * @returns {Promise<TModel | null>} A promise that resolves to the transformed and constructed model, or null if the transformation did not result in a valid model.
+   */
+  async transformAndConstructModel(leanDoc: LeanDoc<TVersions> | null): Promise<T | null> {
+    const transformed = await this.transformOne(leanDoc);
+    return transformed ? this.constructModel(transformed) : null;
+  }
+
+  /**
+   * Transforms and constructs multiple model instances.
+   *
+   * @param {LeanDoc<TVersions>[]} leanDocs - The array of LeanDoc objects.
+   * @returns {Promise<SomeModel[]>} The array of constructed models.
+   */
+  async transformAndConstructModels(leanDocs: LeanDoc<TVersions>[]): Promise<T[]> {
+    const transformed = await this.transformAll(leanDocs);
+    return this.constructModels(transformed);
   }
 
   /**
@@ -338,7 +443,7 @@ export abstract class AbstractDao<T extends BaseDocument> {
     options?: IBaseFetchQueryOptions<T>,
   ): Promise<T | null> {
     filter ||= {};
-    filter._id = this.assureEntityId(identity);
+    filter._id = this.assureDocumentId(identity);
     return this.findOne(filter, options);
   }
 
@@ -349,7 +454,7 @@ export abstract class AbstractDao<T extends BaseDocument> {
    * @param options
    */
   async findAllByIds(ids: DocumentIdentity<T>[], options?: IFetchQueryOptions<T>): Promise<T[]> {
-    return this.findAll({ _id: { $in: ids.map((id) => this.assureEntityId(id)) } }, options);
+    return this.findAll({ _id: { $in: ids.map((id) => this.assureDocumentId(id)) } }, options);
   }
 
   /**
@@ -372,7 +477,9 @@ export abstract class AbstractDao<T extends BaseDocument> {
       query.collation(options.collation);
     }
 
-    return this.constructModels(await this.applyFetchQueryOptions(query, options).lean());
+    return this.transformAndConstructModels(
+      await this.applyFetchQueryOptions(query, options).lean(),
+    );
   }
 
   /**
@@ -380,7 +487,7 @@ export abstract class AbstractDao<T extends BaseDocument> {
    * @param identity
    * @protected
    */
-  protected assureEntityId(identity: DocumentIdentity<T>): T['_id'] {
+  protected assureDocumentId(identity: DocumentIdentity<T>): T['_id'] {
     return assureObjectId(identity);
   }
 
@@ -399,8 +506,8 @@ export abstract class AbstractDao<T extends BaseDocument> {
       query.collation(options.collation);
     }
 
-    const model = await query.lean();
-    return model ? this.constructModel(model) : null;
+    const model = <LeanDoc<TVersions> | null>await query.lean();
+    return this.transformAndConstructModel(model);
   }
 
   /**
@@ -440,8 +547,8 @@ export abstract class AbstractDao<T extends BaseDocument> {
 
     return {
       _id: Array.isArray(excludeIds)
-        ? { $nin: excludeIds.map((identity) => this.assureEntityId(identity)) }
-        : { $ne: this.assureEntityId(excludeIds) },
+        ? { $nin: excludeIds.map((identity) => this.assureDocumentId(identity)) }
+        : { $ne: this.assureDocumentId(excludeIds) },
     };
   }
 
@@ -536,7 +643,7 @@ export abstract class AbstractDao<T extends BaseDocument> {
     }
 
     filter = filter || {};
-    filter._id = this.assureEntityId(id);
+    filter._id = this.assureDocumentId(id);
 
     const query = this.getModel(options).findOneAndUpdate(filter, cloneDeep(update), options);
 
@@ -544,7 +651,7 @@ export abstract class AbstractDao<T extends BaseDocument> {
       query.collation(options.collation);
     }
 
-    const result = await query.lean();
+    const result = <LeanDoc<TVersions> | null>await query.lean();
 
     if (!result) return null;
 
@@ -552,7 +659,7 @@ export abstract class AbstractDao<T extends BaseDocument> {
       applyUpdateTo(id, update);
     }
 
-    return this.constructModel(result);
+    return this.transformAndConstructModel(result);
   }
 
   /**
@@ -618,7 +725,7 @@ export abstract class AbstractDao<T extends BaseDocument> {
     if (!(await this.beforeUpdate(identity, clonedUpdate))) return false;
 
     filter = filter || {};
-    filter._id = this.assureEntityId(identity);
+    filter._id = this.assureDocumentId(identity);
 
     const query = this.getModel(options).updateOne(filter, clonedUpdate, options);
 
@@ -645,7 +752,7 @@ export abstract class AbstractDao<T extends BaseDocument> {
    * @param options
    * @protected
    */
-  protected getModel(options?: IBaseQueryOptions) {
+  protected getModel(options?: IBaseQueryOptions): Model<T> {
     let model = this.model;
 
     if (options?.discriminator) {
@@ -680,19 +787,43 @@ export abstract class AbstractDao<T extends BaseDocument> {
    * @param updates
    * @param options
    */
-  async updateSetBulk(
-    updates: { id: DocumentIdentity<T>; update: UpdateQuerySet<T> }[],
+  async updateBulk(
+    updates: { id: DocumentIdentity<T>; update: UpdateQuery<T> }[],
     options?: IBaseQueryOptions,
-  ) {
-    await this.getModel(options).bulkWrite(
+  ): Promise<Pick<BulkWriteResult, 'modifiedCount'>> {
+    const { modifiedCount } = await this.getModel(options).bulkWrite(
       updates.map((update) => ({
         updateOne: {
-          filter: <any>{ _id: this.assureEntityId(update.id) },
-          update: <any>{ $set: update.update },
+          filter: <any>{ _id: this.assureDocumentId(update.id) },
+          update,
         },
       })),
       <MongooseBulkWriteOptions>options,
     );
+
+    return { modifiedCount };
+  }
+
+  /**
+   * Updates the given set data by bulkWrite.
+   * @param updates
+   * @param options
+   */
+  async updateSetBulk(
+    updates: { id: DocumentIdentity<T>; update: UpdateQuerySet<T> }[],
+    options?: IBaseQueryOptions,
+  ): Promise<Pick<BulkWriteResult, 'modifiedCount'>> {
+    const { modifiedCount } = await this.getModel(options).bulkWrite(
+      updates.map(({ id, update }) => ({
+        updateOne: {
+          filter: <any>{ _id: this.assureDocumentId(id) },
+          update: <any>{ $set: update },
+        },
+      })),
+      <MongooseBulkWriteOptions>options,
+    );
+
+    return { modifiedCount };
   }
 
   /**
@@ -709,7 +840,7 @@ export abstract class AbstractDao<T extends BaseDocument> {
    * @param options
    */
   async deleteManyByIds(ids: DocumentIdentity<T>[], options?: DeleteOptions): Promise<number> {
-    return this.deleteMany({ _id: { $in: ids.map((id) => this.assureEntityId(id)) } }, options);
+    return this.deleteMany({ _id: { $in: ids.map((id) => this.assureDocumentId(id)) } }, options);
   }
 
   /**

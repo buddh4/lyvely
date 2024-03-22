@@ -2,8 +2,7 @@ import { Content } from '../schemas';
 import { Injectable } from '@nestjs/common';
 import { ContentTypeRegistry } from '../components';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, DocumentIdentity } from '@/core';
-import { DeepPartial } from '@lyvely/common';
+import { Model, DocumentIdentity, LeanDoc } from '@/core';
 import { ContentTypeDao } from './content-type.dao';
 import { ProfileShard } from '@/profiles';
 
@@ -29,7 +28,7 @@ export class ContentDao extends ContentTypeDao<Content> {
     );
   }
 
-  getModelConstructor(model: DeepPartial<Content>) {
+  getModelConstructor(model: LeanDoc<Content>) {
     return model?.type && this.contentTypeRegistry.isRegisteredType(model.type)
       ? this.contentTypeRegistry.getTypeConstructor(model.type) || Content
       : Content;
