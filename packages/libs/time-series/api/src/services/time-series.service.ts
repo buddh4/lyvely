@@ -1,4 +1,10 @@
-import { ContentService, Profile, ProfileContext, ProtectedProfileContext } from '@lyvely/api';
+import {
+  ContentService,
+  Profile,
+  ProfileContext,
+  ProtectedProfileContext,
+  sortBySortOrder,
+} from '@lyvely/api';
 import { CalendarDate, CalendarInterval, getTimingIds, isInFuture } from '@lyvely/dates';
 import {
   CalendarPlanFilter,
@@ -74,6 +80,7 @@ export abstract class TimeSeriesService<
     );
 
     await this.contentService.populateContentPolicies(models, context);
+
     return models;
   }
 
@@ -94,8 +101,6 @@ export abstract class TimeSeriesService<
       this.findByFilter(context, filter),
       this.findDataPoints(context, filter),
     ]);
-
-    await this.contentService.populateContentPolicies(models, context);
 
     return { models, dataPoints };
   }
