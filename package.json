@@ -97,7 +97,7 @@
     "husky": "^8.0.1",
     "jest": "^29.5.0",
     "mini-svg-data-uri": "^1.4.4",
-    "mongo-seeding": "^3.7.2",
+    "mongo-seeding": "^4.0.0",
     "mongodb-memory-server": "^8.13.0",
     "ncp": "^2.0.0",
     "nx": "16.3.2",

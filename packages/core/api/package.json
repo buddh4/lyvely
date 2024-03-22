@@ -42,7 +42,7 @@
     "@lyvely/interface": "^0.1.0-alpha3",
     "express": "^4.18.2",
     "mongoose": "^7.1.0",
-    "mongodb": "^4.13.0",
+    "mongodb": "^5.9.0",
     "class-transformer": "^0.5.1",
     "helmet": "^6.1.5",
     "lodash": "^4.17.21",

@@ -25,7 +25,7 @@
     "rollup-plugin-node-externals": "^6.1.2",
     "rollup-plugin-vue": "^6.0.0",
     "vite-plugin-dts": "^3.6.3",
-    "mongo-seeding": "^3.7.2",
+    "mongo-seeding": "^4.0.0",
     "slugify": "^1.6.6",
     "jsonwebtoken": "^9.0.0",
     "dotenv": "^16.0.3",
