@@ -20,10 +20,16 @@ import {
 import { User } from '@/users';
 import { assignRawDataTo, Constructor } from '@lyvely/common';
 import { IntegrityException, ProfileType } from '@lyvely/interface';
+import { ProfileTypeTransformation } from '../schemas/transformations';
 
 @Injectable()
 export class ProfileDao extends AbstractDao<Profile> {
   @InjectModel(Profile.name) protected model: Model<Profile>;
+
+  constructor() {
+    super();
+    this.registerTransformations(new ProfileTypeTransformation());
+  }
 
   async findOneByOwnerAndName(owner: DocumentIdentity<User>, name: string) {
     return this.findOne({ ownerId: assureObjectId(owner), name });
