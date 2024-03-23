@@ -25,6 +25,8 @@ import { Constructor, PropertiesOf } from '@lyvely/common';
 import { cloneDeep } from 'lodash';
 import type { IDocumentTransformation } from './document.transformation';
 import type { LeanDoc } from './lean-doc.interface';
+import type { IDocumentTransformer } from './document.transformer';
+import { DocumentTransformer } from './document.transformer';
 
 interface IPagination {
   page: number;
@@ -136,7 +138,11 @@ export type PartialEntityData<T extends BaseDocument> = Partial<EntityData<T>>;
  *   }
  * }
  */
-export abstract class AbstractDao<T extends BaseDocument, TVersions extends BaseDocument = T> {
+export abstract class AbstractDao<
+  T extends BaseDocument,
+  THistory extends BaseDocument = T,
+  TVersions extends T | THistory = T | THistory,
+> {
   /**
    * The mongoose model, which is usually injected with @InjectModel()
    * @protected
@@ -156,7 +162,10 @@ export abstract class AbstractDao<T extends BaseDocument, TVersions extends Base
    * @param {Array<IDocumentTransformation<T>>} transformations - An array of document transformations.
    * @returns {void}
    */
-  protected transformations: Array<IDocumentTransformation<TVersions>> = [];
+  protected transformer: IDocumentTransformer<T, TVersions> = new DocumentTransformer<
+    T,
+    TVersions
+  >();
 
   /**
    * Base constructor, sets up the logger by default.
@@ -193,7 +202,7 @@ export abstract class AbstractDao<T extends BaseDocument, TVersions extends Base
    * @param {...IDocumentTransformation<TVersions>[]} transformations - An array of document transformations to register.
    */
   registerTransformations(...transformations: IDocumentTransformation<TVersions>[]) {
-    this.transformations.push(...transformations);
+    this.transformer.registerTransformations(...transformations);
   }
 
   /**
@@ -267,16 +276,7 @@ export abstract class AbstractDao<T extends BaseDocument, TVersions extends Base
     lean: LeanDoc<TVersions>,
     update: boolean,
   ): Promise<[LeanDoc<T>, boolean]> {
-    let wasTransformed = false;
-    const result = this.transformations.reduce((transformed, transformation) => {
-      const { _id } = transformed;
-      if (transformation.condition(transformed)) {
-        wasTransformed = true;
-        transformed = transformation.transform(transformed);
-        transformed._id = _id;
-      }
-      return transformed;
-    }, lean);
+    const [result, wasTransformed] = this.transformer.transformDocument(lean);
 
     if (update && wasTransformed) {
       await this.updateOneById(result._id as T['_id'], result);
@@ -791,11 +791,12 @@ export abstract class AbstractDao<T extends BaseDocument, TVersions extends Base
     updates: { id: DocumentIdentity<T>; update: UpdateQuery<T> }[],
     options?: IBaseQueryOptions,
   ): Promise<Pick<BulkWriteResult, 'modifiedCount'>> {
+    if (!updates.length) return { modifiedCount: 0 };
     const { modifiedCount } = await this.getModel(options).bulkWrite(
       updates.map((update) => ({
         updateOne: {
           filter: <any>{ _id: this.assureDocumentId(update.id) },
-          update,
+          update: <any>update.update,
         },
       })),
       <MongooseBulkWriteOptions>options,
@@ -813,6 +814,7 @@ export abstract class AbstractDao<T extends BaseDocument, TVersions extends Base
     updates: { id: DocumentIdentity<T>; update: UpdateQuerySet<T> }[],
     options?: IBaseQueryOptions,
   ): Promise<Pick<BulkWriteResult, 'modifiedCount'>> {
+    if (!updates.length) return { modifiedCount: 0 };
     const { modifiedCount } = await this.getModel(options).bulkWrite(
       updates.map(({ id, update }) => ({
         updateOne: {

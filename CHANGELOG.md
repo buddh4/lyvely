@@ -30,6 +30,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Renamed ProfileType.Organization from 'Organization' to 'organization'
 - Renamed ProfileType.Group from 'GroupProfile' to 'group'
 - Renamed ProfileType.User from 'UserProfile' to 'user'
+- Added `Content.state`
+- Refactored Task content to use `Content.state`
 
 ### Added
 - Implemented basic legal module
@@ -53,6 +55,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Configuration by db
 - Added `@Trim` transformer decorator as well as trim input property
 - Added icon library registry
+- Document Transformation API
 
 ## [0.2.1] - 2023-06-06
 

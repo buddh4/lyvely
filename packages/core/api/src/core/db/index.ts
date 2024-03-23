@@ -5,6 +5,7 @@ export * from './db-query.util';
 export * from './db.utils';
 export * from './lean-doc.interface';
 export * from './document.transformation';
+export * from './document.transformer';
 export * from './transaction.util';
 export * from './mixed-prop.decorator';
 export * from './object-id-prop.decorator';

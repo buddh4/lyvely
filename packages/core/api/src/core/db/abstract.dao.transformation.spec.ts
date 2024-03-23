@@ -1,11 +1,9 @@
 import { InjectModel, Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { AbstractDao } from './abstract.dao';
-import { ModelSaveEvent } from './dao.events';
 import { Model, TObjectId } from './db.type';
 import {
   createCoreTestingModule,
   EventTester,
-  getObjectId,
   afterEachTest,
   afterAllTests,
 } from '../testing/core-test.util';
@@ -18,7 +16,6 @@ import {
   type IDocumentTransformation,
   type LeanDoc,
 } from '@/core';
-import { T } from 'vitest/dist/reporters-LLiOBu3g';
 
 @Schema()
 class TestEntityV1 {
@@ -39,7 +36,7 @@ class TestEntityV1 {
 
 const TestEntityV1Schema = SchemaFactory.createForClass(TestEntityV1);
 
-@Schema()
+@Schema({ discriminatorKey: 'type' })
 class TestEntity {
   _id: TObjectId;
 
@@ -131,9 +128,10 @@ describe('AbstractDao Transformations', () => {
   });
 
   describe('transform', () => {
-    it('transform on load', async () => {
+    it('transform on findById', async () => {
       const v1Model = await ModelV1.create(new TestEntityV1({ numberField: 3 }));
       const model = await dao.findById(v1Model._id);
+      expect(model instanceof TestEntity).toEqual(true);
       expect(model?.valueField).toEqual(3);
       expect(model?.version).toEqual(2);
       expect((<any>model)?.numberField).toBeUndefined();
@@ -142,6 +140,21 @@ describe('AbstractDao Transformations', () => {
       expect(reload?.valueField).toEqual(3);
       expect(reload?.version).toEqual(2);
       expect((<any>reload)?.numberField).toBeUndefined();
+    });
+
+    it('transform on findAll', async () => {
+      const v1Model = await ModelV1.create(new TestEntityV1({ numberField: 3 }));
+      const v1Model2 = await ModelV1.create(new TestEntityV1({ numberField: 5 }));
+      const models = await dao.findAll({}, { sort: { valueField: 1 } });
+      expect(models[0].valueField).toEqual(3);
+      expect(models[0].version).toEqual(2);
+      expect(models[0]._id).toEqual(v1Model._id);
+      expect((<any>models[0]).numberField).toBeUndefined();
+
+      expect(models[1].valueField).toEqual(5);
+      expect(models[1].version).toEqual(2);
+      expect(models[1]._id).toEqual(v1Model2._id);
+      expect((<any>models[1]).numberField).toBeUndefined();
     });
   });
 });

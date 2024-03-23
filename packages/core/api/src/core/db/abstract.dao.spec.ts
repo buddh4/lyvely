@@ -14,12 +14,6 @@ import { Injectable } from '@nestjs/common';
 import { TestingModule } from '@nestjs/testing';
 import { BaseDocument, type BaseDocumentData, type LeanDoc } from '@/core';
 
-interface ITestEntity {
-  requiredField: string;
-  numberField: number;
-  type: string;
-}
-
 @Schema({ discriminatorKey: 'type' })
 class TestEntity {
   _id: TObjectId;
