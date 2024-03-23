@@ -31,6 +31,7 @@ const sidebars = {
                 'dev/framework/policies',
                 'dev/framework/features',
                 'dev/framework/content',
+                'dev/framework/migrations',
             ],
         },
         {
