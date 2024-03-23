@@ -138,11 +138,7 @@ export type PartialEntityData<T extends BaseDocument> = Partial<EntityData<T>>;
  *   }
  * }
  */
-export abstract class AbstractDao<
-  T extends BaseDocument,
-  THistory extends BaseDocument = T,
-  TVersions extends T | THistory = T | THistory,
-> {
+export abstract class AbstractDao<T extends BaseDocument, TVersions extends BaseDocument = T> {
   /**
    * The mongoose model, which is usually injected with @InjectModel()
    * @protected

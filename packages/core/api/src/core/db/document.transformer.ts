@@ -137,7 +137,7 @@ export abstract class DiscriminatorDocumentTransformer<
     new Map();
 
   /** Returns the discriminator value of a given document. **/
-  abstract getDiscriminator(leanDoc: LeanDoc<TVersions>): string;
+  protected abstract getDiscriminator(leanDoc: LeanDoc<TVersions>): string;
 
   /**
    * Registers document transformations.
@@ -171,5 +171,21 @@ export abstract class DiscriminatorDocumentTransformer<
     const discriminatorTransformations =
       this.discriminatorTransformations.get(this.getDiscriminator(lean)) || [];
     return [...this.transformations, ...discriminatorTransformations];
+  }
+}
+
+/**
+ * A class representing a special type of DiscriminatorDocumentTransformer for collections using the `type` field
+ * as discriminator field.
+ *
+ * @typeparam T - The type of the base document that the transformer operates on.
+ * @typeparam TVersions - The type of the base document with versions. Defaults to T.
+ */
+export class DocumentTypeTransformer<
+  T extends BaseDocument & { type: string },
+  TVersions extends BaseDocument & { type: string } = T,
+> extends DiscriminatorDocumentTransformer<T, TVersions> {
+  protected override getDiscriminator(leanDoc: LeanDoc<TVersions>): string {
+    return leanDoc.type;
   }
 }

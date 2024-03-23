@@ -64,3 +64,20 @@ export abstract class DiscriminatorTransformation<
     return this.typedCondition(leanDoc);
   }
 }
+
+/**
+ * Represents a special kind of DiscriminatorTransformation for documents with a `type` discriminator field.
+ *
+ * @typeparam TVersions - The type of versions of the document.
+ * @typeparam TTarget - The type of the transformed target document.
+ * @typeparam TFrom - The type of the original document to transform from.
+ */
+export abstract class DocumentTypeTransformation<
+  TVersions extends BaseDocument & { type: string },
+  TTarget extends BaseDocument & { type: string } = TVersions,
+  TFrom extends BaseDocument & { type: string } = TVersions,
+> extends DiscriminatorTransformation<TVersions, TTarget, TFrom> {
+  override getDiscriminator(leanDoc: LeanDoc<TVersions>): string {
+    return leanDoc.type;
+  }
+}

@@ -55,8 +55,10 @@ class TestEntity {
 
 const TestEntitySchema = SchemaFactory.createForClass(TestEntity);
 
+type TestEntityVersions = TestEntity | TestEntityV1;
+
 @Injectable()
-class TestEntityDao extends AbstractDao<TestEntity, TestEntityV1> {
+class TestEntityDao extends AbstractDao<TestEntity, TestEntityVersions> {
   @InjectModel(TestEntity.name) protected model: Model<TestEntity>;
 
   getModelConstructor(model: LeanDoc<TestEntity>) {
@@ -67,8 +69,6 @@ class TestEntityDao extends AbstractDao<TestEntity, TestEntityV1> {
     return 'test';
   }
 }
-
-type TestEntityVersions = TestEntity | TestEntityV1;
 
 class TestEntityV1ToV2Transformation
   implements IDocumentTransformation<TestEntityVersions, TestEntity, TestEntityV1>

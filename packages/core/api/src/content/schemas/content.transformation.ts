@@ -1,4 +1,4 @@
-import { DiscriminatorTransformation, LeanDoc } from '@/core';
+import { DocumentTypeTransformation } from '@/core';
 import type { Content } from './content.schema';
 
 /**
@@ -11,8 +11,4 @@ export abstract class ContentTransformation<
   TVersions extends Content = Content,
   TTarget extends TVersions = TVersions,
   TFrom extends Content = Content,
-> extends DiscriminatorTransformation<TVersions, TTarget, TFrom> {
-  override getDiscriminator(leanDoc: LeanDoc<TVersions>): string {
-    return leanDoc.type || '';
-  }
-}
+> extends DocumentTypeTransformation<TVersions, TTarget, TFrom> {}
