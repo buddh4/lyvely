@@ -1,3 +1,4 @@
 import ProfileAvatar from './ProfileAvatar.vue';
+import ProfileRelationPicker from './picker/ProfileRelationPicker.vue';
 
-export { ProfileAvatar };
+export { ProfileAvatar, ProfileRelationPicker };
