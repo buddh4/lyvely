@@ -1,12 +1,16 @@
 import { Exclude, Expose } from 'class-transformer';
-import { IsString, MaxLength } from 'class-validator';
+import { IsEnum, IsString, MaxLength } from 'class-validator';
 import { BaseModel, type BaseModelData } from '@lyvely/common';
-import { IChartSeriesConfig } from '../interfaces';
+import { ChartType, IChartSeriesConfig } from '../interfaces';
 
 @Exclude()
 export class ChartSeriesConfigModel implements IChartSeriesConfig {
   @Expose()
   id: string;
+
+  @Expose()
+  @IsEnum(ChartType)
+  chartType: ChartType;
 
   @Expose()
   type: string;
@@ -15,6 +19,8 @@ export class ChartSeriesConfigModel implements IChartSeriesConfig {
   @IsString()
   @MaxLength(255)
   name: string;
+
+  templateId?: string;
 
   constructor(data: BaseModelData<ChartSeriesConfigModel>) {
     BaseModel.init(this, data);

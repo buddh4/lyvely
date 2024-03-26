@@ -1,15 +1,26 @@
 import {
   ANALYTICS_MODULE_ID,
   AnalyticsFeature,
+  CHART_SERIES_DEFINITION_SCORE,
+  CHART_TEMPLATE_SCORE_PROFILE,
+  CHART_TEMPLATE_SCORE_TAG,
+  CHART_TEMPLATE_SCORE_USER,
   ChartModel,
   CreateChartModel,
-  CHART_SERIES_TYPE_SCORE,
-  CHART_SERIES_DEFINITION_SCORE,
+  GRAPH_CHART_TYPES,
+  ScoreChartSeriesConfigModel,
 } from '@lyvely/analytics-interface';
 import { registerMenuEntry, registerSvgIcon } from '@lyvely/ui';
-import { IModule, MENU_PROFILE_DRAWER, registerContentType, translation } from '@lyvely/web';
+import {
+  IModule,
+  isMultiUserProfile,
+  MENU_PROFILE_DRAWER,
+  registerContentType,
+  translation,
+  useProfileStore,
+} from '@lyvely/web';
 import { analyticsRoutes } from '@/routes/analytics.routes';
-import { registerChartSeriesFormDefinition } from '@/registries/chart-series-web.registry';
+import { registerChart } from '@/registries/chart-series-web.registry';
 
 export default () => {
   return {
@@ -21,9 +32,30 @@ export default () => {
     features: [AnalyticsFeature],
     routes: analyticsRoutes,
     init: () => {
-      registerChartSeriesFormDefinition({
+      registerChart({
         type: CHART_SERIES_DEFINITION_SCORE,
+        templates: [
+          {
+            id: CHART_TEMPLATE_SCORE_PROFILE,
+            label: 'analytics.templates.score-profile',
+            description: 'analytics.templates.info.score-profile',
+            chartTypes: [...GRAPH_CHART_TYPES],
+          },
+          {
+            id: CHART_TEMPLATE_SCORE_USER,
+            label: 'analytics.templates.score-user',
+            description: 'analytics.templates.info.score-user',
+            initModel: () => new ScoreChartSeriesConfigModel<string>({ currentUser: true }),
+            condition: () => isMultiUserProfile(useProfileStore().profile),
+          },
+          {
+            id: CHART_TEMPLATE_SCORE_TAG,
+            label: 'analytics.templates.score-tag',
+            description: 'analytics.templates.info.score-tag',
+          },
+        ],
         label: 'analytics.graphs.types.score',
+        form: () => import('./components/forms/ScoreGraphForm.vue'),
       });
       registerMenuEntry(MENU_PROFILE_DRAWER, () => ({
         id: 'analytics',

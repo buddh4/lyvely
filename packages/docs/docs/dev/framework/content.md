@@ -677,7 +677,7 @@ Please note that certain aspects have been simplified to facilitate understandin
 <script lang="ts" setup>
 import { CreatePollModel, PollModel, UpdatePollModel } from 'lyvely-polls-interface';
 import { computed } from 'vue';
-import { TagChooser, isTouchScreen, ContentEditModalEmits, useContentEditModal, ICreateContentInitOptions } from '@lyvely/web';
+import { TagPicker, isTouchScreen, ContentEditModalEmits, useContentEditModal, ICreateContentInitOptions } from '@lyvely/web';
 import { usePollService } from '../services';
 import { LyModal, LyFormModel, LyTextField } from '@lyvely/ui';
 
@@ -718,7 +718,7 @@ const modalTitle = computed(() => {
       </fieldset>
 
       <fieldset>
-        <tag-chooser v-model="model.tagNames" />
+        <tag-picker v-model="model.tagNames" />
       </fieldset>
     </ly-form-model>
   </ly-modal>

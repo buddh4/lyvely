@@ -1,5 +1,5 @@
 import { registerChartSeries, resetChartSeries } from '../registries';
-import { ChartType } from '../interfaces';
+import { GRAPH_CHART_TYPES } from '../interfaces';
 import { ChartSeriesConfigModel } from './chart-series-config.model';
 import { UpdateChartSeriesModel } from './update-chart-series.model';
 import { Expose, plainToClass } from 'class-transformer';
@@ -26,7 +26,7 @@ describe('UpdateChartSeriesModel', () => {
     it('transform of default chart series type works', () => {
       registerChartSeries({
         id: 'test',
-        chartTypes: [ChartType.Graph],
+        chartTypes: GRAPH_CHART_TYPES,
       });
       const config = {
         id: 'testId',
@@ -54,7 +54,7 @@ describe('UpdateChartSeriesModel', () => {
       registerChartSeries({
         id: TestSeriesConfig.seriesType,
         configType: TestSeriesConfig,
-        chartTypes: [ChartType.Graph],
+        chartTypes: GRAPH_CHART_TYPES,
       });
       const config = {
         id: 'testId',

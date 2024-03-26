@@ -1,4 +1,4 @@
-export enum GraphChartType {
+export enum GraphChartCategory {
   Bar = 'bar',
   Line = 'line',
 }

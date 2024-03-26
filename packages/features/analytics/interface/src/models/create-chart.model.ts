@@ -2,8 +2,8 @@ import { Exclude, Expose } from 'class-transformer';
 import { CreateContentModel } from '@lyvely/interface';
 import { IsEnum, IsNotEmpty, IsOptional, IsString, Length, MaxLength } from 'class-validator';
 import { Trim, type BaseModelData, BaseModel } from '@lyvely/common';
-import { ChartType } from '../interfaces';
-import { CalendarInterval } from '@lyvely/dates';
+import { ChartCategory } from '../interfaces';
+import type { ChartSeriesConfigModel } from './chart-series-config.model';
 
 @Exclude()
 export class CreateChartModel extends CreateContentModel {
@@ -22,12 +22,13 @@ export class CreateChartModel extends CreateContentModel {
   text?: string;
 
   @Expose()
-  @IsEnum(CalendarInterval)
-  interval: CalendarInterval = CalendarInterval.Monthly;
+  @IsEnum(ChartCategory)
+  category: ChartCategory = ChartCategory.Graph;
 
   @Expose()
-  @IsEnum(ChartType)
-  type: ChartType = ChartType.Graph;
+  series: ChartSeriesConfigModel;
+
+  templateId?: string;
 
   constructor(data?: BaseModelData<CreateChartModel>) {
     super(false);

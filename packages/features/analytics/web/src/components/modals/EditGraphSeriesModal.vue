@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import { LyModal, LyFormModel, LySelect, LyTextField } from '@lyvely/ui';
 import { useEditChartSeriesStore } from '@/store';
-import { getChartSeriesFormDefinitions } from '@/registries/chart-series-web.registry';
+import { getChartDefinitions } from '@/registries/chart-series-web.registry';
 
 export interface IProps {
   cid?: string;
@@ -12,7 +12,7 @@ defineProps<IProps>();
 
 const editGraphStore = useEditChartSeriesStore();
 const { reset, submit, isCreate, showModal, baseModel, baseValidator } = editGraphStore;
-const graphTypes = getChartSeriesFormDefinitions();
+const graphTypes = getChartDefinitions();
 const title = computed(() =>
   isCreate.value ? 'analytics.graphs.add.title' : 'analytics.graphs.edit.title',
 );

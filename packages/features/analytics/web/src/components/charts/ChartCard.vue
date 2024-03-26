@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { ChartModel, ChartType } from '@lyvely/analytics-interface';
+import { ChartModel, ChartCategory } from '@lyvely/analytics-interface';
 import { ContentDropdown } from '@lyvely/web';
 import GraphChart from './GraphChart.vue';
 
 const props = defineProps<{ model: ChartModel }>();
 
 const ChartComponent = {
-  [ChartType.Graph]: GraphChart,
-  [ChartType.Calendar]: GraphChart,
-  [ChartType.Pie]: GraphChart,
+  [ChartCategory.Graph]: GraphChart,
+  [ChartCategory.Calendar]: GraphChart,
+  [ChartCategory.Pie]: GraphChart,
 }[props.model.config.type] as any;
 </script>
 

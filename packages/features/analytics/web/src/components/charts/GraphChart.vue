@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {
   ChartModel,
-  ChartType,
+  ChartCategory,
   useChartsClient,
   ChartSeriesDataResponse,
   isGraphChart,
@@ -31,9 +31,9 @@ function renderChart() {
 
   chart.config.interval;
 
-  echart = echarts.init(chartRoot.value!);
+  const echart = echarts.init(chartRoot.value!);
 
-  props.model.chart.setOption({
+  echart.setOption({
     tooltip: {},
     legend: {
       data: [],
@@ -95,7 +95,7 @@ function renderChart() {
 }
 
 function addSeries() {
-  useEditChartSeriesStore().addSeries(props.model.id, ChartType.Graph);
+  useEditChartSeriesStore().addSeries(props.model.id, ChartCategory.Graph);
 }
 
 onMounted(async () => {

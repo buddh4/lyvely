@@ -7,7 +7,7 @@ import {
   UpdateQuerySet,
 } from '@lyvely/api';
 import { Chart, ChartConfig } from '../schemas';
-import { ChartType, CreateChartModel, UpdateChartModel } from '@lyvely/analytics-interface';
+import { ChartCategory, CreateChartModel, UpdateChartModel } from '@lyvely/analytics-interface';
 import { ChartsDao } from '../daos';
 import { GraphChartConfig } from '../schemas/graph-chart.schema';
 
@@ -23,8 +23,8 @@ export class ChartsService extends ContentTypeService<Chart, CreateChartModel, U
     model: CreateChartModel,
   ): Promise<Chart> {
     const { profile, user } = context;
-    const { text, title, type } = model;
-    const config = this.createChartConfigByType(type);
+    const { text, title, category } = model;
+    const config = this.createChartConfigByCategory(category);
 
     if (!config) throw new FieldValidationException([{ property: 'type', errors: ['invalid'] }]);
 
@@ -34,9 +34,9 @@ export class ChartsService extends ContentTypeService<Chart, CreateChartModel, U
     });
   }
 
-  private createChartConfigByType(type: ChartType): ChartConfig | undefined {
-    switch (type) {
-      case ChartType.Graph:
+  private createChartConfigByCategory(category: ChartCategory): ChartConfig | undefined {
+    switch (category) {
+      case ChartCategory.Graph:
         return new GraphChartConfig({});
     }
   }

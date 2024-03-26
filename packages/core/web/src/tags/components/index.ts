@@ -1,6 +1,6 @@
 import TagBadge from './TagBadge.vue';
 import TagList from './TagList.vue';
 import EditTagModal from './EditTagModal.vue';
-import TagChooser from './TagChooser.vue';
+import TagPicker from './TagPicker.vue';
 
-export { TagBadge, TagList, TagChooser, EditTagModal };
+export { TagBadge, TagList, TagPicker, EditTagModal };

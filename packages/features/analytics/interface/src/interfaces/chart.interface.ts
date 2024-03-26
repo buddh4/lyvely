@@ -1,10 +1,20 @@
 import { Type } from '@lyvely/common';
+import { ChartSeriesConfigModel } from '../models';
 
-export enum ChartType {
+export enum ChartCategory {
   Graph = 'graph',
   Calendar = 'calendar',
   Pie = 'pie',
 }
+
+export enum ChartType {
+  Line = 'line',
+  Bar = 'bar',
+  Calendar = 'calendar',
+  Pie = 'pie',
+}
+
+export const GRAPH_CHART_TYPES = [ChartType.Line, ChartType.Bar];
 
 export enum ChartState {
   InProgress = 'in-progress',
@@ -23,19 +33,21 @@ export interface IChartStatus {
   errors?: string[];
 }
 
-export interface IChart {
+export interface IChart<TConfig extends IChartConfig = IChartConfig> {
   type: string;
-  status: IChartStatus;
+  config: TConfig;
+  state: IChartStatus;
 }
 
 export interface IChartSeriesConfig {
   id: string;
   name: string;
   type: string;
+  chartType: ChartType;
 }
 
 export interface IChartConfig {
-  type: ChartType;
+  category: ChartCategory;
   series: IChartSeriesConfig[];
 }
 
@@ -45,7 +57,9 @@ export interface IChartConfig {
  * by a config model.
  * @interface IChartSeriesDefinition
  */
-export interface IChartSeriesDefinition {
+export interface IChartSeriesDefinition<
+  TConfigType extends ChartSeriesConfigModel = ChartSeriesConfigModel,
+> {
   /** A unique id for this chart series type. **/
   id: string;
 
@@ -54,7 +68,7 @@ export interface IChartSeriesDefinition {
    * and mainly used for validation purposes. This property is not required unless the chart series does provide
    * additional configuration options.
    * */
-  configType?: Type;
+  configType?: Type<TConfigType>;
 
   /**
    * Defines the chart types with which this series is compatible.

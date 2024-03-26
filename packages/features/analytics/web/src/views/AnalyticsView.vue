@@ -29,7 +29,7 @@ onMounted(async () => {
         class="rounded border border-divide p-5 drop-shadow-md cursor-pointer"
         @click="createEntry">
         <div
-          class="flex justify-center items-center w-full h-full text-9xl text-secondary dark:text-secondary-dark">
+          class="flex justify-center items-center w-full h-full text-9xl text-secondary dark:text-secondary-dark select-none">
           +
         </div>
       </div>

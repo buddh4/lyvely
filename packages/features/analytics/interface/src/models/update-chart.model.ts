@@ -4,18 +4,13 @@ import { CreateChartModel } from './create-chart.model';
 import type { PartialPropertiesOf } from '@lyvely/common';
 import { BaseModel } from '@lyvely/common';
 import { IsEnum } from 'class-validator';
-import { CalendarInterval } from '@lyvely/dates';
-import { ChartType } from '../interfaces';
+import { ChartCategory } from '../interfaces';
 
 @Exclude()
 export class UpdateChartModel extends PartialType(CreateChartModel) {
   @Expose()
-  @IsEnum(CalendarInterval)
-  override interval?: CalendarInterval = undefined;
-
-  @Expose()
-  @IsEnum(ChartType)
-  override type?: ChartType = undefined;
+  @IsEnum(ChartCategory)
+  override category?: ChartCategory = undefined;
 
   constructor(data?: PartialPropertiesOf<UpdateChartModel>) {
     super(false);

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { computed, ref, watchEffect } from 'vue';
 import {
-  TagChooser,
+  TagPicker,
   ContentEditModalEmits,
   useContentEditModal,
   ICreateContentInitOptions,
@@ -14,17 +14,19 @@ import {
   LySelect,
   LyTextarea,
   isTouchScreen,
-  ISelectOptions,
+  LyAlert,
   LyButton,
+  type ISelectOptions,
 } from '@lyvely/ui';
 import {
   ChartModel,
-  ChartType,
+  ChartCategory,
   CreateChartModel,
   UpdateChartModel,
   useChartsClient,
 } from '@lyvely/analytics-interface';
-import { CalendarInterval } from '@lyvely/dates';
+import { useChartTemplates } from '@/composables';
+import ChartTemplateForm from '@/components/forms/ChartTemplateForm.vue';
 
 export interface IProps {
   modelValue: boolean;
@@ -44,32 +46,9 @@ const { isCreate, showModal, model, validator, submit, status } = useContentEdit
   client: useChartsClient(),
 });
 
-const intervalOptions: ISelectOptions = [
-  { value: `${CalendarInterval.Daily}`, label: `analytics.interval.5` },
-  { value: `${CalendarInterval.Weekly}`, label: `analytics.interval.4` },
-  { value: `${CalendarInterval.Monthly}`, label: `analytics.interval.3` },
-  { value: `${CalendarInterval.Quarterly}`, label: `analytics.interval.2` },
-  { value: `${CalendarInterval.Yearly}`, label: `analytics.interval.1` },
-];
-
 const modalTitle = computed(() => {
   return isCreate.value ? `analytics.charts.create.title` : `analytics.charts.edit.title`;
 });
-
-function isCreateModel(m: UpdateChartModel | CreateChartModel): m is CreateChartModel {
-  return isCreate.value;
-}
-
-const chartType = computed(() => {
-  const modelValue = model.value;
-  return isCreateModel(modelValue) ? modelValue.type : props.content?.config.type;
-});
-
-function setChartType(chartType: ChartType) {
-  const modelValue = model.value;
-  if (!isCreateModel(modelValue)) return;
-  modelValue.type = chartType;
-}
 </script>
 
 <template>
@@ -86,39 +65,12 @@ function setChartType(chartType: ChartType) {
           :required="true"
           :autofocus="isCreate || !isTouchScreen()"
           :auto-validation="false" />
-        <ly-select
-          property="interval"
-          type="number"
-          label="analytics.fields.interval"
-          :required="true"
-          :options="intervalOptions" />
-
-        <div class="flex gap-2 justify-between items-stretch">
-          <ly-button
-            class="text-xs secondary w-full outlined"
-            :active="chartType === ChartType.Graph"
-            @click="setChartType(ChartType.Graph)">
-            {{ t('analytics.charts.types.graph') }}
-          </ly-button>
-
-          <ly-button
-            class="text-xs secondary w-full outlined"
-            :active="chartType === ChartType.Pie"
-            @click="setChartType(ChartType.Pie)">
-            {{ t('analytics.charts.types.pie') }}
-          </ly-button>
-
-          <ly-button
-            class="text-xs secondary w-full outlined"
-            :active="chartType === ChartType.Calendar"
-            @click="setChartType(ChartType.Calendar)">
-            {{ t('analytics.charts.types.calendar') }}
-          </ly-button>
-        </div>
       </fieldset>
 
+      <chart-template-form :key="model.templateId" v-model="model" :embedded="true" />
+
       <fieldset>
-        <tag-chooser v-model="model.tagNames" />
+        <tag-picker v-model="model.tagNames" />
         <ly-textarea property="text" />
       </fieldset>
     </ly-form-model>

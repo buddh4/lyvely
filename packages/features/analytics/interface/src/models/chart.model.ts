@@ -1,6 +1,6 @@
 import { ContentModel, IEditableModel } from '@lyvely/interface';
 import { Expose } from 'class-transformer';
-import type { IChartStatus, IChart, IChartConfig } from '../interfaces';
+import type { IChart, IChartConfig } from '../interfaces';
 import { UpdateChartModel } from './update-chart.model';
 
 export class ChartModel<TID = string, TConfig extends IChartConfig = IChartConfig>
@@ -11,9 +11,6 @@ export class ChartModel<TID = string, TConfig extends IChartConfig = IChartConfi
 
   @Expose()
   override type = ChartModel.contentType;
-
-  @Expose()
-  status: IChartStatus;
 
   toEditModel(): UpdateChartModel {
     return new UpdateChartModel({

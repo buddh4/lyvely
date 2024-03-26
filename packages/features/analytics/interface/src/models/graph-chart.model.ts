@@ -1,5 +1,5 @@
 import type { IChartConfig } from '../interfaces';
-import { ChartType } from '../interfaces';
+import { ChartCategory } from '../interfaces';
 import type { BaseModelData } from '@lyvely/common';
 import { BaseModel } from '@lyvely/common';
 import { CalendarInterval } from '@lyvely/dates';
@@ -9,7 +9,7 @@ import { ChartModel } from './chart.model';
 
 @Exclude()
 export class GraphChartConfigModel implements IChartConfig {
-  type = ChartType.Graph;
+  category = ChartCategory.Graph;
 
   @Expose()
   interval: CalendarInterval;
@@ -31,5 +31,5 @@ export class GraphChartConfigModel implements IChartConfig {
 export function isGraphChart<T = string>(
   chart: ChartModel<T>,
 ): chart is ChartModel<T, GraphChartConfigModel> {
-  return chart.config.type === ChartType.Graph;
+  return chart.config.category === ChartCategory.Graph;
 }

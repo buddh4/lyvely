@@ -6,6 +6,17 @@
       "title": "Analytics",
       "description": "If disabled, the Analytics view and content type will be unavailable."
     },
+    "templates": {
+      "none": "None",
+      "score-profile": "Profile Score",
+      "score-user": "User Score",
+      "score-tag": "Tag Score",
+      "info": {
+        "score-profile": "Visualizes the progression of the total profile score over time, allowing you to track and analyze trends in performance or changes in score throughout a specified period.",
+        "score-user": "Visualizes user scores. You can choose specific users and/or include the currently active user. You can furthermore group scores by tags.",
+        "score-tag": "Visualizes scores related to certain tags."
+      }
+    },
     "interval": {
       "0": "Unscheduled",
       "1": "Yearly",
@@ -16,7 +27,12 @@
     },
     "fields": {
       "interval": "Interval",
-      "type": "Type"
+      "type": "Type",
+      "template": "Template",
+      "current-user": "Include current user score",
+      "users": "Users",
+      "select-template": "Select a template",
+      "tags": "Group by Tags"
     },
     "graphs": {
       "types": {
@@ -33,7 +49,8 @@
     "charts": {
       "name": "Chart",
       "types": {
-        "graph": "Graph",
+        "line": "Line",
+        "bar": "Bar",
         "calendar": "Calendar",
         "pie": "Pie"
       },

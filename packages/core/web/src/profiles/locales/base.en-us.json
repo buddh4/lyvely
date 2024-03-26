@@ -1,5 +1,12 @@
 {
   "profiles": {
+    "ui": {
+      "relations": {
+        "picker": {
+          "title": "Users"
+        }
+      }
+    },
     "errors": {
       "loading": "This profile could not be loaded."
     },

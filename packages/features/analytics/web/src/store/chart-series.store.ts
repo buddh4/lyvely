@@ -2,13 +2,13 @@ import { reactive, ref, watch } from 'vue';
 import {
   CHART_SERIES_TYPE_SCORE,
   ChartModel,
-  ChartType,
+  ChartCategory,
   useChartsClient,
   ChartSeriesConfigModel,
   UpdateChartSeriesModel,
 } from '@lyvely/analytics-interface';
 import { I18nModelValidator, loadingStatus, useStatus } from '@lyvely/web';
-import { getChartSeriesFormDefinition } from '@/registries';
+import { getChartDefinition } from '@/registries';
 import { ComponentRegistration } from '@lyvely/ui';
 import { useChartsStore } from '@/store/charts.store';
 
@@ -38,7 +38,7 @@ export const useEditChartSeriesStore = () => {
     status.resetStatus();
   }
 
-  function addSeries(chartId: string, chartType: ChartType) {
+  function addSeries(chartId: string, chartType: ChartCategory) {
     setType(_getDefaultSeriesType(chartType));
     isCreate.value = true;
     cid.value = chartId;
@@ -58,16 +58,16 @@ export const useEditChartSeriesStore = () => {
     sid.value = seriesId;
   }
 
-  function _getDefaultSeriesType(chartType: ChartType) {
+  function _getDefaultSeriesType(chartType: ChartCategory) {
     switch (chartType) {
-      case ChartType.Graph:
+      case ChartCategory.Graph:
         return CHART_SERIES_TYPE_SCORE;
     }
     return CHART_SERIES_TYPE_SCORE;
   }
 
   function setType(type: string, formData?: any) {
-    const definition = getChartSeriesFormDefinition(type);
+    const definition = getChartDefinition(type);
     if (!definition) {
       console.error('Could not find graph type definition for ' + type);
       return;

@@ -1,1 +1,1 @@
-export { TagBadge, TagList, TagChooser } from './components';
+export { TagBadge, TagList, TagPicker } from './components';

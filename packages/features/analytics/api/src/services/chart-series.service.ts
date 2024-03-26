@@ -1,5 +1,5 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
-import { ProtectedProfileContext } from '@lyvely/api';
+import { ProtectedProfileContext, createObjectId } from '@lyvely/api';
 import { Chart, ChartSeriesConfig } from '../schemas';
 import {
   UpdateChartSeriesModel,
@@ -65,12 +65,12 @@ export class ChartSeriesService {
 
     if (!seriesDefinition)
       throw new IntegrityException(
-        `Attempt to add invalid series type ${series.type} to chart ${chart.config.type}`,
+        `Attempt to add invalid series type ${series.type} to chart ${chart.config.category}`,
       );
 
-    if (!seriesDefinition.chartTypes.includes(chart.config.type))
+    if (!seriesDefinition.chartTypes.includes(series.chartType))
       throw new IntegrityException(
-        `Attempt to add incompatible series type ${series.type} to chart ${chart.config.type}`,
+        `Attempt to add incompatible series type ${series.type} to chart ${chart.config.category}`,
       );
   }
 
@@ -92,6 +92,7 @@ export class ChartSeriesService {
 
     const ConfigType = seriesDefinition.configType || ChartSeriesConfigModel;
 
-    return new ConfigType(model.config);
+    const config = new ConfigType({ ...model.config });
+    return { _id: createObjectId(), ...config };
   }
 }

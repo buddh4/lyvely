@@ -1,4 +1,4 @@
-import { NestedSchema, ObjectIdArrayProp, ObjectIdProp, Subdocument, TObjectId } from '@lyvely/api';
+import { NestedSchema, ObjectIdArrayProp, Subdocument, TObjectId } from '@lyvely/api';
 import { SchemaFactory } from '@nestjs/mongoose';
 import {
   CHART_SERIES_TYPE_SCORE,

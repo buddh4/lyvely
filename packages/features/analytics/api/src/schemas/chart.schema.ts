@@ -6,7 +6,7 @@ import {
   type PropertiesOf,
   type BaseModelData,
 } from '@lyvely/common';
-import { ChartModel, ChartState, ChartType, IChartStatus } from '@lyvely/analytics-interface';
+import { ChartModel, ChartState, ChartCategory } from '@lyvely/analytics-interface';
 import { ChartSeriesConfig, ChartSeriesConfigSchema } from './chart-series-config.schema';
 
 @NestedSchema()
@@ -23,7 +23,7 @@ const ChartStatusSchema = SchemaFactory.createForClass(ChartStatus);
 
 @NestedSchema({ discriminatorKey: 'type' })
 export class ChartConfig {
-  type: ChartType;
+  category: ChartCategory;
 
   @Prop({ type: [ChartSeriesConfigSchema] })
   series: ChartSeriesConfig[];
@@ -37,18 +37,18 @@ const ChartConfigSchema = SchemaFactory.createForClass(ChartConfig);
 
 @Schema()
 export class Chart<TConfig extends ChartConfig = ChartConfig> extends ContentType<TConfig> {
-  @Prop({ type: ChartStatusSchema })
-  status: IChartStatus;
-
   @Prop({ type: ChartConfigSchema, required: true })
   override config: TConfig;
 
-  addSeries(series: ChartSeriesConfig) {
-    this.config.series.push(series);
+  @Prop({ type: ChartStatusSchema })
+  override state: ChartStatus;
+
+  override toModel(user?: User): ChartModel {
+    return new ChartModel<string>(this);
   }
 
-  toModel(user?: User): ChartModel {
-    return new ChartModel(this);
+  addSeries(series: ChartSeriesConfig) {
+    this.config.series.push(series);
   }
 }
 
