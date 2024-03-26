@@ -21,32 +21,31 @@ export interface IconOptionsIF {
   definition: LySvgIconDefinitionIF;
 }
 
-export enum TextSize {
-  XS = 'xs',
-  SM = 'sm',
-  BASE = 'base',
-  LG = 'lg',
-  XL = 'xl',
-  XL2 = '2xl',
-  XL3 = '3xl',
-  XL4 = '4xl',
-  XL5 = '5xl',
-  XL6 = '6xl',
-  XL7 = '7xl',
-}
+export type TextSize =
+  | 'xs'
+  | 'sm'
+  | 'base'
+  | 'lg'
+  | 'xl'
+  | '2xl'
+  | '3xl'
+  | '4xl'
+  | '5xl'
+  | '6xl'
+  | '7xl';
 
 const textSizeClassMap = {
-  [TextSize.XS]: 'text-xs',
-  [TextSize.SM]: 'text-sm',
-  [TextSize.BASE]: 'text-base',
-  [TextSize.LG]: 'text-lg',
-  [TextSize.XL]: 'text-xl',
-  [TextSize.XL2]: 'text-2xl',
-  [TextSize.XL3]: 'text-3xl',
-  [TextSize.XL4]: 'text-4xl',
-  [TextSize.XL5]: 'text-5xl',
-  [TextSize.XL6]: 'text-6xl',
-  [TextSize.XL7]: 'text-7xl',
+  ['xs']: 'text-xs',
+  ['sm']: 'text-sm',
+  ['base']: 'text-base',
+  ['lg']: 'text-lg',
+  ['xl']: 'text-xl',
+  ['2xl']: 'text-2xl',
+  ['3xl']: 'text-3xl',
+  ['4xl']: 'text-4xl',
+  ['5xl']: 'text-5xl',
+  ['6xl']: 'text-6xl',
+  ['7xl']: 'text-7xl',
 };
 
 export const getTextSizeClass = (size: TextSize): string => {

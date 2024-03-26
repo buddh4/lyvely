@@ -1,12 +1,14 @@
 <script lang="ts" setup>
 import { computed, useSlots } from 'vue';
 import { t, Translatable } from '@/i18n';
-import LyIcon from "@/components/icons/LyIcon.vue";
-import LyButton from "@/components/buttons/LyButton.vue";
+import LyIcon from '@/components/icons/LyIcon.vue';
+import LyButton from '@/components/buttons/LyButton.vue';
+import { getTextSizeClass, TextSize } from '@/types';
 
 export interface IProps {
-  modelValue?: boolean,
+  modelValue?: boolean;
   text?: Translatable;
+  textSize: TextSize;
   type?: 'danger' | 'info' | 'warning' | 'secondary' | 'success';
   icon?: boolean;
   enterActiveClass?: string;
@@ -17,11 +19,12 @@ export interface IProps {
 const props = withDefaults(defineProps<IProps>(), {
   modelValue: true,
   text: undefined,
+  textSize: 'sm',
   type: 'secondary',
   icon: false,
   enterActiveClass: 'animate__animated animate__faster animate__fadeIn',
   leaveActiveClass: 'animate__animated animate__faster animate__fadeOut',
-  closable: false
+  closable: false,
 });
 
 const emit = defineEmits(['update:modelValue']);
@@ -62,28 +65,30 @@ const iconName = computed(() => {
 </script>
 
 <template>
-  <transition
-      :enter-active-class="enterActiveClass"
-      :leave-active-class="leaveActiveClass">
-  <div v-if="show && isActive" :class="cssClass" role="alert">
-    <div class="text-sm relative">
-      <slot>
-        <div class="flex items-center gap-1">
-          <slot name="icon">
-            <ly-icon v-if="icon" :name="iconName" class="w-5 mr-1 flex-shrink-0" :class="iconTextClass" />
-          </slot>
+  <transition :enter-active-class="enterActiveClass" :leave-active-class="leaveActiveClass">
+    <div v-if="show && isActive" :class="cssClass" role="alert">
+      <div :class="['relative', getTextSizeClass(textSize)]">
+        <slot>
+          <div class="flex items-center gap-1">
+            <slot name="icon">
+              <ly-icon
+                v-if="icon"
+                :name="iconName"
+                class="w-5 mr-1 flex-shrink-0"
+                :class="iconTextClass" />
+            </slot>
 
-          <div class="inline-block flex-grow" v-if="text">
-            {{ t(text) }}
+            <div class="inline-block flex-grow" v-if="text">
+              {{ t(text) }}
+            </div>
+
+            <ly-button v-if="closable" class="px-1 py-1 flex-shrink-0" @click="show = false">
+              <ly-icon name="close" class="w-4" :class="iconTextClass" />
+            </ly-button>
           </div>
-
-          <ly-button v-if="closable" class="px-1 py-1 flex-shrink-0" @click="show = false">
-            <ly-icon name="close" class="w-4" :class="iconTextClass" />
-          </ly-button>
-        </div>
-      </slot>
+        </slot>
+      </div>
     </div>
-  </div>
   </transition>
 </template>
 
