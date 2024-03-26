@@ -44,9 +44,9 @@ describe('User can send messages', function () {
     cy.getByObjectId('owner-profile-first', 'menu').click();
     cy.getId('content-edit').click();
     cy.getId('edit-message-text').clear().type('Edited Text!');
-    cy.getId('edit-message-tag-chooser').click();
+    cy.getId('edit-message-tag-picker').click();
     cy.get('[data-badge-selection="Health"]').click();
-    cy.getId('edit-message-tag-chooser-modal').find('[data-id="btn-modal-submit"]').click();
+    cy.getId('edit-message-tag-picker-modal').find('[data-id="btn-modal-submit"]').click();
     cy.getId('btn-modal-submit').click();
     cy.getByObjectId('owner-profile-first').contains('Edited Text!');
     cy.getByObjectId('owner-profile-first').contains('Health');
