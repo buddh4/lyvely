@@ -20,7 +20,7 @@ export class TextDataPoint
   constructor(
     profile: Profile,
     user: User,
-    content: TimeSeriesContent<any>,
+    content: TimeSeriesContent,
     data?: BaseDocumentData<TextDataPoint>,
   ) {
     super(profile, user, content, data);

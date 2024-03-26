@@ -23,7 +23,7 @@ export class SingleUserTaskStateModel {
 
 @Exclude()
 export class TaskModel<TID = string>
-  extends ContentModel<TID, ITaskConfig, ContentDataTypeModel, SingleUserTaskStateModel>
+  extends ContentModel<TID, ITaskConfig, SingleUserTaskStateModel>
   implements IEditableModel<UpdateTaskModel>, ICalendarPlanEntry<TID>
 {
   static contentType = 'Task';
@@ -83,7 +83,6 @@ export class MultiUserTaskStateModel<TID> {
 export class TaskWithUsersModel<TID = string> extends ContentModel<
   TID,
   ITaskConfig,
-  ContentDataTypeModel,
   MultiUserTaskStateModel<TID>
 > {
   @Expose()

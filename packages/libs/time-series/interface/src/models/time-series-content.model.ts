@@ -25,7 +25,7 @@ export class TimeSeriesContentModel<
     TData extends ContentDataTypeModel = ContentDataTypeModel,
     TState extends Object | undefined = undefined,
   >
-  extends ContentModel<TID, TConfig, TData, TState>
+  extends ContentModel<TID, TConfig, TState, TData>
   implements ISortable, ICalendarPlanEntry<TID>
 {
   @Expose()

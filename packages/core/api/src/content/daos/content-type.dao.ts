@@ -1,12 +1,13 @@
 import { Content } from '../schemas';
 import { assureObjectId, DocumentIdentity, UpdateQuerySet, UpdateQuery } from '@/core';
-import { ProfileDocumentDao, Profile } from '@/profiles';
+import { ProfileShardDao, Profile } from '@/profiles';
 import { User } from '@/users';
 import { SortResult } from '@lyvely/interface';
 
 export abstract class ContentTypeDao<
-  T extends Content<any, any, any>,
-> extends ProfileDocumentDao<T> {
+  T extends Content,
+  TVersions extends Content = T,
+> extends ProfileShardDao<T, TVersions> {
   protected override getModelType(): string | null {
     return 'content';
   }

@@ -31,7 +31,7 @@ export class MilestoneRelationModel<TID = string> {
   @Expose()
   progress?: number;
 
-  constructor(content: IContent<any>, progress?: { progress: number; tid?: string } | number) {
+  constructor(content: IContent, progress?: { progress: number; tid?: string } | number) {
     BaseModel.init<MilestoneRelationModel<any>>(this, {
       pid: content.pid,
       cid: content.id,

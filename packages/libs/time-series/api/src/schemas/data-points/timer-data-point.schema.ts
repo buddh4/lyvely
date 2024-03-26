@@ -47,7 +47,7 @@ export class TimerDataPoint
   constructor(
     profile: Profile,
     user: User,
-    content: TimeSeriesContent<any>,
+    content: TimeSeriesContent,
     data?: BaseDocumentData<TimerDataPoint>,
   ) {
     super(profile, user, content, data);

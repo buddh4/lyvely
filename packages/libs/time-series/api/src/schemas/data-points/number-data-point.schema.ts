@@ -25,7 +25,7 @@ export class NumberDataPoint
   constructor(
     profile: Profile,
     user: User,
-    content: TimeSeriesContent<any>,
+    content: TimeSeriesContent,
     data?: BaseDocumentData<NumberDataPoint>,
   ) {
     super(profile, user, content, data);

@@ -32,7 +32,7 @@ export class TestContentDataB extends ContentDataType {
 export const TestContentDataBSchema = SchemaFactory.createForClass(TestContentDataB);
 
 @Schema()
-export class TestContentB extends Content<TestContent> {
+export class TestContentB extends Content {
   @Prop({ type: TestContentDataBSchema, required: true })
   override content: TestContentDataB;
 }

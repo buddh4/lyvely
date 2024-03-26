@@ -102,9 +102,9 @@ export class ContentLogModel<TData = any, TID = string> implements IContentLog<T
 export class ContentModel<
   TID = string,
   TConfig extends Object | undefined = any,
-  TData extends ContentDataTypeModel = ContentDataTypeModel,
   TState extends Object | undefined = any,
-> implements IContent<TID, TConfig, TData, TState>
+  TData extends ContentDataTypeModel = ContentDataTypeModel,
+> implements IContent<TID, TConfig, TState, TData>
 {
   @Expose()
   id: string;
@@ -145,7 +145,7 @@ export class ContentModel<
   @Expose()
   policies: IContentPolicies;
 
-  constructor(data: BaseModelData<ContentModel<any, TConfig, TData, TState>>) {
+  constructor(data: BaseModelData<ContentModel<any, TConfig, TState, TData>>) {
     BaseModel.init(this, data);
   }
 

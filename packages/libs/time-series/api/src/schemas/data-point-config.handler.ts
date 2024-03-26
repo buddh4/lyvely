@@ -10,7 +10,7 @@ import { DataPointConfig, DataPointConfigRevision } from './config';
 const dataPointFacade = useDataPointStrategyFacade();
 
 export class DataPointConfigHandler {
-  applyUpdate(model: TimeSeriesContent<any>, update: Partial<DataPointConfigRevision>) {
+  applyUpdate(model: TimeSeriesContent, update: Partial<DataPointConfigRevision>) {
     const oldConfig = model.timeSeriesConfig;
     const updatedConfig = this.prepareUpdate(model, update);
 
@@ -38,7 +38,7 @@ export class DataPointConfigHandler {
     }
   }
 
-  private prepareUpdate(model: TimeSeriesContent<any>, update: Partial<DataPointConfigRevision>) {
+  private prepareUpdate(model: TimeSeriesContent, update: Partial<DataPointConfigRevision>) {
     const valueType = update.valueType || model.timeSeriesConfig.valueType;
     const inputType = update.inputType || model.timeSeriesConfig.inputType;
     const preparedUpdate = this.pickValueTypeSettings(update, valueType);
@@ -64,7 +64,7 @@ export class DataPointConfigHandler {
     return pick(obj, ['inputType', 'valueType', 'userStrategy', 'interval', ...settingKeys]);
   }
 
-  prepareConfig(model: TimeSeriesContent<any>, config?: DataPointConfig) {
+  prepareConfig(model: TimeSeriesContent, config?: DataPointConfig) {
     if (!config) {
       config = model.timeSeriesConfig;
     }
@@ -72,17 +72,17 @@ export class DataPointConfigHandler {
     dataPointFacade.getService(model.timeSeriesConfig.valueType).prepareConfig(config);
   }
 
-  private timeSeriesConfigRevisionCheck(model: TimeSeriesContent<any>, update: DataPointConfig) {
+  private timeSeriesConfigRevisionCheck(model: TimeSeriesContent, update: DataPointConfig) {
     return !model.timeSeriesConfig.isEqualTo(update) && !this.getTimeSeriesRevisionUpdatedAt(model);
   }
 
-  private getTimeSeriesRevisionUpdatedAt(model: TimeSeriesContent<any>, date: Date = new Date()) {
+  private getTimeSeriesRevisionUpdatedAt(model: TimeSeriesContent, date: Date = new Date()) {
     if (!model.timeSeriesConfig?.history.length) return false;
 
     return model.timeSeriesConfig.history.find((rev) => isSameDay(rev.validUntil, date));
   }
 
-  private pushTimeSeriesConfigRevision(model: TimeSeriesContent<any>, cfg: DataPointConfig) {
+  private pushTimeSeriesConfigRevision(model: TimeSeriesContent, cfg: DataPointConfig) {
     if (!model.timeSeriesConfig.history) {
       model.timeSeriesConfig.history = [];
     }
@@ -94,7 +94,7 @@ export class DataPointConfigHandler {
     }
   }
 
-  private createTimeSeriesConfigRevision(model: TimeSeriesContent<any>, old: DataPointConfig) {
+  private createTimeSeriesConfigRevision(model: TimeSeriesContent, old: DataPointConfig) {
     return dataPointFacade.createRevision(old);
   }
 }

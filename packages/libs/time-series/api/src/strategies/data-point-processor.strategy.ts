@@ -3,7 +3,7 @@ import { UpdateQuerySet, OptionalUser } from '@lyvely/api';
 import { CalendarDate } from '@lyvely/dates';
 
 export interface IDataPointProcessorStrategy<
-  TModel extends TimeSeriesContent = TimeSeriesContent<any>,
+  TModel extends TimeSeriesContent = TimeSeriesContent,
   TDataPoint extends DataPoint = DataPoint,
 > {
   postProcess(

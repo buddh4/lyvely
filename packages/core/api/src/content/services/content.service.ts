@@ -64,7 +64,7 @@ export class ContentService {
    * @param content
    * @throws DocumentNotFoundException
    */
-  async archive(user: User, content: Content<any, any, any>): Promise<Content> {
+  async archive(user: User, content: Content): Promise<Content> {
     await this.contentDao.archive(user, content);
     if (content.meta.parentId) {
       this.contentDao.decrementChildCount(content, content.meta.parentId).catch((e) => {
@@ -81,7 +81,7 @@ export class ContentService {
    * @param content
    * @throws DocumentNotFoundException
    */
-  async restore(user: User, content: Content<any, any, any>): Promise<Content> {
+  async restore(user: User, content: Content): Promise<Content> {
     await this.contentDao.restore(user, content);
     if (content.meta.parentId) {
       this.contentDao.incrementChildCount(content, content.meta.parentId).catch((e) => {
@@ -99,10 +99,7 @@ export class ContentService {
    *
    * @return {Promise<void>} - A promise that resolves when the content policies have been populated.
    */
-  async populateContentPolicies(
-    content: Content<any, any, any> | Content<any, any, any>[],
-    context: ProfileContext,
-  ) {
+  async populateContentPolicies(content: Content | Content[], context: ProfileContext) {
     content = Array.isArray(content) ? content : [content];
     await Promise.all(content.map((c) => this._populateContentPolicies(c, context)));
   }
@@ -114,7 +111,7 @@ export class ContentService {
    * @param {ProfileContext} context - The profile context to use for policy checking.
    * @return {Promise<void>} A Promise that resolves once the content policies are populated.
    */
-  private async _populateContentPolicies(content: Content<any, any, any>, context: ProfileContext) {
+  private async _populateContentPolicies(content: Content, context: ProfileContext) {
     const contentContext: ProfileContentContext =
       context instanceof ProfileContentContext
         ? context

@@ -10,7 +10,7 @@ import { DataPoint, TimeSeriesContent } from '../schemas';
 import { DataPointStrategyDao } from '../daos';
 import { useDataPointStrategyRegistry } from '../strategies';
 import { isEqual } from 'lodash';
-import { IDataPointUpdateResult } from '../interfaces/data-point-update-result.interface';
+import { IDataPointUpdateResult } from '../interfaces';
 
 /**
  * This class represents a service class for managing and manipulating data points.

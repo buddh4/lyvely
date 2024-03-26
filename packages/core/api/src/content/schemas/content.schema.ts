@@ -72,9 +72,6 @@ function implementsGetModelConstructor(model: any): model is IGetModelConstructo
   return typeof (model as IGetModelConstructor).getModelConstructor === 'function';
 }
 
-export type ContentEntity<T, TConfig extends Object = any> = IContent<TObjectId, TConfig> &
-  BaseDocument<T>;
-
 /**
  * This class implements the base schema of all content types. Subclasses may overwrite the `content`, `config` or
  * `state` properties for content specific data.
@@ -89,12 +86,12 @@ export type ContentEntity<T, TConfig extends Object = any> = IContent<TObjectId,
 @Schema({ discriminatorKey: 'type' })
 export class Content<
     TConfig extends Object | undefined = any,
-    TData extends ContentDataType = ContentDataType,
     TStatus extends Object | undefined = any,
+    TData extends ContentDataType = ContentDataType,
     TModel extends ContentModel<string> = ContentModel<string, any, any, any>,
   >
   extends ProfileDocument
-  implements IContent<TObjectId, TConfig, TData, TStatus>
+  implements IContent<TObjectId, TConfig, TStatus, TData>
 {
   /** The content field holds the core data for the content instance. **/
   @Prop({ type: ContentDataTypeSchema })
@@ -130,7 +127,7 @@ export class Content<
   constructor(
     profile: Profile,
     createdBy: User,
-    obj?: BaseDocumentData<Content<TConfig, TData, TStatus>>,
+    obj?: BaseDocumentData<Content<TConfig, TStatus, TData>>,
   ) {
     super();
 
@@ -157,7 +154,7 @@ export class Content<
   /**
    * Prepares default values of a new content instance.
    */
-  getDefaults(): Partial<Content<TConfig, TData, TStatus>> {
+  getDefaults(): Partial<Content<TConfig, TStatus, TData>> {
     // not really sure why the cast is required...
     return {
       config: this.getDefaultConfig(),
@@ -326,10 +323,10 @@ export class Content<
  */
 export abstract class ContentType<
   TConfig extends Object | undefined = any,
-  TData extends ContentDataType = ContentDataType,
   TState extends Object | undefined = any,
-  TModel extends ContentModel<string> = ContentModel<string, any, any>,
-> extends Content<TConfig, TData, TState, TModel> {
+  TData extends ContentDataType = ContentDataType,
+  TModel extends ContentModel<string> = ContentModel<string>,
+> extends Content<TConfig, TState, TData, TModel> {
   abstract override toModel(user?: User): TModel;
 }
 

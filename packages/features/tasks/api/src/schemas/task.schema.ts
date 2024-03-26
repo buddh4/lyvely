@@ -92,7 +92,7 @@ const TaskStateSchema = SchemaFactory.createForClass(TaskState);
 
 @Schema()
 export class Task
-  extends ContentType<TaskConfig, ContentDataType, TaskState>
+  extends ContentType<TaskConfig, TaskState>
   implements PropertiesOf<TaskWithUsersModel<TObjectId>>
 {
   @Prop({ type: TaskConfigSchema, required: true })

@@ -20,7 +20,7 @@ export abstract class DataPointStrategyDao<T extends DataPoint = DataPoint> exte
     );
   }
 
-  async findDataPointByTid(content: TimeSeriesContent<any>, tid: string) {
+  async findDataPointByTid(content: TimeSeriesContent, tid: string) {
     // TODO: (TimeSeries History) fetch interval from history
     return this.findOne({
       cid: assureObjectId(content),
@@ -29,7 +29,7 @@ export abstract class DataPointStrategyDao<T extends DataPoint = DataPoint> exte
   }
 
   async findUserDataPointByTid(
-    content: TimeSeriesContent<any>,
+    content: TimeSeriesContent,
     uid: DocumentIdentity<User>,
     tid: string,
   ) {

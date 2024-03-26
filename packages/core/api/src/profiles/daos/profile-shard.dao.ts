@@ -14,13 +14,14 @@ import {
   FilterQuery,
   QueryOptions,
   UpdateQuery,
+  BaseDocument,
 } from '@/core';
 import { ProfileDocument } from '../daos';
 import { Profile } from '../schemas';
 
 /**
  * This type is used as compound type for different kinds of profile relation on DAO level.
- * The ProfileDocumentDao at least requires an oid and pid for most of its queries.
+ * The ProfileShardDao at least requires an oid and pid for most of its queries.
  */
 export type ProfileShard =
   | Profile
@@ -31,7 +32,10 @@ export type ProfileShard =
  * This Dao class serves as base class for profile related models.
  * Profile related models need to include an oid and pid field which should be used in all queries.
  */
-export abstract class ProfileDocumentDao<T extends ProfileDocument> extends AbstractDao<T> {
+export abstract class ProfileShardDao<
+  T extends ProfileDocument,
+  TVersions extends BaseDocument = T,
+> extends AbstractDao<T, TVersions> {
   async findByProfileAndId(
     profileRelation: ProfileShard,
     identity: DocumentIdentity<T>,

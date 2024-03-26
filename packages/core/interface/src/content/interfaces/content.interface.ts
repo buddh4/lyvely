@@ -75,8 +75,8 @@ export interface IContentLog<TData = any, TID = any> {
 export interface IContent<
   TID = any,
   TConfig extends Object | undefined = any,
-  TData extends IContentDataType = IContentDataType,
   TState extends Object | undefined = any,
+  TData extends IContentDataType = IContentDataType,
 > extends ISortable {
   id: string;
   oid: TID;

@@ -48,7 +48,7 @@ export class SelectionDataPoint
   constructor(
     profile: Profile,
     user: User,
-    content: TimeSeriesContent<any>,
+    content: TimeSeriesContent,
     data?: BaseDocumentData<SelectionDataPoint>,
   ) {
     super(profile, user, content, data);

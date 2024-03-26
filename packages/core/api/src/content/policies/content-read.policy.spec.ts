@@ -59,7 +59,7 @@ describe('ContentReadPolicy', () => {
   });
 
   it('test custom content read policy', async () => {
-    class TestContent extends Content<TestContent> {
+    class TestContent extends Content {
       value: string;
       override getReadPolicy(): Type<IPolicy<ProfileContentContext>> {
         // This policy only grants read access if value === 'test'
@@ -82,7 +82,7 @@ describe('ContentReadPolicy', () => {
   });
 
   it('test profile owner can read content', async () => {
-    class TestContent extends Content<TestContent> {
+    class TestContent extends Content {
       value: string;
     }
 
@@ -97,7 +97,7 @@ describe('ContentReadPolicy', () => {
   });
 
   it('test profile member can not read content with visibility level owner', async () => {
-    class TestContent extends Content<TestContent> {
+    class TestContent extends Content {
       value: string;
     }
 
