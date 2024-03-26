@@ -169,10 +169,22 @@ export function findByPath<T>(
   return result || options?.defaultValue;
 }
 
+/**
+ * Checks if the given value is an ObjectId.
+ *
+ * @param {any} value - The value to be checked.
+ * @returns {boolean} - Returns true if the value is an ObjectId, otherwise returns false.
+ */
 export function isObjectId(value: any): value is object {
   return getNonNullableProperty(value, '_bsontype') === 'ObjectId';
 }
 
+/**
+ * Retrieves the prototype tree of a given type.
+ *
+ * @param {Type} type - The type to retrieve the prototype tree for.
+ * @return {Array<Type>} - The prototype tree of the given type, including the type itself.
+ */
 export function getPrototypeTree(type: Type): Array<Type> {
   let curr = type;
   const prototypeTree = [type];
@@ -186,6 +198,13 @@ export function getPrototypeTree(type: Type): Array<Type> {
   return prototypeTree;
 }
 
+/**
+ * Creates and returns a singleton instance of a given type.
+ *
+ * @template T The type of the singleton instance.
+ * @param {() => T} create A function that creates the singleton instance.
+ * @returns {<TR extends T = T>() => TR} A function that returns the singleton instance.
+ */
 export function useSingleton<T>(create: () => T) {
   let instance: T;
   return <TR extends T = T>(): TR => {
@@ -195,4 +214,14 @@ export function useSingleton<T>(create: () => T) {
 
     return instance as TR;
   };
+}
+
+/**
+ * Clones an object by creating a shallow copy of the provided object.
+ *
+ * @param {TModel} obj - The object to clone.
+ * @returns {TModel} - A shallow copy of the provided object.
+ */
+export function clone<TModel = any>(obj: TModel): TModel {
+  return Object.create(Object.getPrototypeOf(obj), Object.getOwnPropertyDescriptors(obj));
 }
