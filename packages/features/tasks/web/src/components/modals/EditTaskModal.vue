@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 import {
-  TagChooser,
+  TagPicker,
   ContentEditModalEmits,
   useContentEditModal,
   ICreateContentInitOptions,
@@ -72,7 +72,7 @@ const modalTitle = computed(() => {
       </fieldset>
 
       <fieldset>
-        <tag-chooser v-model="model.tagNames" />
+        <tag-picker v-model="model.tagNames" />
       </fieldset>
       <fieldset></fieldset>
     </ly-form-model>

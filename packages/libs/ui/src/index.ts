@@ -33,7 +33,7 @@ import LyContentPanel from './components/panels/LyContentPanel.vue';
 import LyProgressBar from './components/progress/LyProgressBar.vue';
 import LyDimmed from './components/texts/LyDimmed.vue';
 import LyTrim from './components/texts/LyTrim.vue';
-import LyBadgeChooser from './components/forms/LyBadgeChooser.vue';
+import LyBadgePicker from './components/forms/LyBadgePicker.vue';
 import LyCheckboxRange from './components/forms/LyCheckboxRange.vue';
 import LyEditableText from './components/forms/LyEditableText.vue';
 import LyFloatingInputLayout from './components/forms/LyFloatingInputLayout.vue';
@@ -105,7 +105,7 @@ const createLyvelyUi = (options?: LyvelyUiOptions) => {
       Vue.component('LySliderMenu', LySliderMenu);
       Vue.component('LyDimmed', LyDimmed);
       Vue.component('LyTrim', LyTrim);
-      Vue.component('LyBadgeChooser', LyBadgeChooser);
+      Vue.component('LyBadgePicker', LyBadgePicker);
       Vue.component('LyCheckboxRange', LyCheckboxRange);
       Vue.component('LyEditableText', LyEditableText);
       Vue.component('LyFloatingInputLayout', LyFloatingInputLayout);
@@ -133,6 +133,7 @@ export * from './components/layouts/interfaces';
 export * from './interfaces';
 export * from './components/menus';
 
+export * from './composables';
 export type { Translatable, TranslationAdapter };
 export {
   vMobileScrollbar,
@@ -149,7 +150,7 @@ export {
   LyNumberField,
   LyFormModel,
   LyFloatingInputLayout,
-  LyBadgeChooser,
+  LyBadgePicker,
   LySliderMenu,
   LyDimmed,
   LyTrim,

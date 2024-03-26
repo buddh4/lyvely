@@ -7,7 +7,7 @@ import {
 } from '@lyvely/interface';
 import { computed } from 'vue';
 import { ContentEditModalEmits, useContentEditModal, ICreateContentInitOptions } from '@/content';
-import { TagChooser } from '@/tags';
+import { TagPicker } from '@/tags';
 import { isTouchScreen, LyModal, LyFormModel } from '@lyvely/ui';
 
 export interface IProps {
@@ -51,7 +51,7 @@ const modalTitle = computed(() => {
       </fieldset>
 
       <fieldset>
-        <tag-chooser id="edit-message-tag-chooser" v-model="model.tagNames" />
+        <tag-picker id="edit-message-tag-picker" v-model="model.tagNames" />
       </fieldset>
     </ly-form-model>
   </ly-modal>

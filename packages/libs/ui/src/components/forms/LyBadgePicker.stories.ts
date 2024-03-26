@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
-import LyBadgeChooser from "@/components/forms/LyBadgeChooser.vue";
+import LyBadgeChooser from "@/components/forms/LyBadgePicker.vue";
 import { setTranslationProvider } from "@/i18n";
 
 setTranslationProvider((test: any) => {

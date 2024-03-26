@@ -8,12 +8,14 @@ import { storeToRefs } from 'pinia';
 
 export interface IProps {
   modelValue: Array<string> | undefined;
+  optionKey?: 'id' | 'name';
   inputId?: string;
   label?: string;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
-  inputId: uniqueId('tag-chooser'),
+  inputId: uniqueId('tag-picker'),
+  optionKey: 'name',
   label: translation('tags.chooser.label'),
 });
 
@@ -22,7 +24,7 @@ const { profile } = storeToRefs(useProfileStore());
 const options = computed(
   () =>
     profile.value!.tags?.map((tag: TagModel) => ({
-      key: tag.name,
+      key: props.optionKey === 'id' ? tag.id : tag.name,
       color: tag.color,
     })) || [],
 );
@@ -36,7 +38,7 @@ const model = computed({
 </script>
 
 <template>
-  <ly-badge-chooser
+  <ly-badge-picker
     v-model="model"
     :input-id="inputId"
     :options="options"

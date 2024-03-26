@@ -33,7 +33,7 @@ const usageLabel = (usage: string) => translate('profiles.usage.' + usage.toLowe
     <ly-form-model v-model="model" label-key="profiles.create.properties" :validator="validator">
       <ly-text-field property="name" :required="true" />
       <ly-textarea property="description" />
-      <ly-badge-chooser
+      <ly-badge-picker
         v-model="model.usage"
         label="profiles.create.placeholders.usage"
         :options="usageOptions"

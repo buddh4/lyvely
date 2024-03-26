@@ -2,13 +2,15 @@
 import { computed, CSSProperties } from 'vue';
 import { getContrast } from '@/helpers';
 import { t, Translatable } from '@/i18n';
-import {twMerge} from "tailwind-merge";
-import LyIcon from "@/components/icons/LyIcon.vue";
-import LyButton from "@/components/buttons/LyButton.vue";
+import { twMerge } from 'tailwind-merge';
+import LyIcon from '@/components/icons/LyIcon.vue';
+import LyButton from '@/components/buttons/LyButton.vue';
+import { AvatarData } from '@/interfaces';
 
 export interface IProps {
-  modelValue?: boolean,
+  modelValue?: boolean;
   text?: Translatable;
+  avatar?: AvatarData;
   color?: string;
   textColor?: string;
   clickable?: boolean;
@@ -31,19 +33,17 @@ const props = withDefaults(defineProps<IProps>(), {
 const emit = defineEmits(['update:modelValue']);
 
 function getClassNames(attrClasses: any, clickable: boolean) {
-
   return twMerge(
-      `badge inline-block leading-3 overflow-hidden rounded select-none py-0.5 px-1.5 text-xs`,
-      textClass.value,
-      clickable && 'cursor-pointer',
-      attrClasses
+    `badge inline-block leading-3 overflow-hidden rounded select-none py-0.5 px-1.5 text-xs`,
+    textClass.value,
+    clickable && 'cursor-pointer',
+    attrClasses,
   );
 }
 
 const textClass = computed(() => {
   const textContrast = props.color ? getContrast(props.color) : 'light';
   return textContrast === 'dark' ? 'text-slate-900' : 'text-slate-100';
-
 });
 
 const styleObject = computed<CSSProperties>(() => {
@@ -60,21 +60,20 @@ const show = computed({
 </script>
 
 <template>
-  <transition
-      :enter-active-class="enterActiveClass"
-      :leave-active-class="leaveActiveClass">
-  <span v-if="modelValue" :class="getClassNames($attrs.class, clickable)" :style="styleObject">
-    <small class="text-xs">
-      <slot>
-        <div class="inline-flex items-center gap-1">
-          <span>{{ t(text) }}</span>
-          <ly-button v-if="closable" class="px-0 py-1" @click="show = false">
-            <ly-icon name="close" class="w-2.5" :class="textClass" />
-          </ly-button>
-        </div>
-      </slot>
-    </small>
-  </span>
+  <transition :enter-active-class="enterActiveClass" :leave-active-class="leaveActiveClass">
+    <span v-if="modelValue" :class="getClassNames($attrs.class, clickable)" :style="styleObject">
+      <small class="text-xs">
+        <slot>
+          <div class="inline-flex items-center gap-1">
+            <ly-avatar v-if="avatar" :name="t(text)" :guid="avatar.guid" />
+            <span>{{ t(text) }}</span>
+            <ly-button v-if="closable" class="px-0 py-1" @click="show = false">
+              <ly-icon name="close" class="w-2.5" :class="textClass" />
+            </ly-button>
+          </div>
+        </slot>
+      </small>
+    </span>
   </transition>
 </template>
 

@@ -8,7 +8,7 @@ import {
 import { NumberDataPointConfigForm, useDataPointStrategyFacade } from '@lyvely/time-series-web';
 import { computed } from 'vue';
 import {
-  TagChooser,
+  TagPicker,
   ContentEditModalEmits,
   useContentEditModal,
   ICreateContentInitOptions,
@@ -81,7 +81,7 @@ const modalTitle = computed(() => {
       </fieldset>
 
       <fieldset>
-        <tag-chooser v-model="model.tagNames" />
+        <tag-picker v-model="model.tagNames" />
         <ly-textarea property="text" />
       </fieldset>
     </ly-form-model>
