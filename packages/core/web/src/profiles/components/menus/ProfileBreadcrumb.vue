@@ -37,7 +37,7 @@ const path = computed(() => {
 
 <template>
   <div
-    id="profile-breadcrumb"
+    data-id="profile-breadcrumb"
     class="border border-divide px-3 p-2 rounded-2xl hidden sm:inline-flex sm:flex-nowrap text-xs">
     <router-link v-if="isProfileRoute" to="/" class="text-main flex flex-nowrap gap-1">
       <span class="text-pop">@</span>

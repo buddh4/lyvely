@@ -20,7 +20,6 @@ type ResultType<TClient> = [undefined] extends [TClient] ? any : keyof TClient;
 type ApiRequestConfig<D = any> = AxiosRequestConfig<D> & {
   skipAuthRefresh?: boolean;
   withCaptcha?: boolean;
-  skipProfileIdParam?: boolean;
   pid?: string;
 };
 

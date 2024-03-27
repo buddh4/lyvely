@@ -25,7 +25,7 @@ const steps = [
     position: 'right',
   },
   {
-    element: document.querySelector('#profile-breadcrumb')!,
+    element: document.querySelector("[data-id='profile-breadcrumb']")!,
     title: translate('help.intro.profile_breadcrumb_title'),
     intro: `<p>${translate('help.intro.profile_breadcrumb')}</p>`,
     position: 'bottom',

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, toRefs, ref, watch, nextTick } from 'vue';
+import { computed, toRefs, ref, watch, nextTick, onUnmounted } from 'vue';
 import { t, Translatable } from '@/i18n';
 import LyButton from '@/components/buttons/LyButton.vue';
 import LyIcon from '@/components/icons/LyIcon.vue';
@@ -104,6 +104,10 @@ function onKeyDown(evt: KeyboardEvent) {
     emit('submit');
   }
 }
+
+onUnmounted(() => {
+  if(modelValue.value) close();
+});
 </script>
 
 <template>

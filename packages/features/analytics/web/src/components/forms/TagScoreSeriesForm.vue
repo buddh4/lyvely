@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { TagPicker } from '@lyvely/web';
 import { useModel } from '@lyvely/ui';
-import { TagScoreSeriesConfigModel } from '@lyvely/analytics-interface/src';
+import { TagScoreSeriesConfigModel } from '@lyvely/analytics-interface';
 
 const props = defineProps({
   modelValue: TagScoreSeriesConfigModel<string>,

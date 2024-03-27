@@ -3,9 +3,14 @@ import { usePageStore } from '@/ui';
 import { computed } from 'vue';
 import { useProfileStore } from '@/profiles/stores/profile.store';
 import ProfileRelationsChooser from './ProfileRelationsChooser.vue';
-import { getScaledProgress } from '@lyvely/interface';
+import {
+  CreateGroupProfilePermission,
+  getScaledProgress,
+  CreateUserProfilePermission,
+} from '@lyvely/interface';
 import ProfileAvatar from '@/profiles/components/ProfileAvatar.vue';
 import { t } from '@/i18n';
+import { useGlobalPermissions } from '@/common/composables';
 
 const profileStore = useProfileStore();
 const pageStore = usePageStore();
@@ -76,7 +81,7 @@ const progressStyle = computed(() => {
           </div>
         </div>
         <div class="border border-divide border-l-0 rounded-r-2xl flex justify-center items-center">
-          <ly-button class="px-3 py-2" @click="toggle">
+          <ly-button data-id="btn-toggle-profile-relations" class="px-3 py-2" @click="toggle">
             <ly-icon style="margin-top: -1px" name="caret-down" />
           </ly-button>
         </div>

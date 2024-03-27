@@ -53,6 +53,9 @@ const input = ref<HTMLInputElement>();
 const { inputValue, inputId, dataId, onChange, onFocusOut, showHelpText, label, inputClass } =
   useBaseInputSetup(props, emit);
 
+const radioId = `${inputId}-${props.value}`;
+const radioDataId = `${dataId}-${props.value}`;
+
 onMounted(() => {
   if (props.autofocus) setTimeout(() => input.value?.focus());
 });
@@ -63,8 +66,9 @@ onMounted(() => {
     <div class="flex">
       <label :for="inputId" class="inline-flex items-center">
         <input
-          :id="inputId"
-          :data-id="dataId"
+          :id="radioId"
+          :data-id="radioDataId"
+          :name="inputId"
           ref="input"
           v-model="inputValue"
           :aria-describedby="ariaDescribedby"

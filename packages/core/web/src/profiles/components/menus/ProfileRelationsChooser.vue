@@ -5,10 +5,16 @@ import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
 import { useRouter, isNavigationFailure } from 'vue-router';
 import { useCreateProfileStore } from '@/profiles/stores/create-profile.store';
-import { isMultiUserProfile, ProfileRelationInfo } from '@lyvely/interface';
+import {
+  CreateGroupProfilePermission,
+  CreateUserProfilePermission,
+  isMultiUserProfile,
+  ProfileRelationInfo,
+} from '@lyvely/interface';
 import LyProfileAvatar from '../ProfileAvatar.vue';
 import { profileIdRoute } from '@/profiles/routes';
 import { t } from '@/i18n';
+import { useGlobalPermissions } from '@/common/composables';
 
 const profileRelationInfosStore = useProfileRelationInfosStore();
 const profileStore = useProfileStore();
@@ -36,6 +42,11 @@ function getProfileIcon(relation: ProfileRelationInfo) {
   return isMultiUserProfile(relation.type) ? 'group' : 'private';
 }
 
+const { isAllowed: canCreateProfile } = useGlobalPermissions(
+  CreateUserProfilePermission,
+  CreateGroupProfilePermission,
+);
+
 // TODO: A user might have multiple relations with a single profile...
 // TODO: (permissions) "Can create organizations" policy
 // TODO: (permissions) "Can create profile" policy
@@ -52,7 +63,11 @@ function getProfileIcon(relation: ProfileRelationInfo) {
         <span class="text-sm font-bold">
           {{ t('profiles.labels.profiles') }}
         </span>
-        <ly-add-button class="m-auto" @click="showCreateProfile = true" />
+        <ly-add-button
+          v-if="canCreateProfile"
+          data-id="btn-create-profile"
+          class="m-auto"
+          @click="showCreateProfile = true" />
       </div>
     </li>
     <li>
