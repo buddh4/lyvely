@@ -95,7 +95,6 @@ export class GlobalPermissionsService implements IGlobalPermissionsService {
    */
   getGlobalUserRole(user: OptionalUser) {
     if (!user) return GlobalPermissionRole.Visitor;
-    const roleConfig = this.configService.get('userRoles', {});
-    return roleConfig[user.id] || GlobalPermissionRole.User;
+    return user.role || GlobalPermissionRole.User;
   }
 }
