@@ -50,11 +50,11 @@ export const useProfileStore = defineStore('profile', () => {
     if (isCurrentProfileHandle(handle)) return Promise.resolve(profile.value!);
 
     try {
-      const profile = await loadingStatus(
+      const loadedProfile = await loadingStatus(
         handle ? profileClient.getProfileByHandle(handle) : profileClient.getDefaultProfile(),
         status,
       );
-      await setActiveProfile(profile);
+      await setActiveProfile(loadedProfile);
       status.setStatus(Status.SUCCESS);
     } catch (err: any) {
       // Probably an error with latestProfileHandle e.g. profile got deleted
