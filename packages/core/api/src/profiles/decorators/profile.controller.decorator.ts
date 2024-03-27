@@ -22,7 +22,10 @@ export const ProfileEndpoint = (
 ): MethodDecorator & ClassDecorator => {
   const profileGuard = UseGuards(ProfileGuard, PolicyGuard, ...guards);
 
-  return function (target: any) {
+  return function (target: any, key?: string | symbol, descriptor?: TypedPropertyDescriptor<any>) {
+    if (key && descriptor) {
+      profileGuard(target, key, descriptor);
+    }
     profileGuard(target);
   };
 };
