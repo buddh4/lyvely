@@ -21,6 +21,7 @@ export const useCreateProfileStore = defineStore('create-profile', () => {
       const relation = await profilesClient.create(model.value);
       useProfileRelationInfosStore().addRelation(new ProfileRelationInfo(relation));
       show.value = false;
+      reset();
       return relation;
     }
     return Promise.reject();
