@@ -40,13 +40,13 @@ export class BaseProfileGuard implements CanActivate {
     const user = request.user;
 
     // TODO: Request query pid is used for compatibility with pre alpha version. Can be removed as soon as all clients are merged.
-    const pid = request.params.pid || request.query.pid;
+    const pid = request.query.pid || request.params.pid;
     if (isValidObjectId(pid)) {
       request.context = await this.profileService.findProfileContext(user, pid, oid);
       request.profile = request.context.profile;
     }
 
-    const handle = request.params.handle || request.query.handle;
+    const handle = request.query.handle || request.params.handle;
     if (!request.profile && typeof handle === 'string') {
       request.context = await this.profileService.findProfileContextByHandle(user, handle);
       request.profile = request.context.profile;
