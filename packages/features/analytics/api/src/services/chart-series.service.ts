@@ -1,13 +1,20 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
-import { ProtectedProfileContext, createObjectId } from '@lyvely/api';
+import {
+  createObjectId,
+  ProtectedProfileContext,
+  FieldValidationException,
+  IntegrityException,
+} from '@lyvely/api';
 import { Chart, ChartSeriesConfig } from '../schemas';
 import {
-  UpdateChartSeriesModel,
-  getChartSeriesDefinition,
   ChartSeriesConfigModel,
+  getChartSeriesDefinition,
+  UpdateChartSeriesModel,
+  isValidChartTypeForCategory,
 } from '@lyvely/analytics-interface';
 import { ChartsDao } from '../daos';
-import { IntegrityException } from '@lyvely/interface';
+import type { IChartSeriesConfig } from '@lyvely/analytics-interface';
+import { validate } from 'class-validator';
 
 @Injectable()
 export class ChartSeriesService {
@@ -30,8 +37,7 @@ export class ChartSeriesService {
     chart: Chart,
     model: UpdateChartSeriesModel,
   ) {
-    const series = this.createSeriesConfig(chart, model);
-    return this.addSeries(context, chart, series);
+    return this.addSeries(context, chart, model.config);
   }
 
   /**
@@ -40,13 +46,17 @@ export class ChartSeriesService {
    *
    * @param {ProtectedProfileContext} context - The protected profile context.
    * @param {Chart} chart - The chart to add the series to.
-   * @param {ChartSeriesConfig} series - The series document to add.
+   * @param {IChartSeriesConfig} rawSeriesConfig - The series document to add.
    * @returns {Promise<void>} - A promise that resolves when the series has been added to the chart and the chart has been updated.
    */
-  async addSeries(context: ProtectedProfileContext, chart: Chart, series: ChartSeriesConfig) {
-    this.validateSeriesTypeAgainstChart(chart, series);
+  async addSeries(
+    context: ProtectedProfileContext,
+    chart: Chart,
+    rawSeriesConfig: IChartSeriesConfig,
+  ) {
+    const seriesConfig = await this.createAndValidateSeriesConfig(chart, rawSeriesConfig);
 
-    chart.addSeries(series);
+    chart.addSeries({ ...seriesConfig, _id: createObjectId() });
 
     await this.chartDao.updateOneByProfileAndIdSet(context.profile, chart, {
       config: chart.config,
@@ -57,42 +67,52 @@ export class ChartSeriesService {
    * Validates whether the given series type is compatible with the chart type.
    *
    * @param {Chart} chart - The chart object that the series will be added to.
-   * @param {ChartSeriesConfig} series - The series configuration object.
+   * @param {ChartSeriesConfig} seriesConfig - The series configuration object.
    * @throws {IntegrityException} - If the series type is not compatible with the chart type.
    */
-  validateSeriesTypeAgainstChart(chart: Chart, series: ChartSeriesConfig) {
-    const seriesDefinition = getChartSeriesDefinition(series.type);
+  async createAndValidateSeriesConfig(
+    chart: Chart,
+    seriesConfig: IChartSeriesConfig,
+  ): Promise<ChartSeriesConfig> {
+    seriesConfig = this.createSeriesConfigModel(seriesConfig);
+    const seriesDefinition = getChartSeriesDefinition(seriesConfig.type);
 
     if (!seriesDefinition)
+      throw new IntegrityException(`Attempt to add invalid series type ${seriesConfig.type}`);
+
+    if (!seriesDefinition.chartTypes.includes(seriesConfig.chartType))
       throw new IntegrityException(
-        `Attempt to add invalid series type ${series.type} to chart ${chart.config.category}`,
+        `Attempt to add incompatible chart type ${seriesConfig.chartType} to chart ${chart.config.category}`,
       );
 
-    if (!seriesDefinition.chartTypes.includes(series.chartType))
+    if (!isValidChartTypeForCategory(seriesConfig.chartType, chart.config.category))
       throw new IntegrityException(
-        `Attempt to add incompatible series type ${series.type} to chart ${chart.config.category}`,
+        `Attempt to add invalid chart type ${seriesConfig.chartType} to chart ${chart.config.category}`,
       );
+
+    const errors = await validate(seriesConfig);
+    if (errors.length) throw new FieldValidationException(errors);
+
+    return { ...seriesConfig, _id: createObjectId() };
   }
 
   /**
    * Creates the series configuration for the chart based on the provided model.
    *
-   * @param {Chart} chart - The chart object.
-   * @param {ChartSeriesConfig} model - The model object containing the series configuration details.
+   * @param {IChartSeriesConfig} config - The model object containing the series configuration details.
    * @throws {IntegrityException} If the chart series type is unknown.
    * @returns {ChartSeriesConfig} The created series configuration.
    */
-  createSeriesConfig(chart: Chart, model: UpdateChartSeriesModel): ChartSeriesConfig {
-    const seriesDefinition = getChartSeriesDefinition(model.config.type);
+  createSeriesConfigModel(config: IChartSeriesConfig): ChartSeriesConfigModel {
+    const seriesDefinition = getChartSeriesDefinition(config.type);
 
     if (!seriesDefinition)
       throw new IntegrityException(
-        `Can not create series config for unknown series type ${model.config.type}`,
+        `Can not create series config for unknown series type ${config.type}`,
       );
 
     const ConfigType = seriesDefinition.configType || ChartSeriesConfigModel;
 
-    const config = new ConfigType({ ...model.config });
-    return { _id: createObjectId(), ...config };
+    return new ConfigType({ ...config });
   }
 }

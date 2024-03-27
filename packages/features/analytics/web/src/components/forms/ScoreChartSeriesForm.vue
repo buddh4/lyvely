@@ -6,6 +6,7 @@ import {
 } from '@lyvely/analytics-interface';
 import { ProfileRelationPicker, TagPicker } from '@lyvely/web';
 import { LyCheckbox, useModel } from '@lyvely/ui';
+import { storeToRefs } from 'pinia';
 
 const props = defineProps({
   modelValue: ScoreChartSeriesConfigModel<string>,
@@ -19,8 +20,7 @@ const { formValue } = useModel(props.modelValue!, emit);
 <template>
   <div v-if="modelValue?.templateId === CHART_TEMPLATE_SCORE_USER">
     <profile-relation-picker v-model="formValue.uids" label="analytics.fields.users" />
-
-    <tag-picker v-model="formValue.tagIds" label="analytics.fields.tags" />
+    <tag-picker v-model="formValue.tagIds" label="analytics.fields.tag" />
     <ly-checkbox v-model="formValue.currentUser" label="analytics.fields.current-user" />
   </div>
   <div v-if="modelValue?.templateId === CHART_TEMPLATE_SCORE_TAG">

@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { UseClassSerializer } from '@/core';
 import { Controller } from '@/common';
-import { mapType } from '@lyvely/common';
+import { assignRawDataTo, mapType } from '@lyvely/common';
 import {
   API_PROFILES,
   CalendarPreferences,
@@ -62,21 +62,21 @@ export class ProfilesController implements ProfilesEndpoint {
     if (!user) throw new ForbiddenException();
 
     // TODO: (ACL) check if user is allowed to create profiles
-    let profileRelations;
+    let context: ProtectedProfileContext;
 
     switch (model.type) {
       case ProfileType.User:
-        profileRelations = await this.profilesService.createUserProfile(user, model);
+        context = await this.profilesService.createUserProfile(user, model);
         break;
       case ProfileType.Group:
-        profileRelations = await this.profilesService.createUserProfile(user, model);
+        context = await this.profilesService.createUserProfile(user, model);
         break;
       case ProfileType.Organization:
-        profileRelations = await this.profilesService.createOrganization(user, model);
+        context = await this.profilesService.createOrganization(user, model);
         break;
     }
 
-    return mapType(ProtectedProfileContext, ProfileWithRelationsModel<any>, profileRelations);
+    return this.mapAndPopulateProfileWithRelations(context);
   }
 
   @Get()
@@ -136,10 +136,11 @@ export class ProfilesController implements ProfilesEndpoint {
     return new SettingsUpdateResponse({ settings });
   }
 
-  private async mapAndPopulateProfileWithRelations(context: ProfileContext) {
-    const profileWithRelations = mapType(ProfileContext, ProfileWithRelationsModel<any>, context);
-    profileWithRelations.profileRelations =
-      await this.profilesRelationsService.findProfileRelations(context.profile);
-    return profileWithRelations;
+  private async mapAndPopulateProfileWithRelations(
+    context: ProfileContext,
+  ): Promise<ProfileWithRelationsModel> {
+    return assignRawDataTo(mapType(ProfileContext, ProfileWithRelationsModel<any>, context), {
+      profileRelations: await this.profilesRelationsService.findProfileRelations(context.profile),
+    });
   }
 }

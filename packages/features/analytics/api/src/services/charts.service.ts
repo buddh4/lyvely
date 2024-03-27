@@ -10,6 +10,7 @@ import { Chart, ChartConfig } from '../schemas';
 import { ChartCategory, CreateChartModel, UpdateChartModel } from '@lyvely/analytics-interface';
 import { ChartsDao } from '../daos';
 import { GraphChartConfig } from '../schemas/graph-chart.schema';
+import { ChartSeriesService } from './chart-series.service';
 
 @Injectable()
 export class ChartsService extends ContentTypeService<Chart, CreateChartModel, UpdateChartModel> {
@@ -17,6 +18,9 @@ export class ChartsService extends ContentTypeService<Chart, CreateChartModel, U
 
   @Inject()
   protected contentDao: ChartsDao;
+
+  @Inject()
+  protected chartSeriesService: ChartSeriesService;
 
   protected async createInstance(
     context: ProtectedProfileContext,
@@ -28,13 +32,24 @@ export class ChartsService extends ContentTypeService<Chart, CreateChartModel, U
 
     if (!config) throw new FieldValidationException([{ property: 'type', errors: ['invalid'] }]);
 
-    return new Chart(profile, user, {
+    const chart = new Chart(profile, user, {
       content: new ContentDataType({ title, text }),
       config,
     });
+
+    if (model.series) {
+      const seriesConfig = await this.chartSeriesService.createAndValidateSeriesConfig(
+        chart,
+        model.series,
+      );
+      chart.addSeries(seriesConfig);
+    }
+
+    return chart;
   }
 
   private createChartConfigByCategory(category: ChartCategory): ChartConfig | undefined {
+    return new ChartConfig({ category });
     switch (category) {
       case ChartCategory.Graph:
         return new GraphChartConfig({});

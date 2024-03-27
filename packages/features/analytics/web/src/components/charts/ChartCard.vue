@@ -7,7 +7,6 @@ const props = defineProps<{ model: ChartModel }>();
 
 const ChartComponent = {
   [ChartCategory.Graph]: GraphChart,
-  [ChartCategory.Calendar]: GraphChart,
   [ChartCategory.Pie]: GraphChart,
 }[props.model.config.type] as any;
 </script>

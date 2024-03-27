@@ -1,6 +1,5 @@
 import { reactive, ref, watch } from 'vue';
 import {
-  CHART_SERIES_TYPE_SCORE,
   ChartModel,
   ChartCategory,
   useChartsClient,
@@ -24,106 +23,109 @@ const formComponent = ref<ComponentRegistration>();
 export const useEditChartSeriesStore = () => {
   const client = useChartsClient();
 
-  watch(model, (newValue, oldValue) => {
-    if (newValue.type !== oldValue.type) setType(newValue.type);
-  });
+  /*
+ watch(model, (newValue, oldValue) => {
+   if (newValue.type !== oldValue.type) setType(newValue.type);
+ });
 
-  function reset() {
-    model.value = new ChartSeriesConfigModel({});
-    validator.setModel(model.value);
-    formComponent.value = undefined;
-    showModal.value = false;
-    cid.value = '';
-    sid.value = '';
-    status.resetStatus();
-  }
+function reset() {
+   model.value = new ChartSeriesConfigModel({});
+   validator.setModel(model.value);
+   formComponent.value = undefined;
+   showModal.value = false;
+   cid.value = '';
+   sid.value = '';
+   status.resetStatus();
+ }
 
-  function addSeries(chartId: string, chartType: ChartCategory) {
-    setType(_getDefaultSeriesType(chartType));
-    isCreate.value = true;
-    cid.value = chartId;
-  }
+ function addSeries(chartId: string, chartType: ChartCategory) {
+   setType(_getDefaultSeriesType(chartType));
+   isCreate.value = true;
+   cid.value = chartId;
+ }
 
-  function updateSeries(chart: ChartModel, seriesId: string) {
-    const series = chart.config.series.find((s) => s.id === seriesId);
+ function updateSeries(chart: ChartModel, seriesId: string) {
+   const series = chart.config.series.find((s) => s.id === seriesId);
 
-    if (!series) {
-      console.error('Attempt to update non existing series');
-      return;
-    }
+   if (!series) {
+     console.error('Attempt to update non existing series');
+     return;
+   }
 
-    setType(series.type);
-    isCreate.value = false;
-    cid.value = chart.id;
-    sid.value = seriesId;
-  }
+   setType(series.type);
+   isCreate.value = false;
+   cid.value = chart.id;
+   sid.value = seriesId;
+ }
 
-  function _getDefaultSeriesType(chartType: ChartCategory) {
-    switch (chartType) {
-      case ChartCategory.Graph:
-        return CHART_SERIES_TYPE_SCORE;
-    }
-    return CHART_SERIES_TYPE_SCORE;
-  }
+ function _getDefaultSeriesType(chartType: ChartCategory) {
+   switch (chartType) {
+     case ChartCategory.Graph:
+       return CHART_SERIES_TYPE_SCORE;
+   }
+   return CHART_SERIES_TYPE_SCORE;
+ }
 
-  function setType(type: string, formData?: any) {
-    const definition = getChartDefinition(type);
-    if (!definition) {
-      console.error('Could not find graph type definition for ' + type);
-      return;
-    }
+ function setType(type: string, formData?: any) {
+   const definition = getChartDefinition(type);
+   if (!definition) {
+     console.error('Could not find graph type definition for ' + type);
+     return;
+   }
 
-    if (definition.type.configType) {
-      const FormModel = definition.type.configType;
-      model.value = new FormModel({ type, ...formData });
-      validator.setModel(model.value!);
-    }
+   if (definition.type.configType) {
+     const FormModel = definition.type.configType;
+     model.value = new FormModel({ type, ...formData });
+     validator.setModel(model.value!);
+   }
 
-    if (definition.form) {
-      formComponent.value = definition.form;
-    }
+   if (definition.form) {
+     formComponent.value = definition.form;
+   }
 
-    showModal.value = true;
-  }
+   showModal.value = true;
+ }
 
-  async function submit() {
-    if (!(await validator.validate())) return false;
-    try {
-      if (isCreate.value) await _create();
-      else await _update();
+ async function submit() {
+   if (!(await validator.validate())) return false;
+   try {
+     if (isCreate.value) await _create();
+     else await _update();
 
-      reset();
-    } catch (e) {
-      return false;
-    }
-  }
+     reset();
+   } catch (e) {
+     return false;
+   }
+ }
 
-  async function _create() {
-    const chart = await loadingStatus(
-      () => client.addSeries(cid.value, new UpdateChartSeriesModel(model.value)),
-      status,
-    );
-    useChartsStore().updateOrPushChart(chart);
-    return chart;
-  }
+ async function _create() {
+   const chart = await loadingStatus(
+     () => client.addSeries(cid.value, new UpdateChartSeriesModel(model.value)),
+     status,
+   );
+   useChartsStore().updateOrPushChart(chart);
+   return chart;
+ }
 
-  async function _update() {
-    const chart = await loadingStatus(
-      () => client.updateSeries(cid.value, sid.value, new UpdateChartSeriesModel(model.value)),
-      status,
-    );
-    useChartsStore().updateOrPushChart(chart);
-    return chart;
-  }
+ async function _update() {
+   const chart = await loadingStatus(
+     () => client.updateSeries(cid.value, sid.value, new UpdateChartSeriesModel(model.value)),
+     status,
+   );
+   useChartsStore().updateOrPushChart(chart);
+   return chart;
+ }
 
-  return {
-    model,
-    validator,
-    showModal,
-    isCreate,
-    submit,
-    reset,
-    addSeries,
-    updateSeries,
-  };
+ return {
+   model,
+   validator,
+   showModal,
+   isCreate,
+   submit,
+   reset,
+   addSeries,
+   updateSeries,
+ };
+ */
+  return {};
 };

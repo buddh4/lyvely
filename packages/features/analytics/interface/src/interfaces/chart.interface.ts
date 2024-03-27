@@ -1,20 +1,29 @@
 import { Type } from '@lyvely/common';
 import { ChartSeriesConfigModel } from '../models';
+import type { IContent } from '@lyvely/interface';
 
 export enum ChartCategory {
   Graph = 'graph',
-  Calendar = 'calendar',
   Pie = 'pie',
 }
 
 export enum ChartType {
   Line = 'line',
   Bar = 'bar',
-  Calendar = 'calendar',
   Pie = 'pie',
 }
 
 export const GRAPH_CHART_TYPES = [ChartType.Line, ChartType.Bar];
+
+export function isValidChartTypeForCategory(
+  chartType: ChartType,
+  category: ChartCategory,
+): boolean {
+  return !!{
+    [ChartCategory.Graph]: GRAPH_CHART_TYPES,
+    [ChartCategory.Pie]: [ChartType.Pie],
+  }[category]?.includes(chartType);
+}
 
 export enum ChartState {
   InProgress = 'in-progress',
@@ -33,7 +42,8 @@ export interface IChartStatus {
   errors?: string[];
 }
 
-export interface IChart<TConfig extends IChartConfig = IChartConfig> {
+export interface IChart<TID = any, TConfig extends IChartConfig = IChartConfig>
+  extends IContent<TID, TConfig, IChartStatus> {
   type: string;
   config: TConfig;
   state: IChartStatus;
@@ -61,19 +71,19 @@ export interface IChartSeriesDefinition<
   TConfigType extends ChartSeriesConfigModel = ChartSeriesConfigModel,
 > {
   /** A unique id for this chart series type. **/
-  id: string;
+  readonly id: string;
 
   /**
    * An optional config class type representing a model holding configuration options usually provided by the frontend
    * and mainly used for validation purposes. This property is not required unless the chart series does provide
    * additional configuration options.
    * */
-  configType?: Type<TConfigType>;
+  readonly configType?: Type<TConfigType>;
 
   /**
    * Defines the chart types with which this series is compatible.
    */
-  chartTypes: ChartType[];
+  readonly chartTypes: ChartType[];
 }
 
 export enum ChartSeriesDataTypes {

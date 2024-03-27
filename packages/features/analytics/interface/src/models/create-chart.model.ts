@@ -28,8 +28,6 @@ export class CreateChartModel extends CreateContentModel {
   @Expose()
   series: ChartSeriesConfigModel;
 
-  templateId?: string;
-
   constructor(data?: BaseModelData<CreateChartModel>) {
     super(false);
     BaseModel.init(this, data);

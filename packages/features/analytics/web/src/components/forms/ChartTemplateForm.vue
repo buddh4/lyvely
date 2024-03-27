@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import {
-  ChartCategory,
   ChartType,
   type CreateChartModel,
   type UpdateChartModel,
 } from '@lyvely/analytics-interface';
 import { t } from '@lyvely/web';
-import { LyAlert, LySelect, LyButton, useModel } from '@lyvely/ui';
+import { LyAlert, LySelect, LyButton, LyTextField, useModel, LyFormModel } from '@lyvely/ui';
 import { useChartTemplates } from '@/composables';
+import { ref } from 'vue';
 
 const props = withDefaults(
   defineProps<{
@@ -23,14 +23,17 @@ const emit = defineEmits(['update:modelValue']);
 
 const { formValue } = useModel(props.modelValue, emit);
 
+const seriesTypeId = ref('');
+
 const {
-  chartTypeOptions,
+  seriesTypeDefinition,
   allowedChartTypes,
-  templateOptions,
-  templateDefinition,
-  templateFormComponent,
-  templateModel,
-} = useChartTemplates(formValue.value.templateId);
+  chartTypeOptions,
+  seriesConfigModel,
+  seriesFormComponent,
+  seriesTypeOptions,
+  validator,
+} = useChartTemplates(formValue, seriesTypeId);
 </script>
 
 <template>
@@ -40,57 +43,56 @@ const {
         'flex flex-col gap-2 border border-divide rounded bg-highlight dark:bg-main p-3': embedded,
       }">
       <ly-select
-        v-model="formValue.templateId"
+        v-model="seriesTypeId"
         class="shadow-lg"
-        label="analytics.fields.template"
-        :options="templateOptions" />
+        label="analytics.fields.type"
+        :options="seriesTypeOptions" />
 
       <ly-alert
-        v-if="templateDefinition?.description"
+        v-if="seriesTypeDefinition?.description"
         type="secondary"
-        :text="templateDefinition.description"
+        :text="seriesTypeDefinition!.description"
         text-size="xs" />
 
+      <ly-form-model v-if="seriesConfigModel" v-model="seriesConfigModel" :validator="validator">
+        <ly-text-field
+          property="name"
+          label="common.fields.label"
+          :error="validator.getError('name')" />
+      </ly-form-model>
+
       <div
-        v-if="chartTypeOptions.length > 1 && templateModel"
+        v-if="chartTypeOptions.length > 1 && seriesConfigModel"
         class="flex gap-2 justify-between items-stretch">
         <ly-button
           v-if="allowedChartTypes.includes(ChartType.Line)"
           class="text-xs secondary w-full outlined"
-          :active="templateModel.chartType === ChartType.Line"
-          @click="templateModel.chartType = ChartType.Line">
+          :active="seriesConfigModel.chartType === ChartType.Line"
+          @click="seriesConfigModel.chartType = ChartType.Line">
           {{ t('analytics.charts.types.line') }}
         </ly-button>
 
         <ly-button
           v-if="allowedChartTypes.includes(ChartType.Bar)"
           class="text-xs secondary w-full outlined"
-          :active="templateModel.chartType === ChartType.Bar"
-          @click="templateModel.chartType = ChartType.Bar">
+          :active="seriesConfigModel.chartType === ChartType.Bar"
+          @click="seriesConfigModel.chartType = ChartType.Bar">
           {{ t('analytics.charts.types.bar') }}
         </ly-button>
 
         <ly-button
           v-if="allowedChartTypes.includes(ChartType.Pie)"
           class="text-xs secondary w-full outlined"
-          :active="templateModel.chartType === ChartType.Pie"
-          @click="templateModel.chartType = ChartType.Pie">
+          :active="seriesConfigModel.chartType === ChartType.Pie"
+          @click="seriesConfigModel.chartType = ChartType.Pie">
           {{ t('analytics.charts.types.pie') }}
-        </ly-button>
-
-        <ly-button
-          v-if="allowedChartTypes.includes(ChartType.Calendar)"
-          class="text-xs secondary w-full outlined"
-          :active="templateModel.chartType === ChartType.Calendar"
-          @click="templateModel.chartType = ChartType.Calendar">
-          {{ t('analytics.charts.types.calendar') }}
         </ly-button>
       </div>
 
       <component
-        :is="templateFormComponent"
-        v-if="templateFormComponent && templateModel"
-        v-model="templateModel" />
+        :is="seriesFormComponent"
+        v-if="seriesFormComponent && seriesConfigModel"
+        v-model="seriesConfigModel" />
     </div>
   </fieldset>
 </template>

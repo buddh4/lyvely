@@ -10,6 +10,7 @@ export interface IProps {
   modelValue: Array<string> | undefined;
   optionKey?: 'id' | 'name';
   inputId?: string;
+  multiple?: boolean;
   label?: string;
 }
 
@@ -42,6 +43,7 @@ const model = computed({
     v-model="model"
     :input-id="inputId"
     :options="options"
+    :multiple="multiple"
     :label="label"
     :add="true" />
 </template>

@@ -1,4 +1,4 @@
-import { ContentType, NestedSchema, User } from '@lyvely/api';
+import { ContentType, NestedSchema, TObjectId, User } from '@lyvely/api';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import {
   getStringEnumValues,
@@ -6,11 +6,18 @@ import {
   type PropertiesOf,
   type BaseModelData,
 } from '@lyvely/common';
-import { ChartModel, ChartState, ChartCategory } from '@lyvely/analytics-interface';
+import {
+  ChartModel,
+  ChartState,
+  ChartCategory,
+  IChartConfig,
+  IChart,
+} from '@lyvely/analytics-interface';
 import { ChartSeriesConfig, ChartSeriesConfigSchema } from './chart-series-config.schema';
+import type { IChartStatus } from '@lyvely/analytics-interface';
 
 @NestedSchema()
-export class ChartStatus {
+export class ChartStatus implements IChartStatus {
   @Prop({ enum: getStringEnumValues(ChartState), required: true })
   state: ChartState;
 
@@ -21,8 +28,8 @@ export class ChartStatus {
 
 const ChartStatusSchema = SchemaFactory.createForClass(ChartStatus);
 
-@NestedSchema({ discriminatorKey: 'type' })
-export class ChartConfig {
+@NestedSchema({ discriminatorKey: 'category' })
+export class ChartConfig implements IChartConfig {
   category: ChartCategory;
 
   @Prop({ type: [ChartSeriesConfigSchema] })
@@ -36,7 +43,10 @@ export class ChartConfig {
 const ChartConfigSchema = SchemaFactory.createForClass(ChartConfig);
 
 @Schema()
-export class Chart<TConfig extends ChartConfig = ChartConfig> extends ContentType<TConfig> {
+export class Chart<TConfig extends ChartConfig = ChartConfig>
+  extends ContentType<TConfig>
+  implements IChart<TObjectId>
+{
   @Prop({ type: ChartConfigSchema, required: true })
   override config: TConfig;
 

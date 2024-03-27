@@ -9,6 +9,7 @@
     "format": "prettier \"lib/**/*.ts\" --write",
     "dev": "nest start",
     "dev:debug": "nest start --debug --watch",
+    "deps": "npx depcruise --config .dependency-cruiser.js src",
     "build": "rm -rf ./dist/* && tsc -p tsconfig.build.json",
     "prepublish:npm": "npm run build",
     "publish:npm": "npm publish --access public",
@@ -24,17 +25,16 @@
     "@nestjs/mongoose": "^9.2.2",
     "@lyvely/api": "^0.1.0-alpha3",
     "@lyvely/common": "^0.1.0-alpha3",
-    "@lyvely/timers": "^0.1.0-alpha3",
-    "@lyvely/time-series": "^0.1.0-alpha3",
-    "@lyvely/habits-interface": "^0.1.0-alpha3",
+    "@lyvely/dates": "^0.1.0-alpha3",
+    "@lyvely/analytics-interface": "^0.1.0-alpha3",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
+    "mongoose": "^7.1.0",
     "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
     "@lyvely/devtools": "^0.1.0-alpha3",
-    "@lyvely/testing": "^0.1.0-alpha3",
-    "@lyvely/dates": "^0.1.0-alpha3"
+    "@lyvely/testing": "^0.1.0-alpha3"
   },
   "jest": {
     "rootDir": ".",

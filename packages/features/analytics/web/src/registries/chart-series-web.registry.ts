@@ -1,32 +1,9 @@
 import {
-  ChartType,
   IChartSeriesDefinition,
   registerChartSeries,
+  ChartSeriesConfigModel,
 } from '@lyvely/analytics-interface';
 import type { ComponentRegistration } from '@lyvely/ui';
-import { ChartSeriesConfigModel, ChartCategory } from '@lyvely/analytics-interface/src';
-
-export interface IWebChartTemplate<
-  TConfigType extends ChartSeriesConfigModel = ChartSeriesConfigModel,
-> {
-  /** A unique template id, ideally prefixed with the module id, e.g. analytics-user-score. **/
-  id: string;
-
-  /** A translatable label. **/
-  label: string;
-
-  /** A translatable description. **/
-  description?: string;
-
-  /** Optional config model initializer. As default the chart definition constructor is used (if any) **/
-  initModel?(): TConfigType;
-
-  /** Optional condition check whether this template is active. **/
-  condition?(): boolean;
-
-  /** Optional array of chart types this template supports. As default the chart definition chartTypes are used. **/
-  chartTypes?: ChartType[];
-}
 
 /**
  * Interface representing the definition of a chart used in the frontend.
@@ -36,13 +13,30 @@ export interface IWebChartTemplate<
 export interface IWebChartDefinition<
   TConfigType extends ChartSeriesConfigModel = ChartSeriesConfigModel,
 > {
+  /** The chart series type definition. **/
   type: IChartSeriesDefinition<TConfigType>;
+
+  /** A translatable label. **/
   label: string;
-  templates?: IWebChartTemplate<TConfigType>[];
+
+  /** A translatable description. **/
+  description?: string;
+
+  /** An optional form component for chart specific settings. **/
   form?: ComponentRegistration;
+
+  /** Optional config model initializer. As default the chart definition constructor is used (if any) **/
+  initModel?(): TConfigType;
+
+  /** Optional condition check whether this template is active. **/
+  condition?(): boolean;
 }
 
 const chartSeriesWebRegistry = new Map<string, IWebChartDefinition>();
+
+export function registerCharts(definition: IWebChartDefinition[]) {
+  definition.forEach((d) => registerChart(d));
+}
 
 export function registerChart(definition: IWebChartDefinition) {
   const { type } = definition;
@@ -54,6 +48,6 @@ export function getChartDefinitions(): Array<IWebChartDefinition> {
   return Array.from(chartSeriesWebRegistry.values());
 }
 
-export function getChartDefinition(key: string): IWebChartDefinition | undefined {
-  return chartSeriesWebRegistry.get(key);
+export function getChartDefinition(id: string): IWebChartDefinition | undefined {
+  return chartSeriesWebRegistry.get(id);
 }

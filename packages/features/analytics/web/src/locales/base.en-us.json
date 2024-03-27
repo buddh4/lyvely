@@ -13,8 +13,8 @@
       "score-tag": "Tag Score",
       "info": {
         "score-profile": "Visualizes the progression of the total profile score over time, allowing you to track and analyze trends in performance or changes in score throughout a specified period.",
-        "score-user": "Visualizes user scores. You can choose specific users and/or include the currently active user. You can furthermore group scores by tags.",
-        "score-tag": "Visualizes scores related to certain tags."
+        "score-user": "Visualizes scores grouped by users. You can choose specific users and/or include the currently active user. Optionally you can filter for scores related to certain tags.",
+        "score-tag": "Visualizes scores grouped by tags."
       }
     },
     "interval": {
@@ -28,11 +28,11 @@
     "fields": {
       "interval": "Interval",
       "type": "Type",
-      "template": "Template",
       "current-user": "Include current user score",
       "users": "Users",
       "select-template": "Select a template",
-      "tags": "Group by Tags"
+      "tags": "Group by Tags",
+      "tag": "Filter by Tags"
     },
     "graphs": {
       "types": {

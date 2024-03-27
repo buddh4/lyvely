@@ -1,5 +1,5 @@
 import { IFeature } from '@lyvely/interface';
-import { ANALYTICS_MODULE_ID, CHART_SERIES_TYPE_SCORE } from './analytics.constants';
+import { ANALYTICS_MODULE_ID } from './analytics.constants';
 
 export const AnalyticsFeature: IFeature = {
   id: 'analytics',

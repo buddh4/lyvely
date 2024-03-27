@@ -5,7 +5,11 @@ import { ChartSeriesConfigModel } from '../models/chart-series-config.model';
 const chartSeriesRegistry = new Map<string, IChartSeriesDefinition>();
 const chartSeriesConfigTypes: Array<{ value: Type; name: string }> = [];
 
-export function registerChartSeries(definition: IChartSeriesDefinition) {
+export function registerChartSeries(...definitions: IChartSeriesDefinition[]) {
+  definitions.forEach((d) => registerChartSeriesDefinition(d));
+}
+
+function registerChartSeriesDefinition(definition: IChartSeriesDefinition) {
   const { id, configType } = definition;
   chartSeriesRegistry.set(id, definition);
   findAndReplace(

@@ -88,7 +88,6 @@
     "archived": "Archived",
     "accept": "Accept",
     "decline": "Decline",
-    "restore": "Restore default",
     "archive": "Archive",
     "back_to_home": "Take me back home",
     "none": "none",
@@ -100,6 +99,8 @@
       "500": "An unknown error occurred!"
     },
     "fields": {
+      "name": "Name",
+      "label": "Label",
       "title": "Title",
       "tags": "Tags",
       "text": "Description",
@@ -118,7 +119,7 @@
     },
     "edit": "Edit",
     "save": "Save",
-    "saved": "Saved",
+    "saved": "Saved"
   },
   "journals": {
     "labels": {
@@ -140,7 +141,7 @@
     "isString": "{property} is required",
     "sameAs": "{property} must equal {c1}",
     "isNotEmpty": "{property} is required",
-    "maxLength": "{property} must be at least {c1} characters of fewer",
+    "maxLength": "{property} must can not be longer than {c1} characters",
     "isLength": "{property} must be between {c1} and {c2} characters",
     "isCaptcha": "Please enter 5 alphanumeric characters",
     "isEmail": "{property} must be an email",

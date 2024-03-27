@@ -4,12 +4,11 @@ import type { BaseModelData } from '@lyvely/common';
 import { BaseModel, PropertyType } from '@lyvely/common';
 import { ChartSeriesConfigModel } from './chart-series-config.model';
 import { ChartType, IChartSeriesDefinition } from '../interfaces';
-import { CHART_SERIES_TYPE_SCORE } from '../analytics.constants';
 
-const allowedChartTypes = [ChartType.Line, ChartType.Bar, ChartType.Pie];
+const allowedChartTypes = [ChartType.Line, ChartType.Bar];
 
 @Exclude()
-export class ScoreChartSeriesConfigModel<TID = string> extends ChartSeriesConfigModel {
+export class UserScoreSeriesConfigModel<TID = string> extends ChartSeriesConfigModel {
   @IsMongoId()
   @IsOptional()
   @Expose()
@@ -22,24 +21,25 @@ export class ScoreChartSeriesConfigModel<TID = string> extends ChartSeriesConfig
 
   @IsBoolean()
   @IsOptional()
+  @PropertyType(Boolean, { default: true })
   currentUser?: boolean;
 
   @Expose()
-  override type = CHART_SERIES_TYPE_SCORE;
+  override readonly type = CHART_SERIES_USER_SCORE.id;
 
   @Expose()
   @IsEnum(allowedChartTypes)
   @PropertyType(String, { default: ChartType.Line })
-  override chartType: ChartType;
+  override readonly chartType: ChartType;
 
-  constructor(data?: BaseModelData<ScoreChartSeriesConfigModel<any>>) {
+  constructor(data?: BaseModelData<UserScoreSeriesConfigModel<any>>) {
     super(false);
     BaseModel.init(this, data);
   }
 }
 
-export const CHART_SERIES_DEFINITION_SCORE: IChartSeriesDefinition = {
-  id: CHART_SERIES_TYPE_SCORE,
-  configType: ScoreChartSeriesConfigModel,
-  chartTypes: allowedChartTypes,
+export const CHART_SERIES_USER_SCORE: IChartSeriesDefinition = {
+  id: 'analytics-user-score',
+  configType: UserScoreSeriesConfigModel,
+  chartTypes: [ChartType.Line, ChartType.Bar],
 };

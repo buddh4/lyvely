@@ -9,6 +9,7 @@ import { ProfileRelationModel, isMultiUserProfile } from '@lyvely/interface';
 export interface IProps {
   modelValue: Array<string> | undefined;
   inputId?: string;
+  multiple?: boolean;
   label?: string;
 }
 
@@ -41,6 +42,7 @@ const model = computed({
     v-if="isMultiUserProfile(profile)"
     v-model="model"
     :input-id="inputId"
+    :multiple="multiple"
     :options="options"
     :label="label"
     :add="true" />

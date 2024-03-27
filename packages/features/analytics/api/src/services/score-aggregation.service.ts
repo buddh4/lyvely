@@ -3,18 +3,17 @@ import { Model, Profile, ProfileScore } from '@lyvely/api';
 import { CalendarInterval } from '@lyvely/dates';
 import { InjectModel } from '@nestjs/mongoose';
 import { createIntervalAggregation } from '../aggregations/interval-aggregation.factory';
-import { ChartSeriesAccumulation } from '@lyvely/analytics-interface';
-import { ScoreChartSeriesConfig } from '../schemas';
+import { ChartSeriesAccumulation, IChartSeriesConfig } from '@lyvely/analytics-interface';
 
 @Injectable()
 export class ScoreAggregationService {
   @InjectModel(ProfileScore.name)
   protected model: Model<ProfileScore>;
 
-  async aggregateScoreValues(
+  async aggregateProfileValues(
     profile: Profile,
     interval: CalendarInterval,
-    config: ScoreChartSeriesConfig,
+    config: IChartSeriesConfig,
   ): Promise<Array<{ _id: number; value: number }>> {
     const $match = {
       oid: profile.oid,

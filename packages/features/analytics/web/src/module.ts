@@ -1,14 +1,9 @@
 import {
   ANALYTICS_MODULE_ID,
   AnalyticsFeature,
-  CHART_SERIES_DEFINITION_SCORE,
-  CHART_TEMPLATE_SCORE_PROFILE,
-  CHART_TEMPLATE_SCORE_TAG,
-  CHART_TEMPLATE_SCORE_USER,
+  CHART_SERIES_TAG_SCORE,
   ChartModel,
   CreateChartModel,
-  GRAPH_CHART_TYPES,
-  ScoreChartSeriesConfigModel,
 } from '@lyvely/analytics-interface';
 import { registerMenuEntry, registerSvgIcon } from '@lyvely/ui';
 import {
@@ -20,7 +15,11 @@ import {
   useProfileStore,
 } from '@lyvely/web';
 import { analyticsRoutes } from '@/routes/analytics.routes';
-import { registerChart } from '@/registries/chart-series-web.registry';
+import { registerChart, registerCharts } from '@/registries/chart-series-web.registry';
+import {
+  CHART_SERIES_PROFILE_SCORE,
+  CHART_SERIES_USER_SCORE,
+} from '@lyvely/analytics-interface/src';
 
 export default () => {
   return {
@@ -32,31 +31,26 @@ export default () => {
     features: [AnalyticsFeature],
     routes: analyticsRoutes,
     init: () => {
-      registerChart({
-        type: CHART_SERIES_DEFINITION_SCORE,
-        templates: [
-          {
-            id: CHART_TEMPLATE_SCORE_PROFILE,
-            label: 'analytics.templates.score-profile',
-            description: 'analytics.templates.info.score-profile',
-            chartTypes: [...GRAPH_CHART_TYPES],
-          },
-          {
-            id: CHART_TEMPLATE_SCORE_USER,
-            label: 'analytics.templates.score-user',
-            description: 'analytics.templates.info.score-user',
-            initModel: () => new ScoreChartSeriesConfigModel<string>({ currentUser: true }),
-            condition: () => isMultiUserProfile(useProfileStore().profile),
-          },
-          {
-            id: CHART_TEMPLATE_SCORE_TAG,
-            label: 'analytics.templates.score-tag',
-            description: 'analytics.templates.info.score-tag',
-          },
-        ],
-        label: 'analytics.graphs.types.score',
-        form: () => import('./components/forms/ScoreGraphForm.vue'),
-      });
+      registerCharts([
+        {
+          type: CHART_SERIES_PROFILE_SCORE,
+          label: 'analytics.templates.score-profile',
+          description: 'analytics.templates.info.score-profile',
+        },
+        {
+          type: CHART_SERIES_USER_SCORE,
+          label: 'analytics.templates.score-user',
+          description: 'analytics.templates.info.score-user',
+          condition: () => isMultiUserProfile(useProfileStore().profile),
+          form: () => import('./components/forms/ScoreChartSeriesForm.vue'),
+        },
+        {
+          type: CHART_SERIES_TAG_SCORE,
+          label: 'analytics.templates.score-tag',
+          description: 'analytics.templates.info.score-tag',
+          form: () => import('./components/forms/ScoreChartSeriesForm.vue'),
+        },
+      ]);
       registerMenuEntry(MENU_PROFILE_DRAWER, () => ({
         id: 'analytics',
         moduleId: ANALYTICS_MODULE_ID,
