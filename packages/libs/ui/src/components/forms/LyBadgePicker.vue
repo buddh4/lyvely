@@ -203,19 +203,18 @@ const showEmptyEntry = computed(() => !showAddEntry.value && !props.options.leng
     submit-icon="check"
     @submit="visible = false">
     <div ref="picker" class="flex flex-col max-h-full">
-      <div>
+      <div class="mb-2">
         <ly-text-field
           :id="id + '-search'"
           :data-id="id + '-search'"
           v-model="query"
           :autofocus="true"
           :placeholder="t('common.filter.search')"
-          input-class="attachment-b"
           @keyup.down="focusFirst" />
       </div>
 
       <div
-        class="flex flex-col border border-divide divide-y rounded-b md:max-h-96 overflow-auto scrollbar-thin">
+        class="flex flex-col border border-divide divide-y rounded md:max-h-96 overflow-auto scrollbar-thin">
         <div
           v-for="option in selectedOptions"
           :key="getOptionKey(option)"

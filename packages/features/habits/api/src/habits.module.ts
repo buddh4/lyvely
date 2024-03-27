@@ -8,7 +8,6 @@ import {
 } from './services';
 import {
   UsersModule,
-  CoreModule,
   ContentModule,
   getContentModelDefinition,
   getContentScoreDefinition,
