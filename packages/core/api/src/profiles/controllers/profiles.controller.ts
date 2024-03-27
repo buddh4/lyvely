@@ -16,6 +16,7 @@ import {
   API_PROFILES,
   CalendarPreferences,
   CreateProfileModel,
+  FieldValidationException,
   ProfileMembershipRole,
   ProfilesEndpoint,
   ProfilesEndpoints,
@@ -69,11 +70,13 @@ export class ProfilesController implements ProfilesEndpoint {
         context = await this.profilesService.createUserProfile(user, model);
         break;
       case ProfileType.Group:
-        context = await this.profilesService.createUserProfile(user, model);
+        context = await this.profilesService.createGroupProfile(user, model);
         break;
       case ProfileType.Organization:
         context = await this.profilesService.createOrganization(user, model);
         break;
+      default:
+        throw new FieldValidationException([{ property: 'type', errors: ['isValid'] }]);
     }
 
     return this.mapAndPopulateProfileWithRelations(context);
