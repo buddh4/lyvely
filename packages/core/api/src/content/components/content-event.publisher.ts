@@ -5,7 +5,6 @@ import { LiveService } from '@/live';
 import { assureStringId, Model } from '@/core';
 import { ConfigurationPath } from '@/config';
 import { InjectModel } from '@nestjs/mongoose';
-import { ChangeStreamInsertDocument } from 'mongodb';
 import { ContentUpdateStateLiveEvent } from '@lyvely/interface';
 
 @Injectable()

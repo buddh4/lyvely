@@ -1,4 +1,4 @@
-import { ProfileScoreDao } from '../daos';
+import { ProfileScoreTypeDao } from '../daos';
 import { Profile, ProfileScore } from '../schemas';
 import { createBaseDocumentInstance } from '@/core';
 import { ProfilesService } from './profiles.service';
@@ -7,7 +7,7 @@ import { Type } from '@lyvely/common';
 
 @Injectable()
 export abstract class ProfileScoreService<E extends ProfileScore> {
-  protected profileScoreDao: ProfileScoreDao<E>;
+  protected profileScoreDao: ProfileScoreTypeDao<E>;
 
   constructor(protected profileService: ProfilesService) {}
 

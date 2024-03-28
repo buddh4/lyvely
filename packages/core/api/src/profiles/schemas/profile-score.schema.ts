@@ -92,7 +92,7 @@ export class ProfileScore {
   updatedAt: Date;
 
   static collectionName() {
-    return 'profileScoreActions';
+    return 'profileScores';
   }
 
   constructor(options: ICreateProfileScore, data: PartialPropertiesOf<ProfileScore> = {}) {

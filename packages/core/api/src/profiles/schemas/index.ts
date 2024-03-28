@@ -1,4 +1,5 @@
 export * from './profile-memberships.schema';
+export * from './profile-shard.schema';
 export * from './profile-role-permissions.schema';
 export * from './profile-member-group.schema';
 export * from './profiles.schema';

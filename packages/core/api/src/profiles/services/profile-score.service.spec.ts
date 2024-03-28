@@ -5,7 +5,7 @@ import {
   TestProfileScoreSchema,
   profilesTestPlugin,
   ProfileTestDataUtils,
-  TestProfileScoreDao,
+  TestProfileScoreTypeDao,
   TestProfileScoreService,
 } from '../testing';
 import { INestApplication } from '@nestjs/common';
@@ -30,7 +30,7 @@ describe('AbstractUserProfileActionService', () => {
   beforeEach(async () => {
     testingModule = await buildTest(TEST_KEY)
       .plugins([profilesTestPlugin])
-      .providers([TestProfileScoreDao, TestProfileScoreService])
+      .providers([TestProfileScoreTypeDao, TestProfileScoreService])
       .models([testScoreModelDef])
       .compile();
     testProfileActionService = testingModule.get<TestProfileScoreService>(TestProfileScoreService);

@@ -16,16 +16,15 @@ import {
   UpdateQuery,
   BaseDocument,
 } from '@/core';
-import { ProfileDocument } from '../daos';
-import { Profile } from '../schemas';
+import { ProfileShard, Profile } from '../schemas';
 
 /**
  * This type is used as compound type for different kinds of profile relation on DAO level.
  * The ProfileShardDao at least requires an oid and pid for most of its queries.
  */
-export type ProfileShard =
+export type ProfileShardData =
   | Profile
-  | ProfileDocument
+  | ProfileShard
   | { oid: TObjectId; location: string; pid: TObjectId };
 
 /**
@@ -33,11 +32,11 @@ export type ProfileShard =
  * Profile related models need to include an oid and pid field which should be used in all queries.
  */
 export abstract class ProfileShardDao<
-  T extends ProfileDocument,
+  T extends ProfileShard,
   TVersions extends BaseDocument = T,
 > extends AbstractDao<T, TVersions> {
   async findByProfileAndId(
-    profileRelation: ProfileShard,
+    profileRelation: ProfileShardData,
     identity: DocumentIdentity<T>,
     options?: IBaseFetchQueryOptions<T>,
   ) {
@@ -50,7 +49,7 @@ export abstract class ProfileShardDao<
   }
 
   async findAllByProfileAndIds(
-    profileRelation: ProfileShard,
+    profileRelation: ProfileShardData,
     ids: DocumentIdentity<T>[],
     options?: IFetchQueryOptions<T>,
   ) {
@@ -62,7 +61,7 @@ export abstract class ProfileShardDao<
   }
 
   async findAllByProfile<C = T>(
-    profileRelation: ProfileShard,
+    profileRelation: ProfileShardData,
     filter?: FilterQuery<C>,
     options?: IFetchQueryOptions<T>,
   ): Promise<T[]> {
@@ -70,7 +69,7 @@ export abstract class ProfileShardDao<
   }
 
   async findOneByProfile<C = T>(
-    profileRelation: ProfileShard,
+    profileRelation: ProfileShardData,
     filter: FilterQuery<C>,
     options?: IBaseFetchQueryOptions<T>,
   ): Promise<T | null> {
@@ -78,7 +77,7 @@ export abstract class ProfileShardDao<
   }
 
   async updateOneByProfileAndIdSet(
-    profileRelation: ProfileShard,
+    profileRelation: ProfileShardData,
     id: DocumentIdentity<T>,
     updateSet: UpdateQuerySet<T>,
     options?: IBaseQueryOptions,
@@ -87,7 +86,7 @@ export abstract class ProfileShardDao<
   }
 
   async updateOneByProfileAndId(
-    profileRelation: ProfileShard,
+    profileRelation: ProfileShardData,
     id: DocumentIdentity<T>,
     update: UpdateQuery<T>,
     options?: IUpdateQueryOptions,
@@ -96,7 +95,7 @@ export abstract class ProfileShardDao<
   }
 
   protected async updateOneByProfileAndFilter(
-    profileRelation: ProfileShard,
+    profileRelation: ProfileShardData,
     identity: DocumentIdentity<T>,
     update: UpdateQuery<T>,
     filter?: FilterQuery<T>,
@@ -111,7 +110,7 @@ export abstract class ProfileShardDao<
   }
 
   async findOneAndSetByProfileAndId(
-    profileRelation: ProfileShard,
+    profileRelation: ProfileShardData,
     id: DocumentIdentity<T>,
     updateSet: UpdateQuerySet<T>,
     options?: IFindAndUpdateQueryOptions<T>,
@@ -125,7 +124,7 @@ export abstract class ProfileShardDao<
   }
 
   async findOneAndUpdateByProfileAndId(
-    profileRelation: ProfileShard,
+    profileRelation: ProfileShardData,
     id: DocumentIdentity<T>,
     update: UpdateQuery<T>,
     options?: IFindAndUpdateQueryOptions<T>,
@@ -139,7 +138,7 @@ export abstract class ProfileShardDao<
   }
 
   async findOneAndUpdateByProfileAndFilter(
-    profileRelation: ProfileShard,
+    profileRelation: ProfileShardData,
     id: DocumentIdentity<T>,
     update: UpdateQuery<T>,
     filter?: FilterQuery<T>,
@@ -154,7 +153,7 @@ export abstract class ProfileShardDao<
   }
 
   async updateSetBulkByProfile(
-    profileRelation: ProfileShard,
+    profileRelation: ProfileShardData,
     updates: { id: DocumentIdentity<T>; update: UpdateQuerySet<T> }[],
     options?: IBulkBaseQueryOptions,
   ) {
@@ -172,14 +171,14 @@ export abstract class ProfileShardDao<
   }
 
   async deleteAllByProfile(
-    profileRelation: ProfileShard,
+    profileRelation: ProfileShardData,
     options?: DeleteOptions,
   ): Promise<number> {
     return this.deleteMany(applyShardQueryFilter(profileRelation), options);
   }
 
   async deleteManyByProfile(
-    profileRelation: ProfileShard,
+    profileRelation: ProfileShardData,
     filter: FilterQuery<T>,
     options?: DeleteOptions,
   ): Promise<number> {
@@ -187,7 +186,7 @@ export abstract class ProfileShardDao<
   }
 
   async deleteOneByProfile(
-    profileRelation: ProfileShard,
+    profileRelation: ProfileShardData,
     filter: FilterQuery<T>,
     options?: DeleteOptions,
   ): Promise<boolean> {
@@ -195,7 +194,7 @@ export abstract class ProfileShardDao<
   }
 }
 
-function applyShardQueryFilter(profileRelation: ProfileShard, filter?: FilterQuery<any>) {
+function applyShardQueryFilter(profileRelation: ProfileShardData, filter?: FilterQuery<any>) {
   filter = filter || {};
   if (profileRelation.oid) {
     filter.oid = assureObjectId(profileRelation.oid);
@@ -206,7 +205,7 @@ function applyShardQueryFilter(profileRelation: ProfileShard, filter?: FilterQue
   return filter;
 }
 
-function assureProfileId(profileRelation: ProfileShard): Profile['_id'] {
+function assureProfileId(profileRelation: ProfileShardData): Profile['_id'] {
   return profileRelation instanceof Profile
     ? profileRelation._id
     : (assureObjectId(profileRelation.pid) as Profile['_id']);

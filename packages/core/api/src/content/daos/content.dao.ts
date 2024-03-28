@@ -4,7 +4,7 @@ import { ContentTypeRegistry } from '../components';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, DocumentIdentity, LeanDoc } from '@/core';
 import { ContentTypeDao } from './content-type.dao';
-import { ProfileShard } from '@/profiles';
+import { ProfileShardData } from '@/profiles';
 
 @Injectable()
 export class ContentDao extends ContentTypeDao<Content> {
@@ -15,11 +15,11 @@ export class ContentDao extends ContentTypeDao<Content> {
     super();
   }
 
-  incrementChildCount(context: ProfileShard, parent: DocumentIdentity<Content>) {
+  incrementChildCount(context: ProfileShardData, parent: DocumentIdentity<Content>) {
     return this.updateOneByProfileAndId(context, parent, { $inc: { 'meta.childCount': 1 } });
   }
 
-  decrementChildCount(context: ProfileShard, parent: DocumentIdentity<Content>) {
+  decrementChildCount(context: ProfileShardData, parent: DocumentIdentity<Content>) {
     return this.updateOneByProfileAndFilter(
       context,
       parent,

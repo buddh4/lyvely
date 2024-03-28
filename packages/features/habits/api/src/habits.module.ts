@@ -28,6 +28,7 @@ import { ActivityHabitsFeature, HABITS_MODULE_ID, HabitsFeature } from '@lyvely/
     UsersModule,
     ProfilesModule,
     ContentModule.registerContentType(Habit),
+    ProfilesModule.registerProfileScoreType(HabitScore),
     MongooseModule.forFeature([
       getContentModelDefinition([{ name: Habit.name, schema: HabitSchema }]),
       getContentScoreDefinition([{ name: HabitScore.name, schema: HabitScoreSchema }]),

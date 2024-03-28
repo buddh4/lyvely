@@ -1,7 +1,7 @@
 import { ObjectIdProp, TObjectId } from '@/core';
 import { Prop } from '@nestjs/mongoose';
 
-export abstract class ProfileDocument {
+export abstract class ProfileShard {
   @ObjectIdProp({ required: true })
   oid: TObjectId;
 

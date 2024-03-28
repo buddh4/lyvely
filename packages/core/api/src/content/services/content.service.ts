@@ -2,7 +2,7 @@ import { Content, ProfileContentContext } from '../schemas';
 import { Injectable, Logger } from '@nestjs/common';
 import { ContentDao } from '../daos';
 import { DocumentNotFoundException } from '@lyvely/interface';
-import { ProfileContext, ProfileShard } from '@/profiles';
+import { ProfileContext, ProfileShardData } from '@/profiles';
 import { assureObjectId, DocumentIdentity, TObjectId } from '@/core';
 import { User } from '@/users';
 import { InjectPolicy } from '@/policies';
@@ -46,7 +46,7 @@ export class ContentService {
   public async findContentByProfileAndId<
     B extends boolean | undefined | null = boolean | undefined | null,
   >(
-    profileRelation: ProfileShard,
+    profileRelation: ProfileShardData,
     id: DocumentIdentity<Content>,
     throwException?: B,
   ): Promise<B extends false | undefined | null ? Content | undefined : Content> {
@@ -213,7 +213,7 @@ export class ContentService {
   /**
    * Sets the milestone for a specific content identified by its content ID (cid).
    *
-   * @param {ProfileShard} profileRelation - The profile relation of the content.
+   * @param {ProfileShardData} profileRelation - The profile relation of the content.
    * @param {User} user - The user performing the action.
    * @param {DocumentIdentity<Content>} cid - The content ID of the document.
    * @param {TObjectId | string} mid - The ID of the milestone to set.
@@ -221,7 +221,7 @@ export class ContentService {
    * @throws {DocumentNotFoundException} - If the milestone cannot be found.
    */
   async setMilestone(
-    profileRelation: ProfileShard,
+    profileRelation: ProfileShardData,
     user: User,
     cid: DocumentIdentity<Content>,
     mid: TObjectId | string,

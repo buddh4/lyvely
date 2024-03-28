@@ -20,7 +20,7 @@ import { CreatedAs, Author } from './content-author.schema';
 import { OptionalUser, User } from '@/users';
 import {
   Profile,
-  ProfileDocument,
+  ProfileShard,
   Tag,
   ProfileContext,
   ProtectedProfileContext,
@@ -90,7 +90,7 @@ export class Content<
     TData extends ContentDataType = ContentDataType,
     TModel extends ContentModel<string> = ContentModel<string, any, any, any>,
   >
-  extends ProfileDocument
+  extends ProfileShard
   implements IContent<TObjectId, TConfig, TStatus, TData>
 {
   /** The content field holds the core data for the content instance. **/

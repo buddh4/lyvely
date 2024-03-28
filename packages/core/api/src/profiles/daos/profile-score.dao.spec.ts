@@ -5,7 +5,7 @@ import {
   TestProfileScoreSchema,
   profilesTestPlugin,
   ProfileTestDataUtils,
-  TestProfileScoreDao,
+  TestProfileScoreTypeDao,
 } from '../testing';
 import { toTimingId } from '@lyvely/dates';
 
@@ -17,7 +17,7 @@ const testScoreModelDef = {
 
 describe('AbstractUserProfileActionDao', () => {
   let testingModule: LyvelyTestingModule;
-  let testScoreDao: TestProfileScoreDao;
+  let testScoreDao: TestProfileScoreTypeDao;
   let testData: ProfileTestDataUtils;
 
   const TEST_KEY = 'abstract_user_profile_action_dao';
@@ -25,10 +25,10 @@ describe('AbstractUserProfileActionDao', () => {
   beforeEach(async () => {
     testingModule = await buildTest(TEST_KEY)
       .plugins([profilesTestPlugin])
-      .providers([TestProfileScoreDao])
+      .providers([TestProfileScoreTypeDao])
       .models([testScoreModelDef])
       .compile();
-    testScoreDao = testingModule.get<TestProfileScoreDao>(TestProfileScoreDao);
+    testScoreDao = testingModule.get<TestProfileScoreTypeDao>(TestProfileScoreTypeDao);
     testData = testingModule.get(ProfileTestDataUtils);
   });
 
