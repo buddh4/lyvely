@@ -6,23 +6,26 @@ import {
   ProfileType,
   CreateGroupProfilePermission,
   CreateUserProfilePermission,
+  CreateOrganizationProfilePermission,
 } from '@lyvely/interface';
 import { translate } from '@/i18n';
 import { useRouter } from 'vue-router';
 import { profileRoute } from '@/profiles/routes/profile-route.helper';
 import { useGlobalPermissions } from '@/common/composables';
 
+const props = defineProps<{
+  oid?: string;
+}>();
+
 const createProfileStore = useCreateProfileStore();
-const { show, model, validator, error } = storeToRefs(createProfileStore);
+const { show, model, validator, error, isOrganization } = storeToRefs(createProfileStore);
 const { reset, submit } = createProfileStore;
 
 const router = useRouter();
 
 const createProfile = () =>
-  submit().then((profile) => router.push(profileRoute('stream', profile.handle)));
+  submit(props.oid).then((profile) => router.push(profileRoute('stream', profile.handle)));
 
-const userType = ProfileType.User;
-const groupType = ProfileType.Group;
 const usageOptions = [
   ProfileUsage.Business,
   ProfileUsage.Private,
@@ -33,6 +36,9 @@ const usageOptions = [
 ];
 const usageLabel = (usage: string) => translate('profiles.usage.' + usage.toLowerCase());
 
+const { isAllowed: canCreateOrganization } = useGlobalPermissions(
+  CreateOrganizationProfilePermission,
+);
 const { isAllowed: canCreateGroupProfile } = useGlobalPermissions(CreateGroupProfilePermission);
 const { isAllowed: canCreateUserProfile } = useGlobalPermissions(CreateUserProfilePermission);
 </script>
@@ -57,15 +63,20 @@ const { isAllowed: canCreateUserProfile } = useGlobalPermissions(CreateUserProfi
         :options="usageOptions"
         :labels="usageLabel" />
       <ly-radio
-        v-if="canCreateUserProfile"
+        v-if="!isOrganization && canCreateUserProfile"
         property="type"
         label="profiles.create.properties.user"
-        :value="userType" />
+        :value="ProfileType.User" />
       <ly-radio
-        v-if="canCreateGroupProfile"
+        v-if="!isOrganization && canCreateGroupProfile"
         property="type"
         label="profiles.create.properties.group"
-        :value="groupType" />
+        :value="ProfileType.Group" />
+      <ly-radio
+        v-if="isOrganization && !oid && canCreateOrganization"
+        property="type"
+        label="profiles.create.properties.organization"
+        :value="ProfileType.Organization" />
     </ly-form-model>
     <ly-alert type="danger" :text="error" class="mt-2" />
   </ly-modal>

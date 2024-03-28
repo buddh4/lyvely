@@ -38,7 +38,14 @@ import { ProfileDao, MembershipsDao, UserProfileRelationsDao, ProfileScoreDao } 
 import { ProfileVisibilityPolicy } from './policies';
 import { PoliciesModule } from '@/policies';
 import { CoreModule, LyvelyModule } from '@/core';
-import { PROFILES_MODULE_ID, ProfileType } from '@lyvely/interface';
+import {
+  PROFILES_MODULE_ID,
+  ProfileType,
+  AddProfileToOrganizationPermission,
+  CreateOrganizationProfilePermission,
+  CreateGroupProfilePermission,
+  CreateUserProfilePermission,
+} from '@lyvely/interface';
 import { useProfileMappings } from './mappings';
 import { ProfilesEvents } from './profiles.events';
 import { ProfileMembershipPolicy } from '@/profiles/policies/profile-membership-policy';
@@ -75,6 +82,12 @@ useProfileMappings();
   name: 'Profiles',
   path: __dirname,
   policies: [ProfileVisibilityPolicy, ProfileMembershipPolicy],
+  permissions: [
+    AddProfileToOrganizationPermission,
+    CreateOrganizationProfilePermission,
+    CreateGroupProfilePermission,
+    CreateUserProfilePermission,
+  ],
   imports: [CoreModule, UsersModule, PoliciesModule, ProfileModel],
   providers: [
     ProfileDao,

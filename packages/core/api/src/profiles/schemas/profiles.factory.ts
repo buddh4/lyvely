@@ -8,9 +8,10 @@ import {
 import { UserProfile } from './user-profiles.schema';
 import { GroupProfile } from './group-profiles.schema';
 import { Organization } from './organization.schema';
+import type { DocumentIdentity } from '../../core';
 
 export interface ICreateProfileOptions {
-  organization?: Organization;
+  organization?: Organization | null;
   usage?: ProfileUsage[];
   visibility?: ProfileVisibilityLevel;
   name: string;

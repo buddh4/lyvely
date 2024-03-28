@@ -55,6 +55,10 @@ module.exports = [
       },
     ],
   }),
+  createProfile('admin-profile', 'owner', {
+    usage: ['Private'],
+    type: 'group'
+  }),
   createProfile('member-group', 'owner', {
     usage: ['Project'],
     name: 'Protected Group',

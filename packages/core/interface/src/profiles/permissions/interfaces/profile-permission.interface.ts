@@ -6,7 +6,7 @@ import {
   IPermissionSetting,
 } from '@/permissions';
 import { ProfileRelationRole } from '@/profiles/relations';
-import { ProfileType, ProfileVisibilityLevel } from '@/profiles/core/interfaces';
+import type { ProfileType, ProfileVisibilityLevel } from '@/profiles/core/interfaces';
 
 /**
  * Defines a flat hierarchy of profile relation roles. This is used for permissions and access rules in which a
@@ -28,7 +28,9 @@ export const profileRelationRoleHierarchy = [
  * Interface used to define profile level permissions.
  */
 export interface IProfilePermission
-  extends IPermission<ProfileRelationRole, BasePermissionType.Profile> {}
+  extends IPermission<ProfileRelationRole, BasePermissionType.Profile> {
+  profileTypes?: ProfileType[];
+}
 
 /**
  * This interface defines the data of a profile permission subject which represents a user in a profile permission context.

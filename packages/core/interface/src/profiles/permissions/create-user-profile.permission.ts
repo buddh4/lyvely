@@ -6,7 +6,7 @@ import {
 } from '../../permissions';
 
 export const CreateUserProfilePermission: IGlobalPermission = {
-  id: 'create-private-profile-permission',
+  id: 'create-private-profile',
   moduleId: PERMISSIONS_MODULE_ID,
   name: 'profiles.permissions.create-private-profile.name',
   description: 'profiles.permissions.create-private-profile.description',

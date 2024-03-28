@@ -6,7 +6,7 @@ import {
   getPermission,
   useProfilePermissionsManager,
   VisitorMode,
-  IProfilePermission,
+  type IProfilePermission,
   IGlobalPermission,
   isGlobalPermission,
   IntegrityException,

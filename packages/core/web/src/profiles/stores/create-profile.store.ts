@@ -6,6 +6,7 @@ import { useProfileRelationInfosStore } from '@/profiles/stores/profile-relation
 
 export const useCreateProfileStore = defineStore('create-profile', () => {
   const show = ref(false);
+  const isOrganization = ref(false);
   const model = ref(new CreateProfileModel());
   const validator = ref(new ModelValidator(model.value));
   const error = ref('');
@@ -14,11 +15,12 @@ export const useCreateProfileStore = defineStore('create-profile', () => {
   function reset() {
     model.value = new CreateProfileModel();
     validator.value.setModel(model.value);
+    isOrganization.value = false;
   }
 
-  async function submit() {
+  async function submit(oid?: string) {
     if (await validator.value.validate()) {
-      const relation = await profilesClient.create(model.value);
+      const relation = await profilesClient.create({ ...model.value, oid });
       useProfileRelationInfosStore().addRelation(new ProfileRelationInfo(relation));
       show.value = false;
       reset();
@@ -34,5 +36,6 @@ export const useCreateProfileStore = defineStore('create-profile', () => {
     submit,
     error,
     reset,
+    isOrganization,
   };
 });

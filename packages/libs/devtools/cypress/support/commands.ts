@@ -32,7 +32,7 @@ import VisitOptions = Cypress.VisitOptions;
 import Shadow = Cypress.Shadow;
 import RequestBody = Cypress.RequestBody;
 
-type Username = 'owner' | 'disabled' | 'moderator' | 'member' | 'no-member';
+type Username = 'owner' | 'admin' | 'disabled' | 'moderator' | 'member' | 'no-member';
 
 Cypress.Commands.add('authenticatedAs', (username: Username) => {
   cy.task<string>('auth:createAuthToken', username).then((token: string) => {

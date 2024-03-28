@@ -137,10 +137,11 @@ export const useProfilePermissionsStore = defineStore('profile-permissions-store
   }
 
   function getPermissions() {
+    const { profile } = useProfileStore();
     const permissions = [
-      ...getAllPermissions(BasePermissionType.Profile),
-      ...getAllPermissions(BasePermissionType.Content),
-    ];
+      ...getAllPermissions<IProfilePermission>(BasePermissionType.Profile),
+      ...getAllPermissions<IContentPermission>(BasePermissionType.Content),
+    ].filter((p) => !p.profileTypes || p.profileTypes.includes(profile!.type));
 
     permissions.sort((a, b) => (a.moduleId > b.moduleId ? 1 : -1));
     return permissions;

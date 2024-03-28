@@ -82,7 +82,8 @@
         "name": "Name",
         "description": "Description",
         "user": "Just for me",
-        "group": "For me and invited users"
+        "group": "For me and invited users",
+        "organization": "A new organization"
       }
     },
     "visibility": {

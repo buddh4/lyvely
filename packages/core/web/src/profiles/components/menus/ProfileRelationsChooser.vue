@@ -1,50 +1,45 @@
 <script lang="ts" setup>
 import { useProfileRelationInfosStore } from '@/profiles/stores/profile-relation-infos.store';
-import { useProfileStore } from '@/profiles/stores/profile.store';
 import { storeToRefs } from 'pinia';
-import { ref } from 'vue';
-import { useRouter, isNavigationFailure } from 'vue-router';
+import { computed, ref } from 'vue';
 import { useCreateProfileStore } from '@/profiles/stores/create-profile.store';
 import {
   CreateGroupProfilePermission,
+  CreateOrganizationProfilePermission,
   CreateUserProfilePermission,
-  isMultiUserProfile,
-  ProfileRelationInfo,
+  ProfileType,
 } from '@lyvely/interface';
-import LyProfileAvatar from '../ProfileAvatar.vue';
-import { profileIdRoute } from '@/profiles/routes';
 import { t } from '@/i18n';
 import { useGlobalPermissions } from '@/common/composables';
+import ProfileRelationsChooserList from './ProfileRelationsChooserList.vue';
 
 const profileRelationInfosStore = useProfileRelationInfosStore();
-const profileStore = useProfileStore();
 
 const { statusError } = storeToRefs(profileRelationInfosStore);
-const profileRelations = ref(await profileRelationInfosStore.getRelations());
+const allProfileRelations = ref(await profileRelationInfosStore.getRelations());
 
-const { profile } = storeToRefs(profileStore);
-const { show: showCreateProfile } = storeToRefs(useCreateProfileStore());
+const organizations = computed(() =>
+  allProfileRelations.value.profiles.filter((p) => p.type === ProfileType.Organization),
+);
 
-const router = useRouter();
+const profiles = computed(() =>
+  allProfileRelations.value.profiles.filter((p) => p.type !== ProfileType.Organization),
+);
 
-async function setProfile(pid: string) {
-  const currentRoute = router.currentRoute.value;
-  const isProfileView = !!currentRoute.meta.isPublic;
+const { show: showCreateProfile, isOrganization } = storeToRefs(useCreateProfileStore());
 
-  const viewName = isProfileView
-    ? currentRoute.meta.baseName || <string>currentRoute.name
-    : undefined;
-  const result = await router.push(profileIdRoute(pid, { viewName }));
-  if (isNavigationFailure(result)) console.error(result);
-}
-
-function getProfileIcon(relation: ProfileRelationInfo) {
-  return isMultiUserProfile(relation.type) ? 'group' : 'private';
-}
+const createOrganization = () => {
+  isOrganization.value = true;
+  showCreateProfile.value = true;
+};
 
 const { isAllowed: canCreateProfile } = useGlobalPermissions(
   CreateUserProfilePermission,
   CreateGroupProfilePermission,
+);
+
+const { isAllowed: canCreateOrganization } = useGlobalPermissions(
+  CreateOrganizationProfilePermission,
 );
 
 // TODO: A user might have multiple relations with a single profile...
@@ -58,6 +53,19 @@ const { isAllowed: canCreateProfile } = useGlobalPermissions(
     </li>
   </ul>
   <ul v-else class="divide-y divide-divide w-80 md:w-96">
+    <li v-if="canCreateOrganization || organizations.length" class="py-3 px-4">
+      <div class="flex items-center">
+        <span class="text-sm font-bold">
+          {{ t('profiles.labels.organizations') }}
+        </span>
+        <ly-add-button
+          v-if="canCreateOrganization"
+          data-id="btn-create-organization"
+          class="m-auto"
+          @click="createOrganization" />
+      </div>
+    </li>
+    <profile-relations-chooser-list :relations="organizations" />
     <li class="py-3 px-4">
       <div class="flex items-center">
         <span class="text-sm font-bold">
@@ -70,41 +78,7 @@ const { isAllowed: canCreateProfile } = useGlobalPermissions(
           @click="showCreateProfile = true" />
       </div>
     </li>
-    <li>
-      <ly-divided-list v-if="profile">
-        <ly-list-item
-          v-for="relation in profileRelations.profiles"
-          :key="relation.id"
-          :active="profile.id === relation.id"
-          @click="setProfile(relation.id)">
-          <div class="flex items-center space-x-4">
-            <div class="flex-shrink-0">
-              <ly-profile-avatar :profile="relation" />
-            </div>
-            <div class="flex-1 min-w-0">
-              <p class="text-sm font-medium truncate">
-                {{ relation.name }}
-              </p>
-              <ly-dimmed :text="{ plain: relation.description }" :truncate="true" />
-            </div>
-            <div>
-              <ly-icon :name="getProfileIcon(relation)" />
-            </div>
-          </div>
-        </ly-list-item>
-      </ly-divided-list>
-    </li>
-    <!-- li class="py-3 px-4">
-      <div class="flex items-center">
-        <span class="text-sm font-bold">
-          {{ t('profiles.labels.organizations') }}
-        </span>
-        <ly-add-button class="m-auto" />
-      </div>
-    </li>
-    <li class="py-3 px-4 text-dimmed text-sm">
-      <ly-text-dimmed :text="t('profile.content-stream.no-organization-relation')" />
-    </li -->
+    <profile-relations-chooser-list :relations="profiles" />
   </ul>
 </template>
 

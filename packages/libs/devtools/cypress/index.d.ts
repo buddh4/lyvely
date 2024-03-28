@@ -1,6 +1,6 @@
 import RequestOptions = Cypress.RequestOptions;
 
-type Username = 'owner' | 'disabled' | 'moderator' | 'member' | 'no-member';
+type Username = 'owner' | 'admin' | 'disabled' | 'moderator' | 'member' | 'no-member';
 
 type APIRequestOptions = RequestOptions & {
   apiVersion?: string;

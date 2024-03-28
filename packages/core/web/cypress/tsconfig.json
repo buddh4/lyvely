@@ -3,7 +3,10 @@
   "compilerOptions": {
     "target": "es5",
     "lib": ["es5", "dom"],
-    "types": ["cypress", "node"],
+    "types": ["cypress", "node", "@lyvely/devtools"]
   },
-  "include": ["**/*.ts"],
+  "include": [
+    "**/*.ts",
+    "../../../../node_modules/@lyvely/devtools/cypress/index.d.ts"
+  ]
 }

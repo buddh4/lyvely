@@ -3,6 +3,7 @@ import { OptionalUser, User } from '@/users';
 import {
   CalendarPreferences,
   DocumentNotFoundException,
+  ForbiddenServiceException,
   MisconfigurationException,
   ProfileMembershipRole,
   ProfileType,
@@ -11,7 +12,10 @@ import {
   UniqueConstraintException,
   UpdateProfileModel,
   VALID_HANDLE_REGEX,
-  VisitorStrategy,
+  AddProfileToOrganizationPermission,
+  CreateUserProfilePermission,
+  CreateGroupProfilePermission,
+  CreateOrganizationProfilePermission,
 } from '@lyvely/interface';
 import { MembershipsDao, ProfileDao } from '../daos';
 import { ProfileContext, ProtectedProfileContext } from '../models';
@@ -43,6 +47,8 @@ import {
 import { ProfileSettingsService } from './profile-settings.service';
 import { ConfigService } from '@nestjs/config';
 import { ConfigurationPath } from '@/config';
+import { ProfilePermissionsService } from './profile-permissions.service';
+import { GlobalPermissionsService } from '@/permissions';
 
 @Injectable()
 export class ProfilesService {
@@ -53,6 +59,8 @@ export class ProfilesService {
     private membershipService: ProfileMembershipService,
     private relationsService: ProfileRelationsService,
     private profileSettingsService: ProfileSettingsService,
+    private profilePermissionsService: ProfilePermissionsService,
+    private globalPermissionsService: GlobalPermissionsService,
     @InjectConnection() private readonly connection: Connection,
   ) {}
 
@@ -81,7 +89,8 @@ export class ProfilesService {
 
   /**
    * Creates a new user profile with the provided options.
-   * Ensures that the profile name is unique for the organization (if any) or the owner.
+   * Ensures that the profile name is unique for the organization (if any) or the owner and verifies if the user is
+   * allowed to create a user profile.
    * If a locale is not provided, it uses the locale of the organization (if any) or the user.
    * @param owner The user who will own the profile.
    * @param options Options for creating the profile.
@@ -92,6 +101,9 @@ export class ProfilesService {
     owner: User,
     options: ICreateProfileOptions,
   ): Promise<ProtectedProfileContext> {
+    if (!this.globalPermissionsService.verifyPermission(owner, CreateUserProfilePermission)) {
+      throw new ForbiddenServiceException('Insufficient permissions to create user profile.');
+    }
     await this.checkProfileNameUniqueness(owner, options);
     options.locale ??= options.organization?.locale || owner.locale;
     return this.createProfile(owner, Object.assign({}, options, { type: ProfileType.User }));
@@ -99,7 +111,8 @@ export class ProfilesService {
 
   /**
    * Creates a new group profile with the provided options.
-   * Ensures that the profile name is unique for the organization (if any) or the owner.
+   * Ensures that the profile name is unique for the organization (if any) or the owner and verifies if the user is
+   * allowed to create a group profile.
    * If a locale is not provided, it uses the locale of the organization (if any) or the user.
    * @param owner The user who will own the profile.
    * @param options Options for creating the profile.
@@ -110,6 +123,9 @@ export class ProfilesService {
     owner: User,
     options: ICreateProfileOptions,
   ): Promise<ProtectedProfileContext> {
+    if (!this.globalPermissionsService.verifyPermission(owner, CreateGroupProfilePermission)) {
+      throw new ForbiddenServiceException('Insufficient permissions to create group profile.');
+    }
     await this.checkProfileNameUniqueness(owner, options);
     options.locale = options.locale || options.organization?.locale || owner.locale;
     return this.createProfile(owner, Object.assign({}, options, { type: ProfileType.Group }));
@@ -144,7 +160,7 @@ export class ProfilesService {
 
   /**
    * Creates a new organization profile with the provided options.
-   * Ensures that the organization name not already in use.
+   * Ensures that the organization name not already in use and the user is allowed to create an organization.
    * If a locale is not provided, it uses the locale of the organization (if any) or the user.
    * @param owner The user who will own the profile.
    * @param options Options for creating the profile.
@@ -155,6 +171,14 @@ export class ProfilesService {
     owner: User,
     options: Omit<ICreateProfileOptions, 'organization'>,
   ): Promise<ProtectedProfileContext> {
+    if (
+      !this.globalPermissionsService.verifyPermission(owner, CreateOrganizationProfilePermission)
+    ) {
+      throw new ForbiddenServiceException(
+        'Insufficient permissions to create organization profile.',
+      );
+    }
+
     if (await this.profileDao.findExistingProfileByOrganizationName(owner, options.name)) {
       throw new UniqueConstraintException(
         'name',
@@ -182,11 +206,25 @@ export class ProfilesService {
    */
   protected async createProfile(
     owner: User,
-    options: ICreateProfileTypeOptions,
+    options: ICreateProfileTypeOptions & { oid?: DocumentIdentity<Organization> },
   ): Promise<ProtectedProfileContext> {
     return withTransaction(this.connection, async (transaction) => {
       // TODO (profile visibility) implement max profile visibility in configuration (default member)
       options.visibility = ProfileVisibilityLevel.Member;
+
+      if (options.oid && !options.organization) {
+        options.organization = await this.findProfileById(options.oid);
+        if (!options.organization) throw new DocumentNotFoundException('Organization not found');
+      }
+
+      if (
+        options.organization &&
+        !(await this.canAddOrganizationProfile(owner, options.organization))
+      ) {
+        throw new ForbiddenServiceException(
+          'User is not allowed to create profiles for this organization.',
+        );
+      }
 
       let profile = ProfilesFactory.createProfile(owner, options);
       profile.handle = await this.findUniqueHandle(profile);
@@ -210,6 +248,17 @@ export class ProfilesService {
         relations: [membership],
       });
     });
+  }
+
+  private async canAddOrganizationProfile(
+    user: User,
+    organization: Organization,
+  ): Promise<boolean> {
+    const context = await this._createProfileContext(user, organization);
+    return this.profilePermissionsService.verifyPermission(
+      context,
+      AddProfileToOrganizationPermission,
+    );
   }
 
   /**

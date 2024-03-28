@@ -4,7 +4,7 @@ import {
   BasePermissionType,
   IPermissionSetting,
 } from '@/permissions';
-import { IProfilePermissionObject, ProfileRelationRole } from '@/profiles';
+import { IProfilePermissionObject, ProfileRelationRole, ProfileType } from '@/profiles';
 
 /**
  * Represents the possible roles of a user (or visitor) in relation to a content.
@@ -60,7 +60,9 @@ export const contentRoleHierarchy = [
  * Interface used to define profile level permissions.
  */
 export interface IContentPermission
-  extends IPermission<ContentUserRole, BasePermissionType.Content> {}
+  extends IPermission<ContentUserRole, BasePermissionType.Content> {
+  profileTypes?: ProfileType[];
+}
 
 /**
  * This interface defines the data of a profile permission subject which represents a user in a profile permission context.

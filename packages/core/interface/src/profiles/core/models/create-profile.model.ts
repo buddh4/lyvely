@@ -1,6 +1,15 @@
 import { Exclude, Expose } from 'class-transformer';
 import { BaseModel, type PropertiesOf, PropertyType } from '@lyvely/common';
-import { IsEnum, IsString, IsOptional, IsArray, Length, IsNumber, Matches } from 'class-validator';
+import {
+  IsEnum,
+  IsString,
+  IsOptional,
+  IsArray,
+  Length,
+  IsNumber,
+  Matches,
+  IsMongoId,
+} from 'class-validator';
 import { ProfileType, ProfileUsage, ProfileVisibilityLevel } from '../interfaces';
 import {
   MAX_PROFILE_DESCRIPTION_LENGTH,
@@ -18,10 +27,15 @@ export class CreateProfileModel {
   name: string;
 
   @Expose()
+  @IsMongoId()
+  @IsOptional()
+  oid?: string;
+
+  @Expose()
   @IsString()
   @IsOptional()
   @Length(0, MAX_PROFILE_DESCRIPTION_LENGTH)
-  description: string;
+  description?: string;
 
   @Expose()
   @IsArray()

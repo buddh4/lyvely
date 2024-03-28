@@ -12,6 +12,7 @@ const createUserData = (username, options) => {
     status: options.status ?? 1, // Enabled by default
     email: options.email || username.toLowerCase() + '@test.com',
     guid: createHash('md5').update(username).digest('hex'),
+    role: options.role || 'user',
     emails: options.emails || [
       { email: options.email || username.toLowerCase() + '@test.com', verified: true },
     ],
@@ -21,9 +22,10 @@ const createUserData = (username, options) => {
 };
 
 module.exports = [
-  createUserData('owner'),
+  createUserData('owner', { role: 'admin' }),
+  createUserData('admin', { role: 'admin' }),
   createUserData('member'),
-  createUserData('moderator'),
+  createUserData('moderator', { role: 'moderator' }),
   createUserData('no-member'),
   createUserData('disabled', { status: 0 }),
 ];
