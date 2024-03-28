@@ -2,15 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { OptionalUser, User } from '@/users';
 import {
   CalendarPreferences,
+  DocumentNotFoundException,
+  MisconfigurationException,
   ProfileMembershipRole,
   ProfileType,
   ProfileUsage,
   ProfileVisibilityLevel,
+  UniqueConstraintException,
   UpdateProfileModel,
   VALID_HANDLE_REGEX,
-  DocumentNotFoundException,
-  UniqueConstraintException,
-  MisconfigurationException,
+  VisitorStrategy,
 } from '@lyvely/interface';
 import { MembershipsDao, ProfileDao } from '../daos';
 import { ProfileContext, ProtectedProfileContext } from '../models';
@@ -312,7 +313,7 @@ export class ProfilesService {
    * could not be found.
    * @param handle the unique profile handle.
    * @param throwsException if set to true, throws an exception in case the profile could not be found.
-   * @throws DocumentNotFoundException if throwsExceptio is set to true and the profile could not be found.
+   * @throws DocumentNotFoundException if throwsException is set to true and the profile could not be found.
    */
   async findProfileByHandle(handle: string, throwsException = false): Promise<Profile | null> {
     if (!handle && throwsException) throw new DocumentNotFoundException('Profile not found.');
@@ -325,6 +326,15 @@ export class ProfilesService {
     }
 
     return result;
+  }
+
+  /**
+   * Returns a profiles for the given handles.
+   * @param handles array of profile handles.
+   */
+  async findProfilesByHandle(handles: string[]): Promise<Profile[]> {
+    if (!handles.length) return [];
+    return this.profileDao.findByHandles(handles);
   }
 
   /**
@@ -576,6 +586,18 @@ export class ProfilesService {
           relations: userRelations.filter((relation) => relation.pid.equals(profile._id)),
         }),
     );
+  }
+
+  /**
+   * Finds max 25 profile contexts of profiles visible by guests.
+   *
+   * @returns {Promise<ProfileContext[]>} - A promise that resolves to an array of profile contexts.
+   */
+  async findAllGuestProfileContexts(): Promise<ProfileContext[]> {
+    const profiles = await this.profileDao.findByVisibility(ProfileVisibilityLevel.Visitor, {
+      limit: 25,
+    });
+    return profiles.map((profile) => new ProfileContext({ profile }));
   }
 
   /**

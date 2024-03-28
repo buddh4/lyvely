@@ -101,29 +101,20 @@ function sanitizePermissionSetting(
 }
 
 export function useProfileMappings() {
-  registerMapping(ProtectedProfileContext, ProfileRelationInfo, (relations) => {
-    const { id, name, description, score, type, guid } = relations.profile;
+  const profileContextToProfileRelationInfo = (context: ProfileContext): ProfileRelationInfo => {
+    const { id, name, description, score, type, guid } = context.profile;
 
     return new ProfileRelationInfo({
-      id,
-      name,
-      description,
-      score,
-      type,
-      guid,
-      relations: relations.relations.map(({ type, role }) => ({ type, role })),
+      ...{ name, description, score, type, guid, id },
+      relations: context.relations.map(({ type, role }) => ({ type, role })),
     });
-  });
+  };
 
-  registerMapping([ProtectedProfileContext], ProfileRelationInfos, (relations) => {
+  registerMapping(ProfileContext, ProfileRelationInfo, profileContextToProfileRelationInfo);
+
+  registerMapping([ProfileContext], ProfileRelationInfos, (relations) => {
     return new ProfileRelationInfos({
-      profiles: relations.map((relation) => {
-        const { name, description, score, type, guid, id } = relation.profile;
-        return new ProfileRelationInfo({
-          ...{ name, description, score, type, guid, id },
-          relations: relation.relations.map(({ type, role }) => ({ type, role })),
-        });
-      }),
+      profiles: relations.map(profileContextToProfileRelationInfo),
     });
   });
 

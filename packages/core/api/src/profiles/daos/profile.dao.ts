@@ -16,10 +16,11 @@ import {
   createObjectId,
   IBaseFetchQueryOptions,
   LeanDoc,
+  IFetchQueryOptions,
 } from '@/core';
 import { User } from '@/users';
 import { assignRawDataTo, Constructor } from '@lyvely/common';
-import { IntegrityException, ProfileType } from '@lyvely/interface';
+import { IntegrityException, ProfileType, ProfileVisibilityLevel } from '@lyvely/interface';
 import { ProfileTypeTransformation } from '../schemas/transformations';
 
 @Injectable()
@@ -108,9 +109,17 @@ export class ProfileDao extends AbstractDao<Profile> {
 
   async findByHandles(
     handles: string[],
-    options?: IBaseFetchQueryOptions<Profile>,
+    options?: IFetchQueryOptions<Profile>,
   ): Promise<Profile[]> {
+    if (!handles.length) return [];
     return this.findAll({ handle: { $in: handles } }, options);
+  }
+
+  async findByVisibility(
+    visibility: ProfileVisibilityLevel,
+    options?: IFetchQueryOptions<Profile>,
+  ): Promise<Profile[]> {
+    return this.findAll({ visibility: { $gte: visibility } }, options);
   }
 
   async addTags(profile: Profile, tags: Tag[]) {

@@ -1,7 +1,7 @@
 import { ClassSerializerInterceptor, Get, Param, Request, UseInterceptors } from '@nestjs/common';
 
 import { ProfilesService } from '../services';
-import { UserRequest, UsersService } from '@/users';
+import { type OptionalUserRequest, UserRequest, UsersService } from '@/users';
 import {
   ProfileRelationInfos,
   API_PROFILE_RELATION_INFOS,
@@ -11,7 +11,7 @@ import {
   DocumentNotFoundException,
 } from '@lyvely/interface';
 import { mapType } from '@lyvely/common';
-import { ProtectedProfileContext } from '../models';
+import { ProfileContext } from '../models';
 import { Controller } from '@/common';
 
 @Controller(API_PROFILE_RELATION_INFOS)
@@ -20,9 +20,14 @@ export class ProfileRelationInfosController implements ProfileRelationInfosEndpo
   constructor(private profilesService: ProfilesService, private usersService: UsersService) {}
 
   @Get()
-  async getAllProfileRelationInfos(@Request() req: UserRequest): Promise<ProfileRelationInfos> {
-    const relations = await this.profilesService.findAllProfileContextsByUser(req.user);
-    return mapType([ProtectedProfileContext], ProfileRelationInfos, relations);
+  async getAllProfileRelationInfos(
+    @Request() req: OptionalUserRequest,
+  ): Promise<ProfileRelationInfos> {
+    const { user } = req;
+    const relations = user
+      ? await this.profilesService.findAllProfileContextsByUser(user)
+      : await this.profilesService.findAllGuestProfileContexts();
+    return mapType([ProfileContext], ProfileRelationInfos, relations);
   }
 
   @Get(ProfileRelationInfosEndpoints.PROFILE_RELATION_INFO(':pid', ':uid'))
