@@ -3,7 +3,11 @@ import {
   AnalyticsFeature,
   CHART_SERIES_TAG_SCORE,
   ChartModel,
+  ChartSeriesConfigModel,
+  ChartType,
   CreateChartModel,
+  CHART_SERIES_PROFILE_SCORE,
+  CHART_SERIES_USER_SCORE,
 } from '@lyvely/analytics-interface';
 import { registerMenuEntry, registerSvgIcon } from '@lyvely/ui';
 import {
@@ -11,15 +15,12 @@ import {
   isMultiUserProfile,
   MENU_PROFILE_DRAWER,
   registerContentType,
+  t,
   translation,
   useProfileStore,
 } from '@lyvely/web';
 import { analyticsRoutes } from '@/routes/analytics.routes';
-import { registerChart, registerCharts } from '@/registries/chart-series-web.registry';
-import {
-  CHART_SERIES_PROFILE_SCORE,
-  CHART_SERIES_USER_SCORE,
-} from '@lyvely/analytics-interface/src';
+import { registerCharts } from '@/registries/chart-series-web.registry';
 
 export default () => {
   return {
@@ -34,23 +35,30 @@ export default () => {
       registerCharts([
         {
           type: CHART_SERIES_PROFILE_SCORE,
-          label: 'analytics.templates.score-profile',
-          description: 'analytics.templates.info.score-profile',
+          label: 'analytics.series.score-profile.label',
+          description: 'analytics.series.score-profile.info',
+          initModel() {
+            return new ChartSeriesConfigModel({
+              name: t('analytics.series.score-profile.init-label'),
+              chartType: ChartType.Line,
+            });
+          },
         },
         {
           type: CHART_SERIES_USER_SCORE,
-          label: 'analytics.templates.score-user',
-          description: 'analytics.templates.info.score-user',
+          label: 'analytics.series.score-user.label',
+          description: 'analytics.series.score-user.info',
           condition: () => isMultiUserProfile(useProfileStore().profile),
           form: () => import('./components/forms/ScoreChartSeriesForm.vue'),
         },
         {
           type: CHART_SERIES_TAG_SCORE,
-          label: 'analytics.templates.score-tag',
-          description: 'analytics.templates.info.score-tag',
+          label: 'analytics.series.score-tag.label',
+          description: 'analytics.series.score-tag.info',
           form: () => import('./components/forms/ScoreChartSeriesForm.vue'),
         },
       ]);
+
       registerMenuEntry(MENU_PROFILE_DRAWER, () => ({
         id: 'analytics',
         moduleId: ANALYTICS_MODULE_ID,
@@ -80,11 +88,11 @@ export default () => {
           create: {
             mode: 'modal',
             modelClass: CreateChartModel,
-            component: () => import('./components/modals/EditChartModal.vue'),
+            component: () => import('./components/modals/UpsertChartModal.vue'),
           },
           edit: {
             mode: 'modal',
-            component: () => import('./components/modals/EditChartModal.vue'),
+            component: () => import('./components/modals/UpsertChartModal.vue'),
           },
           /* stream: {
             details: () => import('./components/content-stream/ChartDetails.vue'),

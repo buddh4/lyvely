@@ -1,31 +1,23 @@
 import { Injectable } from '@nestjs/common';
-import { Model, Profile, ProfileScore } from '@lyvely/api';
+import { ProfileContext, ProfileScoreDao } from '@lyvely/api';
+import { runIntervalAggregation } from '../aggregations/interval.aggregation';
+import { ChartSeriesAccumulation } from '@lyvely/analytics-interface';
 import { CalendarInterval } from '@lyvely/dates';
-import { InjectModel } from '@nestjs/mongoose';
-import { createIntervalAggregation } from '../aggregations/interval-aggregation.factory';
-import { ChartSeriesAccumulation, IChartSeriesConfig } from '@lyvely/analytics-interface';
+import type { ChartSeriesKeyValueData } from '@lyvely/analytics-interface';
 
 @Injectable()
 export class ScoreAggregationService {
-  @InjectModel(ProfileScore.name)
-  protected model: Model<ProfileScore>;
+  constructor(private profileScoreDao: ProfileScoreDao) {}
 
-  async aggregateProfileValues(
-    profile: Profile,
-    interval: CalendarInterval,
-    config: IChartSeriesConfig,
-  ): Promise<Array<{ _id: number; value: number }>> {
+  async aggregateProfileScoreSeries(context: ProfileContext): Promise<ChartSeriesKeyValueData[]> {
+    const { profile } = context;
     const $match = {
       oid: profile.oid,
-      pid: profile.id,
+      pid: profile._id,
     };
 
-    /*if (config.uid) {
-      $match['uid'] = assureObjectId(options.uid);
-    }*/
-
-    const pipeline = createIntervalAggregation({
-      interval,
+    return runIntervalAggregation(this.profileScoreDao, {
+      interval: CalendarInterval.Monthly,
       accumulator: ChartSeriesAccumulation.Sum,
       accumulationField: 'score',
       dateField: 'date',
@@ -34,7 +26,5 @@ export class ScoreAggregationService {
       preferences: profile.settings?.calendar,
       endDate: new Date(),
     });
-
-    return this.model.aggregate(pipeline).exec();
   }
 }

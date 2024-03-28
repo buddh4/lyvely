@@ -87,7 +87,8 @@ export class ChartsController
   async getSeriesData(
     @Request() request: ProfileContentRequest<Chart>,
   ): Promise<ChartSeriesDataResponse> {
-    const { content } = request;
-    return new ChartSeriesDataResponse();
+    const { context, content } = request;
+    const result = await this.chartSeriesService.getSeriesData(context, content);
+    return new ChartSeriesDataResponse(result);
   }
 }

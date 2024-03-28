@@ -5,7 +5,7 @@ import {
   ProfilesModule,
 } from '@lyvely/api';
 import { ANALYTICS_MODULE_ID, AnalyticsFeature } from '@lyvely/analytics-interface';
-import { ChartSeriesService, ChartsService } from './services';
+import { ChartSeriesService, ChartsService, ScoreAggregationService } from './services';
 import { ChartsController } from './controllers';
 import { Chart, ChartSchema } from './schemas';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -24,6 +24,12 @@ import { AnalyticsEvents } from './analytics.events';
     ]),
   ],
   controllers: [ChartsController],
-  providers: [AnalyticsEvents, ChartsService, ChartSeriesService, ChartsDao],
+  providers: [
+    AnalyticsEvents,
+    ChartsService,
+    ScoreAggregationService,
+    ChartSeriesService,
+    ChartsDao,
+  ],
 })
 export class AnalyticsModule {}

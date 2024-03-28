@@ -32,6 +32,6 @@ export class QuarterlyIntervalAggregation extends IntervalAggregation {
   }
 
   protected override getSort(): PipelineStage.Sort['$sort'] {
-    return { $year: 1, $quarter: 1 };
+    return { '_id.year': 1, '_id.quarter': 1 };
   }
 }

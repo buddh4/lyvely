@@ -1,16 +1,19 @@
 <script setup lang="ts">
 import {
   ChartModel,
-  ChartCategory,
   useChartsClient,
   ChartSeriesDataResponse,
   isGraphChart,
 } from '@lyvely/analytics-interface';
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, onMounted, type Ref, ref, watch } from 'vue';
+import {
+  getDailyChartAxisCategories,
+  getMonthlyChartAxisCategories,
+  getYearlyChartAxisCategories,
+} from '@/helpers';
 import * as echarts from 'echarts/core';
-import EditGraphSeriesModal from '@/components/modals/EditGraphSeriesModal.vue';
-import { useEditChartSeriesStore } from '@/store';
 import { LyButton, LyIcon } from '@lyvely/ui';
+import { subtractDays, subtractYears, subtractMonths } from '@lyvely/dates';
 
 const props = defineProps<{ model: ChartModel<string> }>();
 
@@ -21,7 +24,20 @@ const hasSeries = computed(() => !!props.model.config?.series?.length);
 const chartData = ref<ChartSeriesDataResponse | undefined>();
 const error = ref<string | undefined>();
 
+type IntervalFilter = '7D' | '1M' | '6M' | '1Y' | '3Y';
+const filters: IntervalFilter[] = ['7D', '1M', '6M', '1Y', '3Y'];
+const axisData: Record<IntervalFilter, string[]> = {
+  '7D': getDailyChartAxisCategories(subtractDays(new Date(), 7), new Date()),
+  '1M': getDailyChartAxisCategories(subtractMonths(new Date(), 1), new Date()),
+  '6M': getMonthlyChartAxisCategories(subtractMonths(new Date(), 6), new Date()),
+  '1Y': getMonthlyChartAxisCategories(subtractYears(new Date(), 1), new Date()),
+  '3Y': getYearlyChartAxisCategories(subtractYears(new Date(), 3), new Date()),
+};
+
+const intervalFilter: Ref<IntervalFilter> = ref('7D');
+
 watch(chartData, renderChart);
+watch(intervalFilter, renderChart);
 
 function renderChart() {
   const chart = props.model;
@@ -39,7 +55,8 @@ function renderChart() {
       data: [],
     },
     xAxis: {
-      data: [],
+      type: 'category',
+      data: axisData[intervalFilter.value],
     },
     yAxis: {},
     series: [],
@@ -95,11 +112,11 @@ function renderChart() {
 }
 
 function addSeries() {
-  useEditChartSeriesStore().addSeries(props.model.id, ChartCategory.Graph);
+  //useEditChartSeriesStore().addSeries(props.model.id, ChartCategory.Graph);
 }
 
 onMounted(async () => {
-  await useChartsClient().getSeriesData(props.model.id);
+  chartData.value = await useChartsClient().getSeriesData(props.model.id);
 });
 </script>
 
@@ -110,8 +127,20 @@ onMounted(async () => {
         <ly-icon name="add-chart" class="w-10" />
       </ly-button>
     </div>
-    <div v-else ref="chartRoot" style="width: 100%; height: 250px"></div>
-    <edit-graph-series-modal :cid="model.id" />
+    <div v-else>
+      <div class="flex gap-1.5 text-xs my-2">
+        <ly-button
+          v-for="filter in filters"
+          :key="filter"
+          class="secondary outlined inline-flex items-center py-0.5 px-1 text-xs"
+          :text="`analytics.filters.${filter}`"
+          :active="intervalFilter === filter"
+          @click="intervalFilter = filter" />
+      </div>
+      <div ref="chartRoot" style="width: 100%; height: 250px"></div>
+    </div>
+
+    <!--edit-graph-series-modal :cid="model.id" / -->
   </div>
 </template>
 

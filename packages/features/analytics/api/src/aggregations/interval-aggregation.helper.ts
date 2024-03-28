@@ -42,8 +42,22 @@ export abstract class IntervalAggregation {
     this.options = options;
   }
 
+  /**
+   * Specifies the group key. This is usually a field name with $ prefix e.g. $year.
+   * @protected
+   */
   protected abstract getGroupId(): PipelineStage.Group['$group']['_id'];
+
+  /**
+   * Specifies the $match filter of the aggregation.
+   * @protected
+   */
   protected abstract getMatchFilter(): PipelineStage.Match['$match'];
+
+  /**
+   * Specifies the $sort of the aggregation.
+   * @protected
+   */
   protected abstract getSort(): PipelineStage.Sort['$sort'];
 
   build(): [PipelineStage.Group, PipelineStage.Match, PipelineStage.Sort] {

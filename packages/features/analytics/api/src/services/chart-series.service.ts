@@ -1,9 +1,10 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import {
   createObjectId,
   ProtectedProfileContext,
   FieldValidationException,
   IntegrityException,
+  ProfileContext,
 } from '@lyvely/api';
 import { Chart, ChartSeriesConfig } from '../schemas';
 import {
@@ -11,17 +12,81 @@ import {
   getChartSeriesDefinition,
   UpdateChartSeriesModel,
   isValidChartTypeForCategory,
+  ChartSeriesData,
+  CHART_SERIES_PROFILE_SCORE,
 } from '@lyvely/analytics-interface';
 import { ChartsDao } from '../daos';
 import type { IChartSeriesConfig } from '@lyvely/analytics-interface';
 import { validate } from 'class-validator';
+import { EventEmitter2 } from 'eventemitter2';
+import { AnalyticsEvents, FetchSeriesDataEvent } from '../analytics.events';
+import { OnEvent } from '@nestjs/event-emitter';
+import { ScoreAggregationService } from './score-aggregation.service';
 
 @Injectable()
 export class ChartSeriesService {
-  protected logger = new Logger(ChartSeriesService.name);
+  private logger = new Logger(ChartSeriesService.name);
 
-  @Inject()
-  protected chartDao: ChartsDao;
+  constructor(
+    private readonly chartDao: ChartsDao,
+    private readonly scoreAggregationService: ScoreAggregationService,
+    private readonly emitter: EventEmitter2,
+  ) {}
+
+  @OnEvent(AnalyticsEvents.EVENT_FETCH_SERIES_DATA)
+  onFetchSeriesDataEvent(event: FetchSeriesDataEvent) {
+    const { context, config } = event;
+
+    if (event.isSeriesType(config, CHART_SERIES_PROFILE_SCORE.id)) {
+      event.setResult(this.scoreAggregationService.aggregateProfileScoreSeries(context));
+    }
+  }
+
+  /**
+   * Assembles all series data for a given chart.
+   *
+   * @param {ProfileContext} context The context object for the chart.
+   * @param {Chart} chart The chart object for which to fetch the series data.
+   * @return {Promise<ChartSeriesData[]>} A promise that resolves to an array of ChartSeriesData objects.
+   */
+  async getSeriesData(
+    context: ProfileContext,
+    chart: Chart,
+  ): Promise<Map<string, ChartSeriesData[]>> {
+    const result = new Map<string, ChartSeriesData[]>();
+    const fetchPromises: Promise<ChartSeriesData[]>[] = [];
+
+    for (const config of chart.config.series) {
+      fetchPromises.push(this.getSeriesDataByConfig(context, chart, config));
+    }
+
+    const allSeriesResults = await Promise.all(fetchPromises);
+    allSeriesResults.forEach((seriesData, index) => {
+      result.set(chart.config.series[index].id, seriesData);
+    });
+
+    return result;
+  }
+
+  async getSeriesDataByConfig(
+    context: ProfileContext,
+    chart: Chart,
+    config: ChartSeriesConfig,
+  ): Promise<ChartSeriesData[]> {
+    const event = new FetchSeriesDataEvent(chart, context, config);
+    this.emitter.emit(AnalyticsEvents.EVENT_FETCH_SERIES_DATA, event);
+    const result = event.getResult();
+    if (result) {
+      return result.catch((e) => {
+        this.logger.error(e, e.stack);
+        return [
+          { type: 'error', data: `An error occurred aggregating Series Type ${config.type}` },
+        ];
+      });
+    } else {
+      return [{ type: 'error', data: `Invalid Series Type ${config.type}` }];
+    }
+  }
 
   /**
    * Adds a series to the given chart by update model.

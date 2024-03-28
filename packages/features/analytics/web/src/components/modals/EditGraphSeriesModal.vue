@@ -10,8 +10,7 @@ export interface IProps {
 
 defineProps<IProps>();
 
-const editGraphStore = useEditChartSeriesStore();
-const { reset, submit, isCreate, showModal, baseModel, baseValidator } = editGraphStore;
+const { reset, submit, isCreate, showModal, baseModel, baseValidator } = useEditChartSeriesStore();
 const graphTypes = getChartDefinitions();
 const title = computed(() =>
   isCreate.value ? 'analytics.graphs.add.title' : 'analytics.graphs.edit.title',

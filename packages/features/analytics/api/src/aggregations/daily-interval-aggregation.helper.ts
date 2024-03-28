@@ -35,7 +35,6 @@ export class DailyIntervalAggregation extends IntervalAggregation {
   }
 
   protected override getSort(): PipelineStage.Sort['$sort'] {
-    const $dateField = `$${this.getDateField()}`;
-    return { $year: 1, [$dateField]: 1 };
+    return { '_id.year': 1, '_id.month': 1, '_id.day': 1 };
   }
 }

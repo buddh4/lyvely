@@ -6,15 +6,20 @@
       "title": "Analytics",
       "description": "If disabled, the Analytics view and content type will be unavailable."
     },
-    "templates": {
+    "series": {
       "none": "None",
-      "score-profile": "Profile Score",
-      "score-user": "User Score",
-      "score-tag": "Tag Score",
-      "info": {
-        "score-profile": "Visualizes the progression of the total profile score over time, allowing you to track and analyze trends in performance or changes in score throughout a specified period.",
-        "score-user": "Visualizes scores grouped by users. You can choose specific users and/or include the currently active user. Optionally you can filter for scores related to certain tags.",
-        "score-tag": "Visualizes scores grouped by tags."
+      "score-profile": {
+        "label": "Profile Score",
+        "init-label": "Score",
+        "info": "Visualizes the progression of the total profile score over time, allowing you to track and analyze trends in performance or changes in score throughout a specified period."
+      },
+      "score-user": {
+        "label": "User Score",
+        "info": "Visualizes scores grouped by users. You can choose specific users and/or include the currently active user. Optionally you can filter for scores related to certain tags."
+      },
+      "score-tag": {
+        "label": "Tag Score",
+        "info": "Visualizes scores grouped by tags."
       }
     },
     "interval": {

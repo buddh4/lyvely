@@ -5,6 +5,7 @@ import {
   BaseModel,
   type PropertiesOf,
   type BaseModelData,
+  PropertyType,
 } from '@lyvely/common';
 import {
   ChartModel,
@@ -33,6 +34,7 @@ export class ChartConfig implements IChartConfig {
   category: ChartCategory;
 
   @Prop({ type: [ChartSeriesConfigSchema] })
+  @PropertyType([ChartSeriesConfig])
   series: ChartSeriesConfig[];
 
   constructor(data?: BaseModelData<ChartConfig>) {
@@ -48,6 +50,7 @@ export class Chart<TConfig extends ChartConfig = ChartConfig>
   implements IChart<TObjectId>
 {
   @Prop({ type: ChartConfigSchema, required: true })
+  @PropertyType(ChartConfig)
   override config: TConfig;
 
   @Prop({ type: ChartStatusSchema })

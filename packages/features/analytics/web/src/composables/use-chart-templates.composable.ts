@@ -31,7 +31,7 @@ export const useChartTemplates = (
         }
         return options;
       },
-      [{ value: '', label: 'analytics.templates.none' }] as ISelectOptions,
+      [{ value: '', label: 'common.none' }] as ISelectOptions,
     ),
   );
 
@@ -57,6 +57,10 @@ export const useChartTemplates = (
         seriesConfigModel.value = new ChartSeriesConfigModel({
           type: seriesTypeDefinition.value!.type.id,
         });
+      }
+
+      if (seriesConfigModel.value) {
+        seriesConfigModel.value.type = seriesTypeId.value;
       }
 
       formValue.value!.series = seriesConfigModel.value;

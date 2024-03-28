@@ -48,8 +48,7 @@ const unwatchFilter = watch(
   { deep: true },
 );
 
-const commonButtonClassNames =
-  'secondary outlined inline-flex items-center text-xs py-1 px-1 text-xs';
+const commonButtonClassNames = 'secondary outlined inline-flex items-center py-1 px-1 text-xs';
 const pillButton = commonButtonClassNames + ' px-2 rounded';
 const roundButton = commonButtonClassNames + ' px-1 rounded';
 

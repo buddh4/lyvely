@@ -97,7 +97,7 @@ export enum ChartSeriesDataTypes {
  * @template T - The type of the chart series. Must extend ChartSeriesDataTypes.
  * @template TData - The type of the data for the chart series.
  */
-export type ChartSeriesData<T extends ChartSeriesDataTypes, TData = any> = {
+export type ChartSeriesData<T extends ChartSeriesDataTypes = any, TData = any> = {
   type: T;
   data: TData;
 };
@@ -107,10 +107,10 @@ export type ChartSeriesData<T extends ChartSeriesDataTypes, TData = any> = {
  *
  * @template TValue The type of the series values (default: number)
  */
-export type ChartSeriesKeyValueData<TValue = number> = ChartSeriesData<
-  ChartSeriesDataTypes.KEYVALUE,
-  Array<{ key: string; value: TValue }>
->;
+export type ChartSeriesKeyValueData<
+  TKey extends number | string | object = number | string | object,
+  TValue = number,
+> = ChartSeriesData<ChartSeriesDataTypes.KEYVALUE, Array<{ key: TKey; value: TValue }>>;
 
 /**
  * Represents a key value data array.

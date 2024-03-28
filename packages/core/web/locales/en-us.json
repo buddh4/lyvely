@@ -90,7 +90,7 @@
     "decline": "Decline",
     "archive": "Archive",
     "back_to_home": "Take me back home",
-    "none": "none",
+    "none": "None",
     "not-set": "Not set",
     "restore": "Add from archive",
     "status": {
@@ -109,7 +109,7 @@
       "interval_plural": "Planned within",
       "max": "Max",
       "optimal": "Optimal",
-      "min": "Min"
+      "min": "Min",
     },
     "filter": {
       "search": "Search",

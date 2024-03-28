@@ -10,7 +10,7 @@ export function subtractByInterval(
     case CalendarTimeInterval.Unscheduled:
       return dateTime(date).toDate();
     case CalendarTimeInterval.Yearly:
-      return subtractYear(date, count);
+      return subtractYears(date, count);
     case CalendarTimeInterval.Quarterly:
       return subtractQuarters(date, count);
     case CalendarTimeInterval.Monthly:
@@ -127,7 +127,7 @@ export function addYear(date: CalendarDate, count: number): Date {
   return dateTime(date).add(count, 'year').toDate();
 }
 
-export function subtractYear(date: CalendarDate, count: number): Date {
+export function subtractYears(date: CalendarDate, count: number): Date {
   return dateTime(date).subtract(count, 'year').toDate();
 }
 

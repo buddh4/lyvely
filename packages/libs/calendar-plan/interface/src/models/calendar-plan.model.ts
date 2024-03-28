@@ -11,7 +11,7 @@ import {
   subtractMonths,
   subtractQuarters,
   subtractWeeks,
-  subtractYear,
+  subtractYears,
   CalendarDate,
   dateTime,
   CalendarInterval,
@@ -120,7 +120,7 @@ export class YearlyPlan extends UnscheduledPlan {
   }
 
   override decrement(date: Date, amount = 1): Date {
-    return subtractYear(date, amount);
+    return subtractYears(date, amount);
   }
 
   override getDefaultWindowSize(): number {
