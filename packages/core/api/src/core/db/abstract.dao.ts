@@ -15,6 +15,7 @@ import {
   ClientSession,
   ProjectionType,
   MongooseBulkWriteOptions,
+  PipelineStage,
 } from 'mongoose';
 import { BaseDocument } from './base.document';
 import { BulkWriteResult, CollationOptions } from 'mongodb';
@@ -857,5 +858,13 @@ export abstract class AbstractDao<T extends BaseDocument, TVersions extends Base
    */
   async deleteOne(filter: FilterQuery<T>, options?: DeleteOptions): Promise<boolean> {
     return (await this.getModel(options).deleteOne(filter, options)).deletedCount === 1;
+  }
+
+  /**
+   * Runs an aggregation pipeline on this model.
+   * @param pipeline
+   */
+  async aggregate<T = any>(pipeline: PipelineStage[]): Promise<T[]> {
+    return this.model.aggregate(pipeline).exec();
   }
 }
