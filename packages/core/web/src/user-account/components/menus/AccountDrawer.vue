@@ -34,7 +34,7 @@ function onMenuItemClick() {
       data-id="btn-account-drawer"
       aria-controls="btn-account-drawer"
       @click="showAccountDrawer = !showAccountDrawer">
-      <user-avatar />
+      <user-avatar data-id="account-drawer-avatar" />
     </button>
   </div>
 

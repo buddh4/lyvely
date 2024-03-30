@@ -1,11 +1,11 @@
 import { StrictEndpoint } from '@/endpoints';
-import { AvatarModel } from '@/avatars';
+import { AvatarModel, IUpdateAvatarClient } from '@/avatars';
 import { AddEmailDto, VerifyEmailDto } from '../dtos';
 import { CalendarPreferences, SetLanguageDto, SetTimezoneDto } from '@/common';
 import { ResendOtp, OtpInfo } from '@/otp';
 import { SettingsUpdateResponse } from '@/settings';
 
-export interface IUserAccountClient {
+export interface IUserAccountClient extends IUpdateAvatarClient {
   addEmail(dto: AddEmailDto): Promise<OtpInfo>;
   setLanguage(dto: SetLanguageDto): Promise<void>;
   setTimezone(dto: SetTimezoneDto): Promise<void>;

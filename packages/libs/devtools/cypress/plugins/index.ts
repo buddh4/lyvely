@@ -83,6 +83,22 @@ async function deleteMails() {
   }
 }
 
+async function deleteUploads() {
+  const absoluteDirectoryPath = path.resolve('./cypress/uploads');
+
+  try {
+    if (fs.existsSync(absoluteDirectoryPath)) {
+      fs.rmSync(absoluteDirectoryPath, { recursive: true, force: true });
+      // Then re-create the directory
+      fs.mkdirSync(absoluteDirectoryPath, { recursive: true });
+    }
+
+    return true;
+  } catch (err) {
+    throw err;
+  }
+}
+
 function getLatestMailContent(): string {
   try {
     const mailDir = path.resolve('./cypress/mails');
@@ -169,6 +185,7 @@ export default (on: any, config: any) => {
     'mails:delete': () => deleteMails(),
     'mails:latest': () => getLatestMailContent(),
     'mails:extract': (regex: string, flags: string) => extractFromLatestMail(regex, flags),
+    'uploads:delete': () => deleteUploads(),
   });
 
   return config;

@@ -6,6 +6,6 @@ export function getLocalUploadFilePath(
   configService: ConfigService<ConfigurationPath>,
   ...path: Array<string>
 ) {
-  const uploadPath = configService.get('file.local.path') || join(process.cwd(), 'uploads');
+  const uploadPath = configService.get('files.local.path') || join(process.cwd(), 'uploads');
   return path?.length ? join(uploadPath, ...path) : uploadPath;
 }

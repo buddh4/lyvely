@@ -3,10 +3,9 @@ import { useAuthStore } from '@/auth/store/auth.store';
 import { useProfileRelationInfosStore } from '@/profiles/stores/profile-relation-infos.store';
 import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
-import 'cropperjs/dist/cropper.min.css';
-import { ProfileType } from '@lyvely/interface';
-import { useAccountAvatarStore } from '@/user-account/stores/upload-account-avatar.store';
+import { AvatarModel, ProfileType, useUserAccountClient } from '@lyvely/interface';
 import { UserAvatar } from '@/users';
+import { UpdateAvatarModal } from '@/avatars';
 
 const authStore = useAuthStore();
 const { user } = storeToRefs(authStore);
@@ -20,48 +19,32 @@ const userProfileCount = profileRelations.profiles.filter(
   (p) => p.type === ProfileType.User,
 ).length;
 
-const accountAvatarStore = useAccountAvatarStore();
+const showUpdateAvatarModal = ref(false);
+const userAccountClient = useUserAccountClient();
 
-const { showCropImageModal, showUpdateAvatarModal } = storeToRefs(accountAvatarStore);
-
-const newAvatarFileInput = ref<HTMLInputElement>();
-
-function selectNewAvatar() {
-  showUpdateAvatarModal.value = false;
-  setTimeout(() => {
-    newAvatarFileInput.value?.click();
-  }, 50);
-}
-
-function processNewAvatar() {
-  if (!newAvatarFileInput.value?.files?.length) return;
-  accountAvatarStore.cropImageFile(newAvatarFileInput.value.files[0]);
-}
-
-async function uploadAvatar() {
-  accountAvatarStore.updateAvatar();
-}
-
-function updateGravatar() {
-  accountAvatarStore.updateGravatar();
+function onAvatarUpdate(avatar: AvatarModel) {
+  if (!user.value) return;
+  user.value.avatar = avatar;
 }
 </script>
 
 <template>
   <div v-if="user" class="flex items-center justify-center">
-    <div class="m-5 relative cursor-pointer" @click="showUpdateAvatarModal = true">
-      <user-avatar class="w-16 h-16 text-xl border border-main" />
+    <div
+      data-id="btn-change-avatar"
+      role="button"
+      class="m-5 relative cursor-pointer"
+      @click="showUpdateAvatarModal = true">
+      <user-avatar data-id="my-account-avatar" class="w-16 h-16 text-xl border border-main" />
       <div
         class="w-6 h-6 absolute flex justify-center bg-shadow bottom-0 right-0 border border-main rounded-full">
         <ly-icon name="camera" class="p-0.5 color-main" />
       </div>
-      <input
-        id="new-avatar"
-        ref="newAvatarFileInput"
-        type="file"
-        class="hidden"
-        @change="processNewAvatar" />
     </div>
+    <update-avatar-modal
+      v-model="showUpdateAvatarModal"
+      :client="userAccountClient"
+      @success="onAvatarUpdate" />
     <div class="py-5 px-2 flex flex-col">
       <h2 class="font-bold text-xl">{{ user.username }}</h2>
       <div class="flex">
@@ -80,20 +63,6 @@ function updateGravatar() {
       </div>
     </div>
   </div>
-
-  <ly-modal v-model="showUpdateAvatarModal" title="avatar.title" :show-footer="false">
-    <div class="flex flex-col items-stretch space-y-1">
-      <ly-button class="primary" text="avatar.upload" @click="selectNewAvatar" />
-      <ly-button class="primary" text="avatar.gravatar" @click="updateGravatar" />
-    </div>
-  </ly-modal>
-
-  <ly-modal v-model="showCropImageModal" width="2xl" title="cropper.title" @submit="uploadAvatar">
-    <div>
-      <img id="imagePreview" src="" alt="Image preview" style="display: block; max-width: 100%" />
-      <ly-alert type="danger" :text="accountAvatarStore?.statusError" class="mt-1" />
-    </div>
-  </ly-modal>
 </template>
 
 <style scoped></style>

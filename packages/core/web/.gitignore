@@ -20,6 +20,7 @@ lerna-debug.log*
 /cypress/integration/examples
 /cypress/screenshots
 /cypress/downloads
+/cypress/uploads/*/**
 /cypress/videos
 
 # IDEs and editors

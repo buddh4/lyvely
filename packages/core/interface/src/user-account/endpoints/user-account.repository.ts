@@ -36,9 +36,7 @@ export const userAccountRepository = {
   },
 
   async updateAvatar(formData: any) {
-    return api.post<'updateAvatar'>(UserAccountEndpoints.UPDATE_AVATAR, formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    });
+    return api.post<'updateAvatar'>(UserAccountEndpoints.UPDATE_AVATAR, formData);
   },
 
   async updateGravatar() {

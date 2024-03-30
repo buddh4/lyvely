@@ -150,7 +150,7 @@ export type ServerConfiguration<ModuleView = Record<string, unknown>> = {
   mongodb?: ILyvelyMongoDBOptions;
   auth?: LyvelyAuthOptions;
   helmet?: HelmetOptions | false;
-  file?: LyvelyFileOptions;
+  files?: LyvelyFileOptions;
   mail?: LyvelyMailOptions;
   features?: IFeatureConfig;
   permissions?: IPermissionConfig;

@@ -6,6 +6,9 @@ import { VisitorMode } from '@lyvely/interface';
 export default {
   appName: 'Lyvely e2e',
   operationMode: 'standalone',
+  files: {
+    local: { path: path.resolve(process.cwd(), '../web/cypress/uploads') },
+  },
   http: {
     host: '127.0.0.1',
     appUrl: 'http://127.0.0.1:3000',
