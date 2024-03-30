@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, ref } from 'vue';
+import {computed, ref, watch} from 'vue';
 import { getContrast, includesUtilityClass } from '@/helpers';
 import randomColor from 'randomcolor';
 import { AvatarData } from '@/interfaces';
@@ -15,27 +15,31 @@ export interface IProps {
 
 const props = defineProps<IProps>();
 
-const guid = computed(() => props.avatar?.guid || props.guid);
-const timestamp = computed(() => props.avatar?.timestamp || props.timestamp);
 
+const imgGuid = computed(() => props.avatar?.guid || props.guid);
+const imgTimestamp = computed(() => props.avatar?.timestamp || props.timestamp);
 const imgError = ref(false);
 
-const url = computed(() => {
+watch(() => props.avatar, () => {
+  imgError.value = false;
+});
+
+const imgUrl = computed(() => {
   return imgError.value
     ? undefined
     : props.url
     ? props.url
-    : guid.value
-    ? createAvatarUrl(guid.value!, timestamp.value)
+    : imgGuid.value
+    ? createAvatarUrl(imgGuid.value!, imgTimestamp.value)
     : undefined;
 });
 
-const initials = computed(() => (url.value ? undefined : props.name?.substring(0, 2)));
+const initials = computed(() => (imgUrl.value ? undefined : props.name?.substring(0, 2)));
 const color = computed(() =>
-  url.value ? undefined : randomColor({ seed: props.name + '_user' + guid.value || '' }),
+    imgUrl.value ? undefined : randomColor({ seed: props.name + '_user' + imgGuid.value || '' }),
 );
 const textClass = computed(() =>
-  !url.value && color.value
+  !imgUrl.value && color.value
     ? getContrast(color.value!) === 'dark'
       ? 'text-slate-900'
       : 'text-slate-100'
@@ -69,14 +73,15 @@ function getImageClassNames(attrClasses: any) {
 
 <template>
   <img
-    v-if="url"
-    :key="url"
+    v-if="imgUrl"
+    v-bind="$attrs"
     :alt="name"
-    :src="url"
+    :src="imgUrl"
     :class="getImageClassNames($attrs.class)"
     @error="imgError = true" />
   <div
     v-else
+    v-bind="$attrs"
     :class="getClassNames($attrs.class, textClass)"
     :style="{ 'background-color': color }">
     {{ initials }}
