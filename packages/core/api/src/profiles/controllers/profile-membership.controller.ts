@@ -1,6 +1,5 @@
-import { Body, ForbiddenException, Post, Req } from '@nestjs/common';
+import { Body, Post, Req } from '@nestjs/common';
 import { ProfileController, ProfileRoleLevel } from '../decorators';
-import { ProfileRequest } from '../types';
 import { UseClassSerializer } from '@/core';
 import {
   API_PROFILE_MEMBERSHIP,
@@ -10,6 +9,7 @@ import {
   UpdateProfileMembershipSettings,
 } from '@lyvely/interface';
 import { ProfileMembershipService } from '../services';
+import type { ProfileMembershipRequest } from '../types';
 
 @ProfileController(API_PROFILE_MEMBERSHIP)
 @UseClassSerializer()
@@ -20,11 +20,10 @@ export class ProfileMembershipController implements ProfileMembershipEndpoint {
   @ProfileRoleLevel(ProfileRelationRole.Member)
   async update(
     @Body() update: UpdateProfileMembershipSettings,
-    @Req() req: ProfileRequest,
+    @Req() req: ProfileMembershipRequest,
   ): Promise<MembershipModel> {
     const membership = req.context.getMembership();
-    if (!membership) throw new ForbiddenException();
     await this.membershipService.updateMembershipInfo(membership, update);
-    return new MembershipModel<any>(membership);
+    return new MembershipModel(membership);
   }
 }

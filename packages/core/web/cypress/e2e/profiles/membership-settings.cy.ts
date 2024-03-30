@@ -5,7 +5,40 @@ describe('Membership Settings', function () {
     cy.task('db:seed');
   });
 
-  /* it('Member can update membership settings', () => {
+  it('Non member can non update membership settings', () => {
+    cy.authenticatedAs('no-member');
+    cy.loadProfile('public-group/stream');
+    cy.getId('content-stream-root').should('exist');
+    cy.getId('profileSettings').should('not.exist');
+
+    cy.loadProfile('public-group/membership');
+    cy.url().should('include', '/403');
+
+    cy.profileApiPost('public-group', '/membership', {
+      displayName: 'ImNoMember',
+      description: 'I tried...',
+    }).then((response) => {
+      expect(response.status).to.eq(403);
+    });
+  });
+
+  it('Visitor can non update membership settings', () => {
+    cy.loadProfile('public-group/stream');
+    cy.getId('content-stream-root').should('exist');
+    cy.getId('profileSettings').should('not.exist');
+
+    cy.loadProfile('public-group/membership');
+    cy.url().should('include', '/403');
+
+    cy.profileApiPost('public-group', '/membership', {
+      displayName: 'ImNoMember',
+      description: 'I tried...',
+    }).then((response) => {
+      expect(response.status).to.eq(403);
+    });
+  });
+
+  it('Member can update membership settings', () => {
     cy.authenticatedAs('member');
     cy.loadProfile('protected-group');
     cy.getId('profileSettings').click();
@@ -18,13 +51,5 @@ describe('Membership Settings', function () {
     cy.contains('.flash-message', 'Saved').click();
     cy.getId('stream').click();
     cy.contains('[data-stream-entry]', 'Buddh4Monk');
-  });*/
-
-  it('Non member can non update membership settings', () => {
-    cy.authenticatedAs('no-member');
-    cy.loadProfile('public-group/stream');
-    cy.getId('content-stream-root').should('exist');
-    cy.getId('profileSettings').should('not.exist');
-    cy.loadProfile('public-group/membership');
   });
 });
