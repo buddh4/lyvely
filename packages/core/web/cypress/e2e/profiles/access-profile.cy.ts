@@ -26,13 +26,13 @@ describe('Test profile access', function () {
   });
 
   it('Visitor can not access protected (user only) group', () => {
-    cy.loadProfile('member-group');
+    cy.loadProfile('protected-group');
     cy.isForbidden();
   });
 
   it('User can access protected profile', () => {
     cy.authenticatedAs('no-member');
-    cy.loadProfile('member-group/stream');
+    cy.loadProfile('protected-group/stream');
     cy.getId('layout-profile').should('exist');
   });
 

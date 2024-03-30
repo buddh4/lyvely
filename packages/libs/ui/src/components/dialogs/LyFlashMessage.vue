@@ -30,7 +30,7 @@ const show = computed({
         v-model="show"
         aria-live="assertive"
         aria-atomic="true"
-        class="left-0 md:left-6 fixed bottom-12 max-w-prose z-50"
+        class="flash-message left-0 md:left-6 fixed bottom-12 max-w-prose z-50"
         :icon="true"
         :text="text"
         :type="type"
@@ -42,10 +42,6 @@ const show = computed({
 </template>
 
 <style scoped>
-.flash-message {
-  z-index: 100;
-}
-
 .fade-leave-active {
   transition: opacity 0.2s ease;
 }

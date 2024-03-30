@@ -81,7 +81,6 @@ export const useProfilePermissionsStore = defineStore('profile-permissions-store
 
     const authStore = useAuthStore();
     const { user } = authStore;
-    const { userRelations, userOrganizationRelations } = currentProfile;
 
     // TODO: How to handle different kinds of relation?
     return useProfilePermissionsManager().verifyEach(
@@ -89,7 +88,7 @@ export const useProfilePermissionsStore = defineStore('profile-permissions-store
       {
         relationStatus: currentProfile.getMembership()?.relationStatus,
         userStatus: user?.status,
-        role: getProfileRelationRole(user, userRelations, userOrganizationRelations),
+        role: currentProfile.role,
       },
       currentProfile as IProfilePermissionObject,
       getPermissionConfig(),

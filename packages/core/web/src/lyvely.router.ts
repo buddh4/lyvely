@@ -65,7 +65,6 @@ function moduleGuards(guards: Array<GuardDefinition>) {
     from: RouteLocationNormalized,
     next: NavigationGuardNext,
   ) => {
-    // Create a recursive function to apply guards sequentially
     async function applyGuards() {
       let nextArg: any;
       for (const guard of guards) {
@@ -80,7 +79,6 @@ function moduleGuards(guards: Array<GuardDefinition>) {
       next();
     }
 
-    // Start applying guards from index 0
     await applyGuards();
   };
 }

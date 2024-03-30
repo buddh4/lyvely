@@ -66,48 +66,49 @@ export const profilesModule = () => {
           text: 'profiles.users.label',
           condition: useProfileStore().isMultiUserProfile(),
         }),
-        {
+        () => ({
           id: 'profileSettings',
           moduleId: PROFILES_MODULE_ID,
           to: { name: 'ProfileSettings' },
+          condition: useProfileStore().isMember(),
           icon: 'settings',
           sortOrder: 4000,
           text: 'profiles.settings.label',
-        },
+        }),
       ]);
 
       // TODO: Permissions
       registerMenuEntries(MENU_PROFILE_SETTINGS, [
         {
-          id: 'ProfileMembership',
+          id: 'profileMembership',
           moduleId: PROFILES_MODULE_ID,
           text: 'profiles.settings.membership.label',
           sortOrder: 1000,
           to: { name: 'ProfileMembershipSettings' },
         },
         {
-          id: 'GeneralProfileSettings',
+          id: 'generalProfileSettings',
           moduleId: PROFILES_MODULE_ID,
           text: 'profiles.settings.general.label',
           sortOrder: 2000,
           to: { name: 'GeneralProfileSettings' },
         },
         {
-          id: 'ProfilePermissions',
+          id: 'profilePermissions',
           moduleId: PROFILES_MODULE_ID,
           text: 'profiles.settings.permissions.label',
           sortOrder: 3000,
           to: { name: 'ProfilePermissionsSettings' },
         },
         {
-          id: 'ProfileFeatureSettings',
+          id: 'profileFeatureSettings',
           moduleId: PROFILES_MODULE_ID,
           text: 'profiles.settings.features.label',
           sortOrder: 4000,
           to: { name: 'ProfileFeaturesSettings' },
         },
         {
-          id: 'ProfilePreferences',
+          id: 'profilePreferences',
           moduleId: PROFILES_MODULE_ID,
           text: 'profiles.settings.preferences.label',
           sortOrder: 5000,

@@ -1,6 +1,7 @@
 import { ProfileContext, ProtectedProfileContext } from '../models';
 import {
   getPermission,
+  getProfileRelationRole,
   getProfileRoleLevel,
   IProfilePermissionSetting,
   isProfilePermission,
@@ -118,21 +119,27 @@ export function useProfileMappings() {
     });
   });
 
-  registerMapping(ProfileContext, ProfileWithRelationsModel<any>, (context) => {
+  const profileContextToProfileWithRelationsModel = (
+    context: ProfileContext,
+  ): ProfileWithRelationsModel<string> => {
     const { relations, profile } = context;
     return new ProfileWithRelationsModel<any>({
       ...profile,
       permissions: sanitizePermissionSettings(context),
       userRelations: relations,
+      role: getProfileRelationRole(context.user, relations),
     });
-  });
+  };
 
-  registerMapping(ProtectedProfileContext, ProfileWithRelationsModel<any>, (context) => {
-    const { relations, profile } = context;
-    return new ProfileWithRelationsModel<any>({
-      ...profile,
-      permissions: sanitizePermissionSettings(context),
-      userRelations: relations,
-    });
-  });
+  registerMapping(
+    ProfileContext,
+    ProfileWithRelationsModel<any>,
+    profileContextToProfileWithRelationsModel,
+  );
+
+  registerMapping(
+    ProtectedProfileContext,
+    ProfileWithRelationsModel<any>,
+    profileContextToProfileWithRelationsModel,
+  );
 }

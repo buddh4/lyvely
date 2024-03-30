@@ -1,12 +1,13 @@
-import { Post, Req, Body, ForbiddenException } from '@nestjs/common';
-import { ProfileController } from '../decorators';
+import { Body, ForbiddenException, Post, Req } from '@nestjs/common';
+import { ProfileController, ProfileRoleLevel } from '../decorators';
 import { ProfileRequest } from '../types';
 import { UseClassSerializer } from '@/core';
 import {
-  MembershipModel,
-  UpdateProfileMembershipSettings,
   API_PROFILE_MEMBERSHIP,
+  MembershipModel,
   ProfileMembershipEndpoint,
+  ProfileRelationRole,
+  UpdateProfileMembershipSettings,
 } from '@lyvely/interface';
 import { ProfileMembershipService } from '../services';
 
@@ -16,6 +17,7 @@ export class ProfileMembershipController implements ProfileMembershipEndpoint {
   constructor(private readonly membershipService: ProfileMembershipService) {}
 
   @Post()
+  @ProfileRoleLevel(ProfileRelationRole.Member)
   async update(
     @Body() update: UpdateProfileMembershipSettings,
     @Req() req: ProfileRequest,

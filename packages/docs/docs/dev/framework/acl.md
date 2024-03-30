@@ -57,17 +57,22 @@ Controller or Controller Function level.
 Endpoints decorated with `@Public` will skip the visitor mode configuration check.
 :::
 
-### The `@Visibility` Decorator
+### The `@ProfileRoleLevel` Decorator
 
-The `@Visibility` decorator can be used to restrict the access to an endpoint by defining one of the following 
-visibility level restrictions:
+The `@ProfileRoleLevel` decorator can be used to restrict the access to an endpoint by defining one of the following 
+profile roles:
 
-| Level            | Description                                                                                    |
-|------------------|------------------------------------------------------------------------------------------------|
-| 0 (Members only) | Restricts the access to members only. (Only for profile controllers)                           |
-| 1 (Organization) | Adds access for profile related organization members. (Only for profile controllers)           |
-| 3 (User)         | Adds access for any authenticated users.                                                       |
-| 4 (Visitors)     | Adds access for non-authenticated visitors, in case the visitor mode configuration is enabled. |
+| Level        | Description                                                     |
+|--------------|-----------------------------------------------------------------|
+| owner        | Restricts the access to the profile owner only.                 |
+| admin        | Adds access for user with admin role.                           |
+| moderator    | Adds access for user with moderator role.                       |
+| member       | Adds access for any profile member.                             |
+| guest        | Adds access for profile guest user.                             |
+| organization | Adds access for any member of the related organization.         |
+| follower     | Adds access for users following the profile.                    |
+| user         | Adds access for any active user of the platform.                |
+| visitor      | Grants access for all users and platform visitors (if enabled). |
 
 
 ### `@Permissions` Decorator

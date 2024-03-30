@@ -1,23 +1,23 @@
 import { Exclude, Expose } from 'class-transformer';
-import { IsOptional, IsString, Length, MaxLength } from 'class-validator';
-import { MIN_USER_NAME_LENGTH, MAX_USER_NAME_LENGTH } from '@/users';
-import { type PropertiesOf } from '@lyvely/common';
+import { IsOptional, IsString, MaxLength, Matches } from 'class-validator';
+import { BaseModel, type PropertiesOf } from '@lyvely/common';
+import { VALID_DISPLAY_NAME_REGEX } from '@/validation';
+import { pick } from 'lodash';
 
 @Exclude()
 export class UpdateProfileMembershipSettings {
   @Expose()
   @IsString()
-  @Length(MIN_USER_NAME_LENGTH, MAX_USER_NAME_LENGTH)
+  @Matches(VALID_DISPLAY_NAME_REGEX)
   displayName: string;
 
   @Expose()
   @IsString()
-  @MaxLength(MAX_USER_NAME_LENGTH)
+  @MaxLength(255)
   @IsOptional()
   description?: string;
 
   constructor(data: PropertiesOf<UpdateProfileMembershipSettings>) {
-    this.displayName = data.displayName;
-    this.description = data.description;
+    BaseModel.init(this, pick(data, ['displayName', 'description']));
   }
 }

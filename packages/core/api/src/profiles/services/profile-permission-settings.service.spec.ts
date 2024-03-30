@@ -144,8 +144,8 @@ describe('ProfilePermissionsService', () => {
       const { profile } = await testDataUtils.createUserAndProfile();
       profile.groups = [
         new ProfileMemberGroup(<ProfileMemberGroup>{
-          _id: getObjectId('test-member-group'),
-          id: getObjectId('test-member-group').toString(),
+          _id: getObjectId('test-protected-group'),
+          id: getObjectId('test-protected-group').toString(),
           name: 'TestGroup',
         }),
       ];
@@ -153,14 +153,14 @@ describe('ProfilePermissionsService', () => {
       const update = await permissionSettingsService.setPermission(profile, {
         id: 'test1',
         role: ProfileRelationRole.Member,
-        groups: [getObjectId('test-member-group'), getObjectId('another-group')],
+        groups: [getObjectId('test-protected-group'), getObjectId('another-group')],
       });
 
       expect(profile.permissions.length).toEqual(1);
       expect(profile.permissions[0]).toEqual({
         id: 'test1',
         role: ProfileRelationRole.Member,
-        groups: [getObjectId('test-member-group')],
+        groups: [getObjectId('test-protected-group')],
       });
       expect(update).toEqual(profile.permissions[0]);
     });

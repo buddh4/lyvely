@@ -6,9 +6,12 @@ import {
   DocumentNotFoundException,
   ForbiddenServiceException,
   UnauthorizedServiceException,
+  verifyProfileVisibilityLevel,
+  verifyProfileRoleLevel,
 } from '@lyvely/interface';
 import { PATH_LOGOUT } from '@/auth';
 import { PATH_403, PATH_404, PATH_500 } from '@/ui';
+import { isNil } from '@lyvely/common';
 
 export const ifIsMultiUserProfile = async (
   to: RouteLocation,
@@ -55,11 +58,20 @@ export const loadProfileGuard = async (
     } else {
       await loadProfileByHandle(to, from, next);
     }
+
+    const userRole = useProfileStore().profile!.role;
+    if (!isNil(to.meta.visibility) && !verifyProfileVisibilityLevel(userRole, to.meta.visibility)) {
+      next(PATH_403);
+    }
+
+    if (!isNil(to.meta.role) && !verifyProfileRoleLevel(userRole, to.meta.role)) {
+      next(PATH_403);
+    }
   } catch (e) {
-    if (e instanceof UnauthorizedServiceException) return next(PATH_LOGOUT);
-    if (e instanceof DocumentNotFoundException) return next(PATH_404);
-    if (e instanceof ForbiddenServiceException) return next(PATH_403);
-    else return next(PATH_500);
+    if (e instanceof UnauthorizedServiceException) next(PATH_LOGOUT);
+    if (e instanceof DocumentNotFoundException) next(PATH_404);
+    if (e instanceof ForbiddenServiceException) next(PATH_403);
+    else next(PATH_500);
   }
 };
 

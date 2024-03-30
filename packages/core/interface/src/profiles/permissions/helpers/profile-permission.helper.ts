@@ -3,12 +3,15 @@ import { ProfileRelationRole, RoleVisibilityLevel } from '@/profiles/relations';
 import { ProfileVisibilityLevel } from '@/profiles/core/interfaces';
 import { IntegrityException } from '@/exceptions';
 import { BasePermissionType, IPermission } from '@/permissions';
+import {vi} from "vitest";
 
 /**
  * Returns the profile visibility level for a given role.
  * @param role
  */
 export function getProfileRoleLevel(role: ProfileRelationRole) {
+  // Just to make sure no invalid role is given
+  role ??= ProfileRelationRole.Visitor;
   const roleLevel = profileRelationRoleHierarchy.indexOf(role);
   if (roleLevel < 0) throw new IntegrityException(`Invalid content user role level ${role}`);
   return roleLevel;
@@ -82,6 +85,21 @@ export function verifyProfileRoleLevel(
   minRole: ProfileRelationRole,
 ) {
   return getProfileRoleLevel(userRole) <= getProfileRoleLevel(minRole);
+}
+
+/**
+ * Verifies if a userRole has a role level equal to or lower than the specified minRole.
+ *
+ * @param {ProfileRelationRole} userRole - The user's current role.
+ * @param {ProfileVisibilityLevel} visibility - The profile visibility role.
+ *
+ * @return {boolean} - True if the userRole has a role level equal to or lower than the minRole, otherwise false.
+ */
+export function verifyProfileVisibilityLevel(
+  userRole: ProfileRelationRole,
+  visibility: ProfileVisibilityLevel,
+) {
+  return getProfileRoleLevel(userRole) <= getProfileRoleLevelByProfileVisibility(visibility);
 }
 
 /**

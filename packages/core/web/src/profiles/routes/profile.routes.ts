@@ -1,9 +1,9 @@
-import { toProfileHome, ifIsMultiUserProfile } from '../guards';
+import { ifIsMultiUserProfile, toProfileHome } from '../guards';
 import { translation } from '@/i18n';
-import { profileRoot, profilePath, profileRoute, profilePathRoute } from './profile-route.helper';
+import { profilePath, profileRoot } from './profile-route.helper';
 import { RouteRecordRaw } from 'vue-router';
 import { LAYOUT_PROFILE, LAYOUT_PROFILE_SETTINGS } from '@/profiles/profile.constants';
-import { PROFILES_MODULE_ID } from '@lyvely/interface';
+import { PROFILES_MODULE_ID, ProfileVisibilityLevel } from '@lyvely/interface';
 
 export default [
   {
@@ -45,6 +45,7 @@ export default [
         path: profilePath('membership'),
         meta: {
           title: translation('profiles.settings.membership.title'),
+          visibility: ProfileVisibilityLevel.Member,
         },
         component: () => import('../views/ProfileMembershipSettings.vue'),
       },

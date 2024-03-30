@@ -7,6 +7,8 @@ import {
   useProfilesClient,
   DocumentNotFoundException,
   isMultiUserProfile as _isMultiUserProfile,
+  ProfileRelationUserInfoModel,
+  ProfileRelationRole,
 } from '@lyvely/interface';
 import { computed, ref, watch } from 'vue';
 import { usePageStore } from '@/ui';
@@ -14,6 +16,7 @@ import { findByPath } from '@lyvely/common';
 import { useLiveStore } from '@/live';
 import { profileRoute } from '@/profiles/routes/profile-route.helper';
 import { LocationQueryRaw } from 'vue-router';
+import { useAuthStore } from '../../auth';
 
 const LATEST_PROFILE_HANDLE = 'latest_profile_handle';
 export const latestProfileHandle = localStorageManager.getStoredValue(LATEST_PROFILE_HANDLE);
@@ -132,16 +135,31 @@ export const useProfileStore = defineStore('profile', () => {
       .map((tag) => tag.name);
   }
 
-  function getMemberUserInfo(uid: string) {
+  function isMember() {
+    if (!profile.value) return false;
+    return !!profile.value.getMembership();
+  }
+
+  function getUserRole() {
+    const { user } = useAuthStore();
+    return profile.value?.role || user ? ProfileRelationRole.User : ProfileRelationRole.Visitor;
+  }
+
+  function getMemberUserInfo(uid: string): ProfileRelationUserInfoModel | undefined {
     const relation = profile.value?.profileRelations.find((realtion) => realtion.uid === uid);
     return relation?.userInfo;
   }
 
-  async function getUserInfo(uid: string) {
-    const userInfo = getMemberUserInfo(uid);
-    return userInfo
-      ? userInfo
-      : useProfileRelationInfosClient().getProfileRelationUserInfo(profile.value!.id, uid);
+  async function getUserInfo(uid: string): Promise<ProfileRelationUserInfoModel | null> {
+    try {
+      const userInfo = getMemberUserInfo(uid);
+      return userInfo
+        ? userInfo
+        : await useProfileRelationInfosClient().getProfileRelationUserInfo(profile.value!.id, uid);
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
   }
 
   function setPageTitle(title: Array<string> | string) {
@@ -202,6 +220,8 @@ export const useProfileStore = defineStore('profile', () => {
     getRoute,
     isMultiUserProfile,
     onSwitchProfile,
+    getUserRole,
+    isMember,
     ...status,
   };
 });

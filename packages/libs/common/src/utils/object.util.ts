@@ -97,6 +97,16 @@ export function getNonNullableProperty<T extends object = any, K extends keyof T
   return hasNonNullableProperty<T, K>(value, property) ? value[property] : defaultValue || null;
 }
 
+/**
+ * Checks if a value is null or undefined
+ *
+ * @param {any} value - The value to be checked
+ * @return {boolean} - true if the value is null or undefined, false otherwise
+ */
+export function isNil(value: any): value is null | undefined {
+  return value === null || value === undefined;
+}
+
 interface FindByPathOptions {
   returnParent?: boolean;
   create?: boolean;
