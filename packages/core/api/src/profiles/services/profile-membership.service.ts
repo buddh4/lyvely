@@ -85,8 +85,10 @@ export class ProfileMembershipService {
 
   async updateAvatar(context: ProfileMembershipContext, file: Express.Multer.File) {
     const avatar = new Avatar();
-    await fs.writeFile(this.getAvatarFilePath(avatar), file.buffer);
+    const oldGuid = context.getMembership().userInfo.guid;
+    await fs.writeFile(this.getAvatarFilePath(avatar.guid), file.buffer);
     await this.updateUserInfoAvatar(context, avatar);
+    this.deleteOldAvatar(oldGuid);
     return avatar;
   }
 
@@ -94,19 +96,28 @@ export class ProfileMembershipService {
     // TODO: Gravatar should only be allowed for verified emails (at the moment the default email is verified)
     const { user } = context;
     const avatar = new Avatar();
+    const oldGuid = context.getMembership().userInfo.guid;
     const gravatarUrl = this.buildGravatarUrl(user);
 
     return new Promise((resolve, reject) => {
       client.get(gravatarUrl, (res) => {
-        const stream = createWriteStream(this.getAvatarFilePath(avatar));
+        const stream = createWriteStream(this.getAvatarFilePath(avatar.guid));
         res.pipe(stream);
         stream.on('error', reject);
         stream.on('finish', async () => {
           await this.updateUserInfoAvatar(context, avatar);
+          this.deleteOldAvatar(oldGuid);
           resolve(avatar);
         });
       });
     });
+  }
+
+  private async deleteOldAvatar(guid: string): Promise<void> {
+    const avatarFilePath = this.getAvatarFilePath(guid);
+    if (existsSync(avatarFilePath)) {
+      await fs.unlink(avatarFilePath);
+    }
   }
 
   private buildGravatarUrl(user: User) {
@@ -120,12 +131,12 @@ export class ProfileMembershipService {
     });
   }
 
-  private getAvatarFilePath(avatar: Avatar) {
+  private getAvatarFilePath(guid: string) {
     const avatarDirPath = getLocalUploadFilePath(this.configService, 'avatars');
     if (!existsSync(avatarDirPath)) {
       mkdirSync(avatarDirPath, { recursive: true });
     }
 
-    return getLocalUploadFilePath(this.configService, 'avatars', avatar.guid);
+    return getLocalUploadFilePath(this.configService, 'avatars', guid);
   }
 }
