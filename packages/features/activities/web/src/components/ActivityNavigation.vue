@@ -12,8 +12,8 @@ let { enabledMenuEntries } = useProfileMenu(MENU_ACTIVITIES);
     <ly-tab-menu-entry
       v-for="entry in enabledMenuEntries"
       :key="entry.id"
-      aria-controls="calendar-plan"
-      :to="entry.to!">
+      :entry="entry"
+      aria-controls="calendar-plan">
       <template #default="{ active }">
         <div class="flex gap-1 items-center justify-center">
           <ly-icon v-if="typeof entry.icon === 'string'" :name="entry.icon" />

@@ -10,9 +10,8 @@ const { enabledMenuEntries } = useMenu(MENU_ACCOUNT_SETTINGS);
     <ly-tab-menu-entry
       v-for="menuEntry in enabledMenuEntries"
       :key="menuEntry.id"
-      aria-controls="calendar-plan"
-      :label="menuEntry.text"
-      :to="menuEntry.to!" />
+      :entry="menuEntry"
+      aria-controls="calendar-plan" />
   </ly-tab-menu>
 </template>
 

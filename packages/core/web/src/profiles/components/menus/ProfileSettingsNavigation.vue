@@ -11,9 +11,8 @@ const { enabledMenuEntries } = useProfileMenu(MENU_PROFILE_SETTINGS);
     <ly-tab-menu-entry
       v-for="menuEntry in enabledMenuEntries"
       :key="menuEntry.id"
-      aria-controls="profile-settings-content"
-      :to="menuEntry.to!"
-      :label="menuEntry.text" />
+      :entry="menuEntry"
+      aria-controls="profile-settings-content" />
   </div>
 </template>
 

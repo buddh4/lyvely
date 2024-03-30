@@ -3,6 +3,7 @@ import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useProfileStore, useUpdateProfileMembershipSettingsStore } from '@/profiles/stores';
 import { I18nModelValidator, t } from '@/i18n';
+import { UserAvatar } from '@lyvely/web';
 
 const profileStore = useProfileStore();
 const updateProfileMembershipSettingsStore = useUpdateProfileMembershipSettingsStore();
@@ -15,8 +16,8 @@ const validator = computed(
   () => updateProfileMembershipSettingsStore.validator as I18nModelValidator,
 );
 
-function updateSettings() {
-  updateProfileMembershipSettingsStore.update();
+async function updateSettings() {
+  await updateProfileMembershipSettingsStore.update();
 }
 </script>
 
@@ -38,6 +39,7 @@ function updateSettings() {
 
     <ly-list-page-section>
       <ly-form-model
+        id="profile-membership-settings"
         v-model="model"
         :validator="validator"
         :status="updateProfileMembershipSettingsStore.status"
@@ -48,17 +50,18 @@ function updateSettings() {
           </div>
           <div
             class="ml-3 bg-highlight w-20 flex justify-center items-center rounded border border-divide cursor-pointer">
-            <ly-user-avatar class="m-3" />
+            <user-avatar class="m-3" />
           </div>
         </div>
 
-        <div class="w-full relative">
-          <ly-textarea property="description" />
-        </div>
+        <ly-textarea property="description" />
       </ly-form-model>
 
       <div class="flex mt-2 md:mt-4">
-        <ly-button class="primary text-xs ml-auto" @click="updateSettings">
+        <ly-button
+          data-id="btn-submit-settings"
+          class="primary text-xs ml-auto"
+          @click="updateSettings">
           {{ t('common.update') }}
         </ly-button>
       </div>
