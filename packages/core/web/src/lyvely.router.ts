@@ -7,11 +7,8 @@ import {
   NavigationGuard,
   RouteLocationNormalized,
   NavigationHookAfter,
-  RouteLocationRaw,
 } from 'vue-router';
 import { sortBySortOrder } from '@lyvely/interface';
-
-//import { useHelpStore } from '@/help/stores/help.store';
 
 const beforeNavigate: GuardDefinition[] = [];
 const guards: GuardDefinition[] = [];
