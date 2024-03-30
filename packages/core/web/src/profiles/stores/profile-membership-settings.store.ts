@@ -1,9 +1,11 @@
 import { defineStore } from 'pinia';
-import { useStatus } from '@/core';
+import { loadingStatus, useStatus } from '@/core';
 import { I18nModelValidator } from '@/i18n';
 import { ref } from 'vue';
 import { UpdateProfileMembershipSettings, useProfileMembershipClient } from '@lyvely/interface';
 import { useProfileStore } from '@/profiles/stores/profile.store';
+import { useFlashStore } from '@/ui';
+import { useAuthStore } from '@/auth';
 
 export const useUpdateProfileMembershipSettingsStore = defineStore(
   'update-profile-membership-settings',
@@ -21,10 +23,20 @@ export const useUpdateProfileMembershipSettingsStore = defineStore(
     const validator = new I18nModelValidator(model.value);
 
     async function update() {
-      await useProfileMembershipClient().update(model.value);
-      membership!.userInfo.description = model.value.description;
-      membership!.userInfo.displayName =
-        model.value.displayName || membership!.userInfo.displayName;
+      await loadingStatus(
+        () => useProfileMembershipClient().update(model.value),
+        status,
+        validator,
+      );
+
+      const userInfo = await profileStore.getUserInfo(useAuthStore().user!.id);
+      if (userInfo && membership) {
+        userInfo.description = membership.userInfo.description = model.value.description;
+        userInfo.displayName = membership.userInfo.displayName =
+          model.value.displayName || membership!.userInfo.displayName;
+      }
+
+      useFlashStore().addSavedFlash();
     }
 
     return {

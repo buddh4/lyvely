@@ -17,7 +17,7 @@ export interface IProfileRelation<TID = string> {
   role?: string;
 }
 /**
- * A role is assigned with a specific content visibility level, which defines the level of visible and accessible content
+ * A role is assigned with a specific visibility level, which defines the level of visible and accessible content
  * of a given role. A role can only view content which a visibility level >= the roles visibility level.
  */
 export enum RoleVisibilityLevel {
