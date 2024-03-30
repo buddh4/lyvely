@@ -1,9 +1,12 @@
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useProfileStore, useUpdateProfileMembershipSettingsStore } from '@/profiles/stores';
 import { I18nModelValidator, t } from '@/i18n';
-import { UserAvatar } from '@lyvely/web';
+import { AvatarModel, useProfileMembershipClient } from '@lyvely/interface';
+import UserRelationAvatar from '../components/avatars/UserRelationAvatar.vue';
+import { UpdateAvatarModal } from '../../avatars';
+import { useAuthStore } from '../../auth';
 
 const profileStore = useProfileStore();
 const updateProfileMembershipSettingsStore = useUpdateProfileMembershipSettingsStore();
@@ -12,6 +15,8 @@ const { model } = storeToRefs(updateProfileMembershipSettingsStore);
 
 const membership = computed(() => profileStore.profile!.getMembership());
 
+const showUpdateAvatarModal = ref(false);
+
 const validator = computed(
   () => updateProfileMembershipSettingsStore.validator as I18nModelValidator,
 );
@@ -19,6 +24,19 @@ const validator = computed(
 async function updateSettings() {
   await updateProfileMembershipSettingsStore.update();
 }
+
+const client = useProfileMembershipClient();
+
+const onAvatarUpdate = (avatar: AvatarModel) => {
+  const { user } = useAuthStore();
+  if (!user || !membership.value) return;
+
+  membership.value.userInfo.guid = avatar.guid;
+  profileStore.getUserInfo(user.id).then((userInfo) => {
+    if (!userInfo) return;
+    userInfo!.guid = avatar.guid;
+  });
+};
 </script>
 
 <template>
@@ -48,10 +66,16 @@ async function updateSettings() {
           <div class="w-full relative">
             <ly-text-field property="displayName" class="mb-0" />
           </div>
-          <div
-            class="ml-3 bg-highlight w-20 flex justify-center items-center rounded border border-divide cursor-pointer">
-            <user-avatar class="m-3" />
-          </div>
+          <button
+            data-id="btn-change-avatar"
+            class="ml-3 bg-highlight w-20 flex justify-center items-center rounded border border-divide cursor-pointer"
+            @click="showUpdateAvatarModal = true">
+            <user-relation-avatar data-id="user-relation-avatar" class="m-3" />
+          </button>
+          <update-avatar-modal
+            v-model="showUpdateAvatarModal"
+            :client="client"
+            @success="onAvatarUpdate" />
         </div>
 
         <ly-textarea property="description" />

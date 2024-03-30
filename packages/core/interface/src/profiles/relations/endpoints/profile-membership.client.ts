@@ -2,7 +2,7 @@ import { IProfileMembershipClient } from './profile-membership.endpoint';
 import { MembershipModel, UpdateProfileMembershipSettings } from '../models';
 import { useSingleton } from '@lyvely/common';
 import profileMembershipRepository from './profile-membership.repository';
-import { IProfileApiRequestOptions, unwrapAndTransformResponse } from '@/endpoints';
+import { IProfileApiRequestOptions, unwrapAndTransformResponse, unwrapResponse } from '@/endpoints';
 
 class ProfileMembershipClient implements IProfileMembershipClient {
   async update(
@@ -13,6 +13,14 @@ class ProfileMembershipClient implements IProfileMembershipClient {
       profileMembershipRepository.update(dto, options),
       MembershipModel,
     );
+  }
+
+  async updateAvatar(formData: any) {
+    return unwrapResponse(profileMembershipRepository.updateAvatar(formData));
+  }
+
+  async updateGravatar() {
+    return unwrapResponse(profileMembershipRepository.updateGravatar());
   }
 }
 

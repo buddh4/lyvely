@@ -8,6 +8,7 @@ import {
   getDefaultLocale,
   MixedProp,
   TObjectId,
+  uniqueGuid,
 } from '@/core';
 import {
   PropertiesOf,
@@ -169,9 +170,7 @@ export class User
     }
 
     if (!this.guid) {
-      this.guid = createHash('sha256')
-        .update(createObjectId().toString() + this.email)
-        .digest('hex');
+      this.guid = uniqueGuid();
     }
 
     this.settings ||= {};

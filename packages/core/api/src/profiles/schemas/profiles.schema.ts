@@ -8,6 +8,7 @@ import {
   MixedProp,
   ObjectIdProp,
   TObjectId,
+  uniqueGuid,
 } from '@/core';
 import { User } from '@/users';
 import { Tag, TagSchema } from './tags.schema';
@@ -29,7 +30,6 @@ import {
   ProfilePermissionSetting,
   ProfilePermissionSettingSchema,
 } from './profile-role-permissions.schema';
-import { createHash } from 'crypto';
 import { ProfileMemberGroup, ProfileMemberGroupSchema } from './profile-member-group.schema';
 
 @Schema({ _id: false })
@@ -184,7 +184,7 @@ export class Profile implements PropertiesOf<ProfileModel<TObjectId>>, IProfileP
     }
 
     if (!this.guid) {
-      this.guid = createHash('sha256').update(createObjectId().toString()).digest('hex');
+      this.guid = uniqueGuid();
     }
 
     this.settings ||= {};

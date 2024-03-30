@@ -12,8 +12,6 @@ export interface IUserAccountClient extends IUpdateAvatarClient {
   setCalendarPreferences(dto: CalendarPreferences): Promise<SettingsUpdateResponse>;
   verifyEmail(dto: VerifyEmailDto): Promise<void>;
   resendOtp(dto: ResendOtp): Promise<OtpInfo | null>;
-  updateAvatar(file: any): Promise<AvatarModel>;
-  updateGravatar(): Promise<AvatarModel>;
 }
 
 export const API_USER_ACCOUNT = 'account';

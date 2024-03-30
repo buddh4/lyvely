@@ -9,6 +9,7 @@ import {
   isMultiUserProfile as _isMultiUserProfile,
   ProfileRelationUserInfoModel,
   ProfileRelationRole,
+  MembershipModel,
 } from '@lyvely/interface';
 import { computed, ref, watch } from 'vue';
 import { usePageStore } from '@/ui';

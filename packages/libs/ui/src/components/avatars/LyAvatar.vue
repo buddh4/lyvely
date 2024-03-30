@@ -24,6 +24,10 @@ watch(() => props.avatar, () => {
   imgError.value = false;
 });
 
+watch(() => props.guid, () => {
+  imgError.value = false;
+});
+
 const imgUrl = computed(() => {
   return imgError.value
     ? undefined

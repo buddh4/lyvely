@@ -16,14 +16,8 @@ import { UserRequest, UserThrottle, UserThrottlerGuard } from '@/users';
 import { UseClassSerializer } from '@/core';
 import { Controller } from '@/common';
 import { UserAccountService, AccountAvatarService } from '../services';
-import { ParseFilePipeBuilder, MimeTypeValidator } from '@/files';
 import { FileInterceptor } from '@nestjs/platform-express';
-
-const avatarPipe = new ParseFilePipeBuilder()
-  .addMaxSizeValidator({ maxSize: 1_000_000 })
-  .addFileTypeValidator({ fileType: 'jpeg' })
-  .addValidator(new MimeTypeValidator({ type: ['image/jpeg'] }))
-  .build();
+import { UploadAvatarPipe } from '@/avatars';
 
 @Controller(API_USER_ACCOUNT)
 @UseClassSerializer()
@@ -71,7 +65,10 @@ export class UserAccountController implements UserAccountEndpoint {
   @UseGuards(UserThrottlerGuard)
   @UserThrottle(20, 60)
   @UseInterceptors(FileInterceptor('file'))
-  async updateAvatar(@UploadedFile(avatarPipe) file: Express.Multer.File, @Req() req: UserRequest) {
+  async updateAvatar(
+    @UploadedFile(UploadAvatarPipe) file: Express.Multer.File,
+    @Req() req: UserRequest,
+  ) {
     const avatar = await this.accountAvatarService.updateAvatar(req.user, file);
     return new AvatarModel(avatar);
   }
