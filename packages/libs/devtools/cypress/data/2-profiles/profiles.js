@@ -59,7 +59,7 @@ module.exports = [
     usage: ['Private'],
     type: 'group'
   }),
-  createProfile('member-group', 'owner', {
+  createProfile('protected-group', 'owner', {
     usage: ['Project'],
     name: 'Protected Group',
     type: 'group',

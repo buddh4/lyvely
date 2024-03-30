@@ -47,4 +47,8 @@ module.exports = [
     tagIds: [getObjectId('tag-health')],
     streamSort: 1702640598021,
   }),
+
+  createMessage('member-protected-first', 'member', 'protected-group', 'Hi all!', {
+    streamSort: 1702640598017,
+  }),
 ];
