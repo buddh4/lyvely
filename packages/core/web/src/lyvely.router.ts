@@ -7,6 +7,7 @@ import {
   NavigationGuard,
   RouteLocationNormalized,
   NavigationHookAfter,
+  RouteLocationRaw,
 } from 'vue-router';
 import { sortBySortOrder } from '@lyvely/interface';
 
@@ -59,27 +60,28 @@ export function registerAfterNavigationHooks(hooks: NavigationHookAfter[]) {
 }
 
 function moduleGuards(guards: Array<GuardDefinition>) {
-  return (
+  return async (
     to: RouteLocationNormalized,
     from: RouteLocationNormalized,
     next: NavigationGuardNext,
   ) => {
     // Create a recursive function to apply guards sequentially
-    function applyGuard(index: number) {
-      if (index < guards.length) {
-        const guard = guards[index];
-        guard.guard(to, from, (n?: any) => {
-          if (n) next(n);
-          else applyGuard(index + 1);
+    async function applyGuards() {
+      let nextArg: any;
+      for (const guard of guards) {
+        await guard.guard(to, from, (n?: any) => {
+          nextArg = n;
         });
-      } else {
-        // All guards have been applied, call the next() function
-        next();
+
+        if (nextArg) {
+          return next(nextArg);
+        }
       }
+      next();
     }
 
     // Start applying guards from index 0
-    applyGuard(0);
+    await applyGuards();
   };
 }
 
