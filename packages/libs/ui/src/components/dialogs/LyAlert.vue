@@ -11,6 +11,7 @@ export interface IProps {
   textSize: TextSize;
   type?: 'danger' | 'info' | 'warning' | 'secondary' | 'success';
   icon?: boolean;
+  fullWidth?: boolean;
   enterActiveClass?: string;
   leaveActiveClass?: string;
   closable?: boolean;
@@ -22,6 +23,7 @@ const props = withDefaults(defineProps<IProps>(), {
   textSize: 'sm',
   type: 'secondary',
   icon: false,
+  fullWidth: true,
   enterActiveClass: 'animate__animated animate__faster animate__fadeIn',
   leaveActiveClass: 'animate__animated animate__faster animate__fadeOut',
   closable: false,
@@ -30,7 +32,8 @@ const props = withDefaults(defineProps<IProps>(), {
 const emit = defineEmits(['update:modelValue']);
 
 const cssClass = computed(() => [
-  'inline-block items-center border px-4 py-3 rounded mb-1 w-full',
+  'inline-block items-center border px-4 py-3 rounded mb-1',
+  { 'w-full': props.fullWidth },
   { 'border-danger text-danger bg-red-50': props.type === 'danger' },
   { 'border-info text-blue-900 bg-blue-50': props.type === 'info' },
   { 'border-warning text-orange-600 bg-orange-50': props.type === 'warning' },
