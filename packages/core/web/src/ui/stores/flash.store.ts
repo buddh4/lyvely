@@ -45,9 +45,27 @@ export const useFlashStore = defineStore('ui-flash', () => {
     });
   }
 
+  function addSuccessFlash(message = 'status.success', options: Partial<IFlashMessage> = {}) {
+    addFlash({
+      message: message || 'status.success',
+      type: 'success',
+      duration: 'medium',
+      ...options,
+    });
+  }
+
   function addErrorFlash(message: string, options: Partial<IFlashMessage> = {}) {
     addFlash({
       message: message,
+      type: 'danger',
+      duration: 'medium',
+      ...options,
+    });
+  }
+
+  function addUnknownErrorFlash(options: Partial<IFlashMessage> = {}) {
+    addFlash({
+      message: 'error.unknown',
       type: 'danger',
       duration: 'medium',
       ...options,
@@ -77,6 +95,8 @@ export const useFlashStore = defineStore('ui-flash', () => {
     isManual,
     addFlash,
     addSavedFlash,
+    addSuccessFlash,
     addErrorFlash,
+    addUnknownErrorFlash,
   };
 });

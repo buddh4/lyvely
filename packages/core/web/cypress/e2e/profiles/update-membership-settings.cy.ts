@@ -48,7 +48,7 @@ describe('Membership Settings', function () {
       .clear()
       .type('Not smart, but good looking.');
     cy.getId('btn-submit-settings').click();
-    cy.contains('.flash-message', 'Saved').click();
+    cy.contains('.flash-message', 'Saved');
     cy.getId('stream').click();
     cy.contains('[data-stream-entry]', 'Buddh4Monk');
   });

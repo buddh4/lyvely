@@ -3,7 +3,7 @@ import {
   GlobalPermissionRole,
   type IGlobalPermission,
   PERMISSIONS_MODULE_ID,
-} from '../../permissions';
+} from '@/permissions';
 
 export const CreateGroupProfilePermission: IGlobalPermission = {
   id: 'create-group-profile',

@@ -861,6 +861,18 @@ export abstract class AbstractDao<T extends BaseDocument, TVersions extends Base
   }
 
   /**
+   * Deletes a document by identity.
+   * @param filter
+   * @param options
+   */
+  async deleteById(id: DocumentIdentity<T>, options?: DeleteOptions): Promise<boolean> {
+    return (
+      (await this.getModel(options).deleteOne({ _id: assureObjectId(id) }, options))
+        .deletedCount === 1
+    );
+  }
+
+  /**
    * Runs an aggregation pipeline on this model.
    * @param pipeline
    */

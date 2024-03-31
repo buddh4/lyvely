@@ -1,4 +1,15 @@
-import { Body, Post, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import {
+  Body,
+  Delete,
+  HttpCode,
+  HttpStatus,
+  Post,
+  Put,
+  Req,
+  UploadedFile,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
 import { ProfileController, ProfileRoleLevel } from '../decorators';
 import { UseClassSerializer } from '@/core';
 import {
@@ -9,6 +20,8 @@ import {
   ProfileMembershipEndpoints,
   ProfileRelationRole,
   UpdateProfileMembershipSettings,
+  UpdateUserRelationsResponse,
+  getProfileRelationRole,
 } from '@lyvely/interface';
 import { ProfileMembershipService } from '../services';
 import type { ProfileMembershipRequest } from '../types';
@@ -22,7 +35,7 @@ import { UploadAvatarPipe } from '@/avatars';
 export class ProfileMembershipController implements ProfileMembershipEndpoint {
   constructor(private readonly membershipService: ProfileMembershipService) {}
 
-  @Post()
+  @Put()
   async update(
     @Body() update: UpdateProfileMembershipSettings,
     @Req() req: ProfileMembershipRequest,
@@ -32,22 +45,36 @@ export class ProfileMembershipController implements ProfileMembershipEndpoint {
     return new MembershipModel(membership);
   }
 
-  @Post(ProfileMembershipEndpoints.UPDATE_AVATAR)
+  @Delete(ProfileMembershipEndpoints.REVOKE)
+  async revoke(@Req() req: ProfileMembershipRequest): Promise<UpdateUserRelationsResponse> {
+    const { context, user } = req;
+    await this.membershipService.revoke(req.context);
+    return new UpdateUserRelationsResponse({
+      userRelations: context.relations,
+      role: getProfileRelationRole(
+        user,
+        context.relations,
+        context.getOrganizationContext()?.relations,
+      ),
+    });
+  }
+
+  @Put(ProfileMembershipEndpoints.UPDATE_AVATAR)
   @UseGuards(UserThrottlerGuard)
   @UserThrottle(20, 60)
   @UseInterceptors(FileInterceptor('file'))
   async updateAvatar(
     @UploadedFile(UploadAvatarPipe) file: Express.Multer.File,
     @Req() req: ProfileMembershipRequest,
-  ) {
+  ): Promise<AvatarModel> {
     const avatar = await this.membershipService.updateAvatar(req.context, file);
     return new AvatarModel(avatar);
   }
 
-  @Post(ProfileMembershipEndpoints.UPDATE_GAVATAR)
+  @Put(ProfileMembershipEndpoints.UPDATE_GAVATAR)
   @UseGuards(UserThrottlerGuard)
   @UserThrottle(20, 60)
-  async updateGravatar(@Req() req: ProfileMembershipRequest) {
+  async updateGravatar(@Req() req: ProfileMembershipRequest): Promise<AvatarModel> {
     const avatar = await this.membershipService.updateGravatar(req.context);
     return new AvatarModel(avatar);
   }

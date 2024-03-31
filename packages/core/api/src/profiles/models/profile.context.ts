@@ -3,6 +3,7 @@ import { IOptionalUserContext, IUserContext, User } from '@/users';
 import { useUserProfileRelationHelper } from '../helpers';
 import { BaseModel, type BaseModelData, PropertyType } from '@lyvely/common';
 import {
+  BaseUserProfileRelationType,
   getProfileRelationRole,
   IPermissionSetting,
   IProfilePermissionData,
@@ -180,6 +181,15 @@ export class ProfileContext<TProfile extends Profile = Profile>
   getMembership(...roles: ProfileMembershipRole[]): Membership | undefined {
     const membership = useUserProfileRelationHelper(this.relations).getMembership(...roles);
     if (membership) return new Membership(membership);
+  }
+
+  /**
+   * Removes user relations of a given type from the profile.
+   *
+   * @param {BaseUserProfileRelationType} type - The type of relations to be removed.
+   */
+  removeRelationsByType(type: BaseUserProfileRelationType) {
+    this.relations = useUserProfileRelationHelper(this.relations).removeRelationsByType(type);
   }
 
   /**

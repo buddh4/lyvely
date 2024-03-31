@@ -49,9 +49,6 @@
         "enable": "Enable",
         "disable": "Disable"
       },
-      "archive": {
-        "confirm": "Do you really want to archive this profile?"
-      },
       "title": "Profile Settings",
       "name": "Name",
       "description": "Description",

@@ -10,6 +10,7 @@ import {
   ProfileRelationUserInfoModel,
   ProfileRelationRole,
   MembershipModel,
+  ProfileRelationDetailsModel,
 } from '@lyvely/interface';
 import { computed, ref, watch } from 'vue';
 import { usePageStore } from '@/ui';
@@ -28,9 +29,16 @@ export const useProfileStore = defineStore('profile', () => {
   const status = useStatus();
   const profileClient = useProfilesClient();
 
+  /** If set to true, the next profile path will fall back to the default profile. **/
+  const resetFlag = ref(false);
+
+  function reset() {
+    resetFlag.value = true;
+  }
+
   async function loadProfileById(pid: string): Promise<ProfileWithRelationsModel> {
     status.setStatus(Status.LOADING);
-    if (isCurrentProfileId(pid)) return Promise.resolve(profile.value!);
+    if (!resetFlag.value && isCurrentProfileId(pid)) return Promise.resolve(profile.value!);
 
     const result = await loadingStatus(profileClient.getProfileById(pid), status);
 
@@ -45,7 +53,7 @@ export const useProfileStore = defineStore('profile', () => {
   async function loadProfile(handle?: string | false): Promise<ProfileWithRelationsModel> {
     status.setStatus(Status.LOADING);
 
-    if (handle !== false) {
+    if (handle !== false && !resetFlag.value) {
       handle ??= latestProfileHandle.getValue() || undefined;
     } else {
       handle = undefined;
@@ -60,6 +68,7 @@ export const useProfileStore = defineStore('profile', () => {
       );
       await setActiveProfile(loadedProfile);
       status.setStatus(Status.SUCCESS);
+      resetFlag.value = false;
     } catch (err: any) {
       // Probably an error with latestProfileHandle e.g. profile got deleted
       if (handle && handle === latestProfileHandle.getValue()) return loadProfile(false);
@@ -163,6 +172,12 @@ export const useProfileStore = defineStore('profile', () => {
     }
   }
 
+  function setUserRelations(relations: ProfileRelationDetailsModel[], role: ProfileRelationRole) {
+    if (!profile.value) return;
+    profile.value.userRelations = relations;
+    profile.value.role = role;
+  }
+
   function setPageTitle(title: Array<string> | string) {
     title = Array.isArray(title) ? title : [title];
 
@@ -222,7 +237,9 @@ export const useProfileStore = defineStore('profile', () => {
     isMultiUserProfile,
     onSwitchProfile,
     getUserRole,
+    setUserRelations,
     isMember,
+    reset,
     ...status,
   };
 });

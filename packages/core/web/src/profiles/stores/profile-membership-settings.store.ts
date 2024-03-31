@@ -2,10 +2,15 @@ import { defineStore } from 'pinia';
 import { loadingStatus, useStatus } from '@/core';
 import { I18nModelValidator } from '@/i18n';
 import { ref } from 'vue';
-import { UpdateProfileMembershipSettings, useProfileMembershipClient } from '@lyvely/interface';
+import {
+  UpdateProfileMembershipSettings,
+  useProfileMembershipClient,
+  verifyProfileVisibilityLevel,
+} from '@lyvely/interface';
 import { useProfileStore } from '@/profiles/stores/profile.store';
 import { useFlashStore } from '@/ui';
 import { useAuthStore } from '@/auth';
+import { useRouter } from 'vue-router';
 
 export const useUpdateProfileMembershipSettingsStore = defineStore(
   'update-profile-membership-settings',
@@ -13,6 +18,8 @@ export const useUpdateProfileMembershipSettingsStore = defineStore(
     const status = useStatus();
     const profileStore = useProfileStore();
     const membership = profileStore.profile!.getMembership();
+    const client = useProfileMembershipClient();
+    const router = useRouter();
     const model = ref(
       new UpdateProfileMembershipSettings({
         displayName: membership?.userInfo.displayName || '',
@@ -23,11 +30,7 @@ export const useUpdateProfileMembershipSettingsStore = defineStore(
     const validator = new I18nModelValidator(model.value);
 
     async function update() {
-      await loadingStatus(
-        () => useProfileMembershipClient().update(model.value),
-        status,
-        validator,
-      );
+      await loadingStatus(() => client.update(model.value), status, validator);
 
       const userInfo = await profileStore.getUserInfo(useAuthStore().user!.id);
       if (userInfo && membership) {
@@ -39,11 +42,30 @@ export const useUpdateProfileMembershipSettingsStore = defineStore(
       useFlashStore().addSavedFlash();
     }
 
+    async function revoke() {
+      try {
+        const { userRelations, role } = await client.revoke();
+        profileStore.setUserRelations(userRelations, role);
+
+        if (!verifyProfileVisibilityLevel(role, profileStore.profile!.visibility)) {
+          profileStore.reset();
+          await router.push({ path: '/' });
+        } else {
+          await router.push(profileStore.getRoute());
+        }
+
+        useFlashStore().addSuccessFlash();
+      } catch (e) {
+        useFlashStore().addUnknownErrorFlash();
+      }
+    }
+
     return {
       status,
       model,
       validator,
       update,
+      revoke,
     };
   },
 );

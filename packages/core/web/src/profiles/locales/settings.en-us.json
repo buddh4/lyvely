@@ -19,7 +19,10 @@
         "headline": "Your Membership",
         "displayName": "Your Display Name",
         "description": "Your Description",
-        "archive": "Archive Membership",
+        "revoke": {
+          "title":  "Revoke Membership",
+          "confirm": "Do you really want to archive this profile?"
+        },
         "your_role": "You are {role} of this profile."
       },
       "permissions": {

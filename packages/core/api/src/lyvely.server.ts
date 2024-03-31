@@ -201,7 +201,7 @@ export class LyvelyServer {
     this.logger.log(`Using cors origin ${cors.origin}`);
 
     cors.credentials = cors.credentials !== false;
-    cors.methods ||= ['GET', 'POST', 'PUT', 'PATCH'];
+    cors.methods ||= ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
     cors.exposedHeaders ||= ['set-cookie'];
 
     cors.allowedHeaders ||= [

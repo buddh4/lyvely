@@ -1,7 +1,6 @@
-import { BasePermissionType, PERMISSIONS_MODULE_ID } from '../../permissions';
-import type { IProfilePermission } from './interfaces';
-import { ProfileRelationRole } from '../relations';
-import { ProfileType } from '../core/interfaces';
+import { BasePermissionType, PERMISSIONS_MODULE_ID } from '@/permissions';
+import type { IProfilePermission } from '../interfaces';
+import { ProfileRelationRole, ProfileType } from '../interfaces';
 
 export const AddProfileToOrganizationPermission: IProfilePermission = {
   id: 'add-profile-to-organization',

@@ -9,21 +9,15 @@ import { UpdateAvatarModal } from '../../avatars';
 import { useAuthStore } from '../../auth';
 
 const profileStore = useProfileStore();
-const updateProfileMembershipSettingsStore = useUpdateProfileMembershipSettingsStore();
+const membershipSettingsStore = useUpdateProfileMembershipSettingsStore();
 
-const { model } = storeToRefs(updateProfileMembershipSettingsStore);
+const { model } = storeToRefs(membershipSettingsStore);
 
 const membership = computed(() => profileStore.profile!.getMembership());
 
 const showUpdateAvatarModal = ref(false);
 
-const validator = computed(
-  () => updateProfileMembershipSettingsStore.validator as I18nModelValidator,
-);
-
-async function updateSettings() {
-  await updateProfileMembershipSettingsStore.update();
-}
+const validator = computed(() => membershipSettingsStore.validator as I18nModelValidator);
 
 const client = useProfileMembershipClient();
 
@@ -60,7 +54,7 @@ const onAvatarUpdate = (avatar: AvatarModel) => {
         id="profile-membership-settings"
         v-model="model"
         :validator="validator"
-        :status="updateProfileMembershipSettingsStore.status"
+        :status="membershipSettingsStore.status"
         label-key="profiles.settings.membership">
         <div class="flex mb-2 flex-row items-stretch">
           <div class="w-full relative">
@@ -85,7 +79,7 @@ const onAvatarUpdate = (avatar: AvatarModel) => {
         <ly-button
           data-id="btn-submit-settings"
           class="primary text-xs ml-auto"
-          @click="updateSettings">
+          @click="membershipSettingsStore.update">
           {{ t('common.update') }}
         </ly-button>
       </div>
@@ -94,10 +88,11 @@ const onAvatarUpdate = (avatar: AvatarModel) => {
     <ly-list-page-section class="bg-red-200 dark:bg-red-950">
       <div class="flex">
         <ly-button
+          data-id="btn-revoke"
           class="danger text-xs ml-auto"
-          :confirm="{ text: 'profiles.settings.archive.confirm' }">
-          {{ t('profiles.settings.membership.archive') }}
-        </ly-button>
+          :confirm="{ text: 'profiles.settings.membership.revoke.confirm' }"
+          text="profiles.settings.membership.revoke.title"
+          @click="membershipSettingsStore.revoke" />
       </div>
     </ly-list-page-section>
   </ly-list-page>

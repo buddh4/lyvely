@@ -47,12 +47,12 @@ const { isAllowed: canCreateOrganization } = useGlobalPermissions(
 // TODO: (permissions) "Can create profile" policy
 </script>
 <template>
-  <ul v-if="statusError" class="divide-y divide-divide w-64 md:w-96">
+  <ul v-if="statusError" data-id="profile-relations" class="divide-y divide-divide w-64 md:w-96">
     <li class="py-3 px-4">
       <ly-alert type="danger" :text="statusError" />
     </li>
   </ul>
-  <ul v-else class="divide-y divide-divide w-80 md:w-96">
+  <ul v-else data-id="profile-relations" class="divide-y divide-divide w-80 md:w-96">
     <li v-if="canCreateOrganization || organizations.length" class="py-3 px-4">
       <div class="flex items-center">
         <span class="text-sm font-bold">
