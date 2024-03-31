@@ -27,7 +27,8 @@ export function unwrapAndTransformResponse<
   });
 }
 
-export function profileApiPrefix(prefix: string) {
+export function profileApiPrefix(prefix?: string) {
+  if (!prefix) return 'profiles/:pid';
   prefix = prefix.startsWith('/') ? prefix : `/${prefix}`;
   return `profiles/:pid${prefix}`;
 }
