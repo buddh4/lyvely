@@ -10,7 +10,7 @@ const createProfile = (idSeed, ownerSeed, options) => {
     ownerId: getObjectId(ownerSeed),
     name: options.name || idSeed,
     handle: options.handle || slugify(idSeed),
-    guid: createHash('md5').update(idSeed).digest('hex'),
+    guid: createHash('sha256').update(options.name || idSeed,).digest('hex'),
     locale: options.locale || 'en-US',
     usage: options.usage || [],
     archived: options.usage ?? false,

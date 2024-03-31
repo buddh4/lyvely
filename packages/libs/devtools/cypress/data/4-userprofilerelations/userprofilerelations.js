@@ -24,11 +24,17 @@ module.exports = [
   createProfileRelationData('owner', 'public-group', { role: 'owner' }),
   createProfileRelationData('owner', 'private-group', { role: 'owner' }),
   createProfileRelationData('owner', 'protected-group', { role: 'owner' }),
-  createProfileRelationData('admin', 'admin-profile', { role: 'owner' }),
+
+  createProfileRelationData('admin', 'admin-profile', { role: 'admin' }),
+  createProfileRelationData('admin', 'public-group', { role: 'admin' }),
+  createProfileRelationData('admin', 'private-group', { role: 'admin' }),
+  createProfileRelationData('admin', 'protected-group', { role: 'admin' }),
+
   createProfileRelationData('member', 'private-group'),
   createProfileRelationData('member', 'public-group'),
   createProfileRelationData('member', 'protected-group'),
   createProfileRelationData('member', 'public-organization'),
+
   createProfileRelationData('moderator', 'private-group', { role: 'moderator' }),
   createProfileRelationData('moderator', 'public-group', { role: 'moderator' }),
   createProfileRelationData('moderator', 'protected-group', { role: 'moderator' }),

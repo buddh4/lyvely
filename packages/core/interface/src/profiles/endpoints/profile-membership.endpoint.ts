@@ -4,9 +4,9 @@ import {
   UpdateProfileMembershipSettings,
   UpdateUserRelationsResponse,
 } from '../models';
-import type { IUpdateAvatarClient } from '@/avatars';
+import type { IUpdateAvatarClient, IUpdateGravatarClient } from '@/avatars';
 
-export interface IProfileMembershipClient extends IUpdateAvatarClient {
+export interface IProfileMembershipClient extends IUpdateAvatarClient, IUpdateGravatarClient {
   update(update: UpdateProfileMembershipSettings): Promise<MembershipModel>;
   revoke(): Promise<UpdateUserRelationsResponse>;
 }

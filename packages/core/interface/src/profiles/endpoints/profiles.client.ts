@@ -2,7 +2,7 @@ import { IProfilesClient } from './profiles.endpoint';
 import { CreateProfileModel, UpdateProfileModel, ProfileWithRelationsModel } from '../models';
 import { useSingleton } from '@lyvely/common';
 import profileRepository from './profiles.repository';
-import { unwrapAndTransformResponse } from '@/endpoints';
+import { unwrapAndTransformResponse, unwrapResponse } from '@/endpoints';
 import { SettingsUpdateResponse } from '@/settings';
 import { CalendarPreferences } from '@/common';
 
@@ -40,6 +40,10 @@ class ProfilesClient implements IProfilesClient {
       profileRepository.updateProfile(model),
       ProfileWithRelationsModel,
     );
+  }
+
+  async updateAvatar(formData: any) {
+    return unwrapResponse(profileRepository.updateAvatar(formData));
   }
 
   async setCalendarPreferences(dto: CalendarPreferences): Promise<SettingsUpdateResponse> {

@@ -1,17 +1,21 @@
 import { registerAfterNavigationHooks, registerGuards } from '@/lyvely.router';
 import routes from './routes/profile.routes';
 import { loadProfileGuard, setProfilePageTitleGuard } from './guards';
-import { registerMenuEntries, registerComponentStackEntries, registerLayouts } from '@lyvely/ui';
+import { registerComponentStackEntries, registerLayouts, registerMenuEntries } from '@lyvely/ui';
 import {
-  MENU_PROFILE_DRAWER,
-  MENU_PROFILE_SETTINGS,
   LAYOUT_PROFILE,
   LAYOUT_PROFILE_FULL,
-  LAYOUT_PROFILE_XL,
   LAYOUT_PROFILE_SETTINGS,
+  LAYOUT_PROFILE_XL,
+  MENU_PROFILE_DRAWER,
+  MENU_PROFILE_SETTINGS,
   STACK_PROFILE_LAYOUT,
 } from '@/profiles/profile.constants';
-import { PROFILES_MODULE_ID, useApiRequestInterceptor } from '@lyvely/interface';
+import {
+  ProfileRelationRole,
+  PROFILES_MODULE_ID,
+  useApiRequestInterceptor,
+} from '@lyvely/interface';
 import { useProfileStore } from '@/profiles/stores';
 import { IModule } from '@/core';
 import { profileIdInterceptor } from './interceptors';
@@ -79,41 +83,46 @@ export const profilesModule = () => {
 
       // TODO: Permissions
       registerMenuEntries(MENU_PROFILE_SETTINGS, [
-        {
+        () => ({
           id: 'profileMembership',
           moduleId: PROFILES_MODULE_ID,
           text: 'profiles.settings.membership.label',
+          condition: useProfileStore().isMember(),
           sortOrder: 1000,
           to: { name: 'ProfileMembershipSettings' },
-        },
-        {
+        }),
+        () => ({
           id: 'generalProfileSettings',
           moduleId: PROFILES_MODULE_ID,
           text: 'profiles.settings.general.label',
+          condition: useProfileStore().verifyRoleLevel(ProfileRelationRole.Admin),
           sortOrder: 2000,
           to: { name: 'GeneralProfileSettings' },
-        },
-        {
+        }),
+        () => ({
           id: 'profilePermissions',
           moduleId: PROFILES_MODULE_ID,
           text: 'profiles.settings.permissions.label',
+          condition: useProfileStore().verifyRoleLevel(ProfileRelationRole.Admin),
           sortOrder: 3000,
           to: { name: 'ProfilePermissionsSettings' },
-        },
-        {
+        }),
+        () => ({
           id: 'profileFeatureSettings',
           moduleId: PROFILES_MODULE_ID,
           text: 'profiles.settings.features.label',
+          condition: useProfileStore().verifyRoleLevel(ProfileRelationRole.Admin),
           sortOrder: 4000,
           to: { name: 'ProfileFeaturesSettings' },
-        },
-        {
+        }),
+        () => ({
           id: 'profilePreferences',
           moduleId: PROFILES_MODULE_ID,
           text: 'profiles.settings.preferences.label',
+          condition: useProfileStore().verifyRoleLevel(ProfileRelationRole.Admin),
           sortOrder: 5000,
           to: { name: 'ProfilePreferences' },
-        },
+        }),
       ]);
     },
   } as IModule;

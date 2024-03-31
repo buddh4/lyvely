@@ -6,15 +6,12 @@ describe('User Account Avatar', function () {
     cy.task('uploads:delete');
   });
 
-  it('User can update his avatar', () => {
-    cy.authenticatedAs('member');
-    cy.loadProfile('protected-group');
-    cy.getId('btn-account-drawer').click();
-    cy.getId('my-account').click();
+  it('Admin can update profile avatar', () => {
+    cy.authenticatedAs('admin');
+    cy.loadProfile('protected-group/general');
     cy.getId('btn-change-avatar').click();
     cy.getId('avatar-input').selectFile('cypress/files/avatar.jpeg', { force: true });
     cy.getId('btn-modal-submit').click();
-    cy.get('img[data-id="my-account-avatar"]').should('exist');
-    cy.get('img[data-id="account-drawer-avatar"]').should('exist');
+    cy.get('img[data-id="active-profile-avatar"]').should('exist');
   });
 });

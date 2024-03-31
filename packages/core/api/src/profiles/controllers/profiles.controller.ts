@@ -7,17 +7,21 @@ import {
   Put,
   Req,
   Request,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { UseClassSerializer } from '@/core';
 import { Controller } from '@/common';
 import { assignRawDataTo, mapType } from '@lyvely/common';
 import {
   API_PROFILES,
+  AvatarModel,
   CalendarPreferences,
   CreateProfileModel,
   FieldValidationException,
   ProfileMembershipRole,
+  ProfileRelationRole,
   ProfilesEndpoint,
   ProfilesEndpoints,
   ProfileType,
@@ -25,14 +29,16 @@ import {
   SettingsUpdateResponse,
   UpdateProfileModel,
 } from '@lyvely/interface';
-import { ProfileRelationsService, ProfilesService } from '../services';
+import { ProfileAvatarService, ProfileRelationsService, ProfilesService } from '../services';
 import { ProfileContext, ProtectedProfileContext } from '../models';
-import { OptionalUserRequest, UserRequest } from '@/users';
+import { OptionalUserRequest, UserRequest, UserThrottle, UserThrottlerGuard } from '@/users';
 import { ProfileVisibilityPolicy } from '../policies';
 import { InjectPolicy } from '@/policies';
-import { ProfileRequest, ProtectedProfileRequest } from '../types';
-import { ProfileEndpoint } from '../decorators';
+import { ProfileMembershipRequest, ProfileRequest, ProtectedProfileRequest } from '../types';
+import { ProfileEndpoint, ProfileRoleLevel } from '../decorators';
 import { ProfileGuard } from '../guards';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { UploadAvatarPipe } from '@/avatars';
 
 /**
  * Implementation of the ProfilesEndpoint service
@@ -47,10 +53,11 @@ import { ProfileGuard } from '../guards';
 @UseClassSerializer()
 export class ProfilesController implements ProfilesEndpoint {
   constructor(
-    private profilesService: ProfilesService,
-    private profilesRelationsService: ProfileRelationsService,
+    private readonly profilesService: ProfilesService,
+    private readonly profileAvatarService: ProfileAvatarService,
+    private readonly profilesRelationsService: ProfileRelationsService,
     @InjectPolicy(ProfileVisibilityPolicy.name)
-    private profileVisibilityPolicy: ProfileVisibilityPolicy,
+    private readonly profileVisibilityPolicy: ProfileVisibilityPolicy,
   ) {}
 
   @Post()
@@ -90,8 +97,8 @@ export class ProfilesController implements ProfilesEndpoint {
     return this.mapAndPopulateProfileWithRelations(context);
   }
 
-  @UseGuards(ProfileGuard)
   @Get(ProfilesEndpoints.BY_HANDLE(':handle'))
+  @UseGuards(ProfileGuard)
   async getProfileByHandle(
     @Param('handle') handle: string,
     @Request() req: ProfileRequest,
@@ -100,30 +107,41 @@ export class ProfilesController implements ProfilesEndpoint {
     return this.mapAndPopulateProfileWithRelations(context);
   }
 
-  @ProfileEndpoint()
   @Get(':pid')
+  @ProfileEndpoint()
   async getProfileById(@Request() req: ProfileRequest): Promise<ProfileWithRelationsModel> {
     const { context } = req;
     return this.mapAndPopulateProfileWithRelations(context);
   }
 
+  @Put(':pid')
   @ProfileEndpoint()
-  @Put()
+  @ProfileRoleLevel(ProfileRelationRole.Admin)
   async update(
     @Body() model: UpdateProfileModel,
     @Request() req: ProtectedProfileRequest,
   ): Promise<ProfileWithRelationsModel> {
     const { profile, context } = req;
-
-    // TODO: Use ACL
-    if (!context.getMembership(ProfileMembershipRole.Admin, ProfileMembershipRole.Owner)) {
-      throw new ForbiddenException();
-    }
-
     await this.profilesService.updateProfile(profile, model);
     return this.mapAndPopulateProfileWithRelations(context);
   }
 
+  @Put(ProfilesEndpoints.UPDATE_AVATAR)
+  @ProfileEndpoint()
+  @ProfileRoleLevel(ProfileRelationRole.Admin)
+  @UseGuards(UserThrottlerGuard)
+  @UserThrottle(20, 60)
+  @UseInterceptors(FileInterceptor('file'))
+  async updateAvatar(
+    @UploadedFile(UploadAvatarPipe) file: Express.Multer.File,
+    @Req() req: ProfileMembershipRequest,
+  ): Promise<AvatarModel> {
+    const avatar = await this.profileAvatarService.updateAvatar(req.context, file);
+    return new AvatarModel(avatar);
+  }
+
+  @ProfileEndpoint()
+  @ProfileRoleLevel(ProfileRelationRole.Admin)
   @ProfileEndpoint()
   @Post(ProfilesEndpoints.SET_CALENDAR_PREFERENCES)
   async setCalendarPreferences(

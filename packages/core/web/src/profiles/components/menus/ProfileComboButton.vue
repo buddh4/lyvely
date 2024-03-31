@@ -50,7 +50,7 @@ const progressStyle = computed(() => {
           aria-controls="sidebar"
           @click="toggleSidebar">
           <div class="border border-divide px-3 p-2 flex justify-center items-center gap-2">
-            <profile-avatar />
+            <profile-avatar data-id="active-profile-avatar" />
 
             <div class="flex flex-col">
               <div class="flex justify-center items-center text-xs">

@@ -23,7 +23,7 @@ import {
   UpdateUserRelationsResponse,
   getProfileRelationRole,
 } from '@lyvely/interface';
-import { ProfileMembershipService } from '../services';
+import { ProfileMembershipAvatarService, ProfileMembershipService } from '../services';
 import type { ProfileMembershipRequest } from '../types';
 import { UserThrottle, UserThrottlerGuard } from '@/users';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -33,7 +33,10 @@ import { UploadAvatarPipe } from '@/avatars';
 @ProfileRoleLevel(ProfileRelationRole.Member)
 @UseClassSerializer()
 export class ProfileMembershipController implements ProfileMembershipEndpoint {
-  constructor(private readonly membershipService: ProfileMembershipService) {}
+  constructor(
+    private readonly membershipService: ProfileMembershipService,
+    private readonly membershipAvatarService: ProfileMembershipAvatarService,
+  ) {}
 
   @Put()
   async update(
@@ -67,7 +70,7 @@ export class ProfileMembershipController implements ProfileMembershipEndpoint {
     @UploadedFile(UploadAvatarPipe) file: Express.Multer.File,
     @Req() req: ProfileMembershipRequest,
   ): Promise<AvatarModel> {
-    const avatar = await this.membershipService.updateAvatar(req.context, file);
+    const avatar = await this.membershipAvatarService.updateAvatar(req.context, file);
     return new AvatarModel(avatar);
   }
 
@@ -75,7 +78,7 @@ export class ProfileMembershipController implements ProfileMembershipEndpoint {
   @UseGuards(UserThrottlerGuard)
   @UserThrottle(20, 60)
   async updateGravatar(@Req() req: ProfileMembershipRequest): Promise<AvatarModel> {
-    const avatar = await this.membershipService.updateGravatar(req.context);
+    const avatar = await this.membershipAvatarService.updateGravatar(req.context);
     return new AvatarModel(avatar);
   }
 }

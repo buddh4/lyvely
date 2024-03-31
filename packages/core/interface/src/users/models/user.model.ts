@@ -14,7 +14,6 @@ import {
   IPermissionObject,
   IPermissionSetting,
 } from '@/permissions/interfaces';
-import { Document } from 'postcss';
 
 @Exclude()
 export class UserEmailModel {

@@ -40,7 +40,7 @@ export const useFlashStore = defineStore('ui-flash', () => {
     addFlash({
       message: message || 'common.saved',
       type: 'success',
-      duration: 'medium',
+      duration: 'short',
       ...options,
     });
   }
@@ -49,7 +49,7 @@ export const useFlashStore = defineStore('ui-flash', () => {
     addFlash({
       message: message || 'status.success',
       type: 'success',
-      duration: 'medium',
+      duration: 'short',
       ...options,
     });
   }

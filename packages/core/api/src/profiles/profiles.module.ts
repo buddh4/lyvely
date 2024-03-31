@@ -23,6 +23,8 @@ import {
   ProfileRelationsService,
   ProfileSettingsRegistry,
   ProfilePermissionSettingsService,
+  ProfileMembershipAvatarService,
+  ProfileAvatarService,
 } from './services';
 import {
   ProfilesController,
@@ -53,6 +55,7 @@ import { Inject, Injectable, OnModuleInit, Scope, Type } from '@nestjs/common';
 import { DynamicModule } from '@nestjs/common/interfaces/modules/dynamic-module.interface';
 import { uniqueId } from 'lodash';
 import { ProfileScoreTypeRegistry } from '@/profiles/registires';
+import { AvatarsModule } from '../avatars';
 
 const ProfileModel = MongooseModule.forFeature([
   {
@@ -88,7 +91,7 @@ useProfileMappings();
     CreateGroupProfilePermission,
     CreateUserProfilePermission,
   ],
-  imports: [CoreModule, UsersModule, PoliciesModule, ProfileModel],
+  imports: [CoreModule, UsersModule, PoliciesModule, AvatarsModule, ProfileModel],
   providers: [
     ProfileDao,
     ProfileScoreTypeRegistry,
@@ -98,7 +101,9 @@ useProfileMappings();
     UserProfileRelationsDao,
     MembershipsDao,
     ProfileMembershipService,
+    ProfileMembershipAvatarService,
     ProfilesService,
+    ProfileAvatarService,
     ProfileTagsService,
     ProfileUrlGenerator,
     ProfileFeaturesService,

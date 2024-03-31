@@ -9,8 +9,8 @@ import {
   isMultiUserProfile as _isMultiUserProfile,
   ProfileRelationUserInfoModel,
   ProfileRelationRole,
-  MembershipModel,
   ProfileRelationDetailsModel,
+  verifyProfileRoleLevel,
 } from '@lyvely/interface';
 import { computed, ref, watch } from 'vue';
 import { usePageStore } from '@/ui';
@@ -150,6 +150,11 @@ export const useProfileStore = defineStore('profile', () => {
     return !!profile.value.getMembership();
   }
 
+  function verifyRoleLevel(role: ProfileRelationRole) {
+    if (!profile.value) return false;
+    return verifyProfileRoleLevel(profile.value.role, role);
+  }
+
   function getUserRole() {
     const { user } = useAuthStore();
     return profile.value?.role || user ? ProfileRelationRole.User : ProfileRelationRole.Visitor;
@@ -239,6 +244,7 @@ export const useProfileStore = defineStore('profile', () => {
     getUserRole,
     setUserRelations,
     isMember,
+    verifyRoleLevel,
     reset,
     ...status,
   };

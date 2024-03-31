@@ -11,7 +11,11 @@ export default {
   },
 
   async updateProfile(model: UpdateProfileModel) {
-    return api.put<'update'>(model);
+    return api.put<'update'>(ProfilesEndpoints.UPDATE, model);
+  },
+
+  async updateAvatar(formData: any) {
+    return api.put<'updateAvatar'>(ProfilesEndpoints.UPDATE_AVATAR, formData);
   },
 
   async getProfileById(id: string) {

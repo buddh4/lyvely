@@ -28,6 +28,7 @@
       "always",
       [
         "api",
+        "avatars",
         "analytics",
         "activities",
         "mixed",

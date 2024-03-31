@@ -1,59 +1,46 @@
 import { Injectable } from '@nestjs/common';
 import { User, UserDao } from '@/users';
-import { Avatar } from '@/avatars';
-import { ConfigService } from '@nestjs/config';
-import fs from 'fs/promises';
-import { createWriteStream, existsSync, mkdirSync } from 'fs';
-import crypto from 'crypto';
-import { getLocalUploadFilePath } from '@/files';
-import client from 'https';
-import { ConfigurationPath } from '@/config';
-import { IntegrityException } from '@lyvely/interface';
-import { isGuid } from '@lyvely/common';
+import { Avatar, AvatarService, GravatarService } from '@/avatars';
 
+/**
+ * AccountAvatarService is responsible for updating avatars for user accounts.
+ *
+ * @class
+ * @public
+ * @constructor
+ * @param {UserDao} userDao - The data access object for user.
+ * @param {AvatarService} avatarService - The service for managing avatars.
+ * @param {GravatarService} gravatarService - The service for managing gravatars.
+ */
 @Injectable()
 export class AccountAvatarService {
-  constructor(private userDao: UserDao, private configService: ConfigService<ConfigurationPath>) {}
+  constructor(
+    private userDao: UserDao,
+    private avatarService: AvatarService,
+    private gravatarService: GravatarService,
+  ) {}
 
+  /**
+   * Updates the avatar of a user.
+   *
+   * @param {User} user - The user for whom to update the avatar.
+   * @param {Express.Multer.File} file - The file containing the new avatar image.
+   * @returns {Promise<Avatar>} - The newly*/
   async updateAvatar(user: User, file: Express.Multer.File) {
-    if (!isGuid(user.guid)) throw new IntegrityException(`Invalid user guid for user '${user.id}'`);
-
-    await fs.writeFile(this.getAccountAvatarFilePath(user), file.buffer);
-    const avatar = new Avatar(user.guid);
-    await this.userDao.updateOneSetById(user, { avatar: new Avatar(user.guid) });
+    const avatar = await this.avatarService.createAvatar(file, user.guid);
+    await this.userDao.updateOneSetById(user, { avatar });
     return avatar;
   }
 
+  /**
+   * Updates the user Avatar by fetching his Gravatar.
+   *
+   * @param {User} user - The user object whose Gravatar should be updated.
+   * @return {Promise<Avatar>} - A promise that resolves with the updated avatar.
+   */
   async updateGravatar(user: User): Promise<Avatar> {
-    if (!isGuid(user.guid)) throw new IntegrityException(`Invalid user guid for user '${user.id}'`);
-
-    const hash = crypto.createHash('md5').update(user.email.toLowerCase()).digest('hex');
-    const gravatarUrl = `https://s.gravatar.com/avatar/${hash}?s=64`;
-
-    return new Promise((resolve, reject) => {
-      client.get(gravatarUrl, (res) => {
-        const stream = createWriteStream(this.getAccountAvatarFilePath(user));
-        res.pipe(stream);
-        stream.on('error', reject);
-        stream.on('finish', async () => {
-          const avatar = new Avatar(user.guid);
-          await this.userDao.updateOneSetById(user, { avatar: new Avatar(user.guid) });
-          resolve(avatar);
-        });
-      });
-    });
-  }
-
-  private getAccountAvatarFilePath(user: User) {
-    // TODO: Move to avatar module
-    this.ensureAvatarDirExists();
-    return getLocalUploadFilePath(this.configService, 'avatars', user.guid);
-  }
-
-  private ensureAvatarDirExists(): void {
-    const avatarDirPath = getLocalUploadFilePath(this.configService, 'avatars');
-    if (!existsSync(avatarDirPath)) {
-      mkdirSync(avatarDirPath, { recursive: true });
-    }
+    const avatar = await this.gravatarService.createAvatar(user.email, user.guid);
+    await this.userDao.updateOneSetById(user, { avatar });
+    return avatar;
   }
 }

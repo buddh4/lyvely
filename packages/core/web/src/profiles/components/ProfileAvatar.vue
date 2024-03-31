@@ -4,7 +4,7 @@ import { computed } from 'vue';
 import { ProfileModel } from '@lyvely/interface';
 
 export interface IProps {
-  profile?: Pick<ProfileModel, 'id' | 'guid' | 'name'>;
+  profile?: Pick<ProfileModel, 'id' | 'guid' | 'name' | 'avatar'>;
 }
 
 const props = defineProps<IProps>();
@@ -13,7 +13,7 @@ const profile = computed(() => props.profile || useProfileStore().profile);
 </script>
 
 <template>
-  <ly-avatar v-if="profile" :name="profile.name" :guid="profile.guid" />
+  <ly-avatar v-if="profile" :avatar="profile.avatar" :name="profile.name" :guid="profile.guid" />
 </template>
 
 <style scoped></style>

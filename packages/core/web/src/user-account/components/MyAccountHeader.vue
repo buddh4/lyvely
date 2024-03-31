@@ -30,7 +30,7 @@ function onAvatarUpdate(avatar: AvatarModel) {
 
 <template>
   <div v-if="user" class="flex items-center justify-center">
-    <div
+    <button
       data-id="btn-change-avatar"
       role="button"
       class="m-5 relative cursor-pointer"
@@ -40,7 +40,7 @@ function onAvatarUpdate(avatar: AvatarModel) {
         class="w-6 h-6 absolute flex justify-center bg-shadow bottom-0 right-0 border border-main rounded-full">
         <ly-icon name="camera" class="p-0.5 color-main" />
       </div>
-    </div>
+    </button>
     <update-avatar-modal
       v-model="showUpdateAvatarModal"
       :client="userAccountClient"

@@ -2,22 +2,31 @@
 import { LyModal } from '@lyvely/ui';
 import { loadingStatus, useStatus } from '@/core';
 import { computed, nextTick, ref, watch } from 'vue';
-import { AvatarModel, type IUpdateAvatarClient, useUserAccountClient } from '@lyvely/interface';
+import {
+  AvatarModel,
+  type IUpdateAvatarClient,
+  type IUpdateGravatarClient,
+} from '@lyvely/interface';
 import Cropper from 'cropperjs';
 import 'cropperjs/dist/cropper.min.css';
 
 const props = defineProps<{
   modelValue: boolean;
-  client: IUpdateAvatarClient;
+  client: IUpdateAvatarClient & Partial<IUpdateGravatarClient>;
 }>();
 
 const emit = defineEmits(['success', 'update:modelValue']);
 
+const { client } = props;
 const status = useStatus();
 const showCropImageModal = ref(false);
 const showUpdateAvatarModal = ref(false);
 const fileInput = ref<HTMLInputElement>();
 let cropper: Cropper | undefined;
+
+function isGravatarSupported(): boolean {
+  return !!client.updateGravatar;
+}
 
 async function updateAvatar() {
   if (!cropper) return;
@@ -25,7 +34,9 @@ async function updateAvatar() {
 }
 
 async function updateGravatar() {
-  await setAvatar(loadingStatus(props.client.updateGravatar(), status));
+  if (client.updateGravatar) {
+    await setAvatar(loadingStatus(client.updateGravatar(), status));
+  }
 }
 
 async function uploadAvatar(blob: Blob | null) {
@@ -111,6 +122,7 @@ const show = computed({
           text="avatar.upload"
           @click="selectNewAvatar" />
         <ly-button
+          v-if="isGravatarSupported()"
           data-id="btn-use-gravatar"
           class="primary"
           text="avatar.gravatar"

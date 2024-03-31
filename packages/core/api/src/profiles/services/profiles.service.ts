@@ -49,6 +49,7 @@ import { ConfigService } from '@nestjs/config';
 import { ConfigurationPath } from '@/config';
 import { ProfilePermissionsService } from './profile-permissions.service';
 import { GlobalPermissionsService } from '@/permissions';
+import { pick } from 'lodash';
 
 @Injectable()
 export class ProfilesService {
@@ -388,18 +389,12 @@ export class ProfilesService {
 
   /**
    * Updates the profile details with the provided update data.
-   * Note: Changes to the profile type are currently ignored.
    * @param profile The profile to be updated.
    * @param update The update data containing the fields to be updated.
    * @returns A Promise resolving to a boolean value indicating whether the update was successful.
    */
   async updateProfile(profile: Profile, update: UpdateProfileModel): Promise<boolean> {
-    const updateData = { ...update };
-
-    // Currently we ignore profile type changes
-    delete updateData.type;
-
-    return this.profileDao.updateOneSetById(profile, updateData);
+    return this.profileDao.updateOneSetById(profile, pick(update, ['name', 'description']));
   }
 
   /**

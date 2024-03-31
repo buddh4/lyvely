@@ -10,23 +10,12 @@ import {
   ProfileMembershipRole,
   ProfileType,
 } from '@lyvely/interface';
-import fs from 'fs/promises';
-import { Avatar } from '../../avatars';
-import crypto from 'crypto';
-import client from 'https';
-import { createWriteStream, existsSync, mkdirSync } from 'fs';
-import { getLocalUploadFilePath } from '@/files';
+import { Avatar, AvatarService, GravatarService } from '@/avatars';
 import type { ProfileMembershipContext } from '../models';
-import { ConfigService } from '@nestjs/config';
-import type { ServerConfiguration } from '@/config';
 
 @Injectable()
 export class ProfileMembershipService {
-  constructor(
-    private readonly membershipDao: MembershipsDao,
-    private usersService: UsersService,
-    private configService: ConfigService<ServerConfiguration>,
-  ) {}
+  constructor(private readonly membershipDao: MembershipsDao, private usersService: UsersService) {}
 
   /**
    * Retrieves the memberships associated with a given profile.
@@ -137,105 +126,5 @@ export class ProfileMembershipService {
     ]);
 
     return membership;
-  }
-
-  /**
-   * Updates the avatar of a profile membership.
-   *
-   * @param {ProfileMembershipContext} context - The context of the user profile membership.
-   * @param {Express.Multer.File} file - The file containing the new avatar image.
-   * @returns {Avatar} - The updated avatar object.
-   */
-  async updateAvatar(context: ProfileMembershipContext, file: Express.Multer.File) {
-    const avatar = new Avatar();
-    const oldGuid = context.getMembership().userInfo.guid;
-    await fs.writeFile(this.getAvatarFilePath(avatar.guid), file.buffer);
-    await this.updateUserInfoAvatar(context, avatar);
-    this.deleteOldAvatar(oldGuid);
-    return avatar;
-  }
-
-  /**
-   * Updates the Avatar of a profile membership with his Gravatar.
-   *
-   * @param {ProfileMembershipContext} context - The context object containing user information.
-   * @return {Promise<Avatar>} A promise that resolves with the updated avatar.
-   */
-  async updateGravatar(context: ProfileMembershipContext): Promise<Avatar> {
-    // TODO: Gravatar should only be allowed for verified emails (at the moment the default email is verified)
-    const { user } = context;
-    const avatar = new Avatar();
-    const oldGuid = context.getMembership().userInfo.guid;
-    const email = context.getMembership().userInfo.email || user.email;
-    const gravatarUrl = this.buildGravatarUrl(email);
-
-    return new Promise((resolve, reject) => {
-      client.get(gravatarUrl, (res) => {
-        const stream = createWriteStream(this.getAvatarFilePath(avatar.guid));
-        res.pipe(stream);
-        stream.on('error', reject);
-        stream.on('finish', async () => {
-          await this.updateUserInfoAvatar(context, avatar);
-          this.deleteOldAvatar(oldGuid);
-          resolve(avatar);
-        });
-      });
-    });
-  }
-
-  /**
-   * Deletes the old avatar file associated with the given GUID.
-   *
-   * @param {string} guid - The GUID of the avatar to delete.
-   * @private
-   * @return {Promise<void>} - A promise that resolves when the avatar file is deleted.
-   */
-  private async deleteOldAvatar(guid: string): Promise<void> {
-    const avatarFilePath = this.getAvatarFilePath(guid);
-    if (existsSync(avatarFilePath)) {
-      await fs.unlink(avatarFilePath);
-    }
-  }
-
-  /**
-   * Builds a Gravatar URL based on the given email.
-   *
-   * @param {string} email - The email address to generate a Gravatar URL for.
-   * @private
-   * @return {string} The Gravatar URL.
-   */
-  private buildGravatarUrl(email: string) {
-    const hash = crypto.createHash('md5').update(email.toLowerCase()).digest('hex');
-    return `https://s.gravatar.com/avatar/${hash}?s=64`;
-  }
-
-  /**
-   * Updates the avatar of the user's profile.
-   *
-   * @param {ProfileMembershipContext} context - The membership context of the user's profile.
-   * @param {Avatar} avatar - The new avatar to update.
-   * @private
-   * @returns {Promise<void>} - A promise that resolves when the avatar update is complete.
-   */
-  private async updateUserInfoAvatar(context: ProfileMembershipContext, avatar: Avatar) {
-    return this.membershipDao.updateOneSetById(context.getMembership(), {
-      'userInfo.guid': avatar.guid,
-    });
-  }
-
-  /**
-   * Retrieves the file path for the avatar with the given GUID.
-   *
-   * @param {string} guid - The GUID of the avatar.
-   * @private
-   * @returns {string} The file path for the avatar.
-   */
-  private getAvatarFilePath(guid: string) {
-    const avatarDirPath = getLocalUploadFilePath(this.configService, 'avatars');
-    if (!existsSync(avatarDirPath)) {
-      mkdirSync(avatarDirPath, { recursive: true });
-    }
-
-    return getLocalUploadFilePath(this.configService, 'avatars', guid);
   }
 }

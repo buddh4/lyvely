@@ -11,6 +11,7 @@ import {
 import { ProfilePermissionSettingModel } from './profile-permission-settings.model';
 import { IPermissionSetting } from '@/permissions';
 import { TagModel } from './tag.model';
+import { AvatarModel } from '../../avatars';
 
 @Expose()
 export class ProfileInfoModel {
@@ -39,6 +40,10 @@ export class ProfileModel<TID = string> implements IProfilePermissionObject {
 
   @Expose()
   subscription?: string;
+
+  @Expose()
+  @PropertyType(AvatarModel, { optional: true })
+  avatar?: AvatarModel;
 
   @TransformObjectId()
   @Expose()
