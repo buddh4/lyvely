@@ -11,6 +11,7 @@ import { useProfileStore } from '@/profiles/stores/profile.store';
 import { useFlashStore } from '@/ui';
 import { useAuthStore } from '@/auth';
 import { useRouter } from 'vue-router';
+import { useProfileRelationInfosStore } from './profile-relation-infos.store';
 
 export const useUpdateProfileMembershipSettingsStore = defineStore(
   'update-profile-membership-settings',
@@ -44,6 +45,7 @@ export const useUpdateProfileMembershipSettingsStore = defineStore(
 
     async function revoke() {
       try {
+        const { id: pid } = profileStore.profile!;
         const { userRelations, role } = await client.revoke();
         profileStore.setUserRelations(userRelations, role);
 
@@ -54,6 +56,7 @@ export const useUpdateProfileMembershipSettingsStore = defineStore(
           await router.push(profileStore.getRoute());
         }
 
+        useProfileRelationInfosStore().removeRelation(pid);
         useFlashStore().addSuccessFlash();
       } catch (e) {
         useFlashStore().addUnknownErrorFlash();

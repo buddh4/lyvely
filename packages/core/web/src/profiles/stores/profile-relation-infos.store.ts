@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import {
+  BaseUserProfileRelationType,
   ProfileRelationInfo,
   ProfileRelationInfos,
   useProfileRelationInfosClient,
@@ -12,8 +13,8 @@ export const useProfileRelationInfosStore = defineStore('profile-relation-infos'
   const profilesRelationInfosClient = useProfileRelationInfosClient();
   const status = useStatus();
 
-  async function getRelations(): Promise<ProfileRelationInfos> {
-    return status.isStatusSuccess() ? Promise.resolve(relations.value) : loadRelations();
+  async function getRelations(force = false): Promise<ProfileRelationInfos> {
+    return !force && status.isStatusSuccess() ? Promise.resolve(relations.value) : loadRelations();
   }
 
   async function loadRelations() {
@@ -27,6 +28,10 @@ export const useProfileRelationInfosStore = defineStore('profile-relation-infos'
     );
   }
 
+  function removeRelation(pid: string) {
+    relations.value.profiles = relations.value.profiles.filter((p) => p.id !== pid);
+  }
+
   function addRelation(relation: ProfileRelationInfo) {
     relations.value?.profiles.push(relation);
   }
@@ -36,5 +41,6 @@ export const useProfileRelationInfosStore = defineStore('profile-relation-infos'
     getRelations,
     addRelation,
     loadRelations,
+    removeRelation,
   };
 });
