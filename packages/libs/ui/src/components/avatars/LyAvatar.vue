@@ -10,10 +10,13 @@ export interface IProps {
   name: string;
   guid?: string;
   url?: string;
+  border?: boolean;
   timestamp?: number;
 }
 
-const props = defineProps<IProps>();
+const props = withDefaults(defineProps<IProps>(), {
+  border: true
+});
 
 
 const imgGuid = computed(() => props.avatar?.guid || props.guid);
@@ -52,8 +55,9 @@ const textClass = computed(() =>
 
 function getClassNames(attrClasses: any, textClass: string) {
   return {
-    'rounded-full uppercase flex justify-center items-center select-none border border-shadow dark:border-divide':
+    'rounded-full uppercase flex justify-center items-center select-none':
       true,
+    'border border-shadow dark:border-divide': props.border,
     'p-1': !includesUtilityClass(attrClasses, 'p'),
     'w-6': !includesUtilityClass(attrClasses, 'w'),
     'h-6': !includesUtilityClass(attrClasses, 'h'),
@@ -65,8 +69,9 @@ function getClassNames(attrClasses: any, textClass: string) {
 
 function getImageClassNames(attrClasses: any) {
   return {
-    'rounded-full uppercase flex justify-center items-center select-none border border-shadow dark:border-divide':
+    'rounded-full uppercase flex justify-center items-center select-none':
       true,
+    'border border-shadow dark:border-divide': props.border,
     'w-6': !includesUtilityClass(attrClasses, 'w'),
     'h-6': !includesUtilityClass(attrClasses, 'h'),
     'text-xxs': !includesUtilityClass(attrClasses, 'text'),

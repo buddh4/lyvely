@@ -1,7 +1,7 @@
 import { Exclude, Expose } from 'class-transformer';
 import { BaseModel, type BaseModelData, type PropertiesOf, PropertyType } from '@lyvely/common';
 import { BaseUserProfileRelationType, ProfileType } from '../interfaces';
-import { AvatarModel } from '../../avatars';
+import { AvatarModel } from '@/avatars';
 
 /**
  * Represents a summary of a profile relation.
@@ -36,6 +36,9 @@ export class ProfileRelationInfo {
   @Expose()
   @PropertyType(AvatarModel, { optional: true })
   avatar?: AvatarModel;
+
+  @Expose()
+  archived?: boolean;
 
   /** The description of the profile. **/
   @Expose()

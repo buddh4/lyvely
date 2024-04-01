@@ -6,7 +6,13 @@
         "headline": "General Profile Settings",
         "name": "Profile Name",
         "description": "Profile Description",
-        "visibility": "Visibility"
+        "visibility": "Visibility",
+        "archive": {
+          "confirm": "Do you really want to archive this profile?"
+        },
+        "restore": {
+          "confirm": "Do you really want to restore this profile?"
+        }
       },
       "features": {
         "headline": "Profile Features",
@@ -21,7 +27,7 @@
         "description": "Your Description",
         "revoke": {
           "title":  "Revoke Membership",
-          "confirm": "Do you really want to archive this profile?"
+          "confirm": "Do you really want to revoke your membership?"
         },
         "your_role": "You are {role} of this profile."
       },

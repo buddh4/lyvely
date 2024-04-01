@@ -33,4 +33,12 @@ export default {
   async setCalendarPreferences(model: CalendarPreferences) {
     return api.post<'setCalendarPreferences'>(ProfilesEndpoints.SET_CALENDAR_PREFERENCES, model);
   },
+
+  async archive() {
+    return api.put<'archive'>(ProfilesEndpoints.ARCHIVE);
+  },
+
+  async restore() {
+    return api.put<'restore'>(ProfilesEndpoints.RESTORE);
+  },
 };

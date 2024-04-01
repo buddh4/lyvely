@@ -10,7 +10,7 @@ const { active } = storeToRefs(introductionTourStore);
 
 const steps = [
   {
-    element: document.querySelector('#profile-combo-button')!,
+    element: document.querySelector('[data-id="profile-combo-button"]')!,
     title: translate('help.intro.profile_combo_button_title'),
     intro: `<p>${translate('help.intro.profile_combo_button1')}</p>
             <p>${translate('help.intro.profile_combo_button2')}</p>
@@ -18,7 +18,7 @@ const steps = [
     position: 'bottom',
   },
   {
-    element: document.querySelector('#profile-navigation')!,
+    element: document.querySelector('[data-id="profile-drawer"]')!,
     title: translate('help.intro.profile_sidebar_title'),
     intro: `<p>${translate('help.intro.profile_sidebar1')}</p>
             <p>${translate('help.intro.profile_sidebar2')}</p>`,

@@ -32,7 +32,7 @@ import LyAppLoader from './components/loaders/LyAppLoader.vue';
 import LyContentPanel from './components/panels/LyContentPanel.vue';
 import LyProgressBar from './components/progress/LyProgressBar.vue';
 import LyDimmed from './components/texts/LyDimmed.vue';
-import LyTrim from './components/texts/LyTrim.vue';
+import LyTruncate from './components/texts/LyTruncate.vue';
 import LyBadgePicker from './components/forms/LyBadgePicker.vue';
 import LyCheckboxRange from './components/forms/LyCheckboxRange.vue';
 import LyEditableText from './components/forms/LyEditableText.vue';
@@ -104,7 +104,7 @@ const createLyvelyUi = (options?: LyvelyUiOptions) => {
       Vue.component('LyProgressBar', LyProgressBar);
       Vue.component('LySliderMenu', LySliderMenu);
       Vue.component('LyDimmed', LyDimmed);
-      Vue.component('LyTrim', LyTrim);
+      Vue.component('LyTruncate', LyTruncate);
       Vue.component('LyBadgePicker', LyBadgePicker);
       Vue.component('LyCheckboxRange', LyCheckboxRange);
       Vue.component('LyEditableText', LyEditableText);
@@ -153,7 +153,7 @@ export {
   LyBadgePicker,
   LySliderMenu,
   LyDimmed,
-  LyTrim,
+  LyTruncate,
   LyCheckboxRange,
   LyEditableText,
   LyScreenReaderValidationError,

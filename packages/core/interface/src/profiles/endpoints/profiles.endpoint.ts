@@ -11,6 +11,8 @@ export interface IProfilesClient
   getProfileById(id: string): Promise<ProfileWithRelationsModel>;
   getDefaultProfile(): Promise<ProfileWithRelationsModel>;
   setCalendarPreferences(dto: CalendarPreferences): Promise<SettingsUpdateResponse>;
+  archive(): Promise<void>;
+  restore(): Promise<void>;
 }
 
 export type ProfilesEndpoint = Endpoint<IProfilesClient>;
@@ -19,6 +21,8 @@ export const API_PROFILES = 'profiles';
 export const ProfilesEndpoints = {
   BY_HANDLE: (handle: string) => `by-handle/${handle}`,
   UPDATE: ':pid',
+  ARCHIVE: ':pid/archive',
+  RESTORE: ':pid/restore',
   UPDATE_AVATAR: ':pid/avatar',
   SET_CALENDAR_PREFERENCES: 'set-calendar-preferences',
 };

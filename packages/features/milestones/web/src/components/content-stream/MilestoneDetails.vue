@@ -17,7 +17,7 @@ import {
 import { computed, onBeforeMount, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
-import { LyIcon, LyProgressBar, LyTrim, LyMarkdownView } from '@lyvely/ui';
+import { LyIcon, LyProgressBar, LyTruncate, LyMarkdownView } from '@lyvely/ui';
 
 export interface IProps {
   model: MilestoneModel;
@@ -97,7 +97,7 @@ onBeforeMount(async () => {
             </td>
             <td class="px-4 py-2 pl-2 text-left">
               <span class="font-bold">
-                <ly-trim
+                <ly-truncate
                   :max="20"
                   :text="relation.title || relation.text || relation.contentType" />
               </span>

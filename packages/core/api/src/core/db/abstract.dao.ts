@@ -670,7 +670,7 @@ export abstract class AbstractDao<T extends BaseDocument, TVersions extends Base
     id: DocumentIdentity<T>,
     updateSet: UpdateQuerySet<T>,
     options?: IBaseQueryOptions,
-  ) {
+  ): Promise<boolean> {
     return this.updateOneById(id, { $set: updateSet }, options);
   }
 
@@ -685,7 +685,7 @@ export abstract class AbstractDao<T extends BaseDocument, TVersions extends Base
     id: DocumentIdentity<T>,
     updateUnset: UpdateQueryUnset<T>,
     options?: IBaseQueryOptions,
-  ) {
+  ): Promise<boolean> {
     return this.updateOneById(id, { $unset: updateUnset }, options);
   }
 

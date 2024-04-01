@@ -1,15 +1,15 @@
 import { defineStore } from 'pinia';
-import { Status, useStatus, localStorageManager, loadingStatus } from '@/core';
+import { loadingStatus, localStorageManager, Status, useStatus } from '@/core';
 import {
+  DocumentNotFoundException,
+  isMultiUserProfile as _isMultiUserProfile,
+  ProfileRelationDetailsModel,
+  ProfileRelationRole,
+  ProfileRelationUserInfoModel,
   ProfileWithRelationsModel,
   TagModel,
   useProfileRelationInfosClient,
   useProfilesClient,
-  DocumentNotFoundException,
-  isMultiUserProfile as _isMultiUserProfile,
-  ProfileRelationUserInfoModel,
-  ProfileRelationRole,
-  ProfileRelationDetailsModel,
   verifyProfileRoleLevel,
 } from '@lyvely/interface';
 import { computed, ref, watch } from 'vue';
@@ -150,6 +150,10 @@ export const useProfileStore = defineStore('profile', () => {
     return !!profile.value.getMembership();
   }
 
+  function isOwner() {
+    return verifyRoleLevel(ProfileRelationRole.Owner);
+  }
+
   function verifyRoleLevel(role: ProfileRelationRole) {
     if (!profile.value) return false;
     return verifyProfileRoleLevel(profile.value.role, role);
@@ -244,6 +248,7 @@ export const useProfileStore = defineStore('profile', () => {
     getUserRole,
     setUserRelations,
     isMember,
+    isOwner,
     verifyRoleLevel,
     reset,
     ...status,

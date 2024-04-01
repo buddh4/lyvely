@@ -5,6 +5,7 @@ import { useSendInviteUsersStore } from '@/user-invitations/stores/send-invitati
 import { useAuthStore } from '@/auth/store/auth.store';
 import { computed } from 'vue';
 import { ProfileMembershipRole, ProfileRelationModel } from '@lyvely/interface';
+import UserRelationAvatar from '../components/avatars/UserRelationAvatar.vue';
 
 const sendInviteStore = useSendInviteUsersStore();
 const profileStore = useProfileStore();
@@ -19,7 +20,7 @@ const order = [
   ProfileMembershipRole.Guest,
 ];
 
-const profileRelations = computed(() => {
+const profileRelations = computed<ProfileRelationModel[]>(() => {
   const profileRelations = profile.value?.profileRelations || [];
   return [...profileRelations].sort((a: ProfileRelationModel, b: ProfileRelationModel) => {
     return (
@@ -46,13 +47,11 @@ const openInviteModal = () => sendInviteStore.openModal(profileStore.profile!.id
       <div
         v-for="relation in profileRelations"
         :key="relation.uid"
-        class="flex py-4 px-3 bg-main items-center border-divide">
-        <ly-user-avatar v-if="relation.uid === user?.id" />
+        class="flex py-4 px-3 gap-2 bg-main items-center border-divide">
+        <user-relation-avatar v-if="relation.uid === user?.id" />
         <ly-avatar v-else :name="relation.userInfo.displayName" :guid="relation.userInfo.guid" />
-        <span class="ml-2">
-          {{ relation.userInfo.displayName }}
-          <small>({{ relation.role }})</small>
-        </span>
+        <span>{{ relation.userInfo.displayName }}</span>
+        <ly-badge class="bg-secondary ml-auto">{{ relation.role }}</ly-badge>
       </div>
     </ly-list-page>
   </ly-content-root>

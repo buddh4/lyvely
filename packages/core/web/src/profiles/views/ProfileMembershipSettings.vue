@@ -5,8 +5,8 @@ import { useProfileStore, useUpdateProfileMembershipSettingsStore } from '@/prof
 import { I18nModelValidator, t } from '@/i18n';
 import { AvatarModel, useProfileMembershipClient } from '@lyvely/interface';
 import UserRelationAvatar from '../components/avatars/UserRelationAvatar.vue';
-import { UpdateAvatarModal } from '../../avatars';
-import { useAuthStore } from '../../auth';
+import { UpdateAvatarModal } from '@/avatars';
+import { useAuthStore } from '@/auth';
 
 const profileStore = useProfileStore();
 const membershipSettingsStore = useUpdateProfileMembershipSettingsStore();

@@ -7,10 +7,11 @@ import { storeToRefs } from 'pinia';
 import { ISelectOptions, LyListPageSection } from '@lyvely/ui';
 import { getProfileVisibilityOptions } from '../helpers';
 import { UpdateAvatarModal } from '@/avatars';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { AvatarModel, useProfilesClient } from '@lyvely/interface';
 
-const { profile } = storeToRefs(useProfileStore());
+const profileStore = useProfileStore();
+const { profile } = storeToRefs(profileStore);
 const updateStore = useUpdateProfileStore();
 const { setUpdateModel, submit, status } = updateStore;
 const { model, validator } = storeToRefs(updateStore);
@@ -23,6 +24,8 @@ const onAvatarUpdate = (avatar: AvatarModel) => {
   if (!profile.value) return;
   profile.value.avatar = avatar;
 };
+
+const canArchive = computed(() => profileStore.isOwner());
 
 const visibilityOptions: ISelectOptions = getProfileVisibilityOptions();
 </script>
@@ -69,12 +72,23 @@ const visibilityOptions: ISelectOptions = getProfileVisibilityOptions();
       </ly-form-model>
     </ly-list-page-section>
 
-    <ly-list-page-section class="bg-red-200 dark:bg-red-950">
+    <ly-list-page-section v-if="canArchive" class="bg-red-200 dark:bg-red-950">
       <div class="flex">
         <ly-button
+          v-if="canArchive && !profile!.archived"
+          data-id="archive-profile"
           class="danger text-xs ml-auto"
-          :confirm="{ text: 'profiles.settings.archive.confirm' }">
+          :confirm="{ text: 'profiles.settings.general.archive.confirm' }"
+          @click="updateStore.archive">
           {{ t('common.archive') }}
+        </ly-button>
+        <ly-button
+          v-if="canArchive && profile!.archived"
+          data-id="restore-profile"
+          class="warning text-xs ml-auto"
+          :confirm="{ text: 'profiles.settings.general.restore.confirm' }"
+          @click="updateStore.restore">
+          {{ t('common.restore') }}
         </ly-button>
       </div>
     </ly-list-page-section>

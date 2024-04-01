@@ -15,7 +15,7 @@ import { storeToRefs } from 'pinia';
 import { useContentStreamHistoryStore, useContentStreamFilter, useContentStore } from '../stores';
 import { onBeforeRouteLeave } from 'vue-router';
 import { useStream } from '@/stream/stream.composable';
-import { scrollToBottom } from '@/core';
+import { scrollToBottom } from '@lyvely/ui';
 import DefaultStreamEntry from './DefaultStreamEntry.vue';
 
 export interface IProps {

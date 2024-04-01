@@ -18,7 +18,7 @@ import {
   CreateOrganizationProfilePermission,
 } from '@lyvely/interface';
 import { MembershipsDao, ProfileDao } from '../daos';
-import { ProfileContext, ProtectedProfileContext } from '../models';
+import { ProfileContext, type ProfileMembershipContext, ProtectedProfileContext } from '../models';
 import slugify from 'slugify';
 import {
   assureObjectId,
@@ -684,5 +684,27 @@ export class ProfilesService {
 
     await this.profileSettingsService.updateSettings(profile, update);
     return profile.settings;
+  }
+
+  /**
+   * Archives a profile.
+   *
+   * @param {DocumentIdentity<Profile>} identity - The profile membership context.
+   * @return {Promise<void>} A Promise that resolves when the profile is successfully archived.
+   */
+  async archive(identity: DocumentIdentity<Profile>): Promise<boolean> {
+    // TODO: Trigger live event.
+    return this.profileDao.updateOneSetById(identity, { archived: true });
+  }
+
+  /**
+   * Restores a profile.
+   *
+   * @param {DocumentIdentity<Profile>} identity - The profile membership context.
+   * @return {Promise<void>} A Promise that resolves when the profile is successfully archived.
+   */
+  async restore(identity: DocumentIdentity<Profile>): Promise<boolean> {
+    // TODO: Trigger live event.
+    return this.profileDao.updateOneSetById(identity, { archived: false });
   }
 }

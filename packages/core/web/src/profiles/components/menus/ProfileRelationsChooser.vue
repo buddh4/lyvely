@@ -7,6 +7,7 @@ import {
   CreateGroupProfilePermission,
   CreateOrganizationProfilePermission,
   CreateUserProfilePermission,
+  ProfileRelationInfo,
   ProfileType,
 } from '@lyvely/interface';
 import { t } from '@/i18n';
@@ -18,12 +19,29 @@ const profileRelationInfosStore = useProfileRelationInfosStore();
 const { statusError } = storeToRefs(profileRelationInfosStore);
 const allProfileRelations = ref(await profileRelationInfosStore.getRelations());
 
+const filterArchived = ref(false);
+const searchInput = ref<HTMLInputElement>();
+const search = ref('');
+
+function filterRelation(relation: ProfileRelationInfo) {
+  if (filterArchived.value !== !!relation.archived) return false;
+  if (search.value?.length) {
+    const searchValue = search.value;
+    return relation.name.includes(searchValue) || relation.description?.includes(searchValue);
+  }
+  return true;
+}
+
 const organizations = computed(() =>
-  allProfileRelations.value.profiles.filter((p) => p.type === ProfileType.Organization),
+  allProfileRelations.value.profiles.filter(
+    (r) => r.type === ProfileType.Organization && filterRelation(r),
+  ),
 );
 
 const profiles = computed(() =>
-  allProfileRelations.value.profiles.filter((p) => p.type !== ProfileType.Organization),
+  allProfileRelations.value.profiles.filter(
+    (r) => r.type !== ProfileType.Organization && filterRelation(r),
+  ),
 );
 
 const { show: showCreateProfile, isOrganization } = storeToRefs(useCreateProfileStore());
@@ -53,6 +71,26 @@ const { isAllowed: canCreateOrganization } = useGlobalPermissions(
     </li>
   </ul>
   <ul v-else data-id="profile-relations" class="divide-y divide-divide w-80 md:w-96">
+    <li class="px-4 pb-2 prev-close">
+      <div class="flex">
+        <div>
+          <ly-button @click="searchInput?.focus()">
+            <ly-icon name="search" />
+          </ly-button>
+          <input
+            ref="searchInput"
+            v-model="search"
+            type="text"
+            class="plain border-none ring-0 outline-0 focus-hidden p-0 focus:ring-0 focus:ring-offset-0" />
+        </div>
+        <ly-button
+          class="ml-auto"
+          :class="{ 'outline outline-gray-100': filterArchived }"
+          @click="filterArchived = !filterArchived">
+          <ly-icon name="archive" />
+        </ly-button>
+      </div>
+    </li>
     <li v-if="canCreateOrganization || organizations.length" class="py-3 px-4">
       <div class="flex items-center">
         <span class="text-sm font-bold">

@@ -50,6 +50,9 @@ export class ProfileModel<TID = string> implements IProfilePermissionObject {
   oid: TID;
 
   @Expose()
+  archived: boolean;
+
+  @Expose()
   name: string;
 
   @Expose()

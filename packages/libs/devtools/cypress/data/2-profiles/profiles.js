@@ -13,7 +13,7 @@ const createProfile = (idSeed, ownerSeed, options) => {
     guid: createHash('sha256').update(options.name || idSeed,).digest('hex'),
     locale: options.locale || 'en-US',
     usage: options.usage || [],
-    archived: options.usage ?? false,
+    archived: options.archived ?? false,
     deleted: options.deleted ?? false,
     visibility: options.visibility ?? 0,
     hasOrg: options.hasOrg ?? false,
@@ -32,6 +32,7 @@ const createProfile = (idSeed, ownerSeed, options) => {
 module.exports = [
   createProfile('owner-profile', 'owner', {
     usage: ['Private'],
+    name: "Owner Profile",
     type: 'user',
     tags: [
       {
@@ -58,7 +59,15 @@ module.exports = [
 
   createProfile('admin-profile', 'owner', {
     usage: ['Private'],
+    name: "Admin Profile",
     type: 'group'
+  }),
+
+  createProfile('archived-group', 'owner', {
+    usage: ['Project'],
+    name: "Archived Group",
+    type: 'group',
+    archived: true
   }),
 
   createProfile('private-group', 'owner', {

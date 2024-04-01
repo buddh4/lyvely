@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import { formatDate, isToday, formatDateWithTime } from '@lyvely/dates';
 import { ContentModel } from '@lyvely/interface';
-import { computed, unref } from 'vue';
+import { computed } from 'vue';
 import RelativeTime from '@/calendar/components/RelativeTime.vue';
 import { useRouter } from 'vue-router';
-import { isTextSelection } from '@/core';
+import { isTextSelection } from '@lyvely/ui';
 import { t } from '@/i18n';
 import TagList from '@/tags/components/TagList.vue';
 import { IStream } from '@/stream/stream.composable';

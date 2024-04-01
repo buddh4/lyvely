@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, Ref, ref, toRefs } from 'vue';
+import { computed, Ref, ref } from 'vue';
 import { watchMaxSize, isMaxViewSize, LyMenuEntry } from '@lyvely/ui';
 import { usePageStore } from '@/ui';
 import { translate } from '@/i18n';
@@ -8,15 +8,18 @@ import imageUrl from '@/assets/logo_white_bold.svg';
 import { UseSwipeDirection, useSwipe } from '@vueuse/core';
 import { useProfileMenu } from '@/profiles/composables';
 import { MENU_PROFILE_DRAWER } from '@/profiles/profile.constants';
+import ProfileAvatar from '../ProfileAvatar.vue';
+import { storeToRefs } from 'pinia';
 //import LegalLinks from '@/legal/components/LegalLinks.vue';
 
 const pageStore = usePageStore();
 const appDrawer = ref<HTMLElement>() as Ref<HTMLElement>;
+const { profile } = storeToRefs(useProfileStore());
 
 const { enabledMenuEntries } = useProfileMenu(MENU_PROFILE_DRAWER);
 
 const { toggleSidebar } = pageStore;
-const { showSidebar } = toRefs(pageStore);
+const { showSidebar } = storeToRefs(pageStore);
 
 const isSmallView = ref(isMaxViewSize('sm'));
 watchMaxSize('sm', (value) => {
@@ -65,37 +68,51 @@ const { direction: overlayDirection } = useSwipe(appDrawerOverlay, {
   <nav
     id="app-drawer"
     ref="appDrawer"
-    :class="['will-change-transform z-50', { toggled: !showSidebar }]"
+    :class="['will-change-transform z-50 overflow-hidden', { toggled: !showSidebar }]"
     :aria-label="ariaLabel">
     <div class="flex flex-col flex-wrap items-stretch content-start h-screen-s">
-      <div class="py-2">
+      <div class="px-3 py-2 w-full">
         <a
-          class="flex items-center no-underline font-extrabold uppercase tracking-wider h-12 px-3 cursor-pointer"
+          class="flex gap-2 items-center no-underline font-extrabold uppercase tracking-wider h-10 cursor-pointer"
           @click="toggleSidebar">
-          <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-5" />
+          <ly-icon name="lyvely" class="fill-current text-lyvely w-5" />
           <transition name="fade">
             <img v-if="showLabels" class="lyvely-logo-text" alt="Lyvely Logo" :src="imageUrl" />
           </transition>
         </a>
       </div>
 
-      <div class="flex-grow">
-        <ul id="profile-navigation" class="nav flex-column">
-          <li>
+      <div class="flex-grow w-full">
+        <ul data-id="profile-drawer" class="nav flex-column">
+          <li class="mb-1">
+            <div class="bg-slate-800 mx-1 rounded">
+              <div
+                class="flex text-sm gap-2 items-center h-12 select-none px-3"
+                @click="toggleSidebar">
+                <profile-avatar :border="false" />
+                <transition name="fade">
+                  <span v-if="showLabels" class="truncate no-underline">{{ profile!.name }}</span>
+                </transition>
+              </div>
+            </div>
+          </li>
+          <li v-if="profile!.archived" class="mb-1 px-1">
+            <ly-alert type="warning" :icon="true" text="common.archived" />
+          </li>
+          <li v-for="menuEntry in enabledMenuEntries" :key="menuEntry.id">
             <ly-menu-entry
-              v-for="menuEntry in enabledMenuEntries"
-              :key="menuEntry.id"
+              text-class="truncate text-sm"
               :entry="menuEntry"
               :show-labels="showLabels"
               icon-class="w-5"
-              class="flex no-wrap items-center h-12 select-none py-3 px-3 no-underline cursor-pointer"
+              class="flex gap-2 select-none items-center h-12 px-3 cursor-pointer"
               @click="onMenuItemClick" />
           </li>
         </ul>
       </div>
 
       <transition name="fade">
-        <div v-if="showSidebar" class="legal-links shrink-0 flex justify-center px-2 py-4 w-full">
+        <div v-if="showSidebar" class="footer shrink-0 flex justify-center px-2 py-4 w-full">
           <!-- legal-links /-->
         </div>
       </transition>
@@ -108,16 +125,20 @@ const { direction: overlayDirection } = useSwipe(appDrawerOverlay, {
   height: 20px;
 }
 
-.legal-links {
+.footer {
   background-color: rgba(255, 255, 255, 5%);
 }
 
-#app-drawer .legal-links,
-#app-drawer .legal-links a {
+#app-drawer .footer,
+#app-drawer .footer a {
   color: rgba(255, 255, 255, 30%);
 }
 
-#app-drawer .legal-links a:hover {
+#app-drawer .icon {
+  width: 24px;
+}
+
+#app-drawer .footer a:hover {
   color: rgba(255, 255, 255, 80%);
 }
 
@@ -136,7 +157,7 @@ const { direction: overlayDirection } = useSwipe(appDrawerOverlay, {
 }
 
 #app-drawer .nav a .icon {
-  @apply fill-current mr-2 opacity-50;
+  @apply fill-current opacity-50;
   border-left: 4px solid transparent;
 }
 

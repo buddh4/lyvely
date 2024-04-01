@@ -3,6 +3,7 @@ import { Ref, ref } from 'vue';
 import { uniqueId } from 'lodash';
 import { onClickOutside } from '@vueuse/core';
 import { t, Translatable } from '@/i18n';
+import { findParent } from '@/helpers'
 
 export interface IProps {
   label?: Translatable;
@@ -33,7 +34,7 @@ const buttonClassName = [
 const id = uniqueId('dropdown-');
 
 function onClickContent(evt: MouseEvent) {
-  if (evt.target instanceof HTMLElement && !evt.target.classList.contains('prev-close')) {
+  if (evt.target instanceof HTMLElement && !findParent(evt.target, '.prev-close')) {
     open.value = false;
   }
 }

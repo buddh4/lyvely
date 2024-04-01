@@ -103,10 +103,10 @@ function sanitizePermissionSetting(
 
 export function useProfileMappings() {
   const profileContextToProfileRelationInfo = (context: ProfileContext): ProfileRelationInfo => {
-    const { id, name, description, score, type, guid, avatar } = context.profile;
+    const { id, name, description, score, type, guid, avatar, archived } = context.profile;
 
     return new ProfileRelationInfo({
-      ...{ name, description, score, type, guid, id, avatar },
+      ...{ name, description, score, type, guid, id, avatar, archived },
       relations: context.relations.map(({ type, role }) => ({ type, role })),
     });
   };

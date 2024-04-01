@@ -3,14 +3,9 @@ import { usePageStore } from '@/ui';
 import { computed } from 'vue';
 import { useProfileStore } from '@/profiles/stores/profile.store';
 import ProfileRelationsChooser from './ProfileRelationsChooser.vue';
-import {
-  CreateGroupProfilePermission,
-  getScaledProgress,
-  CreateUserProfilePermission,
-} from '@lyvely/interface';
+import { getScaledProgress } from '@lyvely/interface';
 import ProfileAvatar from '@/profiles/components/ProfileAvatar.vue';
 import { t } from '@/i18n';
-import { useGlobalPermissions } from '@/common/composables';
 
 const profileStore = useProfileStore();
 const pageStore = usePageStore();
@@ -26,65 +21,58 @@ const formattedScore = computed(() => {
   }).format(score.value);
 });
 
-const progressStyle = computed(() => {
-  return {
-    width: getScaledProgress(score.value || 0) * 100 + '%',
-  };
-});
+const progress = computed(() => getScaledProgress(score.value || 0));
 </script>
 
 <template>
   <ly-dropdown position="right">
     <template #trigger="{ toggle }">
-      <div id="profile-combo-button" class="flex justify-center items-center py-1">
-        <div class="border border-divide border-r-0 rounded-l-2xl flex justify-center items-center">
-          <ly-button class="px-3 py-2" @click="toggleSidebar">
-            <ly-icon name="menu" style="margin-top: -3px" />
-          </ly-button>
-        </div>
+      <div data-id="profile-combo-button" class="flex justify-center items-stretch">
+        <ly-button
+          class="border border-divide border-r-0 rounded-l-2xl px-3 py-2"
+          @click="toggleSidebar">
+          <ly-icon name="menu" class="w-3" style="margin-top: -3px" />
+        </ly-button>
 
         <div
           role="button"
-          class="border-none px-0"
+          class="border border-divide flex justify-center items-center gap-2 px-3"
           :aria-label="t('layout.aria.toggle-sidebar')"
           aria-controls="sidebar"
           @click="toggleSidebar">
-          <div class="border border-divide px-3 p-2 flex justify-center items-center gap-2">
-            <profile-avatar data-id="active-profile-avatar" />
+          <profile-avatar data-id="active-profile-avatar" class="md:hidden" />
 
-            <div class="flex flex-col">
-              <div class="flex justify-center items-center text-xs">
-                <transition
-                  name="score-icon"
-                  mode="out-in"
-                  enter-active-class="animate__animated animate_svg_flip"
-                  leave-active-class="">
-                  <ly-icon :key="score" name="score" class="text-success" />
-                </transition>
+          <div class="flex flex-col">
+            <div class="flex justify-center items-center text-xs">
+              <transition
+                name="score-icon"
+                mode="out-in"
+                enter-active-class="animate__animated animate_svg_flip"
+                leave-active-class="">
+                <ly-icon :key="score" name="score" class="text-success" />
+              </transition>
 
-                <transition
-                  name="score"
-                  mode="out-in"
-                  enter-active-class="animate__animated animate__faster animate__bounceIn"
-                  leave-active-class="animate__animated animate__faster animate__bounceOut">
-                  <div :key="score" class="inline-block score-value ml-0.5">
-                    <span>{{ formattedScore }}</span>
-                  </div>
-                </transition>
-              </div>
-              <div class="border border-divide rounded-full w-full h-1.5">
-                <div
-                  class="score-progress float-right bg-success rounded-full w-2 h-full"
-                  :style="progressStyle"></div>
-              </div>
+              <transition
+                name="score"
+                mode="out-in"
+                enter-active-class="animate__animated animate__faster animate__bounceIn"
+                leave-active-class="animate__animated animate__faster animate__bounceOut">
+                <div :key="score" class="inline-block score-value ml-0.5">
+                  <span>{{ formattedScore }}</span>
+                </div>
+              </transition>
             </div>
+
+            <ly-progress-bar class="h-1.5" :progress="progress" />
           </div>
         </div>
-        <div class="border border-divide border-l-0 rounded-r-2xl flex justify-center items-center">
-          <ly-button data-id="btn-toggle-profile-relations" class="px-3 py-2" @click="toggle">
-            <ly-icon style="margin-top: -1px" name="caret-down" />
-          </ly-button>
-        </div>
+
+        <ly-button
+          data-id="btn-toggle-profile-relations"
+          class="border border-divide border-l-0 rounded-r-2xl px-3"
+          @click="toggle">
+          <ly-icon style="margin-top: -1px" name="caret-down" />
+        </ly-button>
       </div>
     </template>
 
@@ -100,10 +88,6 @@ const progressStyle = computed(() => {
 </template>
 
 <style scoped>
-.score-progress {
-  transition: width 2s ease-in;
-}
-
 .score-value {
   min-width: 1em;
   font-weight: 500;

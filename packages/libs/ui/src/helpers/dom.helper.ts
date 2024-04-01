@@ -22,3 +22,11 @@ export function isTextSelection() {
   const selection = window.getSelection();
   return selection && selection.type === 'Range';
 }
+
+export function findParent(element: HTMLElement | null | undefined, selector: string): HTMLElement | null {
+  if(!element) return null;
+  if (element.matches(selector)) {
+    return element;
+  }
+  return element.parentNode && findParent(element.parentElement, selector);
+}

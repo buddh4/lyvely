@@ -88,7 +88,7 @@
       "member": "Profile Members",
       "user": "All Users",
       "organization": "Organization",
-      "visitors": "Users and Guests"
+      "visitor": "Users and Guests"
     },
     "aria": {
       "sidebar": "Navigation of profile {profile}"

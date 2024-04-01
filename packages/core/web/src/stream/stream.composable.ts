@@ -8,15 +8,14 @@ import {
   IStreamRestoreState,
 } from '@lyvely/interface';
 import { computed, nextTick, ref, Ref } from 'vue';
+import { loadingStatus, useStatus } from '@/core';
 import {
-  loadingStatus,
-  useStatus,
   hasOverflow,
   isScrolledToBottom,
   isScrolledToTop,
   scrollToBottom,
   scrollToTop,
-} from '@/core';
+} from '@lyvely/ui';
 import mitt from 'mitt';
 import { useInfiniteScroll } from '@vueuse/core';
 import { isPlainObject } from '@lyvely/common';

@@ -7,6 +7,28 @@ import { SettingsUpdateResponse } from '@/settings';
 import { CalendarPreferences } from '@/common';
 
 class ProfilesClient implements IProfilesClient {
+  async create(update: CreateProfileModel): Promise<ProfileWithRelationsModel> {
+    return unwrapAndTransformResponse(
+      profileRepository.createProfile(update),
+      ProfileWithRelationsModel,
+    );
+  }
+
+  async update(id: string, model: UpdateProfileModel): Promise<ProfileWithRelationsModel> {
+    return unwrapAndTransformResponse(
+      profileRepository.updateProfile(model),
+      ProfileWithRelationsModel,
+    );
+  }
+
+  async archive(): Promise<void> {
+    return unwrapResponse(profileRepository.archive());
+  }
+
+  async restore(): Promise<void> {
+    return unwrapResponse(profileRepository.restore());
+  }
+
   async getProfileByHandle(handle: string): Promise<ProfileWithRelationsModel> {
     return unwrapAndTransformResponse(
       profileRepository.getProfileByHandle(handle),
@@ -24,20 +46,6 @@ class ProfilesClient implements IProfilesClient {
   async getDefaultProfile(): Promise<ProfileWithRelationsModel> {
     return unwrapAndTransformResponse(
       profileRepository.getDefaultProfile(),
-      ProfileWithRelationsModel,
-    );
-  }
-
-  async create(update: CreateProfileModel): Promise<ProfileWithRelationsModel> {
-    return unwrapAndTransformResponse(
-      profileRepository.createProfile(update),
-      ProfileWithRelationsModel,
-    );
-  }
-
-  async update(id: string, model: UpdateProfileModel): Promise<ProfileWithRelationsModel> {
-    return unwrapAndTransformResponse(
-      profileRepository.updateProfile(model),
       ProfileWithRelationsModel,
     );
   }

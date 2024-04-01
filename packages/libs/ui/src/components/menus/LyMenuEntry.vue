@@ -8,11 +8,13 @@ import { twMerge } from 'tailwind-merge';
 interface IProps {
   entry: IMenuEntry;
   iconClass?: string;
+  textClass?: string;
   showLabels?: boolean;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
   iconClass: '',
+  textClass: '',
   showLabels: true,
 });
 
@@ -35,7 +37,7 @@ const iconBindings = computed(() => {
   <router-link v-if="entry.to" :to="entry.to" :data-id="entry.id" @click="onMenuItemClick">
     <ly-icon v-if="entry.icon" :name="entry.icon" v-bind="iconBindings" :class="iconClass" />
     <transition name="fade">
-      <span v-if="showLabels">
+      <span v-if="showLabels" :class="textClass">
         {{ t(entry.text) }}
       </span>
     </transition>
@@ -43,7 +45,7 @@ const iconBindings = computed(() => {
   <a v-else-if="entry.click" :data-id="entry.id" @click="onMenuItemClick">
     <ly-icon v-if="entry.icon" :name="entry.icon" v-bind="iconBindings" :class="iconClass" />
     <transition name="fade">
-      <span v-if="showLabels">
+      <span v-if="showLabels" :class="textClass">
         {{ t(entry.text) }}
       </span>
     </transition>

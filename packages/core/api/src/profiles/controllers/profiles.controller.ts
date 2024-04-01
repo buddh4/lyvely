@@ -2,6 +2,8 @@ import {
   Body,
   ForbiddenException,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   Post,
   Put,
@@ -89,6 +91,7 @@ export class ProfilesController implements ProfilesEndpoint {
     return this.mapAndPopulateProfileWithRelations(context);
   }
 
+  @Post()
   @Get()
   async getDefaultProfile(@Request() req: OptionalUserRequest): Promise<ProfileWithRelationsModel> {
     const { user } = req;
@@ -119,11 +122,27 @@ export class ProfilesController implements ProfilesEndpoint {
   @ProfileRoleLevel(ProfileRelationRole.Admin)
   async update(
     @Body() model: UpdateProfileModel,
-    @Request() req: ProtectedProfileRequest,
+    @Request() req: ProfileMembershipRequest,
   ): Promise<ProfileWithRelationsModel> {
     const { profile, context } = req;
     await this.profilesService.updateProfile(profile, model);
     return this.mapAndPopulateProfileWithRelations(context);
+  }
+
+  @Put(ProfilesEndpoints.ARCHIVE)
+  @ProfileEndpoint()
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ProfileRoleLevel(ProfileRelationRole.Owner)
+  async archive(@Request() req: ProfileMembershipRequest): Promise<void> {
+    await this.profilesService.archive(req.profile);
+  }
+
+  @Put(ProfilesEndpoints.RESTORE)
+  @ProfileEndpoint()
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ProfileRoleLevel(ProfileRelationRole.Owner)
+  async restore(@Request() req: ProfileMembershipRequest): Promise<void> {
+    await this.profilesService.restore(req.profile);
   }
 
   @Put(ProfilesEndpoints.UPDATE_AVATAR)
@@ -146,7 +165,7 @@ export class ProfilesController implements ProfilesEndpoint {
   @Post(ProfilesEndpoints.SET_CALENDAR_PREFERENCES)
   async setCalendarPreferences(
     @Body() model: CalendarPreferences,
-    @Req() req: ProtectedProfileRequest,
+    @Req() req: ProfileMembershipRequest,
   ): Promise<SettingsUpdateResponse> {
     const { profile, context } = req;
     if (!context.getMembership(ProfileMembershipRole.Admin, ProfileMembershipRole.Owner)) {

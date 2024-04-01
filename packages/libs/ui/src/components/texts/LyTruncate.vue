@@ -13,7 +13,7 @@ const props = withDefaults(defineProps<IProps>(), {
 
 const trimmedText = computed(() => {
   const text = t(props.text).trim() || '';
-  return text.trim().length >= props.max ? text.substring(0, props.max) + '...' : text;
+  return text.trim().length >= props.max ? text.substring(0, props.max).trim() + '...' : text;
 });
 </script>
 

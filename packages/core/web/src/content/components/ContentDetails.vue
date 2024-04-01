@@ -45,7 +45,7 @@ const userInfo = useUserInfo(props.model.meta.createdBy);
         </slot>
         <div class="flex flex-col text-sm">
           <slot name="title">
-            <ly-trim class="font-bold" :max="130" :text="model.getTitle()" />
+            <ly-truncate class="font-bold" :max="130" :text="model.getTitle()" />
             <relative-time :ts="model.meta.createdAt.getTime()"></relative-time>
           </slot>
         </div>
