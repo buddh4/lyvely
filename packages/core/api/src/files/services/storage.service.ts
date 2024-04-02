@@ -17,8 +17,7 @@ import { REGEX_STORAGE_BUCKET } from '../files.constants';
 import type { FileMimeTypeRegistry } from '../registries';
 import { File, FileMetadata, FileVariant, GenericFile } from '../schemas';
 import type { StrictBaseDocumentData } from '@/core';
-import type { Readable, Writable } from 'node:stream';
-import { createWriteStream } from 'node:fs';
+import type { Readable } from 'node:stream';
 import { join } from 'path';
 
 const LOCAL_STORAGE_PROVIDER_ID = 'local';
@@ -39,11 +38,19 @@ const DEFAULT_STORAGE_CONFIG: IStorageConfig = {
  */
 @Injectable()
 export class StorageService implements IStorageService {
+  /** The class logger. **/
   private logger = new Logger(StorageService.name);
+
+  /** ModuleRef used to forward to providers. **/
   private moduleRef: ModuleRef;
+
+  /** A default storage provider, used for all buckets without specific configuration. **/
   private defaultStorage: IStorageProvider;
 
+  /** Stores all storage providers by id key. **/
   private storages: Map<string, IStorageProvider> = new Map();
+
+  /** Stores providers assigned to specific buckets. **/
   private buckets: Map<string, IStorageProvider> = new Map();
 
   constructor(
