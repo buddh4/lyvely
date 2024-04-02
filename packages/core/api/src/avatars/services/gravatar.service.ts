@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { createWriteStream, existsSync } from 'node:fs';
+import { createWriteStream } from 'node:fs';
 import { BaseAvatarService } from './base-avatar.service';
 import { Avatar } from '../schemas';
 import client from 'node:https';
@@ -19,12 +19,10 @@ export class GravatarService extends BaseAvatarService {
 
     return new Promise((resolve, reject) => {
       client.get(this.buildGravatarUrl(email), (res) => {
-        const stream = createWriteStream(this.getAvatarFilePath(avatar.guid));
+        const stream = createWriteStream(this.storageService.getFileUploadPath(avatar.guid));
         res.pipe(stream);
         stream.on('error', reject);
-        stream.on('finish', async () => {
-          resolve(avatar);
-        });
+        stream.on('finish', async () => resolve(avatar));
       });
     });
   }

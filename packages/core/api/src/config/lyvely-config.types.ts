@@ -1,13 +1,14 @@
 import { HelmetOptions } from 'helmet';
 import { MailerOptions } from '@nestjs-modules/mailer';
 import { ServeStaticModuleOptions } from '@nestjs/serve-static';
-import { NestedPaths, TypeFromPath } from '@lyvely/common';
+import { NestedPaths, type Type, TypeFromPath } from '@lyvely/common';
 import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer-options.interface';
 import { Request, Response } from 'express';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 import { ServerOptions } from 'https';
 import { MongooseModuleOptions } from '@nestjs/mongoose/dist/interfaces/mongoose-options.interface';
 import { IFeatureConfig, GlobalPermissionRole, IPermissionConfig } from '@lyvely/interface';
+import type { IStorageProvider, IStorageProviderDefinition } from '@/files/interfaces';
 
 export type LyvelyMailOptions = MailerOptions & {
   createMessageFiles?: boolean;
@@ -76,8 +77,30 @@ export type LyvelyAuthOptions = {
   };
 };
 
+export interface IStorageBucketDefinition {
+  name: string;
+  storage: string;
+}
+
+interface ISingleStorageProviderConfig<
+  TDefinition extends IStorageProviderDefinition = IStorageProviderDefinition,
+> {
+  default: TDefinition['id'];
+  providers: [TDefinition];
+  buckets?: IStorageBucketDefinition[];
+}
+
+interface IStorageDefinitionsConfig {
+  default: string;
+  providers: IStorageProviderDefinition[];
+  buckets?: IStorageBucketDefinition[];
+}
+
+export type IStorageConfig = ISingleStorageProviderConfig | IStorageDefinitionsConfig;
+
 export type LyvelyFileOptions = {
   upload?: MulterOptions;
+  storage?: IStorageConfig;
   local?: {
     path?: string;
   };

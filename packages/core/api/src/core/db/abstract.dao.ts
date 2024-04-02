@@ -22,7 +22,7 @@ import { BulkWriteResult, CollationOptions } from 'mongodb';
 import { Inject, Logger } from '@nestjs/common';
 import { ModelSaveEvent } from './dao.events';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { Constructor, PropertiesOf } from '@lyvely/common';
+import { PropertiesOf, Type } from '@lyvely/common';
 import { cloneDeep } from 'lodash';
 import type { IDocumentTransformation } from './document.transformation';
 import type { LeanDoc } from './lean-doc.interface';
@@ -186,7 +186,7 @@ export abstract class AbstractDao<T extends BaseDocument, TVersions extends Base
    * want to overwrite `constructModel` instead, otherwise it is recommended to only overwrite this function.
    * @param leanModel
    */
-  abstract getModelConstructor(leanModel: LeanDoc<T>): Constructor<T>;
+  abstract getModelConstructor(leanModel: LeanDoc<T>): Type<T>;
 
   /**
    * Subclasses should return the related module id used for logging and potentially restrictions and policies.

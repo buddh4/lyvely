@@ -46,6 +46,8 @@ import { PermissionsModule } from '@/permissions/permissions.module';
 import { PingModule } from '@/ping';
 import { DeepPartial } from '@lyvely/common';
 import defaultConfig from '@/config/lyvely.default.config';
+import { LocalStorageProvider } from './files';
+import fs from 'node:fs';
 
 type TModule = Type | DynamicModule | Promise<DynamicModule> | ForwardReference;
 
@@ -83,6 +85,7 @@ export class AppModuleBuilder {
       this.importConfigModule()
         .importEventEmitterModule()
         .importCoreModules()
+        .importFilesModule()
         .importI18nModule()
         .importQueueModule()
         .importUploadModules()
@@ -138,6 +141,10 @@ export class AppModuleBuilder {
     );
   }
 
+  public importFilesModule() {
+    return this.importModules();
+  }
+
   public importEventEmitterModule() {
     return this.importModules(EventEmitterModule.forRoot({ wildcard: true }));
   }
@@ -171,13 +178,19 @@ export class AppModuleBuilder {
       MulterModule.registerAsync({
         imports: [ConfigModule],
         inject: [ConfigService],
-        useFactory: async (configService: ConfigService<ConfigurationPath>) =>
-          configService.get('file.upload') || {
-            dest: path.join(process.cwd(), 'uploads'),
-            limits: {
-              fileSize: 1_073_741_824, // 1GB
-            },
-          },
+        useFactory: async (configService: ConfigService<ConfigurationPath>) => {
+          const multerConfig = configService.get('file.upload');
+          const dest = multerConfig?.dest || LocalStorageProvider.getDefaultUploadRoot();
+          fs.mkdirSync(dest, { recursive: true });
+          return (
+            configService.get('file.upload') || {
+              dest,
+              limits: {
+                fileSize: 1_073_741_824, // 1GB
+              },
+            }
+          );
+        },
       }),
     );
   }

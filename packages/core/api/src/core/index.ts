@@ -9,3 +9,4 @@ export * from './interfaces';
 export * from './core.module';
 export * from './global.emitter';
 export * from './helpers';
+export * from './core.constants';

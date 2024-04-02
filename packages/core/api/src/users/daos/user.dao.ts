@@ -9,7 +9,7 @@ import {
   UpdateQuerySet,
 } from '@/core';
 import { RefreshToken, User, UserEmail } from '../schemas';
-import { Constructor } from '@lyvely/common';
+import { Type } from '@lyvely/common';
 import { ProfileType, UserStatus } from '@lyvely/interface';
 
 /**
@@ -335,7 +335,7 @@ export class UserDao extends AbstractDao<User> {
     return true;
   }
 
-  getModelConstructor(): Constructor<User> {
+  getModelConstructor(): Type<User> {
     return User;
   }
 

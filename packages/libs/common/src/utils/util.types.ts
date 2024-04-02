@@ -17,8 +17,6 @@ export type PartialPropertiesOf<T> = Partial<PropertiesOf<T>>;
 type FunctionPropertyNames<T> = { [K in keyof T]: T[K] extends Function ? K : never }[keyof T];
 export type FunctionsOf<T> = Pick<T, FunctionPropertyNames<T>>;
 
-export type Constructor<T> = new (...args: any[]) => T;
-
 export type Lazy<T> = () => Promise<{ default: T }>;
 
 export type Optional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;

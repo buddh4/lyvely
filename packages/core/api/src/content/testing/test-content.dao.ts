@@ -1,6 +1,6 @@
 import { ContentTypeDao } from '../daos';
 import { TestContent } from './test-content.schema';
-import { Constructor } from '@lyvely/common';
+import { Type } from '@lyvely/common';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from '@/core';
@@ -10,7 +10,7 @@ export class TestContentDao extends ContentTypeDao<TestContent> {
   @InjectModel(TestContent.name)
   protected model: Model<TestContent>;
 
-  getModelConstructor(): Constructor<any> {
+  getModelConstructor(): Type<any> {
     return TestContent;
   }
 

@@ -25,7 +25,7 @@ import { ProfileShard, Profile } from '../schemas';
 export type ProfileShardData =
   | Profile
   | ProfileShard
-  | { oid: TObjectId; location: string; pid: TObjectId };
+  | { oid: TObjectId; region: string; pid: TObjectId };
 
 /**
  * This Dao class serves as base class for profile related models.

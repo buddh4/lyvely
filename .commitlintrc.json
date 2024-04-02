@@ -53,6 +53,7 @@
         "tasks",
         "live",
         "features",
+        "files",
         "i18n",
         "interface",
         "deps",
