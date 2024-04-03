@@ -15,7 +15,7 @@ import type { IFileVariant, IFile } from '../interfaces';
  * Represents a base file variant
  */
 @NestedSchema({ timestamps: true })
-export class FileVariant<TFile extends File = File>
+export class FileVariant<TFile extends IFile<TObjectId> = IFile<TObjectId>>
   implements IFileVariant<TObjectId, TFile['meta']>
 {
   @Prop({ required: true })

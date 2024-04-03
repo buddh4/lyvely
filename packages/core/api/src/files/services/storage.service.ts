@@ -41,9 +41,6 @@ export class StorageService implements IStorageService {
   /** The class logger. **/
   private logger = new Logger(StorageService.name);
 
-  /** ModuleRef used to forward to providers. **/
-  private moduleRef: ModuleRef;
-
   /** A default storage provider, used for all buckets without specific configuration. **/
   private defaultStorage: IStorageProvider;
 
@@ -56,6 +53,7 @@ export class StorageService implements IStorageService {
   constructor(
     private readonly fileMimeTypeRegistry: FileMimeTypeRegistry,
     private readonly configService: ConfigService<ServerConfiguration>,
+    private moduleRef: ModuleRef,
   ) {
     const filesConfig = this.configService.get<LyvelyFileOptions>('files', {});
     const storageConfig = filesConfig.storage || DEFAULT_STORAGE_CONFIG;
@@ -147,12 +145,12 @@ export class StorageService implements IStorageService {
     const ProviderClass = definition.class;
     this.storages.set(
       definition.id,
-      new ProviderClass({ ...(definition.options || {}) }, this.moduleRef),
+      new ProviderClass(definition.id, { ...definition.options }, this.moduleRef),
     );
   }
 
   /**
-   * Sets the bucket provider for the given storage configuration.
+   * Sets dedicated provider for specific buckets by configuration.
    *
    * @param {IStorageConfig} config - The storage configuration.
    * @private

@@ -1,15 +1,16 @@
-import { type StrictBaseDocumentData } from '@/core';
+import { type StrictBaseDocumentData, type TObjectId } from '@/core';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { BaseModel, PropertyType } from '@lyvely/common';
 import { File, FileVariant } from './file.schema';
 import { ImageFileMetadata, ImageFileMetadataSchema } from './image-file-metadata.schema';
+import type { ImageFileIf, ImageMetadataIf } from '../interfaces';
 
 @Schema({ timestamps: true })
-export class ImageFileVariant extends FileVariant<ImageFile> {
+export class ImageFileVariant extends FileVariant<ImageFileIf<TObjectId>> {
   @Prop({ type: ImageFileMetadataSchema, required: true })
-  override meta: ImageFileMetadata;
+  override meta: ImageMetadataIf;
 
-  constructor(file: ImageFile, variant: string) {
+  constructor(file: ImageFileIf<any>, variant: string) {
     super(file, variant);
   }
 }
