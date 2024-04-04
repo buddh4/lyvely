@@ -1,15 +1,29 @@
 import type { TObjectId } from '@/core';
 import type { IFile } from './file.interface';
 
+export interface IBaseFileInfo {
+  originalname: string;
+  size: number;
+  mimetype: string;
+}
+
 /**
  * Represents information about a file.
  */
-export interface IFileInfo {
-  filename: string;
-  size: number;
-  mimetype: string;
+export interface IDiskFileInfo extends IBaseFileInfo {
+  /** Full path to the local file on disc. **/
   path: string;
 }
+
+/**
+ * Represents information about a file.
+ */
+export interface IMemoryFileInfo extends IBaseFileInfo {
+  /** File data buffer. **/
+  buffer: Buffer;
+}
+
+export type IFileInfo = IDiskFileInfo | IMemoryFileInfo;
 
 /**
  * Represents a file upload request. This interface contains all properties required to store and

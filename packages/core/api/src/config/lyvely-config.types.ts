@@ -9,6 +9,7 @@ import { ServerOptions } from 'https';
 import { MongooseModuleOptions } from '@nestjs/mongoose/dist/interfaces/mongoose-options.interface';
 import { IFeatureConfig, GlobalPermissionRole, IPermissionConfig } from '@lyvely/interface';
 import type { IStorageProvider, IStorageProviderDefinition } from '@/files/interfaces';
+import type { ILocalStorageProviderOptions } from '@/files';
 
 export type LyvelyMailOptions = MailerOptions & {
   createMessageFiles?: boolean;
@@ -82,27 +83,22 @@ export interface IStorageBucketDefinition {
   storage: string;
 }
 
-interface ISingleStorageProviderConfig<
-  TDefinition extends IStorageProviderDefinition = IStorageProviderDefinition,
-> {
-  default: TDefinition['id'];
-  providers: [TDefinition];
+export interface IStorageConfig {
+  default?: string;
+  providers?: IStorageProviderDefinition[];
   buckets?: IStorageBucketDefinition[];
+  local?: ILocalStorageProviderOptions;
 }
-
-interface IStorageDefinitionsConfig {
-  default: string;
-  providers: IStorageProviderDefinition[];
-  buckets?: IStorageBucketDefinition[];
-}
-
-export type IStorageConfig = ISingleStorageProviderConfig | IStorageDefinitionsConfig;
 
 export type LyvelyFileOptions = {
-  upload?: MulterOptions;
   storage?: IStorageConfig;
-  local?: {
-    path?: string;
+  upload?: {
+    /** Used for file uploads, this should be a temporary folder (Default: storage.local.dest/tmp) **/
+    dest?: string;
+    limits?: {
+      /** For multipart forms, the max file size (in bytes)(Default: Infinity) */
+      fileSize?: number;
+    };
   };
 };
 

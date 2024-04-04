@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import type { ProfileMembershipContext } from '../models';
 import { Avatar, AvatarService, GravatarService } from '@/avatars';
 import { MembershipsDao } from '../daos';
+import type { IFileInfo } from '@/files';
 
 @Injectable()
 export class ProfileMembershipAvatarService {
@@ -17,7 +18,7 @@ export class ProfileMembershipAvatarService {
    * @param {Express.Multer.File} file - The file containing the new avatar image.
    * @returns {Avatar} - The updated avatar object.
    */
-  async updateAvatar(context: ProfileMembershipContext, file: Express.Multer.File) {
+  async updateAvatar(context: ProfileMembershipContext, file: IFileInfo) {
     const { user } = context;
     const oldGuid = context.getMembership().userInfo.guid;
     const avatar = await this.avatarService.createAvatar(user._id, file);

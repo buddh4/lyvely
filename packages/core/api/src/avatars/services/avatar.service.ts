@@ -4,7 +4,7 @@ import { BaseAvatarService } from './base-avatar.service';
 import { STORAGE_BUCKET_AVATARS } from '../avatar.constants';
 import type { TObjectId } from '@/core';
 import { assureObjectId } from '@/core';
-import { FileUpload } from '@/files';
+import { FileUpload, type IFileInfo } from '@/files';
 
 @Injectable()
 export class AvatarService extends BaseAvatarService {
@@ -16,7 +16,7 @@ export class AvatarService extends BaseAvatarService {
    * @param {string} guid - An optional GUID for the avatar.
    * @returns {Promise<Avatar>} - A promise that resolves with the updated avatar object.
    */
-  async createAvatar(user: TObjectId, file: Express.Multer.File, guid?: string): Promise<Avatar> {
+  async createAvatar(user: TObjectId, file: IFileInfo, guid?: string): Promise<Avatar> {
     const avatar = new Avatar(guid);
     await this.storageService.upload(
       new FileUpload({

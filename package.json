@@ -63,16 +63,15 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "sharp": "^0.33.3",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "@nx/devkit": "^16.3.2",
-    "@nx/eslint-plugin": "^16.3.2",
-    "eslint-config-prettier": "^8.8.0",
-    "npm-watch": "^0.11.0",
     "@commitlint/cli": "^17.6.1",
     "@commitlint/config-conventional": "^17.6.1",
     "@nestjs/testing": "^9.4.0",
+    "@nx/devkit": "^16.3.2",
+    "@nx/eslint-plugin": "^16.3.2",
     "@rollup/plugin-commonjs": "^24.1.0",
     "@rollup/plugin-dynamic-import-vars": "^2.1.0",
     "@rollup/plugin-node-resolve": "^15.0.2",
@@ -89,6 +88,7 @@
     "dependency-cruiser": "^14.1.0",
     "dotenv": "^16.0.3",
     "eslint": "^8.24.0",
+    "eslint-config-prettier": "^8.8.0",
     "eslint-import-resolver-typescript": "^3.5.1",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-prettier": "^4.2.1",
@@ -100,6 +100,7 @@
     "mongo-seeding": "^4.0.0",
     "mongodb-memory-server": "^8.13.0",
     "ncp": "^2.0.0",
+    "npm-watch": "^0.11.0",
     "nx": "16.3.2",
     "nx-cloud": "latest",
     "postcss": "^8.4.31",

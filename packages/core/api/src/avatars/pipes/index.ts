@@ -1,1 +1,1 @@
-export * from './upload-avatar.pipe';
+export * from './avatar-upload.pipe';

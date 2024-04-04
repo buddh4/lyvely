@@ -17,7 +17,8 @@ import { UseClassSerializer } from '@/core';
 import { GlobalController } from '@/common';
 import { UserAccountService, AccountAvatarService } from '../services';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { UploadAvatarPipe } from '@/avatars';
+import { AvatarUploadPipe } from '@/avatars';
+import type { IFileInfo } from '@/files';
 
 @GlobalController(API_USER_ACCOUNT)
 @UseClassSerializer()
@@ -65,10 +66,7 @@ export class UserAccountController implements UserAccountEndpoint {
   @UseGuards(UserThrottlerGuard)
   @UserThrottle(20, 60)
   @UseInterceptors(FileInterceptor('file'))
-  async updateAvatar(
-    @UploadedFile(UploadAvatarPipe) file: Express.Multer.File,
-    @Req() req: UserRequest,
-  ) {
+  async updateAvatar(@UploadedFile(AvatarUploadPipe) file: IFileInfo, @Req() req: UserRequest) {
     const avatar = await this.accountAvatarService.updateAvatar(req.user, file);
     return new AvatarModel(avatar);
   }

@@ -7,7 +7,11 @@ export default {
   appName: 'Lyvely e2e',
   operationMode: 'standalone',
   files: {
-    local: { path: path.resolve(process.cwd(), '../web/cypress/uploads') },
+    storage: {
+      local: {
+        dest: path.resolve(process.cwd(), '../web/cypress/uploads'),
+      },
+    },
   },
   http: {
     host: '127.0.0.1',

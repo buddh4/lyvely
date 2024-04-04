@@ -4,7 +4,8 @@ export type MimeTypeValidatorOptions = {
   type: string | Array<string>;
 };
 
-const dynamicImport = async (packageName: string) => new Function(`return import('${packageName}')`)();
+const dynamicImport = async (packageName: string) =>
+  new Function(`return import('${packageName}')`)();
 
 export class MimeTypeValidator extends FileValidator<MimeTypeValidatorOptions> {
   buildErrorMessage(): string {
@@ -22,7 +23,9 @@ export class MimeTypeValidator extends FileValidator<MimeTypeValidatorOptions> {
 
     const ft = await dynamicImport('file-type');
 
-    const fileType = file.buffer ? await ft.fileTypeFromBuffer(file.buffer) : await ft.fileTypeFromFile(file.path);
+    const fileType = file.buffer
+      ? await ft.fileTypeFromBuffer(file.buffer)
+      : await ft.fileTypeFromFile(file.path);
     return Array.isArray(this.validationOptions.type)
       ? this.validationOptions.type.includes(fileType.mime)
       : this.validationOptions.type === fileType.mime;

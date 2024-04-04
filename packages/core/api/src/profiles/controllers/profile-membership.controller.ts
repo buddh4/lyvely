@@ -27,7 +27,8 @@ import { ProfileMembershipAvatarService, ProfileMembershipService } from '../ser
 import type { ProfileMembershipRequest } from '../types';
 import { UserThrottle, UserThrottlerGuard } from '@/users';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { UploadAvatarPipe } from '@/avatars';
+import { AvatarUploadPipe } from '@/avatars';
+import type { IFileInfo } from '@/files';
 
 @ProfileController(API_PROFILE_MEMBERSHIP)
 @ProfileRoleLevel(ProfileRelationRole.Member)
@@ -67,7 +68,7 @@ export class ProfileMembershipController implements ProfileMembershipEndpoint {
   @UserThrottle(20, 60)
   @UseInterceptors(FileInterceptor('file'))
   async updateAvatar(
-    @UploadedFile(UploadAvatarPipe) file: Express.Multer.File,
+    @UploadedFile(AvatarUploadPipe) file: IFileInfo,
     @Req() req: ProfileMembershipRequest,
   ): Promise<AvatarModel> {
     const avatar = await this.membershipAvatarService.updateAvatar(req.context, file);

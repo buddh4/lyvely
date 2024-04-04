@@ -3,34 +3,60 @@ import { StorageProvider } from './storage.provider';
 import { join } from 'path';
 import type { FileUpload } from '../models';
 import { isGuid } from '@lyvely/common';
-import { IntegrityException } from '@lyvely/interface';
-import fs from 'node:fs';
+import { IntegrityException, MisconfigurationException } from '@lyvely/interface';
+import { rename, unlink, access, mkdir, writeFile } from 'node:fs/promises';
 import { REGEX_STORAGE_BUCKET } from '../files.constants';
-import { unlink, access, writeFile, mkdir } from 'node:fs/promises';
 import type { Readable } from 'node:stream';
+import fs from 'node:fs';
 import type { FileAccess } from '../interfaces';
 import { ConfigService } from '@nestjs/config';
+import { Logger } from '@nestjs/common';
+import { isMemoryFile } from '@/files/helpers/file-info.helper';
 
 export interface ILocalStorageProviderOptions {
-  root?: string;
+  dest?: string;
 }
 
 /**
  * The LocalStorageProvider class provides methods to interact with the local file system for file storage.
  * It extends the StorageProvider class and implements the methods for uploading, deleting, and downloading files.
  *
- * By default, this provider uses the `process.cwd()/uploads` directory as root directory for all uploads unless
+ * By default, this provider uses the `process.cwd()/storage` directory as root directory for all uploads unless
  * it is overwritten by setting the `root` option.
  */
 export class LocalStorageProvider extends StorageProvider<ILocalStorageProviderOptions> {
+  protected logger = new Logger(LocalStorageProvider.name);
   constructor(
     public override readonly id: string,
     protected override options: ILocalStorageProviderOptions,
     protected override moduleRef: ModuleRef,
   ) {
     super(id, options, moduleRef);
-    const multerConfig = moduleRef.get(ConfigService, { strict: false }).get('file.upload');
-    this.options.root ??= multerConfig?.dest || LocalStorageProvider.getDefaultUploadRoot();
+    this.options.dest ??= LocalStorageProvider.getLocalStorageRoot(
+      moduleRef.get(ConfigService, { strict: false }),
+    );
+
+    if (!this.options.dest?.length)
+      throw new MisconfigurationException(`Local storage upload path can not be empty.`);
+  }
+
+  /**
+   * Initializes the storage directory.
+   *
+   * @return {Promise<void>} - A Promise that resolves once the directory has been successfully created.
+   */
+  async initialize(): Promise<void> {
+    this.logger.log(`Setup local storage directory (${this.id}): ${this.options.dest}`);
+    await mkdir(this.options.dest!, { recursive: true }).catch((e) => {
+      this.logger.error(
+        `Could not initialize local storage directory (${this.id}): ${this.options.dest}`,
+        (<Error>e).stack,
+      );
+    });
+  }
+
+  static getLocalStorageRoot(configService: ConfigService) {
+    return configService.get('file.storage.local.dest') || LocalStorageProvider.getDefaultRoot();
   }
 
   /**
@@ -39,7 +65,7 @@ export class LocalStorageProvider extends StorageProvider<ILocalStorageProviderO
    * @return {string} The upload root directory.
    */
   getUploadRoot(): string {
-    return this.options.root!;
+    return this.options.dest!;
   }
 
   /**
@@ -48,8 +74,13 @@ export class LocalStorageProvider extends StorageProvider<ILocalStorageProviderO
    * @param upload
    */
   async upload(upload: FileUpload): Promise<void> {
+    const { file } = upload;
     const filePath = await this.createAndVerifyFilePath(upload.bucket, upload.guid);
-    //return writeFile(filePath, upload.file.buffer);
+    if (isMemoryFile(file)) {
+      return writeFile(filePath, file.buffer);
+    } else {
+      return rename(file.path, filePath);
+    }
   }
 
   /**
@@ -102,17 +133,19 @@ export class LocalStorageProvider extends StorageProvider<ILocalStorageProviderO
       throw new IntegrityException(`Invalid storage bucket provided: '${bucket}'`);
     }
 
-    const bucketDir = join(
-      this.options.root || LocalStorageProvider.getDefaultUploadRoot(),
-      bucket,
-    );
+    const bucketDir = join(this.options.dest || LocalStorageProvider.getDefaultRoot(), bucket);
 
     await mkdir(bucketDir, { recursive: true });
 
     return join(bucketDir, guid);
   }
 
-  public static getDefaultUploadRoot() {
-    return join(process.cwd(), 'uploads');
+  /**
+   * Returns the default local storage root path.
+   *
+   * @returns {string} The default upload root path.
+   */
+  public static getDefaultRoot() {
+    return join(process.cwd(), 'storage');
   }
 }

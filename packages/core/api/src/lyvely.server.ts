@@ -25,6 +25,8 @@ import { ExpressAdapter, NestExpressApplication } from '@nestjs/platform-express
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 import fs from 'fs';
 import * as net from 'net';
+import { MulterConfigFactory } from '@/files';
+import { mkdir } from 'node:fs/promises';
 
 useDayJsDateTimeAdapter();
 
@@ -39,11 +41,12 @@ export class LyvelyServer {
 
   async bootstrap(options: ILyvelyServerOptions = {}) {
     this.options = options;
-    this.nestApp = await this.initNestApp();
+    this.nestApp = await this.createtNestApp();
 
     this.logger = new NestLogger('main');
     this.configService = this.nestApp.get(ConfigService);
 
+    await this.createPaths();
     this.initVersioning();
     this.initExpress();
     this.initHelmet();
@@ -99,7 +102,7 @@ export class LyvelyServer {
     }
   }
 
-  private async initNestApp() {
+  private async createtNestApp() {
     this.server = express();
     return NestFactory.create<NestExpressApplication>(
       new AppModuleBuilder(this.options).build(),
@@ -219,5 +222,11 @@ export class LyvelyServer {
     //allowedHeaders: 'access-control-allow-originaccept,Accept-Language,Content-Language,Content-Type,Authorization,Cookie,X-Requested-With,Origin,Host'
 
     this.nestApp.enableCors(cors);
+  }
+
+  private async createPaths() {
+    const uploadDir = MulterConfigFactory.getUploadDirectoryPath(this.configService);
+    this.logger.log(`Setup upload directory: ${uploadDir}`);
+    return mkdir(uploadDir, { recursive: true });
   }
 }

@@ -32,4 +32,11 @@ export interface IStorageProvider {
    * @returns {Promise<Readable | null>} A promise that resolves to a Readable stream containing the downloaded file data, or `null` if the download failed.
    */
   download(file: FileAccess): Promise<Readable | null>;
+
+  /**
+   * Runs provider specific initialization logic.
+   *
+   * @returns {Promise<void>} A Promise that resolves when the initialization is complete.
+   */
+  initialize(): Promise<void>;
 }

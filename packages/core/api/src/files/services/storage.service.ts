@@ -130,7 +130,7 @@ export class StorageService implements IStorageService {
    * @private
    */
   private initStorageProviders(config: IStorageConfig) {
-    config.providers.forEach((definition) => {
+    config.providers?.forEach((definition) => {
       this.initStorageProvider(definition);
     });
   }
@@ -148,6 +148,22 @@ export class StorageService implements IStorageService {
       definition.id,
       new ProviderClass(definition.id, { ...definition.options }, this.moduleRef),
     );
+  }
+
+  /**
+   * Initializes all storage providers.
+   *
+   * @return {Promise<void>} A promise that resolves once the module has been initialized.
+   */
+  async onModuleInit(): Promise<void> {
+    try {
+      await Promise.all(
+        Array.from(this.storages.values()).map((provider) => provider.initialize()),
+      );
+    } catch (e) {
+      console.error('There was an error initializing a storage prvider.');
+      throw e;
+    }
   }
 
   /**
@@ -227,7 +243,8 @@ export class StorageService implements IStorageService {
     return this.fileMimeTypeRegistry
       .getTypeMeta(upload.file.mimetype, {
         async metaFactory({ file }: FileUpload): Promise<FileMetadata> {
-          return new FileMetadata(pick(file, ['filename', 'mimetype', 'size']));
+          const { originalname: name, mimetype: mimeType, size } = file;
+          return new FileMetadata({ name, mimeType, size });
         },
       })
       .metaFactory(upload);

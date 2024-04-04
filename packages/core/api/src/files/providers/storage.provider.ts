@@ -39,4 +39,10 @@ export abstract class StorageProvider<TOptions> implements IStorageProvider {
    * successful, or null if the download fails.
    */
   abstract download(file: FileAccess): Promise<stream.Readable | null>;
+
+  /**
+   * May run provider specific initialization logic.
+   * @returns {Promise<void>} A promise that resolves when the initialization is complete.
+   */
+  abstract initialize(): Promise<void>;
 }

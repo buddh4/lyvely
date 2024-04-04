@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { User, UserDao } from '@/users';
 import { Avatar, AvatarService, GravatarService } from '@/avatars';
+import type { IFileInfo } from '@/files';
 
 /**
  * AccountAvatarService is responsible for updating avatars for user accounts.
@@ -26,7 +27,7 @@ export class AccountAvatarService {
    * @param {User} user - The user for whom to update the avatar.
    * @param {Express.Multer.File} file - The file containing the new avatar image.
    * @returns {Promise<Avatar>} - The newly*/
-  async updateAvatar(user: User, file: Express.Multer.File) {
+  async updateAvatar(user: User, file: IFileInfo) {
     const avatar = await this.avatarService.createAvatar(user._id, file, user.guid);
     await this.userDao.updateOneSetById(user, { avatar });
     return avatar;

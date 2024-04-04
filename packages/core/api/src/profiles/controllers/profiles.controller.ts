@@ -36,11 +36,12 @@ import { ProfileContext, ProtectedProfileContext } from '../models';
 import { OptionalUserRequest, UserRequest, UserThrottle, UserThrottlerGuard } from '@/users';
 import { ProfileVisibilityPolicy } from '../policies';
 import { InjectPolicy } from '@/policies';
-import { ProfileMembershipRequest, ProfileRequest, ProtectedProfileRequest } from '../types';
+import { ProfileMembershipRequest, ProfileRequest } from '../types';
 import { ProfileEndpoint, ProfileRoleLevel } from '../decorators';
 import { ProfileGuard } from '../guards';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { UploadAvatarPipe } from '@/avatars';
+import { AvatarUploadPipe } from '@/avatars';
+import type { IFileInfo } from '@/files';
 
 /**
  * Implementation of the ProfilesEndpoint service
@@ -152,7 +153,7 @@ export class ProfilesController implements ProfilesEndpoint {
   @UserThrottle(20, 60)
   @UseInterceptors(FileInterceptor('file'))
   async updateAvatar(
-    @UploadedFile(UploadAvatarPipe) file: Express.Multer.File,
+    @UploadedFile(AvatarUploadPipe) file: IFileInfo,
     @Req() req: ProfileMembershipRequest,
   ): Promise<AvatarModel> {
     const avatar = await this.profileAvatarService.updateAvatar(req.context, file);

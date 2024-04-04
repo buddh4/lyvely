@@ -36,18 +36,15 @@ import { SystemMessagesModule } from '@/system-messages';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { MongooseModule } from '@nestjs/mongoose';
-import path from 'path';
 import { I18nModule as NestjsI18nModule, AcceptLanguageResolver } from 'nestjs-i18n';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
-import { MulterModule } from '@nestjs/platform-express';
 import { BullModule } from '@nestjs/bullmq';
 import { PermissionsModule } from '@/permissions/permissions.module';
 import { PingModule } from '@/ping';
 import { DeepPartial } from '@lyvely/common';
 import defaultConfig from '@/config/lyvely.default.config';
-import { LocalStorageProvider } from './files';
-import fs from 'node:fs';
+import { FilesModule } from '@/files/files.module';
 
 type TModule = Type | DynamicModule | Promise<DynamicModule> | ForwardReference;
 
@@ -85,10 +82,8 @@ export class AppModuleBuilder {
       this.importConfigModule()
         .importEventEmitterModule()
         .importCoreModules()
-        .importFilesModule()
         .importI18nModule()
         .importQueueModule()
-        .importUploadModules()
         .importRateLimitModule()
         .importServeStaticModule()
         .importMongooseModule()
@@ -138,11 +133,8 @@ export class AppModuleBuilder {
       UsersModule,
       AuthModule,
       CaptchaModule,
+      FilesModule,
     );
-  }
-
-  public importFilesModule() {
-    return this.importModules();
   }
 
   public importEventEmitterModule() {
@@ -168,28 +160,6 @@ export class AppModuleBuilder {
         inject: [ConfigService],
         useFactory: async (configService: ConfigService<ConfigurationPath>) => {
           return { connection: configService.get('redis') };
-        },
-      }),
-    );
-  }
-
-  public importUploadModules() {
-    return this.importModules(
-      MulterModule.registerAsync({
-        imports: [ConfigModule],
-        inject: [ConfigService],
-        useFactory: async (configService: ConfigService<ConfigurationPath>) => {
-          const multerConfig = configService.get('file.upload');
-          const dest = multerConfig?.dest || LocalStorageProvider.getDefaultUploadRoot();
-          fs.mkdirSync(dest, { recursive: true });
-          return (
-            configService.get('file.upload') || {
-              dest,
-              limits: {
-                fileSize: 1_073_741_824, // 1GB
-              },
-            }
-          );
         },
       }),
     );

@@ -14,11 +14,11 @@ export class FileMetadata implements IFileMetadata {
 
   /** File mime type. **/
   @Prop({ required: true })
-  mimetype: string;
+  mimeType: string;
 
   /** Original file name. **/
   @Prop({ required: true })
-  filename: string;
+  name: string;
 
   constructor(data: BaseModelData<FileMetadata>) {
     BaseModel.init(this, data);

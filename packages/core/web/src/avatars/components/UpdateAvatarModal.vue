@@ -9,6 +9,7 @@ import {
 } from '@lyvely/interface';
 import Cropper from 'cropperjs';
 import 'cropperjs/dist/cropper.min.css';
+import { useFlashStore } from '@/ui';
 
 const props = defineProps<{
   modelValue: boolean;
@@ -34,8 +35,12 @@ async function updateAvatar() {
 }
 
 async function updateGravatar() {
-  if (client.updateGravatar) {
+  if (!client.updateGravatar) return;
+
+  try {
     await setAvatar(loadingStatus(client.updateGravatar(), status));
+  } catch (e) {
+    useFlashStore().addUnknownErrorFlash();
   }
 }
 
@@ -45,7 +50,12 @@ async function uploadAvatar(blob: Blob | null) {
   const file = new File([blob], 'avatar.jpeg', { type: 'image/jpeg' });
   const formData = new FormData();
   formData.append('file', file, 'avatar.jpeg');
-  await setAvatar(loadingStatus(props.client.updateAvatar(formData), status));
+  try {
+    await setAvatar(loadingStatus(props.client.updateAvatar(formData), status));
+  } catch (e) {
+    useFlashStore().addUnknownErrorFlash();
+  }
+
   show.value = false;
 }
 
