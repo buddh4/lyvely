@@ -5,8 +5,8 @@ import { suggestFocusElement } from '@/helpers';
 import { useInfiniteScroll, useSwipe } from '@vueuse/core';
 import { useDrawerStore } from '@/components/drawers/drawer.store';
 import { t, Translatable } from '@/i18n';
-import LyButton from "@/components/buttons/LyButton.vue";
-import LyIcon from "@/components/icons/LyIcon.vue";
+import LyButton from '@/components/buttons/LyButton.vue';
+import LyIcon from '@/components/icons/LyIcon.vue';
 
 export interface IProps {
   modelValue: boolean;
@@ -108,9 +108,9 @@ h1 {
 .drawer {
   @apply bg-highlight;
   position: fixed;
-  top: 55px;
+  top: 46px;
   right: 0;
-  height: calc(100svh - 55px);
+  height: calc(100svh - 46px);
 
   min-width: 280px;
   max-width: 280px;
