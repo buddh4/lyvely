@@ -1,5 +1,5 @@
-import { buildTest, LyvelyTestingModule } from '@/testing';
-import { profilesTestPlugin, ProfileTestDataUtils } from '@/profiles';
+import { LyvelyTestingModule } from '@/testing';
+import { buildProfileTest, ProfileTestDataUtils } from '@/profiles';
 import {
   ProfileRelationRole,
   MailInvite,
@@ -29,8 +29,8 @@ describe('SendInvitations', () => {
   const TEST_KEY = 'invite_service';
 
   beforeEach(async () => {
-    testingModule = await buildTest(TEST_KEY)
-      .plugins([profilesTestPlugin, mailTestPlugin, notificationTestPlugin])
+    testingModule = await buildProfileTest(TEST_KEY)
+      .plugins([mailTestPlugin, notificationTestPlugin])
       .imports([JwtModule])
       .providers([SendInvitationsService, InvitationDao])
       .models([

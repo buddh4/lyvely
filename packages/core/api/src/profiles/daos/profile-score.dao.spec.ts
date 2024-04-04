@@ -1,11 +1,11 @@
-import { buildTest, LyvelyTestingModule } from '@/testing';
+import { LyvelyTestingModule } from '@/testing';
 import { ProfileScore, ProfileScoreSchema } from '../schemas';
 import {
   TestProfileScore,
   TestProfileScoreSchema,
-  profilesTestPlugin,
   ProfileTestDataUtils,
   TestProfileScoreTypeDao,
+  buildProfileTest,
 } from '../testing';
 import { toTimingId } from '@lyvely/dates';
 
@@ -23,8 +23,7 @@ describe('AbstractUserProfileActionDao', () => {
   const TEST_KEY = 'abstract_user_profile_action_dao';
 
   beforeEach(async () => {
-    testingModule = await buildTest(TEST_KEY)
-      .plugins([profilesTestPlugin])
+    testingModule = await buildProfileTest(TEST_KEY)
       .providers([TestProfileScoreTypeDao])
       .models([testScoreModelDef])
       .compile();

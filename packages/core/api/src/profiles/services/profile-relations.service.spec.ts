@@ -1,5 +1,5 @@
-import { buildTest, LyvelyTestingModule } from '@/testing';
-import { profilesTestPlugin, ProfileTestDataUtils } from '../testing';
+import { LyvelyTestingModule } from '@/testing';
+import { buildProfileTest, ProfileTestDataUtils } from '../testing';
 import { ProfileRelationsService } from './profile-relations.service';
 
 describe('ProfileRelationsService', () => {
@@ -8,9 +8,7 @@ describe('ProfileRelationsService', () => {
   let testData: ProfileTestDataUtils;
 
   beforeEach(async () => {
-    testingModule = await buildTest('ProfileMembershipService')
-      .plugins([profilesTestPlugin])
-      .compile();
+    testingModule = await buildProfileTest('ProfileMembershipService').compile();
     relationsService = testingModule.get(ProfileRelationsService);
     testData = testingModule.get(ProfileTestDataUtils);
   });

@@ -49,7 +49,7 @@ export class LocalStorageProvider extends StorageProvider<ILocalStorageProviderO
    */
   async upload(upload: FileUpload): Promise<void> {
     const filePath = await this.createAndVerifyFilePath(upload.bucket, upload.guid);
-    return writeFile(filePath, upload.file.buffer);
+    //return writeFile(filePath, upload.file.buffer);
   }
 
   /**

@@ -1,8 +1,8 @@
 import { MembershipsDao } from './index';
 import { ProfileRelationUserInfo } from '../schemas';
 import { BaseUserProfileRelationType, ProfileMembershipRole } from '@lyvely/interface';
-import { buildTest, LyvelyTestingModule } from '@/testing';
-import { profilesTestPlugin, ProfileTestDataUtils } from '../testing';
+import { LyvelyTestingModule } from '@/testing';
+import { buildProfileTest, ProfileTestDataUtils } from '../testing';
 
 describe('MembershipDao', () => {
   let testingModule: LyvelyTestingModule;
@@ -12,7 +12,7 @@ describe('MembershipDao', () => {
   const TEST_KEY = 'membership_dao';
 
   beforeEach(async () => {
-    testingModule = await buildTest(TEST_KEY).plugins([profilesTestPlugin]).compile();
+    testingModule = await buildProfileTest(TEST_KEY).compile();
     membershipDao = testingModule.get<MembershipsDao>(MembershipsDao);
     testData = testingModule.get(ProfileTestDataUtils);
   });

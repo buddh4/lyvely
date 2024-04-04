@@ -1,9 +1,8 @@
-import { buildTest, LyvelyTestingModule } from '@/testing';
-import { ProfilePermissionsService, profilesTestPlugin, ProfileTestDataUtils } from '../index';
+import { LyvelyTestingModule } from '@/testing';
+import { buildProfileTest, ProfilePermissionsService, ProfileTestDataUtils } from '../index';
 import {
   BasePermissionType,
   clearPermissions,
-  IProfilePermission,
   ProfileRelationRole,
   registerPermissions,
 } from '@lyvely/interface';
@@ -16,7 +15,7 @@ describe('ProfilePermissionsService', () => {
   const TEST_KEY = 'profile_permissions_service';
 
   beforeEach(async () => {
-    testingModule = await buildTest(TEST_KEY).plugins([profilesTestPlugin]).compile();
+    testingModule = await buildProfileTest(TEST_KEY).compile();
     permissionsService = testingModule.get<ProfilePermissionsService>(ProfilePermissionsService);
     testDataUtils = testingModule.get(ProfileTestDataUtils);
   });

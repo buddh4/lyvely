@@ -18,5 +18,5 @@ export interface IPolicyModuleMetadata {
 }
 
 export function getPolicyToken(name: string | Type) {
-  return `${name instanceof Function ? name.name : name}Policy`;
+  return `${name instanceof Function ? name.name : name}`;
 }

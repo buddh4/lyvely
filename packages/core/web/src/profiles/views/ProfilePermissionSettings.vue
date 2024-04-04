@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import ProfilePermissionsSettingsEntry from '@/profiles/components/permissions/ProfilePermissionsSettingsEntry.vue';
-import { LyListPageSection } from '@lyvely/ui';
+import { LyListPage, LyListPageSection } from '@lyvely/ui';
 import { useProfilePermissionsStore } from '@/profiles/stores';
 import { computed, ref } from 'vue';
 import { t } from '@/i18n';

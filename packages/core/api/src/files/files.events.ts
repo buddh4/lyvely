@@ -1,6 +1,6 @@
 import { Injectable, type OnModuleInit } from '@nestjs/common';
 import { FileMimeTypeRegistry } from './registries';
-import { ImageFile, ImageFileMetadata } from './schemas';
+import { FileMetadata, ImageFile, ImageFileMetadata } from './schemas';
 import type { IFileTypeDefinition, IFileUpload } from './interfaces';
 import sharp from 'sharp';
 
@@ -9,17 +9,14 @@ export class FilesEvents implements OnModuleInit {
   constructor(private readonly fileTypeRegistry: FileMimeTypeRegistry) {}
 
   onModuleInit() {
-    const getUploadFileMeta = (upload: IFileUpload<ImageFile>) => {
-      return {
-        name: upload.fileName,
-        mime: upload.mime,
-        size: upload.fileSize,
-      };
+    const getUploadFileMeta = (upload: IFileUpload<ImageFile>): Partial<FileMetadata> => {
+      const { filename, mimetype, size } = upload.file;
+      return { filename, mimetype, size };
     };
 
     const imageTypeDefinition: IFileTypeDefinition<ImageFile> = {
       async metaFactory(upload: IFileUpload<ImageFile>): Promise<ImageFileMetadata> {
-        const image = sharp(upload.filePath);
+        const image = sharp(upload.file.path);
         const metadata = await image.metadata();
         return new ImageFileMetadata({
           ...getUploadFileMeta(upload),
@@ -28,6 +25,7 @@ export class FilesEvents implements OnModuleInit {
         });
       },
     };
+
     this.fileTypeRegistry.registerType(ImageFile, 'image/jpeg', imageTypeDefinition);
     this.fileTypeRegistry.registerType(ImageFile, 'image/jpg', imageTypeDefinition);
     this.fileTypeRegistry.registerType(ImageFile, 'image/png', imageTypeDefinition);

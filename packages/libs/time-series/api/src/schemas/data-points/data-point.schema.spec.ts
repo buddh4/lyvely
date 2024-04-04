@@ -1,5 +1,5 @@
-import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
-import { contentTestPlugin, Model, profilesTestPlugin } from '@lyvely/api';
+import { LyvelyTestingModule } from '@lyvely/testing';
+import { Model, buildContentTest } from '@lyvely/api';
 import { NumberDataPoint, NumberDataPointSchema } from '../index';
 
 const DataPointModelDefinition = [
@@ -13,10 +13,7 @@ describe('NumberTimingDataPointSchema', () => {
   const TEST_KEY = 'NumberTimingDataPointSchema';
 
   beforeEach(async () => {
-    testingModule = await buildTest(TEST_KEY)
-      .plugins([profilesTestPlugin, contentTestPlugin])
-      .models(DataPointModelDefinition)
-      .compile();
+    testingModule = await buildContentTest(TEST_KEY).models(DataPointModelDefinition).compile();
     TestNumberDataPointModel = testingModule.get<Model<NumberDataPoint>>('NumberDataPointModel');
   });
 

@@ -3,7 +3,7 @@ import { CanActivate } from '@nestjs/common/interfaces';
 import { GlobalPermissionsGuard } from '@/permissions/guards/global-permissions.guard';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-export const Controller = (
+export const GlobalController = (
   prefix: string | string[],
   ...guards: (CanActivate | Function)[]
 ): ClassDecorator => {

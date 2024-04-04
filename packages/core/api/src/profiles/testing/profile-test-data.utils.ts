@@ -1,5 +1,6 @@
 import { User, UserEmail, UserTestDataUtils } from '@/users';
 import {
+  GlobalPermissionRole,
   ProfileMembershipRole,
   ProfileType,
   ProfileVisibilityLevel,
@@ -17,7 +18,7 @@ import {
   UserProfileRelation,
 } from '../schemas';
 import { ProfileContext, ProtectedProfileContext } from '../models';
-import { Model, createBaseDocumentInstance, createObjectId } from '@/core';
+import { createBaseDocumentInstance, createObjectId, Model } from '@/core';
 import { getObjectId as mongoSeedingGetObjectId } from 'mongo-seeding';
 
 export class ProfileTestDataUtils extends UserTestDataUtils {
@@ -56,7 +57,7 @@ export class ProfileTestDataUtils extends UserTestDataUtils {
     owner?: User,
     member?: User,
   ) {
-    owner ??= await this.createUser('owner');
+    owner ??= await this.createUser('owner', { role: GlobalPermissionRole.Admin });
     member ??= await this.createUser('member');
 
     const organization = await this.createProfile(

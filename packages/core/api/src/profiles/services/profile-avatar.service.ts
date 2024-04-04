@@ -22,8 +22,8 @@ export class ProfileAvatarService {
     context: ProfileMembershipContext,
     file: Express.Multer.File,
   ): Promise<Avatar> {
-    const { profile } = context;
-    const avatar = await this.avatarService.createAvatar(file, profile.guid);
+    const { profile, user } = context;
+    const avatar = await this.avatarService.createAvatar(user._id, file, profile.guid);
     await this.profileDao.updateOneSetById(profile, { avatar });
     return avatar;
   }

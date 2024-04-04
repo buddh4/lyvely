@@ -1,11 +1,11 @@
-import { buildTest, LyvelyTestingModule } from '@/testing';
+import { LyvelyTestingModule } from '@/testing';
 import {
   MultiUserSubscription,
   ProfileSubscription,
   SingleUserSubscription,
   UserSubscriptionService,
 } from '../index';
-import { profilesTestPlugin, ProfileTestDataUtils } from '@/profiles';
+import { buildProfileTest, ProfileTestDataUtils } from '@/profiles';
 import { BaseUserProfileRelationType } from '@lyvely/interface';
 
 describe('UserSubscriptionService', () => {
@@ -16,10 +16,7 @@ describe('UserSubscriptionService', () => {
   const TEST_KEY = 'UserSubscriptionService';
 
   beforeEach(async () => {
-    testingModule = await buildTest(TEST_KEY)
-      .plugins([profilesTestPlugin])
-      .providers([UserSubscriptionService])
-      .compile();
+    testingModule = await buildProfileTest(TEST_KEY).providers([UserSubscriptionService]).compile();
     userSubscriptionService = testingModule.get(UserSubscriptionService);
     testData = testingModule.get(ProfileTestDataUtils);
   });

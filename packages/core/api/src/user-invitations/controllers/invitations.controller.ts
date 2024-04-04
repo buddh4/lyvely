@@ -12,10 +12,10 @@ import {
   UserInvitationsEndpoints,
 } from '@lyvely/interface';
 import { Public, UseClassSerializer } from '@/core';
-import { Controller } from '@/common';
+import { GlobalController } from '@/common';
 import { UserRequest } from '@/users';
 
-@Controller(API_USER_INVITATIONS)
+@GlobalController(API_USER_INVITATIONS)
 @UseClassSerializer()
 export class InvitationsController implements UserInvitationsEndpoint {
   constructor(

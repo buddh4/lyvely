@@ -1,13 +1,6 @@
-import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
+import { LyvelyTestingModule } from '@lyvely/testing';
 import { INestApplication } from '@nestjs/common';
-import {
-  Content,
-  ContentSchema,
-  contentTestPlugin,
-  profilesTestPlugin,
-  ProfileTestDataUtils,
-  Model,
-} from '@lyvely/api';
+import { Content, ContentSchema, ProfileTestDataUtils, Model, buildContentTest } from '@lyvely/api';
 import { TestTimeSeriesContent, TestTimeSeriesContentSchema } from '../testing';
 import { CalendarInterval } from '@lyvely/dates';
 import {
@@ -36,10 +29,7 @@ describe('TimeSeriesContentSchema', () => {
   const TEST_KEY = 'TimeSeriesContentSchema';
 
   beforeEach(async () => {
-    testingModule = await buildTest(TEST_KEY)
-      .plugins([contentTestPlugin, profilesTestPlugin])
-      .models(ContentModels)
-      .compile();
+    testingModule = await buildContentTest(TEST_KEY).models(ContentModels).compile();
     testData = testingModule.get(ProfileTestDataUtils);
     TestTimeSeriesContentModel = testingModule.get('TestTimeSeriesContentModel');
     app = testingModule.createNestApplication();

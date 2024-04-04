@@ -1,7 +1,7 @@
 import { Post, Body, Req, UnauthorizedException } from '@nestjs/common';
 import { UserRegistrationService } from '../services';
 import { Public, UseClassSerializer } from '@/core';
-import { Controller } from '@/common';
+import { GlobalController } from '@/common';
 import { ConfigurationPath } from '@/config';
 import {
   UserRegistrationEndpoint,
@@ -21,7 +21,7 @@ import { ConfigService } from '@nestjs/config';
 import { Request } from 'express';
 import ms from 'ms';
 
-@Controller(API_USER_REGISTRATION)
+@GlobalController(API_USER_REGISTRATION)
 @UseClassSerializer()
 export class UserRegistrationController
   extends AbstractJwtAuthController

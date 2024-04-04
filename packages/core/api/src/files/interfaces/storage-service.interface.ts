@@ -1,8 +1,8 @@
-import { FileUpload } from '../models';
-import { File } from '../schemas';
+import { IFileUpload } from './file-upload.interface';
+import { IFile } from './file.interface';
 import { Readable } from 'node:stream';
-import type { IStorageProvider } from './storage-provider.interface';
 import type { Optional } from '@lyvely/common';
+import type { TObjectId } from '@/core';
 
 export interface IFileDownloadOptions {
   variant?: string;
@@ -13,7 +13,7 @@ export interface IFileDeleteOptions {
 }
 
 export type FileAccess = Optional<
-  Pick<File, 'bucket' | 'variants' | 'guid' | 'region' | 'oid' | 'pid'>,
+  Pick<IFile, 'bucket' | 'variants' | 'guid' | 'region' | 'oid' | 'pid'>,
   'region'
 >;
 
@@ -31,7 +31,7 @@ export interface IStorageService {
    * @param {FileUpload} upload - The file to be uploaded.
    * @returns {Promise<File>} - A Promise that resolves to the uploaded File object.
    */
-  upload(upload: FileUpload): Promise<File>;
+  upload(upload: IFileUpload): Promise<IFile<TObjectId>>;
 
   /**
    * Downloads a file from the specified bucket using the provided GUID and variation.

@@ -1,9 +1,9 @@
-import { ProfilesCount, RefreshToken, UserEmail, UsersService } from '../index';
-import { buildTest, getObjectId, LyvelyTestingModule } from '@/testing';
+import { buildUserTest, ProfilesCount, RefreshToken, UserEmail, UsersService } from '../index';
+import { getObjectId, LyvelyTestingModule } from '@/testing';
 import { addDays, addMinutes } from '@lyvely/dates';
 import { ProfileType } from '@lyvely/interface';
 import { compare } from 'bcrypt';
-import { usersTestPlugin, UserTestDataUtils } from '../testing';
+import { UserTestDataUtils } from '../testing';
 
 describe('UserService', () => {
   let userService: UsersService;
@@ -11,7 +11,7 @@ describe('UserService', () => {
   let testData: UserTestDataUtils;
 
   beforeEach(async () => {
-    testingModule = await buildTest('UserService').plugins([usersTestPlugin]).compile();
+    testingModule = await buildUserTest('UserService').compile();
     userService = testingModule.get(UsersService);
     testData = testingModule.get(UserTestDataUtils);
   });

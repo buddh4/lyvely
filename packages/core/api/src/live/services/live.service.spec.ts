@@ -1,5 +1,5 @@
-import { buildTest, LyvelyTestingModule } from '@/testing';
-import { profilesTestPlugin, ProfileTestDataUtils } from '@/profiles';
+import { LyvelyTestingModule } from '@/testing';
+import { buildProfileTest, ProfileTestDataUtils } from '@/profiles';
 import { LiveService } from './live.service';
 import { assureStringId } from '@/core';
 import { firstValueFrom } from 'rxjs';
@@ -13,10 +13,7 @@ describe('LiveService', () => {
   const TEST_KEY = 'LiveService';
 
   beforeEach(async () => {
-    testingModule = await buildTest(TEST_KEY)
-      .plugins([profilesTestPlugin])
-      .providers([LiveService])
-      .compile();
+    testingModule = await buildProfileTest(TEST_KEY).providers([LiveService]).compile();
     liveService = testingModule.get(LiveService);
     testData = testingModule.get(ProfileTestDataUtils);
   });

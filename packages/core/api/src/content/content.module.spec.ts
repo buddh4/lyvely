@@ -1,6 +1,12 @@
 import { buildTest, LyvelyTestingModule } from '@/testing';
 import { Content, ContentSchema } from './schemas';
-import { TestContent, TestContentB, TestContentBSchema, TestContentSchema } from './testing';
+import {
+  buildContentTest,
+  TestContent,
+  TestContentB,
+  TestContentBSchema,
+  TestContentSchema,
+} from './testing';
 import { INestApplication, Module } from '@nestjs/common';
 import { ContentCoreModule, ContentModule } from './content.module';
 import { ContentService } from './services';
@@ -33,8 +39,8 @@ describe('content module', () => {
   class TestModule {}
 
   beforeEach(async () => {
-    testingModule = await buildTest('content_module')
-      .imports([ContentCoreModule, TestModule])
+    testingModule = await buildContentTest('content_module')
+      .imports([TestModule])
       .models(TestModels)
       .compile();
     contentService = testingModule.get<ContentService>(ContentService);

@@ -11,9 +11,9 @@ import { ResetPasswordService } from '../services';
 import { JwtResetPasswordGuard, LoginThrottlerGuard } from '../guards';
 import { CaptchaGuard } from '@/captcha';
 import { UserRequest, UserThrottle } from '@/users';
-import { Controller } from '@/common';
+import { GlobalController } from '@/common';
 
-@Controller(API_RESET_PASSWORD)
+@GlobalController(API_RESET_PASSWORD)
 @UseClassSerializer()
 export class ResetPasswordController implements ResetPasswordEndpoint {
   constructor(private resetPasswordService: ResetPasswordService) {}

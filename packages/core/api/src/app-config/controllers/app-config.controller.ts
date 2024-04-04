@@ -1,12 +1,12 @@
 import { ClassSerializerInterceptor, Get, Req, UseInterceptors } from '@nestjs/common';
 import { LyvelyRequest, Public } from '@/core';
-import { Controller } from '@/common';
+import { GlobalController } from '@/common';
 import { AppConfigEndpoint, API_APP_CONFIG, IAppConfig } from '@lyvely/interface';
 import { AppConfigService } from '../services';
 import { ConfigService } from '@nestjs/config';
 import { ConfigurationPath } from '@/config';
 
-@Controller(API_APP_CONFIG)
+@GlobalController(API_APP_CONFIG)
 @UseInterceptors(ClassSerializerInterceptor)
 export class AppConfigController implements AppConfigEndpoint {
   constructor(

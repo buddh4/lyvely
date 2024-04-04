@@ -1,9 +1,9 @@
 import { Sse, Req, Param } from '@nestjs/common';
 import { UserRequest } from '@/users';
 import { LiveService } from '../services';
-import { Controller } from '@/common';
+import { GlobalController } from '@/common';
 
-@Controller('/live')
+@GlobalController('/live')
 export class LiveController {
   constructor(private readonly liveService: LiveService) {}
 

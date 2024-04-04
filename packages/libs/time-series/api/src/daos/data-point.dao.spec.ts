@@ -1,4 +1,4 @@
-import { buildTest, getObjectId, LyvelyTestingModule } from '@lyvely/testing';
+import { getObjectId, LyvelyTestingModule } from '@lyvely/testing';
 import {
   CheckboxNumberDataPointConfig,
   DataPointValueType,
@@ -16,7 +16,7 @@ import {
   getFullDayUTCDate,
 } from '@lyvely/dates';
 import { TestDataPointDao, TestTimeSeriesContent } from '../testing';
-import { contentTestPlugin, Profile, profilesTestPlugin, User } from '@lyvely/api';
+import { Profile, User, buildContentTest } from '@lyvely/api';
 
 const DataPointModelDefinition = [
   getDataPointModelDefinition(TestTimeSeriesContent.name, [DataPointValueType.Number]),
@@ -29,8 +29,7 @@ describe('DataPointDao', () => {
   const TEST_KEY = 'DataPointDao';
 
   beforeEach(async () => {
-    testingModule = await buildTest(TEST_KEY)
-      .plugins([profilesTestPlugin, contentTestPlugin])
+    testingModule = await buildContentTest(TEST_KEY)
       .providers([TestDataPointDao])
       .models(DataPointModelDefinition)
       .compile();

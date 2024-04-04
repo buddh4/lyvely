@@ -1,12 +1,12 @@
 import type { IFile, IFileVariant } from './file.interface';
 import type { IFileMetadata } from './file-meta.interface';
 
-export interface ImageMetadataIf extends IFileMetadata {
+export interface ImageMetadataIF extends IFileMetadata {
   height: number;
   width: number;
 }
 
-export interface ImageFileVariant<TID = string> extends IFileVariant<TID, ImageMetadataIf> {}
+export interface ImageFileVariantIF<TID = string> extends IFileVariant<TID, ImageMetadataIF> {}
 
-export interface ImageFileIf<TID = string>
-  extends IFile<TID, ImageMetadataIf, ImageFileVariant<TID>> {}
+export interface ImageFileIF<TID = string>
+  extends IFile<TID, ImageMetadataIF, ImageFileVariantIF<TID>> {}

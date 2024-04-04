@@ -1,7 +1,7 @@
 import { Profile, Tag, UserProfile } from '../schemas';
 import { ProfileDao } from './index';
-import { profilesTestPlugin, ProfileTestDataUtils } from '../testing';
-import { buildTest, LyvelyTestingModule } from '@/testing';
+import { buildProfileTest, ProfileTestDataUtils } from '../testing';
+import { LyvelyTestingModule } from '@/testing';
 import { ProfileType } from '@lyvely/interface';
 
 describe('ProfileDao', () => {
@@ -12,7 +12,7 @@ describe('ProfileDao', () => {
   const TEST_KEY = 'profile_dao';
 
   beforeEach(async () => {
-    testingModule = await buildTest(TEST_KEY).plugins([profilesTestPlugin]).compile();
+    testingModule = await buildProfileTest(TEST_KEY).compile();
     profileDao = testingModule.get<ProfileDao>(ProfileDao);
     testData = testingModule.get(ProfileTestDataUtils);
   });

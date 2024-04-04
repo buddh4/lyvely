@@ -1,14 +1,13 @@
-import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
+import { LyvelyTestingModule } from '@lyvely/testing';
 import {
   UserAssignmentStrategy,
   User,
   Content,
   ContentSchema,
-  contentTestPlugin,
   Profile,
-  profilesTestPlugin,
   ProfileTestDataUtils,
   Model,
+  buildContentTest,
 } from '@lyvely/api';
 import {
   DataPointValueType,
@@ -48,8 +47,7 @@ describe('DataPointService', () => {
   const TEST_KEY = 'DataPointService';
 
   beforeEach(async () => {
-    testingModule = await buildTest(TEST_KEY)
-      .plugins([profilesTestPlugin, contentTestPlugin])
+    testingModule = await buildContentTest(TEST_KEY)
       .providers([
         TestDataPointDao,
         TestDataPointService,

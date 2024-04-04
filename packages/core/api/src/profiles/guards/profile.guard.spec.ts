@@ -1,8 +1,8 @@
-import { buildTest, createTestExecutionContext, LyvelyTestingModule } from '@/testing';
+import { createTestExecutionContext, LyvelyTestingModule } from '@/testing';
 import { ProfileGuard } from './index';
 import { ProfileRequest } from '../types';
 import { ProfileVisibilityLevel, ProfileMembershipRole } from '@lyvely/interface';
-import { profilesTestPlugin, ProfileTestDataUtils } from '../testing';
+import { buildProfileTest, ProfileTestDataUtils } from '../testing';
 
 describe('ProfileGuard', () => {
   let testingModule: LyvelyTestingModule;
@@ -12,10 +12,7 @@ describe('ProfileGuard', () => {
   const TEST_KEY = 'profile-guard';
 
   beforeEach(async () => {
-    testingModule = await buildTest(TEST_KEY)
-      .plugins([profilesTestPlugin])
-      .providers([ProfileGuard])
-      .compile();
+    testingModule = await buildProfileTest(TEST_KEY).providers([ProfileGuard]).compile();
     profileGuard = testingModule.get(ProfileGuard);
     testData = testingModule.get(ProfileTestDataUtils);
   });

@@ -1,6 +1,6 @@
 import { BaseModel, Optional, PropertyType, type StrictBaseModelData } from '@lyvely/common';
 import { DEFAULT_REGION, type TObjectId, uniqueGuid } from '@/core';
-import type { IFileUpload } from '../interfaces';
+import type { IFileInfo, IFileUpload } from '../interfaces';
 import { File } from '../schemas';
 
 /**
@@ -43,31 +43,9 @@ export class FileUpload<TFile extends File = File> implements IFileUpload<TFile>
   variants?: TFile['variants'];
 
   /**
-   * Temporary file path.
-   */
-  filePath: string;
-
-  /**
-   * Original of the file
-   *
-   * @type {string}
-   */
-  fileName: string;
-
-  /**
-   * Size of the file in bytes.
-   */
-  fileSize: number;
-
-  /**
-   * File mime type
-   */
-  mime: string;
-
-  /**
    * The uploaded file data.
    */
-  file: Express.Multer.File;
+  file: IFileInfo;
 
   constructor(data: StrictBaseModelData<Optional<FileUpload, 'region' | 'guid'>>) {
     BaseModel.init(this, data);

@@ -1,6 +1,6 @@
-import { buildTest, LyvelyTestingModule } from '@/testing';
+import { LyvelyTestingModule } from '@/testing';
 import { ProfileVisibilityLevel } from '@lyvely/interface';
-import { profilesTestPlugin, ProfileTestDataUtils } from '../testing';
+import { buildProfileTest, ProfileTestDataUtils } from '../testing';
 import { LyvelyModule } from '@/core';
 import { ProfileVisibilityPolicy } from './profile-visibility.policy';
 import { ProfilesService } from '../services';
@@ -24,10 +24,7 @@ describe('ProfileVisibilityPolicy', () => {
   const TEST_KEY = 'profile-guard';
 
   beforeEach(async () => {
-    testingModule = await buildTest(TEST_KEY)
-      .plugins([profilesTestPlugin])
-      .imports([TestModule])
-      .compile();
+    testingModule = await buildProfileTest(TEST_KEY).imports([TestModule]).compile();
     testData = testingModule.get(ProfileTestDataUtils);
     profileVisibilityPolicy = testingModule.get(getPolicyToken(ProfileVisibilityPolicy));
     profilesService = testingModule.get(ProfilesService);

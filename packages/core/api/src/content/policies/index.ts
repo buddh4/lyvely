@@ -3,6 +3,7 @@ export * from './content-write.policy';
 export * from './content-create.policy';
 export * from './content-delete.policy';
 export * from './content-manage.policy';
+export * from './base-content.policy';
 export * from './base-content-read.policy';
 export * from './base-content-write.policy';
 export * from './base-content-create.policy';

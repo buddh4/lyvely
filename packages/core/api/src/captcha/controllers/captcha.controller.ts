@@ -8,9 +8,9 @@ import {
   CaptchaEndpoint,
   CaptchaEndpoints,
 } from '@lyvely/interface';
-import { Controller } from '@/common';
+import { GlobalController } from '@/common';
 
-@Controller(API_CAPTCHA)
+@GlobalController(API_CAPTCHA)
 export class CaptchaController implements CaptchaEndpoint {
   constructor(private captchaService: CaptchaService) {}
 

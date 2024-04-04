@@ -1,9 +1,9 @@
 import { RefreshToken, User } from './index';
 import { Model, getDefaultLocale } from '@/core';
-import { buildTest, LyvelyTestingModule } from '@/testing';
+import { LyvelyTestingModule } from '@/testing';
 import { addDays } from '@lyvely/dates';
 import { compare } from 'bcrypt';
-import { usersTestPlugin, UserTestDataUtils } from '../testing';
+import { buildUserTest, UserTestDataUtils } from '../testing';
 
 describe('Users schema', () => {
   let testingModule: LyvelyTestingModule;
@@ -13,7 +13,7 @@ describe('Users schema', () => {
   const TEST_KEY = 'user_schema';
 
   beforeEach(async () => {
-    testingModule = await buildTest(TEST_KEY).plugins([usersTestPlugin]).compile();
+    testingModule = await buildUserTest(TEST_KEY).compile();
     testData = testingModule.get(UserTestDataUtils);
     UserModel = testingModule.get('UserModel');
   });

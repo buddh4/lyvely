@@ -1,7 +1,7 @@
-import { buildTest, getObjectId, LyvelyTestingModule } from '@/testing';
+import { getObjectId, LyvelyTestingModule } from '@/testing';
 import { Tag } from '../schemas';
 import { ProfileTagsService, ProfilesService } from './index';
-import { profilesTestPlugin, ProfileTestDataUtils } from '../testing';
+import { buildProfileTest, ProfileTestDataUtils } from '../testing';
 import { DocumentNotFoundException } from '@lyvely/interface';
 
 describe('ProfileTagsService', () => {
@@ -13,7 +13,7 @@ describe('ProfileTagsService', () => {
   const TEST_KEY = 'profile_service';
 
   beforeEach(async () => {
-    testingModule = await buildTest(TEST_KEY).plugins([profilesTestPlugin]).compile();
+    testingModule = await buildProfileTest(TEST_KEY).compile();
     profileTagsService = testingModule.get<ProfileTagsService>(ProfileTagsService);
     profileService = testingModule.get<ProfilesService>(ProfilesService);
     testData = testingModule.get(ProfileTestDataUtils);

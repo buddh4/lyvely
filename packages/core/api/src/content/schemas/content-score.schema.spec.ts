@@ -1,10 +1,10 @@
-import { ProfileScore, profilesTestPlugin, ProfileTestDataUtils } from '@/profiles';
-import { getObjectId, buildTest, LyvelyTestingModule } from '@/testing';
+import { ProfileScore, ProfileTestDataUtils } from '@/profiles';
+import { getObjectId, LyvelyTestingModule } from '@/testing';
 import { ContentScore, ContentScoreSchema } from './index';
 import {
+  buildContentTest,
   ExtendedTestContentScore,
   ExtendedTestContentScoreSchema,
-  contentTestPlugin,
   TestContent,
 } from '../testing';
 import { Model } from '@/core';
@@ -29,10 +29,7 @@ describe('ContentScore', () => {
   ];
 
   beforeEach(async () => {
-    testingModule = await buildTest(TEST_KEY)
-      .plugins([contentTestPlugin, profilesTestPlugin])
-      .models(Models)
-      .compile();
+    testingModule = await buildContentTest(TEST_KEY).models(Models).compile();
     ExtendedTestContentScoreModel = testingModule.get('ExtendedTestContentScoreModel');
     testDataUtils = testingModule.get(ProfileTestDataUtils);
   });

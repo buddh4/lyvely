@@ -1,5 +1,5 @@
-import { buildTest, getObjectId, LyvelyTestingModule } from '@/testing';
-import { ProfileContext, profilesTestPlugin, ProfileTestDataUtils, Tag } from '@/profiles';
+import { getObjectId, LyvelyTestingModule } from '@/testing';
+import { buildProfileTest, ProfileContext, ProfileTestDataUtils, Tag } from '@/profiles';
 import { mapType } from '@lyvely/common';
 import { ProfileWithRelationsModel } from '@lyvely/interface';
 import { omit } from 'lodash';
@@ -12,7 +12,7 @@ describe('Profile model mapping', () => {
   const TEST_KEY = 'profile-mapping';
 
   beforeEach(async () => {
-    testingModule = await buildTest(TEST_KEY).plugins([profilesTestPlugin]).compile();
+    testingModule = await buildProfileTest(TEST_KEY).compile();
     testData = testingModule.get(ProfileTestDataUtils);
   });
 

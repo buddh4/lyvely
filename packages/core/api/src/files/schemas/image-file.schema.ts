@@ -3,14 +3,14 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { BaseModel, PropertyType } from '@lyvely/common';
 import { File, FileVariant } from './file.schema';
 import { ImageFileMetadata, ImageFileMetadataSchema } from './image-file-metadata.schema';
-import type { ImageFileIf, ImageMetadataIf } from '../interfaces';
+import type { ImageFileIF, ImageMetadataIF } from '../interfaces';
 
 @Schema({ timestamps: true })
-export class ImageFileVariant extends FileVariant<ImageFileIf<TObjectId>> {
+export class ImageFileVariant extends FileVariant<ImageFileIF<TObjectId>> {
   @Prop({ type: ImageFileMetadataSchema, required: true })
-  override meta: ImageMetadataIf;
+  override meta: ImageMetadataIF;
 
-  constructor(file: ImageFileIf<any>, variant: string) {
+  constructor(file: ImageFileIF<any>, variant: string) {
     super(file, variant);
   }
 }

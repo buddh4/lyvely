@@ -1,14 +1,13 @@
-import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
+import { LyvelyTestingModule } from '@lyvely/testing';
 import {
   UserAssignmentStrategy,
   Profile,
-  profilesTestPlugin,
   ProfileTestDataUtils,
   User,
   Content,
   ContentSchema,
-  contentTestPlugin,
   Model,
+  buildContentTest,
 } from '@lyvely/api';
 import { DataPointValueType, getDataPointModelDefinition, TimerDataPointConfig } from '../index';
 import { CalendarInterval } from '@lyvely/dates';
@@ -40,8 +39,7 @@ describe('TimerDataPointService', () => {
   const TEST_KEY = 'NumberDataPointService';
 
   beforeEach(async () => {
-    testingModule = await buildTest(TEST_KEY)
-      .plugins([profilesTestPlugin, contentTestPlugin])
+    testingModule = await buildContentTest(TEST_KEY)
       .providers([TestDataPointDao, TestDataPointService, TestTimerDataPointService])
       .models(Models)
       .compile();

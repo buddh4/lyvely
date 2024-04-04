@@ -1,4 +1,4 @@
-import { FileUpload } from '../models/file-upload.model';
+import { IFileUpload } from './file-upload.interface';
 import { Readable } from 'node:stream';
 import type { FileAccess } from './storage-service.interface';
 
@@ -15,7 +15,7 @@ export interface IStorageProvider {
    * @param {FileUpload} upload - The file upload object containing the file to be uploaded.
    * @return {Promise<void>} - A Promise that resolves when the upload is completed successfully.
    */
-  upload(upload: FileUpload): Promise<void>;
+  upload(upload: IFileUpload): Promise<void>;
 
   /**
    * Deletes the given file from storage.

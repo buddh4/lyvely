@@ -13,13 +13,11 @@ import {
   closeInMongodConnections,
   rootMongooseTestModule,
 } from './mongoose-test.utils';
-import { PoliciesModule } from '@/policies/policies.module';
-import { PermissionsModule } from '@/permissions';
 
 export type Type<T = any> = new (...args: any[]) => T;
 
 export interface TestPlugin {
-  apply?: (builder: LyvelyTestBuilder) => void;
+  apply?: (builder: TestBuilder) => void;
   prepare?: (moduleBuilder: TestingModuleBuilder) => void;
   afterEach?: (module: TestingModule) => void;
   afterAll?: (module: TestingModule) => void;
@@ -36,7 +34,7 @@ export class EventTester {
   public eventEmitter: EventEmitter2;
 }
 
-export class LyvelyTestBuilder {
+export abstract class TestBuilder {
   private readonly id: string;
   private _providers: Provider[] = [];
   private _models: ModelDefinition[] = [];
@@ -44,10 +42,17 @@ export class LyvelyTestBuilder {
   private _config: any = {};
   private _plugins: TestPlugin[] = [];
 
-  constructor(id: string, init: Partial<PropertiesOf<LyvelyTestBuilder>> = {}) {
+  constructor(id: string, data: Partial<PropertiesOf<TestBuilder>> = {}) {
     this.id = id;
-    Object.assign(this, init);
+    Object.assign(this, data);
+    this.init();
   }
+
+  /**
+   * This function is intended for subclasses to initiate any defaults as imports or providers.
+   * @protected
+   */
+  protected abstract init();
 
   models(models: ModelDefinition[]) {
     this._models.push(...models);
@@ -104,6 +109,12 @@ export class LyvelyTestBuilder {
   }
 }
 
+export class LyvelyTestBuilder extends TestBuilder {
+  init() {
+    /** No default initialization needed. **/
+  }
+}
+
 export function buildTest(id: string, init: Partial<LyvelyTestBuilder> = {}) {
   return new LyvelyTestBuilder(id, init);
 }
@@ -137,8 +148,6 @@ export function createCoreTestingModule(
       }),
       CoreModule,
       ...imports,
-      PoliciesModule.forRoot(),
-      PermissionsModule,
     ],
     providers: [EventTester, ...providers],
   })

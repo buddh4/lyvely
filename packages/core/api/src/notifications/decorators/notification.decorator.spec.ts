@@ -5,6 +5,7 @@ import { UrlRoute } from '@lyvely/interface';
 import { buildTest, LyvelyTestingModule } from '@/testing';
 import { NotificationTypeRegistry } from '../components';
 import { notificationTestPlugin } from '../testing';
+import { buildProfileTest } from '@/profiles';
 
 const TEST_KEY = 'Notification decorator';
 
@@ -13,7 +14,7 @@ describe('Notification decorator', () => {
   let notificationRegistry: NotificationTypeRegistry;
 
   beforeEach(async () => {
-    testingModule = await buildTest(TEST_KEY).plugins([notificationTestPlugin]).compile();
+    testingModule = await buildProfileTest(TEST_KEY).plugins([notificationTestPlugin]).compile();
     notificationRegistry = testingModule.get(NotificationTypeRegistry);
   });
 

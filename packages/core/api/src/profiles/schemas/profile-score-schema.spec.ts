@@ -1,11 +1,11 @@
 import { ProfileScore, ProfileScoreSchema } from './index';
-import { buildTest, getObjectId, LyvelyTestingModule } from '@/testing';
+import { getObjectId, LyvelyTestingModule } from '@/testing';
 import { Model } from '@/core';
 import {
   TestProfileScore,
   TestProfileScoreSchema,
-  profilesTestPlugin,
   ProfileTestDataUtils,
+  buildProfileTest,
 } from '../testing';
 import { addDays, toTimingId } from '@lyvely/dates';
 import { UserAssignmentStrategy } from '@lyvely/interface';
@@ -26,10 +26,7 @@ describe('ProfileScore', () => {
   ];
 
   beforeEach(async () => {
-    testingModule = await buildTest(TEST_KEY)
-      .plugins([profilesTestPlugin])
-      .models(Models)
-      .compile();
+    testingModule = await buildProfileTest(TEST_KEY).models(Models).compile();
     TestProfileScoreModel = testingModule.get('TestProfileScoreModel');
     testDataUtils = testingModule.get(ProfileTestDataUtils);
   });

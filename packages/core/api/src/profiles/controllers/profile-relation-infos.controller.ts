@@ -12,9 +12,9 @@ import {
 } from '@lyvely/interface';
 import { mapType } from '@lyvely/common';
 import { ProfileContext } from '../models';
-import { Controller } from '@/common';
+import { GlobalController } from '@/common';
 
-@Controller(API_PROFILE_RELATION_INFOS)
+@GlobalController(API_PROFILE_RELATION_INFOS)
 @UseInterceptors(ClassSerializerInterceptor)
 export class ProfileRelationInfosController implements ProfileRelationInfosEndpoint {
   constructor(private profilesService: ProfilesService, private usersService: UsersService) {}

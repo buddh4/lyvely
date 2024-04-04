@@ -5,7 +5,7 @@ import type {
   IStorageProviderDefinition,
   IStorageService,
 } from '../interfaces';
-import type { ConfigService } from '@nestjs/config';
+import { ConfigService } from '@nestjs/config';
 import { Injectable, Logger } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import type { IStorageConfig, LyvelyFileOptions, ServerConfiguration } from '@/config';
@@ -14,11 +14,12 @@ import { IntegrityException, MisconfigurationException } from '@lyvely/interface
 import { FileUpload } from '../models';
 import { createBaseModelAndInit, isGuid, type Type } from '@lyvely/common';
 import { REGEX_STORAGE_BUCKET } from '../files.constants';
-import type { FileMimeTypeRegistry } from '../registries';
+import { FileMimeTypeRegistry } from '../registries';
 import { File, FileMetadata, FileVariant, GenericFile } from '../schemas';
 import type { StrictBaseDocumentData } from '@/core';
 import type { Readable } from 'node:stream';
 import { join } from 'path';
+import { pick } from 'lodash';
 
 const LOCAL_STORAGE_PROVIDER_ID = 'local';
 
@@ -226,11 +227,7 @@ export class StorageService implements IStorageService {
     return this.fileMimeTypeRegistry
       .getTypeMeta(upload.file.mimetype, {
         async metaFactory({ file }: FileUpload): Promise<FileMetadata> {
-          return new FileMetadata({
-            name: file.filename,
-            mime: file.mimetype,
-            size: file.size,
-          });
+          return new FileMetadata(pick(file, ['filename', 'mimetype', 'size']));
         },
       })
       .metaFactory(upload);

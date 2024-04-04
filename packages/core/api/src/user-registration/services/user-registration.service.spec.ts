@@ -6,8 +6,8 @@ import {
   UserRegistration,
   VerifyEmailDto,
 } from '@lyvely/interface';
-import { User, UsersService, UserTestDataUtils, usersTestPlugin } from '@/users';
-import { TestConfigService, LyvelyTestingModule, buildTest } from '@/testing';
+import { User, UsersService, UserTestDataUtils } from '@/users';
+import { TestConfigService, LyvelyTestingModule } from '@/testing';
 import { UserRegistrationModule } from '../user-registration.module';
 import { ConfigService } from '@nestjs/config';
 import {
@@ -19,11 +19,11 @@ import {
 import { assureObjectId, DocumentIdentity } from '@/core';
 import { Profile } from '@/profiles';
 import { UnauthorizedException } from '@nestjs/common';
-import { contentTestPlugin } from '@/content';
 import { mailTestPlugin } from '@/mails';
 import { i18nTestPlugin } from '@/i18n';
 import { otpTestPlugin } from '@/otp';
 import { notificationTestPlugin } from '@/notifications';
+import { buildContentTest } from '@/content';
 
 describe('UserRegistrationService', () => {
   let testingModule: LyvelyTestingModule;
@@ -37,15 +37,8 @@ describe('UserRegistrationService', () => {
   const TEST_KEY = 'register_service';
 
   beforeEach(async () => {
-    testingModule = await buildTest(TEST_KEY)
-      .plugins([
-        usersTestPlugin,
-        otpTestPlugin,
-        contentTestPlugin,
-        notificationTestPlugin,
-        mailTestPlugin,
-        i18nTestPlugin,
-      ])
+    testingModule = await buildContentTest(TEST_KEY)
+      .plugins([otpTestPlugin, notificationTestPlugin, mailTestPlugin, i18nTestPlugin])
       .imports([UserRegistrationModule, UserInvitationsModule])
       .compile();
     registerService = testingModule.get<UserRegistrationService>(UserRegistrationService);

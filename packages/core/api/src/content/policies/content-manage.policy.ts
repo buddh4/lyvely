@@ -4,7 +4,6 @@ import { ProfileContentContext } from '../schemas';
 import { getPolicyToken } from '@/policies';
 import { BaseContentManagePolicy } from './base-content-manage.policy';
 import { DocumentNotFoundException } from '@lyvely/interface';
-import { ModuleRef } from '@nestjs/core';
 
 /**
  * A policy for managing general access to content features as updating, archiving and deleting as well as tag assignment.
@@ -23,9 +22,6 @@ import { ModuleRef } from '@nestjs/core';
  */
 @Injectable()
 export class ContentManagePolicy extends BaseContentManagePolicy {
-  @Inject()
-  protected readonly moduleRef: ModuleRef;
-
   override async verify(context: ProfileContentContext): Promise<boolean> {
     const { content } = context;
 

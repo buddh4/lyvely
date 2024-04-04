@@ -1,10 +1,9 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { IContentPolicy } from '../interfaces';
+import { Injectable } from '@nestjs/common';
 import { ProfileContentContext } from '../schemas';
 import { InjectPolicy } from '@/policies';
 import { ContentManagePolicy } from './content-manage.policy';
 import { BasePermissionType, getContentDeletePermissionId, getPermission } from '@lyvely/interface';
-import { ContentPermissionsService } from '../services/content-permissions.service';
+import { BaseContentPolicy } from './base-content.policy';
 
 /**
  * Represents the default content delete policy, responsible for granting access to content archive and delete features.
@@ -18,12 +17,9 @@ import { ContentPermissionsService } from '../services/content-permissions.servi
  * @implements {IContentPolicy}
  */
 @Injectable()
-export abstract class BaseContentDeletePolicy implements IContentPolicy {
+export abstract class BaseContentDeletePolicy extends BaseContentPolicy {
   @InjectPolicy(ContentManagePolicy.name)
-  private readonly managePolicy: ContentManagePolicy;
-
-  @Inject()
-  protected readonly contentPermissionsService: ContentPermissionsService;
+  protected readonly managePolicy: ContentManagePolicy;
 
   async verify(context: ProfileContentContext): Promise<boolean> {
     const { content } = context;
@@ -33,7 +29,7 @@ export abstract class BaseContentDeletePolicy implements IContentPolicy {
       BasePermissionType.Content,
     );
 
-    if (permission && this.contentPermissionsService.verifyPermission(context, permission)) {
+    if (permission && this.getContentPermissionsService().verifyPermission(context, permission)) {
       return true;
     }
 

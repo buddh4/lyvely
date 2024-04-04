@@ -1,8 +1,8 @@
-import { buildTest, LyvelyTestingModule } from '@/testing';
+import { LyvelyTestingModule } from '@/testing';
 import { Notification as NotificationDecorator } from '../decorators';
 import { Notification, NotificationContext, NotificationType, RenderFormat } from '../schemas';
 import { SingleUserSubscription } from '@/user-subscriptions';
-import { ProfileInfo, ProfileTestDataUtils, profilesTestPlugin } from '@/profiles';
+import { buildProfileTest, ProfileInfo, ProfileTestDataUtils } from '@/profiles';
 import { UserInfo } from '@/users';
 import { NotificationDao } from './notification.dao';
 import { Prop } from '@nestjs/mongoose';
@@ -55,9 +55,7 @@ describe('NotificationDao', () => {
   let testData: ProfileTestDataUtils;
 
   beforeEach(async () => {
-    testingModule = await buildTest(TEST_KEY)
-      .plugins([profilesTestPlugin, notificationTestPlugin])
-      .compile();
+    testingModule = await buildProfileTest(TEST_KEY).plugins([notificationTestPlugin]).compile();
     notificationDao = testingModule.get(NotificationDao);
     testData = testingModule.get(ProfileTestDataUtils);
   });

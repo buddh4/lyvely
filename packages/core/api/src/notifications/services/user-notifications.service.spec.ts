@@ -1,4 +1,4 @@
-import { buildTest, LyvelyTestingModule } from '@/testing';
+import { LyvelyTestingModule } from '@/testing';
 import { UserNotificationsService } from './user-notifications.service';
 import { MultiUserSubscription } from '@/user-subscriptions';
 import {
@@ -8,7 +8,7 @@ import {
   NotificationContext,
   Notification,
 } from '../index';
-import { Profile, ProfileInfo, profilesTestPlugin, ProfileTestDataUtils } from '@/profiles';
+import { buildProfileTest, Profile, ProfileInfo, ProfileTestDataUtils } from '@/profiles';
 import { User, UserInfo } from '@/users';
 import { assureObjectId, TObjectId } from '@/core';
 import { NotificationDao, UserNotificationDao } from '../daos';
@@ -59,9 +59,7 @@ describe('UserNotificationsService', () => {
   let testData: ProfileTestDataUtils;
 
   beforeEach(async () => {
-    testingModule = await buildTest(TEST_KEY)
-      .plugins([profilesTestPlugin, notificationTestPlugin])
-      .compile();
+    testingModule = await buildProfileTest(TEST_KEY).plugins([notificationTestPlugin]).compile();
     userNotificationsService = testingModule.get(UserNotificationsService);
     notificationDao = testingModule.get(NotificationDao);
     userNotificationDao = testingModule.get(UserNotificationDao);

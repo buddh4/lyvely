@@ -22,9 +22,9 @@ import { ConfigService } from '@nestjs/config';
 import ms from 'ms';
 import { Public, UseClassSerializer } from '@/core';
 import { ConfigurationPath } from '@/config';
-import { Controller } from '@/common';
+import { GlobalController } from '@/common';
 
-@Controller(API_AUTH)
+@GlobalController(API_AUTH)
 @UseClassSerializer()
 export class AuthController extends AbstractJwtAuthController implements AuthEndpoint {
   constructor(

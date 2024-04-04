@@ -1,14 +1,14 @@
 import { assureStringId } from '@/core';
-import { buildTest, getObjectId, LyvelyTestingModule } from '@/testing';
+import { getObjectId, LyvelyTestingModule } from '@/testing';
 import { ProfileUrlGenerator } from './profile-url-generator.service';
-import { profilesTestPlugin } from '../testing';
+import { buildProfileTest } from '@/profiles';
 
 describe('UrlGenrator', () => {
   let urlGenerator: ProfileUrlGenerator;
   let testingModule: LyvelyTestingModule;
 
   beforeEach(async () => {
-    testingModule = await buildTest('url-gnerator').plugins([profilesTestPlugin]).compile();
+    testingModule = await buildProfileTest('url-gnerator').compile();
     urlGenerator = testingModule.get(ProfileUrlGenerator);
   });
 

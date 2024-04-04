@@ -18,8 +18,9 @@ export class ProfileMembershipAvatarService {
    * @returns {Avatar} - The updated avatar object.
    */
   async updateAvatar(context: ProfileMembershipContext, file: Express.Multer.File) {
+    const { user } = context;
     const oldGuid = context.getMembership().userInfo.guid;
-    const avatar = await this.avatarService.createAvatar(file);
+    const avatar = await this.avatarService.createAvatar(user._id, file);
     await Promise.any([
       this.updateUserInfoAvatar(context, avatar),
       this.avatarService.deleteAvatar(oldGuid),

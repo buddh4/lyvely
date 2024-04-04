@@ -5,6 +5,8 @@ import { mailTestPlugin } from '@/mails';
 import { QUEUE_NOTIFICATIONS_SEND } from '../notification.constants';
 import { BullModule, getQueueToken } from '@nestjs/bullmq';
 import { NotificationQueueTester } from '../services';
+import { LiveModule } from '@/live';
+import { ProfilesModule } from '@/profiles';
 
 export const notificationTestPlugin = {
   apply(builder) {
@@ -14,6 +16,7 @@ export const notificationTestPlugin = {
         I18nModule,
         BullModule.registerQueue({ name: QUEUE_NOTIFICATIONS_SEND }),
       ])
+      .imports([LiveModule, ProfilesModule])
       .plugins([i18nTestPlugin, mailTestPlugin])
       .providers([NotificationQueueTester]);
   },

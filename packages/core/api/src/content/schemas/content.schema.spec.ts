@@ -1,9 +1,9 @@
-import { buildTest, LyvelyTestingModule } from '@/testing';
-import { Profile, profilesTestPlugin, ProfileTestDataUtils } from '@/profiles';
+import { LyvelyTestingModule } from '@/testing';
+import { Profile, ProfileTestDataUtils } from '@/profiles';
 import { User } from '@/users';
 import { Content, ContentLog, ContentMetadata, CreatedAs, ContentDataType } from '../schemas';
 import { CreatedAsType } from '@lyvely/interface';
-import { contentTestPlugin } from '../testing';
+import { buildContentTest } from '@/content';
 
 describe('Content Model', () => {
   let testingModule: LyvelyTestingModule;
@@ -14,9 +14,7 @@ describe('Content Model', () => {
   const TEST_KEY = 'content_model';
 
   beforeEach(async () => {
-    testingModule = await buildTest(TEST_KEY)
-      .plugins([contentTestPlugin, profilesTestPlugin])
-      .compile();
+    testingModule = await buildContentTest(TEST_KEY).compile();
     testDataUtils = testingModule.get(ProfileTestDataUtils);
     const userAndProfile = await testDataUtils.createUserAndProfile();
     user = userAndProfile.user;

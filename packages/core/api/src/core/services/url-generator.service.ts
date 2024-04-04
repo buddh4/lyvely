@@ -1,11 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { ConfigurationPath } from '@/config';
 import { MisconfigurationException, UrlRoute } from '@lyvely/interface';
 
 @Injectable()
 export class UrlGenerator {
-  constructor(protected readonly configService: ConfigService<ConfigurationPath>) {}
+  constructor(protected readonly configService: ConfigService) {}
 
   public getAppUrl(route?: UrlRoute): URL {
     return this.generateUrl(this.getBaseAppUrl(), route);

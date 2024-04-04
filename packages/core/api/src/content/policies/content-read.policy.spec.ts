@@ -1,9 +1,9 @@
-import { buildTest, LyvelyTestingModule } from '@/testing';
+import { LyvelyTestingModule } from '@/testing';
 import { Content, ContentSchema, ProfileContentContext } from '../schemas';
-import { contentTestPlugin, TestContent, TestContentSchema } from '../testing';
-import { profilesTestPlugin, ProfileTestDataUtils } from '@/profiles';
+import { buildContentTest, TestContent, TestContentSchema } from '../testing';
+import { ProfileTestDataUtils } from '@/profiles';
 import { RoleVisibilityLevel } from '@lyvely/interface';
-import { getPolicyToken, IPolicy, policyTestPlugin } from '@/policies';
+import { getPolicyToken, IPolicy } from '@/policies';
 import { BaseContentReadPolicy } from './base-content-read.policy';
 import { Type } from '@lyvely/common';
 import { LyvelyModule } from '@/core';
@@ -40,8 +40,7 @@ describe('ContentReadPolicy', () => {
   ];
 
   beforeEach(async () => {
-    testingModule = await buildTest(TEST_KEY)
-      .plugins([profilesTestPlugin, policyTestPlugin, contentTestPlugin])
+    testingModule = await buildContentTest(TEST_KEY)
       .imports([TestModule])
       .models(ContentModel)
       .compile();

@@ -2,6 +2,16 @@ import type { TObjectId } from '@/core';
 import type { IFile } from './file.interface';
 
 /**
+ * Represents information about a file.
+ */
+export interface IFileInfo {
+  filename: string;
+  size: number;
+  mimetype: string;
+  path: string;
+}
+
+/**
  * Represents a file upload request. This interface contains all properties required to store and
  * persist a file.
  *
@@ -33,25 +43,7 @@ export interface IFileUpload<TFile extends IFile<TObjectId> = IFile<TObjectId>> 
   variants?: TFile['variants'];
 
   /**
-   * Temporary file path.
+   * Contains file information.
    */
-  filePath: string;
-
-  /**
-   * Original of the file
-   *
-   * @type {string}
-   * @since 1.0.0
-   */
-  fileName: string;
-
-  /**
-   * Size of the file in bytes.
-   */
-  fileSize: number;
-
-  /**
-   * File mime type
-   */
-  mime: string;
+  file: IFileInfo;
 }

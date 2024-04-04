@@ -3,10 +3,10 @@ import { Public, UseClassSerializer } from '@/core';
 import { StorageService } from '@/files';
 import { Response } from 'express';
 import { ConfigService } from '@nestjs/config';
-import { Controller } from '@/common';
+import { GlobalController } from '@/common';
 import { STORAGE_BUCKET_AVATARS } from '../avatar.constants';
 
-@Controller('avatars')
+@GlobalController('avatars')
 @UseClassSerializer()
 export class AvatarsController {
   private logger = new Logger(AvatarsController.name);

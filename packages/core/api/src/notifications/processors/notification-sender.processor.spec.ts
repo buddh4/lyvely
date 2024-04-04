@@ -1,4 +1,4 @@
-import { buildTest, LyvelyTestingModule } from '@/testing';
+import { LyvelyTestingModule } from '@/testing';
 import { NotificationDao, Notification as NotificationDecorator } from '../index';
 import { Notification, NotificationContext, NotificationType, RenderFormat } from '../schemas';
 import { SingleUserSubscription } from '@/user-subscriptions';
@@ -10,7 +10,7 @@ import { Translatable } from '@/i18n';
 import { UrlRoute } from '@lyvely/interface';
 import { BaseModel, type BaseModelData, escapeHtmlIf } from '@lyvely/common';
 import { TestNotificationCategory } from '../notifications';
-import { profilesTestPlugin, ProfileTestDataUtils } from '@/profiles';
+import { buildProfileTest, ProfileTestDataUtils } from '@/profiles';
 import { notificationTestPlugin } from '../testing';
 
 const TEST_KEY = 'NotificationSendProcessor';
@@ -57,9 +57,7 @@ describe('NotificationSendProcessor', () => {
   let userNotificationService: UserNotificationsService;
 
   beforeEach(async () => {
-    testingModule = await buildTest(TEST_KEY)
-      .plugins([profilesTestPlugin, notificationTestPlugin])
-      .compile();
+    testingModule = await buildProfileTest(TEST_KEY).plugins([notificationTestPlugin]).compile();
     notificationDao = testingModule.get(NotificationDao);
     testData = testingModule.get(ProfileTestDataUtils);
     processor = testingModule.get(NotificationSenderProcessor);

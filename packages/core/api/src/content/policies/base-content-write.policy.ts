@@ -1,10 +1,9 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { IContentPolicy } from '../interfaces';
+import { Injectable } from '@nestjs/common';
 import { ProfileContentContext } from '../schemas';
 import { InjectPolicy } from '@/policies';
 import { ContentManagePolicy } from './content-manage.policy';
-import { ContentPermissionsService } from '@/content/services/content-permissions.service';
 import { BasePermissionType, getContentWritePermissionId, getPermission } from '@lyvely/interface';
+import { BaseContentPolicy } from './base-content.policy';
 
 /**
  * Represents the default content write policy, responsible for granting access to content write features.
@@ -18,12 +17,9 @@ import { BasePermissionType, getContentWritePermissionId, getPermission } from '
  * @implements {IContentPolicy}
  */
 @Injectable()
-export abstract class BaseContentWritePolicy implements IContentPolicy {
+export abstract class BaseContentWritePolicy extends BaseContentPolicy {
   @InjectPolicy(ContentManagePolicy.name)
   private readonly managePolicy: ContentManagePolicy;
-
-  @Inject()
-  protected readonly contentPermissionsService: ContentPermissionsService;
 
   async verify(context: ProfileContentContext): Promise<boolean> {
     const { content } = context;
@@ -33,7 +29,7 @@ export abstract class BaseContentWritePolicy implements IContentPolicy {
       BasePermissionType.Content,
     );
 
-    if (permission && this.contentPermissionsService.verifyPermission(context, permission)) {
+    if (permission && this.getContentPermissionsService().verifyPermission(context, permission)) {
       return true;
     }
 

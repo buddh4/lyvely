@@ -6,8 +6,8 @@ export interface IFileMetadata {
   size: number;
 
   /** File mime type. **/
-  mime: string;
+  mimetype: string;
 
   /** Original file name. **/
-  name: string;
+  filename: string;
 }

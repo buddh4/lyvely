@@ -1,5 +1,5 @@
-import { buildTest, LyvelyTestingModule } from '@/testing';
-import { ProfilePermissionsService, profilesTestPlugin, ProfileTestDataUtils } from '@/profiles';
+import { LyvelyTestingModule } from '@/testing';
+import { buildProfileTest, ProfilePermissionsService, ProfileTestDataUtils } from '@/profiles';
 import {
   BasePermissionType,
   clearPermissions,
@@ -16,7 +16,7 @@ describe('ContentPermissionsService', () => {
   const TEST_KEY = 'profile_permissions_service';
 
   beforeEach(async () => {
-    testingModule = await buildTest(TEST_KEY).plugins([profilesTestPlugin]).compile();
+    testingModule = await buildProfileTest(TEST_KEY).compile();
     permissionsService = testingModule.get<ProfilePermissionsService>(ProfilePermissionsService);
     testDataUtils = testingModule.get(ProfileTestDataUtils);
   });

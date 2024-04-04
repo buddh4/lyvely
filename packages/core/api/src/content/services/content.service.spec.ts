@@ -1,9 +1,9 @@
-import { buildTest, LyvelyTestingModule } from '@/testing';
+import { LyvelyTestingModule } from '@/testing';
 import { Content, ContentMetadata, ContentSchema } from '../schemas';
-import { TestContent, TestContentSchema, contentTestPlugin, TestContentData } from '../testing';
+import { TestContent, TestContentSchema, TestContentData, buildContentTest } from '../testing';
 import { Model } from '@/core';
 import { User } from '@/users';
-import { Profile, profilesTestPlugin, ProfileTestDataUtils } from '@/profiles';
+import { Profile, ProfileTestDataUtils } from '@/profiles';
 import { ContentService } from './content.service';
 
 describe('content dao', () => {
@@ -24,10 +24,7 @@ describe('content dao', () => {
   ];
 
   beforeEach(async () => {
-    testingModule = await buildTest(TEST_KEY)
-      .plugins([contentTestPlugin, profilesTestPlugin])
-      .models(ContentModel)
-      .compile();
+    testingModule = await buildContentTest(TEST_KEY).models(ContentModel).compile();
     contentService = testingModule.get(ContentService);
     testContentModel = testingModule.get('TestContentModel');
     testData = testingModule.get(ProfileTestDataUtils);

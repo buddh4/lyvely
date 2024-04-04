@@ -1,15 +1,18 @@
 import { ProfilesService } from './index';
 import {
   BaseUserProfileRelationType,
+  ForbiddenServiceException,
+  GlobalPermissionRole,
   ProfileMembershipRole,
   ProfileType,
   ProfileVisibilityLevel,
   UniqueConstraintException,
 } from '@lyvely/interface';
-import { buildTest, LyvelyTestingModule } from '@/testing';
+import { LyvelyTestingModule } from '@/testing';
 import { GroupProfile, Organization, UserProfile, UserProfileRelation } from '../schemas';
-import { profilesTestPlugin, ProfileTestDataUtils } from '../testing';
+import { ProfileTestDataUtils } from '../testing';
 import { ProtectedProfileContext } from '../models';
+import { buildProfileTest } from '@/profiles';
 
 describe('ProfileService', () => {
   let testingModule: LyvelyTestingModule;
@@ -19,7 +22,7 @@ describe('ProfileService', () => {
   const TEST_KEY = 'profile_service_group';
 
   beforeEach(async () => {
-    testingModule = await buildTest(TEST_KEY).plugins([profilesTestPlugin]).compile();
+    testingModule = await buildProfileTest(TEST_KEY).compile();
     profileService = testingModule.get<ProfilesService>(ProfilesService);
     testData = testingModule.get(ProfileTestDataUtils);
   });
@@ -142,7 +145,7 @@ describe('ProfileService', () => {
 
     describe('createOrganization()', () => {
       it('create organization', async () => {
-        const user = await testData.createUser('User1');
+        const user = await testData.createUser('User1', { role: GlobalPermissionRole.Admin });
         const { profile, relations } = await profileService.createOrganization(user, {
           name: 'SomeOrganization',
         });
@@ -157,6 +160,37 @@ describe('ProfileService', () => {
         expect(profile.meta.deletable).toEqual(true);
         expect(profile.meta.deletable).toEqual(true);
         expectOwnerRelationship(relations);
+      });
+
+      it('moderator can not create organization', async () => {
+        const user = await testData.createUser('User1', { role: GlobalPermissionRole.Moderator });
+
+        const { profile } = await profileService.createOrganization(user, {
+          name: 'SomeOrganization',
+        });
+        expect(profile).toBeDefined();
+      });
+
+      it('normal user can not create organization', async () => {
+        expect.assertions(1);
+        const user = await testData.createUser('User1', { role: GlobalPermissionRole.User });
+
+        try {
+          await profileService.createOrganization(user, { name: 'ShouldFail' });
+        } catch (e) {
+          expect(e instanceof ForbiddenServiceException).toEqual(true);
+        }
+      });
+
+      it('normal user can not create organization', async () => {
+        expect.assertions(1);
+        const user = await testData.createUser('User1', { role: GlobalPermissionRole.User });
+
+        try {
+          await profileService.createOrganization(user, { name: 'ShouldFail' });
+        } catch (e) {
+          expect(e instanceof ForbiddenServiceException).toEqual(true);
+        }
       });
 
       it('assure organization can not have an organization', async () => {
@@ -178,10 +212,10 @@ describe('ProfileService', () => {
       });
 
       it('organization name is globally unique', async () => {
-        const user = await testData.createUser('User1');
+        const user = await testData.createUser('User1', { role: GlobalPermissionRole.Moderator });
         await profileService.createOrganization(user, { name: 'SomeOrganization' });
 
-        const user2 = await testData.createUser('User2');
+        const user2 = await testData.createUser('User2', { role: GlobalPermissionRole.Moderator });
         expect.assertions(2);
         return profileService.createOrganization(user2, { name: 'SomeOrganization' }).catch((e) => {
           expect(e instanceof UniqueConstraintException).toEqual(true);
@@ -190,7 +224,7 @@ describe('ProfileService', () => {
       });
 
       it('organization name is unique per owner', async () => {
-        const user = await testData.createUser('User1');
+        const user = await testData.createUser('User1', { role: GlobalPermissionRole.Moderator });
         await profileService.createUserProfile(user, { name: 'SomeOrganization' });
 
         expect.assertions(2);

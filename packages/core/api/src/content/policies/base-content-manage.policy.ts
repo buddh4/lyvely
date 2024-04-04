@@ -1,5 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { IContentPolicy } from '../interfaces';
+import { Injectable } from '@nestjs/common';
 import { ProfileContentContext } from '../schemas';
 import {
   BasePermissionType,
@@ -7,9 +6,9 @@ import {
   getPermission,
   ProfileMembershipRole,
 } from '@lyvely/interface';
-import { ProfileMembershipPolicy } from '@/profiles/policies/profile-membership-policy';
+import { ProfileMembershipPolicy } from '@/profiles';
 import { InjectPolicy } from '@/policies';
-import { ContentPermissionsService } from '../services/content-permissions.service';
+import { BaseContentPolicy } from './base-content.policy';
 
 /**
  * Represents the default ContentManagePolicy which applies to content entries unless the content type
@@ -27,12 +26,9 @@ import { ContentPermissionsService } from '../services/content-permissions.servi
  *
  */
 @Injectable()
-export abstract class BaseContentManagePolicy implements IContentPolicy {
+export abstract class BaseContentManagePolicy extends BaseContentPolicy {
   @InjectPolicy(ProfileMembershipPolicy.name)
   private readonly membershipPolicy: ProfileMembershipPolicy;
-
-  @Inject()
-  protected readonly contentPermissionsService: ContentPermissionsService;
 
   async verify(context: ProfileContentContext): Promise<boolean> {
     const { content, user } = context;
@@ -43,7 +39,8 @@ export abstract class BaseContentManagePolicy implements IContentPolicy {
     );
 
     // If a custom manage permission is set, we only allow management permission access.
-    if (permission) return this.contentPermissionsService.verifyPermission(context, permission);
+    if (permission)
+      return this.getContentPermissionsService().verifyPermission(context, permission);
 
     // Fallback
     if (!(await this.membershipPolicy.verify(context))) return false;

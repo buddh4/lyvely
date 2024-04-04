@@ -1,6 +1,6 @@
-import { buildTest, LyvelyTestingModule } from '@/testing';
+import { LyvelyTestingModule } from '@/testing';
 import { ProfileFeaturesService } from './index';
-import { profilesTestPlugin, ProfileTestDataUtils } from '../testing';
+import { buildProfileTest, ProfileTestDataUtils } from '../testing';
 import {
   clearFeatures,
   registerFeatures,
@@ -17,7 +17,7 @@ describe('ProfileFeaturesService', () => {
   const TEST_KEY = 'profile_service';
 
   beforeEach(async () => {
-    testingModule = await buildTest(TEST_KEY).plugins([profilesTestPlugin]).compile();
+    testingModule = await buildProfileTest(TEST_KEY).compile();
     profileFeaturesService = testingModule.get<ProfileFeaturesService>(ProfileFeaturesService);
     testData = testingModule.get(ProfileTestDataUtils);
   });

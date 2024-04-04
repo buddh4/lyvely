@@ -14,12 +14,12 @@ import {
 } from '@lyvely/interface';
 import { UserRequest, UserThrottle, UserThrottlerGuard } from '@/users';
 import { UseClassSerializer } from '@/core';
-import { Controller } from '@/common';
+import { GlobalController } from '@/common';
 import { UserAccountService, AccountAvatarService } from '../services';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UploadAvatarPipe } from '@/avatars';
 
-@Controller(API_USER_ACCOUNT)
+@GlobalController(API_USER_ACCOUNT)
 @UseClassSerializer()
 export class UserAccountController implements UserAccountEndpoint {
   constructor(

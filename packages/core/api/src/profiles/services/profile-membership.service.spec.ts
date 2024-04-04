@@ -1,6 +1,6 @@
 import { ProfileMembershipService } from './index';
-import { buildTest, LyvelyTestingModule } from '@/testing';
-import { profilesTestPlugin, ProfileTestDataUtils } from '../testing';
+import { LyvelyTestingModule } from '@/testing';
+import { buildProfileTest, ProfileTestDataUtils } from '../testing';
 import {
   BaseUserProfileRelationType,
   ProfileMembershipRole,
@@ -12,14 +12,10 @@ import {
 describe('ProfileMembershipService', () => {
   let testingModule: LyvelyTestingModule;
   let membershipService: ProfileMembershipService;
-  let testData: ProfileTestDataUtils;
 
   beforeEach(async () => {
-    testingModule = await buildTest('ProfileMembershipService')
-      .plugins([profilesTestPlugin])
-      .compile();
+    testingModule = await buildProfileTest('ProfileMembershipService').compile();
     membershipService = testingModule.get(ProfileMembershipService);
-    testData = testingModule.get(ProfileTestDataUtils);
   });
 
   afterEach(async () => {

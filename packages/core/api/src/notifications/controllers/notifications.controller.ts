@@ -11,9 +11,9 @@ import { UserNotification } from '../schemas';
 import { TestNotification } from '../notifications';
 import { SingleUserSubscription } from '@/user-subscriptions';
 import { AbstractStreamController } from '@/streams';
-import { Controller } from '@/common';
+import { GlobalController } from '@/common';
 
-@Controller(API_NOTIFICATIONS)
+@GlobalController(API_NOTIFICATIONS)
 export class NotificationsController
   extends AbstractStreamController<UserNotification, IWebNotification, any, IUserContext>
   implements NotificationsEndpoint

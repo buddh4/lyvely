@@ -1,8 +1,7 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { IContentPolicy } from '../interfaces';
+import { Injectable } from '@nestjs/common';
 import { ProfileContentContext } from '../schemas';
-import { ModuleRef } from '@nestjs/core';
 import { getProfileRoleLevel } from '@lyvely/interface';
+import { BaseContentPolicy } from './base-content.policy';
 
 /**
  * Represents a base content read policy.
@@ -11,10 +10,7 @@ import { getProfileRoleLevel } from '@lyvely/interface';
  * @abstract
  */
 @Injectable()
-export abstract class BaseContentReadPolicy implements IContentPolicy {
-  @Inject()
-  protected moduleRef: ModuleRef;
-
+export abstract class BaseContentReadPolicy extends BaseContentPolicy {
   async verify(context: ProfileContentContext): Promise<boolean> {
     return getProfileRoleLevel(context.getRole()) <= context.content.meta.visibility;
   }

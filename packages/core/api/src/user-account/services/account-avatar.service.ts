@@ -27,7 +27,7 @@ export class AccountAvatarService {
    * @param {Express.Multer.File} file - The file containing the new avatar image.
    * @returns {Promise<Avatar>} - The newly*/
   async updateAvatar(user: User, file: Express.Multer.File) {
-    const avatar = await this.avatarService.createAvatar(file, user.guid);
+    const avatar = await this.avatarService.createAvatar(user._id, file, user.guid);
     await this.userDao.updateOneSetById(user, { avatar });
     return avatar;
   }

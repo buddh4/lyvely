@@ -14,7 +14,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { UseClassSerializer } from '@/core';
-import { Controller } from '@/common';
+import { GlobalController } from '@/common';
 import { assignRawDataTo, mapType } from '@lyvely/common';
 import {
   API_PROFILES,
@@ -51,7 +51,7 @@ import { UploadAvatarPipe } from '@/avatars';
  * @param {ProfileRelationsService} profilesRelationsService - The profile relations service.
  * @param {ProfileVisibilityPolicy} profileVisibilityPolicy - The profile visibility policy.
  */
-@Controller(API_PROFILES)
+@GlobalController(API_PROFILES)
 @UseClassSerializer()
 export class ProfilesController implements ProfilesEndpoint {
   constructor(

@@ -1,17 +1,16 @@
 import {
   ProfileTestDataUtils,
-  profilesTestPlugin,
   Content,
   ContentMetadata,
   ContentSchema,
   ContentType,
   ContentModel,
-  contentTestPlugin,
   DocumentIdentity,
   TObjectId,
   Model,
+  buildContentTest,
 } from '@lyvely/api';
-import { buildTest, getObjectId, LyvelyTestingModule } from '@lyvely/testing';
+import { getObjectId, LyvelyTestingModule } from '@lyvely/testing';
 import { MilestonesRelationsService } from './milestones-relations.service';
 import { Schema, SchemaFactory } from '@nestjs/mongoose';
 import { CalendarInterval, formatDate } from '@lyvely/dates';
@@ -77,8 +76,7 @@ describe('MileStonesRelationService', () => {
   const TEST_KEY = 'DataPointService';
 
   beforeEach(async () => {
-    testingModule = await buildTest(TEST_KEY)
-      .plugins([contentTestPlugin, profilesTestPlugin])
+    testingModule = await buildContentTest(TEST_KEY)
       .providers([MilestonesRelationsService, TestMilestoneRelationProvider])
       .models(Models)
       .compile();

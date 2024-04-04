@@ -13,9 +13,6 @@ import { DocumentNotFoundException } from '@lyvely/interface';
  */
 @Injectable()
 export class ContentDeletePolicy extends BaseContentDeletePolicy {
-  @Inject()
-  protected readonly moduleRef: ModuleRef;
-
   override async verify(context: ProfileContentContext): Promise<boolean> {
     const { content } = context;
 

@@ -1,12 +1,12 @@
-import { buildTest, LyvelyTestingModule } from '@/testing';
+import { LyvelyTestingModule } from '@/testing';
 import { ProfileScore, ProfileScoreSchema } from '../schemas';
 import {
   TestProfileScore,
   TestProfileScoreSchema,
-  profilesTestPlugin,
   ProfileTestDataUtils,
   TestProfileScoreTypeDao,
   TestProfileScoreService,
+  buildProfileTest,
 } from '../testing';
 import { INestApplication } from '@nestjs/common';
 import { ProfileDao } from '../daos';
@@ -28,8 +28,7 @@ describe('AbstractUserProfileActionService', () => {
   const TEST_KEY = 'abstract_user_profile_action_service';
 
   beforeEach(async () => {
-    testingModule = await buildTest(TEST_KEY)
-      .plugins([profilesTestPlugin])
+    testingModule = await buildProfileTest(TEST_KEY)
       .providers([TestProfileScoreTypeDao, TestProfileScoreService])
       .models([testScoreModelDef])
       .compile();

@@ -13,14 +13,13 @@ import {
 import {
   IntegrityException,
   UserAssignmentStrategy,
-  profilesTestPlugin,
   ProfileTestDataUtils,
   Content,
-  contentTestPlugin,
+  buildContentTest,
 } from '@lyvely/api';
 import { JournalsService } from '../services';
 import { JournalsDao } from '../daos';
-import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
+import { LyvelyTestingModule } from '@lyvely/testing';
 import { Journal, JournalSchema } from '../schemas';
 
 const Models = [
@@ -39,8 +38,7 @@ describe('JournalService', () => {
   const TEST_KEY = 'journals_service';
 
   beforeEach(async () => {
-    testingModule = await buildTest(TEST_KEY)
-      .plugins([contentTestPlugin, profilesTestPlugin])
+    testingModule = await buildContentTest(TEST_KEY)
       .providers([JournalsDao, JournalsService])
       .models(Models)
       .compile();

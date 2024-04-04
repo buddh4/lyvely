@@ -1,7 +1,6 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { IContentPolicy } from '../interfaces';
 import { ProfileContentContext } from '../schemas';
-import { ModuleRef } from '@nestjs/core';
 import { getPolicyToken } from '@/policies';
 import { BaseContentWritePolicy } from './base-content-write.policy';
 import { DocumentNotFoundException } from '@lyvely/interface';
@@ -13,9 +12,6 @@ import { DocumentNotFoundException } from '@lyvely/interface';
  */
 @Injectable()
 export class ContentWritePolicy extends BaseContentWritePolicy {
-  @Inject()
-  protected readonly moduleRef: ModuleRef;
-
   override async verify(context: ProfileContentContext): Promise<boolean> {
     const { content } = context;
 

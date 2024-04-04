@@ -1,9 +1,9 @@
-import { usersTestPlugin, UserTestDataUtils } from '../testing';
+import { buildUserTest, UserTestDataUtils } from '../testing';
 import { UserDao } from '../daos';
 import { RefreshToken, User, UserEmail } from '../schemas';
 import { UserStatus, ProfileType } from '@lyvely/interface';
 import { addMinutes } from '@lyvely/dates';
-import { buildTest, LyvelyTestingModule } from '@/testing';
+import { LyvelyTestingModule } from '@/testing';
 
 describe('UserDao', () => {
   let testingModule: LyvelyTestingModule;
@@ -11,7 +11,7 @@ describe('UserDao', () => {
   let testData: UserTestDataUtils;
 
   beforeEach(async () => {
-    testingModule = await buildTest('user-dao').plugins([usersTestPlugin]).compile();
+    testingModule = await buildUserTest('user-dao').compile();
     userDao = testingModule.get<UserDao>(UserDao);
     testData = testingModule.get<UserTestDataUtils>(UserTestDataUtils);
   });

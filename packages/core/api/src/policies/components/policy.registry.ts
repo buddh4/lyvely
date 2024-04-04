@@ -28,12 +28,6 @@ export class PolicyRegistry extends AbstractTypeRegistry<IPolicy<any>> {
     super.registerType(type, token, { provide: token, useClass: type });
   }
 
-  private definitionToProvider(definition?: IPolicyDefinition) {
-    return definition instanceof Function
-      ? { provide: definition, useClass: definition }
-      : definition;
-  }
-
   private registerOverwrites(moduleMeta: IModuleMetadata<IPolicyModuleMetadata>) {
     if (Array.isArray(moduleMeta.policies)) {
       moduleMeta.policies.forEach((definition: IPolicyDefinition) => {
