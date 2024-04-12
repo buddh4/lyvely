@@ -32,6 +32,7 @@ const sidebars = {
                 'dev/framework/features',
                 'dev/framework/content',
                 'dev/framework/migrations',
+                'dev/framework/storage',
             ],
         },
         {

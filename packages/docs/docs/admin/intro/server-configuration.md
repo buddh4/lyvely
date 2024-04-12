@@ -189,25 +189,41 @@ The following example shows a very simple content-security-policy header configu
 > Please consult the [Helmet documentation](https://github.com/helmetjs/helmet#how-it-works) for more
 available and default configuration options.
 
-## File
+## Files & Storage
 
-Lyvely utilizes [Multer](https://docs.nestjs.com/techniques/file-upload#default-options) for file uploads.
-
-The `files` configuration can be used to set multer options and the default local upload directory. By default, files
-will be uploaded into the `upload` directory within your server root.
+The `files` configuration can be used to configure different storage providers and set the path for uploaded files:
 
 ```typescript
 {
   files: {
-    upload: { /* Multer options here*/ },
-    local: {
-      path: '/some/local/upload/path'
+    upload: {
+      // Used for file uploads, this should be a temporary folder (Default: storage.local.dest/tmp).
+      dest: '/my/upload/path',
+      limits: {
+        // For multipart forms, the max file size (in bytes)(Default: Infinity).
+        fileSize: number
+      }
+    },
+    storage: {
+      // Here we configure our custom storage provider and set it as default.
+      default: 'MyStorage',
+      providers: [
+        id: 'MyStorage',
+        class: MyStorageProvider,
+        options: { 
+        // Some provider options 
+        }
+      ],
+      buckets: [
+        // Here we make an exception for avatars, which we prefer to serve from local storage.
+        { name: 'local', bucket: 'avatars' }
+      ]
     }
   }
 }
 ```
 
-> Note: Currently we only support local file uploads for example for avatars in the future other storage provider are
+> Note: Currently we only support local file storage for example for avatars in the future other storage provider are
 > planned.
 
 ## Mail
