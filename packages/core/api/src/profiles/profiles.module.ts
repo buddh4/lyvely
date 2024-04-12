@@ -56,6 +56,8 @@ import { DynamicModule } from '@nestjs/common/interfaces/modules/dynamic-module.
 import { uniqueId } from 'lodash';
 import { ProfileScoreTypeRegistry } from '@/profiles/registires';
 import { AvatarsModule } from '../avatars';
+import { MulterModule } from '@nestjs/platform-express';
+import { MulterConfigFactory } from '../files';
 
 const ProfileModel = MongooseModule.forFeature([
   {
@@ -91,7 +93,16 @@ useProfileMappings();
     CreateGroupProfilePermission,
     CreateUserProfilePermission,
   ],
-  imports: [CoreModule, UsersModule, PoliciesModule, AvatarsModule, ProfileModel],
+  imports: [
+    CoreModule,
+    UsersModule,
+    PoliciesModule,
+    AvatarsModule,
+    ProfileModel,
+    MulterModule.registerAsync({
+      useClass: MulterConfigFactory,
+    }),
+  ],
   providers: [
     ProfileDao,
     ProfileScoreTypeRegistry,

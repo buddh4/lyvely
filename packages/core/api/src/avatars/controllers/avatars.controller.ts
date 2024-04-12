@@ -2,7 +2,6 @@ import { Get, Res, Param, NotFoundException, Header, Logger } from '@nestjs/comm
 import { Public, UseClassSerializer } from '@/core';
 import { StorageService } from '@/files';
 import { Response } from 'express';
-import { ConfigService } from '@nestjs/config';
 import { GlobalController } from '@/common';
 import { STORAGE_BUCKET_AVATARS } from '../avatar.constants';
 
@@ -11,10 +10,7 @@ import { STORAGE_BUCKET_AVATARS } from '../avatar.constants';
 export class AvatarsController {
   private logger = new Logger(AvatarsController.name);
 
-  constructor(
-    private readonly configService: ConfigService,
-    private storageService: StorageService,
-  ) {}
+  constructor(private storageService: StorageService) {}
 
   @Get(':guid')
   @Header('Cross-Origin-Resource-Policy', 'cross-origin')

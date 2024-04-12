@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { ProfileScore } from '../schemas';
 import { Model, AbstractDao, LeanDoc } from '@/core';
 import { PROFILES_MODULE_ID } from '@lyvely/interface';
-import type { Constructor } from '@lyvely/common';
+import type { Type } from '@lyvely/common';
 import { ProfileScoreTypeRegistry } from '@/profiles/registires';
 
 /**
@@ -16,7 +16,7 @@ export class ProfileScoreDao extends AbstractDao<ProfileScore> {
   @Inject()
   protected profileScoreTypeRegistry: ProfileScoreTypeRegistry;
 
-  override getModelConstructor(leanModel: LeanDoc<ProfileScore>): Constructor<ProfileScore> {
+  override getModelConstructor(leanModel: LeanDoc<ProfileScore>): Type<ProfileScore> {
     return leanModel?.type && this.profileScoreTypeRegistry.isRegisteredType(leanModel.type)
       ? this.profileScoreTypeRegistry.getTypeConstructor(leanModel.type) || ProfileScore
       : ProfileScore;

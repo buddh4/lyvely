@@ -5,7 +5,7 @@ import { Membership, Profile } from '../schemas';
 import { User } from '@/users';
 import { AbstractUserProfileRelationsDao } from './abstract-user-profile-relations.dao';
 import { ProfileMembershipRole } from '@lyvely/interface';
-import { Constructor } from '@lyvely/common';
+import { Type } from '@lyvely/common';
 
 @Injectable()
 export class MembershipsDao extends AbstractUserProfileRelationsDao<Membership> {
@@ -72,7 +72,7 @@ export class MembershipsDao extends AbstractUserProfileRelationsDao<Membership> 
     );
   }
 
-  getModelConstructor(): Constructor<Membership> {
+  getModelConstructor(): Type<Membership> {
     return Membership;
   }
 

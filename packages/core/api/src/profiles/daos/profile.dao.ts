@@ -19,7 +19,7 @@ import {
   IFetchQueryOptions,
 } from '@/core';
 import { User } from '@/users';
-import { assignRawDataTo, Constructor } from '@lyvely/common';
+import { assignRawDataTo, Type } from '@lyvely/common';
 import { IntegrityException, ProfileType, ProfileVisibilityLevel } from '@lyvely/interface';
 import { ProfileTypeTransformation } from '../schemas/transformations';
 
@@ -157,7 +157,7 @@ export class ProfileDao extends AbstractDao<Profile> {
     return 'profiles';
   }
 
-  getModelConstructor(model: LeanDoc<Profile>): Constructor<Profile> {
+  getModelConstructor(model: LeanDoc<Profile>): Type<Profile> {
     if (!model.type) throw new IntegrityException();
     const ProfileType = getProfileConstructorByType(model.type);
     if (!ProfileType) {
