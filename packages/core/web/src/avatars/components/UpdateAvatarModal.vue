@@ -4,6 +4,7 @@ import { loadingStatus, useStatus } from '@/core';
 import { computed, nextTick, ref, watch } from 'vue';
 import {
   AvatarModel,
+  AVATAR_SIZE_LG,
   type IUpdateAvatarClient,
   type IUpdateGravatarClient,
 } from '@lyvely/interface';
@@ -31,7 +32,9 @@ function isGravatarSupported(): boolean {
 
 async function updateAvatar() {
   if (!cropper) return;
-  cropper.getCroppedCanvas({ width: 64, height: 64 }).toBlob(uploadAvatar, 'image/jpeg', 1);
+  cropper
+    .getCroppedCanvas({ width: AVATAR_SIZE_LG, height: AVATAR_SIZE_LG })
+    .toBlob(uploadAvatar, 'image/jpeg', 1);
 }
 
 async function updateGravatar() {

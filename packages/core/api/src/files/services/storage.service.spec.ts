@@ -44,6 +44,10 @@ describe('StorageService', () => {
     async download(file: FileAccess): Promise<stream.Readable | null> {
       return null;
     }
+
+    async initialize() {
+      /** Nothing to do **/
+    }
   }
 
   describe('upload', () => {

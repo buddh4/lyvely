@@ -47,6 +47,13 @@ export class FileUpload<TFile extends File = File> implements IFileUpload<TFile>
    */
   file: IFileInfo;
 
+  /**
+   * Determines if disk files may be moved instead of copied, which would improve performance. This flag should only be set
+   * if the file is not needed in the original upload directory after uploading e.g. for processing variants.
+   * Default: false.
+   */
+  moveFile?: boolean;
+
   constructor(data: StrictBaseModelData<Optional<FileUpload, 'region' | 'guid'>>) {
     BaseModel.init(this, data);
   }

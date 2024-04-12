@@ -8,7 +8,7 @@ import {
   TestContentSchema,
 } from './testing';
 import { INestApplication, Module } from '@nestjs/common';
-import { ContentCoreModule, ContentModule } from './content.module';
+import { ContentModule } from './content.module';
 import { ContentService } from './services';
 import { ContentTypeRegistry } from './components';
 

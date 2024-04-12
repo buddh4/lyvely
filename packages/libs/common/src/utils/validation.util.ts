@@ -48,8 +48,10 @@ export function isValidEmail(email: string) {
   return isEmail(email);
 }
 
-export function isGuid(guid: string) {
-  return /^[A-Fa-f0-9]{64}$/.test(guid);
+export type GUID = 'md5' | 'sha256';
+
+export function isGuid(guid: string, algo: GUID = 'md5') {
+  return algo === 'md5' ? /^[A-Fa-f0-9]{32}$/.test(guid) : /^[A-Fa-f0-9]{64}$/.test(guid);
 }
 
 export const escapeHTML = (str: string) => {

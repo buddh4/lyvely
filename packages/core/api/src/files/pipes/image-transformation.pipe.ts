@@ -1,23 +1,21 @@
 import { Injectable, PipeTransform } from '@nestjs/common';
 import sharp from 'sharp';
-import { isNil } from '@lyvely/common';
 import type { IFileInfo } from '@/files';
+import { isMemoryFile } from '@/files';
 
 export interface ImageResizePipeOptionsIF {
   maxWidth?: number;
 }
 
 @Injectable()
-export class ImageTransformationPipe
-  implements PipeTransform<Express.Multer.File, Promise<IFileInfo>>
-{
+export class ImageTransformationPipe implements PipeTransform<IFileInfo, Promise<IFileInfo>> {
   options: ImageResizePipeOptionsIF;
 
   constructor(options: ImageResizePipeOptionsIF) {
     this.options = options;
   }
 
-  async transform(image: Express.Multer.File): Promise<IFileInfo> {
+  async transform(image: IFileInfo): Promise<IFileInfo> {
     const transform = this.initSharp(image);
 
     if (this.options.maxWidth) {
@@ -26,9 +24,9 @@ export class ImageTransformationPipe
 
     transform.webp();
 
-    const { originalname, mimetype, size, path } = image;
+    const { originalname, mimetype, size } = image;
 
-    if ('buffer' in image && !isNil(image.buffer)) {
+    if (isMemoryFile(image)) {
       return {
         originalname,
         mimetype,
@@ -37,17 +35,19 @@ export class ImageTransformationPipe
       };
     }
 
-    await transform.toFile(`${image.path}-${Date.now()}`);
+    const transformedPath = `${image.path}-${Date.now()}`;
+
+    await transform.toFile(transformedPath);
     return {
       originalname,
       mimetype,
       size,
-      path,
+      path: transformedPath,
     };
   }
 
-  private initSharp(image: Express.Multer.File): sharp.Sharp {
-    if ('buffer' in image && !isNil(image.buffer)) {
+  private initSharp(image: IFileInfo): sharp.Sharp {
+    if (isMemoryFile(image)) {
       return sharp(image.buffer);
     }
 

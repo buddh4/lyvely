@@ -1,5 +1,6 @@
 import { OperationMode, ServerConfiguration } from '@/config';
 import { VisitorMode } from '@lyvely/interface';
+import { join } from 'path';
 
 const lyvelyTestConfig: ServerConfiguration = {
   appName: 'lyvely.test.app',
@@ -15,6 +16,13 @@ const lyvelyTestConfig: ServerConfiguration = {
   redis: {
     host: '0.0.0.0',
     port: 6379,
+  },
+  files: {
+    storage: {
+      local: {
+        dest: join(process.cwd(), 'storage', 'test'),
+      },
+    },
   },
   permissions: {
     visitorStrategy: { mode: VisitorMode.Enabled, handles: [''] },

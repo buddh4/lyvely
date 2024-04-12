@@ -12,6 +12,7 @@ import type { FileAccess } from '../interfaces';
 import { ConfigService } from '@nestjs/config';
 import { Logger } from '@nestjs/common';
 import { isMemoryFile } from '@/files/helpers/file-info.helper';
+import { copyFile } from 'fs/promises';
 
 export interface ILocalStorageProviderOptions {
   dest?: string;
@@ -56,7 +57,7 @@ export class LocalStorageProvider extends StorageProvider<ILocalStorageProviderO
   }
 
   static getLocalStorageRoot(configService: ConfigService) {
-    return configService.get('file.storage.local.dest') || LocalStorageProvider.getDefaultRoot();
+    return configService.get('files.storage.local.dest') || LocalStorageProvider.getDefaultRoot();
   }
 
   /**
@@ -78,8 +79,10 @@ export class LocalStorageProvider extends StorageProvider<ILocalStorageProviderO
     const filePath = await this.createAndVerifyFilePath(upload.bucket, upload.guid);
     if (isMemoryFile(file)) {
       return writeFile(filePath, file.buffer);
-    } else {
+    } else if (upload.moveFile) {
       return rename(file.path, filePath);
+    } else {
+      return copyFile(file.path, filePath);
     }
   }
 

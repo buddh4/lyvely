@@ -1,6 +1,9 @@
 import type { TObjectId } from '@/core';
 import type { IFile } from './file.interface';
 
+/**
+ * Interface representing basic file information.
+ */
 export interface IBaseFileInfo {
   originalname: string;
   size: number;
@@ -8,7 +11,7 @@ export interface IBaseFileInfo {
 }
 
 /**
- * Represents information about a file.
+ * Represents file information for files stored on local disk.
  */
 export interface IDiskFileInfo extends IBaseFileInfo {
   /** Full path to the local file on disc. **/
@@ -16,13 +19,17 @@ export interface IDiskFileInfo extends IBaseFileInfo {
 }
 
 /**
- * Represents information about a file.
+ * Represents file information for files stored in memory.
  */
 export interface IMemoryFileInfo extends IBaseFileInfo {
   /** File data buffer. **/
   buffer: Buffer;
 }
 
+/**
+ * A type representing file information, which can either be stored on disk or in memory.
+ * The fields of this type are derived from the Express.Multer.File type.
+ */
 export type IFileInfo = IDiskFileInfo | IMemoryFileInfo;
 
 /**

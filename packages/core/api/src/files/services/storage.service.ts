@@ -19,7 +19,6 @@ import { File, FileMetadata, FileVariant, GenericFile } from '../schemas';
 import type { StrictBaseDocumentData } from '@/core';
 import type { Readable } from 'node:stream';
 import { join } from 'path';
-import { pick } from 'lodash';
 
 const LOCAL_STORAGE_PROVIDER_ID = 'local';
 
@@ -62,19 +61,26 @@ export class StorageService implements IStorageService {
     this.validateStorageConfig(storageConfig);
     this.initStorageProviders(storageConfig);
 
-    if (!storageConfig.default) {
-      this.defaultStorage = this.storages[0];
-    } else {
-      this.defaultStorage = this.storages.get(storageConfig.default) || this.storages[0];
-    }
-
     if (!this.getStorage(LOCAL_STORAGE_PROVIDER_ID)) {
       this.initStorageProvider(LOCAL_STORAGE_PROVIDER_DEFINITION);
     }
 
-    this.setBucketProvider(storageConfig);
+    if (!storageConfig.default) {
+      this.defaultStorage = storageConfig?.providers?.[0]?.id
+        ? this.storages.get(storageConfig.providers[0].id)!
+        : this.getLocalStorageProvider();
+    } else {
+      this.defaultStorage =
+        this.storages.get(storageConfig.default) || this.getLocalStorageProvider();
+    }
+
+    if (!this.defaultStorage) {
+      throw new MisconfigurationException('No storage provider configured.');
+    }
 
     this.logger.log(`Use default storage provider ${this.defaultStorage.id}`);
+
+    this.setBucketProvider(storageConfig);
   }
 
   /**
@@ -106,10 +112,6 @@ export class StorageService implements IStorageService {
    * @private
    */
   private validateStorageConfig(config: IStorageConfig) {
-    if (!config.providers?.length) {
-      throw new MisconfigurationException('No storage provider configured.');
-    }
-
     // If we have more than 1 provider but no default provider config, we error out.
     if (!config.default && (config.providers?.length || 0) > 1) {
       throw new MisconfigurationException('Missing default storage provider configuration.');
@@ -212,7 +214,7 @@ export class StorageService implements IStorageService {
    * @returns {Promise<File>} - A Promise that resolves with the uploaded file object.
    */
   async upload(upload: FileUpload): Promise<File> {
-    const { bucket, variants, guid, createdBy, context } = upload;
+    const { bucket, guid, createdBy, context } = upload;
     this.validateFilePathOrThrow(bucket, guid);
     const storage = this.getProviderByBucket(upload.bucket);
     await storage.upload(upload);
@@ -224,7 +226,6 @@ export class StorageService implements IStorageService {
     return createBaseModelAndInit(FileType, {
       guid,
       createdBy,
-      variants,
       oid: context?.oid,
       pid: context?.pid,
       bucket: bucket,

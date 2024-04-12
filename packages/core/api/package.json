@@ -73,7 +73,8 @@
     "@types/minimatch": "^5.1.2",
     "migrate-mongo": "^10.0.0",
     "@types/pug": "2.0.6",
-    "del": "^6.1.1"
+    "del": "^6.1.1",
+    "rimraf": "^5.0.5"
   },
   "jest": {
     "rootDir": ".",
