@@ -1,4 +1,4 @@
-const resoler = require('./postcss-import.resolver');
+const resoler = require('./postcss-import.resolver.cjs');
 
 module.exports = {
   plugins: {

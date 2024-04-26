@@ -25,6 +25,7 @@
     "@nestjs/common": "^9.4.0",
     "@nestjs/mongoose": "^9.2.2",
     "@lyvely/api": "^0.1.0-alpha3",
+    "@lyvely/analytics": "^0.1.0-alpha3",
     "@lyvely/common": "^0.1.0-alpha3",
     "@lyvely/timers": "^0.1.0-alpha3",
     "@lyvely/time-series": "^0.1.0-alpha3",

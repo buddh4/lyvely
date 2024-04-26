@@ -1,4 +1,4 @@
-import { LogLevel, Plugin } from 'vite';
+import { Plugin } from 'vite';
 import { externalizeDeps } from 'vite-plugin-externalize-deps';
 import vuePlugin from '@vitejs/plugin-vue';
 import tsconfigPaths from 'vite-tsconfig-paths';
@@ -9,7 +9,6 @@ import dts from 'vite-plugin-dts';
 
 interface IOptions {
   locales?: string | boolean;
-  dirname: string;
   input?: string[];
 }
 
@@ -17,14 +16,17 @@ const tsconfigPathDefault: (options: any) => Plugin = !!(<any>tsconfigPaths).def
   ? (<any>tsconfigPaths).default
   : tsconfigPaths;
 
+const dtsDefault: (options: any) => Plugin = !!(<any>dts).default ? (<any>dts).default : dts;
+
 export const useViteWebConfig = (options: IOptions) => {
-  const { dirname } = options;
+  const __dirname = process.cwd();
+
   options = { locales: true, ...options };
 
   const plugins = [
     externalizeDeps({ devDeps: true }),
     vuePlugin(),
-    dts({
+    dtsDefault({
       tsconfigPath: './tsconfig.build.json',
     }),
     tsconfigPathDefault({ ignoreConfigErrors: true }),
@@ -36,7 +38,10 @@ export const useViteWebConfig = (options: IOptions) => {
         /* options */
         // locale messages resource pre-compile option
         include: [
-          resolve(dirname, typeof options.locales === 'string' ? options.locales : './locales/**'),
+          resolve(
+            __dirname,
+            typeof options.locales === 'string' ? <string>options.locales! : './locales/**',
+          ),
         ],
       }) as Plugin,
     );
@@ -47,7 +52,7 @@ export const useViteWebConfig = (options: IOptions) => {
 
   const input =
     options.input ||
-    sync(resolve(dirname, 'src/**/*.{ts,css,svg,png}'), {
+    sync(resolve(__dirname, 'src/**/*.{ts,css,svg,png}'), {
       ignore,
     });
 
@@ -65,11 +70,11 @@ export const useViteWebConfig = (options: IOptions) => {
     },
     assetsInclude: ['**/*.svg'],
     resolve: {
-      alias: [{ find: /^@(?=\/)/, replacement: resolve(dirname, './src') }],
+      alias: [{ find: /^@(?=\/)/, replacement: resolve(__dirname, './src') }],
     },
     build: {
       lib: {
-        entry: resolve(dirname, 'src/index.ts'),
+        entry: resolve(__dirname, 'src/index.ts'),
         formats: ['es'],
       },
       rollupOptions: {

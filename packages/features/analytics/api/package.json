@@ -2,6 +2,7 @@
   "name": "@lyvely/analytics",
   "version": "0.1.0-alpha3",
   "description": "Lyvely policy module",
+  "type": "commonjs",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
