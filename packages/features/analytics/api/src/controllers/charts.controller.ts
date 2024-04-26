@@ -1,4 +1,4 @@
-import { Delete, Get, Put, Inject, Post, Request, Body, Param } from '@nestjs/common';
+import { Delete, Get, Put, Inject, Post, Request, Body, Param, Query } from '@nestjs/common';
 import {
   AbstractContentTypeController,
   ContentTypeController,
@@ -19,6 +19,7 @@ import {
   ChartsEndpointPaths,
   UpdateChartSeriesModel,
   ChartSeriesDataResponse,
+  TimeSeriesAggregationInterval,
 } from '@lyvely/analytics-interface';
 import { Chart } from '../schemas';
 
@@ -85,10 +86,11 @@ export class ChartsController
 
   @Get(ChartsEndpointPaths.SERIES_DATA(':cid'))
   async getSeriesData(
+    @Query() query: Record<string, string>,
     @Request() request: ProfileContentRequest<Chart>,
   ): Promise<ChartSeriesDataResponse> {
     const { context, content } = request;
-    const result = await this.chartSeriesService.getSeriesData(context, content);
+    const result = await this.chartSeriesService.getSeriesData(context, content, query);
     return new ChartSeriesDataResponse(result);
   }
 }

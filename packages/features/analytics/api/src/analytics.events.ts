@@ -20,10 +20,18 @@ export class FetchSeriesDataEvent {
 
   readonly config: ChartSeriesConfig;
 
-  constructor(chart: Chart, context: ProfileContext, config: ChartSeriesConfig) {
+  readonly query?: Record<string, string>;
+
+  constructor(
+    chart: Chart,
+    context: ProfileContext,
+    config: ChartSeriesConfig,
+    query?: Record<string, string>,
+  ) {
     this.chart = chart;
     this.context = context;
     this.config = config;
+    this.query = query;
   }
 
   isSeriesType<T extends ChartSeriesConfig = ChartSeriesConfig>(

@@ -14,7 +14,7 @@ export interface IChartsEndpointClient
   addSeries(cid: string, model: UpdateChartSeriesModel): Promise<ChartModel>;
   updateSeries(cid: string, sid: string, model: UpdateChartSeriesModel): Promise<ChartModel>;
   deleteSeries(cid: string, sid: string): Promise<ChartModel>;
-  getSeriesData(cid: string): Promise<ChartSeriesDataResponse>;
+  getSeriesData(cid: string, query?: Record<string, string>): Promise<ChartSeriesDataResponse>;
 }
 
 export type ChartEndpoint = Endpoint<IChartsEndpointClient>;

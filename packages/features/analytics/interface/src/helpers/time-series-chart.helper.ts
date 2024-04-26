@@ -1,5 +1,9 @@
 import { subtractDays, subtractMonths, subtractYears } from '@lyvely/dates';
-import type { TimeSeriesCategoryKey, TimeSeriesAggregationInterval } from '../interfaces';
+import {
+  type TimeSeriesCategoryKey,
+  type TimeSeriesAggregationInterval,
+  timeSeriesIntervalFilters,
+} from '../interfaces';
 
 /**
  * Retrieves a map of time series category values for the X-axis for all possible interval filter.
@@ -18,6 +22,19 @@ export const getTimeSeriesIntervalXAxis = (
   '1Y': getMonthlyChartAxisCategories(subtractYears(new Date(), 1), new Date(), locale),
   '3Y': getMonthlyChartAxisCategories(subtractYears(new Date(), 3), new Date(), locale),
 });
+
+/**
+ * Checks if the given value is a valid TimeSeriesAggregationInterval.
+ *
+ * @param val - The value to check for TimeSeriesAggregationInterval validity.
+ * @returns True if the value is a valid TimeSeriesAggregationInterval, false otherwise.
+ */
+export function isTimeSeriesAggregationInterval(
+  val: string | undefined,
+): val is TimeSeriesAggregationInterval {
+  if (!val) return false;
+  return timeSeriesIntervalFilters.includes(val as TimeSeriesAggregationInterval);
+}
 
 export function getChartCategoryByKey(
   key: TimeSeriesCategoryKey,

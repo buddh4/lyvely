@@ -13,6 +13,7 @@ import {
   UpdateChartSeriesModel,
   ChartSeriesData,
   CHART_SERIES_PROFILE_SCORE,
+  isTimeSeriesAggregationInterval,
 } from '@lyvely/analytics-interface';
 import { ChartsDao } from '../daos';
 import type { IChartSeriesConfig } from '@lyvely/analytics-interface';
@@ -34,11 +35,14 @@ export class ChartSeriesService {
 
   @OnEvent(AnalyticsEvents.EVENT_FETCH_SERIES_DATA)
   onFetchSeriesDataEvent(event: FetchSeriesDataEvent) {
-    const { context, config } = event;
+    const { context, config, query } = event;
 
     if (event.isSeriesType(config, CHART_SERIES_PROFILE_SCORE.id)) {
       event.setResult(
-        this.scoreAggregationService.aggregateProfileScoreSeries(context, { name: config.name }),
+        this.scoreAggregationService.aggregateProfileScoreSeries(context, {
+          name: config.name,
+          interval: isTimeSeriesAggregationInterval(query?.interval) ? query?.interval : undefined,
+        }),
       );
     }
   }
@@ -48,17 +52,19 @@ export class ChartSeriesService {
    *
    * @param {ProfileContext} context The context object for the chart.
    * @param {Chart} chart The chart object for which to fetch the series data.
+   * @param query Optional filter query.
    * @return {Promise<ChartSeriesData[]>} A promise that resolves to an array of ChartSeriesData objects.
    */
   async getSeriesData(
     context: ProfileContext,
     chart: Chart,
+    query?: Record<string, string>,
   ): Promise<Record<string, ChartSeriesData[]>> {
     const result: Record<string, ChartSeriesData[]> = {};
     const fetchPromises: Promise<ChartSeriesData[]>[] = [];
 
     for (const config of chart.config.series) {
-      fetchPromises.push(this.getSeriesDataByConfig(context, chart, config));
+      fetchPromises.push(this.getSeriesDataByConfig(context, chart, config, query));
     }
 
     const allSeriesResults = await Promise.all(fetchPromises);
@@ -73,8 +79,9 @@ export class ChartSeriesService {
     context: ProfileContext,
     chart: Chart,
     config: ChartSeriesConfig,
+    query?: Record<string, string>,
   ): Promise<ChartSeriesData[]> {
-    const event = new FetchSeriesDataEvent(chart, context, config);
+    const event = new FetchSeriesDataEvent(chart, context, config, query);
     this.emitter.emit(AnalyticsEvents.EVENT_FETCH_SERIES_DATA, event);
     const result = event.getResult();
     if (!result) {

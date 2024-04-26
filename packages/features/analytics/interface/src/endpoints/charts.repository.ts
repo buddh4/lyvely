@@ -84,7 +84,14 @@ export default {
    * @param {string} cid - The chart id.
    * @param {IProfileApiRequestOptions} [options] - Optional request options.
    */
-  async getSeriesData(cid: string, options?: IProfileApiRequestOptions) {
-    return api.get<'getSeriesData'>(ChartsEndpointPaths.SERIES_DATA(cid), options);
+  async getSeriesData(
+    cid: string,
+    query?: Record<string, string>,
+    options?: IProfileApiRequestOptions,
+  ) {
+    return api.get<'getSeriesData'>(ChartsEndpointPaths.SERIES_DATA(cid), {
+      ...options,
+      params: query,
+    });
   },
 };

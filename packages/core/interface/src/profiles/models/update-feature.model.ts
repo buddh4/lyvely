@@ -12,8 +12,10 @@ export class UpdateFeatureModel {
   @IsBoolean()
   state: boolean;
 
-  constructor(data: PropertiesOf<UpdateFeatureModel>) {
-    this.featureId = data.featureId;
-    this.state = data.state;
+  constructor(data?: PropertiesOf<UpdateFeatureModel>) {
+    if (data) {
+      this.featureId = data.featureId;
+      this.state = data.state;
+    }
   }
 }

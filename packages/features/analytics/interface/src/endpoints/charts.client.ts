@@ -115,10 +115,11 @@ export class ChartsClient implements IChartsEndpointClient {
    */
   async getSeriesData(
     cid: string,
+    query?: Record<string, string>,
     options?: IProfileApiRequestOptions,
   ): Promise<ChartSeriesDataResponse> {
     return unwrapAndTransformResponse(
-      repository.getSeriesData(cid, options),
+      repository.getSeriesData(cid, query, options),
       ChartSeriesDataResponse,
     );
   }

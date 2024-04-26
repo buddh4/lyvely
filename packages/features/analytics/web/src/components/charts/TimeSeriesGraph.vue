@@ -30,7 +30,7 @@ const chartData = ref<TimeSeriesChartDataResponse>();
 const intervalFilter: Ref<TimeSeriesAggregationInterval> = ref('7D');
 
 watch(chartData, renderChart);
-watch(intervalFilter, renderChart);
+watch(intervalFilter, loadSeriesData);
 
 interface IChartSeries {
   data: number[];
@@ -98,9 +98,13 @@ function addSeries() {
   //useEditChartSeriesStore().addSeries(props.model.id, ChartCategory.Graph);
 }
 
-onMounted(async () => {
-  chartData.value = await useChartsClient().getSeriesData(props.model.id);
-});
+async function loadSeriesData() {
+  chartData.value = await useChartsClient().getSeriesData(props.model.id, {
+    intervalFilter: intervalFilter.value,
+  });
+}
+
+onMounted(loadSeriesData);
 </script>
 
 <template>
