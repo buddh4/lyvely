@@ -23,7 +23,7 @@ const argTypes = {
       category: 'props'
     }
   },
-  inputClass: { options: ['warning', 'success', 'primary', 'info', 'danger'], control: { type: 'radio' } },
+  inputClass: { options: ['warning', 'success', 'primary', 'info', 'danger'] },
   required: { controls: 'boolean' },
   id: { table: { disable: true } },
   name: { table: { disable: true } },

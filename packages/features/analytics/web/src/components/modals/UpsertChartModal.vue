@@ -57,7 +57,7 @@ const modalTitle = computed(() => {
       </fieldset>
     </ly-form-model>
 
-    <chart-template-form v-model="model" :embedded="true" />
+    <chart-template-form v-if="isCreate" v-model="model" :embedded="true" />
 
     <ly-form-model
       v-model="model"

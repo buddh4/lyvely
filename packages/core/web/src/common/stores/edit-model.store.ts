@@ -124,6 +124,7 @@ export function useUpdateModelStore<
 
   function applyBackup(model: TCreateModel | TUpdateModel) {
     if (!options.persistId) return;
+    // TODO: we need some kind of model versioning here, otherwise we may set invalid data
     const backupStr = localStorage.getItem(getBackupKey());
     if (!backupStr) return;
 

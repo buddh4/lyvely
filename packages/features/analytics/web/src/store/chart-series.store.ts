@@ -1,7 +1,6 @@
 import { reactive, ref, watch } from 'vue';
 import {
   ChartModel,
-  ChartCategory,
   useChartsClient,
   ChartSeriesConfigModel,
   UpdateChartSeriesModel,

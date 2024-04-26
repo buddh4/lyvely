@@ -8,6 +8,7 @@ export interface AvatarData {
 export interface ISelectOption {
   label: Translatable;
   value: string | number;
+  group?: { id: string; label: string };
 }
 
 export type ISelectOptions = Array<ISelectOption>;

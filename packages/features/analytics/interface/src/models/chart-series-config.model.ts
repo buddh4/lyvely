@@ -9,7 +9,7 @@ import {
   MaxLength,
 } from 'class-validator';
 import { BaseModel, type BaseModelData, Trim } from '@lyvely/common';
-import { ChartType, IChartSeriesConfig } from '../interfaces';
+import { IChartSeriesConfig } from '../interfaces';
 
 @Exclude()
 export class ChartSeriesConfigModel implements IChartSeriesConfig {
@@ -17,10 +17,6 @@ export class ChartSeriesConfigModel implements IChartSeriesConfig {
   @IsMongoId()
   @IsOptional()
   id: string;
-
-  @Expose()
-  @IsEnum(ChartType)
-  chartType: ChartType;
 
   @Expose()
   @MaxLength(255)

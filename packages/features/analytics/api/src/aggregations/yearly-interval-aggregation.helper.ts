@@ -8,7 +8,9 @@ export class YearlyIntervalAggregation extends IntervalAggregation {
 
   protected override getMatchFilter(): PipelineStage.Match['$match'] {
     const year = this.options.endDate?.getFullYear() || new Date().getFullYear();
-    const range = this.options.range ?? 6;
+    const range = this.options.startDate
+      ? year - this.options.startDate.getFullYear()
+      : this.options.range ?? 6;
     return {
       year: { $in: Array.from({ length: range }, (_, index) => year - index) },
     };

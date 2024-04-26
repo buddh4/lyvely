@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { t } from '@/i18n';
-import { IProfilePermission } from '@lyvely/interface';
+import { type IContentPermission, IProfilePermission } from '@lyvely/interface';
 import { computed } from 'vue';
 import { useProfilePermissionsStore } from '@/profiles/stores';
 
 interface IProps {
-  permission: IProfilePermission;
+  permission: IProfilePermission | IContentPermission;
 }
 
 const props = defineProps<IProps>();

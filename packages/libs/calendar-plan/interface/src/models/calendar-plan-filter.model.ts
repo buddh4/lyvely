@@ -1,4 +1,4 @@
-import { Exclude, Expose } from 'class-transformer';
+import { Exclude, Expose, Type } from 'class-transformer';
 import { IsBoolean, IsEnum, IsMongoId, IsOptional, IsString, Matches } from 'class-validator';
 import { CalendarInterval, formatDate, REGEX_DATE_FORMAT } from '@lyvely/dates';
 import type { CalendarDate } from '@lyvely/dates';
@@ -14,6 +14,7 @@ export class CalendarPlanFilter implements ICalendarPlanFilter {
 
   @Expose()
   @IsEnum(CalendarInterval)
+  @Type(() => Number)
   level: CalendarInterval;
 
   @Expose()

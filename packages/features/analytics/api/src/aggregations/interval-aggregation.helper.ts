@@ -1,14 +1,17 @@
 import type { AccumulatorOperator, PipelineStage } from 'mongoose';
 import { ChartSeriesAccumulation } from '@lyvely/analytics-interface';
 import { CalendarPreferences, TObjectId } from '@lyvely/api';
-import { CalendarInterval } from '@lyvely/dates';
+import type { TimeSeriesAggregationInterval } from '@lyvely/analytics-interface';
 
 export interface IntervalAggregationFilter {
   uids?: TObjectId[];
 }
 
 export interface IntervalAggregationOptions {
-  interval: CalendarInterval;
+  /** The name of the resulting series. **/
+  name: string;
+  /** Aggregation interval **/
+  interval: TimeSeriesAggregationInterval;
   /** Initial $match filter. **/
   $match: PipelineStage.Match['$match'];
   /** Defines how the accumulationField should be accumulated. **/
@@ -23,6 +26,8 @@ export interface IntervalAggregationOptions {
   locale: string;
   /** An optional calendar preferences object, used for timing related calculations. **/
   preferences?: CalendarPreferences;
+  /** The startDate can be used instead of the range to set the start of the interval. **/
+  startDate?: Date;
   /** The endDate used to calculate the aggregation date range. **/
   endDate?: Date;
   /** The interval range used to calculate the aggregation date range. **/
@@ -60,7 +65,7 @@ export abstract class IntervalAggregation {
    */
   protected abstract getSort(): PipelineStage.Sort['$sort'];
 
-  build(): [PipelineStage.Group, PipelineStage.Match, PipelineStage.Sort] {
+  build(): [PipelineStage.Match, PipelineStage.Group, PipelineStage.Sort] {
     const match = this.getMatchFilter();
 
     if (this.options.filter?.uids?.length) {
@@ -70,7 +75,7 @@ export abstract class IntervalAggregation {
     const $match = { $match: { ...this.options.$match, ...this.getMatchFilter() } };
     const $group = { $group: this.getGroup() };
     const $sort = { $sort: this.getSort() };
-    return [$group, $match, $sort];
+    return [$match, $group, $sort];
   }
 
   protected getGroup(): PipelineStage.Group['$group'] {

@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { useFloatingInputSetup } from './FloatingInput';
 import { t, Translatable } from '@/i18n';
-import { HTMLAttributes, onMounted, ref } from 'vue';
+import { computed, HTMLAttributes, onMounted, ref } from 'vue';
 import LyFloatingInputLayout from './LyFloatingInputLayout.vue';
-import { ISelectOptions } from '@/interfaces';
+import { type ISelectOption, ISelectOptions } from '@/interfaces';
 
 export interface IProps {
   id?: string;
@@ -60,6 +60,19 @@ const input = ref<HTMLInputElement>();
 const { inputId, dataId, inputClass, inputError, inputValue, label, onChange, onFocusOut } =
   useFloatingInputSetup(props, emit);
 
+const groups = computed<Map<string, { id: string; label: string; options: ISelectOption[] }>>(() =>
+  props.options.reduce((optGroups, option) => {
+    if (!option.group) return optGroups;
+    let optGroup = optGroups.get(option.group.id);
+    if (!optGroup) {
+      optGroup = { ...option.group, options: [] };
+      optGroups.set(option.group.id, optGroup);
+    }
+    optGroup.options.push(option);
+    return optGroups;
+  }, new Map<string, { id: string; label: string; options: ISelectOption[] }>()),
+);
+
 onMounted(() => {
   if (props.autofocus) setTimeout(() => input.value?.focus());
 });
@@ -87,9 +100,16 @@ onMounted(() => {
       @change="onChange"
       @focusout="onFocusOut">
       <option v-if="placeholder" value="" disabled selected hidden>{{ t(placeholder) }}</option>
-      <option v-for="option in options" :key="option.value" :value="option.value">
-        {{ t(option.label) }}
-      </option>
+      <optgroup v-for="[groupId, group] in groups" :key="groupId" :label="t(group.label)">
+        <option v-for="option in group.options" :key="option.value" :value="option.value">
+          {{ t(option.label) }}
+        </option>
+      </optgroup>
+      <template v-for="option in options">
+        <option v-if="!option.group" :key="option.value" :value="option.value">
+          {{ t(option.label) }}
+        </option>
+      </template>
     </select>
     <select
       v-else
@@ -104,9 +124,16 @@ onMounted(() => {
       @change="onChange"
       @focusout="onFocusOut">
       <option v-if="placeholder" value="" disabled selected hidden>{{ t(placeholder) }}</option>
-      <option v-for="option in options" :key="option.value" :value="option.value">
-        {{ t(option.label) }}
-      </option>
+      <optgroup v-for="[groupId, group] in groups" :key="groupId" :label="t(group.label)">
+        <option v-for="option in group.options" :key="option.value" :value="option.value">
+          {{ t(option.label) }}
+        </option>
+      </optgroup>
+      <template v-for="option in options">
+        <option v-if="!option.group" :key="option.value" :value="option.value">
+          {{ t(option.label) }}
+        </option>
+      </template>
     </select>
   </ly-floating-input-layout>
 </template>

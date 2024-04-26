@@ -13,20 +13,13 @@ export class MonthlyIntervalAggregation extends IntervalAggregation {
   protected override getMatchFilter(): PipelineStage.Match['$match'] {
     const endDate = this.options.endDate || new Date();
     const range = this.options.range ?? 6;
-    const startDate = subtractMonths(endDate, range);
-
-    if (startDate.getFullYear() === endDate.getFullYear()) {
-      return {
-        year: endDate.getFullYear(),
-        month: { $lte: endDate.getMonth() },
-      };
-    }
+    const startDate = this.options.startDate || subtractMonths(endDate, range);
 
     return {
       $or: [
-        { year: { $eq: startDate.getFullYear() }, month: { $gte: startDate.getMonth() } },
+        { year: { $eq: startDate.getFullYear() }, month: { $gte: startDate.getMonth() + 1 } },
         { year: { $gt: startDate.getFullYear(), $lt: endDate.getFullYear() } },
-        { year: { $eq: endDate.getFullYear() }, month: { $lte: endDate.getMonth() } },
+        { year: { $eq: endDate.getFullYear() }, month: { $lte: endDate.getMonth() + 1 } },
       ],
     };
   }

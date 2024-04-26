@@ -51,7 +51,7 @@ export class ProfileScore {
   @Prop({ type: String, required: true })
   tid: string;
 
-  /** Contains the tid this score value is attributed to. **/
+  /** The date this score is attributed to. **/
   @Prop({ type: Date, required: true, immutable: true })
   date: Date;
 
@@ -92,7 +92,7 @@ export class ProfileScore {
   updatedAt: Date;
 
   static collectionName() {
-    return 'profileScores';
+    return 'profilescores';
   }
 
   constructor(options: ICreateProfileScore, data: PartialPropertiesOf<ProfileScore> = {}) {

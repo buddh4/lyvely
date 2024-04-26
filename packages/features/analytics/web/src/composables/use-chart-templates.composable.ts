@@ -1,10 +1,14 @@
 import {
   ChartSeriesConfigModel,
-  ChartType,
   CreateChartModel,
   UpdateChartModel,
 } from '@lyvely/analytics-interface';
-import { getChartDefinition, getChartDefinitions } from '@/registries';
+import {
+  getChartCategoryDefinition,
+  getChartCategoryDefinitions,
+  getChartDefinition,
+  getChartDefinitions,
+} from '@/registries';
 import { ISelectOptions, resolveComponentRegistration } from '@lyvely/ui';
 import { createBaseModelAndInit } from '@lyvely/common';
 import { computed, reactive, ref, Ref, watch } from 'vue';
@@ -24,15 +28,21 @@ export const useChartTemplates = (
   );
 
   const seriesTypeOptions = computed(() =>
-    getChartDefinitions().reduce(
-      (options, definition) => {
-        if (!isFunction(definition.condition) || definition.condition()) {
-          options.push({ value: definition.type.id, label: definition.label });
-        }
-        return options;
-      },
-      [{ value: '', label: 'common.none' }] as ISelectOptions,
-    ),
+    getChartDefinitions().reduce((options, definition) => {
+      if (!isFunction(definition.condition) || definition.condition()) {
+        options.push({ value: definition.type.id, label: definition.label });
+      }
+      return options;
+    }, [] as ISelectOptions),
+  );
+
+  const categoryOptions = computed(() =>
+    getChartCategoryDefinitions().reduce((options, definition) => {
+      if (!isFunction(definition.condition) || definition.condition()) {
+        options.push({ value: definition.type.id, label: definition.label });
+      }
+      return options;
+    }, [] as ISelectOptions),
   );
 
   const seriesConfigModel = ref<ChartSeriesConfigModel>();
@@ -68,21 +78,6 @@ export const useChartTemplates = (
     { immediate: true },
   );
 
-  const allowedChartTypes = computed(() => seriesTypeDefinition.value?.type.chartTypes || []);
-
-  const chartTypeOptions = computed(() => {
-    const result: ISelectOptions = [];
-
-    if (allowedChartTypes.value.includes(ChartType.Bar))
-      result.push({ value: ChartType.Bar, label: `analytics.types.bar` });
-    if (allowedChartTypes.value.includes(ChartType.Line))
-      result.push({ value: ChartType.Line, label: `analytics.types.line` });
-    if (allowedChartTypes.value.includes(ChartType.Pie))
-      result.push({ value: ChartType.Pie, label: `analytics.types.pie` });
-
-    return result;
-  });
-
   watch(seriesConfigModel, (newValue) => {
     formValue!.value.series = newValue;
     if (newValue) {
@@ -93,9 +88,8 @@ export const useChartTemplates = (
   });
 
   return {
+    categoryOptions,
     seriesTypeDefinition,
-    allowedChartTypes,
-    chartTypeOptions,
     seriesConfigModel,
     seriesFormComponent,
     seriesTypeOptions,

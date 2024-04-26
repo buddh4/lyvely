@@ -76,6 +76,7 @@ const ProfileModel = MongooseModule.forFeature([
   },
   {
     name: ProfileScore.name,
+    collection: ProfileScore.collectionName(),
     schema: ProfileScoreSchema,
   },
 ]);
@@ -152,10 +153,10 @@ useProfileMappings();
 export class ProfilesModule {
   static registerProfileScoreType(...profileScoreTypes: Type<ProfileScore>[]): DynamicModule {
     return {
-      module: ProfileScore,
+      module: ProfilesModule,
       providers: [
         {
-          provide: `ContentTypeRegistration${uniqueId('ProfileScoreTypeRegistration')}`,
+          provide: `ProfileTypeRegistration${uniqueId('ProfileScoreTypeRegistration')}`,
           useClass: registerProfileScoreTypeOnInit(profileScoreTypes),
         },
       ],

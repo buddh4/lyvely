@@ -28,14 +28,14 @@ export interface IWebChartDefinition<
   /** Optional config model initializer. As default the chart definition constructor is used (if any) **/
   initModel?(): TConfigType;
 
-  /** Optional condition check whether this template is active. **/
+  /** Optional condition check whether this series is active. **/
   condition?(): boolean;
 }
 
 const chartSeriesWebRegistry = new Map<string, IWebChartDefinition>();
 
 export function registerCharts(definition: IWebChartDefinition[]) {
-  definition.forEach((d) => registerChart(d));
+  definition.forEach(registerChart);
 }
 
 export function registerChart(definition: IWebChartDefinition) {

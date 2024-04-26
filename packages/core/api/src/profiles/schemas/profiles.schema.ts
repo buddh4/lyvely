@@ -86,8 +86,8 @@ export class Profile implements PropertiesOf<ProfileModel<TObjectId>>, IProfileP
 
   // TODO: (integrity) validate locale!
   /**
-   * This locale is used as fallback in case not calendar preferences were set
-   * and usually contains the locale of the initial author.
+   * This locale is used as fallback in case no calendar preferences were set
+   * and usually contains the locale of the initial owner.
    **/
   @Prop({ default: getDefaultLocale() })
   locale: string;

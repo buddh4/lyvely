@@ -1,11 +1,14 @@
-import { NestedSchema, ObjectIdArrayProp, Subdocument, TObjectId } from '@lyvely/api';
-import { Prop, SchemaFactory } from '@nestjs/mongoose';
+import { NestedSchema, ObjectIdArrayProp, TObjectId } from '@lyvely/api';
+import { Prop } from '@nestjs/mongoose';
 import {
   CHART_SERIES_PROFILE_SCORE,
+  TimeSeriesChartType,
   UserScoreSeriesConfigModel,
 } from '@lyvely/analytics-interface';
-import { GraphChartConfigSchema } from './graph-chart.schema';
+import { TimeSeriesChartConfigSchema } from './time-series-chart.schema';
 import { ChartSeriesConfig } from './chart-series-config.schema';
+import { ChartSchemaFactory } from './chart-schema.factory';
+import { getStringEnumValues } from '@lyvely/common';
 
 @NestedSchema()
 export class UserScoreChartSeriesConfig
@@ -13,6 +16,9 @@ export class UserScoreChartSeriesConfig
   implements UserScoreSeriesConfigModel<TObjectId>
 {
   override readonly type = CHART_SERIES_PROFILE_SCORE.id;
+
+  @Prop({ required: true, enum: getStringEnumValues(TimeSeriesChartType) })
+  chartType: TimeSeriesChartType;
 
   @ObjectIdArrayProp()
   uids?: Array<TObjectId>;
@@ -24,9 +30,8 @@ export class UserScoreChartSeriesConfig
   currentUser?: boolean;
 }
 
-const UserScoreChartSeriesConfigSchema = SchemaFactory.createForClass(UserScoreChartSeriesConfig);
-
-GraphChartConfigSchema.path<Subdocument>('series').discriminator(
+export const UserScoreChartSeriesConfigSchema = ChartSchemaFactory.createSeriesForClass(
   CHART_SERIES_PROFILE_SCORE.id,
-  UserScoreChartSeriesConfigSchema,
+  TimeSeriesChartConfigSchema,
+  UserScoreChartSeriesConfig,
 );

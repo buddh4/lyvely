@@ -13,7 +13,7 @@ export class WeeklyIntervalAggregation extends IntervalAggregation {
   protected override getMatchFilter(): PipelineStage.Match['$match'] {
     const endDate = this.options.endDate || new Date();
     const range = this.options.range ?? 6;
-    const startDate = subtractWeeks(endDate, range);
+    const startDate = this.options.startDate || subtractWeeks(endDate, range);
 
     const { week: endWeek } = parseTimingId(
       toWeekTimingId(endDate, this.options.locale, this.options.preferences),

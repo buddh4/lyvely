@@ -7,13 +7,7 @@ import {
   type BaseModelData,
   PropertyType,
 } from '@lyvely/common';
-import {
-  ChartModel,
-  ChartState,
-  ChartCategory,
-  IChartConfig,
-  IChart,
-} from '@lyvely/analytics-interface';
+import { ChartModel, ChartState, IChartConfig, IChart } from '@lyvely/analytics-interface';
 import { ChartSeriesConfig, ChartSeriesConfigSchema } from './chart-series-config.schema';
 import type { IChartStatus } from '@lyvely/analytics-interface';
 
@@ -31,7 +25,7 @@ const ChartStatusSchema = SchemaFactory.createForClass(ChartStatus);
 
 @NestedSchema({ discriminatorKey: 'category' })
 export class ChartConfig implements IChartConfig {
-  category: ChartCategory;
+  category: string;
 
   @Prop({ type: [ChartSeriesConfigSchema] })
   @PropertyType([ChartSeriesConfig])

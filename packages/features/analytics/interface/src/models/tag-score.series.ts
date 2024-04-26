@@ -1,14 +1,13 @@
 import { Exclude, Expose } from 'class-transformer';
-import { IsEnum, IsMongoId, IsOptional } from 'class-validator';
+import { IsMongoId, IsOptional } from 'class-validator';
 import type { BaseModelData } from '@lyvely/common';
-import { BaseModel, PropertyType } from '@lyvely/common';
-import { ChartSeriesConfigModel } from './chart-series-config.model';
-import { ChartType, IChartSeriesDefinition } from '../interfaces';
-
-const chartTypes = [ChartType.Line, ChartType.Bar];
+import { BaseModel } from '@lyvely/common';
+import { IChartSeriesDefinition } from '../interfaces';
+import { TIME_SERIES_CHART } from './time-series-chart.category';
+import { TimeSeriesConfigModel } from './time-series-config.model';
 
 @Exclude()
-export class TagScoreSeriesConfigModel<TID = string> extends ChartSeriesConfigModel {
+export class TagScoreSeriesConfigModel<TID = string> extends TimeSeriesConfigModel {
   @IsMongoId()
   @IsOptional()
   @Expose()
@@ -16,11 +15,6 @@ export class TagScoreSeriesConfigModel<TID = string> extends ChartSeriesConfigMo
 
   @Expose()
   override readonly type = CHART_SERIES_TAG_SCORE.id;
-
-  @Expose()
-  @IsEnum(chartTypes)
-  @PropertyType(String, { default: ChartType.Line })
-  override readonly chartType: ChartType;
 
   constructor(data?: BaseModelData<TagScoreSeriesConfigModel<any>>) {
     super(false);
@@ -31,5 +25,5 @@ export class TagScoreSeriesConfigModel<TID = string> extends ChartSeriesConfigMo
 export const CHART_SERIES_TAG_SCORE: IChartSeriesDefinition = {
   id: 'analytics-tag-score',
   configType: TagScoreSeriesConfigModel,
-  chartTypes,
+  categoryTypes: [TIME_SERIES_CHART.id],
 };

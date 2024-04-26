@@ -5,9 +5,11 @@ import {
   CHART_SERIES_TAG_SCORE,
   CHART_SERIES_USER_SCORE,
   ChartSeriesData,
+  TIME_SERIES_CHART,
 } from '@lyvely/analytics-interface';
-import { Chart, ChartSeriesConfig } from './schemas';
+import { Chart, ChartSeriesConfig, TimeSeriesChartConfig } from './schemas';
 import { ProfileContext } from '@lyvely/api';
+import { registerChartCategories } from './registries';
 
 export class FetchSeriesDataEvent {
   private result?: Promise<ChartSeriesData[]>;
@@ -45,6 +47,12 @@ export class AnalyticsEvents implements OnModuleInit {
   static EVENT_FETCH_SERIES_DATA = 'analytics-fetch-series-data';
 
   onModuleInit(): any {
+    registerChartCategories([
+      {
+        type: TIME_SERIES_CHART,
+        configModel: TimeSeriesChartConfig,
+      },
+    ]);
     registerChartSeries(
       CHART_SERIES_PROFILE_SCORE,
       CHART_SERIES_USER_SCORE,

@@ -40,6 +40,7 @@ export default async (options) => {
         sourcemap: !production,
         dir: 'dist/cjs',
         format: 'cjs',
+        entryFileNames: '[name].cjs',
       },
     ],
     plugins: [

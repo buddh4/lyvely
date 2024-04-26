@@ -7,6 +7,7 @@ module.exports = {
     require.resolve('@lyvely/ui/tailwind.txt'),
     require.resolve('@lyvely/web/tailwind.txt'),
     require.resolve('@lyvely/calendar-plan-web/tailwind.txt'),
+    require.resolve('@lyvely/analytics-web/tailwind.txt'),
     require.resolve('@lyvely/time-series-web/tailwind.txt'),
   ]
 };

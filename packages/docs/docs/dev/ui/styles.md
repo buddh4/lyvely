@@ -123,7 +123,7 @@ export default defineConfig(useViteWebConfig({ dirname: __dirname }));
 - The `postcss.config.cjs` can be imported by the `@lyvely/devoolts` package:
 
 ```javascript title=postcss.config.cjs
-const postCssConfig = require('@lyvely/devtools/tailwind/postcss.config.js');
+const postCssConfig = require('@lyvely/devtools/tailwind/postcss.config.cjs');
 
 module.exports = postCssConfig;
 ```

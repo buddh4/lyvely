@@ -1,14 +1,16 @@
 <script setup lang="ts">
-import { ChartModel, ChartCategory } from '@lyvely/analytics-interface';
+import { ChartModel } from '@lyvely/analytics-interface';
 import { ContentDropdown } from '@lyvely/web';
-import GraphChart from './GraphChart.vue';
+import { LyAlert, resolveComponentRegistration } from '@lyvely/ui';
+import { getChartCategoryDefinition } from '@/registries';
 
 const props = defineProps<{ model: ChartModel }>();
 
-const ChartComponent = {
-  [ChartCategory.Graph]: GraphChart,
-  [ChartCategory.Pie]: GraphChart,
-}[props.model.config.category];
+const category = getChartCategoryDefinition(props.model.config.category);
+
+const ChartComponent = category?.component
+  ? resolveComponentRegistration(category.component)
+  : null;
 </script>
 
 <template>
@@ -19,7 +21,8 @@ const ChartComponent = {
         <content-dropdown :content="model" />
       </div>
     </div>
-    <Component :is="ChartComponent" :model="model" />
+    <Component :is="ChartComponent" v-if="ChartComponent" :model="model" />
+    <ly-alert v-else type="danger" text="analytics.errors.invalid_category" />
   </div>
 </template>
 

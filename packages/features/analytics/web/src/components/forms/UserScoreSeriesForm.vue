@@ -3,6 +3,7 @@ import { UserScoreSeriesConfigModel } from '@lyvely/analytics-interface';
 import { I18nModelValidator, ProfileRelationPicker, TagPicker } from '@lyvely/web';
 import { LyFormModel, LyCheckbox, useModel } from '@lyvely/ui';
 import { computed } from 'vue';
+import TimeSeriesChartTypeSelection from '@/components/forms/TimeSeriesChartTypeSelection.vue';
 
 const props = defineProps({
   modelValue: UserScoreSeriesConfigModel<string>,
@@ -18,6 +19,7 @@ const validator = computed(() => new I18nModelValidator(formValue.value));
 <template>
   <div>
     <ly-form-model v-model="formValue" :validator="validator">
+      <time-series-chart-type-selection v-model="formValue.chartType" />
       <profile-relation-picker v-model="formValue.uids" label="analytics.fields.users" />
       <tag-picker v-model="formValue.tagIds" label="analytics.fields.tag" />
       <ly-checkbox v-model="formValue.currentUser" label="analytics.fields.current-user" />

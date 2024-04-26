@@ -3,11 +3,12 @@ import {
   AnalyticsFeature,
   CHART_SERIES_TAG_SCORE,
   ChartModel,
-  ChartSeriesConfigModel,
-  ChartType,
   CreateChartModel,
   CHART_SERIES_PROFILE_SCORE,
   CHART_SERIES_USER_SCORE,
+  TIME_SERIES_CHART,
+  TimeSeriesConfigModel,
+  TimeSeriesChartType,
 } from '@lyvely/analytics-interface';
 import { registerMenuEntry, registerSvgIcon } from '@lyvely/ui';
 import {
@@ -20,7 +21,7 @@ import {
   useProfileStore,
 } from '@lyvely/web';
 import { analyticsRoutes } from '@/routes/analytics.routes';
-import { registerCharts } from '@/registries/chart-series-web.registry';
+import { registerCharts, registerChartCategories } from '@/registries';
 
 export default () => {
   return {
@@ -32,30 +33,38 @@ export default () => {
     features: [AnalyticsFeature],
     routes: analyticsRoutes,
     init: () => {
+      registerChartCategories([
+        {
+          type: TIME_SERIES_CHART,
+          label: 'analytics.categories.time_series.label',
+          component: () => import('./components/charts/TimeSeriesGraph.vue'),
+        },
+      ]);
       registerCharts([
         {
           type: CHART_SERIES_PROFILE_SCORE,
           label: 'analytics.series.score-profile.label',
           description: 'analytics.series.score-profile.info',
           initModel() {
-            return new ChartSeriesConfigModel({
+            return new TimeSeriesConfigModel({
               name: t('analytics.series.score-profile.init-label'),
-              chartType: ChartType.Line,
+              chartType: TimeSeriesChartType.Line,
             });
           },
+          form: () => import('./components/forms/ProfileScoreSeriesForm.vue'),
         },
         {
           type: CHART_SERIES_USER_SCORE,
           label: 'analytics.series.score-user.label',
           description: 'analytics.series.score-user.info',
           condition: () => isMultiUserProfile(useProfileStore().profile),
-          form: () => import('./components/forms/ScoreChartSeriesForm.vue'),
+          form: () => import('./components/forms/UserScoreSeriesForm.vue'),
         },
         {
           type: CHART_SERIES_TAG_SCORE,
           label: 'analytics.series.score-tag.label',
           description: 'analytics.series.score-tag.info',
-          form: () => import('./components/forms/ScoreChartSeriesForm.vue'),
+          form: () => import('./components/forms/TagScoreSeriesForm.vue'),
         },
       ]);
 

@@ -1,9 +1,9 @@
 import { registerChartSeries, resetChartSeries } from '../registries';
-import { GRAPH_CHART_TYPES } from '../interfaces';
 import { ChartSeriesConfigModel } from './chart-series-config.model';
 import { UpdateChartSeriesModel } from './update-chart-series.model';
 import { Expose, plainToClass } from 'class-transformer';
 import { BaseModel, type BaseModelData } from '@lyvely/common';
+import { TIME_SERIES_CHART } from './time-series-chart.category';
 
 class TestSeriesConfig extends ChartSeriesConfigModel {
   static seriesType = 'TestSeries';
@@ -26,7 +26,7 @@ describe('UpdateChartSeriesModel', () => {
     it('transform of default chart series type works', () => {
       registerChartSeries({
         id: 'test',
-        chartTypes: GRAPH_CHART_TYPES,
+        categoryTypes: [TIME_SERIES_CHART.id],
       });
       const config = {
         id: 'testId',
@@ -54,7 +54,7 @@ describe('UpdateChartSeriesModel', () => {
       registerChartSeries({
         id: TestSeriesConfig.seriesType,
         configType: TestSeriesConfig,
-        chartTypes: GRAPH_CHART_TYPES,
+        categoryTypes: [TIME_SERIES_CHART.id],
       });
       const config = {
         id: 'testId',

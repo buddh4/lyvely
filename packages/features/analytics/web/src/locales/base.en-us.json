@@ -22,6 +22,11 @@
         "info": "Visualizes scores grouped by tags."
       }
     },
+    "categories": {
+      "time_series": {
+        "label": "Time Series"
+      }
+    },
     "interval": {
       "0": "Unscheduled",
       "1": "Yearly",
@@ -32,12 +37,14 @@
     },
     "fields": {
       "interval": "Interval",
-      "type": "Type",
+      "series": "Series",
+      "category": "Type",
       "current-user": "Include current user score",
       "users": "Users",
       "select-template": "Select a template",
       "tags": "Group by Tags",
-      "tag": "Filter by Tags"
+      "tag": "Filter by Tags",
+      "custom": "custom"
     },
     "graphs": {
       "types": {
@@ -50,6 +57,9 @@
         "type": "Type",
         "name": "Name"
       }
+    },
+    "errors": {
+      "invalid_category": "Invalid chart category."
     },
     "charts": {
       "name": "Chart",

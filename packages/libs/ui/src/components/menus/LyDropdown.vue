@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { Ref, ref } from 'vue';
+import { ref } from 'vue';
 import { uniqueId } from 'lodash';
 import { onClickOutside } from '@vueuse/core';
 import { t, Translatable } from '@/i18n';
-import { findParent } from '@/helpers'
+import { findParent } from '@/helpers';
 
 export interface IProps {
   label?: Translatable;
@@ -21,7 +21,7 @@ const props = withDefaults(defineProps<IProps>(), {
 
 const open = ref(false);
 
-const root = ref<HTMLElement>() as Ref<HTMLElement>;
+const root = ref<HTMLElement>();
 
 onClickOutside(root, () => (open.value = false));
 

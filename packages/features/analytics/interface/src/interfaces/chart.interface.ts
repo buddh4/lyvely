@@ -2,27 +2,9 @@ import { Type } from '@lyvely/common';
 import { ChartSeriesConfigModel } from '../models';
 import type { IContent } from '@lyvely/interface';
 
-export enum ChartCategory {
-  Graph = 'graph',
-  Pie = 'pie',
-}
-
-export enum ChartType {
+export enum TimeSeriesChartType {
   Line = 'line',
   Bar = 'bar',
-  Pie = 'pie',
-}
-
-export const GRAPH_CHART_TYPES = [ChartType.Line, ChartType.Bar];
-
-export function isValidChartTypeForCategory(
-  chartType: ChartType,
-  category: ChartCategory,
-): boolean {
-  return !!{
-    [ChartCategory.Graph]: GRAPH_CHART_TYPES,
-    [ChartCategory.Pie]: [ChartType.Pie],
-  }[category]?.includes(chartType);
 }
 
 export enum ChartState {
@@ -53,12 +35,18 @@ export interface IChartSeriesConfig {
   id: string;
   name: string;
   type: string;
-  chartType: ChartType;
 }
 
-export interface IChartConfig {
-  category: ChartCategory;
-  series: IChartSeriesConfig[];
+export interface IChartConfig<TSeriesConfig extends IChartSeriesConfig = IChartSeriesConfig> {
+  category: string;
+  series: TSeriesConfig[];
+}
+
+/**
+ * The interface representing a chart category definition used to register new categories of charts.
+ */
+export interface IChartCategoryDefinition {
+  readonly id: string;
 }
 
 /**
@@ -81,9 +69,9 @@ export interface IChartSeriesDefinition<
   readonly configType?: Type<TConfigType>;
 
   /**
-   * Defines the chart types with which this series is compatible.
+   * Defines the category types with which this series is compatible.
    */
-  readonly chartTypes: ChartType[];
+  readonly categoryTypes: string[];
 }
 
 export enum ChartSeriesDataTypes {
@@ -99,6 +87,8 @@ export enum ChartSeriesDataTypes {
  */
 export type ChartSeriesData<T extends ChartSeriesDataTypes = any, TData = any> = {
   type: T;
+  name: string;
+  chartType?: string;
   data: TData;
 };
 
@@ -117,7 +107,7 @@ export type ChartSeriesKeyValueData<
  *
  * @template TValue The type of the series values (default: number)
  */
-export type ChartSeriesKeyArrayData<TValue = number> = ChartSeriesData<
+export type ChartSeriesKeyArrayData<TValue> = ChartSeriesData<
   ChartSeriesDataTypes.ARRAY,
   Array<TValue>
 >;

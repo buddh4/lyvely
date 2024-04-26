@@ -1,2 +1,2 @@
 export * from './chart.interface';
-export * from './graph-chart.interface';
+export * from './time-series-chart.interface';

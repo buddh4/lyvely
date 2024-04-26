@@ -1,6 +1,5 @@
-import { BaseDocument, type BaseDocumentData, NestedSchema, type TObjectId } from '@lyvely/api';
+import { BaseDocument, type BaseDocumentData, type TObjectId } from '@lyvely/api';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { ChartType } from '@lyvely/analytics-interface';
 import type { PropertiesOf } from '@lyvely/common';
 import type { ChartSeriesConfigModel } from '@lyvely/analytics-interface';
 
@@ -8,9 +7,6 @@ import type { ChartSeriesConfigModel } from '@lyvely/analytics-interface';
 export class ChartSeriesConfig implements PropertiesOf<ChartSeriesConfigModel> {
   @Prop({ required: true })
   name: string;
-
-  @Prop({ required: true })
-  chartType: ChartType;
 
   type: string;
 

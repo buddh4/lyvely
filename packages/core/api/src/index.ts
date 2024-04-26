@@ -28,5 +28,5 @@ export * from './user-account';
 export * from './user-invitations';
 export * from './user-subscriptions';
 export * from './lyvely.server';
-export * from './testing/test.builder';
+export * from './testing';
 export * from '@lyvely/interface';

@@ -11,7 +11,6 @@ import {
   ChartSeriesConfigModel,
   getChartSeriesDefinition,
   UpdateChartSeriesModel,
-  isValidChartTypeForCategory,
   ChartSeriesData,
   CHART_SERIES_PROFILE_SCORE,
 } from '@lyvely/analytics-interface';
@@ -38,7 +37,9 @@ export class ChartSeriesService {
     const { context, config } = event;
 
     if (event.isSeriesType(config, CHART_SERIES_PROFILE_SCORE.id)) {
-      event.setResult(this.scoreAggregationService.aggregateProfileScoreSeries(context));
+      event.setResult(
+        this.scoreAggregationService.aggregateProfileScoreSeries(context, { name: config.name }),
+      );
     }
   }
 
@@ -52,8 +53,8 @@ export class ChartSeriesService {
   async getSeriesData(
     context: ProfileContext,
     chart: Chart,
-  ): Promise<Map<string, ChartSeriesData[]>> {
-    const result = new Map<string, ChartSeriesData[]>();
+  ): Promise<Record<string, ChartSeriesData[]>> {
+    const result: Record<string, ChartSeriesData[]> = {};
     const fetchPromises: Promise<ChartSeriesData[]>[] = [];
 
     for (const config of chart.config.series) {
@@ -62,7 +63,7 @@ export class ChartSeriesService {
 
     const allSeriesResults = await Promise.all(fetchPromises);
     allSeriesResults.forEach((seriesData, index) => {
-      result.set(chart.config.series[index].id, seriesData);
+      result[chart.config.series[index].id] = seriesData;
     });
 
     return result;
@@ -76,16 +77,20 @@ export class ChartSeriesService {
     const event = new FetchSeriesDataEvent(chart, context, config);
     this.emitter.emit(AnalyticsEvents.EVENT_FETCH_SERIES_DATA, event);
     const result = event.getResult();
-    if (result) {
-      return result.catch((e) => {
-        this.logger.error(e, e.stack);
-        return [
-          { type: 'error', data: `An error occurred aggregating Series Type ${config.type}` },
-        ];
-      });
-    } else {
-      return [{ type: 'error', data: `Invalid Series Type ${config.type}` }];
+    if (!result) {
+      return [{ type: 'error', data: `Invalid Series Type ${config.type}`, name: config.name }];
     }
+
+    return result.catch((e) => {
+      this.logger.error(e, e.stack);
+      return [
+        {
+          type: 'error',
+          data: `An error occurred aggregating Series Type ${config.type}`,
+          name: config.name,
+        },
+      ];
+    });
   }
 
   /**
@@ -144,16 +149,6 @@ export class ChartSeriesService {
 
     if (!seriesDefinition)
       throw new IntegrityException(`Attempt to add invalid series type ${seriesConfig.type}`);
-
-    if (!seriesDefinition.chartTypes.includes(seriesConfig.chartType))
-      throw new IntegrityException(
-        `Attempt to add incompatible chart type ${seriesConfig.chartType} to chart ${chart.config.category}`,
-      );
-
-    if (!isValidChartTypeForCategory(seriesConfig.chartType, chart.config.category))
-      throw new IntegrityException(
-        `Attempt to add invalid chart type ${seriesConfig.chartType} to chart ${chart.config.category}`,
-      );
 
     const errors = await validate(seriesConfig);
     if (errors.length) throw new FieldValidationException(errors);

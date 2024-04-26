@@ -92,7 +92,6 @@ export class ProfilesController implements ProfilesEndpoint {
     return this.mapAndPopulateProfileWithRelations(context);
   }
 
-  @Post()
   @Get()
   async getDefaultProfile(@Request() req: OptionalUserRequest): Promise<ProfileWithRelationsModel> {
     const { user } = req;

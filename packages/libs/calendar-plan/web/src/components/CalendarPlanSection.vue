@@ -41,7 +41,7 @@ const headerId = `calendar-plan-${label}`;
 const itemsId = `calendar-plan-items-${label}`;
 
 const showCreateButton = ref(false);
-const header = ref(null);
+const header = ref();
 onClickOutside(header, () => (showCreateButton.value = false));
 
 function toggleContent() {

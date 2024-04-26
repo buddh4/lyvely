@@ -1,14 +1,13 @@
 import { Exclude, Expose } from 'class-transformer';
-import { IsBoolean, IsEnum, IsMongoId, IsOptional } from 'class-validator';
+import { IsBoolean, IsMongoId, IsOptional } from 'class-validator';
 import type { BaseModelData } from '@lyvely/common';
 import { BaseModel, PropertyType } from '@lyvely/common';
-import { ChartSeriesConfigModel } from './chart-series-config.model';
-import { ChartType, IChartSeriesDefinition } from '../interfaces';
-
-const allowedChartTypes = [ChartType.Line, ChartType.Bar];
+import { IChartSeriesDefinition } from '../interfaces';
+import { TIME_SERIES_CHART } from './time-series-chart.category';
+import { TimeSeriesConfigModel } from './time-series-config.model';
 
 @Exclude()
-export class UserScoreSeriesConfigModel<TID = string> extends ChartSeriesConfigModel {
+export class UserScoreSeriesConfigModel<TID = string> extends TimeSeriesConfigModel {
   @IsMongoId()
   @IsOptional()
   @Expose()
@@ -27,11 +26,6 @@ export class UserScoreSeriesConfigModel<TID = string> extends ChartSeriesConfigM
   @Expose()
   override readonly type = CHART_SERIES_USER_SCORE.id;
 
-  @Expose()
-  @IsEnum(allowedChartTypes)
-  @PropertyType(String, { default: ChartType.Line })
-  override readonly chartType: ChartType;
-
   constructor(data?: BaseModelData<UserScoreSeriesConfigModel<any>>) {
     super(false);
     BaseModel.init(this, data);
@@ -41,5 +35,5 @@ export class UserScoreSeriesConfigModel<TID = string> extends ChartSeriesConfigM
 export const CHART_SERIES_USER_SCORE: IChartSeriesDefinition = {
   id: 'analytics-user-score',
   configType: UserScoreSeriesConfigModel,
-  chartTypes: [ChartType.Line, ChartType.Bar],
+  categoryTypes: [TIME_SERIES_CHART.id],
 };

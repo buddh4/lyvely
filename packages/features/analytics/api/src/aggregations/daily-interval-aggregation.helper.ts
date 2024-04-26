@@ -15,22 +15,21 @@ export class DailyIntervalAggregation extends IntervalAggregation {
   protected override getMatchFilter(): PipelineStage.Match['$match'] {
     const dateField = this.getDateField();
     const endDate = this.options.endDate || new Date();
-    const range = this.options.range ?? 6;
-    const startDate = subtractDays(endDate, range);
+    const range = this.options.range ?? 7;
+    const startDate = this.options.startDate || subtractDays(endDate, range);
 
-    if (startDate.getFullYear() === endDate.getFullYear()) {
-      return {
-        year: endDate.getFullYear(),
-        date: { $lte: endDate },
-      };
-    }
+    // TODO: Proper timezone handling?
+    const utcStartDate = new Date(
+      startDate.getFullYear(),
+      startDate.getMonth(),
+      startDate.getDate(),
+      0,
+      0,
+      0,
+    );
 
     return {
-      $or: [
-        { year: { $eq: startDate.getFullYear() }, [dateField]: { $gte: startDate } },
-        { year: { $gt: startDate.getFullYear(), $lt: endDate.getFullYear() } },
-        { year: { $eq: endDate.getFullYear() }, [dateField]: { $lte: endDate } },
-      ],
+      [dateField]: { $gte: utcStartDate, $lte: endDate },
     };
   }
 

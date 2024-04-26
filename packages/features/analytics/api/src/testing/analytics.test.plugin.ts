@@ -1,5 +1,9 @@
-import { TestPlugin } from '@lyvely/testing';
-import { contentTestPlugin, getContentModelDefinition, profilesTestPlugin } from '@lyvely/api';
+import {
+  TestPlugin,
+  contentTestPlugin,
+  getContentModelDefinition,
+  profilesTestPlugin,
+} from '@lyvely/api';
 import { Chart, ChartSchema } from '../schemas';
 
 export const analyticsTestPlugin = {
