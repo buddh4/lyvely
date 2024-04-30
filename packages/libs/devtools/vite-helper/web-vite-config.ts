@@ -47,14 +47,7 @@ export const useViteWebConfig = (options: IOptions) => {
     );
   }
 
-  const ignore =
-    process.env.NODE_ENV !== 'development' ? ['src/styles/tailwind.css', 'src/main.ts'] : [];
-
-  const input =
-    options.input ||
-    sync(resolve(__dirname, 'src/**/*.{ts,css,svg,png}'), {
-      ignore,
-    });
+  const input = options.input || sync(resolve(__dirname, 'src/**/*.ts'));
 
   /// <reference types="vitest" />
   return {
@@ -68,7 +61,7 @@ export const useViteWebConfig = (options: IOptions) => {
       setupFiles: ['vitest.setup.ts'],
       environment: 'jsdom',
     },
-    assetsInclude: ['**/*.svg'],
+    assetsInclude: ['**/*.svg', '**/*.png'],
     resolve: {
       alias: [{ find: /^@(?=\/)/, replacement: resolve(__dirname, './src') }],
     },
