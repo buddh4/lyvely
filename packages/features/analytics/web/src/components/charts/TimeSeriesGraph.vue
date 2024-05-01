@@ -17,6 +17,8 @@ import { computed, onMounted, type Ref, ref, watch } from 'vue';
 import * as echarts from 'echarts/core';
 import { LyButton, LyIcon } from '@lyvely/ui';
 import { useI18nStore } from '@lyvely/web';
+import { useUpsertChartTimeSeriesStore } from '@/store';
+import EditTimeSeriesChartModal from '../modals/EditTimeSeriesChartModal.vue';
 
 const props = defineProps<{ model: ChartModel<string, ITimeSeriesChartConfig> }>();
 
@@ -95,7 +97,7 @@ function renderChart() {
 }
 
 function addSeries() {
-  //useEditChartSeriesStore().addSeries(props.model.id, ChartCategory.Graph);
+  useUpsertChartTimeSeriesStore().addSeries(props.model);
 }
 
 async function loadSeriesData() {
@@ -127,7 +129,7 @@ onMounted(loadSeriesData);
       <div ref="chartRoot" style="width: 100%; height: 250px"></div>
     </div>
 
-    <!--edit-graph-series-modal :cid="model.id" / -->
+    <edit-time-series-chart-modal />
   </div>
 </template>
 

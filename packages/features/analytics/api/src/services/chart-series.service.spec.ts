@@ -11,7 +11,7 @@ import { ChartsDao } from '../daos';
 import { analyticsTestPlugin } from '../testing';
 import { Chart, ChartSeriesConfig, TimeSeriesChartConfig } from '../schemas';
 import { CHART_SERIES_PROFILE_SCORE, registerChartSeries } from '@lyvely/analytics-interface';
-import { ScoreAggregationService } from './score-aggregation.service';
+import { ProfileScoreAggregationService } from './profile-score-aggregation.service';
 
 describe('ChartSeriesService', () => {
   let chartSeriesService: ChartSeriesService;
@@ -24,7 +24,12 @@ describe('ChartSeriesService', () => {
   beforeEach(async () => {
     testingModule = await buildProfileTest(TEST_KEY)
       .plugins([analyticsTestPlugin])
-      .providers([ChartsDao, ChartSeriesService, ScoreAggregationService, ProfileTestDataUtils])
+      .providers([
+        ChartsDao,
+        ChartSeriesService,
+        ProfileScoreAggregationService,
+        ProfileTestDataUtils,
+      ])
       .compile();
     chartSeriesService = testingModule.get(ChartSeriesService);
     chartsDao = testingModule.get(ChartsDao);

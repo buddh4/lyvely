@@ -18,6 +18,7 @@ import { I18nModelValidator } from '@lyvely/web';
 export const useChartTemplates = (
   formValue: Ref<CreateChartModel | UpdateChartModel>,
   seriesTypeId: Ref<string>,
+  category?: string,
 ) => {
   const seriesTypeDefinition = computed(() => getChartDefinition(seriesTypeId.value));
 
@@ -27,17 +28,21 @@ export const useChartTemplates = (
       : null,
   );
 
-  const seriesTypeOptions = computed(() =>
-    getChartDefinitions().reduce((options, definition) => {
-      if (!isFunction(definition.condition) || definition.condition()) {
+  const categoryOptions = computed(() =>
+    getChartCategoryDefinitions()
+      .filter(
+        (def) =>
+          !isFunction(def.condition) ||
+          (def.condition() && (!category || category === def.type.id)),
+      )
+      .reduce((options, definition) => {
         options.push({ value: definition.type.id, label: definition.label });
-      }
-      return options;
-    }, [] as ISelectOptions),
+        return options;
+      }, [] as ISelectOptions),
   );
 
-  const categoryOptions = computed(() =>
-    getChartCategoryDefinitions().reduce((options, definition) => {
+  const seriesTypeOptions = computed(() =>
+    getChartDefinitions().reduce((options, definition) => {
       if (!isFunction(definition.condition) || definition.condition()) {
         options.push({ value: definition.type.id, label: definition.label });
       }

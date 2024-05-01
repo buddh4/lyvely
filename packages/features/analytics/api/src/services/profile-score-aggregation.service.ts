@@ -14,7 +14,7 @@ export interface ScoreAggregationOptions {
 }
 
 @Injectable()
-export class ScoreAggregationService {
+export class ProfileScoreAggregationService {
   constructor(private profileScoreDao: ProfileScoreDao) {}
 
   async aggregateProfileScoreSeries(

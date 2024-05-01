@@ -21,7 +21,7 @@ import { validate } from 'class-validator';
 import { EventEmitter2 } from 'eventemitter2';
 import { AnalyticsEvents, FetchSeriesDataEvent } from '../analytics.events';
 import { OnEvent } from '@nestjs/event-emitter';
-import { ScoreAggregationService } from './score-aggregation.service';
+import { ProfileScoreAggregationService } from './profile-score-aggregation.service';
 
 @Injectable()
 export class ChartSeriesService {
@@ -29,7 +29,7 @@ export class ChartSeriesService {
 
   constructor(
     private readonly chartDao: ChartsDao,
-    private readonly scoreAggregationService: ScoreAggregationService,
+    private readonly scoreAggregationService: ProfileScoreAggregationService,
     private readonly emitter: EventEmitter2,
   ) {}
 

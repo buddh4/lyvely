@@ -8,9 +8,11 @@ const props = withDefaults(
   defineProps<{
     modelValue: CreateChartModel | UpdateChartModel;
     embedded?: boolean;
+    category?: string;
   }>(),
   {
     embedded: false,
+    category: undefined,
   },
 );
 
@@ -27,7 +29,7 @@ const {
   seriesTypeOptions,
   categoryOptions,
   validator,
-} = useChartTemplates(formValue, seriesTypeId);
+} = useChartTemplates(formValue, seriesTypeId, props.category);
 </script>
 
 <template>
@@ -37,6 +39,7 @@ const {
         'flex flex-col gap-2 border border-divide rounded bg-highlight dark:bg-main p-3': embedded,
       }">
       <ly-select
+        v-if="categoryOptions.length > 1"
         v-model="formValue.category"
         required
         label="analytics.fields.category"

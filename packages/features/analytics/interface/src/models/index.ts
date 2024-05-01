@@ -10,5 +10,6 @@ export * from './create-chart.model';
 export * from './update-chart.model';
 export * from './update-chart-response.model';
 export * from './update-chart-series.model';
+export * from './create-chart-series.model';
 export * from './time-series-chart.category';
 export * from './time-series-config.model';

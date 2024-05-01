@@ -1,3 +1,3 @@
 export * from './charts.service';
 export * from './chart-series.service';
-export * from './score-aggregation.service';
+export * from './profile-score-aggregation.service';
