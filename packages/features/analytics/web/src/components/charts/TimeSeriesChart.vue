@@ -1,28 +1,32 @@
 <script setup lang="ts">
 import {
+  CHART_SERIES_USER_SCORE,
   ChartModel,
-  useChartsClient,
-  isTimeSeriesChart,
-  TimeSeriesAggregationInterval,
   getChartCategoryByKey,
   getTimeSeriesIntervalXAxis,
-  timeSeriesIntervalFilters,
-  type TimeSeriesChartData,
-  type TimeSeriesChartDataResponse,
+  isTimeSeriesChart,
   type ITimeSeriesChartConfig,
   type ITimeSeriesChartSeriesConfig,
+  TimeSeriesAggregationInterval,
+  type TimeSeriesChartData,
+  type TimeSeriesChartDataResponse,
   TimeSeriesChartType,
+  timeSeriesIntervalFilters,
+  useChartsClient,
 } from '@lyvely/analytics-interface';
 import { computed, onMounted, type Ref, ref, watch } from 'vue';
 import * as echarts from 'echarts/core';
 import { LyButton, LyIcon } from '@lyvely/ui';
-import { useI18nStore } from '@lyvely/web';
-import { useUpsertChartTimeSeriesStore } from '@/store';
-import EditTimeSeriesChartModal from '../modals/EditTimeSeriesChartModal.vue';
+import { useI18nStore, useProfileStore } from '@lyvely/web';
+import { useUpsertChartSeriesStore } from '@/store';
+import EditTimeSeriesChartModal from '../modals/UpsertChartTimeSeries.vue';
+import ManageChartTimeSeries from '@/components/modals/ManageChartTimeSeries.vue';
+import { type ChartErrorData, ChartSeriesDataTypes } from '@lyvely/analytics-interface/src';
 
 const props = defineProps<{ model: ChartModel<string, ITimeSeriesChartConfig> }>();
 
 const chartRoot = ref<HTMLElement>();
+const showManageSeries = ref(false);
 
 const locale = useI18nStore().locale;
 const axisData = getTimeSeriesIntervalXAxis(locale);
@@ -32,6 +36,7 @@ const chartData = ref<TimeSeriesChartDataResponse>();
 const intervalFilter: Ref<TimeSeriesAggregationInterval> = ref('7D');
 
 watch(chartData, renderChart);
+watch(() => props.model, renderChart);
 watch(intervalFilter, loadSeriesData);
 
 interface IChartSeries {
@@ -40,28 +45,50 @@ interface IChartSeries {
   name: string;
 }
 
-function transformResponseToChartData(response: TimeSeriesChartDataResponse): IChartSeries[] {
+async function transformResponseToChartData(
+  response: TimeSeriesChartDataResponse,
+): Promise<IChartSeries[]> {
   const { result } = response;
-  return Object.keys(result).reduce((chartSeries, seriesId) => {
+  const chartSeries = [];
+
+  for (const seriesId in result) {
     const seriesData = result[seriesId];
-    chartSeries.push(...transformSeriesData(seriesId, seriesData));
-    return chartSeries;
-  }, [] as IChartSeries[]);
+    chartSeries.push(...(await transformSeriesData(seriesId, seriesData)));
+  }
+
+  return chartSeries;
 }
 
-function transformSeriesData(seriesId: string, seriesData: TimeSeriesChartData[]): IChartSeries[] {
+async function transformSeriesData(
+  seriesId: string,
+  seriesData: TimeSeriesChartData[],
+): Promise<IChartSeries[]> {
   const seriesConfig = props.model.config.series.find((s) => s.id === seriesId);
   if (!seriesConfig) {
     console.error(`Series ${seriesId} does not exist in chart`);
     return [];
   }
-  return seriesData.map((series) => transformSeries(seriesConfig, series));
+
+  const result = [];
+  for (const series of seriesData) {
+    try {
+      result.push(await transformSeries(seriesConfig, series));
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  return result;
 }
 
-function transformSeries(
+async function transformSeries(
   seriesConfig: ITimeSeriesChartSeriesConfig,
-  series: TimeSeriesChartData,
-): IChartSeries {
+  series: TimeSeriesChartData | ChartErrorData,
+): Promise<IChartSeries> {
+  if (series.type === ChartSeriesDataTypes.ERROR) {
+    throw new Error(series.data);
+  }
+
   const data = axisData[intervalFilter.value].map(
     (category: string) =>
       series.data.find(
@@ -71,33 +98,40 @@ function transformSeries(
 
   const type = series.chartType || seriesConfig.chartType || TimeSeriesChartType.Line;
 
-  return { data, type, name: series.name };
+  const name =
+    seriesConfig.type === CHART_SERIES_USER_SCORE.id
+      ? (await useProfileStore().getUserInfo(series.name))?.displayName || series.name
+      : series.name;
+
+  return { data, type, name };
 }
 
-function renderChart() {
+async function renderChart() {
   const chart = props.model;
 
   if (!chartRoot.value) return;
   if (!chartData.value) return;
   if (!isTimeSeriesChart(chart)) return;
 
+  const series = await transformResponseToChartData(chartData.value);
+
   const echart = echarts.init(chartRoot.value!);
   echart.setOption({
     tooltip: {},
     legend: {
-      data: [],
+      data: series.map((s) => s.name),
     },
     xAxis: {
       type: 'category',
       data: axisData[intervalFilter.value],
     },
     yAxis: {},
-    series: transformResponseToChartData(chartData.value),
+    series,
   });
 }
 
 function addSeries() {
-  useUpsertChartTimeSeriesStore().addSeries(props.model);
+  useUpsertChartSeriesStore().addSeries(props.model);
 }
 
 async function loadSeriesData() {
@@ -125,11 +159,17 @@ onMounted(loadSeriesData);
           :text="`analytics.filters.${filter}`"
           :active="intervalFilter === filter"
           @click="intervalFilter = filter" />
+        <ly-button
+          class="secondary outlined inline-flex items-center py-0.5 px-1 text-xs ml-auto"
+          @click="showManageSeries = true">
+          <ly-icon name="settings" class="w-3" />
+        </ly-button>
       </div>
       <div ref="chartRoot" style="width: 100%; height: 250px"></div>
     </div>
 
     <edit-time-series-chart-modal />
+    <manage-chart-time-series v-model="showManageSeries" :chart="model" />
   </div>
 </template>
 

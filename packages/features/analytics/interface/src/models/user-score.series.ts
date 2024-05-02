@@ -8,7 +8,7 @@ import { TimeSeriesConfigModel } from './time-series-config.model';
 
 @Exclude()
 export class UserScoreSeriesConfigModel<TID = string> extends TimeSeriesConfigModel {
-  @IsMongoId()
+  @IsMongoId({ each: true })
   @IsOptional()
   @Expose()
   uids?: TID[];

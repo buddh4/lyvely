@@ -18,7 +18,7 @@ const isCreate = ref(false);
 const sid = ref('');
 const validator = reactive(new I18nModelValidator<UpdateChartModel>());
 
-export const useUpsertChartTimeSeriesStore = () => {
+export const useUpsertChartSeriesStore = () => {
   const client = useChartsClient();
 
   function reset() {
@@ -31,6 +31,7 @@ export const useUpsertChartTimeSeriesStore = () => {
   }
 
   function addSeries(chartModel: ChartModel) {
+    reset();
     isCreate.value = true;
     model.value = new UpdateChartModel({ category: chartModel.config.category });
     validator.setModel(model.value);
@@ -38,8 +39,9 @@ export const useUpsertChartTimeSeriesStore = () => {
     showModal.value = true;
   }
 
-  function updateSeries(model: ChartModel, seriesId: string) {
-    const series = model.config.series.find((s) => s.id === seriesId);
+  function updateSeries(chartModel: ChartModel, seriesId: string) {
+    reset();
+    const series = chartModel.config.series.find((s) => s.id === seriesId);
 
     if (!series) {
       console.error('Attempt to update non existing series');
@@ -47,7 +49,13 @@ export const useUpsertChartTimeSeriesStore = () => {
     }
 
     isCreate.value = false;
-    chart.value = model;
+    model.value = new UpdateChartModel({
+      category: chartModel.config.category,
+      series: { ...series },
+    });
+    validator.setModel(model.value);
+    chart.value = chartModel;
+    showModal.value = true;
     sid.value = seriesId;
   }
 
@@ -81,10 +89,25 @@ export const useUpsertChartTimeSeriesStore = () => {
 
     const update = await loadingStatus(
       () =>
-        client.updateSeries(chart.value!.id, sid.value, new UpdateChartSeriesModel(model.value)),
+        client.updateSeries(
+          chart.value!.id,
+          sid.value,
+          new UpdateChartSeriesModel(model.value.series!),
+        ),
       status,
     );
     useChartsStore().updateOrPushChart(update);
+    return update;
+  }
+
+  async function deleteSeries() {
+    if (!chart.value || !sid.value) throw new IntegrityException('No chart model or sid selected!');
+    const update = await loadingStatus(
+      () => client.deleteSeries(chart.value!.id, sid.value),
+      status,
+    );
+    useChartsStore().updateOrPushChart(update);
+    reset();
     return update;
   }
 
@@ -98,5 +121,6 @@ export const useUpsertChartTimeSeriesStore = () => {
     reset,
     addSeries,
     updateSeries,
+    deleteSeries,
   };
 };

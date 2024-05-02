@@ -75,6 +75,7 @@ export interface IChartSeriesDefinition<
 }
 
 export enum ChartSeriesDataTypes {
+  ERROR = 'Error',
   KEYVALUE = 'KeyValue',
   ARRAY = 'Array',
 }
@@ -101,6 +102,11 @@ export type ChartSeriesKeyValueData<
   TKey extends number | string | object = number | string | object,
   TValue = number,
 > = ChartSeriesData<ChartSeriesDataTypes.KEYVALUE, Array<{ key: TKey; value: TValue }>>;
+
+/**
+ * This data type is used in case an error occurred when generating the chart data.
+ */
+export type ChartErrorData = ChartSeriesData<ChartSeriesDataTypes.ERROR, string>;
 
 /**
  * Represents a key value data array.

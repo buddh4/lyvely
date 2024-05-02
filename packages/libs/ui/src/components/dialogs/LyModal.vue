@@ -106,7 +106,7 @@ function onKeyDown(evt: KeyboardEvent) {
 }
 
 onUnmounted(() => {
-  if(modelValue.value) close();
+  if (modelValue.value) close();
 });
 </script>
 
@@ -167,6 +167,7 @@ onUnmounted(() => {
           v-if="showFooter"
           class="flex gap-1 p-2 px-4 md:p-5 md:px-5 justify-end shadow z-10"
           data-modal-footer>
+          <slot name="pre-footer"></slot>
           <slot name="footer">
             <ly-button
               v-if="cancelButton"
@@ -188,6 +189,7 @@ onUnmounted(() => {
               {{ t(submitButtonText) }}
             </ly-button>
           </slot>
+          <slot name="post-footer"></slot>
         </div>
         <div v-else class="p-2" data-modal-footer></div>
       </div>

@@ -5,6 +5,7 @@ import {
   ProfileScoreDao,
   ProfileScore,
   type ProtectedProfileContext,
+  assureObjectId,
 } from '@lyvely/api';
 import { analyticsTestPlugin } from '../testing';
 import { ProfileScoreAggregationService } from './profile-score-aggregation.service';
@@ -54,6 +55,47 @@ describe('ScoreAggregationService', () => {
       ),
     );
   }
+
+  describe('aggregateProfileScoreSeries by uids', () => {
+    it('aggregate 7D uid score', async () => {
+      const { owner, ownerContext, member, memberContext } = await testData.createSimpleGroup();
+      await createScores(ownerContext, [
+        [1, new Date('2024-04-20')],
+        [1, new Date('2024-04-21')],
+        [1, new Date('2024-04-22')],
+        [1, new Date('2024-04-23')],
+      ]);
+
+      await createScores(memberContext, [
+        [2, new Date('2024-04-20')],
+        [2, new Date('2024-04-21')],
+        [2, new Date('2024-04-22')],
+        [2, new Date('2024-04-23')],
+      ]);
+
+      const result = await scoreAggregationService.aggregateProfileScoreSeries(ownerContext, {
+        interval: '7D',
+        uids: [owner, member],
+        endDate: new Date('2024-04-23'),
+      });
+
+      expect(result.length).toEqual(2);
+
+      expect(result[1].data).toEqual([
+        { key: { year: 2024, month: 4, day: 20, uid: owner.id }, value: 1 },
+        { key: { year: 2024, month: 4, day: 21, uid: owner.id }, value: 1 },
+        { key: { year: 2024, month: 4, day: 22, uid: owner.id }, value: 1 },
+        { key: { year: 2024, month: 4, day: 23, uid: owner.id }, value: 1 },
+      ]);
+
+      expect(result[0].data).toEqual([
+        { key: { year: 2024, month: 4, day: 20, uid: member.id }, value: 2 },
+        { key: { year: 2024, month: 4, day: 21, uid: member.id }, value: 2 },
+        { key: { year: 2024, month: 4, day: 22, uid: member.id }, value: 2 },
+        { key: { year: 2024, month: 4, day: 23, uid: member.id }, value: 2 },
+      ]);
+    });
+  });
 
   describe('aggregateProfileScoreSeries', () => {
     it('aggregate empty score', async () => {

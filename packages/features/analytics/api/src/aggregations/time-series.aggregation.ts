@@ -3,11 +3,14 @@ import { subtractMonths, subtractYears } from '@lyvely/dates';
 import { MonthlyIntervalAggregation } from './monthly-interval-aggregation.helper';
 import { DailyIntervalAggregation } from './daily-interval-aggregation.helper';
 import { PipelineStage } from 'mongoose';
-import type { TimeSeriesChartData, TimeSeriesCategoryKey } from '@lyvely/analytics-interface';
+import { type TimeSeriesChartData, type TimeSeriesCategoryKey } from '@lyvely/analytics-interface';
 import { ChartSeriesDataTypes } from '@lyvely/analytics-interface';
-import { AbstractDao } from '@lyvely/api';
+import { AbstractDao, assureStringId, type TObjectId } from '@lyvely/api';
 
-export type TimeSeriesAggregationResult = Array<{ _id: TimeSeriesCategoryKey; value: number }>;
+export type TimeSeriesAggregationResult = Array<{
+  _id: TimeSeriesCategoryKey<TObjectId>;
+  value: number;
+}>;
 export type TimeSeriesAggregationPipeline = [
   PipelineStage.Match,
   PipelineStage.Group,
@@ -17,7 +20,7 @@ export type TimeSeriesAggregationPipeline = [
 export async function runTimeSeriesAggregation(
   dao: AbstractDao<any>,
   options: IntervalAggregationOptions,
-): Promise<TimeSeriesChartData[]> {
+): Promise<TimeSeriesChartData<string>[]> {
   const pipeline = createTimeSeriesAggregationPipeline(options);
   const aggregationResult = await execAggregate(dao, pipeline);
   return transformToKeyValueData(aggregationResult, options);
@@ -67,15 +70,51 @@ async function execAggregate(
 function transformToKeyValueData(
   data: TimeSeriesAggregationResult,
   options: IntervalAggregationOptions,
-): TimeSeriesChartData[] {
-  return [
-    {
-      type: ChartSeriesDataTypes.KEYVALUE,
-      name: options.name,
-      data: data.map(({ _id, value }) => ({
-        key: _id,
-        value,
-      })),
-    },
-  ];
+): TimeSeriesChartData<string>[] {
+  if (options.filter?.uids?.length) {
+    return groupByUid(data, options);
+  }
+
+  return [createTimeSeriesChartData(options.name, data)];
+}
+
+function groupByUid(
+  data: TimeSeriesAggregationResult,
+  options: IntervalAggregationOptions,
+): TimeSeriesChartData<string>[] {
+  const result: TimeSeriesChartData<string>[] = [];
+  const uidMap = new Map<string, TimeSeriesAggregationResult>();
+
+  options.filter!.uids?.forEach((uid) => {
+    uidMap.set(assureStringId(uid), []);
+  });
+
+  data.forEach((entry) => {
+    const uid = assureStringId(entry._id.uid);
+    if (!uidMap.get(uid)) uidMap.set(uid, []);
+    uidMap.get(uid)!.push(entry);
+  });
+
+  uidMap.forEach((uidData, uid) => result.push(createTimeSeriesChartData(uid, uidData)));
+  return result;
+}
+
+function createTimeSeriesChartData(
+  name: string,
+  data: TimeSeriesAggregationResult,
+): TimeSeriesChartData<string> {
+  return {
+    type: ChartSeriesDataTypes.KEYVALUE,
+    name,
+    data: transformAggregationData(data),
+  };
+}
+
+function transformAggregationData(
+  data: TimeSeriesAggregationResult,
+): TimeSeriesChartData<string>['data'] {
+  return data.map(({ _id, value }) => ({
+    key: { ..._id, uid: _id.uid?.toString() || undefined },
+    value,
+  }));
 }

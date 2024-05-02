@@ -47,7 +47,10 @@ export const useViteWebConfig = (options: IOptions) => {
     );
   }
 
-  const input = options.input || sync(resolve(__dirname, 'src/**/*.ts'));
+  // main.ts imports tailwind.css, which we only want to import in dev environment and not in production build
+  const ignore = process.env.NODE_ENV !== 'development' ? ['src/main.ts'] : [];
+
+  const input = options.input || sync(resolve(__dirname, 'src/**/*.ts'), { ignore });
 
   /// <reference types="vitest" />
   return {

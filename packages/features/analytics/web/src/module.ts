@@ -37,7 +37,7 @@ export default () => {
         {
           type: TIME_SERIES_CHART,
           label: 'analytics.categories.time_series.label',
-          component: () => import('./components/charts/TimeSeriesGraph.vue'),
+          component: () => import('./components/charts/TimeSeriesChart.vue'),
         },
       ]);
       registerCharts([

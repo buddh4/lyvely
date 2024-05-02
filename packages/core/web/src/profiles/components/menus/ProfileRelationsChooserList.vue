@@ -44,7 +44,10 @@ function getProfileIcon(relation: ProfileRelationInfo) {
             <p class="text-sm font-medium truncate">
               {{ relation.name }}
             </p>
-            <ly-dimmed :text="{ plain: relation.description || '' }" :truncate="true" />
+            <ly-dimmed
+              class="text-xs"
+              :text="{ plain: relation.description || '' }"
+              :truncate="true" />
           </div>
           <div>
             <ly-icon :name="getProfileIcon(relation)" />

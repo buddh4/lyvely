@@ -3,12 +3,7 @@ import {
   CreateChartModel,
   UpdateChartModel,
 } from '@lyvely/analytics-interface';
-import {
-  getChartCategoryDefinition,
-  getChartCategoryDefinitions,
-  getChartDefinition,
-  getChartDefinitions,
-} from '@/registries';
+import { getChartCategoryDefinitions, getChartDefinition, getChartDefinitions } from '@/registries';
 import { ISelectOptions, resolveComponentRegistration } from '@lyvely/ui';
 import { createBaseModelAndInit } from '@lyvely/common';
 import { computed, reactive, ref, Ref, watch } from 'vue';
@@ -19,6 +14,7 @@ export const useChartTemplates = (
   formValue: Ref<CreateChartModel | UpdateChartModel>,
   seriesTypeId: Ref<string>,
   category?: string,
+  isCreate?: boolean,
 ) => {
   const seriesTypeDefinition = computed(() => getChartDefinition(seriesTypeId.value));
 
@@ -50,7 +46,7 @@ export const useChartTemplates = (
     }, [] as ISelectOptions),
   );
 
-  const seriesConfigModel = ref<ChartSeriesConfigModel>();
+  const seriesConfigModel = ref<ChartSeriesConfigModel | undefined>(formValue.value.series);
   const validator = reactive(
     new I18nModelValidator<ChartSeriesConfigModel>(),
   ) as I18nModelValidator<ChartSeriesConfigModel>;
@@ -80,7 +76,7 @@ export const useChartTemplates = (
 
       formValue.value!.series = seriesConfigModel.value;
     },
-    { immediate: true },
+    { immediate: isCreate },
   );
 
   watch(seriesConfigModel, (newValue) => {

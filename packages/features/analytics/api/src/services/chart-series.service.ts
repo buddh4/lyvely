@@ -5,23 +5,26 @@ import {
   FieldValidationException,
   IntegrityException,
   ProfileContext,
+  type TObjectId,
+  type DocumentIdentity,
 } from '@lyvely/api';
-import { Chart, ChartSeriesConfig } from '../schemas';
+import { Chart, ChartSeriesConfig, UserScoreChartSeriesConfig } from '../schemas';
 import {
   ChartSeriesConfigModel,
   getChartSeriesDefinition,
-  UpdateChartSeriesModel,
   ChartSeriesData,
   CHART_SERIES_PROFILE_SCORE,
   isTimeSeriesAggregationInterval,
+  CHART_SERIES_USER_SCORE,
+  IChartSeriesConfig,
 } from '@lyvely/analytics-interface';
 import { ChartsDao } from '../daos';
-import type { IChartSeriesConfig } from '@lyvely/analytics-interface';
 import { validate } from 'class-validator';
 import { EventEmitter2 } from 'eventemitter2';
 import { AnalyticsEvents, FetchSeriesDataEvent } from '../analytics.events';
 import { OnEvent } from '@nestjs/event-emitter';
 import { ProfileScoreAggregationService } from './profile-score-aggregation.service';
+import { ProfileScoreChartSeriesConfig } from '../schemas/profile-score-chart-series-config.schema';
 
 @Injectable()
 export class ChartSeriesService {
@@ -37,10 +40,28 @@ export class ChartSeriesService {
   onFetchSeriesDataEvent(event: FetchSeriesDataEvent) {
     const { context, config, query } = event;
 
-    if (event.isSeriesType(config, CHART_SERIES_PROFILE_SCORE.id)) {
+    if (event.isSeriesType<ProfileScoreChartSeriesConfig>(config, CHART_SERIES_PROFILE_SCORE.id)) {
       event.setResult(
         this.scoreAggregationService.aggregateProfileScoreSeries(context, {
           name: config.name,
+          interval: isTimeSeriesAggregationInterval(query?.interval) ? query?.interval : undefined,
+        }),
+      );
+    }
+
+    if (event.isSeriesType<UserScoreChartSeriesConfig>(config, CHART_SERIES_USER_SCORE.id)) {
+      const user = event.context.user;
+      const uids: TObjectId[] = [...(config.uids || [])];
+      if (config.currentUser && user) uids.push(user._id);
+
+      if (!uids.length) {
+        return event.setResult(Promise.resolve([]));
+      }
+
+      event.setResult(
+        this.scoreAggregationService.aggregateProfileScoreSeries(context, {
+          name: config.name,
+          uids,
           interval: isTimeSeriesAggregationInterval(query?.interval) ? query?.interval : undefined,
         }),
       );
@@ -85,7 +106,7 @@ export class ChartSeriesService {
     this.emitter.emit(AnalyticsEvents.EVENT_FETCH_SERIES_DATA, event);
     const result = event.getResult();
     if (!result) {
-      return [{ type: 'error', data: `Invalid Series Type ${config.type}`, name: config.name }];
+      return [{ type: 'error', data: `Invalid Series Type ${config.type}`, name: '' }];
     }
 
     return result.catch((e) => {
@@ -94,27 +115,10 @@ export class ChartSeriesService {
         {
           type: 'error',
           data: `An error occurred aggregating Series Type ${config.type}`,
-          name: config.name,
+          name: '',
         },
       ];
     });
-  }
-
-  /**
-   * Adds a series to the given chart by update model.
-   * The provided series needs to be compatible with the given chart type.
-   *
-   * @param {ProtectedProfileContext} context - The protected profile context.
-   * @param {Chart} chart - The chart to add the series to.
-   * @param {UpdateChartSeriesModel} model - The series model to add.
-   * @returns {Promise<void>} - A promise that resolves when the series has been added to the chart and the chart has been updated.
-   */
-  async addSeriesByUpdateModel(
-    context: ProtectedProfileContext,
-    chart: Chart,
-    model: UpdateChartSeriesModel,
-  ) {
-    return this.addSeries(context, chart, model.config);
   }
 
   /**
@@ -181,5 +185,42 @@ export class ChartSeriesService {
     const ConfigType = seriesDefinition.configType || ChartSeriesConfigModel;
 
     return new ConfigType({ ...config });
+  }
+
+  /**
+   * Updates a series in a given chart.
+   *
+   * @param {ProtectedProfileContext} context - The protected profile context.
+   * @param {Chart} chart - The chart where the series needs to be updated.
+   * @param {DocumentIdentity<ChartSeriesConfig>} sid - The identifier of the series to be updated.
+   * @param {IChartSeriesConfig} rawSeriesConfig - The new configuration for the series.
+   *
+   * @return {Promise<void>} - A promise that resolves when the series is successfully updated.
+   */
+  async updateSeries(
+    context: ProtectedProfileContext,
+    chart: Chart,
+    sid: DocumentIdentity<ChartSeriesConfig>,
+    rawSeriesConfig: IChartSeriesConfig,
+  ) {
+    const seriesConfig = await this.createAndValidateSeriesConfig(chart, rawSeriesConfig);
+    return this.chartDao.updateSeries(chart, sid, seriesConfig);
+  }
+
+  /**
+   * Deletes a series in a given chart.
+   *
+   * @param {ProtectedProfileContext} context - The protected profile context.
+   * @param {Chart} chart - The chart where the series needs to be updated.
+   * @param {DocumentIdentity<ChartSeriesConfig>} sid - The identifier of the series to be updated.
+   *
+   * @return {Promise<void>} - A promise that resolves when the series is successfully updated.
+   */
+  async deleteSeries(
+    context: ProtectedProfileContext,
+    chart: Chart,
+    sid: DocumentIdentity<ChartSeriesConfig>,
+  ) {
+    return this.chartDao.deleteSeries(chart, sid);
   }
 }

@@ -20,6 +20,15 @@
       "score-tag": {
         "label": "Tag Score",
         "info": "Visualizes scores grouped by tags."
+      },
+      "add": {
+        "title": "Add Series"
+      },
+      "edit": {
+        "title": "Edit Series"
+      },
+      "manage": {
+        "title": "Manage Series"
       }
     },
     "categories": {

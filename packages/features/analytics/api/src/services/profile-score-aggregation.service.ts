@@ -1,14 +1,21 @@
 import { Injectable } from '@nestjs/common';
-import { ProfileContext, ProfileScoreDao } from '@lyvely/api';
+import {
+  type DocumentIdentity,
+  ProfileContext,
+  ProfileScoreDao,
+  type TObjectId,
+  type User,
+} from '@lyvely/api';
 import { runTimeSeriesAggregation } from '../aggregations/time-series.aggregation';
 import {
   ChartSeriesAccumulation,
   type TimeSeriesAggregationInterval,
-  ChartSeriesKeyValueData,
+  type TimeSeriesChartData,
 } from '@lyvely/analytics-interface';
 
 export interface ScoreAggregationOptions {
   interval?: TimeSeriesAggregationInterval;
+  uids?: DocumentIdentity<User>[];
   name?: string;
   endDate?: Date;
 }
@@ -20,7 +27,7 @@ export class ProfileScoreAggregationService {
   async aggregateProfileScoreSeries(
     context: ProfileContext,
     options?: ScoreAggregationOptions,
-  ): Promise<ChartSeriesKeyValueData[]> {
+  ): Promise<TimeSeriesChartData<string>[]> {
     const { profile } = context;
 
     const $match = {
@@ -31,6 +38,9 @@ export class ProfileScoreAggregationService {
     return runTimeSeriesAggregation(this.profileScoreDao, {
       name: options?.name || 'Score',
       interval: options?.interval || '7D',
+      filter: {
+        uids: options?.uids,
+      },
       accumulator: ChartSeriesAccumulation.Sum,
       accumulationField: 'score',
       dateField: 'date',

@@ -48,7 +48,7 @@ describe('ChartSeriesService', () => {
     expect(chartsDao).toBeDefined();
   });
 
-  async function createGraph(
+  async function createTimeSeriesChart(
     profile: Profile,
     user: User,
     series: ChartSeriesConfig[],
@@ -65,7 +65,7 @@ describe('ChartSeriesService', () => {
     it('add score graph series', async () => {
       const { user, profile, context } = await testData.createUserAndProfile();
       registerChartSeries(CHART_SERIES_PROFILE_SCORE);
-      const chart = await createGraph(profile, user, []);
+      const chart = await createTimeSeriesChart(profile, user, []);
       expect(chart.config.series.length).toEqual(0);
       await chartSeriesService.addSeries(
         context,

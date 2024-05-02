@@ -1,10 +1,11 @@
 import type { AccumulatorOperator, PipelineStage } from 'mongoose';
 import { ChartSeriesAccumulation } from '@lyvely/analytics-interface';
-import { CalendarPreferences, TObjectId } from '@lyvely/api';
+import { CalendarPreferences, type DocumentIdentity, type User } from '@lyvely/api';
 import type { TimeSeriesAggregationInterval } from '@lyvely/analytics-interface';
+import { assureObjectId } from '@lyvely/api';
 
 export interface IntervalAggregationFilter {
-  uids?: TObjectId[];
+  uids?: DocumentIdentity<User>[];
 }
 
 export interface IntervalAggregationOptions {
@@ -69,10 +70,12 @@ export abstract class IntervalAggregation {
     const match = this.getMatchFilter();
 
     if (this.options.filter?.uids?.length) {
-      match[this.getUidField()] = { $in: this.options.filter.uids };
+      match[this.getUidField()] = {
+        $in: this.options.filter.uids.map((uid) => assureObjectId(uid)),
+      };
     }
 
-    const $match = { $match: { ...this.options.$match, ...this.getMatchFilter() } };
+    const $match = { $match: { ...this.options.$match, ...match } };
     const $group = { $group: this.getGroup() };
     const $sort = { $sort: this.getSort() };
     return [$match, $group, $sort];
@@ -106,6 +109,6 @@ export abstract class IntervalAggregation {
   }
 
   protected getUidField(): string {
-    return this.options.dateField || 'uid';
+    return this.options.uidField || 'uid';
   }
 }

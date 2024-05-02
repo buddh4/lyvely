@@ -19,7 +19,6 @@ import {
   ChartsEndpointPaths,
   UpdateChartSeriesModel,
   ChartSeriesDataResponse,
-  TimeSeriesAggregationInterval,
 } from '@lyvely/analytics-interface';
 import { Chart } from '../schemas';
 
@@ -58,7 +57,7 @@ export class ChartsController
   ): Promise<ChartModel> {
     const { content, context } = request;
 
-    await this.chartSeriesService.addSeriesByUpdateModel(context, content, model);
+    await this.chartSeriesService.addSeries(context, content, model.config);
 
     return content.toModel();
   }
@@ -67,9 +66,11 @@ export class ChartsController
   async updateSeries(
     @Param('sid') sid,
     @Body() model: UpdateChartSeriesModel,
-    @Request() request: ProfileContentRequest<Chart>,
+    @Request() request: ProtectedProfileContentRequest<Chart>,
   ): Promise<ChartModel> {
-    const { content } = request;
+    const { context, content } = request;
+
+    await this.chartSeriesService.updateSeries(context, content, sid, model.config);
 
     return content.toModel();
   }
@@ -77,9 +78,11 @@ export class ChartsController
   @Delete(ChartsEndpointPaths.DELETE_SERIES(':cid', ':sid'))
   async deleteSeries(
     @Param('sid') sid,
-    @Request() request: ProfileContentRequest<Chart>,
+    @Request() request: ProtectedProfileContentRequest<Chart>,
   ): Promise<ChartModel> {
-    const { content } = request;
+    const { context, content } = request;
+
+    await this.chartSeriesService.deleteSeries(context, content, sid);
 
     return content.toModel();
   }

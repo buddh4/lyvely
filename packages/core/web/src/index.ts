@@ -1,4 +1,8 @@
 import App from './App.vue';
+
+import './styles/index.css';
+import '@lyvely/ui/style.css';
+
 export { App };
 export * from './accessibility';
 export * from './app-config';
