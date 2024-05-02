@@ -7,6 +7,7 @@ import {
   ProfileContext,
   type TObjectId,
   type DocumentIdentity,
+  assureStringId,
 } from '@lyvely/api';
 import { Chart, ChartSeriesConfig, UserScoreChartSeriesConfig } from '../schemas';
 import {
@@ -137,7 +138,8 @@ export class ChartSeriesService {
   ) {
     const seriesConfig = await this.createAndValidateSeriesConfig(chart, rawSeriesConfig);
 
-    chart.addSeries({ ...seriesConfig, _id: createObjectId() });
+    const sid = createObjectId();
+    chart.addSeries({ ...seriesConfig, _id: sid, id: assureStringId(sid) });
 
     await this.chartDao.updateOneByProfileAndIdSet(context.profile, chart, {
       config: chart.config,

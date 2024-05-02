@@ -40,7 +40,7 @@ function getSeriesTypeName(seriesId: string) {
     :submit-button="false"
     @close="reset"
     @submit="submit">
-    <div class="flex gap-1">
+    <div class="flex gap-1 max-w-full">
       <div
         v-for="series in chart.config.series"
         role="button"

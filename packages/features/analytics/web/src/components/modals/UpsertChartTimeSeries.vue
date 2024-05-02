@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
-import { LyModal } from '@lyvely/ui';
+import { LyModal, LyButton } from '@lyvely/ui';
 import { useUpsertChartSeriesStore } from '@/store';
 import ChartTemplateForm from '@/components/forms/ChartTemplateForm.vue';
 

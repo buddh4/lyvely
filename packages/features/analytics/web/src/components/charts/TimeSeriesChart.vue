@@ -36,7 +36,7 @@ const chartData = ref<TimeSeriesChartDataResponse>();
 const intervalFilter: Ref<TimeSeriesAggregationInterval> = ref('7D');
 
 watch(chartData, renderChart);
-watch(() => props.model, renderChart);
+watch(() => props.model, loadSeriesData);
 watch(intervalFilter, loadSeriesData);
 
 interface IChartSeries {
@@ -116,18 +116,21 @@ async function renderChart() {
   const series = await transformResponseToChartData(chartData.value);
 
   const echart = echarts.init(chartRoot.value!);
-  echart.setOption({
-    tooltip: {},
-    legend: {
-      data: series.map((s) => s.name),
+  echart.setOption(
+    {
+      tooltip: {},
+      legend: {
+        data: series.map((s) => s.name),
+      },
+      xAxis: {
+        type: 'category',
+        data: axisData[intervalFilter.value],
+      },
+      yAxis: {},
+      series,
     },
-    xAxis: {
-      type: 'category',
-      data: axisData[intervalFilter.value],
-    },
-    yAxis: {},
-    series,
-  });
+    true,
+  );
 }
 
 function addSeries() {
