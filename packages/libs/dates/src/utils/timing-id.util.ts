@@ -33,7 +33,7 @@ export function toTimingId(
   cd: CalendarDateTime,
   level = CalendarInterval.Daily,
   locale = 'en',
-  preferences?: ICalendarPreferences & { utc?: boolean },
+  preferences?: ICalendarPreferences,
 ) {
   if (level <= CalendarInterval.Unscheduled) return 'U';
   if (level === CalendarInterval.Weekly) return toWeekTimingId(cd, locale, preferences);

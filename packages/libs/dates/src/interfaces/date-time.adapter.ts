@@ -32,7 +32,7 @@ export function dateTime(
 }
 
 /**
- * Returns a date instance without time.
+ * Returns a date instance without time information in the local timezone.
  * @param date
  */
 export function getFullDayDate(date: CalendarDate): Date {
@@ -61,12 +61,50 @@ export function getFullDayDate(date: CalendarDate): Date {
 }
 
 /**
- * Returns a date instance without time.
- * @param date
+ * Returns a date instance without time in utc timezone.
+ * @param cd - The calendar date.
  */
 export function getFullDayUTCDate(cd: CalendarDate): Date {
   const date = getFullDayDate(cd);
   return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0));
+}
+
+/**
+ * Retrieves the start of the day in the specified time zone.
+ *
+ * @exmaple
+ *
+ * getFullDayTZDate('2024-05-03', 'Europe/Berlin');
+ * // Will result in 2024-05-02T22:00:00.000Z
+ *
+ * getFullDayTZDate('2024-05-03', 'America/Los_Angeles');
+ * // Will result in 2024-05-03T07:00:00.000Z
+ *
+ * @param {CalendarDate} cd - The calendar date.
+ * @param {string} tz - The time zone.
+ * @returns {Date} - The full day date in the specified time zone.
+ */
+export function getFullDayTZDate(cd: CalendarDate, tz: string): Date {
+  return dateTime(getFullDayDate(cd)).toTZ(tz).toDate();
+}
+
+/**
+ * Retrieves the end of the day in the specified time zone, which is one second before the next day starts.
+ *
+ * @exmaple
+ *
+ * getEndOfDayTZDate('2024-05-03', 'Europe/Berlin');
+ * // Will result in 2024-05-03T21:59:59.000Z
+ *
+ * getEndOfDayTZDate('2024-05-03', 'America/Los_Angeles');
+ * // Will result in 2024-05-04T06:59:59.000Z
+ *
+ * @param {CalendarDate} cd - The calendar date.
+ * @param {string} tz - The time zone.
+ * @returns {Date} - The full day date in the specified time zone.
+ */
+export function getEndOfDayTZDate(cd: CalendarDate, tz: string): Date {
+  return dateTime(getFullDayDate(cd)).toTZ(tz).add(1, 'day').subtract(1, 'second').toDate();
 }
 
 /**
@@ -81,6 +119,6 @@ export function implementsIDateTime(obj: any): obj is IDateTime {
  * Transforms the given CalendarDateTime to a JavaScript Date object.
  * @param date
  */
-export function toDate(date: CalendarDateTime) {
+export function toDate(date: CalendarDateTime): Date {
   return dateTime(date).toDate();
 }

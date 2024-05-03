@@ -158,5 +158,14 @@ export interface IDateTime {
    * Formats the date with the given template.
    * @param template
    */
-  format(template: string): string;
+  format(template?: string): string;
+
+  /**
+   * Translates a date to a specific timezone while preserving the local time if preserveTime = true.
+   *
+   * @param {string} timezone - The target timezone (e.g., 'America/Los_Angeles').
+   * @param preserveLocalTime - If set to true, will preserve the local time
+   * @returns {IDateTime} - The translated datetime object representing date and time in the target timezone.
+   */
+  toTZ(timezone: string, preserveLocalTime?: boolean): IDateTime;
 }
