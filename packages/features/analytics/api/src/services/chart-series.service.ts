@@ -9,7 +9,12 @@ import {
   type DocumentIdentity,
   assureStringId,
 } from '@lyvely/api';
-import { Chart, ChartSeriesConfig, UserScoreChartSeriesConfig } from '../schemas';
+import {
+  Chart,
+  ChartSeriesConfig,
+  UserScoreChartSeriesConfig,
+  ProfileScoreChartSeriesConfig,
+} from '../schemas';
 import {
   ChartSeriesConfigModel,
   getChartSeriesDefinition,
@@ -25,7 +30,6 @@ import { EventEmitter2 } from 'eventemitter2';
 import { AnalyticsEvents, FetchSeriesDataEvent } from '../analytics.events';
 import { OnEvent } from '@nestjs/event-emitter';
 import { ProfileScoreAggregationService } from './profile-score-aggregation.service';
-import { ProfileScoreChartSeriesConfig } from '../schemas/profile-score-chart-series-config.schema';
 
 @Injectable()
 export class ChartSeriesService {

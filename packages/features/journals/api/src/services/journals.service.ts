@@ -32,7 +32,7 @@ export class JournalsService extends ContentTypeService<Journal, CreateJournalMo
     context: ProtectedProfileContext,
     model: CreateJournalModel,
   ): Promise<Journal> {
-    return Journal.create(context.profile, context.user, model);
+    return Journal.create(context, model);
   }
 
   /**

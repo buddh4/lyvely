@@ -49,7 +49,7 @@ export class MilestonesService extends ContentTypeService<
   ): Promise<Milestone> {
     const { user, profile } = context;
     const { title, text, interval } = model;
-    const instance = new Milestone(profile, user, {
+    const instance = new Milestone(context, {
       content: new ContentDataType({ title, text }),
       config: new MilestoneConfig({ interval }),
     });

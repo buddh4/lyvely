@@ -9,18 +9,28 @@ export interface ICreateContentScore extends ICreateProfileScore {
   content: Content;
 }
 
+/**
+ * Represents a ContentScore object which keeps track of scores related to a content entry.
+ * @class
+ */
 @Schema({ timestamps: true, discriminatorKey: 'type' })
 export class ContentScore extends ProfileScore {
   @ObjectIdProp()
   cid: TObjectId;
 
   constructor(options: ICreateContentScore, data: PartialPropertiesOf<ContentScore> = {}) {
-    if (!options.content.pid.equals(options.profile._id)) {
+    const opts = { ...options };
+    const { content } = opts;
+    const { profile } = opts.context;
+    if (!content.pid.equals(profile._id)) {
       throw new IntegrityException('Tried to create a content score on an unrelated profile');
     }
 
-    super(options, data);
-    this.cid ??= options.content._id;
+    opts.title ??= content.getTitle();
+    opts.tagIds ??= content.tagIds;
+
+    super(opts, data);
+    this.cid ??= content._id;
   }
 }
 

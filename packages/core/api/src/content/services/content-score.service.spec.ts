@@ -14,7 +14,6 @@ import { ContentScoreService } from './index';
 import { ContentScoreDao } from '../daos';
 import { toTimingId } from '@lyvely/dates';
 import { UserAssignmentStrategy } from '@lyvely/api';
-import { ContentPermissionsService } from '@/content/services/content-permissions.service';
 
 describe('ContentScoreService', () => {
   let testingModule: LyvelyTestingModule;
@@ -64,25 +63,26 @@ describe('ContentScoreService', () => {
   });
 
   async function createGroupAndContent() {
-    const { owner, member, profile } = await testDataUtils.createSimpleGroup();
-    const content = new TestContent(profile, owner, { _id: getObjectId('TestContent') });
-    return { owner, member, profile, content };
+    const testData = await testDataUtils.createSimpleGroup();
+    const content = new TestContent(testData.ownerContext, {
+      _id: getObjectId('TestContent'),
+    });
+    return { ...testData, content };
   }
 
   describe('Simple Content Score', () => {
     describe('saveScore', () => {
       it('initial data', async () => {
-        const { owner, profile, content } = await createGroupAndContent();
+        const { ownerContext, profile, content } = await createGroupAndContent();
 
         const ownerScore = new TestContentScore({
-          user: owner,
-          profile,
+          context: ownerContext,
           content,
           score: 5,
           date: new Date(),
         });
 
-        const model = await contentScoreService.saveScore(profile, ownerScore);
+        const model = await contentScoreService.saveScore(ownerContext, ownerScore);
         expect(model._id).toBeDefined();
         expect(model.cid).toEqual(content._id);
         expect(model.pid).toEqual(profile._id);
@@ -95,13 +95,13 @@ describe('ContentScoreService', () => {
       });
 
       it('save per user score', async () => {
-        const { owner, member, profile, content } = await createGroupAndContent();
+        const { owner, ownerContext, member, memberContext, profile, content } =
+          await createGroupAndContent();
 
         const ownerScore = await contentScoreService.saveScore(
-          profile,
+          ownerContext,
           new TestContentScore({
-            user: owner,
-            profile,
+            context: ownerContext,
             content,
             score: 5,
             userStrategy: UserAssignmentStrategy.PerUser,
@@ -110,10 +110,9 @@ describe('ContentScoreService', () => {
         );
 
         const memberScore = await contentScoreService.saveScore(
-          profile,
+          memberContext,
           new TestContentScore({
-            user: member,
-            profile,
+            context: memberContext,
             content,
             score: -2,
             userStrategy: UserAssignmentStrategy.PerUser,
@@ -133,13 +132,13 @@ describe('ContentScoreService', () => {
       });
 
       it('save shared score', async () => {
-        const { owner, member, profile, content } = await createGroupAndContent();
+        const { owner, ownerContext, member, memberContext, profile, content } =
+          await createGroupAndContent();
 
         const ownerScore = await contentScoreService.saveScore(
-          profile,
+          ownerContext,
           new TestContentScore({
-            user: owner,
-            profile,
+            context: ownerContext,
             content,
             score: 5,
             userStrategy: UserAssignmentStrategy.Shared,
@@ -148,10 +147,9 @@ describe('ContentScoreService', () => {
         );
 
         const memberScore = await contentScoreService.saveScore(
-          profile,
+          memberContext,
           new TestContentScore({
-            user: member,
-            profile,
+            context: memberContext,
             content,
             score: -2,
             userStrategy: UserAssignmentStrategy.Shared,
@@ -160,12 +158,12 @@ describe('ContentScoreService', () => {
         );
 
         expect(ownerScore._id).toBeDefined();
-        expect(ownerScore.uid).toBeUndefined();
+        expect(ownerScore.uid).toEqual(owner._id);
         expect(ownerScore.score).toEqual(5);
 
         expect(memberScore._id).toBeDefined();
         expect(memberScore._id).not.toEqual(ownerScore._id);
-        expect(memberScore.uid).toBeUndefined();
+        expect(memberScore.uid).toEqual(member._id);
         expect(memberScore.score).toEqual(-2);
 
         expect(profile.score).toEqual(3);
@@ -175,13 +173,12 @@ describe('ContentScoreService', () => {
 
   describe('findScoreByContent', () => {
     it('find shared score', async () => {
-      const { owner, member, profile, content } = await createGroupAndContent();
+      const { ownerContext, memberContext, profile, content } = await createGroupAndContent();
 
       await contentScoreService.saveScore(
-        profile,
+        ownerContext,
         new TestContentScore({
-          user: owner,
-          profile,
+          context: ownerContext,
           content,
           score: 5,
           userStrategy: UserAssignmentStrategy.Shared,
@@ -190,10 +187,9 @@ describe('ContentScoreService', () => {
       );
 
       await contentScoreService.saveScore(
-        profile,
+        memberContext,
         new TestContentScore({
-          user: member,
-          profile,
+          context: memberContext,
           content,
           score: 6,
           userStrategy: UserAssignmentStrategy.Shared,
@@ -202,8 +198,7 @@ describe('ContentScoreService', () => {
       );
 
       const search = await contentScoreService.findScoresByContent(
-        profile,
-        member,
+        memberContext,
         content,
         UserAssignmentStrategy.Shared,
       );
@@ -212,13 +207,12 @@ describe('ContentScoreService', () => {
     });
 
     it('find per user score', async () => {
-      const { owner, member, profile, content } = await createGroupAndContent();
+      const { ownerContext, memberContext, profile, content } = await createGroupAndContent();
 
       const ownerScore = await contentScoreService.saveScore(
-        profile,
+        ownerContext,
         new TestContentScore({
-          user: owner,
-          profile,
+          context: ownerContext,
           content,
           score: 5,
           userStrategy: UserAssignmentStrategy.PerUser,
@@ -227,10 +221,9 @@ describe('ContentScoreService', () => {
       );
 
       const memberScore = await contentScoreService.saveScore(
-        profile,
+        memberContext,
         new TestContentScore({
-          user: member,
-          profile,
+          context: memberContext,
           content,
           score: -2,
           userStrategy: UserAssignmentStrategy.PerUser,
@@ -239,8 +232,7 @@ describe('ContentScoreService', () => {
       );
 
       const ownerSearch = await contentScoreService.findScoresByContent(
-        profile,
-        owner,
+        ownerContext,
         content,
         UserAssignmentStrategy.PerUser,
       );
@@ -248,8 +240,7 @@ describe('ContentScoreService', () => {
       expect(ownerSearch[0]._id).toEqual(ownerScore._id);
       expect(ownerSearch[0].score).toEqual(5);
       const memberSearch = await contentScoreService.findScoresByContent(
-        profile,
-        member,
+        memberContext,
         content,
         UserAssignmentStrategy.PerUser,
       );
@@ -277,13 +268,12 @@ describe('ContentScoreService', () => {
       await expect(contentScoreService.saveScore(profile, testScore)).rejects.toThrow(Error);
     });*/
     it('save test score', async () => {
-      const { user, profile } = await testDataUtils.createUserAndProfile();
-      const content = new TestContent(profile, user, { _id: getObjectId('TestContent') });
+      const { user, context, profile } = await testDataUtils.createUserAndProfile();
+      const content = new TestContent(context, { _id: getObjectId('TestContent') });
 
       const testScore = new ExtendedTestContentScore(
         {
-          user,
-          profile,
+          context,
           content,
           score: 5,
           date: new Date(),
@@ -292,7 +282,7 @@ describe('ContentScoreService', () => {
       );
 
       const model = await contentScoreService.saveScore<ExtendedTestContentScore>(
-        profile,
+        context,
         testScore,
       );
 
@@ -310,13 +300,12 @@ describe('ContentScoreService', () => {
     });
 
     it('assure discriminator is working', async () => {
-      const { user, profile } = await testDataUtils.createUserAndProfile();
-      const content = new TestContent(profile, user, { _id: getObjectId('TestContent') });
+      const { context } = await testDataUtils.createUserAndProfile();
+      const content = new TestContent(context, { _id: getObjectId('TestContent') });
 
       const testScore = new ExtendedTestContentScore(
         {
-          user,
-          profile,
+          context,
           content,
           score: 5,
           date: new Date(),
@@ -324,7 +313,7 @@ describe('ContentScoreService', () => {
         { special: 'TestValue' },
       );
 
-      const model = await contentScoreService.saveScore(profile, testScore);
+      const model = await contentScoreService.saveScore(context, testScore);
 
       const search1 = await TestContentScoreModel.find({}).exec();
       expect(search1.length).toEqual(0);

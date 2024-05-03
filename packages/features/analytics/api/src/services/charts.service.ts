@@ -35,13 +35,12 @@ export class ChartsService extends ContentTypeService<Chart, CreateChartModel, U
     context: ProtectedProfileContext,
     model: CreateChartModel,
   ): Promise<Chart> {
-    const { profile, user } = context;
     const { text, title, category } = model;
     const config = this.createChartConfigByCategory(category);
 
     if (!config) throw new FieldValidationException([{ property: 'type', errors: ['invalid'] }]);
 
-    const chart = new Chart(profile, user, {
+    const chart = new Chart(context, {
       content: new ContentDataType({ title, text }),
       config,
     });

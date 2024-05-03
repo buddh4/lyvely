@@ -35,9 +35,8 @@ export class SystemMessagesService extends ContentTypeService<SystemMessage, ICr
     context: ProtectedProfileContext,
     model: ICreateSystemMessage,
   ): Promise<SystemMessage> {
-    const { profile, user } = context;
     const { text, title, params } = model;
-    return new SystemMessage(profile, user, {
+    return new SystemMessage(context, {
       content: new SystemMessageContent({ text, title, params }),
     });
   }

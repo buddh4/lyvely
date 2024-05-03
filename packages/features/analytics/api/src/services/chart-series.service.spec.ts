@@ -1,9 +1,7 @@
 import {
   LyvelyTestingModule,
   ContentDataType,
-  Profile,
   ProfileTestDataUtils,
-  User,
   buildProfileTest,
 } from '@lyvely/api';
 import { ChartSeriesService } from './chart-series.service';
@@ -12,6 +10,7 @@ import { analyticsTestPlugin } from '../testing';
 import { Chart, ChartSeriesConfig, TimeSeriesChartConfig } from '../schemas';
 import { CHART_SERIES_PROFILE_SCORE, registerChartSeries } from '@lyvely/analytics-interface';
 import { ProfileScoreAggregationService } from './profile-score-aggregation.service';
+import { ProtectedProfileContext } from '@lyvely/api/src';
 
 describe('ChartSeriesService', () => {
   let chartSeriesService: ChartSeriesService;
@@ -49,12 +48,11 @@ describe('ChartSeriesService', () => {
   });
 
   async function createTimeSeriesChart(
-    profile: Profile,
-    user: User,
+    context: ProtectedProfileContext,
     series: ChartSeriesConfig[],
   ): Promise<Chart<TimeSeriesChartConfig>> {
     return chartsDao.save(
-      new Chart<TimeSeriesChartConfig>(profile, user, {
+      new Chart<TimeSeriesChartConfig>(context, {
         content: new ContentDataType({ title: 'Test' }),
         config: new TimeSeriesChartConfig({ series }),
       }),
@@ -63,9 +61,9 @@ describe('ChartSeriesService', () => {
 
   describe('addSeries', () => {
     it('add score graph series', async () => {
-      const { user, profile, context } = await testData.createUserAndProfile();
+      const { context } = await testData.createUserAndProfile();
       registerChartSeries(CHART_SERIES_PROFILE_SCORE);
-      const chart = await createTimeSeriesChart(profile, user, []);
+      const chart = await createTimeSeriesChart(context, []);
       expect(chart.config.series.length).toEqual(0);
       await chartSeriesService.addSeries(
         context,

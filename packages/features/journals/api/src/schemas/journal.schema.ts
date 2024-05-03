@@ -24,6 +24,7 @@ import {
   Profile,
   ContentDataType,
   TObjectId,
+  ProtectedProfileContext,
 } from '@lyvely/api';
 import { PropertiesOf } from '@lyvely/common';
 
@@ -67,9 +68,10 @@ export class Journal
   @Prop({ type: JournalConfigSchema, required: true })
   override config: JournalConfig;
 
-  public static create(profile: Profile, owner: User, model: PropertiesOf<CreateJournalModel>) {
+  public static create(context: ProtectedProfileContext, model: PropertiesOf<CreateJournalModel>) {
     const { title, text } = model;
-    return new Journal(profile, owner, {
+    const { profile } = context;
+    return new Journal(context, {
       content: new ContentDataType({ title, text }),
       tagIds: profile.getTagsByName(model.tagNames || []).map((tag) => assureObjectId(tag.id)),
       config: new JournalConfig(

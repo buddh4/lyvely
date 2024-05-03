@@ -47,8 +47,8 @@ export class TasksService extends ContentTypeService<Task, CreateTaskModel> {
     context: ProtectedProfileContext,
     model: CreateTaskModel,
   ): Promise<Task> {
-    const { user, profile } = context;
-    const instance = Task.create(profile, user, model);
+    const { profile } = context;
+    const instance = Task.create(context, model);
     instance.meta.sortOrder = await this.contentDao.getNextSortOrder(profile);
     return instance;
   }
@@ -115,20 +115,28 @@ export class TasksService extends ContentTypeService<Task, CreateTaskModel> {
     }
 
     if (!wasDone) {
-      await this.scoreService.saveScore(
-        profile,
-        new TaskScore({
-          profile,
-          user,
-          content: task,
-          userStrategy: task.config.userStrategy,
-          score: task.config.score,
-          date: date,
-        }),
-      );
+      await this.saveScore(context, task, date);
     }
 
     return task;
+  }
+
+  private async saveScore(
+    context: ProtectedProfileContext,
+    task: Task,
+    date: CalendarDate,
+    subtract = false,
+  ) {
+    return this.scoreService.saveScore(
+      context,
+      new TaskScore({
+        context,
+        content: task,
+        userStrategy: task.config.userStrategy,
+        score: subtract ? -task.config.score : task.config.score,
+        date: date,
+      }),
+    );
   }
 
   /**
@@ -159,17 +167,7 @@ export class TasksService extends ContentTypeService<Task, CreateTaskModel> {
     task.setUndoneBy(user);
 
     if (wasDone) {
-      await this.scoreService.saveScore(
-        profile,
-        new TaskScore({
-          profile,
-          user,
-          content: task,
-          userStrategy: task.config.userStrategy,
-          score: -task.config.score,
-          date: date,
-        }),
-      );
+      await this.saveScore(context, task, date, true);
     }
 
     return task;

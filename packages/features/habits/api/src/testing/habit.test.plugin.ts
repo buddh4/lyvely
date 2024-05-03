@@ -1,11 +1,11 @@
-import { TestPlugin } from '@lyvely/testing';
-import { HabitTestDataUtil } from './habit.test.utils';
 import {
+  TestPlugin,
   contentTestPlugin,
   getContentModelDefinition,
   getContentScoreDefinition,
   profilesTestPlugin,
 } from '@lyvely/api';
+import { HabitTestDataUtil } from './habit.test.utils';
 import { Habit, HabitSchema, HabitScore, HabitScoreSchema } from '../schemas';
 import { DataPointValueType, getDataPointModelDefinition } from '@lyvely/time-series';
 

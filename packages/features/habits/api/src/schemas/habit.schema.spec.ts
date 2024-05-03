@@ -47,7 +47,7 @@ describe('Habit', () => {
   });
 
   it('create', async () => {
-    const habit = Habit.create(profile, user, {
+    const habit = Habit.create(<any>{ profile, user }, {
       title: 'Test',
       text: 'Some Test Habit',
       score: 5,

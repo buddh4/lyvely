@@ -90,7 +90,7 @@ export class HabitTestDataUtil extends ProfileTestDataUtils {
       },
       data || {},
     );
-    const model = Habit.create(profile, user, initData);
+    const model = Habit.create({ profile, user }, initData);
     if (overwrite) overwrite(model);
     const habit = new this.HabitModel(model);
     Object.assign(habit, overwrite);

@@ -30,7 +30,7 @@ export class HabitsService extends ContentTypeService<Habit, CreateHabitModel> {
     context: ProtectedProfileContext,
     model: CreateHabitModel,
   ): Promise<Habit> {
-    return Habit.create(context.profile, context.user, model);
+    return Habit.create(context, model);
   }
 
   /**

@@ -30,7 +30,7 @@ export class MessageService extends ContentTypeService<Message, CreateMessageMod
    * @returns {Promise<Message>} - A promise that resolves to a new instance of Message.
    */
   protected async createInstance(context: ProtectedProfileContext, model: CreateMessageModel) {
-    return new Message(context.profile, context.user, model.text);
+    return new Message(context, model.text);
   }
 
   /**

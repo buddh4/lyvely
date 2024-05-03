@@ -6,6 +6,7 @@ import {
   Profile,
   ContentDataType,
   TObjectId,
+  ProtectedProfileContext,
 } from '@lyvely/api';
 import { PropertiesOf, PropertyType } from '@lyvely/common';
 import { HabitModel, CreateHabitModel, UpdateHabitModel } from '@lyvely/habits-interface';
@@ -61,9 +62,13 @@ export class Habit
   @PropertyType(HabitConfig)
   override config: HabitConfig;
 
-  public static create(profile: Profile, owner: User, update: PropertiesOf<CreateHabitModel>) {
+  public static create(
+    context: { user: User; profile: Profile },
+    update: PropertiesOf<CreateHabitModel>,
+  ) {
     const { title, text } = update;
-    return new Habit(profile, owner, {
+    const { profile } = context;
+    return new Habit(context, {
       content: new ContentDataType({ title, text }),
       tagIds: profile.getTagsByName(update.tagNames || []).map((tag) => assureObjectId(tag.id)),
       config: new HabitConfig(

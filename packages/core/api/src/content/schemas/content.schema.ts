@@ -125,12 +125,11 @@ export class Content<
   policies: IContentPolicies;
 
   constructor(
-    profile: Profile,
-    createdBy: User,
+    context: { user: User; profile: Profile },
     obj?: BaseDocumentData<Content<TConfig, TStatus, TData>>,
   ) {
+    const { profile, user: createdBy } = context;
     super();
-
     BaseDocument.init(this, obj);
 
     this.pid = profile._id;

@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import {
-  Profile,
   User,
   UserAssignmentStrategy,
   assureObjectId,
@@ -10,6 +9,7 @@ import {
   ContentDataType,
   ContentType,
   TObjectId,
+  ProtectedProfileContext,
 } from '@lyvely/api';
 import {
   PropertiesOf,
@@ -173,12 +173,11 @@ export class Task
   }
 
   public static create(
-    profile: Profile,
-    owner: User,
+    context: ProtectedProfileContext,
     createModel: PropertiesOf<CreateTaskModel>,
   ): Task {
     const { title, text, score, interval, userStrategy } = createModel;
-    return new Task(profile, owner, {
+    return new Task(context, {
       content: new ContentDataType({ title, text }),
       config: new TaskConfig({ score, interval, userStrategy }),
     });
