@@ -139,7 +139,7 @@ function addSeries() {
 
 async function loadSeriesData() {
   chartData.value = await useChartsClient().getSeriesData(props.model.id, {
-    intervalFilter: intervalFilter.value,
+    interval: intervalFilter.value,
   });
 }
 

@@ -5,7 +5,6 @@ import {
   ProfileScoreDao,
   ProfileScore,
   type ProtectedProfileContext,
-  assureObjectId,
 } from '@lyvely/api';
 import { analyticsTestPlugin } from '../testing';
 import { ProfileScoreAggregationService } from './profile-score-aggregation.service';
@@ -81,14 +80,14 @@ describe('ScoreAggregationService', () => {
 
       expect(result.length).toEqual(2);
 
-      expect(result[1].data).toEqual([
+      expect(result[0].data).toEqual([
         { key: { year: 2024, month: 4, day: 20, uid: owner.id }, value: 1 },
         { key: { year: 2024, month: 4, day: 21, uid: owner.id }, value: 1 },
         { key: { year: 2024, month: 4, day: 22, uid: owner.id }, value: 1 },
         { key: { year: 2024, month: 4, day: 23, uid: owner.id }, value: 1 },
       ]);
 
-      expect(result[0].data).toEqual([
+      expect(result[1].data).toEqual([
         { key: { year: 2024, month: 4, day: 20, uid: member.id }, value: 2 },
         { key: { year: 2024, month: 4, day: 21, uid: member.id }, value: 2 },
         { key: { year: 2024, month: 4, day: 22, uid: member.id }, value: 2 },
