@@ -5,6 +5,7 @@ import {
   BaseDocument,
   type BaseDocumentData,
   getDefaultLocale,
+  getDefaultTimezone,
   MixedProp,
   TObjectId,
   uniqueGuid,
@@ -84,12 +85,14 @@ export class User
   @Prop({ required: true })
   password: string;
 
-  // TODO: Proper validation.
   /** The locale of this user used for translation and default locale related formats. **/
-  @Prop({ default: getDefaultLocale() })
+  @Prop({ required: true })
+  @PropertyType(String, { default: getDefaultLocale() })
   locale: string;
 
-  @Prop()
+  /** IANA timezone **/
+  @Prop({ required: true })
+  @PropertyType(String, { default: getDefaultTimezone() })
   timezone: string;
 
   /** Module and other settings. **/

@@ -1,29 +1,31 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { BaseDocument, ObjectIdArrayProp, ObjectIdProp, TObjectId } from '@/core';
-import { type PartialPropertiesOf } from '@lyvely/common';
+import { getNumberEnumValues, type PartialPropertiesOf } from '@lyvely/common';
 import { CalendarPreferences, UserAssignmentStrategy } from '@lyvely/interface';
-import { User } from '@/users';
-import { Profile } from './profiles.schema';
 import { CalendarDate, CalendarInterval, parseTimingId, toDate, toTimingId } from '@lyvely/dates';
+import { ProtectedProfileContext } from '@/profiles';
 
-export interface IProfileScore {
-  _id: TObjectId;
-  oid?: TObjectId;
-  pid: TObjectId;
-  uid?: TObjectId;
-  createdBy: TObjectId;
-  date: Date;
-  tid: string;
-  type: string;
-  tagIds?: TObjectId[];
-  score: number;
-}
-
+/**
+ * Represents the data required to create a profile score.
+ */
 export interface ICreateProfileScore {
-  user: User;
-  profile: Profile;
+  context: ProtectedProfileContext;
   score: number;
+  title?: string;
+  /**
+   * The date this score is attributed to.
+   * For full day dates, this should be provided in the profiles timezone e.g. by using
+   * `getFullDayTZDate(date, profile.timezone)` since aggregations will use the profile timezone.
+   * If no date is given the current date and time is set.
+   * If no tid is given, this date will be used to calculate the tid.
+   **/
   date?: CalendarDate;
+  /**
+   * This contains the timing id this score is attributed to.
+   * If no tid is given, the scores date property is used to calculate one.
+   * A custom tid should be provided in cases in which the date may differ due to the profile timezone e.g.
+   * for time series data points.
+   */
   tid?: string;
   tagIds?: TObjectId[];
   userStrategy?: UserAssignmentStrategy;
@@ -43,6 +45,10 @@ export class ProfileScore {
 
   @ObjectIdProp()
   uid?: TObjectId;
+
+  /** A title, e.g. content title used in the frontend. **/
+  @Prop()
+  title?: string;
 
   @ObjectIdProp({ required: true })
   createdBy: TObjectId;
@@ -75,8 +81,16 @@ export class ProfileScore {
   @Prop({ immutable: true })
   week?: number;
 
+  /** Tag ids related to this score. **/
   @ObjectIdArrayProp()
   tagIds?: TObjectId[];
+
+  @Prop({
+    enum: getNumberEnumValues(UserAssignmentStrategy),
+    default: UserAssignmentStrategy.Shared,
+    required: false,
+  })
+  userStrategy: UserAssignmentStrategy;
 
   @Prop({ required: true, default: 0 })
   score: number;
@@ -96,7 +110,7 @@ export class ProfileScore {
   }
 
   constructor(options: ICreateProfileScore, data: PartialPropertiesOf<ProfileScore> = {}) {
-    const { user, profile } = options;
+    const { user, profile } = options.context;
     data.createdBy ||= user._id;
     data.score = options.score;
     data.pid = profile._id;
@@ -104,12 +118,9 @@ export class ProfileScore {
     data.tagIds ||= options.tagIds;
     data.date = toDate(options.date || new Date());
 
-    const strategy = options.userStrategy ?? UserAssignmentStrategy.PerUser;
-    if (strategy === UserAssignmentStrategy.PerUser) {
-      data.uid = user._id;
-    } else {
-      data.uid = undefined;
-    }
+    data.userStrategy = options.userStrategy ?? UserAssignmentStrategy.Shared;
+    data.uid = user._id;
+    data.title ||= options.title;
 
     BaseDocument.init(this, data);
 
@@ -124,8 +135,6 @@ export class ProfileScore {
       Object.assign(this, parseTimingId(this.tid));
     }
   }
-
-  // TODO: How to generate text, maybe use type to detect message and provide instance and user/profile to translation
 }
 
 export const ProfileScoreSchema = SchemaFactory.createForClass(ProfileScore);

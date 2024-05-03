@@ -4,6 +4,7 @@ import { createBaseDocumentInstance } from '@/core';
 import { ProfilesService } from './profiles.service';
 import { Injectable } from '@nestjs/common';
 import { Type } from '@lyvely/common';
+import { ProfileContext } from '@/profiles';
 
 @Injectable()
 export abstract class ProfileScoreService<E extends ProfileScore> {
@@ -16,11 +17,11 @@ export abstract class ProfileScoreService<E extends ProfileScore> {
    * @param profile
    * @param model
    */
-  async saveScore<T extends E = E>(profile: Profile, model: T): Promise<T> {
+  async saveScore<T extends E = E>(context: ProfileContext, model: T): Promise<T> {
     // Here we set the discriminator field manually since the profile score dao may not be aware of the discriminator type
     model.type = model.constructor.name;
     const scoreModel = await this.profileScoreDao.save(model);
-    await this.profileService.incrementScore(profile, scoreModel.score);
+    await this.profileService.incrementScore(context.profile, scoreModel.score);
     return createBaseDocumentInstance(model.constructor as Type<T>, scoreModel);
   }
 }

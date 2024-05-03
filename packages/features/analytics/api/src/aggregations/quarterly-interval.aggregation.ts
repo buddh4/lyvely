@@ -1,6 +1,6 @@
 import type { PipelineStage } from 'mongoose';
-import { subtractQuarters } from '@lyvely/dates';
-import { IntervalAggregation } from './interval-aggregation.helper';
+import { getEndOfDayTZDate, getFullDayTZDate, subtractQuarters } from '@lyvely/dates';
+import { IntervalAggregation } from './interval.aggregation';
 
 export class QuarterlyIntervalAggregation extends IntervalAggregation {
   protected override getGroupId(): PipelineStage.Group['$group']['_id'] {
@@ -15,17 +15,14 @@ export class QuarterlyIntervalAggregation extends IntervalAggregation {
     const endDate = this.options.endDate || new Date();
     const range = this.options.range ?? 6;
     const startDate = this.options.startDate || subtractQuarters(endDate, range);
-    const utcStartDate = new Date(
-      startDate.getFullYear(),
-      startDate.getMonth(),
-      startDate.getDate(),
-      0,
-      0,
-      0,
-    );
+
+    const tzEndDate = getEndOfDayTZDate(endDate, this.options.timezone);
+
+    // We use the given timezone for calculating the start date.
+    const tzStartDate = getFullDayTZDate(startDate, this.options.timezone);
 
     return {
-      [dateField]: { $gte: utcStartDate, $lte: endDate },
+      [dateField]: { $gte: tzStartDate, $lte: tzEndDate },
     };
   }
 

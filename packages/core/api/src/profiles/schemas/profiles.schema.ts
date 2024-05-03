@@ -92,6 +92,10 @@ export class Profile implements PropertiesOf<ProfileModel<TObjectId>>, IProfileP
   @Prop({ default: getDefaultLocale() })
   locale: string;
 
+  /** Contains the timezone related to this profile. **/
+  @Prop()
+  timezone: string;
+
   /** Whether this profile is archived. **/
   @Prop({ default: false })
   archived: boolean;
@@ -190,6 +194,7 @@ export class Profile implements PropertiesOf<ProfileModel<TObjectId>>, IProfileP
     this.settings ||= {};
 
     this.locale ??= owner.locale || getDefaultLocale();
+    this.timezone ??= owner.timezone;
   }
 
   /**

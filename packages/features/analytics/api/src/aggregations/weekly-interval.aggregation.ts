@@ -1,6 +1,6 @@
 import type { PipelineStage } from 'mongoose';
 import { parseTimingId, subtractWeeks, toWeekTimingId } from '@lyvely/dates';
-import { IntervalAggregation } from './interval-aggregation.helper';
+import { IntervalAggregation } from './interval.aggregation';
 
 export class WeeklyIntervalAggregation extends IntervalAggregation {
   protected override getGroupId(): PipelineStage.Group['$group']['_id'] {

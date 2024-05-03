@@ -156,8 +156,12 @@ export class DayJsDateTime implements IDateTime {
       : this.instance.year();
   }
 
-  format(template: string): string {
+  format(template?: string): string {
     return this.instance.format(template);
+  }
+
+  toTZ(timezone: string): IDateTime {
+    return new DayJsDateTime(this.instance.tz(timezone, true));
   }
 }
 

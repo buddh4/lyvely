@@ -1,5 +1,5 @@
 import type { PipelineStage } from 'mongoose';
-import { IntervalAggregation } from './interval-aggregation.helper';
+import { IntervalAggregation } from './interval.aggregation';
 
 export class YearlyIntervalAggregation extends IntervalAggregation {
   protected override getGroupId(): PipelineStage.Group['$group']['_id'] {

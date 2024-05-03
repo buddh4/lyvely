@@ -1,6 +1,6 @@
 import type { PipelineStage } from 'mongoose';
-import { subtractDays } from '@lyvely/dates';
-import { IntervalAggregation } from './interval-aggregation.helper';
+import { getEndOfDayTZDate, getFullDayTZDate, subtractDays } from '@lyvely/dates';
+import { IntervalAggregation } from './interval.aggregation';
 
 export class DailyIntervalAggregation extends IntervalAggregation {
   protected override getGroupId(): PipelineStage.Group['$group']['_id'] {
@@ -14,22 +14,18 @@ export class DailyIntervalAggregation extends IntervalAggregation {
 
   protected override getMatchFilter(): PipelineStage.Match['$match'] {
     const dateField = this.getDateField();
+
     const endDate = this.options.endDate || new Date();
     const range = this.options.range ?? 7;
     const startDate = this.options.startDate || subtractDays(endDate, range);
 
-    // TODO: Proper timezone handling?
-    const utcStartDate = new Date(
-      startDate.getFullYear(),
-      startDate.getMonth(),
-      startDate.getDate(),
-      0,
-      0,
-      0,
-    );
+    // We use the given timezone for calculating the start date.
+    const tzStartDate = getFullDayTZDate(startDate, this.options.timezone);
+
+    const tzEndDate = getEndOfDayTZDate(endDate, this.options.timezone);
 
     return {
-      [dateField]: { $gte: utcStartDate, $lte: endDate },
+      [dateField]: { $gte: tzStartDate, $lte: tzEndDate },
     };
   }
 

@@ -11,7 +11,7 @@ import {
 import { escapeHTML } from '@lyvely/common';
 import { OtpService } from '@/otp';
 import { UserDao, User, UsersService } from '@/users';
-import { ProfileContext, ProfilesService } from '@/profiles';
+import { ProfilesService } from '@/profiles';
 import { MailService } from '@/mails';
 import { ConfigService } from '@nestjs/config';
 import { ConfigurationPath } from '@/config';
@@ -114,6 +114,7 @@ export class UserRegistrationService {
         status: UserStatus.EmailVerification,
         locale: userRegistration.locale,
         password: userRegistration.password,
+        timezone: userRegistration.timezone,
       }),
     );
   }

@@ -1,11 +1,12 @@
 import type { AccumulatorOperator, PipelineStage } from 'mongoose';
 import { ChartSeriesAccumulation } from '@lyvely/analytics-interface';
-import { CalendarPreferences, type DocumentIdentity, type User } from '@lyvely/api';
+import { CalendarPreferences, type DocumentIdentity, Tag, type User } from '@lyvely/api';
 import type { TimeSeriesAggregationInterval } from '@lyvely/analytics-interface';
 import { assureObjectId } from '@lyvely/api';
 
 export interface IntervalAggregationFilter {
   uids?: DocumentIdentity<User>[];
+  tagIds?: DocumentIdentity<Tag>[];
 }
 
 export interface IntervalAggregationOptions {
@@ -21,10 +22,14 @@ export interface IntervalAggregationOptions {
   accumulationField: string;
   /** Defines the field name containing the required date object. Default: `date`. **/
   dateField?: string;
-  /** Defines the field name containing the optional uid object. Default: `uid`. This document field required for uid filter support. **/
+  /** Defines the field name containing the optional uid. Default: `uid`. This document field required for uid filter support. **/
   uidField?: string;
+  /** Defines the field name containing the optional tagId array. Default: `tagIds`. This document field required for tagIds filter support. **/
+  tagIdField?: string;
   /** A locale string, used for timing related calculations. **/
   locale: string;
+  /** The timezone used to calculate the date ranges. **/
+  timezone: string;
   /** An optional calendar preferences object, used for timing related calculations. **/
   preferences?: CalendarPreferences;
   /** The startDate can be used instead of the range to set the start of the interval. **/
@@ -75,6 +80,12 @@ export abstract class IntervalAggregation {
       };
     }
 
+    if (this.options.filter?.tagIds?.length) {
+      match[this.getTagIdField()] = {
+        $all: this.options.filter.tagIds.map((tagId) => assureObjectId(tagId)),
+      };
+    }
+
     const $match = { $match: { ...this.options.$match, ...match } };
     const $group = { $group: this.getGroup() };
     const $sort = { $sort: this.getSort() };
@@ -110,5 +121,9 @@ export abstract class IntervalAggregation {
 
   protected getUidField(): string {
     return this.options.uidField || 'uid';
+  }
+
+  protected getTagIdField(): string {
+    return this.options.tagIdField || 'tagIds';
   }
 }

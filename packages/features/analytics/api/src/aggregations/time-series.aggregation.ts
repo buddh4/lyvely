@@ -1,7 +1,7 @@
-import { IntervalAggregationOptions } from './interval-aggregation.helper';
+import { IntervalAggregationOptions } from './interval.aggregation';
 import { subtractMonths, subtractYears } from '@lyvely/dates';
-import { MonthlyIntervalAggregation } from './monthly-interval-aggregation.helper';
-import { DailyIntervalAggregation } from './daily-interval-aggregation.helper';
+import { MonthlyIntervalAggregation } from './monthly-interval.aggregation';
+import { DailyIntervalAggregation } from './daily-interval.aggregation';
 import { PipelineStage } from 'mongoose';
 import { type TimeSeriesChartData, type TimeSeriesCategoryKey } from '@lyvely/analytics-interface';
 import { ChartSeriesDataTypes } from '@lyvely/analytics-interface';

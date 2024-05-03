@@ -9,6 +9,8 @@ import {
 import { analyticsTestPlugin } from '../testing';
 import { ProfileScoreAggregationService } from './profile-score-aggregation.service';
 import { ChartSeriesDataTypes } from '@lyvely/analytics-interface';
+import type { PartialPropertiesOf } from '@lyvely/common';
+import { createObjectId } from '@lyvely/api';
 
 describe('ScoreAggregationService', () => {
   let scoreAggregationService: ProfileScoreAggregationService;
@@ -41,16 +43,21 @@ describe('ScoreAggregationService', () => {
     expect(scoreAggregationService).toBeDefined();
   });
 
-  async function createScores(context: ProtectedProfileContext, scores: [number, Date][]) {
+  async function createScores(
+    context: ProtectedProfileContext,
+    scores: Array<[number, Date] | [number, Date, PartialPropertiesOf<ProfileScore>]>,
+  ) {
     return scoreDao.saveMany(
       scores.map(
-        ([score, date]) =>
-          new ProfileScore({
-            user: context.user,
-            profile: context.profile,
-            score,
-            date,
-          }),
+        ([score, date, data]) =>
+          new ProfileScore(
+            {
+              context,
+              score,
+              date,
+            },
+            data,
+          ),
       ),
     );
   }
@@ -92,6 +99,37 @@ describe('ScoreAggregationService', () => {
         { key: { year: 2024, month: 4, day: 21, uid: member.id }, value: 2 },
         { key: { year: 2024, month: 4, day: 22, uid: member.id }, value: 2 },
         { key: { year: 2024, month: 4, day: 23, uid: member.id }, value: 2 },
+      ]);
+    });
+  });
+
+  describe('aggregateProfileScoreSeries with tag filter', () => {
+    it('aggregate 7D with tag filter', async () => {
+      const { context } = await testData.createUserAndProfile();
+
+      const tagAId = createObjectId();
+      const tagBId = createObjectId();
+
+      await createScores(context, [
+        [1, new Date('2024-04-20'), { tagIds: [tagAId] }],
+        [1, new Date('2024-04-20'), { tagIds: [tagBId] }],
+        [1, new Date('2024-04-21'), { tagIds: [tagAId, tagBId] }],
+        [1, new Date('2024-04-22'), { tagIds: [tagAId] }],
+        [1, new Date('2024-04-23'), { tagIds: [tagBId] }],
+      ]);
+
+      const result = await scoreAggregationService.aggregateProfileScoreSeries(context, {
+        interval: '7D',
+        tagIds: [tagAId],
+        endDate: new Date('2024-04-23'),
+      });
+
+      expect(result.length).toEqual(1);
+
+      expect(result[0].data).toEqual([
+        { key: { year: 2024, month: 4, day: 20 }, value: 1 },
+        { key: { year: 2024, month: 4, day: 21 }, value: 1 },
+        { key: { year: 2024, month: 4, day: 22 }, value: 1 },
       ]);
     });
   });

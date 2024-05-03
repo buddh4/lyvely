@@ -3,7 +3,7 @@ import {
   type DocumentIdentity,
   ProfileContext,
   ProfileScoreDao,
-  type TObjectId,
+  type Tag,
   type User,
 } from '@lyvely/api';
 import { runTimeSeriesAggregation } from '../aggregations/time-series.aggregation';
@@ -16,6 +16,7 @@ import {
 export interface ScoreAggregationOptions {
   interval?: TimeSeriesAggregationInterval;
   uids?: DocumentIdentity<User>[];
+  tagIds?: DocumentIdentity<Tag>[];
   name?: string;
   endDate?: Date;
 }
@@ -40,7 +41,9 @@ export class ProfileScoreAggregationService {
       interval: options?.interval || '7D',
       filter: {
         uids: options?.uids,
+        tagIds: options?.tagIds,
       },
+      timezone: profile.timezone,
       accumulator: ChartSeriesAccumulation.Sum,
       accumulationField: 'score',
       dateField: 'date',

@@ -74,7 +74,6 @@ export abstract class DataPointService<
     date: CalendarDate,
     value: TValue,
   ): Promise<IDataPointUpdateResult<TDataPointModel>> {
-    // TODO: Use transaction
     const result = await this.findOrCreateDataPointByDate(context, model, date, value);
     await this.updateDataPointValue(context, result.dataPoint, model, value);
     await this.postProcess(context, model, result, date);
