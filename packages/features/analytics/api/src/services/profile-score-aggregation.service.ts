@@ -18,6 +18,7 @@ export interface ScoreAggregationOptions {
   uids?: DocumentIdentity<User>[];
   tagIds?: DocumentIdentity<Tag>[];
   name?: string;
+  color?: string;
   endDate?: Date;
 }
 
@@ -38,6 +39,7 @@ export class ProfileScoreAggregationService {
 
     return runTimeSeriesAggregation(this.profileScoreDao, {
       name: options?.name || 'Score',
+      color: options?.color,
       interval: options?.interval || '7D',
       filter: {
         uids: options?.uids,

@@ -38,6 +38,7 @@ function getSeriesTypeName(seriesId: string) {
     v-model="show"
     title="analytics.series.manage.title"
     :submit-button="false"
+    cancel-button-text="common.close"
     @close="reset"
     @submit="submit">
     <div class="flex gap-1 max-w-full">

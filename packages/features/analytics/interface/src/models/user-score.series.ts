@@ -13,7 +13,7 @@ export class UserScoreSeriesConfigModel<TID = string> extends TimeSeriesConfigMo
   @Expose()
   uids?: TID[];
 
-  @IsMongoId()
+  @IsMongoId({ each: true })
   @IsOptional()
   @Expose()
   tagIds?: TID[];

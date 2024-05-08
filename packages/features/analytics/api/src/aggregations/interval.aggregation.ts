@@ -12,6 +12,8 @@ export interface IntervalAggregationFilter {
 export interface IntervalAggregationOptions {
   /** The name of the resulting series. **/
   name: string;
+  /** The color of the resulting series. **/
+  color?: string;
   /** Aggregation interval **/
   interval: TimeSeriesAggregationInterval;
   /** Initial $match filter. **/

@@ -89,6 +89,7 @@ export enum ChartSeriesDataTypes {
 export type ChartSeriesData<T extends ChartSeriesDataTypes = any, TData = any> = {
   type: T;
   name: string;
+  color?: string;
   chartType?: string;
   data: TData;
 };

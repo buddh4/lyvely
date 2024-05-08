@@ -17,10 +17,6 @@
         "label": "User Score",
         "info": "Visualizes scores grouped by users. You can choose specific users and/or include the currently active user. Optionally you can filter for scores related to certain tags."
       },
-      "score-tag": {
-        "label": "Tag Score",
-        "info": "Visualizes scores grouped by tags."
-      },
       "add": {
         "title": "Add Series"
       },
@@ -47,12 +43,12 @@
     "fields": {
       "interval": "Interval",
       "series": "Series",
+      "series-name": "Series Name",
       "category": "Type",
       "current-user": "Include current user score",
       "users": "Users",
       "select-template": "Select a template",
-      "tags": "Group by Tags",
-      "tag": "Filter by Tags",
+      "tags": "Filter by Tags",
       "custom": "custom"
     },
     "graphs": {

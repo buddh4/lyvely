@@ -110,7 +110,8 @@
       "interval_plural": "Planned within",
       "max": "Max",
       "optimal": "Optimal",
-      "min": "Min"
+      "min": "Min",
+      "color": "Color"
     },
     "filter": {
       "search": "Search",

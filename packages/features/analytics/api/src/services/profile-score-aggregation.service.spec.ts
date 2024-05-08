@@ -103,6 +103,48 @@ describe('ScoreAggregationService', () => {
     });
   });
 
+  describe('aggregateProfileScoreSeries by uids and tagId filter', () => {
+    it('aggregate 7D uid score', async () => {
+      const { owner, ownerContext, member, memberContext } = await testData.createSimpleGroup();
+
+      const tagAId = createObjectId();
+      const tagBId = createObjectId();
+
+      await createScores(ownerContext, [
+        [1, new Date('2024-04-20'), { tagIds: [tagAId] }],
+        [1, new Date('2024-04-21'), { tagIds: [tagAId, tagBId] }],
+        [1, new Date('2024-04-22'), { tagIds: [tagBId] }],
+        [1, new Date('2024-04-23'), { tagIds: [] }],
+      ]);
+
+      await createScores(memberContext, [
+        [2, new Date('2024-04-20'), { tagIds: [tagAId] }],
+        [2, new Date('2024-04-21'), { tagIds: [tagAId, tagBId] }],
+        [2, new Date('2024-04-22'), { tagIds: [tagBId] }],
+        [2, new Date('2024-04-23'), { tagIds: [] }],
+      ]);
+
+      const result = await scoreAggregationService.aggregateProfileScoreSeries(ownerContext, {
+        interval: '7D',
+        uids: [owner, member],
+        tagIds: [tagAId],
+        endDate: new Date('2024-04-23'),
+      });
+
+      expect(result.length).toEqual(2);
+
+      expect(result[0].data).toEqual([
+        { key: { year: 2024, month: 4, day: 20, uid: owner.id }, value: 1 },
+        { key: { year: 2024, month: 4, day: 21, uid: owner.id }, value: 1 },
+      ]);
+
+      expect(result[1].data).toEqual([
+        { key: { year: 2024, month: 4, day: 20, uid: member.id }, value: 2 },
+        { key: { year: 2024, month: 4, day: 21, uid: member.id }, value: 2 },
+      ]);
+    });
+  });
+
   describe('aggregateProfileScoreSeries with tag filter', () => {
     it('aggregate 7D with tag filter', async () => {
       const { context } = await testData.createUserAndProfile();

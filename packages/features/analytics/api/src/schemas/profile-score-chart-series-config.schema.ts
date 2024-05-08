@@ -1,12 +1,11 @@
 import {
   CHART_SERIES_PROFILE_SCORE,
-  CHART_SERIES_USER_SCORE,
   TimeSeriesChartType,
   TimeSeriesConfigModel,
 } from '@lyvely/analytics-interface';
 import { TimeSeriesChartConfigSchema } from './time-series-chart.schema';
 import { ChartSchemaFactory } from './chart-schema.factory';
-import { NestedSchema } from '@lyvely/api';
+import { NestedSchema, ObjectIdArrayProp, TObjectId } from '@lyvely/api';
 import { ChartSeriesConfig } from './chart-series-config.schema';
 import { Prop } from '@nestjs/mongoose';
 import { BaseModel, getStringEnumValues, type StrictBaseModelData } from '@lyvely/common';
@@ -20,6 +19,12 @@ export class ProfileScoreChartSeriesConfig
 
   @Prop({ required: true, enum: getStringEnumValues(TimeSeriesChartType) })
   chartType: TimeSeriesChartType;
+
+  @ObjectIdArrayProp()
+  tagIds?: Array<TObjectId>;
+
+  @Prop({ required: true })
+  color?: string;
 
   constructor(data?: Omit<StrictBaseModelData<ProfileScoreChartSeriesConfig>, 'type'>) {
     super(false);

@@ -1,7 +1,6 @@
 import { NestedSchema, ObjectIdArrayProp, TObjectId } from '@lyvely/api';
 import { Prop } from '@nestjs/mongoose';
 import {
-  CHART_SERIES_PROFILE_SCORE,
   CHART_SERIES_USER_SCORE,
   TimeSeriesChartType,
   UserScoreSeriesConfigModel,

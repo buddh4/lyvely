@@ -6,6 +6,7 @@ import LyListPageSection from './components/layouts/LyListPageSection.vue';
 import LyAlert from './components/dialogs/LyAlert.vue';
 import LyFlashMessage from './components/dialogs/LyFlashMessage.vue';
 import LyIcon from './components/icons/LyIcon.vue';
+import LyColorPicker from './components/forms/LyColorPicker.vue';
 import LyMainContainer from './components/layouts/LyMainContainer.vue';
 import LyBadge from './components/badges/LyBadge.vue';
 import LyModal from './components/dialogs/LyModal.vue';
@@ -93,6 +94,7 @@ const createLyvelyUi = (options?: LyvelyUiOptions) => {
       Vue.component('LyMenuEntry', LyMenuEntry);
       Vue.component('LyTabMenu', LyTabMenu);
       Vue.component('LyTabMenuEntry', LyTabMenuEntry);
+      Vue.component('LyColorPicker', LyColorPicker);
       Vue.component('LyAvatar', LyAvatar);
       Vue.component('LyFormattedDate', LyFormattedDate);
       Vue.component('LyListItem', LyListItem);
@@ -193,4 +195,5 @@ export {
   registerSvgIcon,
   registerIconLibrary,
   LySvgIcons,
+  LyColorPicker,
 };

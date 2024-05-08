@@ -1,7 +1,6 @@
 import {
   ANALYTICS_MODULE_ID,
   AnalyticsFeature,
-  CHART_SERIES_TAG_SCORE,
   ChartModel,
   CreateChartModel,
   CHART_SERIES_PROFILE_SCORE,
@@ -59,12 +58,6 @@ export default () => {
           description: 'analytics.series.score-user.info',
           condition: () => isMultiUserProfile(useProfileStore().profile),
           form: () => import('./components/forms/UserScoreSeriesForm.vue'),
-        },
-        {
-          type: CHART_SERIES_TAG_SCORE,
-          label: 'analytics.series.score-tag.label',
-          description: 'analytics.series.score-tag.info',
-          form: () => import('./components/forms/TagScoreSeriesForm.vue'),
         },
       ]);
 

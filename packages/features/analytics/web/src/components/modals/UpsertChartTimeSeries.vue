@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import { LyModal, LyButton } from '@lyvely/ui';
 import { useUpsertChartSeriesStore } from '@/store';
-import ChartTemplateForm from '@/components/forms/ChartTemplateForm.vue';
+import ChartSeriesForm from '@/components/forms/ChartSeriesForm.vue';
 
 const { deleteSeries, reset, submit, isCreate, model, showModal } = useUpsertChartSeriesStore();
 const title = computed(() =>
@@ -12,12 +12,13 @@ const title = computed(() =>
 
 <template>
   <ly-modal v-model="showModal" :title="title" @close="reset" @submit="submit">
-    <chart-template-form v-model="model" :is-create="isCreate" :embedded="true" />
+    <chart-series-form v-model="model" :is-create="isCreate" :embedded="true" />
     <template #pre-footer>
       <ly-button
         v-if="!isCreate"
         class="mr-auto danger"
         text="common.delete"
+        :confirm="true"
         @click="deleteSeries" />
     </template>
   </ly-modal>

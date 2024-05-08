@@ -13,19 +13,22 @@ import {
   TimeSeriesChartType,
   timeSeriesIntervalFilters,
   useChartsClient,
+  type ChartErrorData,
+  ChartSeriesDataTypes,
 } from '@lyvely/analytics-interface';
-import { computed, onMounted, type Ref, ref, watch } from 'vue';
+import { computed, onMounted, onUnmounted, type Ref, ref, watch } from 'vue';
 import * as echarts from 'echarts/core';
 import { LyButton, LyIcon } from '@lyvely/ui';
-import { useI18nStore, useProfileStore } from '@lyvely/web';
+import { useI18nStore, usePageStore, useProfileStore } from '@lyvely/web';
 import { useUpsertChartSeriesStore } from '@/store';
 import EditTimeSeriesChartModal from '../modals/UpsertChartTimeSeries.vue';
 import ManageChartTimeSeries from '@/components/modals/ManageChartTimeSeries.vue';
-import { type ChartErrorData, ChartSeriesDataTypes } from '@lyvely/analytics-interface/src';
+import { storeToRefs } from 'pinia';
 
 const props = defineProps<{ model: ChartModel<string, ITimeSeriesChartConfig> }>();
 
 const chartRoot = ref<HTMLElement>();
+let echart: echarts.EChartsType;
 const showManageSeries = ref(false);
 
 const locale = useI18nStore().locale;
@@ -34,15 +37,19 @@ const axisData = getTimeSeriesIntervalXAxis(locale);
 const hasSeries = computed(() => !!props.model.config?.series?.length);
 const chartData = ref<TimeSeriesChartDataResponse>();
 const intervalFilter: Ref<TimeSeriesAggregationInterval> = ref('7D');
+const { isDark } = storeToRefs(usePageStore());
+const textStyle = computed(() => ({ color: isDark.value ? '#f3f4f6' : '#4b5563' }));
 
 watch(chartData, renderChart);
 watch(() => props.model, loadSeriesData);
 watch(intervalFilter, loadSeriesData);
+watch(isDark, renderChart);
 
 interface IChartSeries {
   data: number[];
   type: string;
   name: string;
+  color?: string;
 }
 
 async function transformResponseToChartData(
@@ -103,7 +110,7 @@ async function transformSeries(
       ? (await useProfileStore().getUserInfo(series.name))?.displayName || series.name
       : series.name;
 
-  return { data, type, name };
+  return { data, type, name, color: series.color };
 }
 
 async function renderChart() {
@@ -115,11 +122,13 @@ async function renderChart() {
 
   const series = await transformResponseToChartData(chartData.value);
 
-  const echart = echarts.init(chartRoot.value!);
+  echart = echarts.init(chartRoot.value!);
   echart.setOption(
     {
       tooltip: {},
+      textStyle: textStyle.value,
       legend: {
+        textStyle: textStyle.value,
         data: series.map((s) => s.name),
       },
       xAxis: {
@@ -143,7 +152,16 @@ async function loadSeriesData() {
   });
 }
 
-onMounted(loadSeriesData);
+const onResize = () => echart?.resize();
+
+onMounted(() => {
+  loadSeriesData();
+  window.addEventListener('resize', onResize);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('resize', onResize);
+});
 </script>
 
 <template>

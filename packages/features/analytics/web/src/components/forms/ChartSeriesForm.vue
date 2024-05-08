@@ -43,7 +43,7 @@ const {
       <ly-form-model v-if="seriesConfigModel" v-model="seriesConfigModel" :validator="validator">
         <ly-text-field
           property="name"
-          label="common.fields.name"
+          label="analytics.fields.series-name"
           :error="validator.getError('name')" />
       </ly-form-model>
 

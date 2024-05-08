@@ -21,7 +21,7 @@ const validator = computed(() => new I18nModelValidator(formValue.value));
     <ly-form-model v-model="formValue" :validator="validator">
       <time-series-chart-type-selection v-model="formValue.chartType" />
       <profile-relation-picker v-model="formValue.uids" label="analytics.fields.users" />
-      <tag-picker v-model="formValue.tagIds" label="analytics.fields.tag" />
+      <tag-picker v-model="formValue.tagIds" label="analytics.fields.tags" />
       <ly-checkbox v-model="formValue.currentUser" label="analytics.fields.current-user" />
     </ly-form-model>
   </div>

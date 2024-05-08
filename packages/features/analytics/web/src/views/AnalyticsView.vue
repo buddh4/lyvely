@@ -23,7 +23,9 @@ onMounted(async () => {
 
 <template>
   <ly-content-root>
-    <div v-if="status.isStatusSuccess()" class="grid grid-cols-1 md:grid-cols-3 gap-1 md:gap-4">
+    <div
+      v-if="status.isStatusSuccess()"
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-1 md:gap-4">
       <chart-card v-for="chart in charts" :key="chart.id" :model="chart"></chart-card>
       <div
         class="rounded border border-divide p-5 drop-shadow-md cursor-pointer"

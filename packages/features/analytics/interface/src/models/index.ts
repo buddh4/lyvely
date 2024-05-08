@@ -2,7 +2,6 @@ export * from './chart.model';
 export * from './chart-series-config.model';
 export * from './profile-score.series';
 export * from './user-score.series';
-export * from './tag-score.series';
 export * from './chart-series-data-response.model';
 export * from './chart-list.model';
 export * from './time-series-chart.model';

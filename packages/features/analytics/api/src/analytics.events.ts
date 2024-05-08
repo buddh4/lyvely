@@ -2,7 +2,6 @@ import { Injectable, OnModuleInit } from '@nestjs/common';
 import {
   CHART_SERIES_PROFILE_SCORE,
   registerChartSeries,
-  CHART_SERIES_TAG_SCORE,
   CHART_SERIES_USER_SCORE,
   ChartSeriesData,
   TIME_SERIES_CHART,
@@ -61,10 +60,6 @@ export class AnalyticsEvents implements OnModuleInit {
         configModel: TimeSeriesChartConfig,
       },
     ]);
-    registerChartSeries(
-      CHART_SERIES_PROFILE_SCORE,
-      CHART_SERIES_USER_SCORE,
-      CHART_SERIES_TAG_SCORE,
-    );
+    registerChartSeries(CHART_SERIES_PROFILE_SCORE, CHART_SERIES_USER_SCORE);
   }
 }

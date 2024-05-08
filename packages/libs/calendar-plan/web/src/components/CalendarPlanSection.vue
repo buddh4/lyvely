@@ -132,7 +132,7 @@ const isEmptyUnscheduled = computed(
     role="list"
     data-calendar-plan-item-container
     :class="[
-      'p-0 border-x border-divide overflow-hidden',
+      'p-0 border-x border-divide',
       { 'last:border-b last:rounded-b': count !== 0 },
       { hidden: collapsed },
     ]">

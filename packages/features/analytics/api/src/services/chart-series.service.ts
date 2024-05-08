@@ -49,6 +49,8 @@ export class ChartSeriesService {
       event.setResult(
         this.scoreAggregationService.aggregateProfileScoreSeries(context, {
           name: config.name,
+          color: config.color,
+          tagIds: config.tagIds,
           interval: isTimeSeriesAggregationInterval(query?.interval) ? query?.interval : undefined,
         }),
       );
@@ -67,6 +69,7 @@ export class ChartSeriesService {
         this.scoreAggregationService.aggregateProfileScoreSeries(context, {
           name: config.name,
           uids,
+          tagIds: config.tagIds,
           interval: isTimeSeriesAggregationInterval(query?.interval) ? query?.interval : undefined,
         }),
       );

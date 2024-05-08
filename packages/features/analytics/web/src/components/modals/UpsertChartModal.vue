@@ -13,7 +13,7 @@ import {
   UpdateChartModel,
   useChartsClient,
 } from '@lyvely/analytics-interface';
-import ChartTemplateForm from '@/components/forms/ChartTemplateForm.vue';
+import ChartSeriesForm from '@/components/forms/ChartSeriesForm.vue';
 
 export interface IProps {
   modelValue: boolean;
@@ -57,7 +57,7 @@ const modalTitle = computed(() => {
       </fieldset>
     </ly-form-model>
 
-    <chart-template-form v-if="isCreate" v-model="model" :embedded="true" />
+    <chart-series-form v-if="isCreate" v-model="model" :embedded="true" />
 
     <ly-form-model
       v-model="model"
@@ -65,7 +65,7 @@ const modalTitle = computed(() => {
       :status="status"
       label-key="common.fields">
       <fieldset>
-        <tag-picker v-model="model.tagNames" />
+        <tag-picker v-model="model.tagNames" option-key="name" />
         <ly-textarea property="text" />
       </fieldset>
     </ly-form-model>
