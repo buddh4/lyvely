@@ -16,7 +16,8 @@ export interface IProps {
 
 const props = withDefaults(defineProps<IProps>(), {
   inputId: uniqueId('tag-picker'),
-  optionKey: 'name',
+  optionKey: 'id',
+  multiple: true,
   label: translation('tags.chooser.label'),
 });
 
@@ -26,6 +27,7 @@ const options = computed(
   () =>
     profile.value!.tags?.map((tag: TagModel) => ({
       key: props.optionKey === 'id' ? tag.id : tag.name,
+      label: tag.name,
       color: tag.color,
     })) || [],
 );
