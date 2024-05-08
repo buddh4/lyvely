@@ -11,8 +11,9 @@ export interface IModalProps {
   /* Whether to wrap the body and footer in a from for accessibility purpose */
   form?: boolean;
   showFooter?: boolean;
-  width?: 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | 'full';
-  title: Translatable;
+  showHeader?: boolean;
+  width?: 'auto' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | 'full';
+  title?: Translatable;
   icon?: string;
   isLoading?: boolean;
   iconClass?: string;
@@ -28,7 +29,9 @@ export interface IModalProps {
 
 const props = withDefaults(defineProps<IModalProps>(), {
   showFooter: true,
+  showHeader: true,
   form: true,
+  title: '',
   icon: '',
   width: 'lg',
   cancelButton: true,
@@ -74,16 +77,17 @@ function cancel() {
 }
 
 const widths = {
-  md: 'max-w-md',
-  lg: 'max-w-lg',
-  xl: 'max-w-xl',
-  '2xl': 'max-w-2xl',
-  '3xl': 'max-w-3xl',
-  '4xl': 'max-w-4xl',
-  full: 'max-w-full',
+  auto: '',
+  md: 'w-full max-w-md',
+  lg: 'w-full max-w-lg',
+  xl: 'w-full max-w-xl',
+  '2xl': 'w-full max-w-2xl',
+  '3xl': 'w-full max-w-3xl',
+  '4xl': 'w-full max-w-4xl',
+  full: 'w-full max-w-full',
 };
 
-const dialogClass = `w-full ${
+const dialogClass = `${
   widths[props.width as keyof typeof widths]
 } h-screen-s max-h-screen-s md:h-fit md:max-h overflow-hidden md:min-h-0 my-0 md:my-auto p-0 bg-main text-main md:rounded-sm shadow-lg md:justify-center md:items-center inset-0 z-50 outline-none focus:outline-none bg-no-repeat`;
 
@@ -122,6 +126,7 @@ onUnmounted(() => {
       <div class="flex flex-col h-screen-s max-h-screen-s md:h-auto md:min-h-0">
         <slot name="preHeader"></slot>
         <div
+          v-if="showHeader"
           class="flex items-center p-3 px-4 pb-5 md:p-5 md:px-5 md:rounded-t-sm md:shadow z-10"
           data-modal-header>
           <slot name="header">
