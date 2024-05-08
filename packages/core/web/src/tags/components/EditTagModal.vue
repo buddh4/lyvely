@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, ref, Ref, toRefs } from 'vue';
+import { computed, ref, Ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { Sketch } from '@ckpack/vue-color';
 import { onClickOutside } from '@vueuse/core';

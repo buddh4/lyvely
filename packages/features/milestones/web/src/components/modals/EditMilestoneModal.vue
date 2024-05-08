@@ -60,7 +60,7 @@ const modalTitle = computed(() => {
           :options="getCalendarPlanOptions('plural')" />
       </fieldset>
       <fieldset>
-        <tag-picker v-model="model.tagNames" />
+        <tag-picker v-model="model.tagNames" option-key="name" />
       </fieldset>
       <fieldset>
         <ly-textarea property="text" />

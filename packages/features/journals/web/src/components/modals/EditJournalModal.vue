@@ -125,7 +125,7 @@ const modalTitle = computed(() => {
       </fieldset>
 
       <fieldset>
-        <tag-picker v-model="model.tagNames" />
+        <tag-picker v-model="model.tagNames" option-key="name" />
         <ly-textarea property="text" />
       </fieldset>
     </ly-form-model>

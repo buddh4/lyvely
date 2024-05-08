@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { ref, onMounted, Ref } from 'vue';
+import { ref, onMounted, Ref, computed } from 'vue';
 import { includesUtilityClass } from '@/helpers';
 import { RouteLocationRaw } from 'vue-router';
 import { IConfirmOptions } from '../dialogs/confirm-options.interface';
@@ -24,7 +24,7 @@ export interface IProps {
   isToggle?: boolean;
   outlined?: boolean;
   route?: RouteLocationRaw;
-  confirm?: IConfirmOptions;
+  confirm?: IConfirmOptions | boolean;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
@@ -115,6 +115,10 @@ function getAriaSelected($attrs: any) {
   }
 }
 
+const confirmOptions = computed(
+  () => (typeof props.confirm === 'boolean' ? {} : props.confirm) || {},
+);
+
 function getAriaPressed($attrs: any) {
   if ($attrs['aria-pressed']) {
     return $attrs['aria-pressed'];
@@ -156,7 +160,7 @@ function getAriaPressed($attrs: any) {
   <ly-confirm-modal
     v-if="confirm"
     v-model="showConfirm"
-    :options="confirm"
+    :options="confirmOptions"
     @submit="$emit('click')">
     <slot name="confirmBody"></slot>
   </ly-confirm-modal>
