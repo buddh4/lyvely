@@ -41,17 +41,17 @@ function getSeriesTypeName(seriesId: string) {
     cancel-button-text="common.close"
     @close="reset"
     @submit="submit">
-    <div class="flex gap-1 max-w-full">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-1 flex-wrap max-w-full">
       <div
         v-for="series in chart.config.series"
         role="button"
-        class="flex flex-col w-full md:w-1/2 gap-1 border border-divide rounded p-4 text-sm"
+        class="flex flex-col w-full gap-1 border border-divide rounded p-4 text-sm"
         @click="updateSeries(series.id)">
         <b>{{ series.name }}</b>
         <ly-dimmed class="text-xs" :truncate="true" :text="getSeriesTypeName(series.type)" />
       </div>
       <button
-        class="flex flex-col w-full md:w-1/2 border border-divide rounded p-4 justify-center items-center"
+        class="flex flex-col w-full border border-divide rounded p-4 justify-center items-center"
         role="button"
         @click="addSeries">
         <ly-icon name="add-chart" />
