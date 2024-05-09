@@ -36,10 +36,10 @@ describe('Tasks DAO', () => {
   describe('findByProfileAndTimingIds', () => {
     describe('single user profile', () => {
       it('find undone task on user profile', async () => {
-        const { user, profile } = await testData.createUserAndProfile();
+        const { user, profile, context } = await testData.createUserAndProfile();
         const todayTimingId = toTimingId(new Date(), CalendarInterval.Daily);
 
-        await testData.createTask(user, profile);
+        await testData.createTask(context);
 
         const search = <Task[]>(
           await tasksDao.findByProfileAndTimingIds(profile, user, [todayTimingId])
@@ -49,10 +49,10 @@ describe('Tasks DAO', () => {
       });
 
       it('find done task on user profile', async () => {
-        const { user, profile } = await testData.createUserAndProfile();
+        const { user, profile, context } = await testData.createUserAndProfile();
         const todayTimingId = toTimingId(new Date(), CalendarInterval.Daily);
 
-        await testData.createTask(user, profile, {}, (model) => {
+        await testData.createTask(context, {}, (model) => {
           model.state.doneBy = [new UserDone(user, todayTimingId, new Date())];
         });
 
@@ -64,10 +64,10 @@ describe('Tasks DAO', () => {
 
     describe('group profile', () => {
       it('find undone shared task', async () => {
-        const { member, owner, profile } = await testData.createSimpleGroup();
+        const { member, owner, profile, ownerContext } = await testData.createSimpleGroup();
         const todayTimingId = toTimingId(new Date(), CalendarInterval.Daily);
 
-        await testData.createTask(owner, profile, {
+        await testData.createTask(ownerContext, profile, {
           userStrategy: UserAssignmentStrategy.Shared,
         });
 
@@ -77,12 +77,11 @@ describe('Tasks DAO', () => {
       });
 
       it('find shared task done by me', async () => {
-        const { member, owner, profile } = await testData.createSimpleGroup();
+        const { member, ownerContext, profile } = await testData.createSimpleGroup();
         const todayTimingId = toTimingId(new Date(), CalendarInterval.Daily);
 
         await testData.createTask(
-          owner,
-          profile,
+          ownerContext,
           {
             userStrategy: UserAssignmentStrategy.Shared,
           },
@@ -98,12 +97,11 @@ describe('Tasks DAO', () => {
       });
 
       it('find shared task done by another user', async () => {
-        const { member, owner, profile } = await testData.createSimpleGroup();
+        const { member, owner, ownerContext, profile } = await testData.createSimpleGroup();
         const todayTimingId = toTimingId(new Date(), CalendarInterval.Daily);
 
         await testData.createTask(
-          owner,
-          profile,
+          ownerContext,
           {
             userStrategy: UserAssignmentStrategy.Shared,
           },
@@ -119,13 +117,12 @@ describe('Tasks DAO', () => {
       });
 
       it('do not find task done outside of tid search', async () => {
-        const { member, owner, profile } = await testData.createSimpleGroup();
+        const { member, owner, ownerContext, profile } = await testData.createSimpleGroup();
         const todayTid = toTimingId(new Date(), CalendarInterval.Daily);
         const tomorrowTid = toTimingId(addDays(new Date(), 1), CalendarInterval.Daily);
 
         await testData.createTask(
-          owner,
-          profile,
+          ownerContext,
           { userStrategy: UserAssignmentStrategy.Shared },
           (model) => {
             model.state.doneBy = [new UserDone(owner, tomorrowTid, new Date())];
@@ -138,10 +135,10 @@ describe('Tasks DAO', () => {
       });
 
       it('find undone per user task', async () => {
-        const { member, owner, profile } = await testData.createSimpleGroup();
+        const { member, owner, ownerContext, profile } = await testData.createSimpleGroup();
         const todayTid = toTimingId(new Date(), CalendarInterval.Daily);
 
-        await testData.createTask(owner, profile, {
+        await testData.createTask(ownerContext, {
           userStrategy: UserAssignmentStrategy.PerUser,
         });
 
@@ -151,12 +148,11 @@ describe('Tasks DAO', () => {
       });
 
       it('find per user task done by me', async () => {
-        const { member, owner, profile } = await testData.createSimpleGroup();
+        const { member, ownerContext, profile } = await testData.createSimpleGroup();
         const todayTid = toTimingId(new Date(), CalendarInterval.Daily);
 
         await testData.createTask(
-          owner,
-          profile,
+          ownerContext,
           {
             userStrategy: UserAssignmentStrategy.PerUser,
           },
@@ -170,13 +166,12 @@ describe('Tasks DAO', () => {
       });
 
       it('do not find per user task done by me outside of search tid', async () => {
-        const { member, owner, profile } = await testData.createSimpleGroup();
+        const { member, owner, ownerContext, profile } = await testData.createSimpleGroup();
         const todayTid = toTimingId(new Date(), CalendarInterval.Daily);
         const tomorrowTid = toTimingId(addDays(new Date(), 1), CalendarInterval.Daily);
 
         await testData.createTask(
-          owner,
-          profile,
+          ownerContext,
           {
             userStrategy: UserAssignmentStrategy.PerUser,
           },
@@ -193,12 +188,11 @@ describe('Tasks DAO', () => {
       });
 
       it('find per user task not done by me but done by another user', async () => {
-        const { member, owner, profile } = await testData.createSimpleGroup();
+        const { member, owner, ownerContext, profile } = await testData.createSimpleGroup();
         const todayTid = toTimingId(new Date(), CalendarInterval.Daily);
 
         await testData.createTask(
-          owner,
-          profile,
+          ownerContext,
           {
             userStrategy: UserAssignmentStrategy.PerUser,
           },
@@ -215,14 +209,13 @@ describe('Tasks DAO', () => {
 
   describe('updateDoneBy', () => {
     it('update done by user', async () => {
-      const { member, profile } = await testData.createSimpleGroup();
+      const { member, memberContext, profile } = await testData.createSimpleGroup();
       const yesterdayTid = toTimingId(subtractDays(new Date(), 1), CalendarInterval.Daily);
       const todayTid = toTimingId(new Date(), CalendarInterval.Daily);
       const doneToday = new UserDone(member, todayTid);
 
       const task = await testData.createTask(
-        member,
-        profile,
+        memberContext,
         {
           userStrategy: UserAssignmentStrategy.Shared,
         },
@@ -242,11 +235,10 @@ describe('Tasks DAO', () => {
 
   describe('pullDoneBy', () => {
     it('update done by user', async () => {
-      const { member, profile } = await testData.createSimpleGroup();
+      const { member, memberContext, profile } = await testData.createSimpleGroup();
 
       const task = await testData.createTask(
-        member,
-        profile,
+        memberContext,
         {
           userStrategy: UserAssignmentStrategy.Shared,
         },
@@ -268,9 +260,9 @@ describe('Tasks DAO', () => {
 
   describe('updateBulk', () => {
     it('update multiple tasks', async () => {
-      const { user, profile } = await testData.createUserAndProfile();
-      const task1 = await testData.createTask(user, profile);
-      const task2 = await testData.createTask(user, profile);
+      const { context } = await testData.createUserAndProfile();
+      const task1 = await testData.createTask(context);
+      const task2 = await testData.createTask(context);
 
       await tasksDao.updateSetBulk([
         { id: task1._id, update: { 'meta.sortOrder': 1 } },
@@ -287,8 +279,8 @@ describe('Tasks DAO', () => {
 
   describe('archive', () => {
     it('archive task', async () => {
-      const { user, profile } = await testData.createUserAndProfile();
-      const task = await testData.createTask(user, profile);
+      const { user, context } = await testData.createUserAndProfile();
+      const task = await testData.createTask(context);
       const result = await tasksDao.archive(user, task);
       expect(result).toEqual(true);
       const refresh = await tasksDao.reload(task);
@@ -296,8 +288,8 @@ describe('Tasks DAO', () => {
     });
 
     it('archive already archived task', async () => {
-      const { user, profile } = await testData.createUserAndProfile();
-      const task = await testData.createTask(user, profile, {}, (model) => {
+      const { user, context } = await testData.createUserAndProfile();
+      const task = await testData.createTask(context, {}, (model) => {
         model.meta.archived = true;
       });
       const result = await tasksDao.archive(user, task);
@@ -309,8 +301,8 @@ describe('Tasks DAO', () => {
 
   describe('restore', () => {
     it('un-archive task', async () => {
-      const { user, profile } = await testData.createUserAndProfile();
-      const task = await testData.createTask(user, profile, {}, (model) => {
+      const { user, context } = await testData.createUserAndProfile();
+      const task = await testData.createTask(context, {}, (model) => {
         model.meta.archived = true;
       });
       const result = await tasksDao.restore(user, task);
@@ -320,8 +312,8 @@ describe('Tasks DAO', () => {
     });
 
     it('un-archive already un-archive task', async () => {
-      const { user, profile } = await testData.createUserAndProfile();
-      const task = await testData.createTask(user, profile);
+      const { user, context } = await testData.createUserAndProfile();
+      const task = await testData.createTask(context);
       const result = await tasksDao.restore(user, task);
       expect(result).toEqual(true);
       const refresh = await tasksDao.reload(task);
@@ -329,8 +321,8 @@ describe('Tasks DAO', () => {
     });
 
     it('un-archive task', async () => {
-      const { user, profile } = await testData.createUserAndProfile();
-      const task = await testData.createTask(user, profile, {}, (model) => {
+      const { user, context } = await testData.createUserAndProfile();
+      const task = await testData.createTask(context, {}, (model) => {
         model.meta.archived = true;
       });
       const result = await tasksDao.restore(user, task);

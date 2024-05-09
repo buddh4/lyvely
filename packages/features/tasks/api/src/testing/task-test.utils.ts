@@ -1,12 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import {
-  User,
-  Profile,
   ProfileTestDataUtils,
   Model,
   assureObjectId,
   DocumentIdentity,
   createBaseDocumentInstance,
+  ProtectedProfileContext,
 } from '@lyvely/api';
 import { CreateTaskModel } from '@lyvely/tasks-interface';
 import { CalendarInterval, toTimingId } from '@lyvely/dates';
@@ -49,8 +48,7 @@ export class TaskTestDataUtil extends ProfileTestDataUtils {
   }
 
   async createTask(
-    user: User,
-    profile: Profile,
+    context: ProtectedProfileContext,
     data?: Partial<CreateTaskModel>,
     overwrite?: (model: Task) => void,
   ): Promise<Task> {
@@ -58,7 +56,7 @@ export class TaskTestDataUtil extends ProfileTestDataUtils {
       Object.assign({}, { title: 'test', interval: CalendarInterval.Daily }, data || {})
     );
 
-    const model = Task.create(profile, user, initData);
+    const model = Task.create(context, initData);
     if (overwrite) overwrite(model);
     const task = new this.TaskModel(model);
 

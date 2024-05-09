@@ -31,8 +31,8 @@ describe('TaskCalendarPlanService', () => {
 
   describe('findByFilter', () => {
     it('find undone task', async () => {
-      const { user, profile, context } = await testData.createUserAndProfile('user1');
-      const task = await testData.createTask(user, profile);
+      const { context } = await testData.createUserAndProfile('user1');
+      const task = await testData.createTask(context);
       const filter = new CalendarPlanFilter(new Date());
       const models = await taskTimeSeriesService.findByFilter(context, filter);
       expect(models.length).toEqual(1);
@@ -40,8 +40,8 @@ describe('TaskCalendarPlanService', () => {
     });
 
     it('find task done today within filter range', async () => {
-      const { user, profile, context } = await testData.createUserAndProfile('user1');
-      const task = await testData.createTask(user, profile, { title: 't1' }, (model) => {
+      const { user, context } = await testData.createUserAndProfile('user1');
+      const task = await testData.createTask(context, { title: 't1' }, (model) => {
         model.state.doneBy = [new UserDone(user, TaskTestDataUtil.getTodayTimingId())];
       });
       const filter = new CalendarPlanFilter(new Date());
@@ -51,8 +51,8 @@ describe('TaskCalendarPlanService', () => {
     });
 
     it('find task done tomorrow within filter range', async () => {
-      const { user, profile, context } = await testData.createUserAndProfile('user1');
-      const task = await testData.createTask(user, profile, { title: 't1' }, (model) => {
+      const { user, context } = await testData.createUserAndProfile('user1');
+      const task = await testData.createTask(context, { title: 't1' }, (model) => {
         model.state.doneBy = [new UserDone(user, TaskTestDataUtil.getTomorrowTimingId())];
       });
       const filter = new CalendarPlanFilter(TaskTestDataUtil.getDateTomorrow());
@@ -62,8 +62,8 @@ describe('TaskCalendarPlanService', () => {
     });
 
     it('do not include tasks done outside of filter range', async () => {
-      const { user, profile, context } = await testData.createUserAndProfile('user1');
-      await testData.createTask(user, profile, { title: 't1' }, (model) => {
+      const { user, context } = await testData.createUserAndProfile('user1');
+      await testData.createTask(context, { title: 't1' }, (model) => {
         model.state.doneBy = [new UserDone(user, TaskTestDataUtil.getTomorrowTimingId())];
       });
       const filter = new CalendarPlanFilter(new Date());
