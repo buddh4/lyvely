@@ -37,14 +37,22 @@ export interface ICreateProfileScore {
  */
 @Schema({ timestamps: true, discriminatorKey: 'type' })
 export class ProfileScore {
-  @ObjectIdProp()
-  oid?: TObjectId;
+  @ObjectIdProp({ required: true })
+  oid: TObjectId;
 
   @ObjectIdProp({ required: true })
   pid: TObjectId;
 
   @ObjectIdProp()
   uid?: TObjectId;
+
+  /** Optional ID of a content document this score is related to. **/
+  @ObjectIdProp()
+  cid?: TObjectId;
+
+  /** Optional content type this score is related to. **/
+  @Prop()
+  contentType?: string;
 
   /** A title, e.g. content title used in the frontend. **/
   @Prop()

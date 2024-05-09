@@ -1,5 +1,5 @@
 import { ICreateProfileScore, ProfileScore } from '@/profiles';
-import { ModelDefinition, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { ModelDefinition, Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Content } from './content.schema';
 import { type PartialPropertiesOf } from '@lyvely/common';
 import { IntegrityException } from '@lyvely/interface';
@@ -15,8 +15,11 @@ export interface ICreateContentScore extends ICreateProfileScore {
  */
 @Schema({ timestamps: true, discriminatorKey: 'type' })
 export class ContentScore extends ProfileScore {
-  @ObjectIdProp()
-  cid: TObjectId;
+  @ObjectIdProp({ required: true })
+  override cid: TObjectId;
+
+  @Prop({ required: true })
+  override contentType: string;
 
   constructor(options: ICreateContentScore, data: PartialPropertiesOf<ContentScore> = {}) {
     const opts = { ...options };
@@ -31,6 +34,7 @@ export class ContentScore extends ProfileScore {
 
     super(opts, data);
     this.cid ??= content._id;
+    this.contentType ??= content.type;
   }
 }
 

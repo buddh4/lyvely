@@ -6,6 +6,7 @@ import { PipelineStage } from 'mongoose';
 import { type TimeSeriesChartData, type TimeSeriesCategoryKey } from '@lyvely/analytics-interface';
 import { ChartSeriesDataTypes } from '@lyvely/analytics-interface';
 import { AbstractDao, assureStringId, type TObjectId } from '@lyvely/api';
+import { omit } from 'lodash';
 
 export type TimeSeriesAggregationResult = Array<{
   _id: TimeSeriesCategoryKey<TObjectId>;
@@ -116,7 +117,7 @@ function transformAggregationData(
   data: TimeSeriesAggregationResult,
 ): TimeSeriesChartData<string>['data'] {
   return data.map(({ _id, value }) => ({
-    key: { ..._id, uid: _id.uid?.toString() || undefined },
+    key: _id.uid ? { ..._id, uid: _id.uid.toString() } : omit(_id, 'uid'),
     value,
   }));
 }

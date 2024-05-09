@@ -176,6 +176,68 @@ describe('ScoreAggregationService', () => {
     });
   });
 
+  describe('aggregateProfileScoreSeries with cid filter', () => {
+    it('aggregate 7D with cid', async () => {
+      const { context } = await testData.createUserAndProfile();
+
+      const cidA = createObjectId();
+      const cidB = createObjectId();
+
+      await createScores(context, [
+        [1, new Date('2024-04-20'), { cid: cidA }],
+        [1, new Date('2024-04-20'), { cid: cidB }],
+        [1, new Date('2024-04-21'), { cid: cidA }],
+        [1, new Date('2024-04-22'), { cid: cidA }],
+        [1, new Date('2024-04-23'), { cid: cidB }],
+      ]);
+
+      const result = await scoreAggregationService.aggregateProfileScoreSeries(context, {
+        interval: '7D',
+        cid: cidA,
+        endDate: new Date('2024-04-23'),
+      });
+
+      expect(result.length).toEqual(1);
+
+      expect(result[0].data).toEqual([
+        { key: { year: 2024, month: 4, day: 20 }, value: 1 },
+        { key: { year: 2024, month: 4, day: 21 }, value: 1 },
+        { key: { year: 2024, month: 4, day: 22 }, value: 1 },
+      ]);
+    });
+  });
+
+  describe('aggregateProfileScoreSeries with cid filter', () => {
+    it('aggregate 7D with content type', async () => {
+      const { context } = await testData.createUserAndProfile();
+
+      const contentTypeA = 'TestA';
+      const contentTypeB = 'TestB';
+
+      await createScores(context, [
+        [1, new Date('2024-04-20'), { contentType: contentTypeA }],
+        [1, new Date('2024-04-20'), { contentType: contentTypeB }],
+        [1, new Date('2024-04-21'), { contentType: contentTypeA }],
+        [1, new Date('2024-04-22'), { contentType: contentTypeA }],
+        [1, new Date('2024-04-23'), { contentType: contentTypeB }],
+      ]);
+
+      const result = await scoreAggregationService.aggregateProfileScoreSeries(context, {
+        interval: '7D',
+        contentType: contentTypeA,
+        endDate: new Date('2024-04-23'),
+      });
+
+      expect(result.length).toEqual(1);
+
+      expect(result[0].data).toEqual([
+        { key: { year: 2024, month: 4, day: 20 }, value: 1 },
+        { key: { year: 2024, month: 4, day: 21 }, value: 1 },
+        { key: { year: 2024, month: 4, day: 22 }, value: 1 },
+      ]);
+    });
+  });
+
   describe('aggregateProfileScoreSeries', () => {
     it('aggregate empty score', async () => {
       const { context } = await testData.createUserAndProfile();

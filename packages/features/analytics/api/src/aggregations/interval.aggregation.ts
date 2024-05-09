@@ -1,12 +1,14 @@
 import type { AccumulatorOperator, PipelineStage } from 'mongoose';
 import { ChartSeriesAccumulation } from '@lyvely/analytics-interface';
-import { CalendarPreferences, type DocumentIdentity, Tag, type User } from '@lyvely/api';
+import { CalendarPreferences, Content, type DocumentIdentity, Tag, type User } from '@lyvely/api';
 import type { TimeSeriesAggregationInterval } from '@lyvely/analytics-interface';
 import { assureObjectId } from '@lyvely/api';
 
 export interface IntervalAggregationFilter {
   uids?: DocumentIdentity<User>[];
   tagIds?: DocumentIdentity<Tag>[];
+  cid?: DocumentIdentity<Content>;
+  contentType?: string;
 }
 
 export interface IntervalAggregationOptions {
@@ -28,6 +30,10 @@ export interface IntervalAggregationOptions {
   uidField?: string;
   /** Defines the field name containing the optional tagId array. Default: `tagIds`. This document field required for tagIds filter support. **/
   tagIdField?: string;
+  /** Defines the field name containing the optional cid. Default: `cid`. This document field required for cid filter support. **/
+  cidField?: string;
+  /** Defines the field name containing the optional content type. Default: `contentType`. This document field required for contentType filter support. **/
+  contentTypeField?: string;
   /** A locale string, used for timing related calculations. **/
   locale: string;
   /** The timezone used to calculate the date ranges. **/
@@ -88,6 +94,14 @@ export abstract class IntervalAggregation {
       };
     }
 
+    if (this.options.filter?.cid) {
+      match[this.getContentIdField()] = assureObjectId(this.options.filter.cid);
+    }
+
+    if (this.options.filter?.contentType) {
+      match[this.getContentTypeField()] = assureObjectId(this.options.filter.contentType);
+    }
+
     const $match = { $match: { ...this.options.$match, ...match } };
     const $group = { $group: this.getGroup() };
     const $sort = { $sort: this.getSort() };
@@ -127,5 +141,13 @@ export abstract class IntervalAggregation {
 
   protected getTagIdField(): string {
     return this.options.tagIdField || 'tagIds';
+  }
+
+  protected getContentIdField(): string {
+    return this.options.cidField || 'cid';
+  }
+
+  protected getContentTypeField(): string {
+    return this.options.cidField || 'contentType';
   }
 }

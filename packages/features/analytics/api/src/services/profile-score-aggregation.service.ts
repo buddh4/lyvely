@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import {
+  Content,
   type DocumentIdentity,
   ProfileContext,
   ProfileScoreDao,
@@ -17,6 +18,8 @@ export interface ScoreAggregationOptions {
   interval?: TimeSeriesAggregationInterval;
   uids?: DocumentIdentity<User>[];
   tagIds?: DocumentIdentity<Tag>[];
+  cid?: DocumentIdentity<Content>;
+  contentType?: string;
   name?: string;
   color?: string;
   endDate?: Date;
@@ -44,6 +47,8 @@ export class ProfileScoreAggregationService {
       filter: {
         uids: options?.uids,
         tagIds: options?.tagIds,
+        cid: options?.cid,
+        contentType: options?.contentType,
       },
       timezone: profile.timezone,
       accumulator: ChartSeriesAccumulation.Sum,
