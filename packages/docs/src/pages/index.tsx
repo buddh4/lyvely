@@ -5,6 +5,7 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
 
+
 import styles from './index.module.css';
 
 function HomepageHeader() {
@@ -12,8 +13,9 @@ function HomepageHeader() {
   return (
     <header className={clsx('hero hero--primary', styles.heroBanner)}>
       <div className="container">
-        <h1 className="hero__title">{siteConfig.title}</h1>
-        <p className="hero__subtitle">{siteConfig.tagline}</p>
+        <h1 className="hero__title">
+          <b>Improve</b> and <b>collaborate</b> with modern tools.
+        </h1>
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"
