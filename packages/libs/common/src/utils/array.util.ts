@@ -16,10 +16,13 @@ export function chunkArray(array: Array<any>, size: number) {
  * Finds and replaces an element of the given array with the given replacement, either by providing a condition or
  * property key used to compare an element with the replacement e.g. an id property.
  *
+ * This function returns false in case an existing element was replaced, otherwise false.
+ *
  * @param arr
  * @param replacement
  * @param condition
  * @param pushIfNotExist
+ * @returns boolean true if element was replaced, otherwise false
  */
 export function findAndReplace<T>(
   arr: T[],
@@ -59,8 +62,8 @@ export function findAndRemove<T>(
     typeof toRemove === 'function'
       ? (toRemove as (element: T) => boolean)
       : typeof condition === 'function'
-      ? (condition as (element: T) => boolean)
-      : (element: T) => element[condition as keyof T] === toRemove[condition as keyof T];
+        ? (condition as (element: T) => boolean)
+        : (element: T) => element[condition as keyof T] === toRemove[condition as keyof T];
 
   const index = arr.findIndex(check);
 

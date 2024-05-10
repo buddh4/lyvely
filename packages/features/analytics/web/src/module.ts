@@ -83,7 +83,7 @@ export default () => {
         type: ChartModel.contentType,
         moduleId: ANALYTICS_MODULE_ID,
         name: translation('analytics.charts.name'),
-        icon: 'activity',
+        icon: 'statistics',
         feature: AnalyticsFeature.id,
         modelClass: ChartModel<any>,
         interfaces: {
@@ -96,10 +96,9 @@ export default () => {
             mode: 'modal',
             component: () => import('./components/modals/UpsertChartModal.vue'),
           },
-          /* stream: {
+          stream: {
             details: () => import('./components/content-stream/ChartDetails.vue'),
-            entry: () => import('./components/content-stream/HabitStreamEntry.vue'),
-          },*/
+          },
         },
       });
     },

@@ -16,7 +16,7 @@ const title = computed(() =>
     <template #pre-footer>
       <ly-button
         v-if="!isCreate"
-        class="mr-auto danger"
+        class="danger my-1 mr-auto"
         text="common.delete"
         :confirm="true"
         @click="deleteSeries" />

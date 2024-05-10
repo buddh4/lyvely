@@ -15,10 +15,10 @@ const emit = defineEmits(['update:modelValue']);
 
 const show = computed({
   get: () => props.modelValue,
-  set: (val: boolean) => emit('update:modelValue'),
+  set: (val: boolean) => emit('update:modelValue', val),
 });
 
-const { reset, submit, isCreate, model } = useUpsertChartSeriesStore();
+const { reset, submit } = useUpsertChartSeriesStore();
 
 function updateSeries(sid: string) {
   useUpsertChartSeriesStore().updateSeries(props.chart, sid);
@@ -41,17 +41,19 @@ function getSeriesTypeName(seriesId: string) {
     cancel-button-text="common.close"
     @close="reset"
     @submit="submit">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-1 flex-wrap max-w-full">
+    <div class="grid max-w-full grid-cols-1 flex-wrap gap-1 md:grid-cols-2">
       <div
         v-for="series in chart.config.series"
         role="button"
-        class="flex flex-col w-full gap-1 border border-divide rounded p-4 text-sm"
-        @click="updateSeries(series.id)">
+        tabindex="0"
+        class="border-divide flex w-full flex-col gap-1 rounded border p-4 text-sm"
+        @click="updateSeries(series.id)"
+        @keyup.enter="updateSeries(series.id)">
         <b>{{ series.name }}</b>
         <ly-dimmed class="text-xs" :truncate="true" :text="getSeriesTypeName(series.type)" />
       </div>
       <button
-        class="flex flex-col w-full border border-divide rounded p-4 justify-center items-center"
+        class="border-divide flex w-full flex-col items-center justify-center rounded border p-4"
         role="button"
         @click="addSeries">
         <ly-icon name="add-chart" />

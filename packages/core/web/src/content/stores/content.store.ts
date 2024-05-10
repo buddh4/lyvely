@@ -127,10 +127,14 @@ export const useContentStore = defineStore('content', () => {
     emitPostContentEvent(type, 'updated', content);
   }
 
+  function emitPostContentCreateEvent(type: string, content: IContent) {
+    emitPostContentEvent(type, 'created', content);
+  }
+
   function handleCreateContent(response?: ContentUpdateResponse<any>) {
     if (!response) return;
     useProfileStore().updateTags(response.tags);
-    emitPostContentEvent(response.model.type, 'created', response.model);
+    emitPostContentCreateEvent(response.model.type, response.model);
   }
 
   function handleUpdateContent(response?: ContentUpdateResponse<any>) {
@@ -147,6 +151,7 @@ export const useContentStore = defineStore('content', () => {
     handleUpdateContent,
     emitPostContentEvent,
     emitPostContentUpdateEvent,
+    emitPostContentCreateEvent,
     onContentCreated,
     offContentCreated,
     onContentUpdated,

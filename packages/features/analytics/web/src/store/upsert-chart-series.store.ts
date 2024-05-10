@@ -6,7 +6,13 @@ import {
   UpdateChartModel,
   TIME_SERIES_CHART,
 } from '@lyvely/analytics-interface';
-import { I18nModelValidator, IntegrityException, loadingStatus, useStatus } from '@lyvely/web';
+import {
+  I18nModelValidator,
+  IntegrityException,
+  loadingStatus,
+  useContentStore,
+  useStatus,
+} from '@lyvely/web';
 import { useChartsStore } from '@/store/charts.store';
 import { CreateChartSeriesModel } from '@lyvely/analytics-interface/src';
 
@@ -80,7 +86,7 @@ export const useUpsertChartSeriesStore = () => {
       status,
     );
 
-    useChartsStore().updateOrPushChart(newChart);
+    useContentStore().emitPostContentCreateEvent(ChartModel.contentType, newChart);
     return newChart;
   }
 
@@ -96,7 +102,7 @@ export const useUpsertChartSeriesStore = () => {
         ),
       status,
     );
-    useChartsStore().updateOrPushChart(update);
+    useContentStore().emitPostContentUpdateEvent(ChartModel.contentType, update);
     return update;
   }
 

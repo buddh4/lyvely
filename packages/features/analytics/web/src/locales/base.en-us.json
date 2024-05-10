@@ -83,6 +83,14 @@
       "edit" : {
         "title": "Edit Chart"
       }
+    },
+    "filters": {
+      "7D": "7D",
+      "1M": "1M",
+      "6M": "6M",
+      "1Y": "1Y",
+      "3Y": "3Y",
+      "max": "Max"
     }
   }
 }
