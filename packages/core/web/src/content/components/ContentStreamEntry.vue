@@ -11,6 +11,7 @@ import { IStream } from '@/stream/stream.composable';
 import { getContentTypeOptions } from '../registries';
 import { useUserInfo } from '@/profiles/composables';
 import { toContentDetails } from '@/content';
+import ContentToolbar from './ContentToolbar.vue';
 
 export interface IProps {
   model: ContentModel;
@@ -83,14 +84,6 @@ function onContentClick(evt: MouseEvent) {
 }
 
 const contentTypeName = computed(() => t(getContentTypeOptions(props.model.type)?.name || ''));
-
-const childCount = computed(() => {
-  if (!props.model.meta.childCount) return 0;
-  return Intl.NumberFormat('en-us', {
-    notation: 'compact',
-    maximumFractionDigits: 1,
-  }).format(props.model.meta.childCount);
-});
 
 const bgClass = 'bg-main';
 const bodyWrapperClass = computed(
@@ -171,13 +164,7 @@ const maxWidth = true;
                   </div>
                 </slot>
               </div>
-              <div v-if="model.meta.childCount" class="mt-2 flex justify-end">
-                <div
-                  class="bg-main border-divide -bottom-2.5 right-2.5 inline-flex items-center justify-center gap-1 rounded border px-2 py-1 text-xs">
-                  <ly-icon name="stream" />
-                  <span>{{ childCount }}</span>
-                </div>
-              </div>
+              <content-toolbar :model="model" :hide-empty-comments="true" />
             </div>
           </div>
         </div>

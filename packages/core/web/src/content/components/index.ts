@@ -1,6 +1,7 @@
 import ContentDetails from './ContentDetails.vue';
 import ContentDetailsHeader from './ContentDetailsHeader.vue';
 import ContentStream from './ContentStream.vue';
+import ContentToolbar from './ContentToolbar.vue';
 import ContentStreamEntry from './ContentStreamEntry.vue';
 import ContentStreamFilterNavigation from './ContentStreamFilterNavigation.vue';
 import ContentStreamFooter from './ContentStreamFooter.vue';
@@ -18,4 +19,5 @@ export {
   CreateOrEditContentModal,
   DefaultStreamEntry,
   ContentDropdown,
+  ContentToolbar,
 };

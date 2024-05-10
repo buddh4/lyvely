@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ChartModel } from '@lyvely/analytics-interface';
-import { ContentDropdown, toContentDetails } from '@lyvely/web';
+import { ContentToolbar, ContentDropdown, toContentDetails } from '@lyvely/web';
 import { LyAlert, LyIcon, resolveComponentRegistration } from '@lyvely/ui';
 import { getChartCategoryDefinition } from '@/registries';
 
@@ -30,6 +30,7 @@ const ChartComponent = category?.component
     </div>
     <Component :is="ChartComponent" v-if="ChartComponent" :model="model" />
     <ly-alert v-else type="danger" text="analytics.errors.invalid_category" />
+    <content-toolbar :model="model" />
   </div>
 </template>
 

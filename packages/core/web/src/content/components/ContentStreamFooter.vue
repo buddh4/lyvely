@@ -76,28 +76,28 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="p-2 md:p-4 bg-main">
+  <div class="bg-main p-2 md:p-4">
     <div>
       <content-stream-filter-navigation />
     </div>
-    <div v-if="canCreateMessage" class="flex flex-col mt-2 md:mt-4">
-      <div class="flex gap-1 md:gap-3 items-end">
+    <div v-if="canCreateMessage" class="mt-2 flex flex-col md:mt-4">
+      <div class="flex items-end gap-1 md:gap-3">
         <ly-button
           data-id="btn-stream-add"
-          class="primary rounded-full w-10 h-10 flex items-center"
+          class="primary flex h-10 w-10 items-center rounded-full"
           @click="openCreateContentModal">
           <ly-icon name="plus"></ly-icon>
         </ly-button>
 
         <div
-          class="flex flex-grow relative bg-gray-100 dark:bg-highlight rounded-3xl px-3.5 py-2 overflow-hidden">
+          class="dark:bg-highlight relative flex flex-grow overflow-hidden rounded-3xl bg-gray-100 px-3.5 py-2">
           <textarea
             ref="messageInput"
             v-model.trim="model.text"
             data-id="stream-input"
             rows="1"
             type="text"
-            class="plain w-full bg-transparent resize-none overflow-auto disabled:cursor-pointer scrollbar-thin border-0 p-0 focus-hidden focus:ring-none focus:outline-none focus:shadow-none"
+            class="plain scrollbar-thin focus-hidden focus:ring-none w-full resize-none overflow-auto border-0 bg-transparent p-0 focus:shadow-none focus:outline-none disabled:cursor-pointer"
             :placeholder="t(placeholderKey)"
             @keyup.enter="submitMessage"
             @keydown="onInputKeydown"
@@ -105,7 +105,7 @@ onMounted(() => {
         </div>
 
         <ly-button
-          class="primary rounded-full w-10 h-10 flex items-center"
+          class="primary flex h-10 w-10 items-center rounded-full"
           data-id="btn-stream-submit"
           @click="submitMessage">
           <ly-icon name="send"></ly-icon>
