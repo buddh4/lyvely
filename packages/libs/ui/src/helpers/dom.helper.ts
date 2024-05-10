@@ -23,10 +23,35 @@ export function isTextSelection() {
   return selection && selection.type === 'Range';
 }
 
-export function findParent(element: HTMLElement | null | undefined, selector: string): HTMLElement | null {
-  if(!element) return null;
-  if (element.matches(selector)) {
-    return element;
-  }
+/**
+ * Finds the closest parent element of the given element that matches the specified CSS selector including itself.
+ *
+ * @param {HTMLElement | null | undefined} element - The element to start the search from.
+ * @param {string} selector - The CSS selector to match the parent element with.
+ * @returns {HTMLElement | null} - The closest parent element that matches the selector, or null if no match is found.
+ */
+export function findParent(
+  element: HTMLElement | null | undefined,
+  selector: string,
+): HTMLElement | null {
+  if (!element) return null;
+  if (element.matches(selector)) return element;
   return element.parentNode && findParent(element.parentElement, selector);
+}
+
+/**
+ * Finds the first HTML element within a given element, including itself, matching the specified selector.
+ * Returns null if the given element is null or if no matching element is found.
+ *
+ * @param {HTMLElement | null | undefined} element - The element within which to search.
+ * @param {string} selector - The CSS selector to match against.
+ * @return {HTMLElement | null} The first HTML element matching the selector, or null if not found.
+ */
+export function findFirst(
+  element: HTMLElement | null | undefined,
+  selector: string,
+): HTMLElement | null {
+  if (!element) return null;
+  if (element.matches(selector)) return element;
+  return element.querySelector(selector);
 }

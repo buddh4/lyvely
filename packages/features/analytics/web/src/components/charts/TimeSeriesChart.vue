@@ -18,8 +18,8 @@ import {
 } from '@lyvely/analytics-interface';
 import { computed, onMounted, onUnmounted, type Ref, ref, watch } from 'vue';
 import * as echarts from 'echarts/core';
-import { LyButton, LyIcon } from '@lyvely/ui';
-import { useI18nStore, usePageStore, useProfileStore } from '@lyvely/web';
+import { LyButton, LyIcon, LyLoader } from '@lyvely/ui';
+import { loadingStatus, useI18nStore, usePageStore, useProfileStore, useStatus } from '@lyvely/web';
 import { useUpsertChartSeriesStore } from '@/store';
 import EditTimeSeriesChartModal from '../modals/UpsertChartTimeSeries.vue';
 import ManageChartTimeSeries from '@/components/modals/ManageChartTimeSeries.vue';
@@ -39,6 +39,7 @@ const chartData = ref<TimeSeriesChartDataResponse>();
 const intervalFilter: Ref<TimeSeriesAggregationInterval> = ref('7D');
 const { isDark } = storeToRefs(usePageStore());
 const textStyle = computed(() => ({ color: isDark.value ? '#f3f4f6' : '#4b5563' }));
+const status = useStatus();
 
 watch(chartData, renderChart);
 watch(() => props.model, loadSeriesData);
@@ -147,9 +148,12 @@ function addSeries() {
 }
 
 async function loadSeriesData() {
-  chartData.value = await useChartsClient().getSeriesData(props.model.id, {
-    interval: intervalFilter.value,
-  });
+  chartData.value = await loadingStatus(
+    useChartsClient().getSeriesData(props.model.id, {
+      interval: intervalFilter.value,
+    }),
+    status,
+  );
 }
 
 const onResize = () => echart?.resize();
@@ -165,28 +169,31 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="w-full h-full">
-    <div v-if="!hasSeries" class="w-full h-full items-center justify-center relative flex">
+  <div class="h-full w-full">
+    <div v-if="!hasSeries" class="relative flex h-full w-full items-center justify-center">
       <ly-button @click="addSeries()">
         <ly-icon name="add-chart" class="w-10" />
       </ly-button>
     </div>
-    <div v-else>
-      <div class="flex gap-1.5 text-xs my-2">
+    <div v-else-if="status.isStatusSuccess()">
+      <div class="my-2 flex gap-1.5 text-xs">
         <ly-button
           v-for="filter in timeSeriesIntervalFilters"
           :key="filter"
-          class="secondary outlined inline-flex items-center py-0.5 px-1 text-xs"
+          class="secondary outlined inline-flex items-center px-1 py-0.5 text-xs"
           :text="`analytics.filters.${filter}`"
           :active="intervalFilter === filter"
           @click="intervalFilter = filter" />
         <ly-button
-          class="secondary outlined inline-flex items-center py-0.5 px-1 text-xs ml-auto"
+          class="secondary outlined ml-auto inline-flex items-center px-1 py-0.5 text-xs"
           @click="showManageSeries = true">
           <ly-icon name="settings" class="w-3" />
         </ly-button>
       </div>
       <div ref="chartRoot" style="width: 100%; height: 250px"></div>
+    </div>
+    <div v-else class="h-64">
+      <ly-loader />
     </div>
 
     <edit-time-series-chart-modal />

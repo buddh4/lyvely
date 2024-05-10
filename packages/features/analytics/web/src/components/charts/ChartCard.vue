@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ChartModel } from '@lyvely/analytics-interface';
-import { ContentDropdown } from '@lyvely/web';
-import { LyAlert, resolveComponentRegistration } from '@lyvely/ui';
+import { ContentDropdown, toContentDetails } from '@lyvely/web';
+import { LyAlert, LyIcon, resolveComponentRegistration } from '@lyvely/ui';
 import { getChartCategoryDefinition } from '@/registries';
 
 const props = defineProps<{ model: ChartModel }>();
@@ -14,10 +14,17 @@ const ChartComponent = category?.component
 </script>
 
 <template>
-  <div class="rounded border border-divide bg-main p-5 drop-shadow-md">
-    <div class="text-sm font-bold flex justify-center relative">
-      {{ model.getTitle() }}
-      <div class="absolute right-0 top-0">
+  <div class="chart-card border-divide bg-main rounded border p-5 drop-shadow-md">
+    <div class="relative flex justify-center text-sm font-bold">
+      <div class="mr-auto">
+        <button class="item-drag-button text-secondary my-auto mr-2 w-5 cursor-move">
+          <ly-icon name="drag" class="w-5 md:hidden" />
+        </button>
+      </div>
+      <router-link :to="toContentDetails(model)" class="text-main">
+        {{ model.getTitle() }}
+      </router-link>
+      <div class="ml-auto">
         <content-dropdown :content="model" />
       </div>
     </div>
@@ -26,4 +33,8 @@ const ChartComponent = category?.component
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.chart-card:hover .item-drag-button .icon {
+  display: inline-block;
+}
+</style>

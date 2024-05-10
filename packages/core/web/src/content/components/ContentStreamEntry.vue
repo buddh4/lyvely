@@ -10,6 +10,7 @@ import TagList from '@/tags/components/TagList.vue';
 import { IStream } from '@/stream/stream.composable';
 import { getContentTypeOptions } from '../registries';
 import { useUserInfo } from '@/profiles/composables';
+import { toContentDetails } from '@/content';
 
 export interface IProps {
   model: ContentModel;
@@ -78,7 +79,7 @@ const router = useRouter();
 function onContentClick(evt: MouseEvent) {
   if (evt.target instanceof HTMLAnchorElement) return;
   if (isTextSelection()) return;
-  router.push({ name: 'content-details', params: { pid: props.model.pid, cid: props.model.id } });
+  router.push(toContentDetails(props.model));
 }
 
 const contentTypeName = computed(() => t(getContentTypeOptions(props.model.type)?.name || ''));
@@ -98,7 +99,7 @@ const bodyWrapperClass = computed(
       none: 'relative',
       message: `relative message-bubble ${bgClass} inline-block transition duration-100 cursor-pointer hover:bg-highlight dark:hover:bg-highlight border border-divide px-4 py-1.5`,
       block: `relative inline-flex flex-col border border-divide p-4 rounded-xl ${bgClass} inline-block`,
-    }[props.bodyStyle]),
+    })[props.bodyStyle],
 );
 
 // Just experimental
@@ -107,24 +108,24 @@ const maxWidth = true;
 
 <template>
   <div data-stream-entry :class="cssClass" :data-id="model.id">
-    <div v-if="showTimeSeparator" class="flex items-center justify-center text-dimmed text-xs">
+    <div v-if="showTimeSeparator" class="text-dimmed flex items-center justify-center text-xs">
       {{ timeSeparator }}
     </div>
-    <div class="flex items-stretch w-full gap-1">
-      <div class="flex justify-center flex-shrink-0 w-9 pt-1">
+    <div class="flex w-full items-stretch gap-1">
+      <div class="flex w-9 flex-shrink-0 justify-center pt-1">
         <slot v-if="!mergeWithPrev" name="image">
           <template v-if="userInfo">
             <ly-avatar
               v-if="userInfo"
-              class="w-8 h-8"
+              class="h-8 w-8"
               :name="userInfo.displayName"
               :guid="userInfo.guid" />
           </template>
         </slot>
       </div>
       <div class="mx-3 my-0.5 w-full">
-        <div v-if="!mergeWithPrev" class="text-sm mb-2">
-          <span class="font-bold mr-1">
+        <div v-if="!mergeWithPrev" class="mb-2 text-sm">
+          <span class="mr-1 font-bold">
             <slot name="authorName">
               <template v-if="userInfo">
                 {{ userInfo.displayName }}
@@ -135,7 +136,7 @@ const maxWidth = true;
         </div>
         <div :class="{ 'md:w-2/3': maxWidth && bodyStyle === 'message' }">
           <div :class="bodyWrapperClass" :data-id="'body-' + model.id" @click="onContentClick">
-            <div class="cursor-pointer inline-block">
+            <div class="inline-block cursor-pointer">
               <div class="flex gap-1">
                 <tag-list
                   :class="['mb-2', { 'mt-2': bodyStyle === 'message' }]"
@@ -145,10 +146,10 @@ const maxWidth = true;
                     <ly-badge class="bg-secondary-dark">{{ contentTypeName }}</ly-badge>
                   </template>
                   <template v-if="model.meta.archived" #post>
-                    <ly-icon name="archive" class="w-3 text-warning ml-auto" />
+                    <ly-icon name="archive" class="text-warning ml-auto w-3" />
                   </template>
                   <template v-if="model.meta.locked" #post>
-                    <ly-icon name="locked" class="w-3 ml-auto" />
+                    <ly-icon name="locked" class="ml-auto w-3" />
                   </template>
                 </tag-list>
               </div>
@@ -158,21 +159,21 @@ const maxWidth = true;
                     <div v-if="model.content.title?.length" class="flex items-center gap-1">
                       <span>{{ model.content.title }}</span>
                     </div>
-                    <p v-if="model.content.text?.length" class="text-sm text-dimmed">
+                    <p v-if="model.content.text?.length" class="text-dimmed text-sm">
                       {{ model.content.text }}
                     </p>
                     <div
                       v-if="!model.content.text?.length && !model.content.title?.length"
-                      class="flex items-center gap-1 text-sm text-dimmed">
+                      class="text-dimmed flex items-center gap-1 text-sm">
                       <ly-icon name="warning" class="text-warning" />
                       {{ t('content.stream.empty') }}
                     </div>
                   </div>
                 </slot>
               </div>
-              <div v-if="model.meta.childCount" class="flex mt-2 justify-end">
+              <div v-if="model.meta.childCount" class="mt-2 flex justify-end">
                 <div
-                  class="inline-flex justify-center items-center px-2 py-1 rounded bg-main border border-divide right-2.5 -bottom-2.5 text-xs gap-1">
+                  class="bg-main border-divide -bottom-2.5 right-2.5 inline-flex items-center justify-center gap-1 rounded border px-2 py-1 text-xs">
                   <ly-icon name="stream" />
                   <span>{{ childCount }}</span>
                 </div>

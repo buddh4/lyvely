@@ -49,12 +49,10 @@ export class MilestonesService extends ContentTypeService<
   ): Promise<Milestone> {
     const { user, profile } = context;
     const { title, text, interval } = model;
-    const instance = new Milestone(context, {
+    return new Milestone(context, {
       content: new ContentDataType({ title, text }),
       config: new MilestoneConfig({ interval }),
     });
-    instance.meta.sortOrder = await this.contentDao.getNextSortOrder(profile);
-    return instance;
   }
 
   /**

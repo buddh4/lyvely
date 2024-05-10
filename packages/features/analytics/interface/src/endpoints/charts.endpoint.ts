@@ -1,4 +1,4 @@
-import { IContentTypeClient, Endpoint, profileApiPrefix } from '@lyvely/interface';
+import { IContentTypeClient, Endpoint, profileApiPrefix, SortResponse } from '@lyvely/interface';
 import {
   ChartListModel,
   ChartModel,
@@ -7,10 +7,12 @@ import {
   UpdateChartModel,
   UpdateChartSeriesModel,
 } from '../models';
+import type { ISortRequest } from '@lyvely/interface';
 
 export interface IChartsEndpointClient
   extends IContentTypeClient<ChartModel, CreateChartModel, UpdateChartModel> {
   getCharts(): Promise<ChartListModel>;
+  sort(cid: string, sort: ISortRequest): Promise<SortResponse>;
   addSeries(cid: string, model: UpdateChartSeriesModel): Promise<ChartModel>;
   updateSeries(cid: string, sid: string, model: UpdateChartSeriesModel): Promise<ChartModel>;
   deleteSeries(cid: string, sid: string): Promise<ChartModel>;
@@ -23,6 +25,7 @@ export const API_ANALYTICS_CHARTS = profileApiPrefix('charts');
 export const ChartsEndpointPaths = {
   ADD_SERIES: (cid: string) => `${cid}/series`,
   SERIES_DATA: (cid: string) => `${cid}/series-data`,
+  SORT: (cid: string) => `${cid}/sort`,
   UPDATE_SERIES: (cid: string, sid: string) => `${cid}/series/${sid}`,
   DELETE_SERIES: (cid: string, sid: string) => `${cid}/series/${sid}`,
 };

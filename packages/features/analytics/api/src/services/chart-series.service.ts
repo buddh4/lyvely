@@ -8,6 +8,9 @@ import {
   type TObjectId,
   type DocumentIdentity,
   assureStringId,
+  type SortResult,
+  assureObjectId,
+  type QuerySort,
 } from '@lyvely/api';
 import {
   Chart,
@@ -231,5 +234,47 @@ export class ChartSeriesService {
     sid: DocumentIdentity<ChartSeriesConfig>,
   ) {
     return this.chartDao.deleteSeries(chart, sid);
+  }
+
+  /**
+   * Re-sorts the given time series content entries by means of the new index and updates the sortOrder of other activities with the same
+   * calendar plan accordingly.
+   *
+   * @param context
+   * @param model
+   * @param attachToId
+   * @throws ForbiddenServiceException
+   */
+  async sort(
+    context: ProtectedProfileContext,
+    model: Chart,
+    attachToId?: DocumentIdentity<Chart>,
+  ): Promise<SortResult[]> {
+    const { profile } = context;
+
+    const attachToObjectId = attachToId ? assureObjectId(attachToId) : undefined;
+
+    if (attachToObjectId && model._id.equals(attachToObjectId)) {
+      return Promise.resolve([]);
+    }
+
+    const attachTo = attachToObjectId
+      ? await this.chartDao.findByProfileAndId(profile, attachToObjectId)
+      : undefined;
+
+    if (attachTo && model.type !== attachTo.type) {
+      throw new IntegrityException('Can not sort different content types');
+    }
+
+    const allDocs = await this.chartDao.findAllByProfile(profile, {
+      excludeIds: model._id,
+      sort: <QuerySort<Chart>>{ 'meta.sortOrder': 1 },
+    });
+
+    const newIndex = attachTo ? allDocs.findIndex((m) => m.id === attachTo.id) + 1 : 0;
+
+    allDocs.splice(newIndex, 0, model);
+
+    return await this.chartDao.updateSortOrder(allDocs);
   }
 }

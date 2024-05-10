@@ -1,10 +1,16 @@
 import { Delete, Get, Put, Inject, Post, Request, Body, Param, Query } from '@nestjs/common';
 import {
   AbstractContentTypeController,
+  assureObjectId,
   ContentTypeController,
+  ContentWritePolicy,
+  type ISortRequest,
+  Policies,
   ProfileContentRequest,
   ProfileRequest,
   ProtectedProfileContentRequest,
+  sortBySortOrder,
+  SortResponse,
   UseClassSerializer,
 } from '@lyvely/api';
 import { ChartsService, ChartSeriesService } from '../services';
@@ -43,9 +49,9 @@ export class ChartsController
   @Get()
   async getCharts(@Request() req: ProfileRequest): Promise<ChartListModel> {
     const { profile, user } = req;
-    const charts = (await this.contentService.findAllByProfile(profile, { archived: false })).map(
-      (document) => document.toModel(user),
-    );
+    const charts = (await this.contentService.findAllByProfile(profile, { archived: false }))
+      .map((document) => document.toModel(user))
+      .sort(sortBySortOrder);
 
     return new ChartListModel({ charts });
   }
@@ -95,5 +101,13 @@ export class ChartsController
     const { context, content } = request;
     const result = await this.chartSeriesService.getSeriesData(context, content, query);
     return new ChartSeriesDataResponse(result);
+  }
+
+  @Post(ChartsEndpointPaths.SORT(':cid'))
+  @Policies(ContentWritePolicy)
+  async sort(@Body() dto: ISortRequest, @Request() req: ProtectedProfileContentRequest<Chart>) {
+    const { context, content } = req;
+    const sort = await this.chartSeriesService.sort(context, content, dto.attachToId);
+    return new SortResponse({ sort });
   }
 }

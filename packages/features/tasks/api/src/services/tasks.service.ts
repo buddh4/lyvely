@@ -48,9 +48,7 @@ export class TasksService extends ContentTypeService<Task, CreateTaskModel> {
     model: CreateTaskModel,
   ): Promise<Task> {
     const { profile } = context;
-    const instance = Task.create(context, model);
-    instance.meta.sortOrder = await this.contentDao.getNextSortOrder(profile);
-    return instance;
+    return Task.create(context, model);
   }
 
   /**

@@ -5,6 +5,7 @@ import {
   IChartsEndpointClient,
 } from './charts.endpoint';
 import { CreateChartModel, UpdateChartModel, UpdateChartSeriesModel } from '../models';
+import type { ISortRequest } from '@lyvely/interface';
 
 const api = useApi<IChartsEndpointClient>(API_ANALYTICS_CHARTS);
 
@@ -93,5 +94,15 @@ export default {
       ...options,
       params: query,
     });
+  },
+
+  /**
+   * Sorts the given chart.
+   *
+   * @param {string} cid - The ID of the chart.
+   * @param {IProfileApiRequestOptions} [options] - Optional request options.
+   */
+  async sort(cid: string, sort: ISortRequest, options?: IProfileApiRequestOptions) {
+    return api.post<'sort'>(ChartsEndpointPaths.SORT(cid), sort, options);
   },
 };

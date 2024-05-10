@@ -1,6 +1,6 @@
 import { CalendarInterval } from '@lyvely/dates';
 import { IDragEvent } from '@lyvely/web';
-import { ISelectOptions } from '@lyvely/ui';
+import { findFirst, ISelectOptions } from '@lyvely/ui';
 import { IMoveEntryEvent } from '../interfaces';
 
 export function getCalendarPlanOptions(mode: 'recurrent' | 'plural' = 'recurrent'): ISelectOptions {
@@ -18,9 +18,7 @@ export function dragEventToMoveEvent(evt: IDragEvent | IMoveEntryEvent): IMoveEn
   return isMoveEntryEvent(evt)
     ? evt
     : {
-        cid: <string>(
-          (evt.item.dataset.cid || evt.item.querySelector<HTMLElement>('[data-cid]')?.dataset.cid)
-        ),
+        cid: findFirst(evt.item, '[data-cid]')?.dataset.cid,
         fromInterval: parseInt(evt.from.dataset.calendarInterval as string),
         toInterval: parseInt(evt.to.dataset.calendarInterval as string),
         newIndex: evt.newIndex,

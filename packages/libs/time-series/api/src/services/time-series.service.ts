@@ -1,10 +1,4 @@
-import {
-  ContentService,
-  Profile,
-  ProfileContext,
-  ProtectedProfileContext,
-  sortBySortOrder,
-} from '@lyvely/api';
+import { ContentService, Profile, ProfileContext, ProtectedProfileContext } from '@lyvely/api';
 import { CalendarDate, CalendarInterval, getTimingIds, isInFuture } from '@lyvely/dates';
 import {
   CalendarPlanFilter,

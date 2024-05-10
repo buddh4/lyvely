@@ -32,6 +32,10 @@ export class SortResponse {
   }
 }
 
+export interface ISortRequest {
+  attachToId?: string;
+}
+
 export function getSortOrder(obj: any) {
   if ('sortOrder' in obj) return obj.sortOrder;
   if (typeof obj.getSortOrder === 'function') return obj.getSortOrder();

@@ -9,7 +9,12 @@ import {
   UpdateChartSeriesModel,
 } from '../models';
 import repository from './charts.repository';
-import { IProfileApiRequestOptions, unwrapAndTransformResponse } from '@lyvely/interface';
+import {
+  IProfileApiRequestOptions,
+  type ISortRequest,
+  SortResponse,
+  unwrapAndTransformResponse,
+} from '@lyvely/interface';
 import { useSingleton } from '@lyvely/common';
 
 /**
@@ -104,6 +109,23 @@ export class ChartsClient implements IChartsEndpointClient {
    */
   async getCharts(options?: IProfileApiRequestOptions): Promise<ChartListModel> {
     return unwrapAndTransformResponse(repository.getCharts(options), ChartListModel);
+  }
+
+  /**
+   * Sorts the given chart.
+   *
+   * @param {string} cid - The identifier of the collection.
+   * @param {ISortRequest} sort - The sort request object.
+   * @param {IProfileApiRequestOptions} [options] - The optional request options.
+   *
+   * @returns {Promise<SortResponse>} - A promise that resolves with the SortResponse object.
+   */
+  sort(
+    cid: string,
+    sort: ISortRequest,
+    options?: IProfileApiRequestOptions,
+  ): Promise<SortResponse> {
+    return unwrapAndTransformResponse(repository.sort(cid, sort, options), SortResponse);
   }
 
   /**

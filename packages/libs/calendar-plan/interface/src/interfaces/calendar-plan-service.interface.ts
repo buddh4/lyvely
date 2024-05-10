@@ -1,13 +1,13 @@
 import { ICalendarPlanEntry } from './calendar-plan-entry.interface';
 import { SortResponse } from '@lyvely/interface';
 import { CalendarInterval } from '@lyvely/dates';
+import type { ISortRequest } from '@lyvely/interface';
 
 export interface ICalendarPlanResponse<TModel extends ICalendarPlanEntry> {
   models: TModel[];
 }
 
-export interface ICalendarPlanSort {
-  attachToId?: string;
+export interface ICalendarPlanSort extends ISortRequest {
   interval: CalendarInterval;
 }
 
