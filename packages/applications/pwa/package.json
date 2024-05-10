@@ -76,7 +76,7 @@
     "autoprefixer": "^10.4.14",
     "postcss": "^8.4.23",
     "postcss-import": "^15.1.0",
-    "prettier": "2.8.8",
+    "prettier": "3.2.5",
     "sass": "^1.62.1",
     "sass-loader": "^13.2.2",
     "tailwind": "^4.0.0",
