@@ -3,41 +3,39 @@ import { ContentModel } from '@lyvely/interface';
 import { useRouter } from 'vue-router';
 import { usePageStore } from '@/ui';
 import { t } from '@/i18n';
-//import MilestoneChooser from '@/milestones/components/menus/MilestoneDropdown.vue';
 
 interface IProps {
   content: ContentModel;
 }
 
-const props = defineProps<IProps>();
+defineProps<IProps>();
 
 const router = useRouter();
 
 function historyBack() {
-  if (!hasHistory) return;
-  router.go(-1);
+  if (hasHistory) router.go(-1);
+  else router.push({ name: 'stream' });
 }
 
 const hasHistory = usePageStore().hasHistory;
 </script>
 
 <template>
-  <div class="p-2.5 md:px-4 bg-main border-divide rounded-t w-full">
+  <div class="bg-main border-divide w-full rounded-t p-2.5 md:px-4">
     <div class="flex items-center">
-      <ly-button v-if="hasHistory" class="text-sm pl-0" @click="historyBack">
-        <ly-icon name="arrow-left" data-id="btn-back" class="w-3 mr-2" /><span>{{
-          t('common.back')
-        }}</span>
-      </ly-button>
-      <div class="px-2 md:px-4 ml-auto inline">
+      <a class="text-main cursor-pointer pl-0 text-sm" @click="historyBack">
+        <ly-icon name="arrow-left" data-id="btn-back" class="mr-2 w-3" />
+        <span>{{ t('common.back') }}</span>
+      </a>
+      <div class="ml-auto inline px-2 md:px-4">
         <ly-icon
           v-if="content.meta.archived"
           name="archive"
           :title="t('common.archived')"
-          class="w-4 text-warning ml-auto" />
+          class="text-warning ml-auto w-4" />
       </div>
       <div v-if="!content.meta.archived" class="ml-auto">
-        <!--milestone-chooser :content="content" :editable="true" / -->
+        <!-- milestone-chooser :content="content" :editable="true" /-->
       </div>
     </div>
   </div>

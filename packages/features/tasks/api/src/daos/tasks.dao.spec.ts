@@ -1,6 +1,6 @@
-import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
+import { LyvelyTestingModule } from '@lyvely/testing';
 import { CalendarInterval, toTimingId, addDays, subtractDays } from '@lyvely/dates';
-import { UserAssignmentStrategy } from '@lyvely/api';
+import { buildProfileTest, UserAssignmentStrategy } from '@lyvely/api';
 import { Task, UserDone } from '../schemas';
 import { TaskTestDataUtil, taskTestPlugin } from '../testing';
 import { TasksDao } from '../daos';
@@ -13,7 +13,7 @@ describe('Tasks DAO', () => {
   const TEST_KEY = 'tasks_dao';
 
   beforeEach(async () => {
-    testingModule = await buildTest(TEST_KEY)
+    testingModule = await buildProfileTest(TEST_KEY)
       .plugins([taskTestPlugin])
       .providers([TasksDao])
       .compile();
@@ -64,10 +64,10 @@ describe('Tasks DAO', () => {
 
     describe('group profile', () => {
       it('find undone shared task', async () => {
-        const { member, owner, profile, ownerContext } = await testData.createSimpleGroup();
+        const { member, profile, ownerContext } = await testData.createSimpleGroup();
         const todayTimingId = toTimingId(new Date(), CalendarInterval.Daily);
 
-        await testData.createTask(ownerContext, profile, {
+        await testData.createTask(ownerContext, {
           userStrategy: UserAssignmentStrategy.Shared,
         });
 

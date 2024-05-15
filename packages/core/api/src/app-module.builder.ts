@@ -200,8 +200,6 @@ export class AppModuleBuilder {
           delete options.debug;
 
           options.autoIndex ??= true;
-          options.useNewUrlParser ??= true;
-          options.useUnifiedTopology ??= true;
 
           return options;
         },
@@ -215,8 +213,12 @@ export class AppModuleBuilder {
         imports: [ConfigModule],
         inject: [ConfigService],
         useFactory: (config: ConfigService<ConfigurationPath>) => ({
-          ttl: config.get('http.rateLimit.ttl') || 60,
-          limit: config.get('http.rateLimit.limit') || 120,
+          throttlers: [
+            {
+              ttl: config.get('http.rateLimit.ttl') || 60_000,
+              limit: config.get('http.rateLimit.limit') || 120,
+            },
+          ],
         }),
       }),
     ).useProviders({

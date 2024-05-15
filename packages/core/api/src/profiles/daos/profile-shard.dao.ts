@@ -1,20 +1,18 @@
 import {
   AbstractDao,
   IBaseFetchQueryOptions,
-  IBaseQueryOptions,
   DeleteOptions,
   IFetchQueryOptions,
   IFindAndUpdateQueryOptions,
-  IUpdateQueryOptions,
   UpdateQuerySet,
   assureObjectId,
   DocumentIdentity,
   IBulkBaseQueryOptions,
   TObjectId,
   FilterQuery,
-  QueryOptions,
   UpdateQuery,
   BaseDocument,
+  UpdateOptions,
 } from '@/core';
 import { ProfileShard, Profile } from '../schemas';
 
@@ -80,7 +78,7 @@ export abstract class ProfileShardDao<
     profileRelation: ProfileShardData,
     id: DocumentIdentity<T>,
     updateSet: UpdateQuerySet<T>,
-    options?: IBaseQueryOptions,
+    options?: UpdateOptions<T>,
   ) {
     return this.updateOneByProfileAndId(profileRelation, id, { $set: <any>updateSet }, options);
   }
@@ -89,7 +87,7 @@ export abstract class ProfileShardDao<
     profileRelation: ProfileShardData,
     id: DocumentIdentity<T>,
     update: UpdateQuery<T>,
-    options?: IUpdateQueryOptions,
+    options?: UpdateOptions<T>,
   ) {
     return this.updateOneByFilter(id, update, applyShardQueryFilter(profileRelation), options);
   }
@@ -99,7 +97,7 @@ export abstract class ProfileShardDao<
     identity: DocumentIdentity<T>,
     update: UpdateQuery<T>,
     filter?: FilterQuery<T>,
-    options?: QueryOptions,
+    options?: UpdateOptions<T>,
   ): Promise<boolean> {
     return this.updateOneByFilter(
       identity,

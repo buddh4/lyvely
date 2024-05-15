@@ -1,6 +1,6 @@
 import { Type } from '../../utils/util.types';
 import { getPropertyTypeDefinitions } from '../decorators';
-import { isPlainObject } from '../../utils';
+import { isNil, isPlainObject } from '../../utils';
 import { BaseModel, type BaseModelData } from '../base.model';
 
 interface InitPropertiesOptionsIF {
@@ -36,8 +36,8 @@ function _initPropertyTypes<T>(model: T, level = 0, { maxDepth = 100 } = {}) {
       const propertyKey = key as keyof T & string;
       const propertyDefinition = propertyDefinitions[propertyKey];
       // Instantiate empty non-optional properties or if the type does not match the configured type
-      if (!model[propertyKey] && !propertyDefinition.optional) {
-        if (propertyDefinition.default) {
+      if (isNil(model[propertyKey]) && !propertyDefinition.optional) {
+        if (!isNil(propertyDefinition.default)) {
           model[propertyKey] =
             typeof propertyDefinition.default === 'function'
               ? propertyDefinition.default()

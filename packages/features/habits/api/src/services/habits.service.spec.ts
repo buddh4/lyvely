@@ -1,13 +1,18 @@
 import { HabitsService } from './habits.service';
 import { PropertiesOf } from '@lyvely/common';
-import { UserAssignmentStrategy, assureStringId, ProtectedProfileContext } from '@lyvely/api';
+import {
+  UserAssignmentStrategy,
+  assureStringId,
+  ProtectedProfileContext,
+  buildProfileTest,
+} from '@lyvely/api';
 import { CalendarInterval } from '@lyvely/dates';
 import { DataPointValueType, DataPointInputType } from '@lyvely/time-series';
 import { UpdateHabitModel, CreateHabitModel } from '@lyvely/habits-interface';
 import { HabitTestDataUtil, habitTestPlugin } from '../testing';
 import { HabitsDao } from '../daos';
 import { Habit } from '../schemas';
-import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
+import { LyvelyTestingModule } from '@lyvely/testing';
 
 describe('HabitService', () => {
   let habitsService: HabitsService;
@@ -17,7 +22,7 @@ describe('HabitService', () => {
   const TEST_KEY = 'habit_service';
 
   beforeEach(async () => {
-    testingModule = await buildTest(TEST_KEY)
+    testingModule = await buildProfileTest(TEST_KEY)
       .plugins([habitTestPlugin])
       .providers([HabitsDao, HabitsService])
       .compile();

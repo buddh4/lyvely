@@ -25,7 +25,7 @@
   },
   "devDependencies": {
     "@lyvely/testing": "^0.1.0-alpha3",
-    "@nestjs/testing": "^9.4.0"
+    "@nestjs/testing": "^10.3.8"
   },
   "jest": {
     "rootDir": ".",

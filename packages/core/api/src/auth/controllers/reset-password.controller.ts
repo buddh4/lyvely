@@ -28,7 +28,7 @@ export class ResetPasswordController implements ResetPasswordEndpoint {
   @Public()
   @Post(ResetPasswordEndpoints.SEND_MAIL)
   @UseGuards(LoginThrottlerGuard, CaptchaGuard)
-  @UserThrottle(2, 60)
+  @UserThrottle(2, 60_000)
   async sendMail(@Body() model: SendResetPasswordMail) {
     await this.resetPasswordService.sendMail(model.usernameOrEmail);
   }

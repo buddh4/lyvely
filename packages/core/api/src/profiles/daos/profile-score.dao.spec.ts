@@ -45,9 +45,9 @@ describe('AbstractUserProfileActionDao', () => {
 
   describe('create()', () => {
     it('create test score instance', async () => {
-      const { user, profile } = await testData.createUserAndProfile();
+      const { user, profile, context } = await testData.createUserAndProfile();
       const scoreLog = await testScoreDao.save(
-        new TestProfileScore({ user: user, profile: profile, score: 5 }, { text: 'test' }),
+        new TestProfileScore({ context, score: 5 }, { text: 'test' }),
       );
 
       expect(scoreLog).toBeDefined();

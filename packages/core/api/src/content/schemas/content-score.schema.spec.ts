@@ -48,13 +48,12 @@ describe('ContentScore', () => {
 
   describe('constructor', () => {
     it('Construct ExtendedTestContentScoreModel', async () => {
-      const { user, profile } = await testDataUtils.createUserAndProfile();
+      const { user, profile, context } = await testDataUtils.createUserAndProfile();
       profile.oid = getObjectId('MyOrg');
       const cid = getObjectId('MyContent');
-      const content = new TestContent(profile, user, { _id: cid });
+      const content = new TestContent(context, { _id: cid });
       const model = new ExtendedTestContentScore({
-        user,
-        profile,
+        context,
         content,
         score: 5,
       });

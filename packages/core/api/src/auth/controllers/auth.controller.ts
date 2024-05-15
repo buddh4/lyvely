@@ -63,7 +63,7 @@ export class AuthController extends AbstractJwtAuthController implements AuthEnd
 
   @Public()
   @UseGuards(UserThrottlerGuard, JwtRefreshGuard)
-  @UserThrottle(6, 60)
+  @UserThrottle(6, 60_000)
   @Post(AuthEndpoints.REFRESH)
   async refresh(@Req() req: UserRequest) {
     const { user } = req;
@@ -109,7 +109,7 @@ export class AuthController extends AbstractJwtAuthController implements AuthEnd
 
   @Get(AuthEndpoints.USER)
   @UseGuards(UserThrottlerGuard)
-  @UserThrottle(30, 60)
+  @UserThrottle(30, 60_000)
   async loadUser(@Req() req: UserRequest) {
     return {
       user: new UserModel(req.user),

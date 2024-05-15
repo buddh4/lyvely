@@ -6,8 +6,12 @@ function setThrottlerMetadata(target: any, limit: number, ttl: number): void {
   Reflect.defineMetadata(USER_THROTTLER_LIMIT, limit, target);
 }
 
-export const UserThrottle = (limit = 20, ttl = 60): MethodDecorator & ClassDecorator => {
-  return (target: any, propertyKey?: string | symbol, descriptor?: TypedPropertyDescriptor<any>) => {
+export const UserThrottle = (limit = 20, ttl = 60_000): MethodDecorator & ClassDecorator => {
+  return (
+    target: any,
+    propertyKey?: string | symbol,
+    descriptor?: TypedPropertyDescriptor<any>,
+  ) => {
     if (descriptor) {
       setThrottlerMetadata(descriptor.value, limit, ttl);
       return descriptor;

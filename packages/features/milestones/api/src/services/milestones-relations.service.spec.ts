@@ -106,7 +106,7 @@ describe('MileStonesRelationService', () => {
     const { profile, user, context } = await testData.createUserAndProfile();
     const mid = getObjectId(Date.now().toString());
     const doc = await new TestContentModel(
-      new TestContent(profile, user, {
+      new TestContent(context, {
         meta: new ContentMetadata(<ContentMetadata>{ mid }),
       }),
     ).save();
@@ -115,7 +115,7 @@ describe('MileStonesRelationService', () => {
       mid,
       profile,
       user,
-      content: new TestContent(profile, user, <any>doc.toJSON()),
+      content: new TestContent(context, <any>doc.toJSON()),
       context,
     };
   };

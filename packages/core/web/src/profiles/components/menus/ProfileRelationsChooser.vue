@@ -65,13 +65,13 @@ const { isAllowed: canCreateOrganization } = useGlobalPermissions(
 // TODO: (permissions) "Can create profile" policy
 </script>
 <template>
-  <ul v-if="statusError" data-id="profile-relations" class="divide-y divide-divide w-64 md:w-96">
-    <li class="py-3 px-4">
+  <ul v-if="statusError" data-id="profile-relations" class="divide-divide w-64 divide-y md:w-96">
+    <li class="px-4 py-3">
       <ly-alert type="danger" :text="statusError" />
     </li>
   </ul>
-  <ul v-else data-id="profile-relations" class="divide-y divide-divide w-80 md:w-96">
-    <li class="px-4 pb-2 prev-close">
+  <ul v-else data-id="profile-relations" class="divide-divide w-80 divide-y md:w-96">
+    <li class="prev-close px-4 pb-1">
       <div class="flex">
         <div>
           <ly-button @click="searchInput?.focus()">
@@ -81,17 +81,18 @@ const { isAllowed: canCreateOrganization } = useGlobalPermissions(
             ref="searchInput"
             v-model="search"
             type="text"
-            class="plain border-none ring-0 outline-0 focus-hidden p-0 focus:ring-0 focus:ring-offset-0" />
+            class="plain focus-hidden border-none p-0 outline-0 ring-0 focus:ring-0 focus:ring-offset-0" />
         </div>
         <ly-button
           class="ml-auto"
+          :title="t('profiles.titles.show-archived')"
           :class="{ 'outline outline-gray-100': filterArchived }"
           @click="filterArchived = !filterArchived">
-          <ly-icon name="archive" />
+          <ly-icon name="archive" class="w-3.5" />
         </ly-button>
       </div>
     </li>
-    <li v-if="canCreateOrganization || organizations.length" class="py-3 px-4">
+    <li v-if="canCreateOrganization || organizations.length" class="px-4 py-3">
       <div class="flex items-center">
         <span class="text-sm font-bold">
           {{ t('profiles.labels.organizations') }}
@@ -104,13 +105,14 @@ const { isAllowed: canCreateOrganization } = useGlobalPermissions(
       </div>
     </li>
     <profile-relations-chooser-list :relations="organizations" />
-    <li class="py-3 px-4">
+    <li class="px-4 py-3">
       <div class="flex items-center">
         <span class="text-sm font-bold">
           {{ t('profiles.labels.profiles') }}
         </span>
         <ly-add-button
           v-if="canCreateProfile"
+          :title="t('profiles.titles.add-orga')"
           data-id="btn-create-profile"
           class="m-auto"
           @click="showCreateProfile = true" />

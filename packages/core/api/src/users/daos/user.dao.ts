@@ -4,13 +4,13 @@ import {
   AbstractDao,
   DocumentIdentity,
   FilterQuery,
-  IBaseQueryOptions,
   Model,
+  UpdateOptions,
   UpdateQuerySet,
 } from '@/core';
 import { RefreshToken, User, UserEmail } from '../schemas';
 import { Type } from '@lyvely/common';
-import { ProfileType, UserStatus } from '@lyvely/interface';
+import { ProfileType } from '@lyvely/interface';
 
 /**
  * Data Access Object for accessing user entities.
@@ -222,7 +222,7 @@ export class UserDao extends AbstractDao<User> {
     user: User,
     type: ProfileType,
     amount = 1,
-    options?: IBaseQueryOptions,
+    options?: UpdateOptions<User>,
   ) {
     let path = 'profilesCount.';
     let count;
@@ -249,7 +249,7 @@ export class UserDao extends AbstractDao<User> {
       remember: token.remember,
     });
 
-    return !!(await this.updateOneById(identity, {
+    return await this.updateOneById(identity, {
       $push: {
         refreshTokens: {
           $each: [tokenModel],
@@ -257,7 +257,7 @@ export class UserDao extends AbstractDao<User> {
           $slice: -limit,
         },
       },
-    }));
+    });
   }
 
   async updateRefreshToken(identity: DocumentIdentity<User>, token: RefreshToken) {

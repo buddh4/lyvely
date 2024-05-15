@@ -4,11 +4,12 @@ import {
   IPermission,
   IPermissionConfig,
   registerPermissions,
-} from '../../../permissions';
-import { ProfileRelationRole } from '../../relations';
-import { ProfileModel, ProfileVisibilityLevel } from '../../core';
-import { IntegrityException } from '../../../exceptions';
-import { UserStatus, VisitorMode } from '../../../users';
+  VisitorMode,
+} from '../../permissions';
+import { UserStatus } from '../../users';
+import { ProfileRelationRole, ProfileVisibilityLevel } from '../interfaces';
+import { ProfileModel } from '../models';
+import { IntegrityException } from '../../exceptions';
 import { useProfilePermissionsManager } from './profile-permissions.manager';
 
 describe('ProfilePermissionsManager', function () {

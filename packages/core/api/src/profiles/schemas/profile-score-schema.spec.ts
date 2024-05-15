@@ -45,9 +45,9 @@ describe('ProfileScore', () => {
 
   describe('constructor', () => {
     it('Construct with per user strategy', async () => {
-      const { user, profile } = await testDataUtils.createUserAndProfile();
+      const { user, profile, context } = await testDataUtils.createUserAndProfile();
       profile.oid = getObjectId('MyOrg');
-      const model = new TestProfileScore({ user, profile, score: 5 }, { text: 'Test!' });
+      const model = new TestProfileScore({ context, score: 5 }, { text: 'Test!' });
       expect(model.score).toEqual(5);
       expect(model.pid).toEqual(profile._id);
       expect(model.uid).toEqual(user._id);
@@ -58,29 +58,28 @@ describe('ProfileScore', () => {
     });
 
     it('Construct with given date', async () => {
-      const { user, profile } = await testDataUtils.createUserAndProfile();
+      const { context } = await testDataUtils.createUserAndProfile();
       const tomorrow = addDays(new Date(), 1);
-      const model = new TestProfileScore({ user, profile, score: 5, date: tomorrow });
+      const model = new TestProfileScore({ context, score: 5, date: tomorrow });
       expect(model.tid).toEqual(toTimingId(tomorrow));
     });
 
     it('Construct with per shared user strategy', async () => {
-      const { user, profile } = await testDataUtils.createUserAndProfile();
+      const { user, context } = await testDataUtils.createUserAndProfile();
       const model = new TestProfileScore({
-        user,
-        profile,
+        context,
         score: 5,
         userStrategy: UserAssignmentStrategy.Shared,
       });
-      expect(model.uid).toBeUndefined();
+      expect(model.uid).toEqual(user._id);
       expect(model.createdBy).toEqual(user._id);
     });
 
     it('Overwrite createdBy', async () => {
-      const { user, profile } = await testDataUtils.createUserAndProfile();
+      const { context } = await testDataUtils.createUserAndProfile();
       const createdBy = getObjectId('OtherUser');
       const model = new TestProfileScore(
-        { user, profile, score: 5, userStrategy: UserAssignmentStrategy.Shared },
+        { context, score: 5, userStrategy: UserAssignmentStrategy.Shared },
         { createdBy },
       );
       expect(model.createdBy).toEqual(createdBy);

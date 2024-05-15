@@ -1,10 +1,11 @@
-import { registerChartSeries, resetChartSeries } from '../registries';
+import { getChartSeriesConfigTypes, registerChartSeries, resetChartSeries } from '../registries';
 import { ChartSeriesConfigModel } from './chart-series-config.model';
 import { UpdateChartSeriesModel } from './update-chart-series.model';
-import { Expose, plainToClass } from 'class-transformer';
+import { Exclude, Expose, plainToClass } from 'class-transformer';
 import { BaseModel, type BaseModelData } from '@lyvely/common';
 import { TIME_SERIES_CHART } from './time-series-chart.category';
 
+@Exclude()
 class TestSeriesConfig extends ChartSeriesConfigModel {
   static seriesType = 'TestSeries';
 
@@ -25,27 +26,35 @@ describe('UpdateChartSeriesModel', () => {
   describe('transform', () => {
     it('transform of default chart series type works', () => {
       registerChartSeries({
-        id: 'test',
+        id: TestSeriesConfig.seriesType,
         categoryTypes: [TIME_SERIES_CHART.id],
+        configType: TestSeriesConfig,
       });
       const config = {
-        id: 'testId',
-        type: 'test',
+        testField: 'test',
+        type: TestSeriesConfig.seriesType,
         name: 'TestName',
       };
+
       const instance = plainToClass(UpdateChartSeriesModel, { config });
       expect(instance.config).toEqual(config);
     });
 
     it('invalid field is ignored', () => {
+      registerChartSeries({
+        id: TestSeriesConfig.seriesType,
+        categoryTypes: [TIME_SERIES_CHART.id],
+        configType: TestSeriesConfig,
+      });
       const config = {
-        id: 'testId',
-        type: 'test2',
+        testField: 'test',
+        type: TestSeriesConfig.seriesType,
         name: 'TestName',
       };
       const instance = plainToClass(UpdateChartSeriesModel, {
         config: { ...config, invalidField: 'invalid' },
       });
+
       expect((<any>instance.config).invalidField).toBeUndefined();
       expect(instance.config).toEqual(config);
     });

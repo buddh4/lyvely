@@ -7,13 +7,16 @@ describe('Task', () => {
   describe('setDoneBy', () => {
     it('set done by user on shared task', async () => {
       const user1 = new User({ _id: getObjectId('user1') });
-      const task = new Task(new Profile(user1), user1, {
-        config: {
-          score: 5,
-          interval: CalendarInterval.Daily,
-          userStrategy: UserAssignmentStrategy.Shared,
+      const task = new Task(
+        { profile: new Profile(user1), user: user1 },
+        {
+          config: {
+            score: 5,
+            interval: CalendarInterval.Daily,
+            userStrategy: UserAssignmentStrategy.Shared,
+          },
         },
-      });
+      );
 
       const tid = toTimingId('2021-04-03');
       const date = new Date();
@@ -30,13 +33,16 @@ describe('Task', () => {
       const user1 = new User({ _id: getObjectId('user1') });
       const user2 = new User({ _id: getObjectId('user2') });
 
-      const task = new Task(new Profile(user1), user1, {
-        config: {
-          score: 5,
-          interval: CalendarInterval.Daily,
-          userStrategy: UserAssignmentStrategy.Shared,
+      const task = new Task(
+        { profile: new Profile(user1), user: user1 },
+        {
+          config: {
+            score: 5,
+            interval: CalendarInterval.Daily,
+            userStrategy: UserAssignmentStrategy.Shared,
+          },
         },
-      });
+      );
 
       const tid = toTimingId('2021-04-03');
       const tid2 = toTimingId('2021-04-05');
@@ -54,13 +60,16 @@ describe('Task', () => {
 
     it('set done by user on per user task', async () => {
       const user1 = new User({ _id: getObjectId('user1') });
-      const task = new Task(new Profile(user1), user1, {
-        config: {
-          score: 5,
-          interval: CalendarInterval.Daily,
-          userStrategy: UserAssignmentStrategy.PerUser,
+      const task = new Task(
+        { profile: new Profile(user1), user: user1 },
+        {
+          config: {
+            score: 5,
+            interval: CalendarInterval.Daily,
+            userStrategy: UserAssignmentStrategy.PerUser,
+          },
         },
-      });
+      );
 
       const tid = toTimingId('2021-04-03');
       const date = new Date();
@@ -77,13 +86,16 @@ describe('Task', () => {
       const user1 = new User({ _id: getObjectId('user1') });
       const user2 = new User({ _id: getObjectId('user2') });
 
-      const task = new Task(new Profile(user1), user1, {
-        config: {
-          score: 5,
-          interval: CalendarInterval.Daily,
-          userStrategy: UserAssignmentStrategy.PerUser,
+      const task = new Task(
+        { profile: new Profile(user1), user: user1 },
+        {
+          config: {
+            score: 5,
+            interval: CalendarInterval.Daily,
+            userStrategy: UserAssignmentStrategy.PerUser,
+          },
         },
-      });
+      );
 
       const tid = toTimingId('2021-04-03');
       const tid2 = toTimingId('2021-04-05');
@@ -107,13 +119,16 @@ describe('Task', () => {
       const user1 = new User({ _id: getObjectId('user1') });
       const user2 = new User({ _id: getObjectId('user2') });
 
-      const task = new Task(new Profile(user1), user1, {
-        config: {
-          score: 5,
-          interval: CalendarInterval.Daily,
-          userStrategy: UserAssignmentStrategy.PerUser,
+      const task = new Task(
+        { profile: new Profile(user1), user: user1 },
+        {
+          config: {
+            score: 5,
+            interval: CalendarInterval.Daily,
+            userStrategy: UserAssignmentStrategy.PerUser,
+          },
         },
-      });
+      );
 
       const tid = toTimingId('2021-04-03');
       const tid2 = toTimingId('2021-04-05');
@@ -138,13 +153,16 @@ describe('Task', () => {
   describe('setUndoneBy', () => {
     it('set undone by user on shared task', async () => {
       const user1 = new User({ _id: getObjectId('user1') });
-      const task = new Task(new Profile(user1), user1, {
-        config: {
-          score: 5,
-          interval: CalendarInterval.Daily,
-          userStrategy: UserAssignmentStrategy.PerUser,
+      const task = new Task(
+        { profile: new Profile(user1), user: user1 },
+        {
+          config: {
+            score: 5,
+            interval: CalendarInterval.Daily,
+            userStrategy: UserAssignmentStrategy.PerUser,
+          },
         },
-      });
+      );
 
       const tid = toTimingId('2021-04-03');
       const date = new Date();
@@ -159,13 +177,16 @@ describe('Task', () => {
       const user1 = new User({ _id: getObjectId('user1') });
       const user2 = new User({ _id: getObjectId('user2') });
 
-      const task = new Task(new Profile(user1), user1, {
-        config: {
-          score: 5,
-          interval: CalendarInterval.Daily,
-          userStrategy: UserAssignmentStrategy.Shared,
+      const task = new Task(
+        { profile: new Profile(user1), user: user1 },
+        {
+          config: {
+            score: 5,
+            interval: CalendarInterval.Daily,
+            userStrategy: UserAssignmentStrategy.Shared,
+          },
         },
-      });
+      );
 
       const tid = toTimingId('2021-04-03');
       const date = new Date();
@@ -180,13 +201,16 @@ describe('Task', () => {
       const user1 = new User({ _id: getObjectId('user1') });
       const user2 = new User({ _id: getObjectId('user2') });
 
-      const task = new Task(new Profile(user1), user1, {
-        config: {
-          score: 5,
-          interval: CalendarInterval.Daily,
-          userStrategy: UserAssignmentStrategy.PerUser,
+      const task = new Task(
+        { profile: new Profile(user1), user: user1 },
+        {
+          config: {
+            score: 5,
+            interval: CalendarInterval.Daily,
+            userStrategy: UserAssignmentStrategy.PerUser,
+          },
         },
-      });
+      );
 
       const tid = toTimingId('2021-04-03');
       const date = new Date();
@@ -205,13 +229,16 @@ describe('Task', () => {
       const user2 = new User({ _id: getObjectId('user2') });
       const user3 = new User({ _id: getObjectId('user3') });
 
-      const task = new Task(new Profile(user1), user1, {
-        config: {
-          score: 5,
-          interval: CalendarInterval.Daily,
-          userStrategy: UserAssignmentStrategy.PerUser,
+      const task = new Task(
+        { profile: new Profile(user1), user: user1 },
+        {
+          config: {
+            score: 5,
+            interval: CalendarInterval.Daily,
+            userStrategy: UserAssignmentStrategy.PerUser,
+          },
         },
-      });
+      );
 
       const tid = toTimingId('2021-04-03');
       const date = new Date();
@@ -231,13 +258,16 @@ describe('Task', () => {
       const user1 = new User({ _id: getObjectId('user1') });
       const user2 = new User({ _id: getObjectId('user2') });
 
-      const task = new Task(new Profile(user1), user1, {
-        config: {
-          score: 5,
-          interval: CalendarInterval.Daily,
-          userStrategy: UserAssignmentStrategy.Shared,
+      const task = new Task(
+        { profile: new Profile(user1), user: user1 },
+        {
+          config: {
+            score: 5,
+            interval: CalendarInterval.Daily,
+            userStrategy: UserAssignmentStrategy.Shared,
+          },
         },
-      });
+      );
 
       expect(task.isDoneByUser(user1)).toEqual(false);
       expect(task.isDoneByUser(user2)).toEqual(false);
@@ -254,13 +284,16 @@ describe('Task', () => {
       const user1 = new User({ _id: getObjectId('user1') });
       const user2 = new User({ _id: getObjectId('user2') });
 
-      const task = new Task(new Profile(user1), user1, {
-        config: {
-          score: 5,
-          interval: CalendarInterval.Daily,
-          userStrategy: UserAssignmentStrategy.PerUser,
+      const task = new Task(
+        { profile: new Profile(user1), user: user1 },
+        {
+          config: {
+            score: 5,
+            interval: CalendarInterval.Daily,
+            userStrategy: UserAssignmentStrategy.PerUser,
+          },
         },
-      });
+      );
 
       expect(task.isDoneByUser(user1)).toEqual(false);
       expect(task.isDoneByUser(user2)).toEqual(false);

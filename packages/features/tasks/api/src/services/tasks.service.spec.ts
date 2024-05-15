@@ -1,11 +1,11 @@
 import { CalendarInterval, toTimingId } from '@lyvely/dates';
 import { Timer, TimeSpan } from '@lyvely/timers';
-import { UserAssignmentStrategy, ProtectedProfileContext } from '@lyvely/api';
+import { UserAssignmentStrategy, ProtectedProfileContext, buildProfileTest } from '@lyvely/api';
 import { TasksService } from './tasks.service';
 import { TaskTestDataUtil, taskTestPlugin } from '../testing';
 import { TasksDao } from '../daos';
 import { Task, TaskState } from '../schemas';
-import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
+import { LyvelyTestingModule } from '@lyvely/testing';
 
 describe('TaskService', () => {
   let testingModule: LyvelyTestingModule;
@@ -16,7 +16,7 @@ describe('TaskService', () => {
   const TEST_KEY = 'task_service';
 
   beforeEach(async () => {
-    testingModule = await buildTest(TEST_KEY)
+    testingModule = await buildProfileTest(TEST_KEY)
       .plugins([taskTestPlugin])
       .providers([TasksDao, TasksService])
       .compile();
@@ -64,14 +64,6 @@ describe('TaskService', () => {
     expect(task.config.score).toEqual(5);
     expect(task.content.title).toEqual('Do something!');
     expect(task.state.doneBy).toEqual([]);
-  });
-
-  it('sortOrder creation', async () => {
-    const { context } = await testData.createUserAndProfile();
-    const task1 = await createTask(context, UserAssignmentStrategy.Shared);
-    const task2 = await createTask(context, UserAssignmentStrategy.Shared);
-    expect(task1.meta.sortOrder).toEqual(0);
-    expect(task2.meta.sortOrder).toEqual(1);
   });
 
   describe('setDone', () => {

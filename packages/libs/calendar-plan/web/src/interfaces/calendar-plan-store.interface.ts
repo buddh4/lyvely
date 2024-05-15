@@ -1,7 +1,7 @@
-import { CalendarInterval } from '@lyvely/dates';
-
 export interface IMoveEntryEvent {
   cid: string;
+  fromInterval: number;
+  toInterval: number;
   newIndex: number;
   oldIndex: number;
 }

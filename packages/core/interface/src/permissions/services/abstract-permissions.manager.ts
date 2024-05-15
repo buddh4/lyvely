@@ -209,7 +209,7 @@ export abstract class AbstractPermissionsManager<
    * @returns {boolean} - True if the subject has access as a visitor, false otherwise.
    */
   protected verifyVisitorAccess(subject: TSubject, config: TConfig) {
-    const allowGuests = config.visitorStrategy.mode === VisitorMode.Enabled;
+    const allowGuests = config?.visitorStrategy?.mode === VisitorMode.Enabled;
     return subject.role !== BasePermissionRole.Visitor || allowGuests;
   }
 

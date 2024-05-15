@@ -3,9 +3,15 @@ import { HabitDataPointService } from './habit-data-point.service';
 import { HabitDataPointDao } from '../daos';
 import { CalendarInterval, toTimingId } from '@lyvely/dates';
 import { CalendarPlanFilter } from '@lyvely/calendar-plan';
-import { UserAssignmentStrategy, ContentScoreDao, ContentScoreService, Model } from '@lyvely/api';
+import {
+  UserAssignmentStrategy,
+  ContentScoreDao,
+  ContentScoreService,
+  Model,
+  buildProfileTest,
+} from '@lyvely/api';
 import { DataPoint } from '@lyvely/time-series';
-import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
+import { LyvelyTestingModule } from '@lyvely/testing';
 
 describe('HabitDataPointService', () => {
   let habitDataPointService: HabitDataPointService;
@@ -17,7 +23,7 @@ describe('HabitDataPointService', () => {
   const TEST_KEY = 'habit_data_point_service';
 
   beforeEach(async () => {
-    testingModule = await buildTest(TEST_KEY)
+    testingModule = await buildProfileTest(TEST_KEY)
       .plugins([habitTestPlugin])
       .providers([HabitDataPointService, HabitDataPointDao, ContentScoreService, ContentScoreDao])
       .compile();
@@ -181,9 +187,8 @@ describe('HabitDataPointService', () => {
       const scores = await contentScoreDao.findAll({});
       expect(scores.length).toEqual(2);
       expect(scores[0].score).toEqual(10);
-      expect(scores[0].uid).toBeUndefined();
       expect(scores[1].score).toEqual(-10);
-      expect(scores[1].uid).toBeUndefined();
+      expect(scores[1].uid).toEqual(user._id);
     });
   });
 

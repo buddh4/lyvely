@@ -99,7 +99,7 @@ export abstract class IntervalAggregation {
     }
 
     if (this.options.filter?.contentType) {
-      match[this.getContentTypeField()] = assureObjectId(this.options.filter.contentType);
+      match[this.getContentTypeField()] = this.options.filter.contentType;
     }
 
     const $match = { $match: { ...this.options.$match, ...match } };

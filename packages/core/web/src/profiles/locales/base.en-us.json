@@ -7,6 +7,14 @@
         }
       }
     },
+    "titles": {
+      "show-archived": "Show archived profiles",
+      "add-profile": "Add Profile",
+      "add-orga": "Add Organization"
+    },
+    "validation": {
+      "name_regex": "Name must start with a letter or number and can only contain letters, numbers, single underscores and  single hyphens."
+    },
     "errors": {
       "loading": "This profile could not be loaded."
     },

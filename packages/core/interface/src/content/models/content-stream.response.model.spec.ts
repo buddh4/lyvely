@@ -13,6 +13,7 @@ describe('ContentResponseModel', () => {
       class TestContentModel<TID = string> extends ContentModel<
         TID,
         undefined,
+        undefined,
         TestContentDataType
       > {
         @PropertyType(TestContentDataType)
@@ -34,6 +35,7 @@ describe('ContentResponseModel', () => {
       }
       class TestContentModel<TID = string> extends ContentModel<
         TID,
+        undefined,
         undefined,
         TestContentDataType
       > {

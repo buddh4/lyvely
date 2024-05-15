@@ -49,8 +49,6 @@ export const loadConfigs = (
     } finally {
       await client.close();
     }
-
-    return {};
   };
 
   return () => {

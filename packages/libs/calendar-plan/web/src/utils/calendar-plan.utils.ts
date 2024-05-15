@@ -18,7 +18,7 @@ export function dragEventToMoveEvent(evt: IDragEvent | IMoveEntryEvent): IMoveEn
   return isMoveEntryEvent(evt)
     ? evt
     : {
-        cid: findFirst(evt.item, '[data-cid]')?.dataset.cid,
+        cid: findFirst(evt.item, '[data-cid]')?.dataset.cid || '',
         fromInterval: parseInt(evt.from.dataset.calendarInterval as string),
         toInterval: parseInt(evt.to.dataset.calendarInterval as string),
         newIndex: evt.newIndex,

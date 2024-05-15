@@ -18,8 +18,8 @@ export class I18nModelValidator<
         return propertyLabel
           ? translate(this.getPropertyLabel(prop)!)
           : labelKey
-          ? translate(`${labelKey}.${prop as string}`)
-          : prop;
+            ? translate(`${labelKey}.${prop as string}`)
+            : prop;
       };
 
       // Dirty workaround but meh...
@@ -38,7 +38,7 @@ export class I18nModelValidator<
       const translationKey = `validation.${error.rule}`;
 
       translationVars['property'] = translateProperty(error.property);
-      return translate(translationKey, translationVars);
+      return translate(error.message || translationKey, translationVars);
     };
   }
 }

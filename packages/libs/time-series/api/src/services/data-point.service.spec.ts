@@ -87,10 +87,10 @@ describe('DataPointService', () => {
       },
     };
 
-    const model = new TestTimeSeriesContent(profile, user, data as any);
+    const model = new TestTimeSeriesContent({ profile, user }, data as any);
     const entity = new TestNumberTimeSeriesContentModel(model);
     await entity.save();
-    return new TestTimeSeriesContent(profile, user, entity.toObject());
+    return new TestTimeSeriesContent({ profile, user }, entity.toObject());
   }
 
   it('should be defined', () => {

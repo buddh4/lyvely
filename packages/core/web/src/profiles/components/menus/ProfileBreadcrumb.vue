@@ -38,7 +38,7 @@ const path = computed(() => {
 <template>
   <div
     data-id="profile-breadcrumb"
-    class="border border-divide px-3 p-2 rounded-2xl hidden sm:inline-flex sm:flex-nowrap text-xs">
+    class="border-divide hidden rounded-2xl border p-2 px-3 text-xs sm:inline-flex sm:flex-nowrap">
     <router-link v-if="isProfileRoute" to="/" class="text-main flex flex-nowrap gap-1">
       <span class="text-pop">@</span>
       <ly-truncate :text="profileName" max="10" class="whitespace-nowrap" />

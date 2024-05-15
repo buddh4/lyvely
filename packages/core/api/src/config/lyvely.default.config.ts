@@ -1,4 +1,5 @@
 import { ServerConfiguration } from '@/config';
+import { VisitorMode } from '@lyvely/interface';
 
 const mail = process.env.MAIL_HOST
   ? {
@@ -32,6 +33,11 @@ export default {
   operationMode: 'standalone',
   docUrl: 'https://docs.lyvely.app',
   contactMail: 'help@lyvely.app',
+  permissions: {
+    visitorStrategy: {
+      mode: VisitorMode.Disabled,
+    },
+  },
   redis: {
     host: process.env.REDIS_HOST || 'localhost',
     port: process.env.REDIS_PORT || 6379,

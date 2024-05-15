@@ -47,8 +47,12 @@ export function createCoreTestingModule(
         imports: [ConfigModule],
         inject: [ConfigService],
         useFactory: (config: ConfigService) => ({
-          ttl: config.get('http.rateLimit.ttl') || 60,
-          limit: config.get('http.rateLimit.limit') || 40,
+          throttlers: [
+            {
+              ttl: config.get('http.rateLimit.ttl') || 60_000,
+              limit: config.get('http.rateLimit.limit') || 40,
+            },
+          ],
         }),
       }),
       MongooseModule.forFeature([...models]),

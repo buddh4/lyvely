@@ -179,12 +179,12 @@ const showEmptyEntry = computed(() => !showAddEntry.value && !props.options.leng
     :id="id"
     :data-id="id"
     tabindex="0"
-    class="floating-input cursor-pointer h-auto"
+    class="floating-input h-auto cursor-pointer"
     :label="label"
     @click="visible = true"
     @keyup.enter.prevent="visible = true">
     <div class="flex pt-2">
-      <template v-for="option in selection" :key="getOptionKey(option)">
+      <template v-for="option in selection" :key="getOptionKey(option!)">
         <ly-badge
           v-if="option"
           :text="{ plain: getLabel(option) }"
@@ -202,7 +202,7 @@ const showEmptyEntry = computed(() => !showAddEntry.value && !props.options.leng
     submit-button-text="common.select"
     submit-icon="check"
     @submit="visible = false">
-    <div ref="picker" class="flex flex-col max-h-full">
+    <div ref="picker" class="flex max-h-full flex-col">
       <div class="mb-2">
         <ly-text-field
           :id="id + '-search'"
@@ -214,7 +214,7 @@ const showEmptyEntry = computed(() => !showAddEntry.value && !props.options.leng
       </div>
 
       <div
-        class="flex flex-col border border-divide divide-y rounded md:max-h-96 overflow-auto scrollbar-thin">
+        class="border-divide scrollbar-thin flex flex-col divide-y overflow-auto rounded border md:max-h-96">
         <div
           v-for="option in selectedOptions"
           :key="getOptionKey(option)"
@@ -229,7 +229,7 @@ const showEmptyEntry = computed(() => !showAddEntry.value && !props.options.leng
           <ly-button
             tabindex="-1"
             aria-hidden="true"
-            class="w-5 h-5 bg-main border border-divide rounded-full flex justify-center items-center text-sm px-0 py-0"
+            class="bg-main border-divide flex h-5 w-5 items-center justify-center rounded-full border px-0 py-0 text-sm"
             ><span class="text-primary text-xs">x</span></ly-button
           >
           <ly-badge
@@ -264,7 +264,7 @@ const showEmptyEntry = computed(() => !showAddEntry.value && !props.options.leng
           @keyup.enter.prevent.stop="addSelection(query)"
           @keyup.down="focusNext"
           @keyup.up="focusPrev">
-          <i18n-t :keypath="addTextKey" tag="span" class="text-center text-dimmed text-sm">
+          <i18n-t :keypath="addTextKey" tag="span" class="text-dimmed text-center text-sm">
             <template #option>
               <b>{{ query }}</b>
             </template>
@@ -273,7 +273,7 @@ const showEmptyEntry = computed(() => !showAddEntry.value && !props.options.leng
         <div
           v-if="showEmptyEntry"
           data-badge-selection
-          class="flex items-center gap-2 border-divide bg-main p-2 md:p-4">
+          class="border-divide bg-main flex items-center gap-2 p-2 md:p-4">
           <span v-if="query">{{ t('common.empty_result_filter') }}</span>
           <span v-else>{{ t('common.empty_result') }}</span>
         </div>

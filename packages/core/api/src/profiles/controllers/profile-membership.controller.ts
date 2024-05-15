@@ -54,7 +54,7 @@ export class ProfileMembershipController implements ProfileMembershipEndpoint {
 
   @Put(ProfileMembershipEndpoints.UPDATE_AVATAR)
   @UseGuards(UserThrottlerGuard)
-  @UserThrottle(20, 60)
+  @UserThrottle(20, 60_000)
   @UseInterceptors(FileInterceptor('file'))
   async updateAvatar(
     @UploadedFile(AvatarUploadPipe) file: IFileInfo,
@@ -66,7 +66,7 @@ export class ProfileMembershipController implements ProfileMembershipEndpoint {
 
   @Put(ProfileMembershipEndpoints.UPDATE_GAVATAR)
   @UseGuards(UserThrottlerGuard)
-  @UserThrottle(20, 60)
+  @UserThrottle(20, 60_000)
   async updateGravatar(@Req() req: ProfileMembershipRequest): Promise<AvatarModel> {
     const avatar = await this.membershipAvatarService.updateGravatar(req.context);
     return new AvatarModel(avatar);

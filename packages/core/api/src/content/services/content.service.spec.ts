@@ -39,12 +39,15 @@ describe('content dao', () => {
   });
 
   async function createTestContent(user: User, profile: Profile, archived = false) {
-    const testContent = new TestContent(profile, user, {
-      content: new TestContentData({ testData: 'test' }),
-      meta: new ContentMetadata({ archived }),
-    });
+    const testContent = new TestContent(
+      { profile, user },
+      {
+        content: new TestContentData({ testData: 'test' }),
+        meta: new ContentMetadata({ archived }),
+      },
+    );
     const entity = await testContentModel.create(testContent);
-    return new TestContent(profile, user, entity.toObject());
+    return new TestContent({ profile, user }, entity.toObject());
   }
 
   it('should be defined', () => {

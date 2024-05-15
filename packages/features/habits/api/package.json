@@ -22,8 +22,8 @@
   "author": "Julian Harrer",
   "license": "AGPL-3.0",
   "dependencies": {
-    "@nestjs/common": "^9.4.0",
-    "@nestjs/mongoose": "^9.2.2",
+    "@nestjs/common": "^10.3.8",
+    "@nestjs/mongoose": "^10.0.6",
     "@lyvely/api": "^0.1.0-alpha3",
     "@lyvely/analytics": "^0.1.0-alpha3",
     "@lyvely/common": "^0.1.0-alpha3",

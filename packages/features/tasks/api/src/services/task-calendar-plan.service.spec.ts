@@ -3,7 +3,8 @@ import { TaskTestDataUtil, taskTestPlugin } from '../testing';
 import { TasksDao } from '../daos';
 import { UserDone } from '../schemas';
 import { TaskCalendarPlanService } from './task-calendar-plan.service';
-import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
+import { LyvelyTestingModule } from '@lyvely/testing';
+import { buildProfileTest } from '@lyvely/api';
 
 describe('TaskCalendarPlanService', () => {
   let testingModule: LyvelyTestingModule;
@@ -13,7 +14,7 @@ describe('TaskCalendarPlanService', () => {
   const TEST_KEY = 'task_service';
 
   beforeEach(async () => {
-    testingModule = await buildTest(TEST_KEY)
+    testingModule = await buildProfileTest(TEST_KEY)
       .plugins([taskTestPlugin])
       .providers([TasksDao, TaskCalendarPlanService])
       .compile();

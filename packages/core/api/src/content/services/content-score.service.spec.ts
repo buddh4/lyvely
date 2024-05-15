@@ -66,6 +66,7 @@ describe('ContentScoreService', () => {
     const testData = await testDataUtils.createSimpleGroup();
     const content = new TestContent(testData.ownerContext, {
       _id: getObjectId('TestContent'),
+      type: TestContent.name,
     });
     return { ...testData, content };
   }
@@ -269,7 +270,10 @@ describe('ContentScoreService', () => {
     });*/
     it('save test score', async () => {
       const { user, context, profile } = await testDataUtils.createUserAndProfile();
-      const content = new TestContent(context, { _id: getObjectId('TestContent') });
+      const content = new TestContent(context, {
+        _id: getObjectId('TestContent'),
+        type: TestContent.name,
+      });
 
       const testScore = new ExtendedTestContentScore(
         {
@@ -301,7 +305,10 @@ describe('ContentScoreService', () => {
 
     it('assure discriminator is working', async () => {
       const { context } = await testDataUtils.createUserAndProfile();
-      const content = new TestContent(context, { _id: getObjectId('TestContent') });
+      const content = new TestContent(context, {
+        _id: getObjectId('TestContent'),
+        type: TestContent.name,
+      });
 
       const testScore = new ExtendedTestContentScore(
         {

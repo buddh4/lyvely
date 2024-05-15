@@ -82,10 +82,13 @@ describe('DataPointDao', () => {
       locale: options.locale || 'de',
     });
 
-    const content = new TestTimeSeriesContent(profile, user, {
-      _id: getObjectId(options.uid || 'c1'),
-      config: { timeSeries: new CheckboxNumberDataPointConfig({ interval: interval }) },
-    });
+    const content = new TestTimeSeriesContent(
+      { profile, user },
+      {
+        _id: getObjectId(options.uid || 'c1'),
+        config: { timeSeries: new CheckboxNumberDataPointConfig({ interval: interval }) },
+      },
+    );
 
     const dataPoint = await dao.save(
       new NumberDataPoint(profile, user, content, {

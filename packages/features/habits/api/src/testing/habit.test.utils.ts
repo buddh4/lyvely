@@ -93,7 +93,6 @@ export class HabitTestDataUtil extends ProfileTestDataUtils {
     const model = Habit.create({ profile, user }, initData);
     if (overwrite) overwrite(model);
     const habit = new this.HabitModel(model);
-    Object.assign(habit, overwrite);
     await habit.save();
     return createBaseDocumentInstance(Habit, habit.toObject());
   }

@@ -13,9 +13,8 @@ import { useRouter } from 'vue-router';
 import { watch, ref, computed, toRefs } from 'vue';
 import { storeToRefs } from 'pinia';
 
-const { visible, icon, iconColor, iconClass, title, message, buttonType } = toRefs(
-  useGlobalDialogStore(),
-);
+const { visible, icon, iconColor, iconClass, title, message, buttonType } =
+  toRefs(useGlobalDialogStore());
 
 const layout = ref<string | undefined>();
 const router = useRouter();

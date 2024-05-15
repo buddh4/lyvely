@@ -12,6 +12,7 @@ import { translate } from '@/i18n';
 import { useRouter } from 'vue-router';
 import { profileRoute } from '@/profiles/routes/profile-route.helper';
 import { useGlobalPermissions } from '@/common/composables';
+import { isTouchScreen } from '@lyvely/ui';
 
 const props = defineProps<{
   oid?: string;
@@ -55,7 +56,7 @@ const { isAllowed: canCreateUserProfile } = useGlobalPermissions(CreateUserProfi
       v-model="model"
       label-key="profiles.create.properties"
       :validator="validator">
-      <ly-text-field property="name" :required="true" />
+      <ly-text-field property="name" :required="true" :autofocus="!isTouchScreen()" />
       <ly-textarea property="description" />
       <ly-badge-picker
         v-model="model.usage"

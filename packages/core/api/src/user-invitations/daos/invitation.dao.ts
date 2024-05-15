@@ -9,7 +9,7 @@ export class InvitationDao extends AbstractDao<Invitation> {
   protected model: Model<Invitation>;
 
   countInvitesByUserThisWeek(user: DocumentIdentity<User>) {
-    return this.model.count({
+    return this.model.countDocuments({
       updatedAt: { $gte: subtractDays(new Date(), 7) },
     });
   }

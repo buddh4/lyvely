@@ -23,7 +23,7 @@ export class CreateProfileModel {
   @Expose()
   @IsString()
   @Length(MIN_PROFILE_NAME_LENGTH, MAX_PROFILE_NAME_LENGTH)
-  @Matches(VALID_DISPLAY_NAME_REGEX)
+  @Matches(VALID_DISPLAY_NAME_REGEX, { message: 'profiles.validation.name_regex' })
   name: string;
 
   @Expose()

@@ -149,7 +149,7 @@ export class ProfilesController implements ProfilesEndpoint {
   @ProfileEndpoint()
   @ProfileRoleLevel(ProfileRelationRole.Admin)
   @UseGuards(UserThrottlerGuard)
-  @UserThrottle(20, 60)
+  @UserThrottle(20, 60_000)
   @UseInterceptors(FileInterceptor('file'))
   async updateAvatar(
     @UploadedFile(AvatarUploadPipe) file: IFileInfo,

@@ -66,10 +66,10 @@ describe('ContentReadPolicy', () => {
       }
     }
 
-    const { owner, profile, memberContext } = await testData.createSimpleGroup();
+    const { owner, ownerContext, profile, memberContext } = await testData.createSimpleGroup();
 
-    const content1 = new TestContent(profile, owner, <any>{ value: 'shouldFail' });
-    const content2 = new TestContent(profile, owner, <any>{ value: 'test' });
+    const content1 = new TestContent(ownerContext, <any>{ value: 'shouldFail' });
+    const content2 = new TestContent(ownerContext, <any>{ value: 'test' });
 
     (<ProfileContentContext>memberContext).content = content1;
 
@@ -87,7 +87,7 @@ describe('ContentReadPolicy', () => {
 
     const { user, profile, context } = await testData.createUserAndProfile();
 
-    const content = new TestContent(profile, user);
+    const content = new TestContent(context);
     content.meta.visibility = RoleVisibilityLevel.Owner;
 
     (<ProfileContentContext>context).content = content;
@@ -100,9 +100,9 @@ describe('ContentReadPolicy', () => {
       value: string;
     }
 
-    const { owner, memberContext, profile } = await testData.createSimpleGroup();
+    const { owner, ownerContext, memberContext, profile } = await testData.createSimpleGroup();
 
-    const content = new TestContent(profile, owner);
+    const content = new TestContent(ownerContext);
     content.meta.visibility = RoleVisibilityLevel.Owner;
 
     (<ProfileContentContext>memberContext).content = content;

@@ -64,7 +64,7 @@ export class UserAccountController implements UserAccountEndpoint {
 
   @Post(UserAccountEndpoints.UPDATE_AVATAR)
   @UseGuards(UserThrottlerGuard)
-  @UserThrottle(20, 60)
+  @UserThrottle(20, 60_000)
   @UseInterceptors(FileInterceptor('file'))
   async updateAvatar(@UploadedFile(AvatarUploadPipe) file: IFileInfo, @Req() req: UserRequest) {
     const avatar = await this.accountAvatarService.updateAvatar(req.user, file);
@@ -73,7 +73,7 @@ export class UserAccountController implements UserAccountEndpoint {
 
   @Post(UserAccountEndpoints.UPDATE_GAVATAR)
   @UseGuards(UserThrottlerGuard)
-  @UserThrottle(20, 60)
+  @UserThrottle(20, 60_000)
   async updateGravatar(@Req() req: UserRequest) {
     const avatar = await this.accountAvatarService.updateGravatar(req.user);
     return new AvatarModel(avatar);

@@ -1,4 +1,11 @@
-import { User, CreatedAsType, Profile, Tag, UserAssignmentStrategy } from '@lyvely/api';
+import {
+  User,
+  CreatedAsType,
+  Profile,
+  Tag,
+  UserAssignmentStrategy,
+  buildProfileTest,
+} from '@lyvely/api';
 import { Habit } from './index';
 import { CalendarInterval } from '@lyvely/dates';
 import { CreateHabitModel, HabitModel } from '@lyvely/habits-interface';
@@ -10,7 +17,7 @@ import {
   NumberDataPointConfig,
 } from '@lyvely/time-series';
 import { PropertiesOf } from '@lyvely/common';
-import { buildTest, getObjectId, LyvelyTestingModule } from '@lyvely/testing';
+import { getObjectId, LyvelyTestingModule } from '@lyvely/testing';
 import { instanceToPlain } from 'class-transformer';
 import { HabitTestDataUtil, habitTestPlugin } from '../testing';
 import { HabitsDao } from '../daos';
@@ -30,7 +37,7 @@ describe('Habit', () => {
     profile = new Profile(user, { _id: getObjectId('profileA') });
     profile.tags = [new Tag({ _id: getObjectId('Test1'), name: 'Test1' })];
 
-    testingModule = await buildTest(TEST_KEY)
+    testingModule = await buildProfileTest(TEST_KEY)
       .plugins([habitTestPlugin])
       .providers([HabitsDao])
       .compile();

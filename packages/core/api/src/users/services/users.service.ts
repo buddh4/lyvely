@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { UserDao } from '../daos';
 import { OptionalUser, RefreshToken, User, UserNotificationState } from '../schemas';
-import { DocumentIdentity, IBaseQueryOptions } from '@/core';
+import { DocumentIdentity, UpdateOptions } from '@/core';
 import { IntegrityException, UserStatus, ProfileType } from '@lyvely/interface';
 import { isEmail } from 'class-validator';
 
@@ -62,11 +62,11 @@ export class UsersService {
     return this.userDao.findAllByIds(ids);
   }
 
-  async incrementProfileCount(owner: User, type: ProfileType, options?: IBaseQueryOptions) {
+  async incrementProfileCount(owner: User, type: ProfileType, options?: UpdateOptions) {
     return this.userDao.incrementProfileCount(owner, type, 1, options);
   }
 
-  async decrementProfileCount(owner: User, type: ProfileType, options?: IBaseQueryOptions) {
+  async decrementProfileCount(owner: User, type: ProfileType, options?: UpdateOptions) {
     return this.userDao.incrementProfileCount(owner, type, -1, options);
   }
 

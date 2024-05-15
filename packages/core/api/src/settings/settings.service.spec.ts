@@ -12,7 +12,7 @@ import { SettingsService } from './settings.service';
 import { InjectModel, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { SettingsRegistry } from './settings.registry';
-import { type BaseModelData, Constructor } from '@lyvely/common';
+import { type BaseModelData, type Type } from '@lyvely/common';
 import { FieldValidationException } from '@lyvely/interface';
 
 const settingRegistry = new SettingsRegistry();
@@ -38,7 +38,7 @@ class TestSettingTargetDao extends AbstractDao<TestSettingTarget> {
   @InjectModel(TestSettingTarget.name)
   protected model: Model<TestSettingTarget>;
 
-  getModelConstructor(model: LeanDoc<TestSettingTarget>): Constructor<TestSettingTarget> {
+  getModelConstructor(model: LeanDoc<TestSettingTarget>): Type<TestSettingTarget> {
     return TestSettingTarget;
   }
 

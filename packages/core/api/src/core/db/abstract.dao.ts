@@ -11,14 +11,20 @@ import {
   Model,
   QueryWithHelpers,
   UpdateQuery,
-  QueryOptions,
   ClientSession,
   ProjectionType,
   MongooseBulkWriteOptions,
+  MongooseUpdateQueryOptions,
+  MongooseBaseQueryOptions,
   PipelineStage,
 } from 'mongoose';
 import { BaseDocument } from './base.document';
-import { BulkWriteResult, CollationOptions } from 'mongodb';
+import {
+  BulkWriteResult,
+  CollationOptions,
+  UpdateOptions as MongoUpdateOptions,
+  DeleteOptions as MongoDeleteOptions,
+} from 'mongodb';
 import { Inject, Logger } from '@nestjs/common';
 import { ModelSaveEvent } from './dao.events';
 import { EventEmitter2 } from '@nestjs/event-emitter';
@@ -90,7 +96,6 @@ export interface IFindAndUpdateQueryOptions<T extends BaseDocument>
 }
 
 export type SaveOptions = IBaseQueryOptions;
-export type DeleteOptions = IBaseQueryOptions;
 
 export interface IFetchQueryFilterOptions<T extends BaseDocument>
   extends IBaseFetchQueryOptions<T> {
@@ -111,17 +116,24 @@ export const defaultFetchOptions = {
   },
 };
 
+export type UpdateOptions<T = unknown> = IUpdateQueryOptions &
+  MongoUpdateOptions &
+  MongooseUpdateQueryOptions<T>;
+export type DeleteOptions<T = unknown> = IBaseQueryOptions &
+  MongoDeleteOptions &
+  MongooseBaseQueryOptions<T>;
+
 export type PartialEntityData<T extends BaseDocument> = Partial<EntityData<T>>;
 
 /**
- * Abstract Data Access Object provides basic data access features for sub classes.
+ * Abstract Data Access Object provides basic data access features for subclasses.
  * This class will hardly use the mongoose Model API but instead mainly utilizes the mongoose Query API, which means
  * we hardly interact with mongoose Models and mainly facilitate the `lean` function and do partial document updates like `$set`
  * manually. This class provides many helper functions to support writing fetch and update queries.
  * The advantage of this is that you can directly work with your model class instances and enables a better abstraction
  * by only using mongoose for data access and schema validation.
  *
- * Sub classes may extend this feature for complex queries or updates of a certain model.
+ * Subclasses may extend this feature for complex queries or updates of a certain model.
  *
  * @example
  *
@@ -139,7 +151,11 @@ export type PartialEntityData<T extends BaseDocument> = Partial<EntityData<T>>;
  *   }
  * }
  */
-export abstract class AbstractDao<T extends BaseDocument, TVersions extends BaseDocument = T> {
+export abstract class AbstractDao<
+  T extends BaseDocument,
+  TVersions extends BaseDocument = T,
+  TDoc = T & Document,
+> {
   /**
    * The mongoose model, which is usually injected with @InjectModel()
    * @protected
@@ -669,7 +685,7 @@ export abstract class AbstractDao<T extends BaseDocument, TVersions extends Base
   async updateOneSetById(
     id: DocumentIdentity<T>,
     updateSet: UpdateQuerySet<T>,
-    options?: IBaseQueryOptions,
+    options?: UpdateOptions<TDoc>,
   ): Promise<boolean> {
     return this.updateOneById(id, { $set: updateSet }, options);
   }
@@ -684,7 +700,7 @@ export abstract class AbstractDao<T extends BaseDocument, TVersions extends Base
   async updateOneUnsetById(
     id: DocumentIdentity<T>,
     updateUnset: UpdateQueryUnset<T>,
-    options?: IBaseQueryOptions,
+    options?: UpdateOptions<TDoc>,
   ): Promise<boolean> {
     return this.updateOneById(id, { $unset: updateUnset }, options);
   }
@@ -698,7 +714,7 @@ export abstract class AbstractDao<T extends BaseDocument, TVersions extends Base
   async updateOneById(
     id: DocumentIdentity<T>,
     update: UpdateQuery<T>,
-    options?: IUpdateQueryOptions,
+    options?: UpdateOptions<TDoc>,
   ): Promise<boolean> {
     return this.updateOneByFilter(id, update, {}, options);
   }
@@ -714,7 +730,7 @@ export abstract class AbstractDao<T extends BaseDocument, TVersions extends Base
     identity: DocumentIdentity<T>,
     update: UpdateQuery<T>,
     filter?: FilterQuery<T>,
-    options?: QueryOptions,
+    options?: UpdateOptions<T>,
   ): Promise<boolean> {
     // TODO: trigger events
     const clonedUpdate = cloneDeep(update);
@@ -749,7 +765,7 @@ export abstract class AbstractDao<T extends BaseDocument, TVersions extends Base
    * @param options
    * @protected
    */
-  protected getModel(options?: IBaseQueryOptions): Model<T> {
+  protected getModel(options?: IBaseQueryOptions | null): Model<T> {
     let model = this.model;
 
     if (options?.discriminator) {
@@ -786,7 +802,7 @@ export abstract class AbstractDao<T extends BaseDocument, TVersions extends Base
    */
   async updateBulk(
     updates: { id: DocumentIdentity<T>; update: UpdateQuery<T> }[],
-    options?: IBaseQueryOptions,
+    options?: MongooseBulkWriteOptions,
   ): Promise<Pick<BulkWriteResult, 'modifiedCount'>> {
     if (!updates.length) return { modifiedCount: 0 };
     const { modifiedCount } = await this.getModel(options).bulkWrite(
@@ -809,7 +825,7 @@ export abstract class AbstractDao<T extends BaseDocument, TVersions extends Base
    */
   async updateSetBulk(
     updates: { id: DocumentIdentity<T>; update: UpdateQuerySet<T> }[],
-    options?: IBaseQueryOptions,
+    options?: MongooseBulkWriteOptions,
   ): Promise<Pick<BulkWriteResult, 'modifiedCount'>> {
     if (!updates.length) return { modifiedCount: 0 };
     const { modifiedCount } = await this.getModel(options).bulkWrite(
@@ -819,7 +835,7 @@ export abstract class AbstractDao<T extends BaseDocument, TVersions extends Base
           update: <any>{ $set: update },
         },
       })),
-      <MongooseBulkWriteOptions>options,
+      options,
     );
 
     return { modifiedCount };

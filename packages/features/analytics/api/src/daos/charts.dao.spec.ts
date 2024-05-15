@@ -6,7 +6,6 @@ import {
   User,
   buildProfileTest,
   getObjectId,
-  createObjectId,
 } from '@lyvely/api';
 import { ChartsDao } from '../daos';
 import { analyticsTestPlugin } from '../testing';
@@ -57,10 +56,13 @@ describe('ChartSeriesService', () => {
     series: ChartSeriesConfig[],
   ): Promise<Chart<TimeSeriesChartConfig>> {
     return chartsDao.save(
-      new Chart<TimeSeriesChartConfig>(profile, user, {
-        content: new ContentDataType({ title: 'Test' }),
-        config: new TimeSeriesChartConfig({ series }),
-      }),
+      new Chart<TimeSeriesChartConfig>(
+        { profile, user },
+        {
+          content: new ContentDataType({ title: 'Test' }),
+          config: new TimeSeriesChartConfig({ series }),
+        },
+      ),
     ) as Promise<Chart<TimeSeriesChartConfig>>;
   }
 

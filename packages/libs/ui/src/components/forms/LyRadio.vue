@@ -64,7 +64,7 @@ onMounted(() => {
 <template>
   <div :class="wrapperClass">
     <div class="flex">
-      <label :for="inputId" class="inline-flex items-center">
+      <label :for="radioId" class="inline-flex items-center">
         <input
           :id="radioId"
           :data-id="radioDataId"
@@ -83,7 +83,7 @@ onMounted(() => {
         <span v-if="label" class="label ml-2 text-sm">{{ t(label) }}</span>
       </label>
     </div>
-    <span v-if="showHelpText && helpText" class="text-sm text-dimmed">
+    <span v-if="showHelpText && helpText" class="text-dimmed text-sm">
       {{ t(helpText) }}
     </span>
   </div>
