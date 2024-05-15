@@ -1,16 +1,16 @@
 import { TaskTestDataUtil } from './task-test.utils';
 import {
-  contentTestPlugin,
+  contentITestPlugin,
   getContentModelDefinition,
   getContentScoreDefinition,
-  profilesTestPlugin,
+  profilesITestPlugin,
 } from '@lyvely/api';
 import { Task, TaskSchema, TaskScore, TaskScoreSchema } from '../schemas';
 
-export const taskTestPlugin = {
+export const taskITestPlugin = {
   apply(builder) {
     builder
-      .plugins([profilesTestPlugin, contentTestPlugin])
+      .plugins([profilesITestPlugin, contentITestPlugin])
       .providers([TaskTestDataUtil])
       .models([
         getContentModelDefinition([{ name: Task.name, schema: TaskSchema }]),

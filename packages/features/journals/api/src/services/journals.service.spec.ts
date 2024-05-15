@@ -19,7 +19,7 @@ import {
 } from '@lyvely/api';
 import { JournalsService } from '../services';
 import { JournalsDao } from '../daos';
-import { LyvelyTestingModule } from '@lyvely/testing';
+import { ILyvelyTestingModule } from '@lyvely/testing';
 import { Journal, JournalSchema } from '../schemas';
 
 const Models = [
@@ -32,7 +32,7 @@ const Models = [
 
 describe('JournalService', () => {
   let journalsService: JournalsService;
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let testData: ProfileTestDataUtils;
 
   const TEST_KEY = 'journals_service';

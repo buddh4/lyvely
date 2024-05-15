@@ -1,4 +1,4 @@
-import { LyvelyTestingModule } from '@/testing';
+import { ILyvelyTestingModule } from '@/testing';
 import { buildProfileTest, ProfileTestDataUtils } from '@/profiles';
 import {
   ProfileRelationRole,
@@ -17,11 +17,11 @@ import {
   UserInvitation,
   UserInvitationSchema,
 } from '../index';
-import { mailTestPlugin, TestMailService } from '@/mails';
-import { NotificationQueueTester, notificationTestPlugin } from '@/notifications';
+import { mailITestPlugin, TestMailService } from '@/mails';
+import { NotificationQueueTester, notificationITestPlugin } from '@/notifications';
 
 describe('SendInvitations', () => {
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let testData: ProfileTestDataUtils;
   let invitesService: SendInvitationsService;
   let notificationQueueTester: NotificationQueueTester;
@@ -30,7 +30,7 @@ describe('SendInvitations', () => {
 
   beforeEach(async () => {
     testingModule = await buildProfileTest(TEST_KEY)
-      .plugins([mailTestPlugin, notificationTestPlugin])
+      .plugins([mailITestPlugin, notificationITestPlugin])
       .imports([JwtModule])
       .providers([SendInvitationsService, InvitationDao])
       .models([

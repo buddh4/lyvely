@@ -1,10 +1,10 @@
 import { LyvelyTestBuilder } from '@/testing';
-import { usersTestPlugin } from './user-test.plugin';
+import { usersITestPlugin } from './user-test.plugin';
 
 export class UserTestBuilder extends LyvelyTestBuilder {
   override init() {
     super.init();
-    this.plugins([usersTestPlugin]);
+    this.plugins([usersITestPlugin]);
   }
 }
 

@@ -10,7 +10,7 @@ import {
   Model,
   buildContentTest,
 } from '@lyvely/api';
-import { getObjectId, LyvelyTestingModule } from '@lyvely/testing';
+import { getObjectId, ILyvelyTestingModule } from '@lyvely/testing';
 import { MilestonesRelationsService } from './milestones-relations.service';
 import { Schema, SchemaFactory } from '@nestjs/mongoose';
 import { CalendarInterval, formatDate } from '@lyvely/dates';
@@ -66,7 +66,7 @@ class TestMilestoneRelationProvider {
 }
 
 describe('MileStonesRelationService', () => {
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let testData: ProfileTestDataUtils;
   let service: MilestonesRelationsService;
   let TestContentModel: Model<TestContent>;

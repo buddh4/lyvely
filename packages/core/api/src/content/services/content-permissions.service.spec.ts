@@ -1,4 +1,4 @@
-import { LyvelyTestingModule } from '@/testing';
+import { ILyvelyTestingModule } from '@/testing';
 import { buildProfileTest, ProfilePermissionsService, ProfileTestDataUtils } from '@/profiles';
 import {
   BasePermissionType,
@@ -9,7 +9,7 @@ import {
 } from '@lyvely/interface';
 
 describe('ContentPermissionsService', () => {
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let testDataUtils: ProfileTestDataUtils;
   let permissionsService: ProfilePermissionsService;
 

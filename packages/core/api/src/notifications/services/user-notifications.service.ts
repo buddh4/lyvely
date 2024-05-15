@@ -233,12 +233,6 @@ export class UserNotificationsService extends AbstractStreamService<
     }
   }
 
-  private deleteNotification(user: User, type: string, filter: any) {
-    this.streamEntryDao.deleteMany({
-      uid: assureObjectId(user),
-    });
-  }
-
   createQueryFilter(context: IUserContext): FilterQuery<UserNotification> {
     return { uid: assureObjectId(context.user) };
   }

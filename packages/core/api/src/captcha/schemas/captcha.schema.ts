@@ -2,7 +2,6 @@ import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { BaseDocument, type StrictBaseDocumentData, type TObjectId } from '@/core';
 import { addMilliSeconds } from '@lyvely/dates';
 import ms from 'ms';
-import type { StrictBaseModelData } from '@lyvely/common';
 
 export const TOKEN_EXPIRES_IN = '2m';
 

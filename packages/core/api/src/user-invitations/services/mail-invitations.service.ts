@@ -76,7 +76,7 @@ export class MailInvitationService extends AbstractInvitationsService<
   private verifyToken(token: string): Promise<boolean> {
     if (!token) return Promise.resolve(false);
     return new Promise((resolve) => {
-      jwt.verify(token, this.configService.get('auth.jwt.verify.secret')!, (err, decoded) => {
+      jwt.verify(token, this.configService.get('auth.jwt.verify.secret')!, (err) => {
         resolve(!err);
       });
     });

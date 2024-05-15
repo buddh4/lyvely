@@ -1,4 +1,4 @@
-import { getObjectId, LyvelyTestingModule } from '@/testing';
+import { getObjectId, ILyvelyTestingModule } from '@/testing';
 import {
   ProfileMemberGroup,
   ProfilePermissionSettingsService,
@@ -16,7 +16,7 @@ import {
 } from '@lyvely/interface';
 
 describe('ProfilePermissionsService', () => {
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let testDataUtils: ProfileTestDataUtils;
   let permissionSettingsService: ProfilePermissionSettingsService;
 

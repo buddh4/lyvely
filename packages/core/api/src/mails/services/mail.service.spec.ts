@@ -1,16 +1,16 @@
 import { MailService } from './mail.service';
 import fs from 'fs';
-import { buildTest, LyvelyTestingModule } from '@/testing';
-import { mailTestPlugin } from '../testing';
+import { buildTest, ILyvelyTestingModule } from '@/testing';
+import { mailITestPlugin } from '../testing';
 
 describe('MailService', () => {
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let mailService: MailService;
 
   const TEST_KEY = 'membership_dao';
 
   beforeEach(async () => {
-    testingModule = await buildTest(TEST_KEY).plugins([mailTestPlugin]).compile();
+    testingModule = await buildTest(TEST_KEY).plugins([mailITestPlugin]).compile();
     mailService = testingModule.get(MailService);
   });
 

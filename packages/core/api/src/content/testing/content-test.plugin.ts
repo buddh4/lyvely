@@ -1,9 +1,9 @@
 import { ContentCoreModule } from '../content.module';
-import { TestPlugin } from '@/testing';
+import { ITestPlugin } from '@/testing';
 import { LiveModule } from '@/live';
 
-export const contentTestPlugin = {
+export const contentITestPlugin = {
   apply(builder) {
     builder.imports([ContentCoreModule, LiveModule]);
   },
-} as TestPlugin;
+} as ITestPlugin;

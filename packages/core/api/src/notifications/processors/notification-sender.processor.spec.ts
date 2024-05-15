@@ -1,6 +1,6 @@
-import { LyvelyTestingModule } from '@/testing';
+import { ILyvelyTestingModule } from '@/testing';
 import { NotificationDao, Notification as NotificationDecorator } from '../index';
-import { Notification, NotificationContext, NotificationType, RenderFormat } from '../schemas';
+import { Notification, INotificationContext, NotificationType, RenderFormat } from '../schemas';
 import { SingleUserSubscription } from '@/user-subscriptions';
 import { NotificationSenderProcessor } from './notification-sender.processor';
 import { UserNotificationsService } from '../services';
@@ -11,7 +11,7 @@ import { UrlRoute } from '@lyvely/interface';
 import { BaseModel, type BaseModelData, escapeHtmlIf } from '@lyvely/common';
 import { TestNotificationCategory } from '../notifications';
 import { buildProfileTest, ProfileTestDataUtils } from '@/profiles';
-import { notificationTestPlugin } from '../testing';
+import { notificationITestPlugin } from '../testing';
 
 const TEST_KEY = 'NotificationSendProcessor';
 
@@ -27,7 +27,7 @@ export class MyTestNotification extends NotificationType {
     BaseModel.init(this, data);
   }
 
-  getBody(context: NotificationContext): Translatable {
+  getBody(context: INotificationContext): Translatable {
     return {
       key: 'test.notification.body',
       params: {
@@ -36,7 +36,7 @@ export class MyTestNotification extends NotificationType {
     };
   }
 
-  getTitle(format: NotificationContext): Translatable {
+  getTitle(format: INotificationContext): Translatable {
     return { key: 'test.notification.title' };
   }
 
@@ -50,14 +50,14 @@ export class MyTestNotification extends NotificationType {
 }
 
 describe('NotificationSendProcessor', () => {
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let notificationDao: NotificationDao;
   let testData: ProfileTestDataUtils;
   let processor: NotificationSenderProcessor;
   let userNotificationService: UserNotificationsService;
 
   beforeEach(async () => {
-    testingModule = await buildProfileTest(TEST_KEY).plugins([notificationTestPlugin]).compile();
+    testingModule = await buildProfileTest(TEST_KEY).plugins([notificationITestPlugin]).compile();
     notificationDao = testingModule.get(NotificationDao);
     testData = testingModule.get(ProfileTestDataUtils);
     processor = testingModule.get(NotificationSenderProcessor);

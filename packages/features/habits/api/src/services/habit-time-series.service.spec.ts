@@ -1,24 +1,24 @@
 import { CalendarPlanFilter } from '@lyvely/calendar-plan';
 import { CalendarInterval } from '@lyvely/dates';
 import { User, Profile, sortBySortOrder, buildProfileTest } from '@lyvely/api';
-import { HabitTestDataUtil, habitTestPlugin } from '../testing';
+import { HabitTestDataUtil, habitITestPlugin } from '../testing';
 import { HabitDataPointDao, HabitsDao } from '../daos';
 import { HabitDataPointService } from './habit-data-point.service';
 import { HabitsService } from './habits.service';
 import { Habit } from '../schemas';
 import { HabitTimeSeriesService } from './habit-time-series.service';
-import { LyvelyTestingModule } from '@lyvely/testing';
+import { ILyvelyTestingModule } from '@lyvely/testing';
 
 describe('HabitTimeSeriesService', () => {
   let habitsTimeSeriesService: HabitTimeSeriesService;
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let testData: HabitTestDataUtil;
 
   const TEST_KEY = 'habit_time_series_service';
 
   beforeEach(async () => {
     testingModule = await buildProfileTest(TEST_KEY)
-      .plugins([habitTestPlugin])
+      .plugins([habitITestPlugin])
       .providers([
         HabitsDao,
         HabitDataPointDao,

@@ -1,4 +1,4 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, SchemaFactory } from '@nestjs/mongoose';
 import { UserEmailModel } from '@lyvely/interface';
 import { PropertiesOf, validateEmail } from '@lyvely/common';
 import { NestedSchema } from '@/core';

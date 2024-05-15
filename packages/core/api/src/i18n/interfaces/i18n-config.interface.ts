@@ -1,6 +1,6 @@
 import { ConfigurationPath } from '@/config';
 
-export interface I18nConfig {
+export interface I18nConfigIF {
   modules: {
     i18n: {
       locales?: string[];
@@ -9,4 +9,4 @@ export interface I18nConfig {
   };
 }
 
-export type I18nConfigPath = ConfigurationPath<I18nConfig>;
+export type I18nConfigPath = ConfigurationPath<I18nConfigIF>;

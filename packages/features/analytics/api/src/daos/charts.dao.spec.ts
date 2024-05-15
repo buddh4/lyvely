@@ -1,5 +1,5 @@
 import {
-  LyvelyTestingModule,
+  ILyvelyTestingModule,
   ContentDataType,
   Profile,
   ProfileTestDataUtils,
@@ -8,7 +8,7 @@ import {
   getObjectId,
 } from '@lyvely/api';
 import { ChartsDao } from '../daos';
-import { analyticsTestPlugin } from '../testing';
+import { analyticsITestPlugin } from '../testing';
 import {
   Chart,
   ChartSeriesConfig,
@@ -23,14 +23,14 @@ import {
 
 describe('ChartSeriesService', () => {
   let chartsDao: ChartsDao;
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let testData: ProfileTestDataUtils;
 
   const TEST_KEY = 'habit_service';
 
   beforeEach(async () => {
     testingModule = await buildProfileTest(TEST_KEY)
-      .plugins([analyticsTestPlugin])
+      .plugins([analyticsITestPlugin])
       .providers([ChartsDao])
       .compile();
     chartsDao = testingModule.get(ChartsDao);

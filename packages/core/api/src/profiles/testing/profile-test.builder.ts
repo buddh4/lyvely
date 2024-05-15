@@ -1,13 +1,13 @@
 import { UserTestBuilder } from '@/users';
-import { policyTestPlugin } from '@/policies';
+import { policyITestPlugin } from '@/policies';
 import { LyvelyTestBuilder } from '@/testing';
-import { profilesTestPlugin } from './profile-test.plugin';
+import { profilesITestPlugin } from './profile-test.plugin';
 import { permissionsTestingPlugin } from '@/permissions';
 
 export class ProfileTestBuilder extends UserTestBuilder {
   override init() {
     super.init();
-    this.plugins([profilesTestPlugin, policyTestPlugin, permissionsTestingPlugin]);
+    this.plugins([profilesITestPlugin, policyITestPlugin, permissionsTestingPlugin]);
   }
 }
 

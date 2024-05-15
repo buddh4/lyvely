@@ -8,14 +8,14 @@ import {
   ProfileVisibilityLevel,
   UniqueConstraintException,
 } from '@lyvely/interface';
-import { LyvelyTestingModule } from '@/testing';
+import { ILyvelyTestingModule } from '@/testing';
 import { GroupProfile, Organization, UserProfile, UserProfileRelation } from '../schemas';
 import { ProfileTestDataUtils } from '../testing';
 import { ProtectedProfileContext } from '../models';
 import { buildProfileTest } from '@/profiles';
 
 describe('ProfileService', () => {
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let profileService: ProfilesService;
   let testData: ProfileTestDataUtils;
 
@@ -475,9 +475,8 @@ describe('ProfileService', () => {
     it('find sub profile by instance', async () => {
       const { owner, organization: myOrg } = await testData.createSimpleOrganization();
       const subProfile = await testData.createSubProfile(owner, myOrg);
-      const { profile, organization } = await profileService.findProfileWithOrganization(
-        subProfile,
-      );
+      const { profile, organization } =
+        await profileService.findProfileWithOrganization(subProfile);
       expect(profile._id).toEqual(subProfile._id);
       expect(organization).toBeDefined();
       expect(organization?._id).toEqual(myOrg._id);

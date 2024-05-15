@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Content, ContentDataType } from '../schemas';
-import { BaseModel, type BaseModelData, type PropertiesOf } from '@lyvely/common';
+import { BaseModel, type BaseModelData } from '@lyvely/common';
 
 @Schema()
 export class TestContentData extends ContentDataType {

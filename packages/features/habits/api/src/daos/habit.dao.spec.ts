@@ -1,12 +1,12 @@
-import { LyvelyTestingModule } from '@lyvely/testing';
+import { ILyvelyTestingModule } from '@lyvely/testing';
 import { CalendarInterval } from '@lyvely/dates';
 import { Habit } from '../schemas';
-import { HabitTestDataUtil, habitTestPlugin } from '../testing';
+import { HabitTestDataUtil, habitITestPlugin } from '../testing';
 import { HabitsDao } from './habits.dao';
 import { buildProfileTest } from '@lyvely/api';
 
 describe('Habits DAO', () => {
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let habitsDao: HabitsDao;
   let testData: HabitTestDataUtil;
 
@@ -14,7 +14,7 @@ describe('Habits DAO', () => {
 
   beforeEach(async () => {
     testingModule = await buildProfileTest(TEST_KEY)
-      .plugins([habitTestPlugin])
+      .plugins([habitITestPlugin])
       .providers([HabitsDao])
       .compile();
     habitsDao = testingModule.get(HabitsDao);

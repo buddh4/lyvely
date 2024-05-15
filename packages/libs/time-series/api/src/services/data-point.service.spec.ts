@@ -1,4 +1,4 @@
-import { LyvelyTestingModule } from '@lyvely/testing';
+import { ILyvelyTestingModule } from '@lyvely/testing';
 import {
   UserAssignmentStrategy,
   User,
@@ -39,7 +39,7 @@ const Models = [
 ];
 
 describe('DataPointService', () => {
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let testData: ProfileTestDataUtils;
   let service: TestDataPointService;
   let TestNumberTimeSeriesContentModel: Model<TestTimeSeriesContent>;

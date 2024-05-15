@@ -1,5 +1,5 @@
 import { ProfileScore, ProfileScoreSchema } from './index';
-import { getObjectId, LyvelyTestingModule } from '@/testing';
+import { getObjectId, ILyvelyTestingModule } from '@/testing';
 import { Model } from '@/core';
 import {
   TestProfileScore,
@@ -11,7 +11,7 @@ import { addDays, toTimingId } from '@lyvely/dates';
 import { UserAssignmentStrategy } from '@lyvely/interface';
 
 describe('ProfileScore', () => {
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let testDataUtils: ProfileTestDataUtils;
   let TestProfileScoreModel: Model<TestProfileScore>;
 

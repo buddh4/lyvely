@@ -12,7 +12,7 @@ export enum RenderFormat {
   PLAINTEXT = 'plain',
 }
 
-export interface NotificationContext {
+export interface INotificationContext {
   format: RenderFormat;
   receiver: User;
 }
@@ -23,8 +23,8 @@ export interface INotificationType {
   profileInfo?: ProfileInfo;
   userInfo?: UserInfo;
   getUrl(): UrlRoute | null;
-  getTitle(format: NotificationContext): Translatable;
-  getBody(format: NotificationContext): Translatable;
+  getTitle(format: INotificationContext): Translatable;
+  getBody(format: INotificationContext): Translatable;
 }
 
 export type TNotificationType = Type<NotificationType> & { typeName: string };
@@ -53,7 +53,7 @@ export abstract class NotificationType implements INotificationType {
     BaseDocument.init(this, data);
   }
 
-  mergeWith(notification: NotificationType) {
+  mergeWith() {
     // Nothing todo
   }
 
@@ -62,18 +62,20 @@ export abstract class NotificationType implements INotificationType {
   }
 
   abstract getUrl(): UrlRoute | null;
-  abstract getTitle(context: NotificationContext): Translatable;
-  abstract getBody(context: NotificationContext): Translatable;
+  abstract getTitle(context: INotificationContext): Translatable;
+  abstract getBody(context: INotificationContext): Translatable;
   abstract getCategory(): string;
 }
 
 @Schema({ discriminatorKey: 'type' })
 export class NotificationSchemaType extends NotificationType implements INotificationType {
-  getBody(format: NotificationContext): Translatable {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  getBody(context: INotificationContext): Translatable {
     throw new NotImplementedException();
   }
 
-  getTitle(format: NotificationContext): Translatable {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  getTitle(context: INotificationContext): Translatable {
     throw new NotImplementedException();
   }
 

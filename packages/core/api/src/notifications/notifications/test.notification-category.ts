@@ -10,7 +10,7 @@ export class TestNotificationCategory implements INotificationCategory {
     return TestNotificationCategory.ID;
   }
 
-  getDefaultPreferences(channel: string): boolean {
+  getDefaultPreferences(): boolean {
     return true;
   }
 

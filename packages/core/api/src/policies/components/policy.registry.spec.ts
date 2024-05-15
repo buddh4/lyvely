@@ -1,10 +1,10 @@
-import { buildTest, LyvelyTestingModule } from '@/testing';
+import { buildTest, ILyvelyTestingModule } from '@/testing';
 import { IPolicy } from '../interfaces';
 import { Injectable } from '@nestjs/common';
 import { LyvelyModule } from '@/core';
 import { usePolicyRegistry } from './policy.registry';
 import { InjectPolicy } from '../decorators/inject-policy.decorator';
-import { policyTestPlugin } from '../testing';
+import { policyITestPlugin } from '../testing';
 
 @Injectable()
 class SomePolicy implements IPolicy<void> {
@@ -55,7 +55,7 @@ class PolicyTestService {
 }
 
 describe('PolicyRegistry', () => {
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let testService: PolicyTestService;
 
   const TEST_KEY = 'PolicyRegistry';
@@ -64,7 +64,7 @@ describe('PolicyRegistry', () => {
 
   beforeEach(async () => {
     testingModule = await buildTest(TEST_KEY)
-      .plugins([policyTestPlugin])
+      .plugins([policyITestPlugin])
       .providers([PolicyTestService])
       .imports([PolicyTestModule])
       .compile();

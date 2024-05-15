@@ -1,14 +1,14 @@
-import { TestPlugin } from '@/testing';
+import { ITestPlugin } from '@/testing';
 import { NotificationsModule } from '../notifications.module';
-import { I18nModule, i18nTestPlugin } from '@/i18n';
-import { mailTestPlugin } from '@/mails';
+import { I18nModule, i18nITestPlugin } from '@/i18n';
+import { mailITestPlugin } from '@/mails';
 import { QUEUE_NOTIFICATIONS_SEND } from '../notification.constants';
 import { BullModule, getQueueToken } from '@nestjs/bullmq';
 import { NotificationQueueTester } from '../services';
 import { LiveModule } from '@/live';
 import { ProfilesModule } from '@/profiles';
 
-export const notificationTestPlugin = {
+export const notificationITestPlugin = {
   apply(builder) {
     builder
       .imports([
@@ -17,7 +17,7 @@ export const notificationTestPlugin = {
         BullModule.registerQueue({ name: QUEUE_NOTIFICATIONS_SEND }),
       ])
       .imports([LiveModule, ProfilesModule])
-      .plugins([i18nTestPlugin, mailTestPlugin])
+      .plugins([i18nITestPlugin, mailITestPlugin])
       .providers([NotificationQueueTester]);
   },
   prepare(moduleBuilder) {
@@ -27,4 +27,4 @@ export const notificationTestPlugin = {
       on: jest.fn(),
     });
   },
-} as TestPlugin;
+} as ITestPlugin;

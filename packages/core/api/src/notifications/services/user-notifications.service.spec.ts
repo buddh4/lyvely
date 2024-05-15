@@ -1,11 +1,11 @@
-import { LyvelyTestingModule } from '@/testing';
+import { ILyvelyTestingModule } from '@/testing';
 import { UserNotificationsService } from './user-notifications.service';
 import { MultiUserSubscription } from '@/user-subscriptions';
 import {
   UserNotification,
   NotificationType,
   RenderFormat,
-  NotificationContext,
+  INotificationContext,
   Notification,
 } from '../index';
 import { buildProfileTest, Profile, ProfileInfo, ProfileTestDataUtils } from '@/profiles';
@@ -18,7 +18,7 @@ import { Prop } from '@nestjs/mongoose';
 import { Notification as BaseNotification } from '../schemas';
 import { Translatable } from '@/i18n';
 import { TestNotificationCategory } from '../notifications';
-import { notificationTestPlugin } from '../testing';
+import { notificationITestPlugin } from '../testing';
 
 const TEST_KEY = 'UserNotificationsService';
 
@@ -29,7 +29,7 @@ export class MyTestNotification extends NotificationType {
 
   nonProp: string;
 
-  getBody(ctx: NotificationContext): Translatable {
+  getBody(ctx: INotificationContext): Translatable {
     return {
       key: 'test.notification.body',
       params: {
@@ -52,14 +52,14 @@ export class MyTestNotification extends NotificationType {
 }
 
 describe('UserNotificationsService', () => {
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let userNotificationsService: UserNotificationsService;
   let notificationDao: NotificationDao;
   let userNotificationDao: UserNotificationDao;
   let testData: ProfileTestDataUtils;
 
   beforeEach(async () => {
-    testingModule = await buildProfileTest(TEST_KEY).plugins([notificationTestPlugin]).compile();
+    testingModule = await buildProfileTest(TEST_KEY).plugins([notificationITestPlugin]).compile();
     userNotificationsService = testingModule.get(UserNotificationsService);
     notificationDao = testingModule.get(NotificationDao);
     userNotificationDao = testingModule.get(UserNotificationDao);

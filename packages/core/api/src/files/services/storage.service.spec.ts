@@ -1,4 +1,4 @@
-import { buildTest, LyvelyTestingModule, TestConfigService } from '@/testing';
+import { buildTest, ILyvelyTestingModule, TestConfigService } from '@/testing';
 import { ConfigService } from '@nestjs/config';
 import type { IStorageConfig } from '../../config';
 import { StorageProvider } from '../providers';
@@ -12,7 +12,7 @@ import { ModuleRef } from '@nestjs/core';
 import { GenericFile } from '../schemas';
 
 describe('StorageService', () => {
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let configService: TestConfigService;
   let moduleRef: ModuleRef;
 

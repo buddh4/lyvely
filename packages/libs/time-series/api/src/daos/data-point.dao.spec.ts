@@ -1,4 +1,4 @@
-import { getObjectId, LyvelyTestingModule } from '@lyvely/testing';
+import { getObjectId, ILyvelyTestingModule } from '@lyvely/testing';
 import {
   CheckboxNumberDataPointConfig,
   DataPointValueType,
@@ -23,7 +23,7 @@ const DataPointModelDefinition = [
 ];
 
 describe('DataPointDao', () => {
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let dao: TestDataPointDao;
 
   const TEST_KEY = 'DataPointDao';

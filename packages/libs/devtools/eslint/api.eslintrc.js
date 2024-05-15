@@ -10,7 +10,7 @@ module.exports = {
     sourceType: 'module',
     tsconfigRootDir: './',
   },
-  plugins: ['prettier', '@typescript-eslint/eslint-plugin', 'import', '@nx'],
+  plugins: ['prettier', '@typescript-eslint/eslint-plugin', 'import'],
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
@@ -62,5 +62,5 @@ module.exports = {
     'multiline-ternary': ['error', 'always-multiline'],
     'function-call-argument-newline': ['error', 'consistent'],
   },
-  ignorePatterns: ['.eslintrc.js', '*.d.ts', 'gulp.js'],
+  ignorePatterns: ['.eslintrc.js', '*.d.ts', 'gulp.js', '*.spec.ts'],
 };

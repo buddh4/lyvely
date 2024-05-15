@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { INotificationChannel } from '../interfaces';
-import { UserSubscriptionContext } from '@/user-subscriptions';
+import { IUserSubscriptionContext } from '@/user-subscriptions';
 import { UserNotification, Notification } from '../schemas';
 import { User } from '@/users';
 import { UserStatus } from '@lyvely/interface';
@@ -17,7 +17,7 @@ export class NotificationDecider {
    * @param userNotification
    */
   checkResend(
-    context: UserSubscriptionContext,
+    context: IUserSubscriptionContext,
     notification: Notification,
     userNotification?: UserNotification,
   ) {
@@ -32,7 +32,7 @@ export class NotificationDecider {
   }
 
   checkChannelDelivery(
-    context: UserSubscriptionContext,
+    context: IUserSubscriptionContext,
     notification: Notification,
     channel: INotificationChannel,
   ) {

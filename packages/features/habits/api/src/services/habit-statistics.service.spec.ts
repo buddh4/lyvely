@@ -1,22 +1,22 @@
-import { HabitTestDataUtil, habitTestPlugin } from '../testing';
+import { HabitTestDataUtil, habitITestPlugin } from '../testing';
 import { HabitDataPointService } from './habit-data-point.service';
 import { HabitDataPointDao } from '../daos';
 import { buildProfileTest, ContentScoreDao, ContentScoreService } from '@lyvely/api';
-import { LyvelyTestingModule } from '@lyvely/testing';
+import { ILyvelyTestingModule } from '@lyvely/testing';
 import { HabitStatisticsService, StatisticAccumulation } from './habit-statistics.service';
 import { CalendarInterval } from '@lyvely/dates';
 
 describe('HabitDataPointService', () => {
   let habitDataPointService: HabitDataPointService;
   let habitStatisticsService: HabitStatisticsService;
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let testData: HabitTestDataUtil;
 
   const TEST_KEY = 'habit_data_point_service';
 
   beforeEach(async () => {
     testingModule = await buildProfileTest(TEST_KEY)
-      .plugins([habitTestPlugin])
+      .plugins([habitITestPlugin])
       .providers([
         HabitDataPointService,
         HabitDataPointDao,

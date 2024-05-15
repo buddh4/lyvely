@@ -8,7 +8,7 @@ import {
   isMultiUserSubscription,
   isProfileUserSubscription,
 } from '../schemas';
-import { UserSubscriptionContext } from '../interfaces';
+import { IUserSubscriptionContext } from '../interfaces';
 import {
   IUserWithProfileRelation,
   Profile,
@@ -29,7 +29,7 @@ export class UserSubscriptionService {
   async getSubscriptionContext(
     subscription: UserSubscription,
     pid?: DocumentIdentity<Profile>,
-  ): Promise<Array<UserSubscriptionContext>> {
+  ): Promise<Array<IUserSubscriptionContext>> {
     if (isSingleUserSubscription(subscription)) {
       return this.getSingleUserSubscriptionContext(subscription, pid);
     }
@@ -49,7 +49,7 @@ export class UserSubscriptionService {
   private async getSingleUserSubscriptionContext(
     subscription: SingleUserSubscription,
     pid?: DocumentIdentity<Profile>,
-  ): Promise<UserSubscriptionContext[]> {
+  ): Promise<IUserSubscriptionContext[]> {
     if (!subscription.uid)
       throw new IntegrityException('SingleUserSubscription without uid requested.');
     const user = await this.usersService.findUserById(subscription.uid);
@@ -65,7 +65,7 @@ export class UserSubscriptionService {
   private async getMultiUserSubscriptionContext(
     subscription: MultiUserSubscription,
     pid?: DocumentIdentity<Profile>,
-  ): Promise<UserSubscriptionContext[]> {
+  ): Promise<IUserSubscriptionContext[]> {
     if (!subscription?.uids?.length) return [];
 
     const users = await this.usersService.findUsersById(subscription.uids);
@@ -81,14 +81,14 @@ export class UserSubscriptionService {
 
   private profileContextToSubscriptionContext(
     ctx: IUserWithProfileRelation,
-  ): UserSubscriptionContext {
+  ): IUserSubscriptionContext {
     const { user, profile, relations } = ctx;
     return { user, profile, profileRelations: relations };
   }
 
   private async getProfileSubscriptionContext(
     pid: DocumentIdentity<Profile>,
-  ): Promise<UserSubscriptionContext[]> {
+  ): Promise<IUserSubscriptionContext[]> {
     if (!pid) return [];
 
     // TODO: This is currently not scalable for profiles with many users, we should split this in batches

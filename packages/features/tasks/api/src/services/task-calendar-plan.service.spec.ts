@@ -1,13 +1,13 @@
 import { CalendarPlanFilter } from '@lyvely/calendar-plan';
-import { TaskTestDataUtil, taskTestPlugin } from '../testing';
+import { TaskTestDataUtil, taskITestPlugin } from '../testing';
 import { TasksDao } from '../daos';
 import { UserDone } from '../schemas';
 import { TaskCalendarPlanService } from './task-calendar-plan.service';
-import { LyvelyTestingModule } from '@lyvely/testing';
+import { ILyvelyTestingModule } from '@lyvely/testing';
 import { buildProfileTest } from '@lyvely/api';
 
 describe('TaskCalendarPlanService', () => {
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let taskTimeSeriesService: TaskCalendarPlanService;
   let testData: TaskTestDataUtil;
 
@@ -15,7 +15,7 @@ describe('TaskCalendarPlanService', () => {
 
   beforeEach(async () => {
     testingModule = await buildProfileTest(TEST_KEY)
-      .plugins([taskTestPlugin])
+      .plugins([taskITestPlugin])
       .providers([TasksDao, TaskCalendarPlanService])
       .compile();
     taskTimeSeriesService = testingModule.get(TaskCalendarPlanService);

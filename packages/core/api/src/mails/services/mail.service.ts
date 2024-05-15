@@ -89,8 +89,8 @@ export class MailService {
     const extension = this.isJsonTransport(info)
       ? `json`
       : this.isStreamTransport(info)
-      ? 'eml'
-      : '';
+        ? 'eml'
+        : '';
     return `${this.getMessageFileDir()}/${messageId}.${extension}`;
   }
 

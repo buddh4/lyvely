@@ -1,12 +1,12 @@
 import { buildTest } from '@/testing';
-import { i18nTestPlugin } from '../testing';
+import { i18nITestPlugin } from '../testing';
 import { I18n } from '../components';
 
 describe('I18nModuleLoader', () => {
   let i18n: I18n;
 
   beforeEach(async () => {
-    const test = await buildTest('I18nModuleLoader').plugins([i18nTestPlugin]).compile();
+    const test = await buildTest('I18nModuleLoader').plugins([i18nITestPlugin]).compile();
     i18n = test.get(I18n);
   }, 50000);
 

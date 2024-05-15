@@ -1,4 +1,4 @@
-import { LyvelyTestingModule } from '@/testing';
+import { ILyvelyTestingModule } from '@/testing';
 import { ProfileVisibilityLevel } from '@lyvely/interface';
 import { buildProfileTest, ProfileTestDataUtils } from '../testing';
 import { LyvelyModule } from '@/core';
@@ -8,7 +8,7 @@ import { ProfileContext } from '../models';
 import { getPolicyToken } from '../../policies';
 
 describe('ProfileVisibilityPolicy', () => {
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let testData: ProfileTestDataUtils;
   let profileVisibilityPolicy: ProfileVisibilityPolicy;
   let profilesService: ProfilesService;

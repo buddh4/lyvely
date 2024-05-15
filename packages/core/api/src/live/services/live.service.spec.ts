@@ -1,4 +1,4 @@
-import { LyvelyTestingModule } from '@/testing';
+import { ILyvelyTestingModule } from '@/testing';
 import { buildProfileTest, ProfileTestDataUtils } from '@/profiles';
 import { LiveService } from './live.service';
 import { assureStringId } from '@/core';
@@ -6,7 +6,7 @@ import { firstValueFrom } from 'rxjs';
 import { ILiveProfileEvent, ILiveUserEvent } from '@lyvely/interface';
 
 describe('LiveService', () => {
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let liveService: LiveService;
   let testData: ProfileTestDataUtils;
 

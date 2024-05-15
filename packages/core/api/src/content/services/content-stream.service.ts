@@ -22,7 +22,7 @@ export class ContentStreamService extends AbstractStreamService<
     return this.applyFilter(query, filter);
   }
 
-  protected override prepareModel(model: Content) {
+  protected override prepareModel() {
     // Nothing to do.
   }
 

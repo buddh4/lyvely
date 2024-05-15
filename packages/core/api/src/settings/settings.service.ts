@@ -15,18 +15,21 @@ export abstract class SettingsService<TModel extends BaseDocument & { settings: 
     const validationErrors: IFieldValidationResult[] = [];
     if (!updates.length) return true;
 
-    const updateQuery = updates.reduce((result, update) => {
-      const { key, value } = update;
-      const setting = this.settingsRegistry.getSetting(key);
+    const updateQuery = updates.reduce(
+      (result, update) => {
+        const { key, value } = update;
+        const setting = this.settingsRegistry.getSetting(key);
 
-      if (isDefined(setting) && this.validateSettingValue(setting!, value)) {
-        result[`settings.${setting!.key}`] = value;
-      } else {
-        validationErrors.push({ property: key });
-      }
+        if (isDefined(setting) && this.validateSettingValue(setting!, value)) {
+          result[`settings.${setting!.key}`] = value;
+        } else {
+          validationErrors.push({ property: key });
+        }
 
-      return result;
-    }, {} as Record<string, any>);
+        return result;
+      },
+      {} as Record<string, any>,
+    );
 
     if (validationErrors.length) throw new FieldValidationException(validationErrors);
 

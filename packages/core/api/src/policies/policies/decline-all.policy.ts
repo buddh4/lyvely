@@ -5,7 +5,7 @@ import { IPolicy } from '../interfaces';
  * This may be used in cases where a certain feature is not supported.
  */
 export class DeclineAllPolicy implements IPolicy<any> {
-  async verify(context: any): Promise<boolean> {
+  async verify(): Promise<boolean> {
     return false;
   }
 }

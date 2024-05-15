@@ -1,15 +1,15 @@
 import {
-  TestPlugin,
-  contentTestPlugin,
+  ITestPlugin,
+  contentITestPlugin,
   getContentModelDefinition,
-  profilesTestPlugin,
+  profilesITestPlugin,
 } from '@lyvely/api';
 import { Chart, ChartSchema } from '../schemas';
 
-export const analyticsTestPlugin = {
+export const analyticsITestPlugin = {
   apply(builder) {
     builder
-      .plugins([contentTestPlugin, profilesTestPlugin])
+      .plugins([contentITestPlugin, profilesITestPlugin])
       .models([getContentModelDefinition([{ name: Chart.name, schema: ChartSchema }])]);
   },
-} as TestPlugin;
+} as ITestPlugin;

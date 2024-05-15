@@ -1,5 +1,5 @@
 import { INotificationChannel } from '../interfaces';
-import { UserSubscriptionContext } from '@/user-subscriptions';
+import { IUserSubscriptionContext } from '@/user-subscriptions';
 import { INotificationRateLimit, User } from '@/users';
 import {
   Notification,
@@ -46,12 +46,12 @@ export class MailNotificationChannel implements INotificationChannel {
     };
   }
 
-  isActive(user: User): boolean {
+  isActive(): boolean {
     return true;
   }
 
   async send(
-    context: UserSubscriptionContext,
+    context: IUserSubscriptionContext,
     notification: Notification,
     userNotification: UserNotification,
   ): Promise<NotificationChannelDeliveryStatus> {
@@ -68,7 +68,7 @@ export class MailNotificationChannel implements INotificationChannel {
   }
 
   private async sendMail(
-    context: UserSubscriptionContext,
+    context: IUserSubscriptionContext,
     notification: Notification,
     userNotification: UserNotification,
   ) {
@@ -126,7 +126,7 @@ export class MailNotificationChannel implements INotificationChannel {
     );
   }
 
-  private getEmail(context: UserSubscriptionContext) {
+  private getEmail(context: IUserSubscriptionContext) {
     const membershipMail = useUserProfileRelationHelper(
       context.profileRelations || [],
     ).getMembership()?.userInfo.email;

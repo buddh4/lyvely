@@ -11,14 +11,14 @@ import { rootMongooseTestModule } from './mongoose-test.utils';
 
 export type Type<T = any> = new (...args: any[]) => T;
 
-export interface TestPlugin {
+export interface ITestPlugin {
   apply?: (builder: LyvelyTestBuilder) => void;
   prepare?: (moduleBuilder: TestingModuleBuilder) => void;
   afterEach?: (module: TestingModule) => void;
   afterAll?: (module: TestingModule) => void;
 }
 
-export interface LyvelyTestingModule extends TestingModule {
+export interface ILyvelyTestingModule extends TestingModule {
   afterEach(): Promise<void>;
   afterAll(): Promise<void>;
 }

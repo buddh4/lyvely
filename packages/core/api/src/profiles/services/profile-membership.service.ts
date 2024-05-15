@@ -10,12 +10,14 @@ import {
   ProfileMembershipRole,
   ProfileType,
 } from '@lyvely/interface';
-import { Avatar, AvatarService, GravatarService } from '@/avatars';
 import type { ProfileMembershipContext } from '../models';
 
 @Injectable()
 export class ProfileMembershipService {
-  constructor(private readonly membershipDao: MembershipsDao, private usersService: UsersService) {}
+  constructor(
+    private readonly membershipDao: MembershipsDao,
+    private usersService: UsersService,
+  ) {}
 
   /**
    * Retrieves the memberships associated with a given profile.

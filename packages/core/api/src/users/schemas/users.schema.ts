@@ -18,7 +18,6 @@ import {
   getStringEnumValues,
 } from '@lyvely/common';
 import { RefreshToken, RefreshTokenSchema } from './refresh.tokens.schema';
-import { createHash } from 'crypto';
 import {
   UserModel,
   UserStatus,

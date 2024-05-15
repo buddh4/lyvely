@@ -7,7 +7,7 @@ import {
   VerifyEmailDto,
 } from '@lyvely/interface';
 import { User, UsersService, UserTestDataUtils } from '@/users';
-import { TestConfigService, LyvelyTestingModule } from '@/testing';
+import { TestConfigService, ILyvelyTestingModule } from '@/testing';
 import { UserRegistrationModule } from '../user-registration.module';
 import { ConfigService } from '@nestjs/config';
 import {
@@ -19,14 +19,14 @@ import {
 import { assureObjectId, DocumentIdentity } from '@/core';
 import { Profile } from '@/profiles';
 import { UnauthorizedException } from '@nestjs/common';
-import { mailTestPlugin } from '@/mails';
-import { i18nTestPlugin } from '@/i18n';
-import { otpTestPlugin } from '@/otp';
-import { notificationTestPlugin } from '@/notifications';
+import { mailITestPlugin } from '@/mails';
+import { i18nITestPlugin } from '@/i18n';
+import { otpITestPlugin } from '@/otp';
+import { notificationITestPlugin } from '@/notifications';
 import { buildContentTest } from '@/content';
 
 describe('UserRegistrationService', () => {
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let registerService: UserRegistrationService;
   let userService: UsersService;
   let testData: UserTestDataUtils;
@@ -38,7 +38,7 @@ describe('UserRegistrationService', () => {
 
   beforeEach(async () => {
     testingModule = await buildContentTest(TEST_KEY)
-      .plugins([otpTestPlugin, notificationTestPlugin, mailTestPlugin, i18nTestPlugin])
+      .plugins([otpITestPlugin, notificationITestPlugin, mailITestPlugin, i18nITestPlugin])
       .imports([UserRegistrationModule, UserInvitationsModule])
       .compile();
     registerService = testingModule.get<UserRegistrationService>(UserRegistrationService);

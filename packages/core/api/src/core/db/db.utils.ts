@@ -7,7 +7,6 @@ import {
   findByPath,
   assignRawDataTo,
   hasOwnNonNullableProperty,
-  initBaseModelData,
 } from '@lyvely/common';
 import { IntegrityException } from '@lyvely/interface';
 

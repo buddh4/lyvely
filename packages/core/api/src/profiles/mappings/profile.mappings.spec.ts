@@ -1,4 +1,4 @@
-import { getObjectId, LyvelyTestingModule } from '@/testing';
+import { getObjectId, ILyvelyTestingModule } from '@/testing';
 import { buildProfileTest, ProfileContext, ProfileTestDataUtils, Tag } from '@/profiles';
 import { mapType } from '@lyvely/common';
 import { ProfileWithRelationsModel } from '@lyvely/interface';
@@ -6,7 +6,7 @@ import { omit } from 'lodash';
 import { instanceToPlain } from 'class-transformer';
 
 describe('Profile model mapping', () => {
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let testData: ProfileTestDataUtils;
 
   const TEST_KEY = 'profile-mapping';

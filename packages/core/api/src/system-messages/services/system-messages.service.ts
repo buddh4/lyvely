@@ -1,4 +1,4 @@
-import { ContentType, ContentTypeService } from '@/content';
+import { ContentTypeService } from '@/content';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { SystemMessagesDao } from '../daos';
 import { ProtectedProfileContext } from '@/profiles';

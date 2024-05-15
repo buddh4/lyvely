@@ -9,7 +9,7 @@ import { EVENT_MODULE_REGISTRATION, IModuleMetadata, ModuleRegistry } from '@/co
 import { ConfigService } from '@nestjs/config';
 import { I18nConfigPath } from '../interfaces';
 
-export interface I18nModuleLoaderOptions {
+export interface I18nModuleLoaderOptionsIF {
   watch?: boolean;
 }
 
@@ -20,7 +20,7 @@ export class I18nModuleLoader extends I18nLoader implements OnModuleDestroy {
   constructor(
     private moduleRegistry: ModuleRegistry,
     @Inject(I18N_LOADER_OPTIONS)
-    private options: I18nModuleLoaderOptions, //private i18n: I18n,
+    private options: I18nModuleLoaderOptionsIF, //private i18n: I18n,
     private configService: ConfigService<I18nConfigPath>,
   ) {
     super();

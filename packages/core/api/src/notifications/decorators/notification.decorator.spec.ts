@@ -1,20 +1,20 @@
-import { NotificationContext, NotificationType } from '../schemas';
+import { INotificationContext, NotificationType } from '../schemas';
 import { Notification } from './notification.decorator';
 import { Translatable } from '@/i18n';
 import { UrlRoute } from '@lyvely/interface';
-import { buildTest, LyvelyTestingModule } from '@/testing';
+import { buildTest, ILyvelyTestingModule } from '@/testing';
 import { NotificationTypeRegistry } from '../components';
-import { notificationTestPlugin } from '../testing';
+import { notificationITestPlugin } from '../testing';
 import { buildProfileTest } from '@/profiles';
 
 const TEST_KEY = 'Notification decorator';
 
 describe('Notification decorator', () => {
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let notificationRegistry: NotificationTypeRegistry;
 
   beforeEach(async () => {
-    testingModule = await buildProfileTest(TEST_KEY).plugins([notificationTestPlugin]).compile();
+    testingModule = await buildProfileTest(TEST_KEY).plugins([notificationITestPlugin]).compile();
     notificationRegistry = testingModule.get(NotificationTypeRegistry);
   });
 
@@ -33,11 +33,11 @@ describe('Notification decorator', () => {
         super(props);
       }
 
-      getBody(format: NotificationContext): Translatable {
+      getBody(format: INotificationContext): Translatable {
         return '';
       }
 
-      getTitle(format: NotificationContext): Translatable {
+      getTitle(format: INotificationContext): Translatable {
         return '';
       }
 

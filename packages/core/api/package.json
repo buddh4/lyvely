@@ -11,7 +11,8 @@
     "dev:debug": "cross-env NODE_ENV=development  nest start --debug --watch",
     "dev:e2e": "cross-env NODE_ENV=e2e nest start",
     "dev:e2e:debug": "cross-env NODE_ENV=e2e nest start --debug --watch",
-    "lint": "eslint --fix",
+    "lint": "eslint -c .eslintrc.cjs \"src/**/*.{ts,vue}\"",
+    "lint:fix": "eslint -c .eslintrc.cjs \"src/**/*.{ts,vue}\" --fix",
     "format": "prettier \"lib/**/*.ts\" --write",
     "deps": "npx depcruise --config .dependency-cruiser.js src",
     "test": "jest --passWithNoTests",
@@ -72,7 +73,7 @@
   },
   "devDependencies": {
     "@types/minimatch": "^5.1.2",
-    "migrate-mongo": "^10.0.0",
+    "migrate-mongo": "^11.0.0",
     "@types/pug": "2.0.6",
     "del": "^6.1.1",
     "rimraf": "^5.0.5"

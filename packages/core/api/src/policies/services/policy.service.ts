@@ -4,7 +4,10 @@ import { getPolicyToken, IPolicy, PolicyHandler } from '../interfaces';
 
 @Injectable()
 export class PolicyService {
-  constructor(private reflector: Reflector, private moduleRef: ModuleRef) {}
+  constructor(
+    private reflector: Reflector,
+    private moduleRef: ModuleRef,
+  ) {}
 
   async checkEvery<T = any>(context: T, ...policies: PolicyHandler<T>[]): Promise<boolean> {
     if (!policies?.length) return true;

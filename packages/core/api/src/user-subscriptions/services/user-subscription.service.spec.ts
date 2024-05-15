@@ -1,4 +1,4 @@
-import { LyvelyTestingModule } from '@/testing';
+import { ILyvelyTestingModule } from '@/testing';
 import {
   MultiUserSubscription,
   ProfileSubscription,
@@ -9,7 +9,7 @@ import { buildProfileTest, ProfileTestDataUtils } from '@/profiles';
 import { BaseUserProfileRelationType } from '@lyvely/interface';
 
 describe('UserSubscriptionService', () => {
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let testData: ProfileTestDataUtils;
   let userSubscriptionService: UserSubscriptionService;
 

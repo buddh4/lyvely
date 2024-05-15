@@ -1,5 +1,5 @@
 import { ProfileScoreTypeDao } from '../daos';
-import { Profile, ProfileScore } from '../schemas';
+import { ProfileScore } from '../schemas';
 import { createBaseDocumentInstance } from '@/core';
 import { ProfilesService } from './profiles.service';
 import { Injectable } from '@nestjs/common';

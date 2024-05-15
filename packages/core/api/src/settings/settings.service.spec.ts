@@ -7,7 +7,7 @@ import {
   Model,
   type TObjectId,
 } from '@/core';
-import { buildTest, LyvelyTestingModule } from '@/testing';
+import { buildTest, ILyvelyTestingModule } from '@/testing';
 import { SettingsService } from './settings.service';
 import { InjectModel, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Inject, Injectable, Logger } from '@nestjs/common';
@@ -66,7 +66,7 @@ class TestSettingsService extends SettingsService<TestSettingTarget> {
 
 describe('SettingsService', () => {
   let settingsService: TestSettingsService;
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
 
   beforeEach(async () => {
     testingModule = await buildTest('SettingsService')

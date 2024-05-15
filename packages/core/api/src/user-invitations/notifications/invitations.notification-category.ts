@@ -13,7 +13,7 @@ export class InvitationsNotificationCategory implements INotificationCategory {
     return InvitationsNotificationCategory.ID;
   }
 
-  getDefaultPreferences(channel: string): boolean {
+  getDefaultPreferences(): boolean {
     return true;
   }
 

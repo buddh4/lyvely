@@ -1,4 +1,4 @@
-import { LyvelyTestingModule } from '@lyvely/testing';
+import { ILyvelyTestingModule } from '@lyvely/testing';
 import { Model, buildContentTest } from '@lyvely/api';
 import { NumberDataPoint, NumberDataPointSchema } from '../index';
 
@@ -7,7 +7,7 @@ const DataPointModelDefinition = [
 ];
 
 describe('NumberTimingDataPointSchema', () => {
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let TestNumberDataPointModel: Model<NumberDataPoint>;
 
   const TEST_KEY = 'NumberTimingDataPointSchema';

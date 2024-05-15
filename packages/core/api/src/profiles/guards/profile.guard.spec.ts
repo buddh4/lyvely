@@ -1,11 +1,11 @@
-import { createTestExecutionContext, LyvelyTestingModule } from '@/testing';
+import { createTestExecutionContext, ILyvelyTestingModule } from '@/testing';
 import { ProfileGuard } from './index';
 import { ProfileRequest } from '../types';
 import { ProfileVisibilityLevel, ProfileMembershipRole } from '@lyvely/interface';
 import { buildProfileTest, ProfileTestDataUtils } from '../testing';
 
 describe('ProfileGuard', () => {
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let profileGuard: ProfileGuard;
   let testData: ProfileTestDataUtils;
 

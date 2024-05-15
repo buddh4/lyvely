@@ -1,5 +1,5 @@
 import { ProfileScore, ProfileTestDataUtils } from '@/profiles';
-import { getObjectId, LyvelyTestingModule } from '@/testing';
+import { getObjectId, ILyvelyTestingModule } from '@/testing';
 import { ContentScore, ContentScoreSchema } from './index';
 import {
   buildContentTest,
@@ -11,7 +11,7 @@ import { Model } from '@/core';
 import { toTimingId } from '@lyvely/dates';
 
 describe('ContentScore', () => {
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let testDataUtils: ProfileTestDataUtils;
   let ExtendedTestContentScoreModel: Model<ExtendedTestContentScore>;
 

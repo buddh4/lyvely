@@ -1,4 +1,4 @@
-import { LyvelyTestingModule } from '@lyvely/testing';
+import { ILyvelyTestingModule } from '@lyvely/testing';
 import { INestApplication } from '@nestjs/common';
 import { Content, ContentSchema, ProfileTestDataUtils, Model, buildContentTest } from '@lyvely/api';
 import { TestTimeSeriesContent, TestTimeSeriesContentSchema } from '../testing';
@@ -21,7 +21,7 @@ const ContentModels = [
 ];
 
 describe('TimeSeriesContentSchema', () => {
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let testData: ProfileTestDataUtils;
   let app: INestApplication;
   let TestTimeSeriesContentModel: Model<TestTimeSeriesContent>;

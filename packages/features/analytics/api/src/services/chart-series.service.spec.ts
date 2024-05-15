@@ -1,12 +1,12 @@
 import {
-  LyvelyTestingModule,
+  ILyvelyTestingModule,
   ContentDataType,
   ProfileTestDataUtils,
   buildProfileTest,
 } from '@lyvely/api';
 import { ChartSeriesService } from './chart-series.service';
 import { ChartsDao } from '../daos';
-import { analyticsTestPlugin } from '../testing';
+import { analyticsITestPlugin } from '../testing';
 import { Chart, ChartSeriesConfig, TimeSeriesChartConfig } from '../schemas';
 import { CHART_SERIES_PROFILE_SCORE, registerChartSeries } from '@lyvely/analytics-interface';
 import { ProfileScoreAggregationService } from './profile-score-aggregation.service';
@@ -15,14 +15,14 @@ import { ProtectedProfileContext } from '@lyvely/api/src';
 describe('ChartSeriesService', () => {
   let chartSeriesService: ChartSeriesService;
   let chartsDao: ChartsDao;
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let testData: ProfileTestDataUtils;
 
   const TEST_KEY = 'habit_service';
 
   beforeEach(async () => {
     testingModule = await buildProfileTest(TEST_KEY)
-      .plugins([analyticsTestPlugin])
+      .plugins([analyticsITestPlugin])
       .providers([
         ChartsDao,
         ChartSeriesService,

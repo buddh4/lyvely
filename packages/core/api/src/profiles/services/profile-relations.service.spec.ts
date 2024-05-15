@@ -1,9 +1,9 @@
-import { LyvelyTestingModule } from '@/testing';
+import { ILyvelyTestingModule } from '@/testing';
 import { buildProfileTest, ProfileTestDataUtils } from '../testing';
 import { ProfileRelationsService } from './profile-relations.service';
 
 describe('ProfileRelationsService', () => {
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let relationsService: ProfileRelationsService;
   let testData: ProfileTestDataUtils;
 

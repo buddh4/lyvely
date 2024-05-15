@@ -1,18 +1,18 @@
 import {
-  TestPlugin,
-  contentTestPlugin,
+  ITestPlugin,
+  contentITestPlugin,
   getContentModelDefinition,
   getContentScoreDefinition,
-  profilesTestPlugin,
+  profilesITestPlugin,
 } from '@lyvely/api';
 import { HabitTestDataUtil } from './habit.test.utils';
 import { Habit, HabitSchema, HabitScore, HabitScoreSchema } from '../schemas';
 import { DataPointValueType, getDataPointModelDefinition } from '@lyvely/time-series';
 
-export const habitTestPlugin = {
+export const habitITestPlugin = {
   apply(builder) {
     builder
-      .plugins([contentTestPlugin, profilesTestPlugin])
+      .plugins([contentITestPlugin, profilesITestPlugin])
       .providers([HabitTestDataUtil])
       .models([
         getContentModelDefinition([{ name: Habit.name, schema: HabitSchema }]),
@@ -23,4 +23,4 @@ export const habitTestPlugin = {
         getContentScoreDefinition([{ name: HabitScore.name, schema: HabitScoreSchema }]),
       ]);
   },
-} as TestPlugin;
+} as ITestPlugin;

@@ -1,5 +1,5 @@
 import { ProfileMembershipService } from './index';
-import { LyvelyTestingModule } from '@/testing';
+import { ILyvelyTestingModule } from '@/testing';
 import { buildProfileTest, ProfileTestDataUtils } from '../testing';
 import {
   BaseUserProfileRelationType,
@@ -10,7 +10,7 @@ import {
 } from '@lyvely/interface';
 
 describe('ProfileMembershipService', () => {
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let membershipService: ProfileMembershipService;
 
   beforeEach(async () => {

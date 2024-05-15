@@ -59,16 +59,6 @@ export class ProfileRelationUserInfo implements IProfileRelationUserInfo {
 
 export const UserProfileRelationInfoSchema = SchemaFactory.createForClass(ProfileRelationUserInfo);
 
-type UserRelation = {
-  _id: TObjectId;
-  uid: TObjectId;
-  oid: TObjectId;
-  pid: TObjectId;
-  userInfo: ProfileRelationUserInfo;
-  type: string;
-  role: string;
-};
-
 @Schema({ timestamps: true, discriminatorKey: 'type' })
 export class UserProfileRelation implements ProfileRelationModel<TObjectId> {
   @ObjectIdProp({ required: true })

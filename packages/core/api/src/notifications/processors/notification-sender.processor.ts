@@ -1,7 +1,7 @@
 import { Processor, WorkerHost } from '@nestjs/bullmq';
 import { QUEUE_NOTIFICATIONS_SEND } from '../notification.constants';
 import { ISendNotificationJob } from '../interfaces';
-import { UserSubscriptionService, UserSubscriptionContext } from '@/user-subscriptions';
+import { UserSubscriptionService, IUserSubscriptionContext } from '@/user-subscriptions';
 import { Notification, NotificationChannelDeliveryStatus, UserNotification } from '../schemas';
 import { Job } from 'bullmq';
 import { NotificationChannelRegistry, NotificationDecider } from '../components';
@@ -52,7 +52,7 @@ export class NotificationSenderProcessor extends WorkerHost {
   }
 
   private async processUserNotification(
-    context: UserSubscriptionContext,
+    context: IUserSubscriptionContext,
     notification: Notification,
   ) {
     let userNotification = await this.userNotificationService.findOneByNotification(
@@ -87,7 +87,7 @@ export class NotificationSenderProcessor extends WorkerHost {
   }
 
   private async send(
-    context: UserSubscriptionContext,
+    context: IUserSubscriptionContext,
     notification: Notification,
     userNotification: UserNotification,
   ): Promise<any> {

@@ -18,7 +18,7 @@ import {
   CreateOrganizationProfilePermission,
 } from '@lyvely/interface';
 import { MembershipsDao, ProfileDao } from '../daos';
-import { ProfileContext, type ProfileMembershipContext, ProtectedProfileContext } from '../models';
+import { ProfileContext, ProtectedProfileContext } from '../models';
 import slugify from 'slugify';
 import {
   assureObjectId,
@@ -527,7 +527,7 @@ export class ProfilesService {
     pid: DocumentIdentity<Profile>,
     oid?: DocumentIdentity<Profile>,
   ): Promise<{ profile: Profile; organization: Organization | null }> {
-    let profile: Profile | undefined | null = null;
+    let profile: Profile | undefined | null;
     let organization: Organization | undefined | null = null;
 
     if (!(pid instanceof Profile) && oid && !(oid instanceof Profile)) {

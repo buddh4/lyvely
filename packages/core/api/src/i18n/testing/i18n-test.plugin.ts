@@ -1,9 +1,9 @@
-import { TestPlugin } from '@/testing';
+import { ITestPlugin } from '@/testing';
 import { I18nModule as NestJsI18nModule, AcceptLanguageResolver } from 'nestjs-i18n';
 import { I18nModule } from '../i18n.module';
 import { I18nModuleLoader } from '../loaders/i18n.module.loader';
 
-export const i18nTestPlugin = {
+export const i18nITestPlugin = {
   apply(builder) {
     builder
       .imports([
@@ -25,4 +25,4 @@ export const i18nTestPlugin = {
         },
       });
   },
-} as TestPlugin;
+} as ITestPlugin;

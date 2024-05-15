@@ -1,15 +1,15 @@
-import { buildTest, LyvelyTestingModule } from '@/testing';
+import { buildTest, ILyvelyTestingModule } from '@/testing';
 import { I18n } from './';
-import { i18nTestPlugin } from '../testing';
+import { i18nITestPlugin } from '../testing';
 
 describe('I18n', () => {
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let i18n: I18n;
 
   const TEST_KEY = 'I18n';
 
   beforeEach(async () => {
-    testingModule = await buildTest(TEST_KEY).plugins([i18nTestPlugin]).compile();
+    testingModule = await buildTest(TEST_KEY).plugins([i18nITestPlugin]).compile();
     i18n = testingModule.get(I18n);
   });
 

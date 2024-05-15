@@ -1,11 +1,11 @@
 import { assureStringId } from '@/core';
-import { getObjectId, LyvelyTestingModule } from '@/testing';
+import { getObjectId, ILyvelyTestingModule } from '@/testing';
 import { ProfileUrlGenerator } from './profile-url-generator.service';
 import { buildProfileTest } from '@/profiles';
 
 describe('UrlGenrator', () => {
   let urlGenerator: ProfileUrlGenerator;
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
 
   beforeEach(async () => {
     testingModule = await buildProfileTest('url-gnerator').compile();

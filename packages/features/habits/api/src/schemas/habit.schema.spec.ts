@@ -17,13 +17,13 @@ import {
   NumberDataPointConfig,
 } from '@lyvely/time-series';
 import { PropertiesOf } from '@lyvely/common';
-import { getObjectId, LyvelyTestingModule } from '@lyvely/testing';
+import { getObjectId, ILyvelyTestingModule } from '@lyvely/testing';
 import { instanceToPlain } from 'class-transformer';
-import { HabitTestDataUtil, habitTestPlugin } from '../testing';
+import { HabitTestDataUtil, habitITestPlugin } from '../testing';
 import { HabitsDao } from '../daos';
 
 describe('Habit', () => {
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let habitsDao: HabitsDao;
   let testData: HabitTestDataUtil;
 
@@ -38,7 +38,7 @@ describe('Habit', () => {
     profile.tags = [new Tag({ _id: getObjectId('Test1'), name: 'Test1' })];
 
     testingModule = await buildProfileTest(TEST_KEY)
-      .plugins([habitTestPlugin])
+      .plugins([habitITestPlugin])
       .providers([HabitsDao])
       .compile();
     habitsDao = testingModule.get(HabitsDao);

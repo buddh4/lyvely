@@ -1,12 +1,12 @@
-import { LyvelyTestingModule } from '@lyvely/testing';
+import { ILyvelyTestingModule } from '@lyvely/testing';
 import { CalendarInterval, toTimingId, addDays, subtractDays } from '@lyvely/dates';
 import { buildProfileTest, UserAssignmentStrategy } from '@lyvely/api';
 import { Task, UserDone } from '../schemas';
-import { TaskTestDataUtil, taskTestPlugin } from '../testing';
+import { TaskTestDataUtil, taskITestPlugin } from '../testing';
 import { TasksDao } from '../daos';
 
 describe('Tasks DAO', () => {
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let tasksDao: TasksDao;
   let testData: TaskTestDataUtil;
 
@@ -14,7 +14,7 @@ describe('Tasks DAO', () => {
 
   beforeEach(async () => {
     testingModule = await buildProfileTest(TEST_KEY)
-      .plugins([taskTestPlugin])
+      .plugins([taskITestPlugin])
       .providers([TasksDao])
       .compile();
     tasksDao = testingModule.get(TasksDao);

@@ -1,12 +1,12 @@
 import {
-  LyvelyTestingModule,
+  ILyvelyTestingModule,
   ProfileTestDataUtils,
   buildProfileTest,
   ProfileScoreDao,
   ProfileScore,
   type ProtectedProfileContext,
 } from '@lyvely/api';
-import { analyticsTestPlugin } from '../testing';
+import { analyticsITestPlugin } from '../testing';
 import { ProfileScoreAggregationService } from './profile-score-aggregation.service';
 import { ChartSeriesDataTypes } from '@lyvely/analytics-interface';
 import type { PartialPropertiesOf } from '@lyvely/common';
@@ -14,7 +14,7 @@ import { createObjectId } from '@lyvely/api';
 
 describe('ScoreAggregationService', () => {
   let scoreAggregationService: ProfileScoreAggregationService;
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let testData: ProfileTestDataUtils;
   let scoreDao: ProfileScoreDao;
 
@@ -22,7 +22,7 @@ describe('ScoreAggregationService', () => {
 
   beforeEach(async () => {
     testingModule = await buildProfileTest(TEST_KEY)
-      .plugins([analyticsTestPlugin])
+      .plugins([analyticsITestPlugin])
       .providers([ProfileScoreAggregationService])
       .compile();
     scoreAggregationService = testingModule.get(ProfileScoreAggregationService);

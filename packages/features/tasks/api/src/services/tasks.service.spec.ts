@@ -2,13 +2,13 @@ import { CalendarInterval, toTimingId } from '@lyvely/dates';
 import { Timer, TimeSpan } from '@lyvely/timers';
 import { UserAssignmentStrategy, ProtectedProfileContext, buildProfileTest } from '@lyvely/api';
 import { TasksService } from './tasks.service';
-import { TaskTestDataUtil, taskTestPlugin } from '../testing';
+import { TaskTestDataUtil, taskITestPlugin } from '../testing';
 import { TasksDao } from '../daos';
 import { Task, TaskState } from '../schemas';
-import { LyvelyTestingModule } from '@lyvely/testing';
+import { ILyvelyTestingModule } from '@lyvely/testing';
 
 describe('TaskService', () => {
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let taskService: TasksService;
   let testData: TaskTestDataUtil;
   let taskDao: TasksDao;
@@ -17,7 +17,7 @@ describe('TaskService', () => {
 
   beforeEach(async () => {
     testingModule = await buildProfileTest(TEST_KEY)
-      .plugins([taskTestPlugin])
+      .plugins([taskITestPlugin])
       .providers([TasksDao, TasksService])
       .compile();
     taskService = testingModule.get(TasksService);

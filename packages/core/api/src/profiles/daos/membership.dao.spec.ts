@@ -1,11 +1,11 @@
 import { MembershipsDao } from './index';
 import { ProfileRelationUserInfo } from '../schemas';
 import { BaseUserProfileRelationType, ProfileMembershipRole } from '@lyvely/interface';
-import { LyvelyTestingModule } from '@/testing';
+import { ILyvelyTestingModule } from '@/testing';
 import { buildProfileTest, ProfileTestDataUtils } from '../testing';
 
 describe('MembershipDao', () => {
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let membershipDao: MembershipsDao;
   let testData: ProfileTestDataUtils;
 

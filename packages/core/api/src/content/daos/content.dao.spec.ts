@@ -1,4 +1,4 @@
-import { LyvelyTestingModule } from '@/testing';
+import { ILyvelyTestingModule } from '@/testing';
 import { ContentDao } from './index';
 import { Content, ContentSchema } from '../schemas';
 import { buildContentTest, TestContent, TestContentData, TestContentSchema } from '../testing';
@@ -8,7 +8,7 @@ import { Profile, ProfileTestDataUtils } from '@/profiles';
 import { ContentTypeRegistry } from '../components';
 
 describe('content dao', () => {
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let contentDao: ContentDao;
   let contentTypeRegistry: ContentTypeRegistry;
   let testContentModel: Model<TestContent>;

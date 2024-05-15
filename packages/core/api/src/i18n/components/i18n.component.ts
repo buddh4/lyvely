@@ -12,7 +12,7 @@ import {
 } from '@lyvely/interface';
 import { setEnabledLocales } from '@lyvely/dates';
 
-export interface TranslationOptions {
+export interface ITranslationOptions {
   locale: string;
 }
 
@@ -44,7 +44,7 @@ export class I18n {
    * @param module The module id used for translations.
    * @param optionsOrUser The translation options or a user.
    */
-  public translation(module: string, optionsOrUser: TranslationOptions | User) {
+  public translation(module: string, optionsOrUser: ITranslationOptions | User) {
     return {
       t: (key: string, params?: Record<string, any>) =>
         this.t({ key: `${module}.${key}`, params }, optionsOrUser),
@@ -56,7 +56,7 @@ export class I18n {
    * @param translatable A translatable object or string.
    * @param optionsOrUser The translation options or a user object.
    */
-  public t(translatable: Translatable, optionsOrUser: TranslationOptions | User): string {
+  public t(translatable: Translatable, optionsOrUser: ITranslationOptions | User): string {
     const options =
       optionsOrUser instanceof User ? { locale: optionsOrUser.locale } : optionsOrUser;
     const lang = options.locale;

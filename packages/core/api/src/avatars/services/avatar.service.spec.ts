@@ -3,7 +3,7 @@ import {
   buildTest,
   clearTestStorage,
   getTestStorageFilePath,
-  LyvelyTestingModule,
+  ILyvelyTestingModule,
   testStorageFileExists,
 } from '@/testing';
 import { FilesModule } from '@/files/files.module';
@@ -15,7 +15,7 @@ import type { IDiskFileInfo, IMemoryFileInfo } from '@/files';
 import { AVATAR_SIZE, AVATAR_SIZE_LG, AVATAR_VARIANT_LG } from '@lyvely/interface';
 
 describe('AvatarService', () => {
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let avatarService: AvatarService;
   let testMemoryAvatar: IMemoryFileInfo;
   let testDiskAvatar: IDiskFileInfo;

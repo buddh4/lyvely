@@ -113,10 +113,16 @@ export abstract class AbstractStreamService<
    * This function can be used by subclasses to do further populate or manipulate a model instance.
    *
    * @param {TModel} model - The model to populate.
+   * @param context
    * @protected
    * @return {void}
    */
-  protected prepareModel(model: TModel, context: TContext) {
+  protected prepareModel(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    model: TModel,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    context: TContext,
+  ) {
     // Nothing todo.
   }
 

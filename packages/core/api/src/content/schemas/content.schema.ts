@@ -266,7 +266,11 @@ export class Content<
    * of the model.
    * @param user The user for which this model should be created.
    */
-  toModel(user?: User): TModel {
+
+  toModel(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    user?: User,
+  ): TModel {
     const ModelConstructor: Type<ContentModel> = implementsGetModelConstructor(this)
       ? this.getModelConstructor()
       : ContentModel;

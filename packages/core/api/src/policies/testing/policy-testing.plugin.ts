@@ -1,7 +1,7 @@
-import { TestPlugin } from '@/testing';
+import { ITestPlugin } from '@/testing';
 import { PoliciesModule } from '../policies.module';
 
-export const policyTestPlugin: TestPlugin = {
+export const policyITestPlugin: ITestPlugin = {
   apply(builder) {
     builder.imports([PoliciesModule.forRoot()]);
   },

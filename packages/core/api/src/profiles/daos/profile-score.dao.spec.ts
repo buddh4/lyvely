@@ -1,4 +1,4 @@
-import { LyvelyTestingModule } from '@/testing';
+import { ILyvelyTestingModule } from '@/testing';
 import { ProfileScore, ProfileScoreSchema } from '../schemas';
 import {
   TestProfileScore,
@@ -16,7 +16,7 @@ const testScoreModelDef = {
 };
 
 describe('AbstractUserProfileActionDao', () => {
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let testScoreDao: TestProfileScoreTypeDao;
   let testData: ProfileTestDataUtils;
 

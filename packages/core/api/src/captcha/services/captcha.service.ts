@@ -10,7 +10,10 @@ import { UrlGenerator } from '@/core';
 
 @Injectable()
 export class CaptchaService {
-  constructor(private captchaDao: CaptchaDao, private urlGenerator: UrlGenerator) {}
+  constructor(
+    private captchaDao: CaptchaDao,
+    private urlGenerator: UrlGenerator,
+  ) {}
 
   async createCaptcha(): Promise<CaptchaChallenge> {
     const token = generateCaptchaToken();

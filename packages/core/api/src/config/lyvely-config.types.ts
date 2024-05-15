@@ -1,14 +1,13 @@
 import { HelmetOptions } from 'helmet';
 import { MailerOptions } from '@nestjs-modules/mailer';
 import { ServeStaticModuleOptions } from '@nestjs/serve-static';
-import { NestedPaths, type Type, TypeFromPath } from '@lyvely/common';
-import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer-options.interface';
+import { GenericObject, NestedPaths, TypeFromPath } from '@lyvely/common';
 import { Request, Response } from 'express';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 import { ServerOptions } from 'https';
 import { MongooseModuleOptions } from '@nestjs/mongoose/dist/interfaces/mongoose-options.interface';
 import { IFeatureConfig, GlobalPermissionRole, IPermissionConfig } from '@lyvely/interface';
-import type { IStorageProvider, IStorageProviderDefinition } from '@/files/interfaces';
+import type { IStorageProviderDefinition } from '@/files/interfaces';
 import type { ILocalStorageProviderOptions } from '@/files';
 
 export type LyvelyMailOptions = MailerOptions & {
@@ -104,8 +103,6 @@ export type LyvelyFileOptions = {
 
 export type GlobalUserPermissionRoleConfiguration = Record<string, GlobalPermissionRole>;
 
-export type ModulesConfiguration = {} & { [k: string]: object };
-
 export interface IRedisConfig {
   host: string;
   port: number;
@@ -181,9 +178,6 @@ export type ServerConfiguration<ModuleView = Record<string, unknown>> = {
   serveStatic?: ServeStaticModuleOptions;
 };
 
-// TODO: This is not working for some types
-
 export type ConfigurationPath<C = ServerConfiguration> = {
-  // @ts-ignore
-  [key in NestedPaths<C>]: TypeFromPath<C, key>;
+  [key in NestedPaths<C>]: TypeFromPath<GenericObject<C>, key>;
 } & any;

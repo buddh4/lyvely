@@ -8,7 +8,7 @@ export class DefaultNotificationCategory implements INotificationCategory {
     return 'default';
   }
 
-  getDefaultPreferences(channel: string): boolean {
+  getDefaultPreferences(): boolean {
     return true;
   }
 

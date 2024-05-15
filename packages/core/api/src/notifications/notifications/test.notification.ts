@@ -1,4 +1,4 @@
-import { NotificationContext, NotificationType } from '../schemas';
+import { NotificationType } from '../schemas';
 import { Notification } from '../decorators';
 import { Translatable } from '@/i18n';
 import { UrlRoute } from '@lyvely/interface';
@@ -21,7 +21,7 @@ export class TestNotification extends NotificationType {
     this.date ||= new Date();
   }
 
-  getTitle(format: NotificationContext): Translatable {
+  getTitle(): Translatable {
     return {
       key: 'notifications.test.title',
       params: {
@@ -30,7 +30,7 @@ export class TestNotification extends NotificationType {
     };
   }
 
-  getBody(format: NotificationContext): Translatable {
+  getBody(): Translatable {
     return {
       key: 'notifications.test.body',
       params: {

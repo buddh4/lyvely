@@ -1,7 +1,7 @@
-import { TestPlugin } from '@/testing';
+import { ITestPlugin } from '@/testing';
 import { PermissionsModule } from '@/permissions/permissions.module';
 
-export const permissionsTestingPlugin: TestPlugin = {
+export const permissionsTestingPlugin: ITestPlugin = {
   apply(builder) {
     builder.imports([PermissionsModule]);
   },

@@ -1,4 +1,4 @@
-import { LyvelyTestingModule } from '@/testing';
+import { ILyvelyTestingModule } from '@/testing';
 import { Profile, ProfileTestDataUtils } from '@/profiles';
 import { User } from '@/users';
 import { Content, ContentLog, ContentMetadata, CreatedAs, ContentDataType } from '../schemas';
@@ -6,7 +6,7 @@ import { CreatedAsType } from '@lyvely/interface';
 import { buildContentTest } from '@/content';
 
 describe('Content Model', () => {
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let testDataUtils: ProfileTestDataUtils;
   let user: User;
   let profile: Profile;

@@ -3,10 +3,10 @@ import { UserDao } from '../daos';
 import { RefreshToken, User, UserEmail } from '../schemas';
 import { UserStatus, ProfileType } from '@lyvely/interface';
 import { addMinutes } from '@lyvely/dates';
-import { LyvelyTestingModule } from '@/testing';
+import { ILyvelyTestingModule } from '@/testing';
 
 describe('UserDao', () => {
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let userDao: UserDao;
   let testData: UserTestDataUtils;
 

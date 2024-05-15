@@ -1,5 +1,4 @@
 import type { IStorageProvider } from './storage-provider.interface';
-import type { ModuleRef } from '@nestjs/core';
 import type { Type } from '@lyvely/common';
 
 /**

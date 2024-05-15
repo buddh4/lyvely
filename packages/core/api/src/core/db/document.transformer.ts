@@ -105,10 +105,9 @@ export class DocumentTransformer<
   /**
    * Retrieves the transformations for the given Lean document.
    *
-   * @param {LeanDoc<TVersions>} lean - The Lean document for which to retrieve transformations.
    * @return {IDocumentTransformation<TVersions>[]} - An array of document transformations.
    */
-  override getTransformations(lean: LeanDoc<TVersions>): IDocumentTransformation<TVersions>[] {
+  override getTransformations(): IDocumentTransformation<TVersions>[] {
     return this.transformations;
   }
 }

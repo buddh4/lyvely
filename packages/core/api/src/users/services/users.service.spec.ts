@@ -1,5 +1,5 @@
 import { buildUserTest, ProfilesCount, RefreshToken, UserEmail, UsersService } from '../index';
-import { getObjectId, LyvelyTestingModule } from '@/testing';
+import { getObjectId, ILyvelyTestingModule } from '@/testing';
 import { addDays, addMinutes } from '@lyvely/dates';
 import { ProfileType } from '@lyvely/interface';
 import { compare } from 'bcrypt';
@@ -7,7 +7,7 @@ import { UserTestDataUtils } from '../testing';
 
 describe('UserService', () => {
   let userService: UsersService;
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let testData: UserTestDataUtils;
 
   beforeEach(async () => {

@@ -4,7 +4,7 @@ import { resolve } from 'path';
 
 registerFont(resolve(__dirname, './PunctureRegular.ttf'), { family: 'PunctureRegular' });
 
-interface CaptchaOptions {
+interface ICaptchaOptions {
   font?: string;
   fontSize?: string;
   width?: number;
@@ -25,14 +25,14 @@ const DEFAULT_OPTIONS = {
   particles: 100,
   height: 130,
   length: DEFAULT_LENGTH,
-} as CaptchaOptions;
+} as ICaptchaOptions;
 
 // g was too similar to 9 with PunctureRegular font
 const DEFAULT_CAPTCHA_CHARS = 'abcdefhijklmnopqrstuvwxyz123456789';
 
 const PARTICLE_COLORS = ['red', 'orange', 'cyan', 'blue', 'silver', 'white'];
 
-export function generateCaptcha(options: CaptchaOptions = {}): { image: Buffer; captcha: string } {
+export function generateCaptcha(options: ICaptchaOptions = {}): { image: Buffer; captcha: string } {
   options = Object.assign({}, DEFAULT_OPTIONS, options);
   options.token = options.token || generateCaptchaToken(options);
   const { canvas, context } = initCanvas(options);
@@ -42,7 +42,7 @@ export function generateCaptcha(options: CaptchaOptions = {}): { image: Buffer; 
   return { image: buffer, captcha: options.token };
 }
 
-function initCanvas(options: CaptchaOptions) {
+function initCanvas(options: ICaptchaOptions) {
   const canvas = createCanvas(options.width!, options.height!);
   const context = (<any>canvas.getContext('2d')) as CanvasRenderingContext2D;
   context.fillStyle = getBackgroundColor(options);
@@ -50,19 +50,19 @@ function initCanvas(options: CaptchaOptions) {
   return { canvas, context };
 }
 
-function getBackgroundColor(options: CaptchaOptions) {
+function getBackgroundColor(options: ICaptchaOptions) {
   return options.theme === 'dark' ? 'black' : 'white';
 }
 
-export function generateCaptchaToken(options = {} as CaptchaOptions) {
+export function generateCaptchaToken(options = {} as ICaptchaOptions) {
   if (process.env.NODE_ENV === 'e2e') return '01234';
   options.length = options.length || DEFAULT_LENGTH;
-  return Array.from({ length: options.length }, (v, i) =>
+  return Array.from({ length: options.length }, () =>
     DEFAULT_CAPTCHA_CHARS.charAt(randomInt(0, DEFAULT_CAPTCHA_CHARS.length - 1)),
   ).join('');
 }
 
-function drawCaptchaTokenText(context: CanvasRenderingContext2D, options: CaptchaOptions) {
+function drawCaptchaTokenText(context: CanvasRenderingContext2D, options: ICaptchaOptions) {
   let x = 0;
   const y = 0;
 
@@ -100,13 +100,13 @@ function drawCaptchaTokenText(context: CanvasRenderingContext2D, options: Captch
   });
 }
 
-function drawParticles(context: CanvasRenderingContext2D, options: CaptchaOptions) {
+function drawParticles(context: CanvasRenderingContext2D, options: ICaptchaOptions) {
   for (let i = 0; i < options.particles!; i++) drawParticle(context, options);
 }
 
-function drawParticle(context: CanvasRenderingContext2D, options: CaptchaOptions) {
+function drawParticle(context: CanvasRenderingContext2D, options: ICaptchaOptions) {
   context.save();
-  context.translate(getRandomInt(5, options.width), getRandomInt(5, options.height));
+  context.translate(getRandomInt(5, options.width!), getRandomInt(5, options.height!));
   const color = PARTICLE_COLORS[getRandomInt(0, PARTICLE_COLORS.length - 1)];
   context.shadowColor = color;
   context.shadowOffsetX = 0;
@@ -121,10 +121,10 @@ function drawParticle(context: CanvasRenderingContext2D, options: CaptchaOptions
   context.restore();
 }
 
-function getRandomInt(min, max) {
+function getRandomInt(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-function getRandomFloat(min, max, decimals) {
+function getRandomFloat(min: number, max: number, decimals: number) {
   return parseFloat((Math.random() * (max - min) + min).toFixed(decimals));
 }

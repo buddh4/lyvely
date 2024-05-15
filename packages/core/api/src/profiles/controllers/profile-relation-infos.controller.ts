@@ -1,7 +1,7 @@
 import { ClassSerializerInterceptor, Get, Param, Request, UseInterceptors } from '@nestjs/common';
 
 import { ProfilesService } from '../services';
-import { type OptionalUserRequest, UserRequest, UsersService } from '@/users';
+import { type OptionalUserRequest, UsersService } from '@/users';
 import {
   ProfileRelationInfos,
   API_PROFILE_RELATION_INFOS,
@@ -17,7 +17,10 @@ import { GlobalController } from '@/common';
 @GlobalController(API_PROFILE_RELATION_INFOS)
 @UseInterceptors(ClassSerializerInterceptor)
 export class ProfileRelationInfosController implements ProfileRelationInfosEndpoint {
-  constructor(private profilesService: ProfilesService, private usersService: UsersService) {}
+  constructor(
+    private profilesService: ProfilesService,
+    private usersService: UsersService,
+  ) {}
 
   @Get()
   async getAllProfileRelationInfos(

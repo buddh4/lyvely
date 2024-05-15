@@ -1,4 +1,4 @@
-import { LyvelyTestingModule } from '@/testing';
+import { ILyvelyTestingModule } from '@/testing';
 import { ProfileFeaturesService } from './index';
 import { buildProfileTest, ProfileTestDataUtils } from '../testing';
 import {
@@ -10,7 +10,7 @@ import {
 } from '@lyvely/interface';
 
 describe('ProfileFeaturesService', () => {
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let profileFeaturesService: ProfileFeaturesService;
   let testData: ProfileTestDataUtils;
 

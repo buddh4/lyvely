@@ -1,4 +1,4 @@
-import { LyvelyTestingModule } from '@/testing';
+import { ILyvelyTestingModule } from '@/testing';
 import { Content, ContentSchema, ProfileContentContext } from '../schemas';
 import { buildContentTest, TestContent, TestContentSchema } from '../testing';
 import { ProfileTestDataUtils } from '@/profiles';
@@ -24,7 +24,7 @@ class TestContentReadPolicy extends BaseContentReadPolicy {
 class TestModule {}
 
 describe('ContentReadPolicy', () => {
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let readPolicy: ContentReadPolicy;
   let testData: ProfileTestDataUtils;
 

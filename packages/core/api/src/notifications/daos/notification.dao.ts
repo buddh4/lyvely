@@ -2,7 +2,7 @@ import { AbstractDao, createBaseDocumentInstance, LeanDoc, Model } from '@/core'
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Notification } from '../schemas';
-import { DeepPartial, Type } from '@lyvely/common';
+import { Type } from '@lyvely/common';
 import { NotificationTypeRegistry } from '../components';
 
 @Injectable()

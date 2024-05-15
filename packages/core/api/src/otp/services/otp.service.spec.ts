@@ -1,4 +1,4 @@
-import { buildTest, getObjectId, LyvelyTestingModule } from '@/testing';
+import { buildTest, getObjectId, ILyvelyTestingModule } from '@/testing';
 import { OtpModule, OtpService } from '../';
 import { UserOtp } from '../schemas';
 import ms from 'ms';
@@ -6,7 +6,7 @@ import { subtractSeconds } from '@lyvely/dates';
 import { DEFAULT_MAX_OTP_ATTEMPTS, UserStatus } from '@lyvely/interface';
 import { User } from '@/users';
 
-let testingModule: LyvelyTestingModule;
+let testingModule: ILyvelyTestingModule;
 let userOtpService: OtpService;
 
 describe('OtpService', () => {

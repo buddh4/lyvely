@@ -9,21 +9,21 @@ import {
 import { CalendarInterval } from '@lyvely/dates';
 import { DataPointValueType, DataPointInputType } from '@lyvely/time-series';
 import { UpdateHabitModel, CreateHabitModel } from '@lyvely/habits-interface';
-import { HabitTestDataUtil, habitTestPlugin } from '../testing';
+import { HabitTestDataUtil, habitITestPlugin } from '../testing';
 import { HabitsDao } from '../daos';
 import { Habit } from '../schemas';
-import { LyvelyTestingModule } from '@lyvely/testing';
+import { ILyvelyTestingModule } from '@lyvely/testing';
 
 describe('HabitService', () => {
   let habitsService: HabitsService;
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let testData: HabitTestDataUtil;
 
   const TEST_KEY = 'habit_service';
 
   beforeEach(async () => {
     testingModule = await buildProfileTest(TEST_KEY)
-      .plugins([habitTestPlugin])
+      .plugins([habitITestPlugin])
       .providers([HabitsDao, HabitsService])
       .compile();
     habitsService = testingModule.get<HabitsService>(HabitsService);

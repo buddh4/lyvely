@@ -647,7 +647,6 @@ export abstract class AbstractDao<
     filter?: FilterQuery<T>,
     options?: IFindAndUpdateQueryOptions<T>,
   ): Promise<T | null> {
-    // TODO: trigger events
     if (!(await this.beforeUpdate(id, update))) return null;
 
     options = options || {};
@@ -789,7 +788,9 @@ export abstract class AbstractDao<
    * @protected
    */
   protected async beforeUpdate(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     id: DocumentIdentity<T>,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     update: UpdateQuery<T>,
   ): Promise<PartialEntityData<T> | boolean> {
     return Promise.resolve(true);

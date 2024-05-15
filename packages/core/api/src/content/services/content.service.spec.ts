@@ -1,4 +1,4 @@
-import { LyvelyTestingModule } from '@/testing';
+import { ILyvelyTestingModule } from '@/testing';
 import { Content, ContentMetadata, ContentSchema } from '../schemas';
 import { TestContent, TestContentSchema, TestContentData, buildContentTest } from '../testing';
 import { Model } from '@/core';
@@ -7,7 +7,7 @@ import { Profile, ProfileTestDataUtils } from '@/profiles';
 import { ContentService } from './content.service';
 
 describe('content dao', () => {
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let contentService: ContentService;
   let testContentModel: Model<TestContent>;
   let testData: ProfileTestDataUtils;

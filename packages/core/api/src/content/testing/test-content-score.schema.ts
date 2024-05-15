@@ -1,7 +1,6 @@
 import { ContentScore, type ICreateContentScore } from '../schemas';
 import { Schema, SchemaFactory, Prop } from '@nestjs/mongoose';
 import type { PartialPropertiesOf } from '@lyvely/common';
-import { IntegrityException } from '@lyvely/interface';
 
 @Schema()
 export class TestContentScore extends ContentScore {}

@@ -1,5 +1,5 @@
 import { ProfileController } from '../decorators';
-import { ProfilesService, ProfileTagsService } from '../services';
+import { ProfileTagsService } from '../services';
 import {
   Request,
   Param,

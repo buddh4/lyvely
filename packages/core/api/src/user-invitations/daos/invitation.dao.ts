@@ -1,4 +1,4 @@
-import { AbstractDao, DocumentIdentity, LeanDoc, Model } from '@/core';
+import { AbstractDao, assureObjectId, DocumentIdentity, LeanDoc, Model } from '@/core';
 import { Invitation, MailInvitation, UserInvitation } from '../schemas';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from '@/users';
@@ -10,6 +10,7 @@ export class InvitationDao extends AbstractDao<Invitation> {
 
   countInvitesByUserThisWeek(user: DocumentIdentity<User>) {
     return this.model.countDocuments({
+      uid: assureObjectId(user),
       updatedAt: { $gte: subtractDays(new Date(), 7) },
     });
   }

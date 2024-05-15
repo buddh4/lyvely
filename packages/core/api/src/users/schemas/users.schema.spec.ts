@@ -1,12 +1,12 @@
 import { RefreshToken, User } from './index';
 import { Model, getDefaultLocale } from '@/core';
-import { LyvelyTestingModule } from '@/testing';
+import { ILyvelyTestingModule } from '@/testing';
 import { addDays } from '@lyvely/dates';
 import { compare } from 'bcrypt';
 import { buildUserTest, UserTestDataUtils } from '../testing';
 
 describe('Users schema', () => {
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let testData: UserTestDataUtils;
   let UserModel: Model<User>;
 

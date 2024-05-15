@@ -1,4 +1,9 @@
-import { Notification, NotificationContext, NotificationType, RenderFormat } from '@/notifications';
+import {
+  Notification,
+  INotificationContext,
+  NotificationType,
+  RenderFormat,
+} from '@/notifications';
 import { Translatable } from '@/i18n';
 import { escapeHtmlIf, PropertyType } from '@lyvely/common';
 import { UrlRoute } from '@lyvely/interface';
@@ -25,7 +30,7 @@ export class ProfileInvitationNotification extends NotificationType {
     });
   }
 
-  getTitle(context: NotificationContext): Translatable {
+  getTitle(context: INotificationContext): Translatable {
     return {
       key: 'invitations.notifications.title',
       params: {
@@ -35,7 +40,7 @@ export class ProfileInvitationNotification extends NotificationType {
     };
   }
 
-  getBody(ctx: NotificationContext): Translatable {
+  getBody(ctx: INotificationContext): Translatable {
     return {
       key: 'invitations.notifications.body',
       params: {

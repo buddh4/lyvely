@@ -1,6 +1,6 @@
-import { LyvelyTestingModule } from '@/testing';
+import { ILyvelyTestingModule } from '@/testing';
 import { Notification as NotificationDecorator } from '../decorators';
-import { Notification, NotificationContext, NotificationType, RenderFormat } from '../schemas';
+import { Notification, INotificationContext, NotificationType, RenderFormat } from '../schemas';
 import { SingleUserSubscription } from '@/user-subscriptions';
 import { buildProfileTest, ProfileInfo, ProfileTestDataUtils } from '@/profiles';
 import { UserInfo } from '@/users';
@@ -10,7 +10,7 @@ import { Translatable } from '@/i18n';
 import { escapeHtmlIf } from '@lyvely/common';
 import { UrlRoute } from '@lyvely/interface';
 import { TestNotificationCategory } from '../notifications';
-import { notificationTestPlugin } from '../testing';
+import { notificationITestPlugin } from '../testing';
 import { BaseDocument, type StrictBaseDocumentData } from '@/core';
 
 const TEST_KEY = 'NotificationDao';
@@ -27,7 +27,7 @@ export class MyTestNotification extends NotificationType {
     BaseDocument.init(this, data);
   }
 
-  getBody(context: NotificationContext): Translatable {
+  getBody(context: INotificationContext): Translatable {
     return {
       key: 'test.notification.body',
       params: {
@@ -36,7 +36,7 @@ export class MyTestNotification extends NotificationType {
     };
   }
 
-  getTitle(format: NotificationContext): Translatable {
+  getTitle(format: INotificationContext): Translatable {
     return { key: 'test.notification.title' };
   }
 
@@ -50,12 +50,12 @@ export class MyTestNotification extends NotificationType {
 }
 
 describe('NotificationDao', () => {
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let notificationDao: NotificationDao;
   let testData: ProfileTestDataUtils;
 
   beforeEach(async () => {
-    testingModule = await buildProfileTest(TEST_KEY).plugins([notificationTestPlugin]).compile();
+    testingModule = await buildProfileTest(TEST_KEY).plugins([notificationITestPlugin]).compile();
     notificationDao = testingModule.get(NotificationDao);
     testData = testingModule.get(ProfileTestDataUtils);
   });

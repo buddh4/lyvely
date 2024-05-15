@@ -1,5 +1,5 @@
 import { ProfileScore, ProfileTestDataUtils } from '@/profiles';
-import { getObjectId, LyvelyTestingModule } from '@/testing';
+import { getObjectId, ILyvelyTestingModule } from '@/testing';
 import { ContentScore, ContentScoreSchema } from '../schemas';
 import {
   ExtendedTestContentScore,
@@ -16,7 +16,7 @@ import { toTimingId } from '@lyvely/dates';
 import { UserAssignmentStrategy } from '@lyvely/api';
 
 describe('ContentScoreService', () => {
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let testDataUtils: ProfileTestDataUtils;
   let TestContentScoreModel: Model<TestContentScore>;
   let ExtendedTestContentScoreModel: Model<ExtendedTestContentScore>;

@@ -1,4 +1,4 @@
-import { buildTest, LyvelyTestingModule } from '@/testing';
+import { ILyvelyTestingModule } from '@/testing';
 import { Content, ContentSchema } from './schemas';
 import {
   buildContentTest,
@@ -13,7 +13,7 @@ import { ContentService } from './services';
 import { ContentTypeRegistry } from './components';
 
 describe('content module', () => {
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let contentService: ContentService;
   let contentTypeRegistry: ContentTypeRegistry;
   let app: INestApplication;

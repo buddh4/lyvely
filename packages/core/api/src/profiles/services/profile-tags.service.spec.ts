@@ -1,11 +1,11 @@
-import { getObjectId, LyvelyTestingModule } from '@/testing';
+import { getObjectId, ILyvelyTestingModule } from '@/testing';
 import { Tag } from '../schemas';
 import { ProfileTagsService, ProfilesService } from './index';
 import { buildProfileTest, ProfileTestDataUtils } from '../testing';
 import { DocumentNotFoundException } from '@lyvely/interface';
 
 describe('ProfileTagsService', () => {
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let profileTagsService: ProfileTagsService;
   let profileService: ProfilesService;
   let testData: ProfileTestDataUtils;

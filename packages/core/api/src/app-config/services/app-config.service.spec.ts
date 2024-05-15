@@ -1,4 +1,4 @@
-import { buildTest, LyvelyTestingModule } from '@/testing';
+import { buildTest, ILyvelyTestingModule } from '@/testing';
 import { INestApplication, Injectable, Module } from '@nestjs/common';
 import { AppConfigService } from '@/app-config/services/app-config.service';
 import { OnEvent } from '@nestjs/event-emitter';
@@ -6,7 +6,7 @@ import { EVENT_MODULE_APP_CONFIG_ASSEMBLY, ModuleAppConfigAssemblyEvent } from '
 import { IAppConfig } from '@lyvely/interface';
 
 describe('AppConfigService', () => {
-  let testingModule: LyvelyTestingModule;
+  let testingModule: ILyvelyTestingModule;
   let app: INestApplication;
   let appConfigService: AppConfigService;
 

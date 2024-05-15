@@ -16,14 +16,14 @@ import {
 
 export type Type<T = any> = new (...args: any[]) => T;
 
-export interface TestPlugin {
+export interface ITestPlugin {
   apply?: (builder: TestBuilder) => void;
   prepare?: (moduleBuilder: TestingModuleBuilder) => void;
   afterEach?: (module: TestingModule) => void;
   afterAll?: (module: TestingModule) => void;
 }
 
-export interface LyvelyTestingModule extends TestingModule {
+export interface ILyvelyTestingModule extends TestingModule {
   afterEach(): Promise<void>;
   afterAll(): Promise<void>;
 }
@@ -40,7 +40,7 @@ export abstract class TestBuilder {
   private _models: ModelDefinition[] = [];
   private _imports: Array<Type | DynamicModule | Promise<DynamicModule> | ForwardReference> = [];
   private _config: any = {};
-  private _plugins: TestPlugin[] = [];
+  private _plugins: ITestPlugin[] = [];
 
   constructor(id: string, data: Partial<PropertiesOf<TestBuilder>> = {}) {
     this.id = id;
@@ -74,7 +74,7 @@ export abstract class TestBuilder {
     return this;
   }
 
-  plugins(plugins: TestPlugin[]) {
+  plugins(plugins: ITestPlugin[]) {
     plugins.forEach((plugin) => plugin.apply?.(this));
     this._plugins.push(...plugins);
     return this;
@@ -92,20 +92,20 @@ export abstract class TestBuilder {
     return moduleBuilder;
   }
 
-  async compile(): Promise<LyvelyTestingModule> {
+  async compile(): Promise<ILyvelyTestingModule> {
     const testingModule = await this.build().compile();
-    (<LyvelyTestingModule>(<any>testingModule)).afterEach = async () => {
+    (<ILyvelyTestingModule>(<any>testingModule)).afterEach = async () => {
       testingModule.get(ModuleRegistry)?.reset();
       testingModule.get(EventTester)?.eventEmitter.removeAllListeners();
       globalEmitter.removeAllListeners();
       this._plugins.forEach((plugin) => plugin.afterEach?.(testingModule));
       await closeInMongodConnection(this.id);
     };
-    (<LyvelyTestingModule>(<any>testingModule)).afterAll = async () => {
+    (<ILyvelyTestingModule>(<any>testingModule)).afterAll = async () => {
       this._plugins.forEach((plugin) => plugin.afterAll?.(testingModule));
       await closeInMongodConnections();
     };
-    return testingModule as LyvelyTestingModule;
+    return testingModule as ILyvelyTestingModule;
   }
 }
 
