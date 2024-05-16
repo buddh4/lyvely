@@ -1,23 +1,9 @@
-import { defineConfig } from 'vite';
-import tsconfigPaths from 'vite-tsconfig-paths';
-import vuePlugin from '@vitejs/plugin-vue';
-import { resolve } from 'path';
-import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
-import { VitePWA } from 'vite-plugin-pwa';
+import { useViteWebConfig } from '@lyvely/devtools'
+import { defineConfig } from "vite";
+import { VitePWA } from "vite-plugin-pwa";
 
-/** @type {import('vite').UserConfig} */
-export default defineConfig({
+export default defineConfig(useViteWebConfig({
   plugins: [
-    vuePlugin(),
-    tsconfigPaths({ ignoreConfigErrors: true }),
-    VueI18nPlugin({
-      /* options */
-      // locale messages resource pre-compile option
-      include: [
-        resolve(__dirname, './locales/**'),
-        resolve(__dirname, './src/modules/*/locales/**'),
-      ],
-    }),
     VitePWA({
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'safari-pinned-tab.svg'],
       strategies: 'injectManifest',
@@ -33,6 +19,7 @@ export default defineConfig({
         short_name: 'lyvely',
         description: 'lyvely PWA',
         theme_color: '#1f2937',
+        handle_links: 'preferred',
         icons: [
           {
             src: 'android-chrome-192x192.png',
@@ -57,21 +44,6 @@ export default defineConfig({
         type: 'module',
         navigateFallback: 'index.html',
       },
-    }),
-  ],
-  server: {
-    port: 3000,
-  },
-  resolve: {
-    alias: [{ find: /^@(?=\/)/, replacement: resolve(__dirname, './src') }],
-  },
-  build: {
-    sourcemap: true,
-    minify: true,
-    rollupOptions: {
-      output: {
-        manualChunks: {},
-      },
-    },
-  },
-});
+    })
+  ]
+}));

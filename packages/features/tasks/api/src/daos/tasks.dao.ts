@@ -44,7 +44,12 @@ export class TasksDao extends ContentTypeDao<Task> implements ICalendarPlanDao<a
       return this.findAllByProfile(
         profile,
         {
-          $or: [{ 'state.doneBy': [] }, { 'state.doneBy': { $elemMatch: { tid: { $in: tIds } } } }],
+          $or: [
+            // TODO: This condition only matches legacy tasks < 0.1.0.alpha. This can be removed in later versions.
+            { state: { $exists: false } },
+            { 'state.doneBy': [] },
+            { 'state.doneBy': { $elemMatch: { tid: { $in: tIds } } } },
+          ],
         },
         options,
       );
@@ -56,6 +61,8 @@ export class TasksDao extends ContentTypeDao<Task> implements ICalendarPlanDao<a
       profile,
       {
         $or: [
+          // TODO: This condition only matches legacy tasks < 0.1.0.alpha. This can be removed in later versions.
+          { state: { $exists: false } },
           // Not done by any user
           { 'state.doneBy': [] },
           // Shared task done at within given tids

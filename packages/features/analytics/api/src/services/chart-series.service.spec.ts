@@ -3,6 +3,7 @@ import {
   ContentDataType,
   ProfileTestDataUtils,
   buildProfileTest,
+  ProtectedProfileContext,
 } from '@lyvely/api';
 import { ChartSeriesService } from './chart-series.service';
 import { ChartsDao } from '../daos';
@@ -10,7 +11,6 @@ import { analyticsITestPlugin } from '../testing';
 import { Chart, ChartSeriesConfig, TimeSeriesChartConfig } from '../schemas';
 import { CHART_SERIES_PROFILE_SCORE, registerChartSeries } from '@lyvely/analytics-interface';
 import { ProfileScoreAggregationService } from './profile-score-aggregation.service';
-import { ProtectedProfileContext } from '@lyvely/api/src';
 
 describe('ChartSeriesService', () => {
   let chartSeriesService: ChartSeriesService;

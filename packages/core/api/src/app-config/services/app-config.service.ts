@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ConfigurationPath } from '@/config';
-import { EventEmitter2 } from 'eventemitter2';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { IAppConfig, VisitorMode } from '@lyvely/interface';
 import { EVENT_MODULE_APP_CONFIG_ASSEMBLY } from '../app-config.constants';
 import { ModuleAppConfigAssemblyEvent } from '../events';

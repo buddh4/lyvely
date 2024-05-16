@@ -23,14 +23,19 @@ When building a module's web package, it generates the following resources relat
 Typically, it's only used in the module's development and end-to-end (e2e) environments.
 - `tailwind.txt`: This file includes all tailwind selectors extracted from `tailwind.css`.
 Consuming modules or applications use these files for scanning for dependent tailwind selectors.
-- `styles.css`: (optional) This file contains custom classes defined in `<style>` blocks within your components and imported styles. 
-These styles are exported by the modules `package.json` and must be imported by consuming applications. 
+- `styles.css`: (optional) This file contains custom classes defined in `<style>` blocks within your components and 
+imported styles. These styles are exported by the modules `package.json` and must be imported by consuming applications. 
 
 
 :::info
 We have chosen this separation to avoid issues that can arise from including multiple tailwind builds within a single 
 application. The order of tailwind selectors is crucial, and mixing them can lead to one import overwriting and 
 disrupting the order of selectors from another import.
+:::
+
+:::note
+The tailwind style handling can (hopefully) be simplified once 
+[Tailwind v4](https://tailwindcss.com/blog/tailwindcss-v4-alpha) is out.
 :::
 
 ## Consuming Module Styles

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRegisterSW } from 'virtual:pwa-register/vue';
 import { LyButton } from '@lyvely/ui';
-import { t } form '@lyvely/web';
+import { t } from '@lyvely/web';
 
 const intervalMS = 60 * 60 * 1000;
 
@@ -35,7 +35,7 @@ const close = async () => {
 <template>
   <div
     v-if="needRefresh"
-    class="fixed right-0 bottom-0 m-2 p-1 md:m-4 md:p-5 bg-main border border-divide rounded text-left shadow"
+    class="bg-main border-divide fixed bottom-0 right-0 m-2 rounded border p-1 text-left shadow md:m-4 md:p-5"
     style="z-index: 910"
     role="alert">
     <div class="mb-2 md:mb-3">

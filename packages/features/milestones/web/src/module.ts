@@ -28,7 +28,6 @@ export default () => {
       locale: (locale: string) => import(`./locales/${locale}.json`),
     },
     init: () => {
-      const { isFeatureEnabled } = useProfileFeatureStore();
       registerMenuEntry(MENU_PROFILE_DRAWER, () => ({
         id: 'profile-milestones',
         moduleId: MILESTONES_MODULE_ID,
@@ -36,7 +35,7 @@ export default () => {
         sortOrder: 1503,
         features: MilestonesFeature.id,
         icon: 'target',
-        condition: !isFeatureEnabled(ActivityMilestonesFeature.id),
+        condition: !useProfileFeatureStore().isFeatureEnabled(ActivityMilestonesFeature.id),
         to: { name: 'Milestones' },
       }));
 
@@ -47,7 +46,7 @@ export default () => {
         sortOrder: 1503,
         features: MilestonesFeature.id,
         icon: 'target',
-        condition: !isFeatureEnabled(ActivityMilestonesFeature.id),
+        condition: !useProfileFeatureStore().isFeatureEnabled(ActivityMilestonesFeature.id),
         to: { name: 'Milestones' },
       }));
 

@@ -30,33 +30,37 @@ export default () => {
         },
       ]);
 
-      const { isFeatureEnabled } = useProfileFeatureStore();
+      registerMenuEntry(MENU_PROFILE_DRAWER, () => {
+        const { isFeatureEnabled } = useProfileFeatureStore();
+        return {
+          id: 'activities',
+          text: 'activities.profile-drawer.title',
+          icon: 'activity',
+          sortOrder: 1500,
+          moduleId: ACTIVITIES_MODULE_ID,
+          condition:
+            isFeatureEnabled(ActivityMilestonesFeature.id) ||
+            isFeatureEnabled(ActivityTasksFeature.id) ||
+            isFeatureEnabled(ActivityHabitsFeature.id),
+          to: { name: 'Activities' },
+        };
+      });
 
-      registerMenuEntry(MENU_PROFILE_DRAWER, () => ({
-        id: 'activities',
-        text: 'activities.profile-drawer.title',
-        icon: 'activity',
-        sortOrder: 1500,
-        moduleId: ACTIVITIES_MODULE_ID,
-        condition:
-          isFeatureEnabled(ActivityMilestonesFeature.id) ||
-          isFeatureEnabled(ActivityTasksFeature.id) ||
-          isFeatureEnabled(ActivityHabitsFeature.id),
-        to: { name: 'Activities' },
-      }));
-
-      registerMenuEntry(MENU_PROFILE_MOBILE_FOOTER, () => ({
-        id: 'activities-footer',
-        text: 'activities.profile-drawer.title',
-        icon: 'activity',
-        sortOrder: 1500,
-        moduleId: ACTIVITIES_MODULE_ID,
-        condition:
-          isFeatureEnabled(ActivityMilestonesFeature.id) ||
-          isFeatureEnabled(ActivityTasksFeature.id) ||
-          isFeatureEnabled(ActivityHabitsFeature.id),
-        to: { name: 'Activities' },
-      }));
+      registerMenuEntry(MENU_PROFILE_MOBILE_FOOTER, () => {
+        const { isFeatureEnabled } = useProfileFeatureStore();
+        return {
+          id: 'activities-footer',
+          text: 'activities.profile-drawer.title',
+          icon: 'activity',
+          sortOrder: 1500,
+          moduleId: ACTIVITIES_MODULE_ID,
+          condition:
+            isFeatureEnabled(ActivityMilestonesFeature.id) ||
+            isFeatureEnabled(ActivityTasksFeature.id) ||
+            isFeatureEnabled(ActivityHabitsFeature.id),
+          to: { name: 'Activities' },
+        };
+      });
 
       registerMenuEntries(MENU_ACTIVITIES, [
         {

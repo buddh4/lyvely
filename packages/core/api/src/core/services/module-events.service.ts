@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ModuleRegistry } from '../components';
-import { EventEmitter2 } from 'eventemitter2';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 export const EVENT_MODULE_REGISTRATION = 'module_registration';
 

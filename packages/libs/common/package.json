@@ -33,7 +33,7 @@
     "class-validator": "^0.14.0",
     "he": "^1.2.0",
     "mitt": "^3.0.0",
-    "reflect-metadata": "^0.1.13"
+    "reflect-metadata": "0.1.13"
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "^11.1.0",

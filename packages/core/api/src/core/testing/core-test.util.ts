@@ -2,7 +2,7 @@ import { Provider, DynamicModule, ForwardReference, Injectable, Inject } from '@
 import { ModelDefinition } from '@nestjs/mongoose/dist/interfaces';
 import { Type } from '@lyvely/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { EventEmitterModule } from '@nestjs/event-emitter';
+import { EventEmitterModule, EventEmitter2 } from '@nestjs/event-emitter';
 import { ConfigModule } from '@nestjs/config';
 import { Test, TestingModule, TestingModuleBuilder } from '@nestjs/testing';
 import { MongoMemoryServer } from 'mongodb-memory-server';
@@ -10,7 +10,6 @@ import { disconnect } from 'mongoose';
 import { getObjectId as mongoSeedingGetObjectId } from 'mongo-seeding';
 import { CoreModule } from '../core.module';
 import { ModuleRegistry } from '../components';
-import { EventEmitter2 } from 'eventemitter2';
 import { globalEmitter } from '../global.emitter';
 import { createObjectId } from '@/core';
 

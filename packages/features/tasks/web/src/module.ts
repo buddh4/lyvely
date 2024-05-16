@@ -26,7 +26,6 @@ export default () => {
       base: (locale: string) => import(`./locales/base.${locale}.json`),
     },
     init: () => {
-      const { isFeatureEnabled } = useProfileFeatureStore();
       registerMenuEntry(MENU_PROFILE_DRAWER, () => ({
         id: 'profile-tasks',
         moduleId: TASKS_MODULE_ID,
@@ -35,7 +34,7 @@ export default () => {
         sortOrder: 1502,
         icon: 'task',
         iconBindings: { class: 'w-6' },
-        condition: !isFeatureEnabled(ActivityTasksFeature.id),
+        condition: !useProfileFeatureStore().isFeatureEnabled(ActivityTasksFeature.id),
         to: { name: 'Tasks' },
       }));
 
@@ -47,7 +46,7 @@ export default () => {
         sortOrder: 1502,
         icon: 'task',
         iconBindings: { class: 'w-6' },
-        condition: !isFeatureEnabled(ActivityTasksFeature.id),
+        condition: !useProfileFeatureStore().isFeatureEnabled(ActivityTasksFeature.id),
         to: { name: 'Tasks' },
       }));
 

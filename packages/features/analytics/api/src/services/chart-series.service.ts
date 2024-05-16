@@ -29,9 +29,8 @@ import {
 } from '@lyvely/analytics-interface';
 import { ChartsDao } from '../daos';
 import { validate } from 'class-validator';
-import { EventEmitter2 } from 'eventemitter2';
+import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
 import { AnalyticsEvents, FetchSeriesDataEvent } from '../analytics.events';
-import { OnEvent } from '@nestjs/event-emitter';
 import { ProfileScoreAggregationService } from './profile-score-aggregation.service';
 
 @Injectable()

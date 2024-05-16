@@ -1,5 +1,4 @@
 import 'reflect-metadata';
-
 import './styles/tailwind.css';
 import '@lyvely/ui/style.css';
 import '@lyvely/web/style.css';

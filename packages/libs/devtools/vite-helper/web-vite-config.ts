@@ -10,6 +10,7 @@ import dts from 'vite-plugin-dts';
 interface IOptions {
   locales?: string | boolean;
   input?: string[];
+  plugins?: Plugin[];
 }
 
 const tsconfigPathDefault: (options: any) => Plugin = !!(<any>tsconfigPaths).default
@@ -30,6 +31,7 @@ export const useViteWebConfig = (options: IOptions) => {
       tsconfigPath: './tsconfig.build.json',
     }),
     tsconfigPathDefault({ ignoreConfigErrors: true }),
+    ...(options.plugins || []),
   ];
 
   if (options.locales) {

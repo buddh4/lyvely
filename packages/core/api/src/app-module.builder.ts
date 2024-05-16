@@ -138,7 +138,7 @@ export class AppModuleBuilder {
   }
 
   public importEventEmitterModule() {
-    return this.importModules(EventEmitterModule.forRoot({ wildcard: true }));
+    return this.importModules(EventEmitterModule.forRoot({ wildcard: true, global: true }));
   }
 
   public importI18nModule() {

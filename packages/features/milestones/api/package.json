@@ -23,7 +23,7 @@
   "dependencies": {
     "@nestjs/common": "^10.3.8",
     "@nestjs/mongoose": "^10.0.6",
-    "@nestjs/event-emitter": "^2.0.0",
+    "@nestjs/event-emitter": "^2.0.4",
     "@lyvely/api": "^0.1.0-alpha3",
     "@lyvely/dates": "^0.1.0-alpha3",
     "@lyvely/timers": "^0.1.0-alpha3",

@@ -1,5 +1,4 @@
 import { ServerConfiguration } from '@/config';
-import { DeepPartial } from '@lyvely/common';
 import path from 'path';
 import { VisitorMode } from '@lyvely/interface';
 
@@ -58,4 +57,4 @@ export default {
       },
     },
   },
-} as DeepPartial<ServerConfiguration>;
+} as Partial<ServerConfiguration>;
