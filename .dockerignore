@@ -3,38 +3,13 @@
 !package.json
 !package-lock.json
 !docker
+!nx.json
 
 # Required server files
-!packages/server/config
-!packages/server/mail
-!packages/server/migrations
-!packages/server/src
-!packages/server/uploads
-!packages/server/migrate-mongo-config.ts
-!packages/server/nest-cli.json
-!packages/server/package.json
-!packages/server/tsconfig.build.json
-!packages/server/tsconfig.json
+!packages
 
-# Required web files
-!packages/web/locales
-!packages/web/public
-!packages/web/src
-!packages/web/dist
-!packages/web/index.html
-!packages/web/package.json
-!packages/web/postcss.config.js
-!packages/web/tailwind.config.js
-!packages/web/tsconfig.json
-!packages/web/vite.config.ts
-
-# Required common files
-!packages/common/src
-!packages/common/package.json
-!packages/common/rollup.config.mjs
-!packages/common/tsconfig.build.json
-!packages/common/tsconfig.json
-
+# Ignore all node_modules directories within packages
+packages/**/node_modules
 
 
 
