@@ -7,12 +7,6 @@
     <img src="https://github.com/buddh4/lyvely/blob/main/design/lyvely-readme-logo-dark.png?raw=true" alt="Lyvely" width="210px">
   </a>
 </p>
-<p align="center">
-    <a href="https://lyvely.app/">App</a> •
-    <a href="https://forum.ghost.org">Docs</a> •
-    <a href="https://github.com/TryGhost/Ghost/blob/main/.github/CONTRIBUTING.md">Contributing</a> •
-    <a href="https://twitter.com/ghost">Twitter</a>
-</p>
 
 Lyvely is a flexible self-management and collaboration platform designed for both individual and team usage. 
 It serves as a ready-to-use solution and furthermore offers a powerful framework for building customized collaboration
