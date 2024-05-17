@@ -1,10 +1,10 @@
 &nbsp;
 <p align="center">
   <a href="https://lyvely.app/#gh-light-mode-only" target="_blank">
-    <img src="/buddh4/lyvely/raw/main/design/lyvely-readme-logo-light.png" alt="Lyvely" width="210px">
+    <img src="https://github.com/buddh4/lyvely/blob/main/design/lyvely-readme-logo-light.png?raw=true" alt="Lyvely" width="210px">
   </a>
   <a href="https://lyvely.app/#gh-dark-mode-only" target="_blank">
-    <img src="/buddh4/lyvely/raw/main/design/lyvely-readme-logo-light.png" alt="Lyvely" width="210px">
+    <img src="https://github.com/buddh4/lyvely/blob/main/design/lyvely-readme-logo-dark.png?raw=true" alt="Lyvely" width="210px">
   </a>
 </p>
 &nbsp;
