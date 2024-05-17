@@ -116,18 +116,6 @@ services:
         labels: "lyvely-redis"
     command: redis-server --appendonly yes
 
-  prometheus:
-    image: prom/prometheus
-    profiles:
-      - full
-      - monitoring
-    networks:
-      - lyvely-network
-    ports:
-      - "9090:9090"
-    volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
-
   api:
     build:
       context: ../

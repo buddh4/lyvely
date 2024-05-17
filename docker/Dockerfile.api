@@ -7,27 +7,21 @@ FROM node:19
 WORKDIR /usr/src/app
 
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
-COPY package*.json ./
-COPY packages/common/package*.json ./packages/common/
-COPY packages/server/package*.json ./packages/server/
+COPY .. .
 
 # Install app dependencies
 RUN npm install
-
-# Bundle app source
-COPY .. .
 
 # Copy our the api config
 COPY docker/config/lyvely.ts packages/server/config/lyvely.ts
 
 # Creates a "dist" folder with the production build
-RUN npm run common:build
-RUN npm run server:build
+RUN npx nx run-many -t build
 
 # In some environments this file does not seem to be copied, needs to be reviewed probably a problem with nest build
-COPY packages/server/src/captcha/utils/PunctureRegular.ttf packages/server/dist/src/captcha/utils/PunctureRegular.ttf
-COPY packages/server/src/i18n/locales packages/server/dist/src/i18n/locales
-COPY packages/server/src/mails/templates packages/server/dist/src/mails/templates
+#COPY packages/server/src/captcha/utils/PunctureRegular.ttf packages/server/dist/src/captcha/utils/PunctureRegular.ttf
+#COPY packages/server/src/i18n/locales packages/server/dist/src/i18n/locales
+#COPY packages/server/src/mails/templates packages/server/dist/src/mails/templates
 
 # Start the server using the production build
 CMD  ["npm", "run", "server:prod"]
