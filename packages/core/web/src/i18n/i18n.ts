@@ -5,6 +5,7 @@ import { Translatable } from '@lyvely/ui';
 import { DEFAULT_FALLBACK_LOCALE, LOCALES_SUPPORTED, ITranslatable } from '@lyvely/interface';
 import { loadDateTimeLocale, isDateTimeLocaleLoaded } from '@lyvely/dates';
 import { hasOwnNonNullableProperty } from '@lyvely/common';
+import { useLyvelyApp } from '@/lyvely-web.app';
 
 let i18n: I18n;
 
@@ -17,14 +18,8 @@ export type ITranslation = () => string;
 const DEFAULT_TRANSLATION_SECTION = 'locale';
 const BASE_TRANSLATION_SECTION = 'base';
 
-// Note that at this time, we can not access app config from the backend.
-let fallBackLocale = import.meta.env.VITE_FALLBACK_LOCALE || DEFAULT_FALLBACK_LOCALE;
-
-if (!LOCALES_SUPPORTED.includes(fallBackLocale)) {
-  fallBackLocale = DEFAULT_FALLBACK_LOCALE;
-}
-
-let activeLocale = fallBackLocale;
+let fallBackLocale: string;
+let activeLocale: string;
 
 export function translation(key: string, options?: any) {
   return () => translate(key, options);
@@ -66,6 +61,13 @@ export function translate(key: ITranslatable, params?: Record<string, string>): 
 export const t = translate;
 
 export function setupI18n() {
+  fallBackLocale = useLyvelyApp().options.fallbackLocale;
+
+  if (!LOCALES_SUPPORTED.includes(fallBackLocale)) {
+    fallBackLocale = DEFAULT_FALLBACK_LOCALE;
+  }
+
+  activeLocale = fallBackLocale;
   i18n = createI18n({
     legacy: false,
     fallbackLocale: fallBackLocale,

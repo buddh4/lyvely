@@ -17,12 +17,22 @@ import { markRaw, App as VueApp, createApp } from 'vue';
 import { createPinia, Pinia } from 'pinia';
 import { I18n } from 'vue-i18n';
 import { useDayJsDateTimeAdapter } from '@lyvely/dates';
-import { initApiRepository, createApiUrl } from '@lyvely/interface';
+import { initApiRepository, createApiUrl, DEFAULT_FALLBACK_LOCALE } from '@lyvely/interface';
 import { createLyvelyUi } from '@lyvely/ui';
 
 export interface ILyvelyWebAppOptions extends IModuleLoaderOptions {
   modules?: IModule[];
   apiUrl?: string;
+  baseUrl?: string;
+  fallbackLocale?: string;
+  env?: 'production' | 'development';
+}
+
+let appInstance: LyvelyWebApp;
+
+export function useLyvelyApp() {
+  if (!appInstance) throw new Error('Called useLyvelyApp prior of app initialization.');
+  return appInstance;
 }
 
 export class LyvelyWebApp {
@@ -30,13 +40,25 @@ export class LyvelyWebApp {
   pinia: Pinia;
   i18n: I18n;
   events: AppEvents;
-  options: ILyvelyWebAppOptions;
+  options: Required<ILyvelyWebAppOptions>;
 
   constructor(options: ILyvelyWebAppOptions = {}) {
-    this.options = options;
+    this.options = {
+      env: 'production',
+      baseUrl: import.meta.env.VITE_APP_ENV || 'http://127.0.0.1:3000',
+      apiUrl: import.meta.env.VITE_APP_API_URL || 'http://127.0.0.1:8080/api',
+      fallbackLocale: DEFAULT_FALLBACK_LOCALE,
+      modules: [],
+      ...options,
+    };
   }
 
   async init(selector?: string) {
+    if (appInstance) throw new Error('Lyvely is already running.');
+
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    appInstance = this;
+
     this.initApiRepository();
     this.events = eventBus;
     this.events.emit('app.init.pre');
@@ -56,7 +78,7 @@ export class LyvelyWebApp {
 
   private initApiRepository() {
     initApiRepository({
-      apiUrl: import.meta.env.VITE_APP_API_URL || 'http://127.0.0.1:8080/api',
+      apiUrl: this.options.apiUrl,
     });
   }
 
@@ -85,7 +107,7 @@ export class LyvelyWebApp {
     this.vueApp.use(
       createLyvelyUi({
         translationProvider: translationAdapter,
-        env: import.meta.env.VITE_APP_ENV,
+        env: this.options.env,
         avatarUrlProvider: (guid: string, v?: number) =>
           createApiUrl(`/avatars/${guid}`, v ? { v: v.toString() } : {}),
       }),

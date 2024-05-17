@@ -9,6 +9,10 @@ WORKDIR /usr/src/app
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
 COPY .. .
 
+# Copy docker specific application config
+COPY docker/lyvely.ts ./packages/server/config/lyvely.ts
+COPY docker/web.env ./package/pwa/.env
+
 # Install app dependencies
 RUN npm install
 

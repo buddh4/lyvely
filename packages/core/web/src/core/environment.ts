@@ -1,3 +1,5 @@
+import { useLyvelyApp } from '@/lyvely-web.app';
+
 export function isDevelopEnvironment() {
-  return import.meta.env.VITE_APP_ENV === 'development';
+  return useLyvelyApp().options.env === 'development';
 }
