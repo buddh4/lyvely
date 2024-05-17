@@ -29,25 +29,26 @@ To get started with Lyvely, follow the installation instructions in our [documen
 
 The following selection of features are part of the Lyvely core.
 
- - **Profiles**: Private-, Group- and Organization profiles serve as home for your content and users.
- - **Main Stream**: A chat-like view containing all sorts of content within a profile.
- - **Content Stream**: Each content entry itself can be discussed within an own chat-like Content Stream.
- - **Messages**: The most simple form of content with markdown support.
- - **Tags**: Mark and filter your content with the help of tags.
+ - 🏠 **Profiles**: Private-, Group- and Organization profiles serve as home for your content and users.
+ - 💬 **Main Stream**: A chat-like view containing all sorts of content within a profile.
+ - 💭 **Content Stream**: Each content entry itself can be discussed within an own chat-like Content Stream.
+ - ✉️ **Messages**: The most simple form of content with markdown support.
+ - ⭐ **Tags**: Mark and filter your content with the help of tags.
+ - 🚀 **Features**: Manage and utilize Features as additional content types within your profiles.
 
 ## Feature Modules
 
 The following optional modules are maintained within this repository.
 
- - [Habits](https://github.com/buddh4/lyvely/tree/main/packages/features/habits): Efficiently manage daily, weekly, monthly, quarterly, yearly, or non-scheduled activities.
+ - 😀 [Habits](https://github.com/buddh4/lyvely/tree/main/packages/features/habits): Efficiently manage daily, weekly, monthly, quarterly, yearly, or non-scheduled activities.
 Whether it's personal habits or team and organization-related activities, Lyvely has you covered. A habit can be defined as shared or per-user.
-- [Tasks](https://github.com/buddh4/lyvely/tree/main/packages/features/tasks): Organize individual or team tasks using a Calendar Planner.
+ - ☑️ [Tasks](https://github.com/buddh4/lyvely/tree/main/packages/features/tasks): Organize individual or team tasks using a Calendar Planner.
 A task can be defined as shared or per-user.
-- [Milestones](https://github.com/buddh4/lyvely/tree/main/packages/features/milestones): Assign and keep track of your content by assigning it to a milestone.
-- [Journals](https://github.com/buddh4/lyvely/tree/main/packages/features/journals): Keep track of and evaluate any data over time to make informed decisions.
+ - 🎯 [Milestones](https://github.com/buddh4/lyvely/tree/main/packages/features/milestones): Assign and keep track of your content by assigning it to a milestone.
+ - 📝 [Journals](https://github.com/buddh4/lyvely/tree/main/packages/features/journals): Keep track of and evaluate any data over time to make informed decisions.
   A journal can be defined as shared or per-user.
-- [Analytics](https://github.com/buddh4/lyvely/tree/main/packages/features/analytics): Visualize and compare your data using customizable time series and various chart types.
-- [Legal](https://github.com/buddh4/lyvely/tree/main/packages/features/analytics): Define translatable your communities Privacy Notes and Terms of Service or other legal texts.
+ - 📈 [Analytics](https://github.com/buddh4/lyvely/tree/main/packages/features/analytics): Visualize and compare your data using customizable time series and various chart types.
+ - 📜 [Legal](https://github.com/buddh4/lyvely/tree/main/packages/features/analytics): Define translatable your communities Privacy Notes and Terms of Service or other legal texts.
 
 ## Core APIs
 
