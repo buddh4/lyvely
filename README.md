@@ -7,9 +7,6 @@
     <img src="https://github.com/buddh4/lyvely/blob/main/design/lyvely-readme-logo-dark.png?raw=true" alt="Lyvely" width="210px">
   </a>
 </p>
-&nbsp;
-
-
 <p align="center">
     <a href="https://lyvely.app/">App</a> •
     <a href="https://forum.ghost.org">Docs</a> •
