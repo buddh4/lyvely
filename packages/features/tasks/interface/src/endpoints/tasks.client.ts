@@ -20,7 +20,7 @@ import {
   CalendarPlanFilter,
   ICalendarPlanResponse,
   CalendarPlanSort,
-} from '@lyvely/calendar-plan-web';
+} from '@lyvely/calendar-plan-interface';
 
 import repository from './tasks.repository';
 
