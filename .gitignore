@@ -41,3 +41,6 @@ lerna-debug.log*
 .env
 /screenshots
 .rollup-cache
+
+# NX
+/.nx
