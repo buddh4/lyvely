@@ -9,6 +9,7 @@ import { MongooseModuleOptions } from '@nestjs/mongoose/dist/interfaces/mongoose
 import { IFeatureConfig, GlobalPermissionRole, IPermissionConfig } from '@lyvely/interface';
 import type { IStorageProviderDefinition } from '@/files/interfaces';
 import type { ILocalStorageProviderOptions } from '@/files';
+import type { RedisOptions } from 'ioredis/built/redis/RedisOptions';
 
 export type LyvelyMailOptions = MailerOptions & {
   createMessageFiles?: boolean;
@@ -103,11 +104,6 @@ export type LyvelyFileOptions = {
 
 export type GlobalUserPermissionRoleConfiguration = Record<string, GlobalPermissionRole>;
 
-export interface IRedisConfig {
-  host: string;
-  port: number;
-}
-
 export interface ILyvelyCsrfOptions {
   enabled?: boolean;
   name?: string;
@@ -158,7 +154,7 @@ export type ServerConfiguration<ModuleView = Record<string, unknown>> = {
   appName: string;
   operationMode: 'standalone' | 'standalone-cluster' | 'distributed';
   docUrl?: string;
-  redis: IRedisConfig;
+  redis: RedisOptions;
   csrf?: ILyvelyCsrfOptions;
   contactMail: string;
   i18n?: I18NOptions;

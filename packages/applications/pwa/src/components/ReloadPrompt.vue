@@ -6,7 +6,7 @@ import { t } from '@lyvely/web';
 const intervalMS = 60 * 60 * 1000;
 
 const { offlineReady, needRefresh, updateServiceWorker } = useRegisterSW({
-  onRegisteredSW: (swUrl, r) => {
+  onRegisteredSW: (swUrl: string, r?: ServiceWorkerRegistration) => {
     r &&
       setInterval(async () => {
         if (!(!r.installing && navigator)) return;

@@ -9,8 +9,10 @@ do
     esac
 done
 
+SCRIPT_DIR=$(dirname "$0")
+
 # Create data directories for MongoDB and Redis
-mkdir -p data/mongo1 data/mongo2 data/mongo3 data/redis
+mkdir -p "$SCRIPT_DIR/data/mongo1" "$SCRIPT_DIR/data/mongo2" "$SCRIPT_DIR/data/mongo3" "$SCRIPT_DIR/data/redis"
 
 if [ "$USER" = 1 ]
 then
@@ -22,12 +24,18 @@ then
 fi
 
 # Set appropriate permissions for data directories
-sudo chown -R 957:957 data/mongo1 data/mongo2 data/mongo3
-sudo chown -R redis:redis data/redis
+sudo chown -R 957:957 "$SCRIPT_DIR/data/mongo1" "$SCRIPT_DIR/data/mongo2" "$SCRIPT_DIR/data/mongo3"
+sudo chown -R redis:redis "$SCRIPT_DIR/data/redis"
+
+# Copy environment used for this setup and docker-compose
+if [ ! -f "$SCRIPT_DIR/.env" ]
+then
+	cp "$SCRIPT_DIR/.env.dist" "$SCRIPT_DIR/.env"
+fi
 
 # Load .env file
-if [ -f .env ]; then
-  export $(echo $(cat .env | sed 's/#.*//g'| xargs) | envsubst)
+if [ -f "$SCRIPT_DIR/.env" ]; then
+  export $(echo $(cat "$SCRIPT_DIR/.env" | sed 's/#.*//g'| xargs) | envsubst)
   # Wee need to define those otherwise they get overwritten
   export proxy_add_x_forwarded_for='$proxy_add_x_forwarded_for'
   export remote_addr='$remote_addr'
@@ -45,38 +53,39 @@ if [ -f .env ]; then
   export http_x_forwarded_for='$http_x_forwarded_for'
 fi
 
-# Copy environment used for this setup and docker-compose
-if [ ! -f .env ]
+
+# Copy nginx configuration
+if [ ! -d "$SCRIPT_DIR/config" ] && [ "$FILES" = 1 ]
 then
-	cp .env.dist .env
+	mkdir "$SCRIPT_DIR/config"
 fi
 
 # Copy backend configuration
-if [ ! -f config/lyvely.ts ] || [ "$FILES" = 1 ]
+if [ ! -f "$SCRIPT_DIR/config/lyvely.ts" ] || [ "$FILES" = 1 ]
 then
   export JWT_ACCESS_TOKEN=$(node -e "console.log(require('crypto').randomBytes(32).toString('hex'));")
   export JWT_REFRESH_TOKEN=$(node -e "console.log(require('crypto').randomBytes(32).toString('hex'));")
   export JWT_VERIFY_TOKEN=$(node -e "console.log(require('crypto').randomBytes(32).toString('hex'));")
-	envsubst < lyvely.ts.dist > config/lyvely.ts
+	envsubst < "$SCRIPT_DIR/lyvely.ts.dist" > "$SCRIPT_DIR/config/lyvely.ts"
 fi
 
 # Copy nginx configuration
-if [ ! -f config/nginx.conf ] || [ "$FILES" = 1 ]
+if [ ! -f "$SCRIPT_DIR/config/nginx.conf" ] || [ "$FILES" = 1 ]
 then
-	envsubst < nginx.conf.dist > config/nginx.conf
+	envsubst < "$SCRIPT_DIR/nginx.conf.dist" > "$SCRIPT_DIR/config/nginx.conf"
 fi
 
 # Copy web environment
-if [ ! -f ../packages/web/.env ] || [ "$FILES" = 1 ]
+if [ ! -f "$SCRIPT_DIR/config/web.env" ] || [ "$FILES" = 1 ]
 then
-	envsubst < web.env.dist > ../packages/web/.env
+	envsubst < "$SCRIPT_DIR/web.env.dist" > "$SCRIPT_DIR/config/web.env"
 fi
 
 
 if [ "$BUILD" = 1 ]; then
 # Build the web static files which we need for our custom nginx image
   cd ..
-  npm install && npx nx run-many -t build
+  npm install && npx nx run-many -t build --all --exclude=@lyvely/docs
 fi
 
 

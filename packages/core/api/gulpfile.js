@@ -5,12 +5,10 @@ gulp.task('clean', function () {
   return del('dist/**', { force: true });
 });
 
-// Define your first task
 function copyFonts() {
   return gulp.src('./src/captcha/utils/*.ttf').pipe(gulp.dest('./dist/captcha/utils/'));
 }
 
-// Define your second task
 function copyMailTemplates() {
   return gulp.src('./src/mails/templates/*').pipe(gulp.dest('./dist/mails/templates/'));
 }

@@ -24,6 +24,7 @@
       "vue",
       "@vue/runtime-dom",
       "reflect-metadata",
+      "vite-plugin-pwa/client",
       "jest"
     ],
     "lib": [

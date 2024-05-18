@@ -11,7 +11,7 @@
 In order to prevent rebuilding the frontend app on each module installation, we need a way for publishing an updating
 frontend modules to the frontend app.
 
-- Modules have a server and client folder, separating backend from frontend logic
+- Modules have a api and web folder, separating backend from frontend logic
 - The backend is responsible for sending and syncing the frontend
 
 ### Backend modules

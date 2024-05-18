@@ -7,6 +7,10 @@ Depending on your specific use case and requirements, there are several methods 
 
 ## Requirements
 
+- [Node.js](https://nodejs.org) (version >= 20)
+- [MongoDB](https://www.mongodb.com) (version >= 7)
+- [Redis](https://redis.io/) (version >= 7)
+
 ### Install MongoDB
 
 Either install MongoDB by following the [MongoDB Installation Guide](https://www.mongodb.com/docs/manual/administration/install-community/)
@@ -24,8 +28,14 @@ docker pull mongo
 docker run --name lyvely-mongodb --restart=always -d -p 27017:27017 -v /path/on/host:/data/db mongo
 ```
 
-> Note: Some features as transactions are only available when using a [replica set](https://www.mongodb.com/docs/manual/replication/). 
-> For testing and development this won't be necessary but is recommended for production use.
+:::note
+Some features as transactions are only available when using a [replica set](https://www.mongodb.com/docs/manual/replication/).
+For testing, development and simple installations this won't be necessary but is recommended for production use.
+:::
+
+:::tip
+Check the `docker` directory for a docker compose setup using replication.
+:::
 
 ### Install Redis
 

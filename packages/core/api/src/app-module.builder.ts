@@ -45,6 +45,8 @@ import { PingModule } from '@/ping';
 import { DeepPartial } from '@lyvely/common';
 import defaultConfig from '@/config/lyvely.default.config';
 import { FilesModule } from '@/files/files.module';
+import { resolve } from 'node:path';
+import type { RedisOptions } from 'ioredis/built/redis/RedisOptions';
 
 type TModule = Type | DynamicModule | Promise<DynamicModule> | ForwardReference;
 
@@ -159,7 +161,7 @@ export class AppModuleBuilder {
         imports: [ConfigModule],
         inject: [ConfigService],
         useFactory: async (configService: ConfigService<ConfigurationPath>) => {
-          return { connection: configService.get('redis') };
+          return { connection: configService.get('redis')! };
         },
       }),
     );
@@ -174,7 +176,11 @@ export class AppModuleBuilder {
         inject: [ConfigService],
         useFactory: async (configService: ConfigService<ConfigurationPath>) => {
           // TODO (serveStatic) provide some defaults...
-          return [configService.get('serveStatic', {})];
+          return [
+            configService.get('serveStatic', {
+              rootPath: resolve(__dirname, '../static'),
+            }),
+          ];
         },
       }),
     );

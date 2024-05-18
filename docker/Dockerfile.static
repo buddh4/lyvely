@@ -1,7 +1,7 @@
 # This docker file can be used to create a standalone backend image, which serves the web files itself
 
 # Base image
-FROM node:19
+FROM node:20
 
 # Create app directory
 WORKDIR /usr/src/app
@@ -10,14 +10,25 @@ WORKDIR /usr/src/app
 COPY .. .
 
 # Copy docker specific application config
-COPY docker/lyvely.ts ./packages/server/config/lyvely.ts
-COPY docker/web.env ./package/pwa/.env
+COPY docker/config/lyvely.ts ./packages/server/config/lyvely.production.ts
+COPY docker/config/web.env ./package/applications/pwa/.env
+COPY docker/config/web.env ./package/core/web/.env
 
 # Install app dependencies
-RUN npm install
+RUN npm install -g @nestjs/cli
+RUN npm ci
 
 # Build all packages
-RUN npx nx run-many -t build
+RUN npx nx run-many -t build --all --exclude=@lyvely/docs
+
+# Remove dev dependencies after build
+RUN npm prune --workspaces --production
+
+COPY packages/applications/pwa/dist ./packages/applications/server/static
+
+ENV NODE_ENV=production
+ENV LYVELY_SERVE_STATIC=true
+ENV CYPRESS_INSTALL_BINARY=0
 
 EXPOSE 8080
 

@@ -16,5 +16,5 @@ new LyvelyServer().bootstrap({
     AnalyticsModule,
   ],
   configFiles: [`../config/lyvely.${process.env.NODE_ENV}.config.ts`],
-  serveStatic: false,
+  serveStatic: process.env.LYVELY_SERVE_STATIC === 'true',
 });

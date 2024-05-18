@@ -1,7 +1,7 @@
 # This dockerfile is used in combination with our docker-compose.yml and defines our api service
 
 # Base image
-FROM node:19
+FROM node:20
 
 # Create app directory
 WORKDIR /usr/src/app
@@ -9,19 +9,20 @@ WORKDIR /usr/src/app
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
 COPY .. .
 
+# Copy docker specific application config
+COPY docker/config/lyvely.ts ./packages/server/config/lyvely.ts
+COPY docker/config/web.env ./package/applications/pwa/.env
+COPY docker/config/web.env ./package/core/web/.env
+
 # Install app dependencies
-RUN npm install
+RUN npm install -g @nestjs/cli
+RUN npm ci
 
-# Copy our the api config
-COPY docker/config/lyvely.ts packages/server/config/lyvely.ts
+# Build all packages
+RUN npx nx run-many -t build --exclude=@lyvely/docs,@lyvely/web,@lyvely/pwa,@lyvely/legal-web,@lyvely/calendar-plan-web,@lyvely/time-series-web,@lyvely/tasks-web,@lyvely/milestones-web,@lyvely/journals-web,@lyvely/analytics-web,@lyvely/habits-web,@lyvely/activities-web
 
-# Creates a "dist" folder with the production build
-RUN npx nx run-many -t build
-
-# In some environments this file does not seem to be copied, needs to be reviewed probably a problem with nest build
-#COPY packages/server/src/captcha/utils/PunctureRegular.ttf packages/server/dist/src/captcha/utils/PunctureRegular.ttf
-#COPY packages/server/src/i18n/locales packages/server/dist/src/i18n/locales
-#COPY packages/server/src/mails/templates packages/server/dist/src/mails/templates
+# Remove dev dependencies after build
+RUN npm prune --workspaces --production
 
 # Start the server using the production build
 CMD  ["npm", "run", "server:prod"]

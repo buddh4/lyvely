@@ -184,7 +184,7 @@ export class LyvelyServer {
   private initCors() {
     // Cors not required if staticServe is used
     let cors = this.configService.get<CorsOptions>('http.cors');
-    const staticServe = !!this.configService.get('serveStatic');
+    const staticServe = this.options.serveStatic;
 
     if (!cors && !staticServe) {
       cors = { origin: this.configService.get('http.appUrl') };

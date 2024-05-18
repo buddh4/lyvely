@@ -39,7 +39,6 @@ lerna-debug.log*
 # custom
 .env
 /screenshots
-
 /storage/*
-
 src/lyvely-dev.config.ts
+/static/*

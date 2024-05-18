@@ -1,7 +1,7 @@
 /* eslint-disable */
 import 'vue-router';
 import { Router } from 'vue-router';
-import {ProfileRelationRole, ProfileVisibilityLevel} from '@lyvely/interface';
+import { ProfileRelationRole, ProfileVisibilityLevel } from '@lyvely/interface';
 
 declare module '*.vue' {
   import type { DefineComponent } from 'vue';
@@ -41,7 +41,6 @@ export declare global {
       VITE_FALLBACK_LOCALE: string;
       VITE_APP_ENV: 'development' | 'production';
       VITE_APP_BASEURL: string;
-      MODE: 'development' | 'production';
     };
   }
 }
