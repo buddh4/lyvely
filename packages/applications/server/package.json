@@ -13,8 +13,8 @@
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "dev": "cross-env NODE_ENV=development nest start",
     "dev:debug": "cross-env NODE_ENV=development  nest start --debug --watch",
-    "start": "node dist/src/main",
-    "start:prod": "cross-env NODE_ENV=production nest start",
+    "start": "nest start",
+    "start:prod": "node dist/src/main",
     "start:debug": "nest start --debug --watch"
   },
   "dependencies": {

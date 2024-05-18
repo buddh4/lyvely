@@ -22,5 +22,7 @@ RUN npx nx run-many -t build --exclude=@lyvely/docs,@lyvely/web,@lyvely/pwa,@lyv
 # Remove dev dependencies after build
 RUN npm prune --workspaces --production
 
+ENV NODE_ENV=production
+
 # Start the server using the production build
 CMD  ["npm", "run", "server:prod"]
