@@ -7,5 +7,20 @@ RUN rm /etc/nginx/conf.d/default.conf
 # Copy your custom configuration file
 COPY docker/config/nginx.conf /etc/nginx/conf.d/
 
+# Copy our entry point
+COPY docker/nginx-entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+# Define default env, those will have priority over the .env file
+ENV LYVELY_API_URL=https://www.lyvely.app/api
+ENV LYVELY_APP_BASEURL=lyvely.app
+ENV LYVELY_APP_ENV=production
+
 # Copy your static files to the container
 COPY packages/applications/pwa/dist /usr/share/nginx/html/
+
+# Set the entry point
+ENTRYPOINT ["/entrypoint.sh"]
+
+# Default command to start Nginx
+CMD ["nginx", "-g", "daemon off;"]

@@ -16,14 +16,14 @@ import { getInjectedEnv } from '@/pwa.helper';
 
 new LyvelyWebApp({
   baseUrl: getInjectedEnv(
-    '{{APP_BASEURL}}',
+    '{{LYVELY_APP_BASEURL}}',
     import.meta.env.VITE_APP_BASEURL || 'http://127.0.0.1:3000',
   ),
   apiUrl: getInjectedEnv(
-    '{{API_URL}}',
+    '{{LYVELY_API_URL}}',
     import.meta.env.VITE_APP_API_URL || 'http://127.0.0.1:8080/api',
   ),
-  env: getInjectedEnv('{{APP_BASEURL}}', import.meta.env.VITE_APP_ENV || 'production'),
+  env: getInjectedEnv('{{LYVELY_APP_ENV}}', import.meta.env.VITE_APP_ENV || 'production'),
   modules: [
     activitiesModule(),
     tasksModule(),

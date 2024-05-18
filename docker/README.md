@@ -42,7 +42,7 @@ sh docker/docker-compose-setup.sh -f
 
 Running this command will create the following files
 - `docker/config/lyvely.ts`: Api configuration file
-- `docker/config/web.env`: Frontend environment configuration
+- `docker/config/web.env`: Frontend environment configuration (not used in `docker-compose` setup)
 - `docker/config/ncinx.conf`: Nginx configuration, used for `Dockerfile.nginx` container
 
 #### 3. Review
@@ -111,17 +111,17 @@ This command will:
  - Create the configuration files:
      - `docker/config/lyvely.ts` which is your backend configuration
      - `docker/config/nginx.conf` which will be used by the nginx container
-     - `packages/web/.env` which was used to build your static web files
- - Build the common package
- - Build the web package
+ - Build the whole project
 
-In case you need to change some entries in packages/web/.env you'll need to manually rebuild the web project by running
-`npm run web:build` in the projects root directory.
+### 3. Configuration
 
-Running this script again will only build the common and web project unless you add the `-f` flag, which will force
-the configurations to be overwritten.
+In the `docker-compose` build you can either define a custom `.env` file within the `packages/applications/pwa` package
+(which will require a rebuild of the `pwa` appliction if this file changes) or just use the following environment 
+variables within the `docker/.env` file (preffered). Those variables will only be used in the docker nginx container:
 
-Running the script without the `-b` flag will prevent the common and web project from being build.
+- `LYVELY_API_URL`: The url to the api (default: https://www.lyvely.app/api)
+- `LYVELY_APP_BASEURL`: The url to the api (default: lyvely.app)
+- `LYVELY_APP_ENV`: The url to the api (default: production)
 
 #### 3. Review configuration files
 
@@ -129,7 +129,6 @@ Review your configuration files:
 
   - `docker/config/lyvely.ts`
   - `docker/config/nginx.conf`
-  - `packages/web/.env` (changes to this file require a rebuild)
 
 For a local test installation, you probably want to align the configuration files to allow http only access.
 You may want to use the following mail configuration for a local test environment:
