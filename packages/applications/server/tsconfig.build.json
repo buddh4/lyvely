@@ -1,16 +1,9 @@
 {
   "extends": "./tsconfig.json",
-  "include": ["config/**/*", "src/**/*"],
-  "exclude": [
-    "node_modules",
-    "cypress",
-    "test",
-    "**/tests",
-    "dist",
-    "**/*spec.ts",
-    "mongoose-test-util.ts",
-    "jest.setup.ts",
-    "migrations",
-    "migrate-mongo-config.ts"
-  ],
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src"
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "tests", "dist", "**/*spec.ts"]
 }

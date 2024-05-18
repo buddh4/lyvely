@@ -1,21 +1,10 @@
 {
+  "extends": "../../libs/devtools/typescript/api.tsconfig.json",
   "compilerOptions": {
-    "target": "es2017",
-    "module": "commonjs",
-    "lib": ["es2022"],
-    "baseUrl": "./",
-    "outDir": "./dist",
-    "declaration": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "sourceMap": true,
-    "incremental": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "removeComments": true,
     "paths": {
-      "@/*": ["src/*"],
-    }
+      "@/*": ["src/*"]
+    },
+    "baseUrl": "./"
   },
+  "exclude": ["node_modules", "dist"]
 }
