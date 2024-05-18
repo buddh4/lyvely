@@ -19,7 +19,7 @@ RUN npm install -g @nestjs/cli
 RUN npm ci
 
 # Build all packages
-RUN npx nx run-many -t build --all --exclude=@lyvely/docs
+RUN npx nx run-many -t build --exclude=@lyvely/docs
 
 # Remove dev dependencies after build
 RUN npm prune --workspaces --production
