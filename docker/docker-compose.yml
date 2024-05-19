@@ -136,7 +136,7 @@ services:
         max-size: "10m"
         max-file: "3"
         labels: "lyvely-api"
-    command: npm run server:prod
+    command: pnpm run server:prod
 
   frontend:
     build:

@@ -19,19 +19,19 @@ npm install -g migrate-mongo
 ### Add migration
 
 ```
-npm run migrate:create name-of-my-script
+pnpm migrate:create name-of-my-script
 ```
 
 ### Show status
 
 ```
-npm run migrate:status
+pnpm migrate:status
 ```
 
 ### Run migrations
 
 ```
-npm run migrate:up
+pnpm migrate:up
 ```
 
 ## Testing
@@ -53,7 +53,7 @@ MONGODB_URI=mongodb://localhost/lyvely-e2e
 2. Start e2e env backend
 
 ```
-npm run start:e2e
+pnpm start:e2e
 ```
 
 3. Open cypress
@@ -95,7 +95,7 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'));"
 ## Debugging
 
 ```
-npm run start:debug
+pnpm start:debug
 ```
 **PhpStorm run config:**
 

@@ -10,11 +10,11 @@
     "lint": "eslint --fix",
     "format": "prettier \"lib/**/*.ts\" --write",
     "build": "rm -rf ./dist/* && tsc -p tsconfig.build.json",
-    "prepublish:npm": "npm run build",
+    "prepublish:npm": "pnpm build",
     "publish:npm": "npm publish --access public",
-    "prepublish:next": "npm run build",
+    "prepublish:next": "pnpm build",
     "publish:next": "npm publish --access public --tag next",
-    "prerelease": "npm run build",
+    "prerelease": "pnpm build",
     "test": "jest --passWithNoTests"
   },
   "author": "Julian Harrer",
@@ -26,11 +26,13 @@
     "@lyvely/common": "^0.1.0-alpha3",
     "@lyvely/journals-interface": "^0.1.0-alpha3",
     "@lyvely/time-series": "^0.1.0-alpha3",
+    "@lyvely/calendar-plan": "^0.1.0-alpha3",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
     "reflect-metadata": "0.1.13"
   },
   "devDependencies": {
+    "@lyvely/devtools": "^0.1.0-alpha3",
     "@lyvely/testing": "^0.1.0-alpha3",
     "@lyvely/dates": "^0.1.0-alpha3"
   },

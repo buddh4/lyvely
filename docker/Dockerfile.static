@@ -15,14 +15,14 @@ COPY docker/config/web.env ./package/applications/pwa/.env
 COPY docker/config/web.env ./package/core/web/.env
 
 # Install app dependencies
-RUN npm install -g @nestjs/cli
-RUN npm ci
+RUN npm install -g pnpm
+RUN pnpm install --frozen-lockfile
 
 # Build all packages
 RUN npx nx run-many -t build --exclude=@lyvely/docs
 
 # Remove dev dependencies after build
-RUN npm prune --workspaces --production
+RUN pnpm recursive prune --production
 
 COPY packages/applications/pwa/dist ./packages/applications/server/static
 

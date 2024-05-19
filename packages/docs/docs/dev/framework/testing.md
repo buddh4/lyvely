@@ -12,11 +12,11 @@ When working on the core platform, you can start the web- and api-server by exec
 terminal:
 
 ```shell
-npm run dev -w @lyvely/web
+pnpm run dev -w @lyvely/web
 ```
 
 ```shell
-npm run dev -w @lyvely/api
+pnpm run dev -w @lyvely/api
 ```
 
 ### Feature Development
@@ -25,11 +25,11 @@ When developing a feature, you can initiate the web and server packages by execu
 terminal:
 
 ```shell
-npm run dev -w my-module-web;
+pnpm run dev -w my-module-web;
 ```
 
 ```shell
-npm run dev -w my-module-api;
+pnpm run dev -w my-module-api;
 ```
 
 These commands setup establishes your testing environment, with the API running on `127.0.0.1:8080` 

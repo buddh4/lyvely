@@ -10,11 +10,11 @@
     "lint": "eslint --fix",
     "format": "prettier \"lib/**/*.ts\" --write",
     "build": "tsc -p tsconfig.build.json --outDir dist/lib --declarationDir dist/lib --declaration true && tscpaths -p tsconfig.build.json -s ./src -o dist/lib && rollup -c && rm -f tsconfig.tsbuildinfo",
-    "prepublish:npm": "npm run build",
+    "prepublish:npm": "pnpm run build",
     "publish:npm": "npm publish --access public",
-    "prepublish:next": "npm run build",
+    "prepublish:next": "pnpm run build",
     "publish:next": "npm publish --access public --tag next",
-    "prerelease": "npm run build",
+    "prerelease": "pnpm run build",
      "test": "jest --passWithNoTests",
   "clear": "rm -rf ./dist && rm -f ./tsconfig.tsbuildinfo",
     "test:cov": "jest --coverage --no-cache"
@@ -31,6 +31,10 @@
     "class-validator": "^0.14.0",
     "lodash": "^4.17.21",
     "reflect-metadata": "0.1.13"
+  },
+  "devDependencies": {
+    "@lyvely/devtools": "^0.1.0-alpha3",
+    "tslib": "^2.6.2"
   },
   "jest": {
     "rootDir": ".",

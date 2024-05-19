@@ -15,11 +15,11 @@
 import fs, { readdirSync } from 'fs';
 import { sign, decode, JwtPayload } from 'jsonwebtoken';
 import dotenv from 'dotenv';
-
-const { Seeder, getObjectId } = require('mongo-seeding');
+import { Seeder, getObjectId } from 'mongo-seeding';
+import path from 'node:path';
+import { ObjectId } from 'mongodb';
 
 dotenv.config({ path: '.e2e.env' });
-const path = require('path');
 
 async function seed() {
   console.log('Seeding ' + process.env.MONGODB_URI_E2E);
@@ -165,7 +165,7 @@ function decodeJwt(token: string): JwtPayload {
   return decode(token, { json: true }) as JwtPayload;
 }
 
-function _getObjectId(seed: string): string {
+function _getObjectId(seed: string): ObjectId {
   return getObjectId(seed);
 }
 

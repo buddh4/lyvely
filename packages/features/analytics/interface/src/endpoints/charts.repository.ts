@@ -6,6 +6,8 @@ import {
 } from './charts.endpoint';
 import { CreateChartModel, UpdateChartModel, UpdateChartSeriesModel } from '../models';
 import type { ISortRequest } from '@lyvely/interface';
+// TODO: https://github.com/microsoft/TypeScript/issues/47663
+import type {} from 'axios';
 
 const api = useApi<IChartsEndpointClient>(API_ANALYTICS_CHARTS);
 

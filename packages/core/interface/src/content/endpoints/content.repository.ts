@@ -2,6 +2,8 @@ import { SetMilestoneModel } from '../models';
 import { API_CONTENT, ContentEndpoints, IContentClient } from './content.endpoint';
 import { useApi } from '@/repository';
 import { IProfileApiRequestOptions } from '@/endpoints';
+// TODO: https://github.com/microsoft/TypeScript/issues/47663
+import type {} from 'axios';
 
 const api = useApi<IContentClient>(API_CONTENT);
 

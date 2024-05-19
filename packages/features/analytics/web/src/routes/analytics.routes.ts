@@ -1,5 +1,5 @@
 import { t, profilePath, LAYOUT_PROFILE_FULL } from '@lyvely/web';
-import { RouteRecordRaw } from 'vue-router';
+import type { RouteRecordRaw } from 'vue-router';
 
 export const analyticsRoutes = [
   {

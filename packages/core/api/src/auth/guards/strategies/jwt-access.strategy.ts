@@ -6,6 +6,9 @@ import { User } from '@/users';
 import { UserStatus } from '@lyvely/interface';
 import { ConfigService } from '@nestjs/config';
 import { ConfigurationPath } from '@/config';
+// TODO: https://github.com/microsoft/TypeScript/issues/47663
+/// <reference types="@types/qs" />
+/// <reference types="@types/express-serve-static-core" />
 
 export const JWT_ACCESS_TOKEN = 'jwt-access-token';
 

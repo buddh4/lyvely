@@ -1,6 +1,8 @@
 import { IMilestonesClient, ENDPOINT_MILESTONES } from './milestones.endpoint';
 import { UpdateMilestoneModel } from '../models';
 import { IProfileApiRequestOptions, useApi } from '@lyvely/interface';
+// TODO: https://github.com/microsoft/TypeScript/issues/47663
+import type {} from 'axios';
 
 const api = useApi<IMilestonesClient>(ENDPOINT_MILESTONES);
 

@@ -17,10 +17,10 @@ mkdir -p "$SCRIPT_DIR/data/mongo1" "$SCRIPT_DIR/data/mongo2" "$SCRIPT_DIR/data/m
 if [ "$USER" = 1 ]
 then
     # Create users for each service
-    sudo useradd -u 957 --system -U mongodb || echo "User mongodb already exists."
-    sudo useradd -u 959 --system -U redis || echo "User redis already exists."
-    sudo useradd -u 961 --system -U lyvely || echo "User lyvely already exists."
-    sudo useradd -u 958 --system -U nginx || echo "User nginx already exists."
+    sudo useradd -u 957 --system -U -s /usr/sbin/nologin mongodb || echo "User mongodb already exists."
+    sudo useradd -u 959 --system -U -s /usr/sbin/nologin redis || echo "User redis already exists."
+    sudo useradd -u 961 --system -U -s /usr/sbin/nologin lyvely || echo "User lyvely already exists."
+    sudo useradd -u 958 --system -U -s /usr/sbin/nologin nginx || echo "User nginx already exists."
 fi
 
 # Set appropriate permissions for data directories

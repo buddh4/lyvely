@@ -3,7 +3,7 @@ import { NotificationType, Notification, TNotificationType } from '../schemas';
 import { AbstractTypeRegistry, globalEmitter, Model, Schema, Subdocument } from '@/core';
 import { EVENT_REGISTER_NOTIFICATION_TYPE } from '../notification.constants';
 import { InjectModel } from '@nestjs/mongoose';
-import { Listener } from 'eventemitter2';
+import type { Listener } from 'eventemitter2';
 
 // This workaround is required since the notifications are registered before the registry is available
 const queuedTypeSchemas: [TNotificationType, Schema<NotificationType>][] = [];

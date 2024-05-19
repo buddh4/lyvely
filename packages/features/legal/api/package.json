@@ -11,11 +11,11 @@
     "lint": "eslint --fix",
     "format": "prettier \"lib/**/*.ts\" --write",
     "build": "rm -rf ./dist/* && tsc -p tsconfig.build.json",
-    "prepublish:npm": "npm run build",
+    "prepublish:npm": "pnpm run build",
     "publish:npm": "npm publish --access public",
-    "prepublish:next": "npm run build",
+    "prepublish:next": "pnpm run build",
     "publish:next": "npm publish --access public --tag next",
-    "prerelease": "npm run build",
+    "prerelease": "pnpm run build",
     "test": "jest --passWithNoTests"
   },
   "author": "Julian Harrer",
@@ -23,11 +23,13 @@
   "dependencies": {
     "@nestjs/common": "^10.3.8",
     "@nestjs/config": "^3.2.2",
+    "@nestjs/event-emitter": "^2.0.4",
     "@lyvely/api": "^0.1.0-alpha3",
     "@lyvely/legal-interface": "^0.1.0-alpha3",
     "reflect-metadata": "0.1.13"
   },
   "devDependencies": {
+    "@lyvely/devtools": "^0.1.0-alpha3",
     "@lyvely/testing": "^0.1.0-alpha3"
   },
   "jest": {

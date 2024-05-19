@@ -6,7 +6,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: '',
+  title: 'Lyvely Documentation',
   tagline: 'What else...',
   url: 'https://docs.lyvely.app',
   baseUrl: '/',
@@ -81,7 +81,7 @@ const config = {
             position: 'left',
             label: 'Development',
           },
-          {to: '/blog', label: 'Blog', position: 'left'},
+          { to: '/blog', label: 'Blog', position: 'left' },
           {
             href: 'https://github.com/facebook/docusaurus',
             label: 'GitHub',

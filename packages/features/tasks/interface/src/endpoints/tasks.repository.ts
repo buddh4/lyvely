@@ -3,6 +3,8 @@ import { UpdateTaskStateModel, UpdateTaskModel } from '../models';
 import { TimerValueUpdateModel } from '@lyvely/timers-interface';
 import { CalendarPlanFilter, CalendarPlanSort } from '@lyvely/calendar-plan-interface';
 import { IProfileApiRequestOptions, useApi } from '@lyvely/interface';
+// TODO: https://github.com/microsoft/TypeScript/issues/47663
+import type {} from 'axios';
 
 const api = useApi<ITasksClient>(ENDPOINT_TASKS);
 

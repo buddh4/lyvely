@@ -31,7 +31,7 @@
     "lint": "eslint \"{src,apps,libs,test}/**/*.{ts,vue}\" --fix",
     "format": "prettier .  --write",
     "dev": "vite",
-    "dev:e2e": "cross-env NODE_ENV=e2e npm run dev",
+    "dev:e2e": "cross-env NODE_ENV=e2e pnpm run dev",
     "deps": "npx depcruise --config .dependency-cruiser.js src"
   },
   "jest": {
@@ -82,7 +82,7 @@
     "@vueuse/core": "^10.9.0",
     "@vueuse/integrations": "^10.9.0",
     "animate.css": "^4.1.1",
-    "axios": "^1.4.0",
+    "axios": "^1.6.8",
     "axios-auth-refresh": "^3.3.6",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
@@ -93,6 +93,7 @@
     "intro.js": "^7.2.0",
     "js-cookie": "^3.0.5",
     "lodash": "^4.17.21",
+    "ms": "^2.1.3",
     "mitt": "^3.0.0",
     "nprogress": "^0.2.0",
     "pinia": "^2.0.35",
@@ -124,8 +125,10 @@
     "cypress": "^13.6.0",
     "jsdom": "^22.1.0",
     "jsonwebtoken": "^9.0.2",
-    "ms": "^2.1.3",
+    "@types/ms": "^0.7.34",
     "uuid": "^8.3.2",
-    "vitest": "^1.5.1"
+    "vitest": "^1.5.1",
+    "tslib": "^2.6.2",
+    "@vue/runtime-dom": "^3.4.25"
   }
 }

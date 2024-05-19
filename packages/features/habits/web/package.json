@@ -15,7 +15,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "dev:e2e": "cross-env NODE_ENV=e2e npm run dev",
+    "dev:e2e": "cross-env NODE_ENV=e2e pnpm run dev",
     "cypress:open": "cross-env NODE_ENV=e2e cypress open",
     "cypress:run": "cross-env NODE_ENV=e2e cypress run",
     "build": "lyvely-dev build:web",
@@ -46,6 +46,8 @@
     "vue-tsc": "^2.0.14",
     "tailwind": "^4.0.0",
     "postcss": "^8.4.23",
-    "autoprefixer": "^10.4.14"
+    "autoprefixer": "^10.4.14",
+    "@vue/runtime-dom": "^3.4.25",
+    "vue-router": "^4.3.2"
   }
 }

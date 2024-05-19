@@ -7,6 +7,8 @@ import {
 import { useApi } from '@/repository';
 import { CalendarPreferences, SetLanguageDto, SetTimezoneDto } from '@/common';
 import { ResendOtp } from '@/otp';
+// TODO: https://github.com/microsoft/TypeScript/issues/47663
+import type {} from 'axios';
 
 const api = useApi<IUserAccountClient>(API_USER_ACCOUNT);
 

@@ -141,7 +141,7 @@ export class ContentCoreModule {}
 
 ### API Testing
 
-To initiate the test environment for an `api` package, run the `npm run dev -w my-module-api` command. 
+To initiate the test environment for an `api` package, run the `pnpm run dev -w my-module-api` command. 
 This will launch a Lyvely API server with the default test configuration on `127.0.0.1:8080`.
 
 ## The Web Package
@@ -272,6 +272,6 @@ export const pollsModule = () => {
 
 ### Web Testing
 
-To initiate the test environment for a `web` package, run the `npm run web:dev` command.
+To initiate the test environment for a `web` package, run the `pnpm run web:dev` command.
 This will launch a Lyvely web test server with the default test configuration on `127.0.0.1:3000`.
 This requires the API test environment of the same module to run.

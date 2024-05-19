@@ -14,7 +14,7 @@ import {
   MilestoneSearchResponse,
   MilestoneRelationModel,
 } from '@lyvely/milestones-interface';
-import { CalendarPlanSort, CalendarPlanFilter } from '@lyvely/calendar-plan-interface';
+import { CalendarPlanSort, CalendarPlanFilter } from '@lyvely/calendar-plan';
 import { MilestonesService, MilestonesCalendarPlanService } from '../services';
 import { Body, Get, Inject, Post, Query, Request, ValidationPipe } from '@nestjs/common';
 

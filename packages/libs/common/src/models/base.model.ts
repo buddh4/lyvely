@@ -1,6 +1,5 @@
-import { initBaseModelData, implementsToJson, type InitModelDataOptions } from './util';
+import { initBaseModelData, type InitModelDataOptions } from './util';
 import { PartialPropertiesOf, type PropertiesOf } from '../utils/util.types';
-import { hasOwnNonNullableProperty } from '../utils/object.util';
 
 export type StrictBaseModelData<TModel extends object> = PropertiesOf<TModel> | TModel | false;
 

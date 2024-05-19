@@ -7,6 +7,8 @@ import {
 import { UpdateDataPointModel } from '@lyvely/time-series-interface';
 import { CalendarPlanFilter, CalendarPlanSort } from '@lyvely/calendar-plan-interface';
 import { useApi, IProfileApiRequestOptions } from '@lyvely/interface';
+// TODO: https://github.com/microsoft/TypeScript/issues/47663
+import type {} from 'axios';
 
 const api = useApi<IJournalsEndpointService>(ENDPOINT_JOURNALS);
 

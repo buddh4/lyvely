@@ -12,6 +12,7 @@
     "format": "prettier .  --write"
   },
   "dependencies": {
+    "vue": "^3.4.25",
     "@lyvely/activities-web": "^0.1.0-alpha3",
     "@lyvely/analytics-web": "^0.1.0-alpha3",
     "@lyvely/api": "^0.1.0-alpha3",
@@ -26,6 +27,7 @@
     "vite": "^5.2.11",
     "vite-plugin-pwa": "^0.20.0",
     "workbox-window": "^7.1.0",
-    "workbox-build": "^7.1.0"
+    "workbox-build": "^7.1.0",
+    "@vue/runtime-dom": "^3.4.25"
   }
 }

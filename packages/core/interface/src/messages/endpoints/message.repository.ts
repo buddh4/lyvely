@@ -2,6 +2,8 @@ import { CreateMessageModel } from '../models';
 import { API_MESSAGE, IMessageClient } from './message.endpoint';
 import { useApi } from '@/repository';
 import { IProfileApiRequestOptions } from '@/endpoints';
+// TODO: https://github.com/microsoft/TypeScript/issues/47663
+import type {} from 'axios';
 
 const api = useApi<IMessageClient>(API_MESSAGE);
 

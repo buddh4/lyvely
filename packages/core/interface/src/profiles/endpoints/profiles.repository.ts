@@ -2,6 +2,8 @@ import { API_PROFILES, IProfilesClient, ProfilesEndpoints } from './profiles.end
 import { useApi } from '@/repository';
 import { CreateProfileModel, UpdateProfileModel } from '../models';
 import { CalendarPreferences } from '@/common';
+// TODO: https://github.com/microsoft/TypeScript/issues/47663
+import type {} from 'axios';
 
 const api = useApi<IProfilesClient>(API_PROFILES);
 

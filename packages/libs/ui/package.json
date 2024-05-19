@@ -35,6 +35,7 @@
   },
   "dependencies": {
     "@ckpack/vue-color": "^1.5.0",
+    "@ctrl/tinycolor": "^3.6.0",
     "@lyvely/common": "^0.1.0-alpha3",
     "@lyvely/dates": "^0.1.0-alpha3",
     "@storybook/addon-controls": "^7.5.1",
@@ -60,6 +61,7 @@
     "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
+    "@lyvely/devtools": "^0.1.0-alpha3",
     "@storybook/addon-essentials": "^7.5.1",
     "@storybook/addon-interactions": "^7.5.1",
     "@storybook/addon-links": "^7.5.1",

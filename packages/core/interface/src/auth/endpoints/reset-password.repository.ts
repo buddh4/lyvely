@@ -6,6 +6,8 @@ import {
 import { SendResetPasswordMail, ResetPassword } from '../models';
 import { useApi } from '@/repository';
 import { IProfileApiRequestOptions } from '@/endpoints';
+// TODO: https://github.com/microsoft/TypeScript/issues/47663
+import type {} from 'axios';
 
 const api = useApi<IResetPasswordService>(API_RESET_PASSWORD);
 

@@ -8,6 +8,8 @@ import { useApi } from '@/repository';
 import { VerifyEmailDto } from '@/user-account';
 import { ResendOtp } from '@/otp';
 import { StringFieldValidityRequest } from '@/validation';
+// TODO: https://github.com/microsoft/TypeScript/issues/47663
+import type {} from 'axios';
 
 const api = useApi<IUserRegistrationClient>(API_USER_REGISTRATION);
 

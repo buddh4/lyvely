@@ -1,6 +1,6 @@
 import { User, Profile, AbstractDao, assureObjectId, DocumentIdentity } from '@lyvely/api';
 import { buildDiscriminatorName, DataPoint, TimeSeriesContent } from '../schemas';
-import { CalendarPlanFilter } from '@lyvely/calendar-plan-interface';
+import { CalendarPlanFilter } from '@lyvely/calendar-plan';
 import { getTimingIds, CalendarInterval } from '@lyvely/dates';
 type InterValFilter = { interval: CalendarInterval; tid?: string | { $regex: RegExp } };
 

@@ -6,7 +6,7 @@ import {
   useProfileFeatureStore,
   useProfileStore,
 } from '@lyvely/web';
-import { RouteRecordRaw } from 'vue-router';
+import type { RouteRecordRaw } from 'vue-router';
 import { ActivityHabitsFeature } from '@lyvely/habits-interface';
 
 export const habitRoutes = [

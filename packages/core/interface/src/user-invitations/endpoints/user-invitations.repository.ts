@@ -5,6 +5,8 @@ import {
 } from './user-invitations.endpoint';
 import { InvitationRequest } from '../models';
 import { useApi } from '@/repository';
+// TODO: https://github.com/microsoft/TypeScript/issues/47663
+import type {} from 'axios';
 
 const api = useApi<IUserInvitationsClient>(API_USER_INVITATIONS);
 

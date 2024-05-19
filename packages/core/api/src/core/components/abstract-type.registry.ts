@@ -1,6 +1,5 @@
 import { InjectionToken, Logger, Type } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import type { Listener } from 'eventemitter2';
 import { IModuleMetadata } from '../interfaces';
 
 export interface ITypeRegistryDefinition<T> {
@@ -69,10 +68,8 @@ export abstract class AbstractTypeRegistry<T, TMeta = any, TModuleMetaView = any
    *
    * @returns {Function} - A function that can be used to remove the registration event handler.
    */
-  onRegistration(
-    handler: (meta: IModuleMetadata<TModuleMetaView>) => void,
-  ): EventEmitter2 | Listener {
-    return this.emitter.on(EVENT_REGISTRATION, handler);
+  onRegistration(handler: (meta: IModuleMetadata<TModuleMetaView>) => void): EventEmitter2 {
+    return this.emitter.on(EVENT_REGISTRATION, handler) as EventEmitter2;
   }
 
   /**

@@ -31,6 +31,7 @@
     "@lyvely/dates": "^0.1.0-alpha3",
     "@lyvely/analytics-interface": "^0.1.0-alpha3",
     "echarts": "^5.4.2",
+    "lodash": "^4.17.21",
     "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
@@ -40,6 +41,8 @@
     "vite-tsconfig-paths": "^4.3.2",
     "vue-tsc": "^2.0.14",
     "tailwind": "^4.0.0",
-    "postcss": "^8.4.23"
+    "postcss": "^8.4.23",
+    "@vue/runtime-dom": "^3.4.25",
+    "vue-router": "^4.3.2"
   }
 }
