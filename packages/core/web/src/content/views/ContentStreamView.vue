@@ -11,8 +11,7 @@ import { useRouter } from 'vue-router';
 import { useContentCreateStore, useContentStreamFilter } from '../stores';
 import { storeToRefs } from 'pinia';
 import emptyImageUrl from '@/assets/empty.png';
-import { useProfileStore } from '@/profiles';
-import { usePermissions } from '@/common';
+import { useProfileStore, useProfilePermissions } from '@/profiles';
 
 const { filter } = useContentStreamFilter();
 filter.value = new ContentRequestFilter();
@@ -33,10 +32,10 @@ async function openCreateContentModal() {
 <template>
   <content-stream :batch-size="40">
     <template #stream-empty>
-      <div class="flex w-full h-full items-center justify-center">
+      <div class="flex h-full w-full items-center justify-center">
         <div
           data-id="empty-stream"
-          class="flex flex-col gap-3 items-center justify-center bg-main main border-divide md:border md:shadow-lg rounded p-5 cursor-pointer"
+          class="bg-main main border-divide flex cursor-pointer flex-col items-center justify-center gap-3 rounded p-5 md:border md:shadow-lg"
           @click="openCreateContentModal">
           <img :src="emptyImageUrl" :alt="addButtonText" class="h-72 md:rounded" />
           <h1 class="text-sm font-bold">No content has been added yet</h1>

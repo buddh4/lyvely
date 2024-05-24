@@ -2,7 +2,7 @@ import { useAuthStore } from '@/auth';
 import createAuthRefreshInterceptor from 'axios-auth-refresh';
 import { useApiRepository, useApiRequestInterceptor } from '@lyvely/interface';
 import { InternalAxiosRequestConfig } from 'axios';
-import { eventBus } from '@/core';
+import { useEventBus } from '@/core';
 
 const skipAutoRefreshInterceptor = function (config: InternalAxiosRequestConfig) {
   if (typeof config.skipAuthRefresh !== 'boolean') {
@@ -56,7 +56,7 @@ export const useAutoTokenRefresh = () => {
     return requestToken();
   });
 
-  eventBus.on('app.mount.post', () => {
+  useEventBus().on('app.mount.post', () => {
     setTimeout(autoRefreshTokenInterval, authTokenExpiration);
   });
 };

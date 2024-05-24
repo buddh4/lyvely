@@ -31,4 +31,5 @@ export * from './users';
 export * from './lyvely.router';
 export * from './core.modules';
 export * from './lyvely-web.app';
+export * from './lyvely-web-app.interface';
 export * from '@lyvely/interface';

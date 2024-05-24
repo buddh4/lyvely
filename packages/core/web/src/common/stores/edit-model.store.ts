@@ -1,7 +1,7 @@
 import { reactive, Ref, ref, toValue } from 'vue';
 import { IEditModelClient, FieldValidationException } from '@lyvely/interface';
 import { cloneDeep, isEqual } from 'lodash';
-import { loadingStatus, useStatus, eventBus } from '@/core';
+import { loadingStatus, useStatus, useEventBus } from '@/core';
 import { useProfileStore } from '@/profiles/stores/profile.store';
 import { watchDebounced } from '@vueuse/core';
 import { I18nModelValidator } from '@/i18n';
@@ -199,7 +199,7 @@ export function useUpdateModelStore<
 
       if (response !== false && typeof options.onSubmitSuccess === 'function') {
         const event = isCreate.value ? 'created' : 'updated';
-        eventBus.emit(`model.${event}.post`, response);
+        useEventBus().emit(`model.${event}.post`, response);
         localStorage.removeItem(getBackupKey());
         options.onSubmitSuccess(<TResponse>response);
       }

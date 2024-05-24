@@ -10,9 +10,9 @@ import {
   getLocaleDefinitions,
   getLocaleName,
 } from '@lyvely/interface';
-import { EVENT_APP_CONFIG_LOADED, useAppConfigStore } from '@/app-config';
+import { AppConfigEvents, useAppConfigStore } from '@/app-config';
 import { getFallbackLocale, setLocale } from './i18n';
-import { eventBus } from '@/core';
+import { useEventBus } from '@/core';
 import {
   setEnabledLocales,
   setGlobalDateTimeLocale,
@@ -31,7 +31,7 @@ export const useI18nStore = defineStore('i18n', () => {
    * Here we sync the enabled locales setting with our date time adapter.
    * This is e.g. required for locale validation in models.
    */
-  eventBus.on(EVENT_APP_CONFIG_LOADED, () => {
+  useEventBus<AppConfigEvents>().on('app-config.loaded', () => {
     setEnabledLocales(getEnabledLocales());
   });
 

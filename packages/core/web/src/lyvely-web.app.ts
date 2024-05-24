@@ -3,15 +3,7 @@ import { UserAvatar } from '@/users';
 import { ProfileAvatar } from '@/profiles';
 import { setupI18n, translationAdapter } from '@/i18n';
 import { router } from './lyvely.router';
-import {
-  resetStore,
-  IModuleLoaderOptions,
-  eventBus,
-  AppEvents,
-  installModules,
-  registerModules,
-  IModule,
-} from '@/core';
+import { resetStore, AppEvents, installModules, registerModules, useEventBus } from '@/core';
 import { registerCoreModules } from './core.modules';
 import { markRaw, App as VueApp, createApp } from 'vue';
 import { createPinia, Pinia } from 'pinia';
@@ -19,23 +11,9 @@ import { I18n } from 'vue-i18n';
 import { useDayJsDateTimeAdapter } from '@lyvely/dates';
 import { initApiRepository, createApiUrl, DEFAULT_FALLBACK_LOCALE } from '@lyvely/interface';
 import { createLyvelyUi } from '@lyvely/ui';
+import type { ILyvelyWebApp, ILyvelyWebAppOptions } from './lyvely-web-app.interface';
 
-export interface ILyvelyWebAppOptions extends IModuleLoaderOptions {
-  modules?: IModule[];
-  apiUrl?: string;
-  baseUrl?: string;
-  fallbackLocale?: string;
-  env?: 'production' | 'development';
-}
-
-let appInstance: LyvelyWebApp;
-
-export function useLyvelyApp() {
-  if (!appInstance) throw new Error('Called useLyvelyApp prior of app initialization.');
-  return appInstance;
-}
-
-export class LyvelyWebApp {
+export class LyvelyWebApp implements ILyvelyWebApp {
   vueApp: VueApp;
   pinia: Pinia;
   i18n: I18n;
@@ -54,24 +32,21 @@ export class LyvelyWebApp {
   }
 
   async init(selector?: string) {
-    if (appInstance) throw new Error('Lyvely is already running.');
-
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
-    appInstance = this;
+    this.events = useEventBus();
+    this.events.emit('app.init.pre', this);
 
     this.initApiRepository();
-    this.events = eventBus;
-    this.events.emit('app.init.pre');
     registerCoreModules();
     this.registerModulesFromOptions();
     this.setupPinia();
     await this.setupI18n();
     this.createApp();
-    this.events.emit('app.init.post', this);
 
     if (selector) {
       this.mount(selector);
     }
+
+    this.events.emit('app.init.post', this);
 
     return this;
   }

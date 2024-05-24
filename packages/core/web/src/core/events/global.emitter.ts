@@ -1,15 +1,14 @@
 import mitt, { Emitter, Handler } from 'mitt';
+import type { LyvelyWebApp } from '@/lyvely-web.app';
 
 // Todo: We use any for app events to prevent circular dependencies
 
 type GlobalEvents = {
-  'app.init.pre': void;
-  'app.init.post': any;
-  'app.mount.pre': any;
-  'app.mount.post': any;
-  'app.need.refresh': any;
-  'app.offline.ready': any;
-} & Record<string, any>;
+  'app.init.pre': LyvelyWebApp;
+  'app.init.post': LyvelyWebApp;
+  'app.mount.pre': LyvelyWebApp;
+  'app.mount.post': LyvelyWebApp;
+} & Record<string, unknown>;
 
 export default function matching<
   EventType extends string,
@@ -38,5 +37,12 @@ export default function matching<
   return mitt;
 }
 
-export const eventBus = matching(mitt<GlobalEvents>());
+const eventBus = matching(mitt<GlobalEvents>());
+
+export function useEventBus<TEvents extends Record<string, unknown> = GlobalEvents>(): Emitter<
+  TEvents & GlobalEvents
+> {
+  return (<unknown>eventBus) as Emitter<TEvents & GlobalEvents>;
+}
+
 export type AppEvents = Emitter<GlobalEvents>;

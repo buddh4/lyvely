@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { ContentModel, ContentUpdateResponse, IContent, useContentClient } from '@lyvely/interface';
-import { useGlobalDialogStore, eventBus } from '@/core';
+import { useGlobalDialogStore, useEventBus } from '@/core';
 import { useProfileStore } from '@/profiles/stores/profile.store';
 
 type ContentEventType = 'archived' | 'restored' | 'created' | 'updated' | 'set-milestone';
@@ -52,7 +52,7 @@ export const useContentStore = defineStore('content', () => {
     event: ContentEventType,
     handler: (content: T) => void,
   ): void {
-    return eventBus.on(`content.${type.toLowerCase()}.${event}.post`, handler!);
+    return useEventBus().on(`content.${type.toLowerCase()}.${event}.post`, handler!);
   }
 
   function offContentEvent<T extends ContentModel = ContentModel>(
@@ -60,7 +60,7 @@ export const useContentStore = defineStore('content', () => {
     event: ContentEventType,
     handler: (content: T) => void,
   ): void {
-    return eventBus.off(`content.${type.toLowerCase()}.${event}.post`, handler!);
+    return useEventBus().off(`content.${type.toLowerCase()}.${event}.post`, handler!);
   }
 
   function onContentCreated<T extends ContentModel = ContentModel>(
@@ -120,7 +120,7 @@ export const useContentStore = defineStore('content', () => {
   }
 
   function emitPostContentEvent(type: string, event: ContentEventType, content: IContent) {
-    eventBus.emit(`content.${type.toLowerCase()}.${event}.post`, content);
+    useEventBus().emit(`content.${type.toLowerCase()}.${event}.post`, content);
   }
 
   function emitPostContentUpdateEvent(type: string, content: IContent) {

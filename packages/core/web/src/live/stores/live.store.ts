@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { eventBus } from '@/core';
+import { useEventBus } from '@/core';
 import { createApiUrl, ILiveEvent } from '@lyvely/interface';
 
 export const useLiveStore = defineStore('live', () => {
@@ -99,7 +99,7 @@ export const useLiveStore = defineStore('live', () => {
   }
 
   function emitLocalLiveEvent(event: ILiveEvent) {
-    eventBus.emit(createLiveEventType(event.module, event.name), event);
+    useEventBus().emit(createLiveEventType(event.module, event.name), event);
   }
 
   function createLiveEventType(module: string, name: string) {
@@ -111,7 +111,7 @@ export const useLiveStore = defineStore('live', () => {
     event: string,
     handler: (event: TEvent) => void,
   ) {
-    return eventBus.on(createLiveEventType(module, event), handler);
+    return useEventBus().on(createLiveEventType(module, event), handler);
   }
 
   function off<TEvent extends ILiveEvent = ILiveEvent>(
@@ -119,7 +119,7 @@ export const useLiveStore = defineStore('live', () => {
     event: string,
     handler: (event: TEvent) => void,
   ) {
-    return eventBus.off(createLiveEventType(module, event), handler);
+    return useEventBus().off(createLiveEventType(module, event), handler);
   }
 
   return {

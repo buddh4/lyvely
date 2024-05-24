@@ -7,7 +7,7 @@ import { useProfileStore } from '@/profiles/stores/profile.store';
 import { onMounted, ref } from 'vue';
 import { useContentStreamFilter, useContentCreateStore } from '../stores';
 import { focusIfNotTouchScreen } from '@lyvely/ui';
-import { usePermissions } from '@/common';
+import { useProfilePermissions } from '@/profiles';
 import { t } from '@/i18n';
 
 export interface IProps {
