@@ -199,7 +199,7 @@ export function useUpdateModelStore<
 
       if (response !== false && typeof options.onSubmitSuccess === 'function') {
         const event = isCreate.value ? 'created' : 'updated';
-        useEventBus().emit(`model.${event}.post`, response);
+        useEventBus<any>().emit(`model.${event}.post`, response);
         localStorage.removeItem(getBackupKey());
         options.onSubmitSuccess(<TResponse>response);
       }

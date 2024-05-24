@@ -17,7 +17,7 @@ export type LyvelyAppEvents = {
   'app.init.post': ILyvelyWebApp;
   'app.mount.pre': ILyvelyWebApp;
   'app.mount.post': ILyvelyWebApp;
-} & Record<string, unknown>;
+};
 
 export type LyvelyAppEmitter = Emitter<LyvelyAppEvents>;
 

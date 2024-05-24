@@ -27,8 +27,9 @@ test('translate error without context set with setErrors', () => {
   const validator = new I18nModelValidator(new TestModel(), {
     labelKey: 'test.fields',
   });
+
   validator.setErrors([{ property: 'uniqueField', errors: ['unique'] }]);
-  expect(validator.getError('uniqueField')).to.eq('UniqueField already exist');
+  expect(validator.getError('uniqueField')).to.eq('UniqueField already exists');
 });
 
 test('translate error with context set with setErrors', () => {

@@ -52,7 +52,7 @@ export const useContentStore = defineStore('content', () => {
     event: ContentEventType,
     handler: (content: T) => void,
   ): void {
-    return useEventBus().on(`content.${type.toLowerCase()}.${event}.post`, handler!);
+    return useEventBus<any>().on(`content.${type.toLowerCase()}.${event}.post`, handler!);
   }
 
   function offContentEvent<T extends ContentModel = ContentModel>(
@@ -60,7 +60,7 @@ export const useContentStore = defineStore('content', () => {
     event: ContentEventType,
     handler: (content: T) => void,
   ): void {
-    return useEventBus().off(`content.${type.toLowerCase()}.${event}.post`, handler!);
+    return useEventBus<any>().off(`content.${type.toLowerCase()}.${event}.post`, handler!);
   }
 
   function onContentCreated<T extends ContentModel = ContentModel>(
@@ -120,7 +120,7 @@ export const useContentStore = defineStore('content', () => {
   }
 
   function emitPostContentEvent(type: string, event: ContentEventType, content: IContent) {
-    useEventBus().emit(`content.${type.toLowerCase()}.${event}.post`, content);
+    useEventBus<any>().emit(`content.${type.toLowerCase()}.${event}.post`, content);
   }
 
   function emitPostContentUpdateEvent(type: string, content: IContent) {

@@ -46,13 +46,16 @@ const TimeSeriesSummarySchema = SchemaFactory.createForClass(TimeSeriesSummary);
  */
 export abstract class TimeSeriesContent<
     TDataPointConfig extends DefaultDataPointConfig = DefaultDataPointConfig,
-    TConfig extends ITimeSeriesContentConfig<TDataPointConfig> = ITimeSeriesContentConfig<TDataPointConfig>,
+    TConfig extends
+      ITimeSeriesContentConfig<TDataPointConfig> = ITimeSeriesContentConfig<TDataPointConfig>,
     TState extends Object | undefined = undefined,
     TData extends ContentDataType = ContentDataType,
     TModel extends ContentModel<string> = ContentModel,
   >
   extends ContentType<TConfig, TState, TData, TModel>
-  implements ITimeSeriesContent<TObjectId, TDataPointConfig>, ICalendarPlanEntry<TObjectId>
+  implements
+    ITimeSeriesContent<TObjectId, TDataPointConfig>,
+    ICalendarPlanEntry<TObjectId, TConfig, TState, TData>
 {
   @Prop({ type: TimeSeriesSummarySchema })
   @PropertyType(TimeSeriesSummary)

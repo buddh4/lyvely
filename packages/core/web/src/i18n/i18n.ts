@@ -59,8 +59,8 @@ export function translate(key: ITranslatable, params?: Record<string, string>): 
 
 export const t = translate;
 
-export function setupI18n() {
-  fallBackLocale = useLyvelyApp().options.fallbackLocale;
+export function setupI18n(options?: { fallbackLocale: string }) {
+  fallBackLocale = options?.fallbackLocale || useLyvelyApp().options.fallbackLocale;
 
   if (!LOCALES_SUPPORTED.includes(fallBackLocale)) {
     fallBackLocale = DEFAULT_FALLBACK_LOCALE;

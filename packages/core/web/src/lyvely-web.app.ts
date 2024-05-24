@@ -3,7 +3,7 @@ import { UserAvatar } from '@/users';
 import { ProfileAvatar } from '@/profiles';
 import { setupI18n, translationAdapter } from '@/i18n';
 import { router } from './lyvely.router';
-import { resetStore, AppEvents, installModules, registerModules, useEventBus } from '@/core';
+import { resetStore, installModules, registerModules, useEventBus, LyvelyAppEmitter } from '@/core';
 import { registerCoreModules } from './core.modules';
 import { markRaw, App as VueApp, createApp } from 'vue';
 import { createPinia, Pinia } from 'pinia';
@@ -17,7 +17,7 @@ export class LyvelyWebApp implements ILyvelyWebApp {
   vueApp: VueApp;
   pinia: Pinia;
   i18n: I18n;
-  events: AppEvents;
+  events: LyvelyAppEmitter;
   options: Required<ILyvelyWebAppOptions>;
 
   constructor(options: ILyvelyWebAppOptions = {}) {

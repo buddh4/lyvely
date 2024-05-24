@@ -99,7 +99,7 @@ export const useLiveStore = defineStore('live', () => {
   }
 
   function emitLocalLiveEvent(event: ILiveEvent) {
-    useEventBus().emit(createLiveEventType(event.module, event.name), event);
+    useEventBus<any>().emit(createLiveEventType(event.module, event.name), event);
   }
 
   function createLiveEventType(module: string, name: string) {
@@ -111,7 +111,7 @@ export const useLiveStore = defineStore('live', () => {
     event: string,
     handler: (event: TEvent) => void,
   ) {
-    return useEventBus().on(createLiveEventType(module, event), handler);
+    return useEventBus<any>().on(createLiveEventType(module, event), handler);
   }
 
   function off<TEvent extends ILiveEvent = ILiveEvent>(
@@ -119,7 +119,7 @@ export const useLiveStore = defineStore('live', () => {
     event: string,
     handler: (event: TEvent) => void,
   ) {
-    return useEventBus().off(createLiveEventType(module, event), handler);
+    return useEventBus<any>().off(createLiveEventType(module, event), handler);
   }
 
   return {

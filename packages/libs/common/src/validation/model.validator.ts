@@ -8,7 +8,7 @@ interface ITranslationError<T> {
   value: any;
   property: keyof T & string;
   rule: string;
-  message: string;
+  message?: string;
   context: any;
 }
 
@@ -164,7 +164,6 @@ export class ModelValidator<
           model: this.model!,
           value: getNonNullableProperty(this.model, property),
           property: property,
-          message: message,
           rule: rule,
           context: context || {},
         }) || message
