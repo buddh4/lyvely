@@ -41,17 +41,17 @@ const { model } = toRefs(props);
 
 <template>
   <div
-    class="bg-main py-2 px-3"
+    class="bg-main px-3 py-2"
     role="listitem"
     :data-cid="model.id"
     :data-sort-order="model.meta.sortOrder">
     <div :class="classNames">
       <button
         v-if="dragActive"
-        class="item-drag-button mr-2 my-auto w-5 cursor-move text-secondary"
+        class="item-drag-button text-secondary my-auto mr-2 w-5 cursor-move"
         @keyup.shift.up="$emit('moveUp', model, $el)"
         @keyup.shift.down="$emit('moveDown', model, $el)">
-        <ly-icon name="drag" class="fill-current w-5" />
+        <ly-icon name="drag" class="w-5 fill-current" />
       </button>
 
       <div class="relative flex-grow">

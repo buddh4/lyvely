@@ -5,7 +5,7 @@ declare module 'dayjs/locale/*' {
     interface Locale extends ILocale {}
   }
 
-  const locale: locale.Locale
+  const locale: locale.Locale;
 
-  export = locale
+  export = locale;
 }

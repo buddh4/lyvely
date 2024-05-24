@@ -42,24 +42,24 @@ function setInputType(inputType: DataPointInputType) {
 </script>
 
 <template>
-  <div class="flex flex-col gap-2 border border-divide rounded bg-highlight dark:bg-main p-3">
-    <div class="flex gap-2 justify-between items-stretch">
+  <div class="border-divide bg-highlight dark:bg-main flex flex-col gap-2 rounded border p-3">
+    <div class="flex items-stretch justify-between gap-2">
       <ly-button
-        class="text-xs secondary w-full outlined"
+        class="secondary outlined w-full text-xs"
         :active="modelValue.inputType === DataPointInputType.Checkbox"
         @click="setInputType(DataPointInputType.Checkbox)">
         {{ t('time-series.input_types.checkbox') }}
       </ly-button>
 
       <ly-button
-        class="text-xs secondary w-full outlined"
+        class="secondary outlined w-full text-xs"
         :active="modelValue.inputType === DataPointInputType.Radio"
         @click="setInputType(DataPointInputType.Radio)">
         {{ t('time-series.input_types.radio') }}
       </ly-button>
 
       <ly-button
-        class="text-xs secondary w-full outlined"
+        class="secondary outlined w-full text-xs"
         :active="modelValue.inputType === DataPointInputType.Dropdown"
         @click="setInputType(DataPointInputType.Dropdown)">
         {{ t('time-series.input_types.dropdown') }}
@@ -72,13 +72,13 @@ function setInputType(inputType: DataPointInputType) {
         class="mb-0 grow"
         input-class="attachment-r"
         label="time-series.labels.add_option" />
-      <ly-button class="primary rounded-r w-12" @click="addOption"> + </ly-button>
+      <ly-button class="primary w-12 rounded-r" @click="addOption"> + </ly-button>
     </div>
     <div v-for="option in modelValue.options" :key="option" class="flex">
-      <div class="bg-highlight border border-divide p-2 rounded-l clearfix grow">
+      <div class="bg-highlight border-divide clearfix grow rounded-l border p-2">
         {{ option }}
       </div>
-      <ly-button class="danger float-right rounded-r w-12" @click="removeOption(option)">
+      <ly-button class="danger float-right w-12 rounded-r" @click="removeOption(option)">
         <ly-icon name="delete" />
       </ly-button>
     </div>

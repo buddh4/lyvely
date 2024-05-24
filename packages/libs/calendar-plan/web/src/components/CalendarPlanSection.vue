@@ -66,8 +66,8 @@ const isEmptyUnscheduled = computed(
     :aria-label="t('calendar-plan.aria.header', { time: accessibleTitle })"
     :data-count="count"
     :class="[
-      'relative py-2 px-3 bg-shadow text-center',
-      'first:rounded-t border-divide border ',
+      'bg-shadow relative px-3 py-2 text-center',
+      'border-divide border first:rounded-t ',
       { 'border-b-0': !isEmptyUnscheduled },
       { 'rounded-b border-b': isEmptyUnscheduled },
     ]"
@@ -86,14 +86,14 @@ const isEmptyUnscheduled = computed(
       v-if="leftCaret"
       tabindex="0"
       :aria-label="t('calendar-plan.aria.nav-back', { time: prevTitle })"
-      class="inline-block py-0 select-none"
+      class="inline-block select-none py-0"
       :aria-controls="itemsId"
       @click="decrementTiming">
       {{ leftCaret }}
     </ly-button>
 
     <button
-      class="inline-block my-0 cursor-pointer text-body select-none"
+      class="text-body my-0 inline-block cursor-pointer select-none"
       :aria-controls="itemsId"
       :aria-label="accessibleTitle"
       :aria-expanded="collapsed ? 'false' : 'true'"
@@ -109,7 +109,7 @@ const isEmptyUnscheduled = computed(
       v-if="rightCaret"
       tabindex="0"
       :aria-label="t('calendar-plan.aria.nav-next', { time: nextTitle })"
-      class="inline-block py-0 select-none"
+      class="inline-block select-none py-0"
       :aria-controls="itemsId"
       @click="incrementTiming">
       {{ rightCaret }}
@@ -132,8 +132,8 @@ const isEmptyUnscheduled = computed(
     role="list"
     data-calendar-plan-item-container
     :class="[
-      'p-0 border-x border-divide',
-      { 'last:border-b last:rounded-b': count !== 0 },
+      'border-divide border-x p-0',
+      { 'last:rounded-b last:border-b': count !== 0 },
       { hidden: collapsed },
     ]">
     <slot></slot>

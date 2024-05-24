@@ -44,24 +44,24 @@ function setInputType(inputType: DataPointInputType) {
 </script>
 
 <template>
-  <div class="flex flex-col gap-2 border border-divide rounded bg-highlight dark:bg-main p-3">
-    <div v-if="showInputTypeSelection" class="flex gap-2 justify-between items-stretch">
+  <div class="border-divide bg-highlight dark:bg-main flex flex-col gap-2 rounded border p-3">
+    <div v-if="showInputTypeSelection" class="flex items-stretch justify-between gap-2">
       <ly-button
-        class="text-xs secondary w-full outlined"
+        class="secondary outlined w-full text-xs"
         :active="modelValue.inputType === DataPointInputType.Checkbox"
         @click="setInputType(DataPointInputType.Checkbox)">
         {{ t('time-series.input_types.checkbox') }}
       </ly-button>
 
       <ly-button
-        class="text-xs secondary w-full outlined"
+        class="secondary outlined w-full text-xs"
         :active="modelValue.inputType === DataPointInputType.Spinner"
         @click="setInputType(DataPointInputType.Spinner)">
         {{ t('time-series.input_types.spinner') }}
       </ly-button>
 
       <ly-button
-        class="text-xs secondary w-full outlined"
+        class="secondary outlined w-full text-xs"
         :active="modelValue.inputType === DataPointInputType.Range"
         @click="setInputType(DataPointInputType.Range)">
         {{ t('time-series.input_types.range') }}
@@ -69,7 +69,7 @@ function setInputType(inputType: DataPointInputType) {
 
       <ly-button
         v-if="showTimerInputOption"
-        class="text-xs secondary w-full outlined"
+        class="secondary outlined w-full text-xs"
         :active="modelValue.inputType === DataPointInputType.Timer"
         @click="setInputType(DataPointInputType.Timer)">
         {{ t('time-series.input_types.timer') }}
@@ -128,7 +128,7 @@ function setInputType(inputType: DataPointInputType) {
           :min="-100" />
         <div
           v-if="modelValue.inputType === DataPointInputType.Timer"
-          class="flex border border-divide bg-highlight rounded h-full p-2 text-xs text-dimmed gap-2">
+          class="border-divide bg-highlight text-dimmed flex h-full gap-2 rounded border p-2 text-xs">
           <div>
             <ly-icon name="info" class="text-info-light" />
           </div>

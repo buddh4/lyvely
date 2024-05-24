@@ -13,7 +13,7 @@
     "dev:e2e:debug": "cross-env NODE_ENV=e2e nest start --debug --watch",
     "lint": "eslint -c .eslintrc.cjs \"src/**/*.{ts,vue}\"",
     "lint:fix": "eslint -c .eslintrc.cjs \"src/**/*.{ts,vue}\" --fix",
-    "format": "prettier \"lib/**/*.ts\" --write",
+    "format": "prettier \"src/**/*.ts\" --write",
     "deps": "npx depcruise --config .dependency-cruiser.js src",
     "test": "jest --passWithNoTests",
     "prepublish:npm": "pnpm run build",

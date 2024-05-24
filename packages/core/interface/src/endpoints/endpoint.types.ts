@@ -10,11 +10,11 @@ export type StrictEndpoint<T, TNonStrict extends keyof T = never> = {
       ? (...args: any) => ReturnType<T[k]>
       : never
     : T[k] extends (...args: any) => any
-    ? (
-        arg1: Parameters<T[k]> extends [] ? any : Parameters<T[k]>[0],
-        ...args: any
-      ) => ReturnType<T[k]>
-    : never;
+      ? (
+          arg1: Parameters<T[k]> extends [] ? any : Parameters<T[k]>[0],
+          ...args: any
+        ) => ReturnType<T[k]>
+      : never;
 };
 
 export type EndpointResult<T extends (...args: any) => any> = T extends (...args: any) => infer R

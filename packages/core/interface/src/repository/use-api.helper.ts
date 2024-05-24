@@ -10,10 +10,10 @@ export const DEFAULT_API_VERSION = '1';
 type ApiResponse<T, TClient> = T extends (...args: any) => any
   ? EndpointResult<T>
   : T extends keyof TClient
-  ? TClient[T] extends (...args: any) => any
-    ? EndpointResult<TClient[T]>
-    : never
-  : T;
+    ? TClient[T] extends (...args: any) => any
+      ? EndpointResult<TClient[T]>
+      : never
+    : T;
 
 type ResultType<TClient> = [undefined] extends [TClient] ? any : keyof TClient;
 

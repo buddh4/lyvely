@@ -17,7 +17,7 @@ const isRequired = computed({
 </script>
 
 <template>
-  <div class="flex flex-col gap-2 border border-divide rounded bg-highlight dark:bg-main p-3">
+  <div class="border-divide bg-highlight dark:bg-main flex flex-col gap-2 rounded border p-3">
     <div class="text-xs">
       <ly-checkbox v-model="isRequired" label="time-series.fields.required" />
     </div>

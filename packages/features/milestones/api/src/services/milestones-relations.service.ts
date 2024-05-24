@@ -25,7 +25,10 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
  */
 @Injectable()
 export class MilestonesRelationsService {
-  constructor(private contentDao: ContentDao, private eventEmitter: EventEmitter2) {}
+  constructor(
+    private contentDao: ContentDao,
+    private eventEmitter: EventEmitter2,
+  ) {}
 
   /**
    * Retrieves milestone relations based on given milestones and date.

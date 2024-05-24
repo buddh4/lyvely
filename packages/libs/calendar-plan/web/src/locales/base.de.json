@@ -2,7 +2,7 @@
   "calendar-plan": {
     "today": "Today",
     "interval": {
-      "recurrent" : {
+      "recurrent": {
         "0": "Unscheduled",
         "1": "Yearly",
         "2": "Quarterly",
@@ -10,7 +10,7 @@
         "4": "Weekly",
         "5": "Daily"
       },
-      "plural" : {
+      "plural": {
         "0": "Unscheduled",
         "1": "Years",
         "2": "Quarters",

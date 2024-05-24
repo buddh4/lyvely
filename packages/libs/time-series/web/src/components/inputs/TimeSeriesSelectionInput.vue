@@ -45,7 +45,7 @@ const dropDownOptions = computed(() =>
 </script>
 
 <template>
-  <div v-if="config.inputType === DataPointInputType.Checkbox" class="flex flex-col gap-2 ml-2">
+  <div v-if="config.inputType === DataPointInputType.Checkbox" class="ml-2 flex flex-col gap-2">
     <div v-for="option in config.options" :key="option">
       <ly-checkbox v-model="selection" :label="{ plain: option }" :value="option" />
     </div>

@@ -41,7 +41,7 @@ onBeforeRouteLeave(stopWatch);
 </script>
 
 <template>
-  <nav id="filter-nav" class="flex flex-row gap-0.5 content-left clearfix mb-2">
+  <nav id="filter-nav" class="content-left clearfix mb-2 flex flex-row gap-0.5">
     <ly-button
       :class="roundButton"
       :active="dragActive"
@@ -87,10 +87,10 @@ onBeforeRouteLeave(stopWatch);
         <input
           ref="search"
           v-model="queryFilter"
-          class="search w-full mb-4 py-1"
+          class="search mb-4 w-full py-1"
           :placeholder="t('common.filter.search')"
           type="text" />
-        <ly-icon name="search" class="absolute right-2.5 top-2 text-dimmed pointer-events-none" />
+        <ly-icon name="search" class="text-dimmed pointer-events-none absolute right-2.5 top-2" />
       </div>
 
       <ly-checkbox v-model="archiveFilter" class="mb-4" label="common.filter.archive" />

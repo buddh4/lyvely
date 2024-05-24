@@ -9,7 +9,7 @@
     "debug": "nest start:debug",
     "dev:debug": "nest start --debug --watch",
     "lint": "eslint --fix",
-    "format": "prettier \"lib/**/*.ts\" --write",
+    "format": "prettier \"src/**/*.ts\" --write",
     "build": "rm -rf ./dist/* && tsc -p tsconfig.build.json",
     "prepublish:npm": "pnpm run build",
     "publish:npm": "npm publish --access public",

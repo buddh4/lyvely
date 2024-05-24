@@ -20,20 +20,8 @@
       "@/*": ["src/*"],
       "vite": ["node_modules/vite"]
     },
-    "types": [
-      "vue",
-      "@vue/runtime-dom",
-      "reflect-metadata",
-      "vite-plugin-pwa/client",
-      "jest"
-    ],
-    "lib": [
-      "esnext",
-      "dom",
-      "WebWorker",
-      "dom.iterable",
-      "scripthost"
-    ]
+    "types": ["vue", "@vue/runtime-dom", "reflect-metadata", "vite-plugin-pwa/client", "jest"],
+    "lib": ["esnext", "dom", "WebWorker", "dom.iterable", "scripthost"]
   },
   "include": [
     "src/**/*.ts",
@@ -42,7 +30,5 @@
     "vite.config.mts",
     "config/lyvely-web.config.ts"
   ],
-  "exclude": [
-    "node_modules", "dist"
-  ]
+  "exclude": ["node_modules", "dist"]
 }

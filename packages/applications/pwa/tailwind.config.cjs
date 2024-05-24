@@ -15,5 +15,5 @@ module.exports = {
     require.resolve('@lyvely/milestones-web/tailwind.txt'),
     require.resolve('@lyvely/analytics-web/tailwind.txt'),
     require.resolve('@lyvely/journals-web/tailwind.txt'),
-  ]
+  ],
 };

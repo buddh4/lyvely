@@ -10,7 +10,7 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "format": "prettier \"src/**/*.ts\" --write",
     "dev": "cross-env NODE_ENV=development nest start",
     "dev:debug": "cross-env NODE_ENV=development  nest start --debug --watch",
     "start": "nest start",
