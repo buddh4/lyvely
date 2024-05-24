@@ -210,9 +210,33 @@ importers:
       '@lyvely/tasks-web':
         specifier: ^0.1.0-alpha3
         version: link:../../features/tasks/web
+      '@lyvely/ui':
+        specifier: ^0.1.0-alpha3
+        version: link:../../libs/ui
+      '@lyvely/web':
+        specifier: ^0.1.0-alpha3
+        version: link:../../core/web
       vue:
         specifier: ^3.4.25
         version: 3.4.27(typescript@5.4.5)
+      vue-router:
+        specifier: ^4.3.2
+        version: 4.3.2(vue@3.4.27(typescript@5.4.5))
+      workbox-build:
+        specifier: ^7.1.0
+        version: 7.1.0(@types/babel__core@7.20.5)
+      workbox-core:
+        specifier: ^7.1.0
+        version: 7.1.0
+      workbox-precaching:
+        specifier: ^7.1.0
+        version: 7.1.0
+      workbox-routing:
+        specifier: ^7.1.0
+        version: 7.1.0
+      workbox-window:
+        specifier: ^7.1.0
+        version: 7.1.0
     devDependencies:
       '@lyvely/devtools':
         specifier: ^0.1.0-alpha3
@@ -226,12 +250,6 @@ importers:
       vite-plugin-pwa:
         specifier: ^0.20.0
         version: 0.20.0(vite@5.2.11(@types/node@20.5.1)(less@4.2.0)(sass@1.77.2)(terser@5.31.0))(workbox-build@7.1.0(@types/babel__core@7.20.5))(workbox-window@7.1.0)
-      workbox-build:
-        specifier: ^7.1.0
-        version: 7.1.0(@types/babel__core@7.20.5)
-      workbox-window:
-        specifier: ^7.1.0
-        version: 7.1.0
 
   packages/applications/server:
     dependencies:
@@ -1414,7 +1432,7 @@ importers:
         specifier: ^3.4.25
         version: 3.4.27(typescript@5.4.5)
       vue-router:
-        specifier: ^4.1.6
+        specifier: ^4.3.2
         version: 4.3.2(vue@3.4.27(typescript@5.4.5))
       vuedraggable:
         specifier: ^4.1.0

@@ -13,6 +13,8 @@
   },
   "dependencies": {
     "vue": "^3.4.25",
+    "@lyvely/web": "^0.1.0-alpha3",
+    "@lyvely/ui": "^0.1.0-alpha3",
     "@lyvely/activities-web": "^0.1.0-alpha3",
     "@lyvely/analytics-web": "^0.1.0-alpha3",
     "@lyvely/api": "^0.1.0-alpha3",
@@ -20,14 +22,18 @@
     "@lyvely/journals-web": "^0.1.0-alpha3",
     "@lyvely/legal-web": "^0.1.0-alpha3",
     "@lyvely/milestones-web": "^0.1.0-alpha3",
-    "@lyvely/tasks-web": "^0.1.0-alpha3"
+    "@lyvely/tasks-web": "^0.1.0-alpha3",
+    "workbox-core": "^7.1.0",
+    "workbox-routing": "^7.1.0",
+    "workbox-window": "^7.1.0",
+    "workbox-build": "^7.1.0",
+    "workbox-precaching": "^7.1.0",
+    "vue-router": "^4.3.2"
   },
   "devDependencies": {
     "@lyvely/devtools": "^0.1.0-alpha3",
     "vite": "^5.2.11",
     "vite-plugin-pwa": "^0.20.0",
-    "workbox-window": "^7.1.0",
-    "workbox-build": "^7.1.0",
     "@vue/runtime-dom": "^3.4.25"
   }
 }

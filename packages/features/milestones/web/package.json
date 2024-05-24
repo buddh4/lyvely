@@ -31,7 +31,7 @@
     "@lyvely/ui": "^0.1.0-alpha3",
     "@lyvely/common": "^0.1.0-alpha3",
     "@lyvely/dates": "^0.1.0-alpha3",
-    "vue-router": "^4.1.6",
+    "vue-router": "^4.3.2",
     "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
