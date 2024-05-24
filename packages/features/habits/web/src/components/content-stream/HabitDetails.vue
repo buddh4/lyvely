@@ -60,7 +60,7 @@ onUnmounted(unwatchDate);
 <template>
   <content-details :model="model">
     <template #image>
-      <div class="flex justify-center rounded-full border border-divide w-8 h-8 bg-main">
+      <div class="border-divide bg-main flex h-8 w-8 justify-center rounded-full border">
         <router-link :to="{ name: 'Habits' }">
           <ly-icon name="activity" class="text-main" />
         </router-link>
@@ -85,12 +85,12 @@ onUnmounted(unwatchDate);
             v-if="leftCaret"
             tabindex="0"
             :aria-label="t('calendar-plan.aria.nav-back', { time: prevTitle })"
-            class="switch-timing no-underline py-0"
+            class="switch-timing py-0 no-underline"
             @click="decrementTiming">
             {{ leftCaret }}
           </ly-button>
 
-          <button class="text-xs font-bold text-body select-none" :aria-label="accessibleTitle">
+          <button class="text-body select-none text-xs font-bold" :aria-label="accessibleTitle">
             <span aria-hidden="true">
               {{ title }}
             </span>
@@ -100,7 +100,7 @@ onUnmounted(unwatchDate);
             v-if="rightCaret"
             tabindex="0"
             :aria-label="t('calendar-plan.aria.nav-next', { time: nextTitle })"
-            class="switch-timing no-underline py-0"
+            class="switch-timing py-0 no-underline"
             @click="incrementTiming">
             {{ rightCaret }}
           </ly-button>

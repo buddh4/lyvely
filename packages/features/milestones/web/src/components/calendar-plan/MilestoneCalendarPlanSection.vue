@@ -35,7 +35,7 @@ const addEntry = () =>
     <draggable
       :list="milestones"
       tag="div"
-      class="divide-y divide-divide"
+      class="divide-divide divide-y"
       :data-calendar-interval="interval"
       group="milestones"
       handle=".icon-drag"

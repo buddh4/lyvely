@@ -3,7 +3,6 @@ import {
   MENU_PROFILE_DRAWER,
   MENU_PROFILE_MOBILE_FOOTER,
   registerContentType,
-  registerRoutes,
   translation,
   useProfileFeatureStore,
 } from '@lyvely/web';

@@ -52,7 +52,7 @@ const toDetails = () => {
       <content-dropdown :content="model" />
     </template>
     <template #rating>
-      <div class="w-40 ml-auto">
+      <div class="ml-auto w-40">
         <ly-progress-bar :progress="progress" class="cursor-pointer" @click="toDetails" />
       </div>
     </template>

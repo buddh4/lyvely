@@ -88,23 +88,23 @@ const modalTitle = computed(() => {
 
       <fieldset>
         <div class="flex flex-col gap-2">
-          <div class="flex gap-2 justify-between items-stretch">
+          <div class="flex items-stretch justify-between gap-2">
             <ly-button
-              class="text-xs secondary w-full outlined"
+              class="secondary outlined w-full text-xs"
               :active="model.valueType === DataPointValueType.Number"
               @click="setValueType(DataPointValueType.Number)">
               {{ t('calendar-plan.value_types.number') }}
             </ly-button>
 
             <ly-button
-              class="text-xs secondary w-full outlined"
+              class="secondary outlined w-full text-xs"
               :active="model.valueType === DataPointValueType.Text"
               @click="setValueType(DataPointValueType.Text)">
               {{ t('calendar-plan.value_types.text') }}
             </ly-button>
 
             <ly-button
-              class="text-xs secondary w-full outlined"
+              class="secondary outlined w-full text-xs"
               :active="model.valueType === DataPointValueType.Selection"
               @click="setValueType(DataPointValueType.Selection)">
               {{ t('calendar-plan.value_types.selection') }}

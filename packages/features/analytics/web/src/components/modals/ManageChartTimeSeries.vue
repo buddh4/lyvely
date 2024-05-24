@@ -44,6 +44,7 @@ function getSeriesTypeName(seriesId: string) {
     <div class="grid max-w-full grid-cols-1 flex-wrap gap-1 md:grid-cols-2">
       <div
         v-for="series in chart.config.series"
+        :key="series.id"
         role="button"
         tabindex="0"
         class="border-divide flex w-full flex-col gap-1 rounded border p-4 text-sm"

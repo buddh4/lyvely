@@ -40,8 +40,8 @@ onUnmounted(unwatch);
         :interval="interval" />
     </calendar-planner>
     <ly-content-panel v-else-if="loaded">
-      <ly-alert class="justify-center cursor-pointer bg-main" @click="createEntry">
-        <div class="flex flex-col justify-center items-center">
+      <ly-alert class="bg-main cursor-pointer justify-center" @click="createEntry">
+        <div class="flex flex-col items-center justify-center">
           <ly-icon name="target" class="w-20 cursor-pointer text-gray-300 dark:text-gray-500" />
           <ly-button class="font-semibold">
             {{ t('journals.calendar-plan.empty') }}

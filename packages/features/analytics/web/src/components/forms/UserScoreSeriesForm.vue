@@ -5,9 +5,9 @@ import { LyFormModel, LyCheckbox, useModel } from '@lyvely/ui';
 import { computed } from 'vue';
 import TimeSeriesChartTypeSelection from '@/components/forms/TimeSeriesChartTypeSelection.vue';
 
-const props = defineProps({
-  modelValue: UserScoreSeriesConfigModel<string>,
-});
+const props = defineProps<{
+  modelValue: UserScoreSeriesConfigModel<string>;
+}>();
 
 const emit = defineEmits(['update:modelValue']);
 

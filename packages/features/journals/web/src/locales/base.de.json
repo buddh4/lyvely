@@ -8,10 +8,10 @@
     "stream_entry": {
       "text": "New journal item"
     },
-    "create" : {
+    "create": {
       "title": "Create journal item"
     },
-    "edit" : {
+    "edit": {
       "title": "Edit journal item"
     },
     "feature": {

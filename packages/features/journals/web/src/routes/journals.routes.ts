@@ -9,6 +9,6 @@ export default [
       layout: 'profile',
       title: translation('journals.title'),
     },
-    component: () => import('../views/Journals.vue'),
+    component: () => import('../views/JournalsView.vue'),
   },
 ];

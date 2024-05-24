@@ -38,7 +38,7 @@ const {
   <fieldset>
     <div
       :class="{
-        'flex flex-col gap-2 border border-divide rounded bg-highlight dark:bg-main p-3': embedded,
+        'border-divide bg-highlight dark:bg-main flex flex-col gap-2 rounded border p-3': embedded,
       }">
       <ly-form-model v-if="seriesConfigModel" v-model="seriesConfigModel" :validator="validator">
         <ly-text-field

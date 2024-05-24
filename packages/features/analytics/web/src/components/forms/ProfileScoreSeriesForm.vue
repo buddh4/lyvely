@@ -5,9 +5,9 @@ import { LyFormModel, useModel, LyColorPicker } from '@lyvely/ui';
 import { computed } from 'vue';
 import TimeSeriesChartTypeSelection from './TimeSeriesChartTypeSelection.vue';
 
-const props = defineProps({
-  modelValue: ProfileScoreSeriesConfigModel<string>,
-});
+const props = defineProps<{
+  modelValue: ProfileScoreSeriesConfigModel<string>;
+}>();
 
 const emit = defineEmits(['update:modelValue']);
 

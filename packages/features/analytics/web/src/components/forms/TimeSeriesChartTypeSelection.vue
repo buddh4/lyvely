@@ -13,16 +13,16 @@ const type = computed({
 </script>
 
 <template>
-  <div class="flex gap-2 justify-between items-stretch mb-2">
+  <div class="mb-2 flex items-stretch justify-between gap-2">
     <ly-button
-      class="text-xs secondary w-full outlined"
+      class="secondary outlined w-full text-xs"
       :active="type === TimeSeriesChartType.Line"
       @click="type = TimeSeriesChartType.Line">
       {{ t('analytics.charts.types.line') }}
     </ly-button>
 
     <ly-button
-      class="text-xs secondary w-full outlined"
+      class="secondary outlined w-full text-xs"
       :active="type === TimeSeriesChartType.Bar"
       @click="type = TimeSeriesChartType.Bar">
       {{ t('analytics.charts.types.bar') }}

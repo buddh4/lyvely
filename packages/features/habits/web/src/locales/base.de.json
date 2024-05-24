@@ -16,10 +16,10 @@
     "stream_entry": {
       "text": "New Habit"
     },
-    "create" : {
+    "create": {
       "title": "Create Habit"
     },
-    "edit" : {
+    "edit": {
       "title": "Edit Habit"
     }
   }

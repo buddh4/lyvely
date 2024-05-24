@@ -26,13 +26,13 @@ const createMilestone = () =>
 </script>
 
 <template>
-  <ul v-if="statusError" class="divide-y divide-divide w-64 md:w-96">
-    <li class="py-3 px-4">
+  <ul v-if="statusError" class="divide-divide w-64 divide-y md:w-96">
+    <li class="px-4 py-3">
       <ly-alert type="danger" :text="statusError" />
     </li>
   </ul>
-  <ul v-else class="divide-y divide-divide w-80 md:w-96">
-    <li class="py-3 px-4">
+  <ul v-else class="divide-divide w-80 divide-y md:w-96">
+    <li class="px-4 py-3">
       <div class="flex items-center">
         <span class="text-sm font-bold">
           {{ t('milestones.title') }}
@@ -47,9 +47,9 @@ const createMilestone = () =>
           :key="milestone.id"
           :active="milestone.id === content.meta.mid"
           @click="setMilestone(milestone.id)">
-          <div class="flex items-center space-x-4 w-64">
-            <div class="flex-1 min-w-0">
-              <p class="text-sm font-medium truncate">
+          <div class="flex w-64 items-center space-x-4">
+            <div class="min-w-0 flex-1">
+              <p class="truncate text-sm font-medium">
                 {{ milestone.content.title }}
               </p>
               <ly-dimmed

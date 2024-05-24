@@ -9,5 +9,5 @@ module.exports = {
     require.resolve('@lyvely/milestones-web/tailwind.txt'),
     require.resolve('@lyvely/tasks-web/tailwind.txt'),
     require.resolve('@lyvely/habits-web/tailwind.txt'),
-  ]
+  ],
 };

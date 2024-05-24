@@ -20,29 +20,9 @@
       "@/*": ["src/*"],
       "vite": ["node_modules/vite"]
     },
-    "types": [
-      "vue",
-      "@vue/runtime-dom",
-      "reflect-metadata",
-      "node"
-    ],
-    "lib": [
-      "esnext",
-      "dom",
-      "ESNext",
-      "WebWorker",
-      "DOM",
-      "dom.iterable",
-      "scripthost"
-    ]
+    "types": ["vue", "@vue/runtime-dom", "reflect-metadata", "node"],
+    "lib": ["esnext", "dom", "ESNext", "WebWorker", "DOM", "dom.iterable", "scripthost"]
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
-    "vite.config.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "vite.config.ts"],
+  "exclude": ["node_modules"]
 }

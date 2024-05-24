@@ -28,7 +28,7 @@ const updateTimer = async (value: number) => taskStore.updateTimer(props.model, 
     <template #image>
       <div
         :class="[
-          'flex justify-center rounded-full w-8 h-8 bg-main border',
+          'bg-main flex h-8 w-8 justify-center rounded-full border',
           isDone ? 'border-success' : 'border-divide',
         ]">
         <router-link :to="{ name: 'Tasks' }">
@@ -37,7 +37,7 @@ const updateTimer = async (value: number) => taskStore.updateTimer(props.model, 
       </div>
     </template>
     <template #body>
-      <div v-if="model.content.text?.length" class="text-sm mb-2">
+      <div v-if="model.content.text?.length" class="mb-2 text-sm">
         <ly-markdown-view :md="model.content.text" class="text-sm" />
       </div>
       <div class="flex justify-end">
@@ -54,14 +54,14 @@ const updateTimer = async (value: number) => taskStore.updateTimer(props.model, 
     <template #footer>
       <div class="flex justify-end">
         <ly-button v-if="isDone" class="secondary outlined text-xs" @click="openTask">
-          <ly-icon name="loop" class="text-main-light w-3.5 h-3.5" />
+          <ly-icon name="loop" class="text-main-light h-3.5 w-3.5" />
           {{ t('tasks.buttons.open') }}
         </ly-button>
         <ly-button
           v-else
-          class="secondary outlined text-xs inline-flex items-center gap-1"
+          class="secondary outlined inline-flex items-center gap-1 text-xs"
           @click="closeTask">
-          <ly-icon name="check" class="text-main-light w-3.5 h-3.5" />
+          <ly-icon name="check" class="text-main-light h-3.5 w-3.5" />
           {{ t('tasks.buttons.close') }}
         </ly-button>
       </div>

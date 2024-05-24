@@ -48,7 +48,7 @@ watchEffect(() => {
     <template #trigger="{ toggle }">
       <div
         :class="[
-          'flex items-center gap-1 rounded border border-divide text-xs px-1.5 py-1 relative',
+          'border-divide relative flex items-center gap-1 rounded border px-1.5 py-1 text-xs',
           { ' cursor-pointer': editable },
         ]"
         @click="toggle">

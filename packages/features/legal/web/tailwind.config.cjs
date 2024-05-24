@@ -6,5 +6,5 @@ module.exports = {
     ...baseConfig.content,
     require.resolve('@lyvely/ui/tailwind.txt'),
     require.resolve('@lyvely/web/tailwind.txt'),
-  ]
+  ],
 };

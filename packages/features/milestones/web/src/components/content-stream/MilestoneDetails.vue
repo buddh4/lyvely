@@ -74,7 +74,7 @@ onBeforeMount(async () => {
 <template>
   <content-details :model="model">
     <template #image>
-      <div class="flex justify-center rounded-full border border-divide w-8 h-8 bg-main">
+      <div class="border-divide bg-main flex h-8 w-8 justify-center rounded-full border">
         <router-link :to="{ name: 'Milestones' }">
           <ly-icon name="target" class="text-main" />
         </router-link>
@@ -85,12 +85,12 @@ onBeforeMount(async () => {
       <p class="my-4 text-sm">
         <ly-markdown-view :md="model.content.text" class="text-sm" />
       </p>
-      <table v-if="relations.length" class="border-collapse table-auto text-xs">
+      <table v-if="relations.length" class="table-auto border-collapse text-xs">
         <tbody>
           <tr
             v-for="relation in relations"
             :key="relation.cid"
-            class="cursor-pointer hover:bg-highlight"
+            class="hover:bg-highlight cursor-pointer"
             @click="onRelationClick(relation)">
             <td class="px-4 py-2 pl-2 text-left">
               <ly-icon v-if="getIcon(relation)" :name="getIcon(relation)" />

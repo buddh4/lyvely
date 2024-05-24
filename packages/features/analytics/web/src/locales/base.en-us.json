@@ -77,10 +77,10 @@
       "stream_entry": {
         "text": "New Chart"
       },
-      "create" : {
+      "create": {
         "title": "Create Chart"
       },
-      "edit" : {
+      "edit": {
         "title": "Edit Chart"
       }
     },

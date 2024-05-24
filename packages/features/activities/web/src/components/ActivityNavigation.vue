@@ -15,7 +15,7 @@ let { enabledMenuEntries } = useProfileMenu(MENU_ACTIVITIES);
       :entry="entry"
       aria-controls="calendar-plan">
       <template #default="{ active }">
-        <div class="flex gap-1 items-center justify-center">
+        <div class="flex items-center justify-center gap-1">
           <ly-icon v-if="typeof entry.icon === 'string'" :name="entry.icon" />
           <ly-icon v-else-if="isPlainObject(entry.iconBindings)" v-bind="entry.iconBindings" />
           <span :class="!active ? 'hidden md:inline' : ''">

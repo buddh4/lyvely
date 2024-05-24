@@ -31,7 +31,7 @@ const createEntry = () =>
     <draggable
       :list="journals"
       tag="div"
-      class="divide-y divide-divide"
+      class="divide-divide divide-y"
       :data-calendar-interval="interval"
       group="journals"
       handle=".icon-drag"

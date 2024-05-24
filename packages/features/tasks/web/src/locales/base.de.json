@@ -5,10 +5,10 @@
     "stream_entry": {
       "text": "New task"
     },
-    "create" : {
+    "create": {
       "title": "Create task"
     },
-    "edit" : {
+    "edit": {
       "title": "Edit task"
     }
   }

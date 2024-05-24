@@ -38,7 +38,7 @@ function setActiveSection(section: LegalSection) {
 </script>
 
 <template>
-  <div class="flex justify-center items-center gap-1 flex-wrap">
+  <div class="flex flex-wrap items-center justify-center gap-1">
     <template v-for="(section, index) in sections" :key="section.id">
       <span v-if="index > 0">&middot;</span>
       <a v-if="!!section.url" class="text-xs" target="_blank" :href="section.url">{{
