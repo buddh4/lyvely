@@ -31,7 +31,8 @@
     "reflect-metadata": "0.1.13"
   },
   "devDependencies": {
-    "@lyvely/devtools": "^0.1.0-alpha3"
+    "@lyvely/devtools": "^0.1.0-alpha3",
+    "tslib": "^2.6.2"
   },
   "jest": {
     "rootDir": ".",
