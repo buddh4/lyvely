@@ -17,7 +17,7 @@ import {
   getAllPermissions,
   BasePermissionType,
 } from '@lyvely/interface';
-import { useProfileStore } from '@/profiles';
+import { useProfileStore } from './profile.store';
 import { useAppConfigStore } from '@/app-config';
 import { useAuthStore } from '@/auth';
 import { loadingState, useGlobalDialogStore } from '@/core';

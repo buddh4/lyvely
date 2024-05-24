@@ -11,7 +11,7 @@ import { I18n } from 'vue-i18n';
 import { useDayJsDateTimeAdapter } from '@lyvely/dates';
 import { initApiRepository, createApiUrl, DEFAULT_FALLBACK_LOCALE } from '@lyvely/interface';
 import { createLyvelyUi } from '@lyvely/ui';
-import type { ILyvelyWebApp, ILyvelyWebAppOptions } from './lyvely-web-app.interface';
+import type { ILyvelyWebApp, ILyvelyWebAppOptions } from '@/core';
 
 export class LyvelyWebApp implements ILyvelyWebApp {
   vueApp: VueApp;

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useAuthStore } from '@/auth/store/auth.store';
+import { useAuthStore } from '@/auth/stores/auth.store';
 import { useProfileRelationInfosStore } from '@/profiles/stores/profile-relation-infos.store';
 import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
@@ -33,26 +33,26 @@ function onAvatarUpdate(avatar: AvatarModel) {
     <button
       data-id="btn-change-avatar"
       role="button"
-      class="m-5 relative cursor-pointer"
+      class="relative m-5 cursor-pointer"
       @click="showUpdateAvatarModal = true">
-      <user-avatar data-id="my-account-avatar" class="w-16 h-16 text-xl border border-main" />
+      <user-avatar data-id="my-account-avatar" class="border-main h-16 w-16 border text-xl" />
       <div
-        class="w-6 h-6 absolute flex justify-center bg-shadow bottom-0 right-0 border border-main rounded-full">
-        <ly-icon name="camera" class="p-0.5 color-main" />
+        class="bg-shadow border-main absolute bottom-0 right-0 flex h-6 w-6 justify-center rounded-full border">
+        <ly-icon name="camera" class="color-main p-0.5" />
       </div>
     </button>
     <update-avatar-modal
       v-model="showUpdateAvatarModal"
       :client="userAccountClient"
       @success="onAvatarUpdate" />
-    <div class="py-5 px-2 flex flex-col">
-      <h2 class="font-bold text-xl">{{ user.username }}</h2>
+    <div class="flex flex-col px-2 py-5">
+      <h2 class="text-xl font-bold">{{ user.username }}</h2>
       <div class="flex">
-        <div class="flex items-center mr-2">
+        <div class="mr-2 flex items-center">
           <span class="mr-1 font-bold">{{ userProfileCount }}</span>
           <span class="text-sm">Profiles</span>
         </div>
-        <div class="flex items-center mr-2">
+        <div class="mr-2 flex items-center">
           <span class="mr-1 font-bold">{{ groupCount }}</span>
           <span class="text-sm">Groups</span>
         </div>

@@ -2,7 +2,7 @@
 import { useProfileStore } from '../stores';
 import { storeToRefs } from 'pinia';
 import { useSendInviteUsersStore } from '@/user-invitations/stores/send-invitations.store';
-import { useAuthStore } from '@/auth/store/auth.store';
+import { useAuthStore } from '@/auth/stores/auth.store';
 import { computed } from 'vue';
 import { ProfileMembershipRole, ProfileRelationModel } from '@lyvely/interface';
 import UserRelationAvatar from '../components/avatars/UserRelationAvatar.vue';
@@ -38,7 +38,7 @@ const openInviteModal = () => sendInviteStore.openModal(profileStore.profile!.id
     <ly-list-page v-if="profile" title="profiles.users.title" icon="users">
       <template #header-right>
         <ly-button
-          class="secondary outlined mr-0.5 inline-flex items-center text-xs py-0 px-1"
+          class="secondary outlined mr-0.5 inline-flex items-center px-1 py-0 text-xs"
           @click="openInviteModal">
           <ly-icon name="invite" class="w-5" />
         </ly-button>
@@ -47,7 +47,7 @@ const openInviteModal = () => sendInviteStore.openModal(profileStore.profile!.id
       <div
         v-for="relation in profileRelations"
         :key="relation.uid"
-        class="flex py-4 px-3 gap-2 bg-main items-center border-divide">
+        class="bg-main border-divide flex items-center gap-2 px-3 py-4">
         <user-relation-avatar v-if="relation.uid === user?.id" />
         <ly-avatar v-else :name="relation.userInfo.displayName" :guid="relation.userInfo.guid" />
         <span>{{ relation.userInfo.displayName }}</span>

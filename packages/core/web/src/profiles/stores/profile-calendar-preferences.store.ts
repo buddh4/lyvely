@@ -1,6 +1,6 @@
 import { defineStore, storeToRefs } from 'pinia';
 import { useCalendarPreferences } from '@/common';
-import { useProfileStore } from '@/profiles';
+import { useProfileStore } from './profile.store';
 import { useProfilesClient } from '@lyvely/interface';
 
 export const useProfileCalendarPreferencesStore = defineStore(

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
-import { useAuthStore } from '@/auth/store/auth.store';
+import { useAuthStore } from '@/auth/stores/auth.store';
 
 withDefaults(
   defineProps<{

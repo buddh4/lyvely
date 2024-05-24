@@ -165,10 +165,10 @@ export class MyModuleController {
 
 #### Frontend:
 
-In the frontend you can make use of the `usePermissions` composable for reactive permission checks:
+In the frontend you can make use of the `useGlobalPermissions` composable for reactive permission checks:
 
 ```html
 <script lang="ts" setup>
-    const { isAllowed } = usePermissions(PermissionA, PermissionB);
+    const { isAllowed } = useGlobalPermissions(PermissionA, PermissionB);
 </script>
 ```

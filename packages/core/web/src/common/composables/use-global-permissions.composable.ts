@@ -9,8 +9,8 @@ import {
 } from '@lyvely/interface';
 import { isPlainObject } from '@lyvely/common';
 import { computed } from 'vue';
-import { useAuthStore } from '../../auth';
-import { useAppConfigStore } from '../../app-config';
+import { useAuthStore } from '@/auth';
+import { useAppConfigStore } from '@/app-config';
 
 /**
  * Composable for reactive permission access checks.

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useAuthStore } from '@/auth/store/auth.store';
+import { useAuthStore } from '@/auth/stores/auth.store';
 import { useHelpStore } from '@/help/stores/help.store';
 import { storeToRefs } from 'pinia';
 import { t } from '@/i18n';
@@ -45,7 +45,7 @@ function toDocs() {
       v-if="isNewUser"
       keypath="help.modal.text_intro"
       tag="p"
-      class="text-center text-dimmed text-sm mb-5">
+      class="text-dimmed mb-5 text-center text-sm">
       <template #appName>
         {{ appName }}
       </template>

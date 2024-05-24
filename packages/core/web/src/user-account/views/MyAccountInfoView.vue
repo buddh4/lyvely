@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useAuthStore } from '@/auth/store/auth.store';
+import { useAuthStore } from '@/auth/stores/auth.store';
 import { t } from '@/i18n';
 import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
@@ -31,20 +31,20 @@ const verifyEmail = (email: string) => {
 
 <template>
   <ly-list-page v-if="user" title="user-account.my-account.info.label" class="mb-2" icon="info">
-    <table class="border-collapse text-sm w-full bg-main rounded">
+    <table class="bg-main w-full border-collapse rounded text-sm">
       <tr>
-        <th class="p-3 text-left border-b border-divide">
+        <th class="border-divide border-b p-3 text-left">
           {{ t('user-account.my-account.info.username') }}
         </th>
-        <td class="p-3 text-left border-b border-divide">
+        <td class="border-divide border-b p-3 text-left">
           {{ user.username }}
         </td>
       </tr>
       <tr>
-        <th class="p-3 text-left border-b border-divide">
+        <th class="border-divide border-b p-3 text-left">
           {{ t('user-account.my-account.info.member-since') }}
         </th>
-        <td class="p-3 text-left border-b border-divide">
+        <td class="border-divide border-b p-3 text-left">
           <ly-formatted-date :date="user.createdAt" />
         </td>
       </tr>
@@ -66,23 +66,23 @@ const verifyEmail = (email: string) => {
     <div
       v-for="userEmail in userEmails"
       :key="userEmail.email"
-      class="flex py-4 px-3 bg-main items-center border-divide">
+      class="bg-main border-divide flex items-center px-3 py-4">
       <ly-icon
         v-if="userEmail.email === user.email"
         name="star"
-        class="mr-1 text-pop"
+        class="text-pop mr-1"
         title="user-account.my-account.info.main_email"
         tabindex="0" />
       <ly-icon
         v-else-if="!userEmail.verified"
         name="warning"
-        class="mr-1 text-warning"
+        class="text-warning mr-1"
         title="user-account.my-account.info.unverified_email"
         tabindex="0" />
       <ly-icon
         v-else
         name="success"
-        class="mr-1 text-success-light"
+        class="text-success-light mr-1"
         title="user-account.my-account.info.verified_email"
         tabindex="0" />
 

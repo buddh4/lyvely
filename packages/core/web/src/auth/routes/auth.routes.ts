@@ -1,9 +1,8 @@
 import { ifNotAuthenticated } from '../guards';
 import { translate } from '@/i18n';
 import { RouteLocation, RouteRecordRaw } from 'vue-router';
-import { useAuthStore } from '@/auth/store/auth.store';
+import { useAuthStore, useResetPasswordStore } from '../stores';
 import { PATH_LOGIN, PATH_LOGOUT, PATH_RESET_PASSWORD } from '../auth.constants';
-import { useResetPasswordStore } from '@/auth/store/reset-password.store';
 import { LAYOUT_INTRO } from '@/ui';
 
 export default [

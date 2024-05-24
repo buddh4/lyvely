@@ -13,7 +13,7 @@ import {
 import { findByPath, queuePromise } from '@lyvely/common';
 import { useLiveStore } from '@/live/stores/live.store';
 import { useAppConfigStore } from '@/app-config';
-import { PATH_LOGIN } from '@/auth';
+import { PATH_LOGIN } from '../auth.constants';
 
 export const storedVid = localStorageManager.getStoredValue('visitorId');
 export const logoutToken = localStorageManager.getStoredValue('logoutToken');

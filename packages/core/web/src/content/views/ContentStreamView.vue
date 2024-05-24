@@ -9,7 +9,6 @@ import {
 } from '@lyvely/interface';
 import { useRouter } from 'vue-router';
 import { useContentCreateStore, useContentStreamFilter } from '../stores';
-import { storeToRefs } from 'pinia';
 import emptyImageUrl from '@/assets/empty.png';
 import { useProfileStore, useProfilePermissions } from '@/profiles';
 
@@ -22,7 +21,7 @@ const addButtonText =
     ? 'stream.editor.placeholder_single_user'
     : 'stream.editor.placeholder_multi_user';
 
-const { isAllowed: canCreateMessage } = usePermissions(CreateMessagePermission);
+const { isAllowed: canCreateMessage } = useProfilePermissions(CreateMessagePermission);
 
 async function openCreateContentModal() {
   return useContentCreateStore().createContentType(MessageModel.contentType);

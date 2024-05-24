@@ -24,7 +24,7 @@ const messageInput = ref<HTMLTextAreaElement>();
 const createMessageStore = useCreateMessageStore();
 const { model } = storeToRefs(createMessageStore);
 
-const { isAllowed: canCreateMessage } = usePermissions(CreateMessagePermission);
+const { isAllowed: canCreateMessage } = useProfilePermissions(CreateMessagePermission);
 
 async function submitMessage(evt: KeyboardEvent) {
   if (!evt?.shiftKey) {

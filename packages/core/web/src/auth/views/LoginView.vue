@@ -3,8 +3,7 @@ import { RouteLocationRaw, useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { t } from '@/i18n';
 import { onUnmounted, ref, watch } from 'vue';
-import { useLoginStore } from '@/auth/store/login.store';
-import { useSendResetPasswordMailStore } from '@/auth/store/send-reset-password-mail.store';
+import { useLoginStore, useSendResetPasswordMailStore, useAuthStore } from '../stores';
 import { isTouchScreen, LyCenteredPanel } from '@lyvely/ui';
 import { useAppConfigStore } from '@/app-config/app-config.store';
 import {
@@ -13,8 +12,7 @@ import {
   UserRegistrationMode,
 } from '@lyvely/interface';
 import { PATH_SIGN_UP } from '@/user-registration/user-registration.constants';
-import { useAuthStore } from '@/auth';
-import { profileRoot } from '@/profiles';
+import { profileRoot } from '@/profiles/routes/profile-route.helper';
 
 const loginStore = useLoginStore();
 const router = useRouter();
@@ -91,9 +89,9 @@ onUnmounted(loginStore.reset);
         </div>
 
         <div v-if="stage === 'password'">
-          <div class="flex items-center justify-center mb-5">
+          <div class="mb-5 flex items-center justify-center">
             <div
-              class="flex items-center border border-divide rounded-full px-2 py-1 text-sm font-bold cursor-pointer"
+              class="border-divide flex cursor-pointer items-center rounded-full border px-2 py-1 text-sm font-bold"
               @click="stage = 'usernameOrEmail'">
               <ly-icon name="user" class="mr-1" />
               <span>{{ loginModel.usernameOrEmail }}</span>
@@ -116,15 +114,15 @@ onUnmounted(loginStore.reset);
 
           <ly-alert type="danger" :text="loginStore.status.statusError" />
 
-          <div class="flex items-center justify-between cursor-pointer">
-            <div class="flex flex-nowrap items-center mt-1">
+          <div class="flex cursor-pointer items-center justify-between">
+            <div class="mt-1 flex flex-nowrap items-center">
               <ly-checkbox
                 property="remember"
                 class="text-sm"
                 aria-describedby="remember-me-info" />
               <ly-icon
                 name="info"
-                class="ml-1 text-primary w-4 cursor-pointer"
+                class="text-primary ml-1 w-4 cursor-pointer"
                 aria-hidden="true"
                 @click="showRememberInfo = !showRememberInfo" />
             </div>
@@ -132,7 +130,7 @@ onUnmounted(loginStore.reset);
               v-if="stage === 'password'"
               :to="{ name: 'ResetPassword' }"
               data-id="reset-password"
-              class="no-underline font-bold text-xs cursor-pointer"
+              class="cursor-pointer text-xs font-bold no-underline"
               @click="setResetPassword">
               {{ t('auth.login.reset_password') }}
             </router-link>
@@ -156,35 +154,35 @@ onUnmounted(loginStore.reset);
           {{ t('common.next') }}
         </ly-button>
 
-        <div v-if="isPublicRegistration" class="text-center mt-4">
+        <div v-if="isPublicRegistration" class="mt-4 text-center">
           <small>
             {{ t('auth.login.not_a_member') }}
-            <router-link :to="PATH_SIGN_UP" class="no-underline font-bold">
+            <router-link :to="PATH_SIGN_UP" class="font-bold no-underline">
               {{ t('auth.login.to_sign_up') }}
             </router-link>
           </small>
         </div>
 
-        <div class="flex relative flex-col gap-2 pt-4 mt-5 border-t border-divide">
-          <div class="flex justify-center top-0 absolute w-full" style="margin-top: -0.5em">
-            <div class="inline-block bg-main px-2 font-bold text-dimmed uppercase text-xs">or</div>
+        <div class="border-divide relative mt-5 flex flex-col gap-2 border-t pt-4">
+          <div class="absolute top-0 flex w-full justify-center" style="margin-top: -0.5em">
+            <div class="bg-main text-dimmed inline-block px-2 text-xs font-bold uppercase">or</div>
           </div>
           <ly-button
             v-if="isVisitorModeEnabled"
-            class="secondary w-full text-white flex items-center justify-center gap-2"
+            class="secondary flex w-full items-center justify-center gap-2 text-white"
             @click="accessAsVisitor()">
             <ly-icon name="guest" />
             <div class="inline-block min-w-[6rem]">{{ t('auth.login.visitor') }}</div>
           </ly-button>
-          <ly-button class="bg-red-500 w-full text-white flex items-center justify-center gap-2">
+          <ly-button class="flex w-full items-center justify-center gap-2 bg-red-500 text-white">
             <ly-icon name="google" />
             <div class="inline-block min-w-[6rem]">Google</div>
           </ly-button>
-          <ly-button class="bg-gray-600 text-white w-full flex items-center justify-center gap-2">
+          <ly-button class="flex w-full items-center justify-center gap-2 bg-gray-600 text-white">
             <ly-icon name="github" />
             <div class="inline-block min-w-[6rem]">Github</div>
           </ly-button>
-          <ly-button class="bg-blue-700 text-white w-full flex items-center justify-center gap-2">
+          <ly-button class="flex w-full items-center justify-center gap-2 bg-blue-700 text-white">
             <ly-icon name="facebook" />
             <div class="inline-block min-w-[6rem]">Facebook</div>
           </ly-button>

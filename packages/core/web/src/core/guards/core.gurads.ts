@@ -1,5 +1,5 @@
 import { NavigationGuardNext, RouteLocation } from 'vue-router';
-import { isDevelopEnvironment } from '../environment';
+import { isDevelopEnvironment } from '../util';
 
 export const ifDevelopEnvironment = (
   to: RouteLocation,

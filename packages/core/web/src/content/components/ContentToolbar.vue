@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { ContentModel } from '@lyvely/interface';
 import { computed } from 'vue';
-import { toContentDetails } from '@/content';
+import { toContentDetails } from '../routes/content-route.helper';
 
 interface IProps {
   model: ContentModel;

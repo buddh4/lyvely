@@ -1,4 +1,4 @@
-import { useAuthStore } from '../store';
+import { useAuthStore } from '../stores';
 import {
   NavigationGuardWithThis,
   NavigationGuardNext,

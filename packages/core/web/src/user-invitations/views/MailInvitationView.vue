@@ -6,7 +6,7 @@ import {
   DocumentNotFoundException,
 } from '@lyvely/interface';
 import { onMounted, ref } from 'vue';
-import { useAuthStore } from '@/auth/store/auth.store';
+import { useAuthStore } from '@/auth/stores/auth.store';
 import { storeToRefs } from 'pinia';
 import { useAppConfigStore } from '@/app-config/app-config.store';
 import { LyCenteredPanel } from '@lyvely/ui';
@@ -54,7 +54,7 @@ onMounted(async () => {
     <template #body>
       <div v-if="mailInviteInfo">
         <div v-if="mailInviteInfo.pid && isAuthenticated">
-          <i18n-t keypath="invitations.messages.profile_invite" tag="p" class="text-sm mb-3">
+          <i18n-t keypath="invitations.messages.profile_invite" tag="p" class="mb-3 text-sm">
             <template #host>
               <b>{{ mailInviteInfo.hostName }}</b>
             </template>
@@ -81,7 +81,7 @@ onMounted(async () => {
         </div>
 
         <div v-else-if="mailInviteInfo.pid && !isAuthenticated">
-          <i18n-t keypath="invitations.messages.profile_invite" tag="p" class="text-sm mb-3">
+          <i18n-t keypath="invitations.messages.profile_invite" tag="p" class="mb-3 text-sm">
             <template #host>
               <b>{{ mailInviteInfo.hostName }}</b>
             </template>
@@ -96,7 +96,7 @@ onMounted(async () => {
         </div>
 
         <div v-else-if="!mailInviteInfo.pid && isAuthenticated">
-          <i18n-t keypath="invitations.messages.invite_with_auth" tag="p" class="text-sm mb-3">
+          <i18n-t keypath="invitations.messages.invite_with_auth" tag="p" class="mb-3 text-sm">
             <template #host>
               <b>{{ mailInviteInfo.hostName }}</b>
             </template>
@@ -117,7 +117,7 @@ onMounted(async () => {
         </div>
 
         <div v-else-if="!mailInviteInfo.pid && !isAuthenticated">
-          <i18n-t keypath="invitations.messages.invite_no_auth" tag="p" class="text-sm mb-3">
+          <i18n-t keypath="invitations.messages.invite_no_auth" tag="p" class="mb-3 text-sm">
             <template #host>
               <b>{{ mailInviteInfo.hostName }}</b>
             </template>

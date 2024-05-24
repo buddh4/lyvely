@@ -4,7 +4,7 @@ import {
   IProfilePermission,
   registerPermissions,
 } from '@lyvely/interface';
-import { useProfilePermissionsStore } from '@/profiles';
+import { useProfilePermissionsStore } from '../stores';
 import { isPlainObject } from '@lyvely/common';
 import { computed } from 'vue';
 
@@ -13,7 +13,7 @@ import { computed } from 'vue';
  *
  * @param permissions
  */
-export const usePermissions = (...permissions: Array<string | IProfilePermission>) => {
+export const useProfilePermissions = (...permissions: Array<string | IProfilePermission>) => {
   permissions.forEach((permission) => {
     if (isPlainObject<IPermission<any>>(permission) && !getPermission(permission.id)) {
       registerPermissions([permission]);

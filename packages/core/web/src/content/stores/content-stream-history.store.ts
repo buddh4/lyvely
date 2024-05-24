@@ -3,7 +3,7 @@ import { useProfileStore } from '@/profiles/stores/profile.store';
 import { watch } from 'vue';
 import { ContentModel, ContentRequestFilter, IStreamHistory } from '@lyvely/interface';
 import { IStream } from '@/stream/stream.composable';
-import { useContentStore } from '@/content';
+import { useContentStore } from './content.store';
 import { findAndRemove, findAndReplace } from '@lyvely/common';
 
 export interface IContentStreamHistory extends IStreamHistory<ContentModel> {}

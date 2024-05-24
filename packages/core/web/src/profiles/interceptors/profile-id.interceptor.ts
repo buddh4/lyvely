@@ -1,4 +1,4 @@
-import { useProfileStore } from '@/profiles';
+import { useProfileStore } from '../stores';
 import { InternalAxiosRequestConfig } from 'axios';
 
 export const profileIdInterceptor = function (config: InternalAxiosRequestConfig) {

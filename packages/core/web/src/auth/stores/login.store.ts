@@ -3,7 +3,7 @@ import { I18nModelValidator } from '@/i18n';
 import { loadingStatus, useStatus } from '@/core';
 import { reactive, ref } from 'vue';
 import { RouteLocationRaw } from 'vue-router';
-import { useAuthStore } from '@/auth/store/auth.store';
+import { useAuthStore } from './auth.store';
 import {
   UnauthorizedServiceException,
   LoginModel,

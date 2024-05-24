@@ -1,4 +1,4 @@
-import { useAuthStore } from '@/auth';
+import { useAuthStore } from '../stores';
 import { Headers, useApiRequestInterceptor } from '@lyvely/interface';
 import { InternalAxiosRequestConfig } from 'axios';
 

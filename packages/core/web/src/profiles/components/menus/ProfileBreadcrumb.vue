@@ -2,7 +2,7 @@
 import { useProfileStore } from '@/profiles/stores/profile.store';
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
-import { useAuthStore } from '@/auth/store/auth.store';
+import { useAuthStore } from '@/auth/stores/auth.store';
 import { ITranslation } from '@/i18n';
 
 const router = useRouter();

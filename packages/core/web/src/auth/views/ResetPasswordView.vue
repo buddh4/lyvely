@@ -1,13 +1,12 @@
 <script lang="ts" setup>
 import CaptchaInput from '@/captcha/components/CaptchaInput.vue';
 import { LyCenteredPanel, isTouchScreen } from '@lyvely/ui';
-import { useSendResetPasswordMailStore } from '@/auth/store/send-reset-password-mail.store';
+import { useSendResetPasswordMailStore, useResetPasswordStore } from '../stores';
 import { storeToRefs } from 'pinia';
 import { useRouter, RouteLocationRaw } from 'vue-router';
-import { PATH_LOGIN } from '@/auth';
+import { PATH_LOGIN } from '../auth.constants';
 import { t } from '@/i18n';
 import { onUnmounted, ref } from 'vue';
-import { useResetPasswordStore } from '@/auth/store/reset-password.store';
 
 const resetPasswordStore = useResetPasswordStore();
 const sendResetPasswordMailStore = useSendResetPasswordMailStore();
@@ -68,7 +67,7 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
           @click="sendMail" />
       </div>
 
-      <div class="text-right mt-4">
+      <div class="mt-4 text-right">
         <router-link :to="loginRoute" data-id="to-login" class="items-center text-xs">
           {{ t('auth.reset_password.to_login') }}
         </router-link>
@@ -132,7 +131,7 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
           @click="resetPassword" />
       </div>
 
-      <div class="text-right mt-4">
+      <div class="mt-4 text-right">
         <router-link :to="loginRoute" class="items-center text-xs">
           {{ t('auth.reset_password.to_login') }}
         </router-link>

@@ -142,7 +142,7 @@ To utilize reactive feature switches in your views and components, you can use t
 
 ```html
 <script lang="ts" setup>
-    const { isEnabled } = useFeatures(PollsFeature.id);
+    const { isEnabled } = useProfileFeatures(PollsFeature.id);
 </script>
 <template>
     <div v-if="isEnabled">

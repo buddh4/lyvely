@@ -1,6 +1,6 @@
 import { defineStore, storeToRefs } from 'pinia';
 import { ref } from 'vue';
-import { useAuthStore } from '@/auth/store/auth.store';
+import { useAuthStore } from '@/auth/stores/auth.store';
 import { ResendOtp, OtpInfo, VerifyEmailDto, useUserAccountClient } from '@lyvely/interface';
 import { useEmailVerificationStore } from '@/user-account';
 

@@ -5,7 +5,7 @@ import { authRoutes } from './routes';
 import { AUTH_MODULE_ID } from '@lyvely/interface';
 import { registerMenuEntries } from '@lyvely/ui';
 import { MENU_ACCOUNT_DRAWER } from '@/user-account';
-import { useAuthStore } from '@/auth/store/auth.store';
+import { useAuthStore } from './stores/auth.store';
 import { useAPIVisitorInterceptor, useAutoTokenRefresh } from './interceptors';
 
 export const authModule = () => {

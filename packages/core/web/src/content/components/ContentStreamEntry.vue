@@ -10,7 +10,7 @@ import TagList from '@/tags/components/TagList.vue';
 import { IStream } from '@/stream/stream.composable';
 import { getContentTypeOptions } from '../registries';
 import { useUserInfo } from '@/profiles/composables';
-import { toContentDetails } from '@/content';
+import { toContentDetails } from '@/content/routes/content-route.helper';
 import ContentToolbar from './ContentToolbar.vue';
 
 export interface IProps {

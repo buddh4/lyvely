@@ -1,11 +1,10 @@
 import { nextTick } from 'vue';
 import { createI18n, I18n } from 'vue-i18n';
-import { IModule, getModule, isDevelopEnvironment, getModules } from '@/core';
+import { IModule, getModule, isDevelopEnvironment, getModules, useLyvelyApp } from '@/core';
 import { Translatable } from '@lyvely/ui';
 import { DEFAULT_FALLBACK_LOCALE, LOCALES_SUPPORTED, ITranslatable } from '@lyvely/interface';
 import { loadDateTimeLocale, isDateTimeLocaleLoaded } from '@lyvely/dates';
 import { hasOwnNonNullableProperty } from '@lyvely/common';
-import { useLyvelyApp } from '@/lyvely-web.app';
 
 let i18n: I18n;
 
