@@ -116,7 +116,7 @@ const { inputId, dataId } = useBaseInputSetup(props, emit);
       type="range"
       @change="onChange"
       @focusout="onFocusOut" />
-    <span v-if="showHelpText && helpText" class="text-sm text-dimmed">
+    <span v-if="showHelpText && helpText" class="text-dimmed text-sm">
       {{ t(helpText) }}
     </span>
   </section>

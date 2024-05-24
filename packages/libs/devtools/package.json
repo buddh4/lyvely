@@ -5,7 +5,10 @@
   "module": "dist/esm/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc -p tsconfig.build.json --outDir dist --declarationDir dist --declaration true && tscpaths -p tsconfig.build.json -s ./ -o dist && rollup -c && rm -f tsconfig.tsbuildinfo"
+    "build": "tsc -p tsconfig.build.json --outDir dist --declarationDir dist --declaration true && tscpaths -p tsconfig.build.json -s ./ -o dist && rollup -c && rm -f tsconfig.tsbuildinfo",
+    "lint": "eslint --fix",
+    "format": "prettier . --write",
+    "prettier": "prettier . --check"
   },
   "bin": {
     "lyvely-dev": "bin/lyvely-dev.cli.js"

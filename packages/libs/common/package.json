@@ -7,6 +7,9 @@
   "module": "dist/esm/index.js",
   "types": "dist/lib/index.d.ts",
   "scripts": {
+    "lint": "eslint --fix",
+    "format": "prettier . --write",
+    "prettier": "prettier . --check",
     "test": "jest --passWithNoTests",
     "clear": "rm -rf ./dist && rm -f ./tsconfig.tsbuildinfo",
     "prebuild": "rimraf dist && rimraf tsconfig.build.tsbuildinfo",

@@ -1,24 +1,23 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
 
-
 import LyRadio from './LyRadio.vue';
-import { setTranslationProvider } from "@/i18n";
+import { setTranslationProvider } from '@/i18n';
 
 setTranslationProvider((test) => {
   return typeof test === 'string' ? test : test.toString();
-})
+});
 
 const argTypes = {
-  "label ": {
+  'label ': {
     label: {
       category: 'slots',
-    }
+    },
   },
   label: {
     description: '`string`',
     table: {
-      category: 'props'
-    }
+      category: 'props',
+    },
   },
   required: { controls: 'boolean' },
   id: { table: { disable: true } },
@@ -40,14 +39,14 @@ const argTypes = {
   passwordToggle: { table: { disable: true } },
   loading: { table: { disable: true } },
   helpText: { table: { disable: true } },
-}
+};
 
 const meta = {
   title: 'Forms/Radio',
   component: LyRadio,
   // This component will have an automatically generated docsPage entry: https://storybook.js.org/docs/vue/writing-docs/autodocs
   tags: [],
-  argTypes
+  argTypes,
 } satisfies Meta<typeof LyRadio>;
 
 export default meta;

@@ -12,15 +12,15 @@ const props = withDefaults(defineProps<IProps>(), {
 
 const widthClass = computed(
   () =>
-    ((
-      {
+    (
+      ({
         [Size.SM]: 'max-w-screen-sm',
         [Size.LG]: 'max-w-screen-lg',
         [Size.XL]: 'max-w-screen-xl',
         [Size.XS]: 'max-w-screen-xs',
         [Size.Full]: 'max-w-full',
-      } as Record<string, string>
-    )[props.width] || 'max-w-screen-lg'),
+      }) as Record<string, string>
+    )[props.width] || 'max-w-screen-lg',
 );
 
 const classNames = computed(() => {
@@ -31,7 +31,7 @@ const classNames = computed(() => {
 <template>
   <div
     v-mobile-scrollbar
-    class="flex items-stretch flex-grow overflow-y-auto overflow-x-hidden scrollbar-thin">
+    class="scrollbar-thin flex flex-grow items-stretch overflow-y-auto overflow-x-hidden">
     <main :class="classNames">
       <slot></slot>
     </main>

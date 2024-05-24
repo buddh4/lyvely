@@ -77,7 +77,7 @@ const iconName = computed(() => {
               <ly-icon
                 v-if="icon"
                 :name="iconName"
-                class="w-5 mr-1 flex-shrink-0"
+                class="mr-1 w-5 flex-shrink-0"
                 :class="iconTextClass" />
             </slot>
 
@@ -85,7 +85,7 @@ const iconName = computed(() => {
               {{ t(text) }}
             </div>
 
-            <ly-button v-if="closable" class="px-1 py-1 flex-shrink-0" @click="show = false">
+            <ly-button v-if="closable" class="flex-shrink-0 px-1 py-1" @click="show = false">
               <ly-icon name="close" class="w-4" :class="iconTextClass" />
             </ly-button>
           </div>
@@ -97,30 +97,30 @@ const iconName = computed(() => {
 
 <style lang="postcss">
 .alert {
-  @apply px-4 py-3 rounded relative;
+  @apply relative rounded px-4 py-3;
 }
 
 .alert.primary {
-  @apply bg-primary-light border border-primary-dark;
+  @apply bg-primary-light border-primary-dark border;
 }
 
 .alert.secondary {
-  @apply bg-secondary-light border border-secondary-dark;
+  @apply bg-secondary-light border-secondary-dark border;
 }
 
 .alert.info {
-  @apply bg-info-light border border-info-dark;
+  @apply bg-info-light border-info-dark border;
 }
 
 .alert.success {
-  @apply bg-success-light border border-success-dark;
+  @apply bg-success-light border-success-dark border;
 }
 
 .alert.warning {
-  @apply bg-warning-light border border-warning-dark;
+  @apply bg-warning-light border-warning-dark border;
 }
 
 .alert.danger {
-  @apply bg-danger-light border border-danger-dark;
+  @apply bg-danger-light border-danger-dark border;
 }
 </style>

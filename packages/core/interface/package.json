@@ -7,10 +7,11 @@
   "module": "dist/esm/index.js",
   "types": "dist/lib/index.d.ts",
   "scripts": {
+    "build": "rm -rf ./dist && tsc -p tsconfig.build.json --outDir dist/lib --declarationDir dist/lib --declaration true && tscpaths -p tsconfig.build.json -s ./src -o dist/lib && rollup -c && rm -f tsconfig.tsbuildinfo",
     "lint": "eslint --fix",
     "deps": "npx depcruise --config .dependency-cruiser.js src",
     "format": "prettier \"src/**/*.ts\" --write",
-    "build": "rm -rf ./dist && tsc -p tsconfig.build.json --outDir dist/lib --declarationDir dist/lib --declaration true && tscpaths -p tsconfig.build.json -s ./src -o dist/lib && rollup -c && rm -f tsconfig.tsbuildinfo",
+    "prettier": "prettier . --check",
     "prepublish:npm": "pnpm run build",
     "publish:npm": "npm publish --access public",
     "prepublish:next": "pnpm run build",

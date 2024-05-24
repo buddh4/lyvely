@@ -1,27 +1,26 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
 
-
-import LyCheckbox from "@/components/forms/LyCheckbox.vue";
-import { setTranslationProvider } from "@/i18n";
+import LyCheckbox from '@/components/forms/LyCheckbox.vue';
+import { setTranslationProvider } from '@/i18n';
 
 setTranslationProvider((test) => {
-  if(test === 'common.edit') return 'Edit';
-  if(test === 'common.cancel') return 'Cancel';
-  if(test === 'common.submit') return 'Submit';
+  if (test === 'common.edit') return 'Edit';
+  if (test === 'common.cancel') return 'Cancel';
+  if (test === 'common.submit') return 'Submit';
   return typeof test === 'string' ? test : test.toString();
-})
+});
 
 const argTypes = {
-  "label ": {
+  'label ': {
     label: {
       category: 'slots',
-    }
+    },
   },
   label: {
     description: '`string`',
     table: {
-      category: 'props'
-    }
+      category: 'props',
+    },
   },
   inputClass: { options: ['warning', 'success', 'primary', 'info', 'danger'] },
   required: { controls: 'boolean' },
@@ -43,14 +42,14 @@ const argTypes = {
   passwordToggle: { table: { disable: true } },
   loading: { table: { disable: true } },
   helpText: { table: { disable: true } },
-}
+};
 
 const meta = {
   title: 'Forms/Checkbox',
   component: LyCheckbox,
   // This component will have an automatically generated docsPage entry: https://storybook.js.org/docs/vue/writing-docs/autodocs
   tags: [],
-  argTypes
+  argTypes,
 } satisfies Meta<typeof LyCheckbox>;
 
 export default meta;

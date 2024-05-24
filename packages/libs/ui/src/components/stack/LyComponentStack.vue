@@ -43,7 +43,11 @@ const componentDefinitions = computed<
         v-if="definition.condition"
         v-bind="definition.props"
         v-on="definition.on"
-        @update:model-value="(value: any) => { (definition.props.modelValue = value) }" />
+        @update:model-value="
+          (value: any) => {
+            definition.props.modelValue = value;
+          }
+        " />
     </template>
   </div>
 </template>

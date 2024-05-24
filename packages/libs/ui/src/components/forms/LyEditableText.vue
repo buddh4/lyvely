@@ -3,7 +3,7 @@ import { HTMLAttributes, onMounted, Ref, ref } from 'vue';
 import { t, Translatable } from '@/i18n';
 import LyButton from '@/components/buttons/LyButton.vue';
 import LyMarkdownView from '@/components/markdown/LyMarkdownView.vue';
-import {useBaseInputSetup} from "@/components/forms/BaseInput";
+import { useBaseInputSetup } from '@/components/forms/BaseInput';
 
 export interface IProps {
   id?: string;
@@ -98,8 +98,8 @@ function cancel() {
 }
 </script>
 <template>
-  <div class="cursor-pointer text-main">
-    <div v-if="!isEdit" class="flex gap-2 justify-between" @click="edit">
+  <div class="text-main cursor-pointer">
+    <div v-if="!isEdit" class="flex justify-between gap-2" @click="edit">
       <div class="flex-grow">
         <template v-if="inputValue?.length">
           <ly-markdown-view :md="inputValue" />
@@ -131,7 +131,7 @@ function cancel() {
           @change="onChange"
           @focusout="onFocusOut"></textarea>
       </div>
-      <div class="flex gap-1 justify-end">
+      <div class="flex justify-end gap-1">
         <ly-button class="secondary text-xs" @click="cancel">{{ t('common.cancel') }}</ly-button>
         <ly-button class="primary text-xs" @click="submit">{{ t('common.submit') }}</ly-button>
       </div>

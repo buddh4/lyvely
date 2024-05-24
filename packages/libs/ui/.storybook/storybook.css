@@ -1,14 +1,14 @@
 #storybook-root {
-    padding: 10px;
-    height: 100%;
+  padding: 10px;
+  height: 100%;
 }
 
 #storybook-root:not(.dark) {
-    /* replace color */
-    background: white !important;
+  /* replace color */
+  background: white !important;
 }
 
 .dark {
-    /* replace color */
-    background: #1f2937 !important;
+  /* replace color */
+  background: #1f2937 !important;
 }

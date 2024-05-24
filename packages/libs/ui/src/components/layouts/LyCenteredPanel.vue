@@ -21,15 +21,15 @@ const props = withDefaults(defineProps<IProps>(), {
 
 const widthClass = computed(
   () =>
-    ((
-      {
+    (
+      ({
         [Size.SM]: 'max-w-sm',
         [Size.LG]: 'max-w-lg',
         [Size.XL]: 'max-w-xl',
         [Size.XS]: 'max-w-xs',
         [Size.Full]: 'max-w-full',
-      } as Record<string, string>
-    )[props.width] || 'max-w-sm'),
+      }) as Record<string, string>
+    )[props.width] || 'max-w-sm',
 );
 
 const computedIconClass = computed(() =>
@@ -38,10 +38,10 @@ const computedIconClass = computed(() =>
 </script>
 
 <template>
-  <section class="flex md:p-4 justify-center md:rounded md:h-screen w-full">
-    <div class="flex flex-col gap-4 w-full md:min-h-0 md:max-h-auto m-auto" :class="widthClass">
+  <section class="flex w-full justify-center md:h-screen md:rounded md:p-4">
+    <div class="md:max-h-auto m-auto flex w-full flex-col gap-4 md:min-h-0" :class="widthClass">
       <div
-        class="bg-main main h-screen-s md:h-auto border-divide md:border p-4 shadow-xl md:rounded">
+        class="bg-main main h-screen-s border-divide p-4 shadow-xl md:h-auto md:rounded md:border">
         <slot name="header">
           <div class="flex items-center justify-center">
             <ly-icon v-if="icon?.length" :class="computedIconClass" :name="icon" />
@@ -59,7 +59,7 @@ const computedIconClass = computed(() =>
           <slot name="footer"></slot>
         </div>
 
-        <div class="block md:hidden my-4">
+        <div class="my-4 block md:hidden">
           <slot name="links" />
         </div>
       </div>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import {IconBindingsIf, IMenuEntry} from './interfaces';
+import { IconBindingsIf, IMenuEntry } from './interfaces';
 import { t } from '@/i18n';
-import {computed} from 'vue';
+import { computed } from 'vue';
 import { isPlainObject } from '@lyvely/common';
 import { twMerge } from 'tailwind-merge';
 

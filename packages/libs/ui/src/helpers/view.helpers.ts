@@ -37,11 +37,11 @@ export function getContrast(hexColor: string): 'dark' | 'light' {
 
   if (hexColor.length === 3) {
     hexColor = hexColor
-        .split('')
-        .map(function (hex) {
-          return hex + hex;
-        })
-        .join('');
+      .split('')
+      .map(function (hex) {
+        return hex + hex;
+      })
+      .join('');
   }
 
   const r = parseInt(hexColor.substring(0, 2), 16);
@@ -49,11 +49,10 @@ export function getContrast(hexColor: string): 'dark' | 'light' {
   const b = parseInt(hexColor.substring(4, 6), 16);
 
   // Adjusted YIQ formula for RGB color space
-  const yiq = (r * 0.299 + g * 0.587 + b * 0.114);
+  const yiq = r * 0.299 + g * 0.587 + b * 0.114;
 
   return yiq >= 128 ? 'dark' : 'light';
 }
-
 
 export type VIEW_SIZE = 'sm' | 'md' | 'lg' | 'xl' | '2xl';
 

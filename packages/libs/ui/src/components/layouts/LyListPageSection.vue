@@ -1,7 +1,7 @@
 <script lang="ts" setup></script>
 
 <template>
-  <div class="p-2 md:p-4 border-divide bg-main">
+  <div class="border-divide bg-main p-2 md:p-4">
     <slot></slot>
   </div>
 </template>

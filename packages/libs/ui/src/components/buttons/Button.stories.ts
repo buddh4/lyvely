@@ -15,9 +15,8 @@ const meta = {
   args: {
     outlined: false,
     disabled: false,
-    loading: false
-  }
-
+    loading: false,
+  },
 } satisfies Meta<typeof LyButton & { outlined?: boolean }>;
 
 export default meta;

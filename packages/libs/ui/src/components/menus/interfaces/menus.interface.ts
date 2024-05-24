@@ -3,11 +3,11 @@ import { IconOptionsIF } from '@/types';
 import { RouteLocationRaw } from 'vue-router';
 
 export interface IconBindingsIf {
-    title?: Translatable;
-    options?: IconOptionsIF;
-    scaleTo?: number;
-    class?: string;
-    autoScale?: boolean;
+  title?: Translatable;
+  options?: IconOptionsIF;
+  scaleTo?: number;
+  class?: string;
+  autoScale?: boolean;
 }
 
 export interface IBaseMenuEntry {
@@ -31,4 +31,4 @@ export interface IClickMenuEntry extends IBaseMenuEntry {
   click: { (): void };
 }
 
-export type IMenuEntry = IRouteMenuEntry | IClickMenuEntry
+export type IMenuEntry = IRouteMenuEntry | IClickMenuEntry;

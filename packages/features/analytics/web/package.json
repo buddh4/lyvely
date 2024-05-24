@@ -18,7 +18,8 @@
     "dev": "vite",
     "build": "lyvely-dev build:web",
     "lint": "eslint \"{src,apps,libs,test}/**/*.{ts,vue}\" --fix",
-    "format": "prettier .  --write"
+    "prettier": "prettier . --check",
+    "format": "prettier . --write"
   },
   "author": "Julian Harrer",
   "dependencies": {

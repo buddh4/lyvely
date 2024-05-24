@@ -107,7 +107,9 @@ watch(modelValue, (newValue) => {
   position: absolute;
   width: 0;
   border-radius: inherit;
-  transition: width 0.5s ease-in-out, background 0.25s;
+  transition:
+    width 0.5s ease-in-out,
+    background 0.25s;
 }
 
 .Password__strength-meter--fill[data-score='0'] {

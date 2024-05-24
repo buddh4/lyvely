@@ -24,6 +24,9 @@
   },
   "web-types": "./dist/web-types.json",
   "scripts": {
+    "lint": "eslint --fix",
+    "format": "prettier . --write",
+    "prettier": "prettier . --check",
     "test": "vitest",
     "dev": "vite",
     "build": "lyvely-dev build:web && node bin/generate-types.js",

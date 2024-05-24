@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {computed, ref, watch} from 'vue';
+import { computed, ref, watch } from 'vue';
 import { getContrast, includesUtilityClass } from '@/helpers';
 import randomColor from 'randomcolor';
 import { AvatarData } from '@/interfaces';
@@ -15,35 +15,40 @@ export interface IProps {
 }
 
 const props = withDefaults(defineProps<IProps>(), {
-  border: true
+  border: true,
 });
-
 
 const imgGuid = computed(() => props.avatar?.guid || props.guid);
 const imgTimestamp = computed(() => props.avatar?.timestamp || props.timestamp);
 const imgError = ref(false);
 
-watch(() => props.avatar, () => {
-  imgError.value = false;
-});
+watch(
+  () => props.avatar,
+  () => {
+    imgError.value = false;
+  },
+);
 
-watch(() => props.guid, () => {
-  imgError.value = false;
-});
+watch(
+  () => props.guid,
+  () => {
+    imgError.value = false;
+  },
+);
 
 const imgUrl = computed(() => {
   return imgError.value
     ? undefined
     : props.url
-    ? props.url
-    : imgGuid.value
-    ? createAvatarUrl(imgGuid.value!, imgTimestamp.value)
-    : undefined;
+      ? props.url
+      : imgGuid.value
+        ? createAvatarUrl(imgGuid.value!, imgTimestamp.value)
+        : undefined;
 });
 
 const initials = computed(() => (imgUrl.value ? undefined : props.name?.substring(0, 2)));
 const color = computed(() =>
-    imgUrl.value ? undefined : randomColor({ seed: props.name + '_user' + imgGuid.value || '' }),
+  imgUrl.value ? undefined : randomColor({ seed: props.name + '_user' + imgGuid.value || '' }),
 );
 const textClass = computed(() =>
   !imgUrl.value && color.value
@@ -55,8 +60,7 @@ const textClass = computed(() =>
 
 function getClassNames(attrClasses: any, textClass: string) {
   return {
-    'rounded-full uppercase flex justify-center items-center select-none':
-      true,
+    'rounded-full uppercase flex justify-center items-center select-none': true,
     'border border-shadow dark:border-divide': props.border,
     'p-1': !includesUtilityClass(attrClasses, 'p'),
     'w-6': !includesUtilityClass(attrClasses, 'w'),
@@ -69,8 +73,7 @@ function getClassNames(attrClasses: any, textClass: string) {
 
 function getImageClassNames(attrClasses: any) {
   return {
-    'rounded-full uppercase flex justify-center items-center select-none':
-      true,
+    'rounded-full uppercase flex justify-center items-center select-none': true,
     'border border-shadow dark:border-divide': props.border,
     'w-6': !includesUtilityClass(attrClasses, 'w'),
     'h-6': !includesUtilityClass(attrClasses, 'h'),

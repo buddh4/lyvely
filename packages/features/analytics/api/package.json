@@ -7,7 +7,8 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "lint": "eslint --fix",
-    "format": "prettier \"src/**/*.ts\" --write",
+    "format": "prettier . --write",
+    "prettier": "prettier . --check",
     "dev": "nest start",
     "dev:debug": "nest start --debug --watch",
     "deps": "npx depcruise --config .dependency-cruiser.js src",

@@ -65,11 +65,11 @@ const sliderStyle = computed(() => {
 <template>
   <div
     ref="container"
-    class="no-swipe flex tag-filter-selection overflow-x-hidden whitespace-nowrap relative">
+    class="no-swipe tag-filter-selection relative flex overflow-x-hidden whitespace-nowrap">
     <div
       ref="slider"
       :style="sliderStyle"
-      class="inline-flex gap-0.5 pr-0.5 slider-nav touch-pan-y slider-nav flex"
+      class="slider-nav slider-nav flex inline-flex touch-pan-y gap-0.5 pr-0.5"
       @mousedown="beginSlide"
       @touchstart="beginSlide">
       <slot></slot>

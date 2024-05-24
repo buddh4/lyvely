@@ -69,7 +69,7 @@ const colorValue = computed({
 <template>
   <div
     ref="colorInput"
-    class="flex space-x-2 mb-2 p-2 cursor-pointer rounded-md border border-divide shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+    class="border-divide mb-2 flex cursor-pointer space-x-2 rounded-md border p-2 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
     @click="clickColorBox">
     <div class="inline-block rounded" :style="colorStyle">&nbsp;</div>
     <div v-if="showHex">{{ modelValue }}</div>

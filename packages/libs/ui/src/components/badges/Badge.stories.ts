@@ -7,8 +7,8 @@ const meta = {
   component: LyBadge,
   tags: [],
   argTypes: {
-    color: {control: {type: 'color'}},
-    textColor: {control: {type: 'color'}},
+    color: { control: { type: 'color' } },
+    textColor: { control: { type: 'color' } },
   },
   args: {
     modelValue: true,
@@ -16,8 +16,7 @@ const meta = {
     color: '#0060df',
     clickable: false,
     closable: false,
-  }
-
+  },
 } satisfies Meta<typeof LyBadge>;
 
 export default meta;

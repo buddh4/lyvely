@@ -1,27 +1,26 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
 
-
-import LyCheckboxRange from "@/components/forms/LyCheckboxRange.vue";
-import { setTranslationProvider } from "@/i18n";
+import LyCheckboxRange from '@/components/forms/LyCheckboxRange.vue';
+import { setTranslationProvider } from '@/i18n';
 
 setTranslationProvider((test) => {
-  if(test === 'common.edit') return 'Edit';
-  if(test === 'common.cancel') return 'Cancel';
-  if(test === 'common.submit') return 'Submit';
+  if (test === 'common.edit') return 'Edit';
+  if (test === 'common.cancel') return 'Cancel';
+  if (test === 'common.submit') return 'Submit';
   return typeof test === 'string' ? test : test.toString();
-})
+});
 
 const argTypes = {
-  "label ": {
+  'label ': {
     label: {
       category: 'slots',
-    }
+    },
   },
   label: {
     description: '`string`',
     table: {
-      category: 'props'
-    }
+      category: 'props',
+    },
   },
   required: { controls: 'boolean' },
   id: { table: { disable: true } },
@@ -42,14 +41,14 @@ const argTypes = {
   passwordToggle: { table: { disable: true } },
   loading: { table: { disable: true } },
   helpText: { table: { disable: true } },
-}
+};
 
 const meta = {
   title: 'Forms/CheckboxRange',
   component: LyCheckboxRange,
   // This component will have an automatically generated docsPage entry: https://storybook.js.org/docs/vue/writing-docs/autodocs
   tags: [],
-  argTypes
+  argTypes,
 } satisfies Meta<typeof LyCheckboxRange>;
 
 export default meta;
@@ -60,6 +59,6 @@ export const CheckboxRange: Story = {
     disabled: false,
     min: 2,
     optimal: 3,
-    max: 5
+    max: 5,
   },
 };

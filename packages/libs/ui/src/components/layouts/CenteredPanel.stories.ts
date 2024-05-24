@@ -8,17 +8,16 @@ const meta = {
   // This component will have an automatically generated docsPage entry: https://storybook.js.org/docs/vue/writing-docs/autodocs
   tags: [],
   argTypes: {
-    title: {control: {type: 'text'}},
-    width: {options: ['xs', 'sm', 'lg', 'xl', 'full'], control: {type: 'select'}},
-    icon:  {control: {type: 'text'}},
+    title: { control: { type: 'text' } },
+    width: { options: ['xs', 'sm', 'lg', 'xl', 'full'], control: { type: 'select' } },
+    icon: { control: { type: 'text' } },
   },
   args: {
-    title: "Some title",
+    title: 'Some title',
     width: 'sm',
     body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla metus libero, vestibulum quis libero a, pulvinar feugiat massa. Nam ipsum ante, vehicula id lorem in, posuere malesuada velit. ',
-    icon: "lyvely",
-  }
-
+    icon: 'lyvely',
+  },
 } satisfies Meta<typeof LyCenteredPanel>;
 
 export default meta;

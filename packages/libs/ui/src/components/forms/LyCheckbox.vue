@@ -113,7 +113,7 @@ onMounted(() => {
       <ly-icon
         v-if="hasHelpText"
         name="info"
-        class="ml-1 text-info-dark w-4"
+        class="text-info-dark ml-1 w-4"
         @click="showHelpText = !showHelpText" />
     </div>
     <ly-alert

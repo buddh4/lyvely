@@ -1,6 +1,6 @@
 declare module '*.vue';
 
-import 'vue'
+import 'vue';
 declare module 'vue' {
-    function mergeDefaults(...args: any[]): any;
+  function mergeDefaults(...args: any[]): any;
 }

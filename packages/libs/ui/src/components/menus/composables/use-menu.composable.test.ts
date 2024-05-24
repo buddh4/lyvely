@@ -1,12 +1,12 @@
 import { mount } from '@vue/test-utils';
-import {test, expect, beforeEach} from 'vitest';
+import { test, expect, beforeEach } from 'vitest';
 import { ref } from 'vue';
 import { useMenu } from './use-menu.composable';
-import {clearMenu, registerMenuEntry} from "@/components/menus"; // Replace with the actual path to your composable
+import { clearMenu, registerMenuEntry } from '@/components/menus'; // Replace with the actual path to your composable
 
 beforeEach(() => {
   clearMenu('test');
-})
+});
 
 test('useMenu Composable - should reactively update enabledMenuEntries when context changes', async () => {
   // Create a mock context ref
@@ -17,8 +17,8 @@ test('useMenu Composable - should reactively update enabledMenuEntries when cont
       id: 'test',
       moduleId: 'test',
       text: `Hello ${userName.value.name}`,
-      click: () => {}
-    }
+      click: () => {},
+    };
   });
 
   const wrapper = mount({
@@ -49,8 +49,8 @@ test('useMenu Composable - should reactively update hasEnabledEntries when menu 
       id: 'test',
       moduleId: 'test',
       text: '',
-      click: () => {}
-    }
+      click: () => {},
+    };
   });
 
   const wrapper = mount({
@@ -71,8 +71,8 @@ test('useMenu Composable - should reactively update hasEnabledEntries when menu 
       id: 'test2',
       moduleId: 'test',
       text: '',
-      click: () => {}
-    }
+      click: () => {},
+    };
   });
 
   // Wait for Vue to update and re-render

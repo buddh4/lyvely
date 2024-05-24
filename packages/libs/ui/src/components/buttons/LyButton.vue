@@ -182,7 +182,7 @@ function getAriaPressed($attrs: any) {
 .button.success,
 .button.secondary,
 .button.danger {
-  @apply border text-inverted;
+  @apply text-inverted border;
 }
 
 .button.loading {
@@ -285,7 +285,7 @@ function getAriaPressed($attrs: any) {
 }
 
 .button.primary.outlined:not(.loading, .active, :hover, :disabled) {
-  @apply border-primary bg-transparent text-primary;
+  @apply border-primary text-primary bg-transparent;
 }
 
 .button.primary:hover,
@@ -317,7 +317,7 @@ function getAriaPressed($attrs: any) {
 }
 
 .button.secondary.outlined:not(.loading, .active, :hover, :disabled) {
-  @apply border-secondary-light bg-transparent text-secondary dark:border-gray-600;
+  @apply border-secondary-light text-secondary bg-transparent dark:border-gray-600;
 }
 
 .button.secondary.outlined:hover,
@@ -334,7 +334,7 @@ function getAriaPressed($attrs: any) {
 }
 
 .button.info.outlined:not(.loading, .active, :hover, :disabled) {
-  @apply border-info bg-transparent text-info-dark;
+  @apply border-info text-info-dark bg-transparent;
 }
 
 .button.info.outlined:hover {
@@ -347,11 +347,11 @@ function getAriaPressed($attrs: any) {
 }
 
 .button.success {
-  @apply border border-success bg-success;
+  @apply border-success bg-success border;
 }
 
 .button.success.outlined:not(.loading, .active, :hover, :disabled) {
-  @apply border-success bg-transparent text-success;
+  @apply border-success text-success bg-transparent;
 }
 
 .button.success:hover,
@@ -374,7 +374,7 @@ function getAriaPressed($attrs: any) {
 }
 
 .button.warning.outlined:not(.loading, .active, :hover, :disabled) {
-  @apply border-warning bg-transparent text-warning;
+  @apply border-warning text-warning bg-transparent;
 }
 
 .button.warning:hover,
@@ -397,7 +397,7 @@ function getAriaPressed($attrs: any) {
 }
 
 .button.danger.outlined:not(.loading, .active, :hover, :disabled) {
-  @apply border-danger bg-transparent text-danger;
+  @apply border-danger text-danger bg-transparent;
 }
 
 .button.danger:hover,

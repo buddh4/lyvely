@@ -123,22 +123,22 @@ onUnmounted(() => {
     @keyup.esc.stop.prevent="onEscape"
     @keydown="onKeyDown">
     <ly-conditional-wrapper :if="form" tag="form" @submit.prevent="$emit('submit')">
-      <div class="flex flex-col h-screen-s max-h-screen-s md:h-auto md:min-h-0">
+      <div class="h-screen-s max-h-screen-s flex flex-col md:h-auto md:min-h-0">
         <slot name="preHeader"></slot>
         <div
           v-if="showHeader"
-          class="flex items-center p-3 px-4 pb-5 md:p-5 md:px-5 md:rounded-t-sm md:shadow z-10"
+          class="z-10 flex items-center p-3 px-4 pb-5 md:rounded-t-sm md:p-5 md:px-5 md:shadow"
           data-modal-header>
           <slot name="header">
-            <ly-button class="text-sm md:hidden pl-0" @click="cancel">
+            <ly-button class="pl-0 text-sm md:hidden" @click="cancel">
               <ly-icon name="arrow-left" class="w-3" />
             </ly-button>
             <h1
-              class="flex text-md md:text-lg focus-hidden align-middle justify-center md:justify-start align-items-center flex-grow"
+              class="text-md focus-hidden align-items-center flex flex-grow justify-center align-middle md:justify-start md:text-lg"
               tabindex="-1">
               <ly-icon
                 v-if="icon"
-                class="w-6 mr-2"
+                class="mr-2 w-6"
                 :scale-to="24"
                 :name="icon"
                 :class="iconClass" />
@@ -148,14 +148,14 @@ onUnmounted(() => {
             </h1>
 
             <ly-button
-              class="float-right align-middle font-bold ml-auto px-2 py-0.5 border-none hidden md:inline"
+              class="float-right ml-auto hidden border-none px-2 py-0.5 align-middle font-bold md:inline"
               @click="cancel">
               x
             </ly-button>
 
             <ly-button
               v-if="submitButton"
-              class="float-right align-middle font-bold ml-auto inline-block px-1 md:px-2 py-0.5 border-none md:hidden"
+              class="float-right ml-auto inline-block border-none px-1 py-0.5 align-middle font-bold md:hidden md:px-2"
               @click="$emit('submit')">
               <ly-icon :name="submitIcon" class="w-3.5"></ly-icon>
             </ly-button>
@@ -163,14 +163,14 @@ onUnmounted(() => {
         </div>
 
         <section
-          class="p-2 pt-1 md:p-5 pb-1 overflow-auto scrollbar-thin flex-grow"
+          class="scrollbar-thin flex-grow overflow-auto p-2 pb-1 pt-1 md:p-5"
           data-modal-body>
           <slot></slot>
         </section>
 
         <div
           v-if="showFooter"
-          class="flex gap-1 p-2 px-4 md:p-5 md:px-5 justify-end shadow z-10"
+          class="z-10 flex justify-end gap-1 p-2 px-4 shadow md:p-5 md:px-5"
           data-modal-footer>
           <slot name="pre-footer"></slot>
           <slot name="footer">
@@ -189,7 +189,7 @@ onUnmounted(() => {
               :disabled="isLoading"
               :loading="isLoading"
               data-modal-submit
-              class="my-1 primary"
+              class="primary my-1"
               @click="$emit('submit')">
               {{ t(submitButtonText) }}
             </ly-button>

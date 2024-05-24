@@ -203,8 +203,8 @@ onMounted(() => {
     :help-text="helpText"
     :loading="loading"
     :input-error="inputError">
-    <div ref="root" data-timer-input class="floating-input h-auto border border-divide">
-      <div class="flex justify-center items-center gap-0.5 md:gap-2">
+    <div ref="root" data-timer-input class="floating-input border-divide h-auto border">
+      <div class="flex items-center justify-center gap-0.5 md:gap-2">
         <div class="flex flex-col">
           <ly-button @click="increment('hours')"><ly-icon name="caret-up"></ly-icon></ly-button>
           <input
@@ -214,7 +214,7 @@ onMounted(() => {
             v-model="hourValue"
             data-timer-hours-input
             inputmode="numeric"
-            :class="`w-10 bg-highlight border border-divide rounded px-2.5 py-0.5 text-sm ${inputClass}`"
+            :class="`bg-highlight border-divide w-10 rounded border px-2.5 py-0.5 text-sm ${inputClass}`"
             :style="inputStyle"
             @focus="onFocus"
             @keyup.up="increment('hours')"
@@ -232,7 +232,7 @@ onMounted(() => {
             :aria-label="t('ui.accessibility.forms.minutes')"
             data-timer-minutes-input
             inputmode="numeric"
-            :class="`w-10 bg-highlight border border-divide rounded px-2.5 py-0.5 text-sm ${inputClass}`"
+            :class="`bg-highlight border-divide w-10 rounded border px-2.5 py-0.5 text-sm ${inputClass}`"
             :style="inputStyle"
             @focus="onFocus"
             @keyup.up="increment('minutes')"
@@ -250,7 +250,7 @@ onMounted(() => {
             :aria-label="t('ui.accessibility.forms.seconds')"
             data-timer-seconds-input
             inputmode="numeric"
-            :class="`w-10 bg-highlight border border-divide rounded px-2.5 py-0.5 text-sm ${inputClass}`"
+            :class="`bg-highlight border-divide w-10 rounded border px-2.5 py-0.5 text-sm ${inputClass}`"
             :style="inputStyle"
             @focus="onFocus"
             @keyup.up="increment('seconds')"

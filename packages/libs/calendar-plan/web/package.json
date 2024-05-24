@@ -22,6 +22,7 @@
     "build:staging": "vite build --mode staging && vue-tsc --emitDeclarationOnly",
     "build:dev": "vite build --mode development && vue-tsc --emitDeclarationOnly",
     "lint": "eslint \"{src,apps,libs,test}/**/*.{ts,vue}\" --fix",
+    "prettier": "prettier . --check",
     "format": "prettier .  --write"
   },
   "author": "Julian Harrer",

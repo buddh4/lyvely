@@ -7,6 +7,7 @@
   "scripts": {
     "lint": "eslint --fix",
     "format": "prettier \"src/**/*.ts\" --write",
+    "prettier": "prettier . --check",
     "build": "rm -rf ./dist/* && tsc -p tsconfig.build.json",
     "prepublish:npm": "pnpm run build",
     "publish:npm": "npm publish --access public",

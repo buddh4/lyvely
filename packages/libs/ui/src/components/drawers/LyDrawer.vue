@@ -78,21 +78,21 @@ const style = computed<any>(() => ({ 'z-index': zIndex.value }));
         class="drawer"
         :style="style"
         @keyup.esc="close">
-        <div class="max-h-full flex items-stretch top-0 left-0 flex-col">
-          <div data-drawer-header class="pt-4 px-4 flex items-center pb-3 rounded-t-sm">
+        <div class="left-0 top-0 flex max-h-full flex-col items-stretch">
+          <div data-drawer-header class="flex items-center rounded-t-sm px-4 pb-3 pt-4">
             <slot name="header">
               <h1 v-if="title" class="font-bold">{{ t(title) }}</h1>
               <ly-button
-                class="float-right align-middle font-bold ml-auto px-2 py-0.5 border-none"
+                class="float-right ml-auto border-none px-2 py-0.5 align-middle font-bold"
                 @click="close">
                 <ly-icon name="arrow-right" class="text-main" />
               </ly-button>
             </slot>
           </div>
-          <div ref="body" data-drawer-body class="overflow-auto scrollbar-thin">
+          <div ref="body" data-drawer-body class="scrollbar-thin overflow-auto">
             <slot></slot>
           </div>
-          <div data-drawer-footer class="pb-4 px-4 pt-3">
+          <div data-drawer-footer class="px-4 pb-4 pt-3">
             <slot name="footer"></slot>
           </div>
         </div>

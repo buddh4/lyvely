@@ -10,7 +10,7 @@ withDefaults(defineProps<IProps>(), {
 
 <template>
   <li class="hover:bg-highlight dark:hover:bg-main cursor-pointer">
-    <div :class="['p-4 border-l-4', active ? 'border-pop' : 'border-transparent']">
+    <div :class="['border-l-4 p-4', active ? 'border-pop' : 'border-transparent']">
       <slot></slot>
     </div>
   </li>

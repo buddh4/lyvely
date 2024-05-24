@@ -14,6 +14,7 @@
     "lint": "eslint -c .eslintrc.cjs \"src/**/*.{ts,vue}\"",
     "lint:fix": "eslint -c .eslintrc.cjs \"src/**/*.{ts,vue}\" --fix",
     "format": "prettier \"src/**/*.ts\" --write",
+    "prettier": "prettier \"src/**/*.ts\" --check",
     "deps": "npx depcruise --config .dependency-cruiser.js src",
     "test": "jest --passWithNoTests",
     "prepublish:npm": "pnpm run build",

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
 
-import LyDrawer from "./LyDrawer.vue";
+import LyDrawer from './LyDrawer.vue';
 
 const meta = {
   title: 'Example/Drawer',
@@ -10,9 +10,8 @@ const meta = {
   argTypes: {},
   args: {
     modelValue: true,
-    title: 'This is Drawer'
-  }
-
+    title: 'This is Drawer',
+  },
 } satisfies Meta<typeof LyDrawer>;
 
 export default meta;

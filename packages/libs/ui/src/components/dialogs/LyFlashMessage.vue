@@ -26,8 +26,8 @@ const show = computed({
 
 <template>
   <teleport to="body">
-    <div class="flash-message fixed w-full bottom-5 px-5 z-50">
-    <ly-alert
+    <div class="flash-message fixed bottom-5 z-50 w-full px-5">
+      <ly-alert
         v-model="show"
         aria-live="assertive"
         aria-atomic="true"
@@ -37,7 +37,7 @@ const show = computed({
         :closable="manual"
         enter-active-class="animate__animated animate__faster animate__fadeInUp"
         leave-active-class="animate__animated animate__faster animate__fadeOutDown">
-    </ly-alert>
+      </ly-alert>
     </div>
   </teleport>
 </template>

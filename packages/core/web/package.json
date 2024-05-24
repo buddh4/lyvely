@@ -29,6 +29,7 @@
     "build": "lyvely-dev build:web",
     "lint": "eslint \"{src,apps,libs,test}/**/*.{ts,vue}\" --fix",
     "format": "prettier .  --write",
+    "prettier": "prettier . --check",
     "dev": "vite",
     "dev:e2e": "cross-env NODE_ENV=e2e pnpm run dev",
     "deps": "npx depcruise --config .dependency-cruiser.js src"

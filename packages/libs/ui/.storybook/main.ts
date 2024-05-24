@@ -7,9 +7,9 @@ const config: StorybookConfig = {
     '@storybook/addon-interactions',
     'storybook-tailwind-dark-mode',
     {
-      name: "@storybook/addon-styling",
+      name: '@storybook/addon-styling',
       options: {
-        postCss: true
+        postCss: true,
       },
     },
   ],

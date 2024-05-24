@@ -146,7 +146,7 @@ onMounted(() => {
     <div
       v-if="passwordToggle && type === 'password'"
       role="button"
-      class="absolute flex top-1 right-2 cursor-pointer"
+      class="absolute right-2 top-1 flex cursor-pointer"
       :aria-label="t(togglePasswordAriaLabel)"
       @click="togglePassword">
       <ly-icon :name="togglePasswordIcon" />

@@ -6,7 +6,8 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "lint": "eslint --fix",
-    "format": "prettier \"src/**/*.ts\" --write",
+    "format": "prettier . --write",
+    "prettier": "prettier . --check",
     "dev": "nest start",
     "dev:debug": "nest start --debug --watch",
     "dev:e2e": "cross-env NODE_ENV=e2e nest start",

@@ -19,6 +19,7 @@
     "build:staging": "lyvely-dev build:web:staging",
     "build:dev": "lyvely-dev build:web:development",
     "lint": "eslint \"{src,apps,libs,test}/**/*.{ts,vue}\" --fix",
+    "prettier": "prettier . --check",
     "format": "prettier .  --write"
   },
   "author": "Julian Harrer",

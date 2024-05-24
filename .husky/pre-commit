@@ -1,7 +1,4 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-#pnpm run common:deps
-#pnpm run server:deps
-#pnpm run web:deps
-#pnpm run lint:fix
+#pnpm nx run-many format

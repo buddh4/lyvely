@@ -1,17 +1,20 @@
 <script lang="ts" setup>
 import { computed, normalizeClass, useAttrs } from 'vue';
-import { twMerge } from "tailwind-merge";
-import {omit} from "lodash";
+import { twMerge } from 'tailwind-merge';
+import { omit } from 'lodash';
 
-const props = withDefaults(defineProps<{
-  progress?: number;
-}>(), {
-  progress: 0,
-});
+const props = withDefaults(
+  defineProps<{
+    progress?: number;
+  }>(),
+  {
+    progress: 0,
+  },
+);
 
 defineOptions({
   inheritAttrs: false,
-})
+});
 
 const attrs = useAttrs();
 
@@ -21,10 +24,12 @@ const colorClass = computed(() => {
   return 'bg-success';
 });
 
-
 const progressClass = computed(() =>
-  twMerge('progress rounded-full border border-divide w-full h-4 overflow-hidden', normalizeClass(attrs.class))
-)
+  twMerge(
+    'progress rounded-full border border-divide w-full h-4 overflow-hidden',
+    normalizeClass(attrs.class),
+  ),
+);
 </script>
 
 <template>

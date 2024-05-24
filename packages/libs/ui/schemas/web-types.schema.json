@@ -47,28 +47,19 @@
       "additionalProperties": false
     }
   },
-  "required": [
-    "name",
-    "version"
-  ],
+  "required": ["name", "version"],
   "additionalProperties": false,
   "definitions": {
     "js-types-syntax": {
       "description": "Language in which JavaScript objects types are specified.",
       "type": "string",
-      "enum": [
-        "typescript"
-      ]
+      "enum": ["typescript"]
     },
     "description-markup": {
       "description": "Markup language in which descriptions are formatted.",
       "type": "string",
       "default": "none",
-      "enum": [
-        "html",
-        "markdown",
-        "none"
-      ]
+      "enum": ["html", "markdown", "none"]
     },
     "framework-config": {
       "description": "Provide configuration for the specified web framework. This is an advanced feature, which is used to provide support for templating frameworks like Angular, Vue, Svelte, etc.",
@@ -202,9 +193,7 @@
       "type": "object",
       "description": "The base for any contributions.",
       "javaAbstract": true,
-      "javaInterfaces": [
-        "GenericContributionsHost"
-      ],
+      "javaInterfaces": ["GenericContributionsHost"],
       "properties": {
         "name": {
           "$ref": "#/definitions/name"
@@ -337,9 +326,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "name"
-      ],
+      "required": ["name"],
       "additionalProperties": false
     },
     "html-value-type": {
@@ -375,10 +362,7 @@
               "type": "integer"
             }
           },
-          "required": [
-            "file",
-            "offset"
-          ],
+          "required": ["file", "offset"],
           "additionalProperties": false
         },
         {
@@ -393,9 +377,7 @@
               "type": "string"
             }
           },
-          "required": [
-            "symbol"
-          ],
+          "required": ["symbol"],
           "additionalProperties": false
         }
       ]
@@ -432,13 +414,7 @@
     },
     "priority": {
       "type": "string",
-      "enum": [
-        "lowest",
-        "low",
-        "normal",
-        "high",
-        "highest"
-      ]
+      "enum": ["lowest", "low", "normal", "high", "highest"]
     },
     "proximity": {
       "type": "integer"
@@ -511,9 +487,7 @@
               "default": true
             }
           },
-          "required": [
-            "regex"
-          ],
+          "required": ["regex"],
           "additionalProperties": false
         }
       ]
@@ -577,9 +551,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "path"
-      ]
+      "required": ["path"]
     },
     "extends": {
       "$ref": "#/definitions/reference"
@@ -620,9 +592,7 @@
     },
     "html-contributions-host": {
       "type": "object",
-      "javaInterfaces": [
-        "GenericContributionsHost"
-      ],
+      "javaInterfaces": ["GenericContributionsHost"],
       "javaInterface": true,
       "properties": {
         "elements": {
@@ -669,9 +639,7 @@
       ]
     },
     "generic-html-contribution-or-property": {
-      "javaInterfaces": [
-        "GenericContributionOrProperty"
-      ],
+      "javaInterfaces": ["GenericContributionOrProperty"],
       "oneOf": [
         {
           "$ref": "#/definitions/generic-html-contribution"
@@ -772,11 +740,7 @@
       "properties": {
         "kind": {
           "type": "string",
-          "enum": [
-            "no-value",
-            "plain",
-            "expression"
-          ]
+          "enum": ["no-value", "plain", "expression"]
         },
         "type": {
           "$ref": "#/definitions/html-value-type"
@@ -792,9 +756,7 @@
     },
     "css-contributions-host": {
       "type": "object",
-      "javaInterfaces": [
-        "GenericContributionsHost"
-      ],
+      "javaInterfaces": ["GenericContributionsHost"],
       "javaInterface": true,
       "properties": {
         "properties": {
@@ -854,9 +816,7 @@
       ]
     },
     "generic-css-contribution-or-property": {
-      "javaInterfaces": [
-        "GenericContributionOrProperty"
-      ],
+      "javaInterfaces": ["GenericContributionOrProperty"],
       "oneOf": [
         {
           "type": "string"
@@ -958,9 +918,7 @@
     },
     "js-contributions-host": {
       "type": "object",
-      "javaInterfaces": [
-        "GenericContributionsHost"
-      ],
+      "javaInterfaces": ["GenericContributionsHost"],
       "javaInterface": true,
       "properties": {
         "events": {
@@ -999,9 +957,7 @@
       ]
     },
     "generic-js-contribution-or-property": {
-      "javaInterfaces": [
-        "GenericContributionOrProperty"
-      ],
+      "javaInterfaces": ["GenericContributionOrProperty"],
       "oneOf": [
         {
           "type": "string"
@@ -1093,9 +1049,7 @@
           "$ref": "#/definitions/doc-url"
         }
       },
-      "required": [
-        "name"
-      ],
+      "required": ["name"],
       "additionalProperties": false
     }
   }
