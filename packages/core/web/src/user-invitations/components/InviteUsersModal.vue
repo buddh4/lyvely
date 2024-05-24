@@ -23,7 +23,7 @@ watch(emailInput, (value) => {
     @submit="submit"
     @hide="reset">
     <div v-if="stage === 'users'">
-      <div class="flex flex-row items-center items-stretch mb-2">
+      <div class="mb-2 flex flex-row items-center items-stretch">
         <ly-text-field
           v-model="emailInput"
           class="mb-0 grow"
@@ -31,14 +31,14 @@ watch(emailInput, (value) => {
           :autocomplete="true"
           :autofocus="true"
           label="profiles.invite.email-help" />
-        <ly-button class="primary rounded-r w-12" @click="addEmails"> + </ly-button>
+        <ly-button class="primary w-12 rounded-r" @click="addEmails"> + </ly-button>
       </div>
       <ly-alert type="danger" :text="statusError" />
-      <div v-for="email in emails" :key="email" class="flex mb-2">
-        <div class="bg-highlight border border-divide p-2 rounded-l clearfix grow attachment-r">
+      <div v-for="email in emails" :key="email" class="mb-2 flex">
+        <div class="bg-highlight border-divide clearfix attachment-r grow rounded-l border p-2">
           {{ email }}
         </div>
-        <ly-button class="danger float-right attachment-l w-12" @click="removeEmail(email)">
+        <ly-button class="danger attachment-l float-right w-12" @click="removeEmail(email)">
           <ly-icon name="delete" />
         </ly-button>
       </div>

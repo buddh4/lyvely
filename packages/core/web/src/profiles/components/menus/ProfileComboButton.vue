@@ -27,23 +27,23 @@ const progress = computed(() => getScaledProgress(score.value || 0));
 <template>
   <ly-dropdown position="right">
     <template #trigger="{ toggle }">
-      <div data-id="profile-combo-button" class="flex justify-center items-stretch">
+      <div data-id="profile-combo-button" class="flex items-stretch justify-center">
         <ly-button
-          class="border border-divide border-r-0 rounded-l-2xl px-3 py-2"
+          class="border-divide rounded-l-2xl border border-r-0 px-3 py-2"
           @click="toggleSidebar">
           <ly-icon name="menu" class="w-3" style="margin-top: -3px" />
         </ly-button>
 
         <div
           role="button"
-          class="border border-divide flex justify-center items-center gap-2 px-3"
+          class="border-divide flex items-center justify-center gap-2 border px-3"
           :aria-label="t('layout.aria.toggle-sidebar')"
           aria-controls="sidebar"
           @click="toggleSidebar">
           <profile-avatar data-id="active-profile-avatar" class="md:hidden" />
 
           <div class="flex flex-col">
-            <div class="flex justify-center items-center text-xs">
+            <div class="flex items-center justify-center text-xs">
               <transition
                 name="score-icon"
                 mode="out-in"
@@ -57,7 +57,7 @@ const progress = computed(() => getScaledProgress(score.value || 0));
                 mode="out-in"
                 enter-active-class="animate__animated animate__faster animate__bounceIn"
                 leave-active-class="animate__animated animate__faster animate__bounceOut">
-                <div :key="score" class="inline-block score-value ml-0.5">
+                <div :key="score" class="score-value ml-0.5 inline-block">
                   <span>{{ formattedScore }}</span>
                 </div>
               </transition>
@@ -69,7 +69,7 @@ const progress = computed(() => getScaledProgress(score.value || 0));
 
         <ly-button
           data-id="btn-toggle-profile-relations"
-          class="border border-divide border-l-0 rounded-r-2xl px-3"
+          class="border-divide rounded-r-2xl border border-l-0 px-3"
           @click="toggle">
           <ly-icon style="margin-top: -1px" name="caret-down" />
         </ly-button>

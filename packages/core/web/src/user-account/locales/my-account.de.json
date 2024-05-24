@@ -14,7 +14,7 @@
         "add_mail": "Add email address"
       },
       "add_email": {
-        "title":  "Add email address",
+        "title": "Add email address",
         "fields": {
           "email": "New email address"
         }

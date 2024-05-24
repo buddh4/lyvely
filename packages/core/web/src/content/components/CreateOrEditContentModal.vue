@@ -52,13 +52,13 @@ function switchCreateContentType(type: string) {
       @success="onCreated"
       @cancel="onCreateCanceled">
       <template #navigation>
-        <div v-if="showContentTypeMenu" class="flex justify-center p-2 shadow bg-highlight">
+        <div v-if="showContentTypeMenu" class="bg-highlight flex justify-center p-2 shadow">
           <ly-slider-menu>
             <template
               v-for="contentTypeOption in getCreateContentTypes()"
               :key="contentTypeOption.type">
               <ly-button
-                class="select-none button no-underline text-center rounded inline-block secondary outlined inline-flex items-center text-xs py-1 px-1 text-xs px-2 rounded"
+                class="button secondary outlined inline-block inline-flex select-none items-center rounded rounded px-1 px-2 py-1 text-center text-xs text-xs no-underline"
                 :data-id="`btn-content-type-${contentTypeOption.type.toLowerCase()}`"
                 :active="contentTypeOption.type === contentType"
                 @click="switchCreateContentType(contentTypeOption.type)">

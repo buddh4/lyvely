@@ -26,7 +26,7 @@
         "displayName": "Your Display Name",
         "description": "Your Description",
         "revoke": {
-          "title":  "Revoke Membership",
+          "title": "Revoke Membership",
           "confirm": "Do you really want to revoke your membership?"
         },
         "your_role": "You are {role} of this profile."

@@ -17,7 +17,6 @@ const { model: sendMailModel, validator: sendMailValidator } = storeToRefs(
 
 const router = useRouter();
 const loginRoute = { path: PATH_LOGIN };
-const captchaInput = ref();
 const repeatPasswordType = ref('password');
 
 function sendMail() {
@@ -54,7 +53,7 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
           autocomplete="email"
           :required="true"
           :autofocus="!isTouchScreen()" />
-        <captcha-input id="reset-password-captcha" ref="captchaInput" />
+        <captcha-input id="reset-password-captcha" />
       </ly-form-model>
     </template>
 

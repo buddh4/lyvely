@@ -1,7 +1,7 @@
-@import "./variables.css";
-@import "./base.css";
-@import "./components.css";
-@import "./forms.css";
-@import "./utilities.css";
-@import "animate.css/animate.css";
-@import "./multiselect.css";
+@import './variables.css';
+@import './base.css';
+@import './components.css';
+@import './forms.css';
+@import './utilities.css';
+@import 'animate.css/animate.css';
+@import './multiselect.css';

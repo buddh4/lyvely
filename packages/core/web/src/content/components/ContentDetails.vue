@@ -4,7 +4,7 @@ import { ContentModel } from '@lyvely/interface';
 import ContentDropdown from '@/content/components/ContentDropdown.vue';
 import TagList from '@/tags/components/TagList.vue';
 import { useRouter } from 'vue-router';
-import { computed, unref } from 'vue';
+import { computed } from 'vue';
 import { translate } from '@/i18n';
 import { getContentTypeOptions } from '../registries';
 import { useUserInfo } from '@/profiles/composables';
@@ -34,12 +34,12 @@ const userInfo = useUserInfo(props.model.meta.createdBy);
 
 <template>
   <div :data-id="model.id">
-    <div class="p-2.5 md:px-4 bg-shadow border-divide w-full">
+    <div class="bg-shadow border-divide w-full p-2.5 md:px-4">
       <div class="flex items-center justify-items-stretch gap-2">
         <slot name="image">
           <ly-avatar
             v-if="userInfo"
-            class="w-8 h-8"
+            class="h-8 w-8"
             :name="userInfo.displayName"
             :guid="userInfo.guid" />
         </slot>
@@ -49,7 +49,7 @@ const userInfo = useUserInfo(props.model.meta.createdBy);
             <relative-time :ts="model.meta.createdAt.getTime()"></relative-time>
           </slot>
         </div>
-        <div class="flex ml-auto">
+        <div class="ml-auto flex">
           <slot name="menu">
             <div class="flex flex-col">
               <content-dropdown :content="model" />
@@ -60,21 +60,21 @@ const userInfo = useUserInfo(props.model.meta.createdBy);
     </div>
     <tag-list
       :tag-ids="model.tagIds"
-      class="flex w-full px-2.5 pt-2.5 md:px-4 md:pt-4 bg-main"
+      class="bg-main flex w-full px-2.5 pt-2.5 md:px-4 md:pt-4"
       @select="selectTag">
       <template v-if="showType && contentTypeName" #pre>
         <ly-badge class="bg-secondary-dark">{{ contentTypeName }}</ly-badge>
       </template>
       <template v-if="model.meta.archived" #post>
-        <ly-icon name="archive" class="w-3 text-warning ml-auto" />
+        <ly-icon name="archive" class="text-warning ml-auto w-3" />
       </template>
     </tag-list>
-    <div class="p-2.5 md:px-4 bg-main border-divide rounded-b text-sm">
+    <div class="bg-main border-divide rounded-b p-2.5 text-sm md:px-4">
       <slot name="body">
         <ly-markdown-view :md="model.content.text" class="text-sm" />
       </slot>
     </div>
-    <div v-if="$slots.footer" class="bg-main rounded-b p-2.5 md:p-4 border-t border-divide">
+    <div v-if="$slots.footer" class="bg-main border-divide rounded-b border-t p-2.5 md:p-4">
       <slot name="footer" />
     </div>
   </div>

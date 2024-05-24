@@ -56,7 +56,7 @@ onBeforeRouteLeave(unwatchFilter);
 </script>
 
 <template>
-  <nav data-id="stream-filter-nav" class="flex flex-row gap-0.5 content-left clearfix">
+  <nav data-id="stream-filter-nav" class="content-left clearfix flex flex-row gap-0.5">
     <ly-slider-menu class="tag-filter-selection">
       <ly-button :class="pillButton" :active="!activeTagId" @click="setTagFilter()">
         {{ t('filter.all') }}
@@ -94,10 +94,10 @@ onBeforeRouteLeave(unwatchFilter);
         <input
           ref="search"
           v-model.trim="query"
-          class="search w-full mb-4 py-1"
+          class="search mb-4 w-full py-1"
           :placeholder="t('common.filter.search')"
           type="text" />
-        <ly-icon name="search" class="absolute right-2.5 top-2 text-dimmed pointer-events-none" />
+        <ly-icon name="search" class="text-dimmed pointer-events-none absolute right-2.5 top-2" />
       </div>
 
       <ly-checkbox v-model="filter.archived" class="mb-4" label="common.filter.archive" />

@@ -60,15 +60,15 @@ const title = computed(() => (error.value?.length ? 'error.title' : 'invitations
   <ly-centered-panel :title="title">
     <template #body>
       <div v-if="userInviteInfo" class="flex flex-col">
-        <div class="flex justify-center items-center gap-1">
+        <div class="flex items-center justify-center gap-1">
           <ly-avatar :name="userInviteInfo.hostName" :guid="userInviteInfo.hostGuid" />
           <span class="text-sm font-bold">{{ userInviteInfo.hostName }}</span>
         </div>
-        <div class="flex justify-center items-center m-2">
-          <ly-icon name="envelope-open" class="w-12 text-secondary" />
+        <div class="m-2 flex items-center justify-center">
+          <ly-icon name="envelope-open" class="text-secondary w-12" />
         </div>
 
-        <div class="flex justify-center items-center gap-1">
+        <div class="flex items-center justify-center gap-1">
           <ly-avatar :name="userInviteInfo.profileName" :guid="userInviteInfo.profileGuid" />
           <span class="text-sm font-bold">{{ userInviteInfo.profileName }}</span>
         </div>
@@ -84,10 +84,10 @@ const title = computed(() => (error.value?.length ? 'error.title' : 'invitations
     </template>
 
     <template #footer>
-      <div v-if="error?.length" class="flex justify-center items-center gap-1">
+      <div v-if="error?.length" class="flex items-center justify-center gap-1">
         <ly-button class="primary" text="common.back_to_home" @click="toHome" />
       </div>
-      <div v-else class="flex justify-center items-center gap-1">
+      <div v-else class="flex items-center justify-center gap-1">
         <ly-button class="secondary" text="common.decline" @click="decline" />
         <ly-button class="primary" text="common.accept" @click="accept" />
       </div>

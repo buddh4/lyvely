@@ -108,7 +108,7 @@
     },
     "edit": "Edit",
     "save": "Save",
-    "saved": "Saved",
+    "saved": "Saved"
   },
   "journals": {
     "labels": {
@@ -194,7 +194,7 @@
     "info": "Info",
     "success": "Success"
   },
-  "error":{
+  "error": {
     "title": "Error",
     "unknown": "An unexpected error occurred, please try again later.",
     "500": "A problem occurred while handling your request, please try again later.",
@@ -233,7 +233,7 @@
   },
   "stream": {
     "title": "stream",
-    "labels":  {
+    "labels": {
       "main_nav": "Stream"
     },
     "breadcrumb": {

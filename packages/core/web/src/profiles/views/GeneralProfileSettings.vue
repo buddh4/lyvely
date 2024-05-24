@@ -38,13 +38,13 @@ const visibilityOptions: ISelectOptions = getProfileVisibilityOptions();
         v-model="model"
         label-key="profiles.settings.general"
         :validator="validator!">
-        <div class="flex mb-2 flex-row items-stretch">
+        <div class="mb-2 flex flex-row items-stretch">
           <div class="w-full">
             <ly-text-field property="name" />
           </div>
           <button
             data-id="btn-change-avatar"
-            class="ml-3 bg-highlight w-20 flex justify-center items-center rounded border border-divide cursor-pointer"
+            class="bg-highlight border-divide ml-3 flex w-20 cursor-pointer items-center justify-center rounded border"
             @click="showUpdateAvatarModal = true">
             <profile-avatar class="m-3" />
           </button>
@@ -60,10 +60,10 @@ const visibilityOptions: ISelectOptions = getProfileVisibilityOptions();
 
         <ly-textarea property="description" />
 
-        <div class="flex mt-2 md:mt-4">
+        <div class="mt-2 flex md:mt-4">
           <ly-button
             data-id="btn-submit-settings"
-            class="primary text-xs ml-auto"
+            class="primary ml-auto text-xs"
             :loading="status.isStatusLoading()"
             @click="submit">
             {{ t('common.update') }}
@@ -77,7 +77,7 @@ const visibilityOptions: ISelectOptions = getProfileVisibilityOptions();
         <ly-button
           v-if="canArchive && !profile!.archived"
           data-id="archive-profile"
-          class="danger text-xs ml-auto"
+          class="danger ml-auto text-xs"
           :confirm="{ text: 'profiles.settings.general.archive.confirm' }"
           @click="updateStore.archive">
           {{ t('common.archive') }}
@@ -85,7 +85,7 @@ const visibilityOptions: ISelectOptions = getProfileVisibilityOptions();
         <ly-button
           v-if="canArchive && profile!.archived"
           data-id="restore-profile"
-          class="warning text-xs ml-auto"
+          class="warning ml-auto text-xs"
           :confirm="{ text: 'profiles.settings.general.restore.confirm' }"
           @click="updateStore.restore">
           {{ t('common.restore') }}

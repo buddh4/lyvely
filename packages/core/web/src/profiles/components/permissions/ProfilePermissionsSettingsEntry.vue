@@ -25,7 +25,7 @@ const padding = 'py-1 md:py-4';
 </script>
 
 <template>
-  <tr :class="'border-b border-divide last:border-0'">
+  <tr :class="'border-divide border-b last:border-0'">
     <th scope="row" class="w-auto">
       <div :class="['border-divide', padding]">
         <div class="flex items-center">
@@ -34,13 +34,13 @@ const padding = 'py-1 md:py-4';
         <ly-dimmed v-if="permission.description" class="text-xs" :text="permission.description" />
       </div>
     </th>
-    <td :class="['whitespace-nowrap w-auto hidden md:table-cell', padding]">
+    <td :class="['hidden w-auto whitespace-nowrap md:table-cell', padding]">
       <ly-badge
         class="bg-secondary dark:text-inverted"
         :text="{ plain: permission.moduleId }"
         @click="$emit('select-module-id', permission.moduleId)" />
     </td>
-    <td :class="['whitespace-nowrap w-auto', padding]">
+    <td :class="['w-auto whitespace-nowrap', padding]">
       <div class="flex items-center">
         <ly-select
           v-model="activeRole"

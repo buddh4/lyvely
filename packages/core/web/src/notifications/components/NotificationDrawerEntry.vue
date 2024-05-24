@@ -19,7 +19,7 @@ const cssClass = computed(() => [
 
 <template>
   <div :class="cssClass">
-    <div class="p-2 w-12">
+    <div class="w-12 p-2">
       <ly-avatar
         v-if="notification.userInfo"
         :guid="notification.userInfo.imageGuid"
@@ -29,7 +29,7 @@ const cssClass = computed(() => [
         :guid="notification.profileInfo.imageGuid"
         :name="notification.profileInfo.name" />
     </div>
-    <div class="flex flex-col p-2 pl-0 gap-1 text-sm w-full">
+    <div class="flex w-full flex-col gap-1 p-2 pl-0 text-sm">
       <div class="line-clamp-2" v-html="notification.body"></div>
       <relative-time :ts="notification.sortOrder" />
     </div>

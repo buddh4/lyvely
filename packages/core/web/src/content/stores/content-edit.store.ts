@@ -27,7 +27,7 @@ export const useContentEditStore = defineStore('content-edit', () => {
     activeResolve = undefined;
   }
 
-  function editContent(content?: ContentModel, options?: any, onSuccess?: (res: any) => void) {
+  function editContent(content?: ContentModel, options?: any) {
     reset();
 
     if (!content) return Promise.resolve();

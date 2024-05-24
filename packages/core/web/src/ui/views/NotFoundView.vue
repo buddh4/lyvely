@@ -12,7 +12,7 @@ import imgUrl from '@/assets/404.png';
     </template>
 
     <template #footer>
-      <div class="flex justify-center items-center">
+      <div class="flex items-center justify-center">
         <ly-button :route="{ path: '/' }" class="primary" text="common.back_to_home" />
       </div>
     </template>

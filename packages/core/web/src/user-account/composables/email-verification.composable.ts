@@ -100,8 +100,8 @@ export function useEmailVerificationStore(options: IEmailVerificationOptions) {
       errorMsg.value = !otpInfo.value.hasAttemptsLeft()
         ? 'otp.errors.maxAttempts'
         : otpInfo.value.isExpired()
-        ? 'otp.errors.expired'
-        : 'otp.errors.invalid';
+          ? 'otp.errors.expired'
+          : 'otp.errors.invalid';
     } else {
       errorMsg.value = e?.message || 'error.unknown';
     }

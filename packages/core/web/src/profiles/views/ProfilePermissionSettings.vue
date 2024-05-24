@@ -26,15 +26,15 @@ const filterModuleId = (moduleId: string) => (search.value = moduleId);
   <ly-list-page title="profiles.settings.permissions.headline" aria-label="tags.view.aria.title">
     <ly-list-page-section>
       <div class="flex items-center">
-        <div class="relative inline-block my-1 w-full md:w-1/3">
+        <div class="relative my-1 inline-block w-full md:w-1/3">
           <input
             v-model="search"
             type="text"
             :placeholder="t('profiles.settings.permissions.search')"
-            class="search w-full pl-2 border-divide text-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 rounded-r-3xl p-1 bg-main" />
+            class="search border-divide bg-main w-full rounded-r-3xl p-1 pl-2 text-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" />
           <ly-icon
             :name="!search.length ? 'search' : 'close'"
-            class="absolute right-2.5 top-2 text-dimmed cursor-pointer"
+            class="text-dimmed absolute right-2.5 top-2 cursor-pointer"
             @click="search = ''" />
         </div>
       </div>

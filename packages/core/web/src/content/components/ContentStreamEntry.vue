@@ -139,10 +139,11 @@ const maxWidth = true;
                     <ly-badge class="bg-secondary-dark">{{ contentTypeName }}</ly-badge>
                   </template>
                   <template v-if="model.meta.archived" #post>
-                    <ly-icon name="archive" class="text-warning ml-auto w-3" />
-                  </template>
-                  <template v-if="model.meta.locked" #post>
-                    <ly-icon name="locked" class="ml-auto w-3" />
+                    <ly-icon
+                      v-if="model.meta.archived"
+                      name="archive"
+                      class="text-warning ml-auto w-3" />
+                    <ly-icon v-if="model.meta.locked" name="locked" class="ml-auto w-3" />
                   </template>
                 </tag-list>
               </div>

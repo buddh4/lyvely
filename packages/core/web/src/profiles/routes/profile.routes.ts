@@ -3,9 +3,9 @@ import { translation } from '@/i18n';
 import { profilePath, profileRoot } from './profile-route.helper';
 import { RouteRecordRaw } from 'vue-router';
 import { LAYOUT_PROFILE, LAYOUT_PROFILE_SETTINGS } from '@/profiles/profile.constants';
-import { ProfileRelationRole, PROFILES_MODULE_ID, ProfileVisibilityLevel } from '@lyvely/interface';
+import { ProfileRelationRole, PROFILES_MODULE_ID } from '@lyvely/interface';
 
-export default [
+export const profileRoutes = [
   {
     path: '/pid/:pid/:view?',
     name: 'PID',

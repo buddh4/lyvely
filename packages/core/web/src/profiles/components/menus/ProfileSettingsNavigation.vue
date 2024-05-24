@@ -7,7 +7,7 @@ const { enabledMenuEntries } = useProfileMenu(MENU_PROFILE_SETTINGS);
 </script>
 
 <template>
-  <div class="flex gap-1 md:mx-2 text-xs md:text-sm pb-2 md:pb-5 overflow-auto">
+  <div class="flex gap-1 overflow-auto pb-2 text-xs md:mx-2 md:pb-5 md:text-sm">
     <ly-tab-menu-entry
       v-for="menuEntry in enabledMenuEntries"
       :key="menuEntry.id"

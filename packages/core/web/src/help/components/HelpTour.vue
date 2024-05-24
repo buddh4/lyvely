@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import 'intro.js/minified/introjs.min.css';
-import { onMounted, watch, ref, unref, onUnmounted } from 'vue';
+import { onMounted, watch, ref, onUnmounted } from 'vue';
 import introJs from 'intro.js';
 
 export interface IProps {
@@ -34,7 +34,5 @@ onMounted(() => {
 
 onUnmounted(() => tour.exit(true));
 </script>
-
-<template><template /></template>
 
 <style scoped></style>

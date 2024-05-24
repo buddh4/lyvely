@@ -12,7 +12,7 @@ import { LyCenteredPanel, LyButton } from '@lyvely/ui';
     </template>
 
     <template #footer>
-      <div class="flex justify-center items-center">
+      <div class="flex items-center justify-center">
         <ly-button :route="{ path: '/' }" class="primary" text="common.back_to_home" />
       </div>
     </template>

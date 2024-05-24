@@ -5,7 +5,7 @@ const userInfo = useUserInfo();
 </script>
 
 <template>
-  <ly-avatar v-if="userInfo" class="w-8 h-8" :name="userInfo.displayName" :guid="userInfo.guid" />
+  <ly-avatar v-if="userInfo" class="h-8 w-8" :name="userInfo.displayName" :guid="userInfo.guid" />
 </template>
 
 <style scoped></style>

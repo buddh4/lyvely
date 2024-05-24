@@ -8,8 +8,8 @@ export type IModuleInitializer = { default: () => IModule };
 export type IModuleImport<TEager extends boolean | undefined = undefined> = TEager extends true
   ? IModuleInitializer
   : TEager extends false
-  ? Promise<IModuleInitializer>
-  : IModuleInitializer | Promise<IModuleInitializer>;
+    ? Promise<IModuleInitializer>
+    : IModuleInitializer | Promise<IModuleInitializer>;
 
 export type IModulesGlobImport<TEager extends boolean | undefined = undefined> = Record<
   string,

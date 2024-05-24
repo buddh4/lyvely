@@ -62,32 +62,32 @@ const { direction: overlayDirection } = useSwipe(appDrawerOverlay, {
       v-if="showSidebar"
       id="app-drawer-overlay"
       ref="appDrawerOverlay"
-      class="fixed md:hidden bg-black opacity-50 inset-0 z-40"
+      class="fixed inset-0 z-40 bg-black opacity-50 md:hidden"
       @click="toggleSidebar"></div>
   </transition>
   <nav
     id="app-drawer"
     ref="appDrawer"
-    :class="['will-change-transform z-50 overflow-hidden', { toggled: !showSidebar }]"
+    :class="['z-50 overflow-hidden will-change-transform', { toggled: !showSidebar }]"
     :aria-label="ariaLabel">
-    <div class="flex flex-col flex-wrap items-stretch content-start h-screen-s">
-      <div class="px-3 py-2 w-full">
+    <div class="h-screen-s flex flex-col flex-wrap content-start items-stretch">
+      <div class="w-full px-3 py-2">
         <a
-          class="flex gap-2 items-center no-underline font-extrabold uppercase tracking-wider h-10 cursor-pointer"
+          class="flex h-10 cursor-pointer items-center gap-2 font-extrabold uppercase tracking-wider no-underline"
           @click="toggleSidebar">
-          <ly-icon name="lyvely" class="fill-current text-lyvely w-5" />
+          <ly-icon name="lyvely" class="text-lyvely w-5 fill-current" />
           <transition name="fade">
             <img v-if="showLabels" class="lyvely-logo-text" alt="Lyvely Logo" :src="imageUrl" />
           </transition>
         </a>
       </div>
 
-      <div class="flex-grow w-full">
+      <div class="w-full flex-grow">
         <ul data-id="profile-drawer" class="nav flex-column">
           <li class="mb-1">
-            <div class="bg-slate-800 mx-1 rounded">
+            <div class="mx-1 rounded bg-slate-800">
               <div
-                class="flex text-sm gap-2 items-center h-12 select-none px-3"
+                class="flex h-12 select-none items-center gap-2 px-3 text-sm"
                 @click="toggleSidebar">
                 <profile-avatar :border="false" />
                 <transition name="fade">
@@ -105,14 +105,14 @@ const { direction: overlayDirection } = useSwipe(appDrawerOverlay, {
               :entry="menuEntry"
               :show-labels="showLabels"
               icon-class="w-5"
-              class="flex gap-2 select-none items-center h-12 px-3 cursor-pointer"
+              class="flex h-12 cursor-pointer select-none items-center gap-2 px-3"
               @click="onMenuItemClick" />
           </li>
         </ul>
       </div>
 
       <transition name="fade">
-        <div v-if="showSidebar" class="footer shrink-0 flex justify-center px-2 py-4 w-full">
+        <div v-if="showSidebar" class="footer flex w-full shrink-0 justify-center px-2 py-4">
           <!-- legal-links /-->
         </div>
       </transition>
@@ -162,7 +162,7 @@ const { direction: overlayDirection } = useSwipe(appDrawerOverlay, {
 }
 
 #app-drawer .nav a.router-link-active {
-  @apply font-bold border-l-4 border-pop;
+  @apply border-pop border-l-4 font-bold;
 }
 
 #app-drawer .nav a:hover:not(.router-link-active) {
@@ -179,7 +179,7 @@ const { direction: overlayDirection } = useSwipe(appDrawerOverlay, {
 }
 
 #app-drawer {
-  @apply bg-slate-900 z-40;
+  @apply z-40 bg-slate-900;
 }
 
 @media (max-width: 767px) {

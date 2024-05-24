@@ -41,7 +41,7 @@ const onAvatarUpdate = (avatar: AvatarModel) => {
         <i18n-t
           keypath="profiles.settings.membership.your_role"
           tag="span"
-          class="text-center text-dimmed text-sm">
+          class="text-dimmed text-center text-sm">
           <template #role>
             <b v-if="membership">{{ t(`profiles.roles.${membership.role}`) }}</b>
           </template>
@@ -56,13 +56,13 @@ const onAvatarUpdate = (avatar: AvatarModel) => {
         :validator="validator"
         :status="membershipSettingsStore.status"
         label-key="profiles.settings.membership">
-        <div class="flex mb-2 flex-row items-stretch">
-          <div class="w-full relative">
+        <div class="mb-2 flex flex-row items-stretch">
+          <div class="relative w-full">
             <ly-text-field property="displayName" class="mb-0" />
           </div>
           <button
             data-id="btn-change-avatar"
-            class="ml-3 bg-highlight w-20 flex justify-center items-center rounded border border-divide cursor-pointer"
+            class="bg-highlight border-divide ml-3 flex w-20 cursor-pointer items-center justify-center rounded border"
             @click="showUpdateAvatarModal = true">
             <user-relation-avatar data-id="user-relation-avatar" class="m-3" />
           </button>
@@ -75,10 +75,10 @@ const onAvatarUpdate = (avatar: AvatarModel) => {
         <ly-textarea property="description" />
       </ly-form-model>
 
-      <div class="flex mt-2 md:mt-4">
+      <div class="mt-2 flex md:mt-4">
         <ly-button
           data-id="btn-submit-settings"
-          class="primary text-xs ml-auto"
+          class="primary ml-auto text-xs"
           @click="membershipSettingsStore.update">
           {{ t('common.update') }}
         </ly-button>
@@ -89,7 +89,7 @@ const onAvatarUpdate = (avatar: AvatarModel) => {
       <div class="flex">
         <ly-button
           data-id="btn-revoke"
-          class="danger text-xs ml-auto"
+          class="danger ml-auto text-xs"
           :confirm="{ text: 'profiles.settings.membership.revoke.confirm' }"
           text="profiles.settings.membership.revoke.title"
           @click="membershipSettingsStore.revoke" />

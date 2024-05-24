@@ -3,7 +3,7 @@ import LanguageChooser from '@/i18n/components/LanguageChooser.vue';
 </script>
 
 <template>
-  <div class="w-full absolute px-2">
+  <div class="absolute w-full px-2">
     <LanguageChooser class="float-right" />
   </div>
 

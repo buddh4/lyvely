@@ -36,14 +36,14 @@ defineExpose({ validate });
 
 <template>
   <div class="rounded">
-    <div :class="['flex border border-b-0 rounded-t', borderColorClass]">
-      <label :for="id" class="text-sm opacity-70 px-3 py-2">
+    <div :class="['flex rounded-t border border-b-0', borderColorClass]">
+      <label :for="id" class="px-3 py-2 text-sm opacity-70">
         {{ t('captcha.label') }}
       </label>
 
       <ly-icon
         name="refresh"
-        class="ml-auto mx-3 opacity-70 cursor-pointer"
+        class="mx-3 ml-auto cursor-pointer opacity-70"
         @click="refresh"></ly-icon>
     </div>
     <div :class="['border border-b-0', borderColorClass]">

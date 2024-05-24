@@ -9,6 +9,7 @@ export interface IProps {
 }
 
 const props = withDefaults(defineProps<IProps>(), {
+  profile: undefined,
   border: true,
 });
 

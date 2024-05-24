@@ -45,21 +45,21 @@ onMounted(() => accessibilityFocus('.list-page-headline'));
     <ly-list-page title="tags.view.title" aria-label="tags.view.aria.title" icon="tags">
       <ly-list-page-section>
         <div class="flex gap-1">
-          <div class="relative w-full md:w-1/3 inline-block">
+          <div class="relative inline-block w-full md:w-1/3">
             <input
               ref="search"
               v-model="filter.query"
               type="text"
               :placeholder="t('tags.view.search')"
-              class="search pl-2 w-full border-divide text-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 rounded-r-3xl p-1 bg-main" />
+              class="search border-divide bg-main w-full rounded-r-3xl p-1 pl-2 text-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" />
             <ly-icon
               name="search"
-              class="absolute right-2.5 top-2 text-dimmed pointer-events-none" />
+              class="text-dimmed pointer-events-none absolute right-2.5 top-2" />
           </div>
           <ly-button
             data-id="btn-toggle-archived"
             :active="filter.archived"
-            class="secondary outlined text-xs px-1.5 py-1 ml-auto"
+            class="secondary outlined ml-auto px-1.5 py-1 text-xs"
             :title="t('filter.archive')"
             @click="filter.archived = !filter.archived">
             <ly-icon name="archive" class="p-0.5"></ly-icon>
@@ -71,7 +71,7 @@ onMounted(() => accessibilityFocus('.list-page-headline'));
         <div
           v-for="tag in tags"
           :key="tag.id"
-          class="flex py-4 px-3 bg-main items-center border-divide">
+          class="bg-main border-divide flex items-center px-3 py-4">
           <div class="align-middle">
             <tag-badge :tag="tag" class="px-3 py-2 text-base" @click="setEditTag(tag)" />
             <ly-badge v-if="tag.archived" class="bg-danger ml-2">
@@ -107,7 +107,7 @@ onMounted(() => accessibilityFocus('.list-page-headline'));
             </ly-button>
           </div>
         </div>
-        <div v-if="!tags.length" class="p-5 border-divide bg-main text-xs">
+        <div v-if="!tags.length" class="border-divide bg-main p-5 text-xs">
           <span v-if="filter.isActive()">{{ t('filter.empty') }}</span>
           <span v-else>{{ t('list.empty') }}</span>
         </div>

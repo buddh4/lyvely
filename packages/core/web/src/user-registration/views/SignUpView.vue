@@ -149,7 +149,7 @@ const hidePassword = ref(true);
             <ly-checkbox property="remember" class="text-sm" aria-describedby="remember-me-info" />
             <ly-icon
               name="info"
-              class="ml-1 text-primary w-4 cursor-pointer"
+              class="text-primary ml-1 w-4 cursor-pointer"
               aria-hidden="true"
               @click="showRememberInfo = !showRememberInfo" />
           </div>
@@ -167,16 +167,16 @@ const hidePassword = ref(true);
 
     <template #footer>
       <ly-button
-        class="primary w-full mb-4 float-right"
+        class="primary float-right mb-4 w-full"
         text="user-registration.create_account"
         :disabled="status.isStatusLoading()"
         data-id="btn-submit"
         @click="register" />
 
-      <div class="text-center pt-4">
+      <div class="pt-4 text-center">
         <small>
           {{ t('user-registration.is_member') }}
-          <router-link to="/login" class="no-underline font-bold">
+          <router-link to="/login" class="font-bold no-underline">
             {{ t('user-registration.to_sign_in') }}
           </router-link>
         </small>

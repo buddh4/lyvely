@@ -9,20 +9,20 @@ import { t } from '@/i18n';
 <template>
   <nav
     id="top-navigation"
-    class="flex items-center justify-between no-wrap bg-main p-0.5 px-2 z-30 overflow-visible"
+    class="no-wrap bg-main z-30 flex items-center justify-between overflow-visible p-0.5 px-2"
     :aria-label="t('layout.aria.top-nav')">
     <div class="w-1/3">
       <profile-combo-button />
     </div>
 
-    <div class="w-1/3 flex justify-center">
+    <div class="flex w-1/3 justify-center">
       <profile-breadcrumb />
     </div>
 
     <div class="w-1/3">
       <ly-component-stack
         :id="STACK_PROFILE_TOP_RIGHT_NAVIGATION"
-        class="flex flex-row-reverse items-center justify-end score float-right gap-1" />
+        class="score float-right flex flex-row-reverse items-center justify-end gap-1" />
     </div>
   </nav>
 </template>

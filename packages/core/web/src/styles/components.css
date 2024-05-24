@@ -1,36 +1,38 @@
-@import "nprogress/nprogress.css";
+@import 'nprogress/nprogress.css';
 @import 'vue-virtual-scroller/dist/vue-virtual-scroller.css';
 
 #main {
-    font-family: Avenir, Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    margin-top: 60px;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  margin-top: 60px;
 }
 
 #nprogress .bar {
-    background: var(--color-lyvely) !important;
+  background: var(--color-lyvely) !important;
 }
 
 #nprogress .peg {
-    box-shadow: 0 0 10px var(--color-lyvely), 0 0 5px var(--color-lyvely);
+  box-shadow:
+    0 0 10px var(--color-lyvely),
+    0 0 5px var(--color-lyvely);
 }
 
 #nprogress .spinner-icon {
-    display:none;
+  display: none;
 }
 
 /* Size < Small */
 @media screen and (max-width: 768px) {
-    .introjs-tooltip {
-        min-width: 300px !important;
-    }
+  .introjs-tooltip {
+    min-width: 300px !important;
+  }
 }
 
 /* Size > Small */
 @media screen and (min-width: 768px) {
-    .introjs-tooltip {
-        min-width: 500px !important;
-    }
+  .introjs-tooltip {
+    min-width: 500px !important;
+  }
 }

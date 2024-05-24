@@ -17,9 +17,9 @@ const { enabledMenuEntries } = useProfileMenu(MENU_PROFILE_MOBILE_FOOTER);
     <nav
       v-if="state"
       id="page-footer"
-      class="footer shrink-0 shadow overflow-hidden w-full py-1 bg-main md:hidden">
+      class="footer bg-main w-full shrink-0 overflow-hidden py-1 shadow md:hidden">
       <div class="flex justify-center">
-        <div class="navbar-nav flex flex-row justify-content-center">
+        <div class="navbar-nav justify-content-center flex flex-row">
           <ly-menu-entry
             v-for="entry in enabledMenuEntries"
             :key="entry.id"

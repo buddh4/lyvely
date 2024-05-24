@@ -91,13 +91,13 @@ const text = computed(() =>
 
 <template>
   <fieldset>
-    <i18n-t :keypath="text" tag="p" class="text-center text-dimmed text-sm mb-5">
+    <i18n-t :keypath="text" tag="p" class="text-dimmed mb-5 text-center text-sm">
       <template #email>
         <b>{{ subject }}</b>
       </template>
     </i18n-t>
 
-    <div class="flex m-5 mt-0 justify-between">
+    <div class="m-5 mt-0 flex justify-between">
       <template v-for="i in 6" :key="i">
         <input
           v-model="otp[i - 1]"
@@ -108,7 +108,7 @@ const text = computed(() =>
           :aria-label="t('otp.aria.input_label')"
           aria-invlaid="false"
           :class="[
-            'rounded w-10 border-divide',
+            'border-divide w-10 rounded',
             {
               'border-success': isValid && !hasError,
               'border-danger': hasError,

@@ -40,8 +40,8 @@ function getProfileIcon(relation: ProfileRelationInfo) {
           <div class="flex-shrink-0">
             <profile-avatar :profile="relation" />
           </div>
-          <div class="flex-1 min-w-0">
-            <p class="text-sm font-medium truncate">
+          <div class="min-w-0 flex-1">
+            <p class="truncate text-sm font-medium">
               {{ relation.name }}
             </p>
             <ly-dimmed

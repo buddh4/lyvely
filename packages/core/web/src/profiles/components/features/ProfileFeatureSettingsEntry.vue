@@ -31,9 +31,9 @@ const padding = 'py-2 md:py-4';
 <template>
   <tr
     :class="[
-      { 'border-b border-divide last:border-0': !isSelected },
+      { 'border-divide border-b last:border-0': !isSelected },
       { 'bg-gray-50 dark:bg-gray-700': isSelected },
-      { 'border-r border-gray-60 dark:border-gray-700': !isMainFeature },
+      { 'border-gray-60 border-r dark:border-gray-700': !isMainFeature },
     ]">
     <th
       scope="row"

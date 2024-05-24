@@ -45,9 +45,9 @@ const timezones = computed(() =>
 
 <template>
   <ly-list-page title="user-account.i18n.settings" class="mb-2">
-    <table class="border-collapse text-sm w-full bg-main rounded">
+    <table class="bg-main w-full border-collapse rounded text-sm">
       <tr>
-        <th class="p-3 text-left w-3/4">
+        <th class="w-3/4 p-3 text-left">
           {{ t('user-account.i18n.language') }}
         </th>
         <td class="bg-main p-3 text-left">
@@ -57,7 +57,7 @@ const timezones = computed(() =>
         </td>
       </tr>
       <tr>
-        <th class="p-3 text-left w-3/4">
+        <th class="w-3/4 p-3 text-left">
           {{ t('user-account.i18n.timezone') }}
         </th>
         <td class="bg-main p-3 text-left">
@@ -78,7 +78,7 @@ const timezones = computed(() =>
       <div
         v-for="def in getEnabledLocaleDefinitions()"
         :key="def.locale"
-        class="hover:bg-highlight p-3 rounded cursor-pointer flex"
+        class="hover:bg-highlight flex cursor-pointer rounded p-3"
         @click="updateLocale = def.locale">
         <div class="flex-grow">
           {{ def.name }}
@@ -94,22 +94,22 @@ const timezones = computed(() =>
     title="user-account.i18n.timezone"
     @submit="setTimezone"
     @cancel="resetUpdateTimezone">
-    <div class="relative inline-block w-full mb-2">
+    <div class="relative mb-2 inline-block w-full">
       <input
         ref="search"
         v-model="timezoneSearch"
         :autofocus="!isTouchScreen()"
         type="text"
         :placeholder="t('tags.view.search')"
-        class="search pl-2 border-divide text-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 rounded-r-3xl p-1 bg-main w-full" />
-      <ly-icon name="search" class="absolute right-2.5 top-2 text-dimmed pointer-events-none" />
+        class="search border-divide bg-main w-full rounded-r-3xl p-1 pl-2 text-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" />
+      <ly-icon name="search" class="text-dimmed pointer-events-none absolute right-2.5 top-2" />
     </div>
     <div class="md:h-96">
       <div class="flex flex-col gap-2">
         <div
           v-for="tz in timezones"
           :key="tz"
-          class="hover:bg-highlight p-3 rounded cursor-pointer flex"
+          class="hover:bg-highlight flex cursor-pointer rounded p-3"
           @click="updateTimezone = tz">
           <div class="flex-grow">
             {{ tz }}

@@ -60,9 +60,9 @@ const notificationDrawerButtonClass = computed(() => {
             index,
             active,
           }: {
-            item: IWebNotification,
-            index: number,
-            active: boolean,
+            item: IWebNotification;
+            index: number;
+            active: boolean;
           }">
           <dynamic-scroller-item :item="item" :active="active" :data-index="index">
             <notification-drawer-entry :notification="item" @click="notificationClick(item)" />

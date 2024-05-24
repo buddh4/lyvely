@@ -1,5 +1,5 @@
 import { registerAfterNavigationHooks, registerGuards } from '@/lyvely.router';
-import routes from './routes/profile.routes';
+import { profileRoutes } from './routes';
 import { loadProfileGuard, setProfilePageTitleGuard } from './guards';
 import { registerComponentStackEntries, registerLayouts, registerMenuEntries } from '@lyvely/ui';
 import {
@@ -28,7 +28,7 @@ export const profilesModule = () => {
       i18n: (locale: string) => import(`./locales/i18n.${locale}.json`),
       settings: (locale: string) => import(`./locales/settings.${locale}.json`),
     },
-    routes,
+    routes: profileRoutes,
     init: () => {
       useApiRequestInterceptor(profileIdInterceptor);
       registerGuards([loadProfileGuard]);

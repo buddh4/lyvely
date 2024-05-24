@@ -25,7 +25,7 @@ const appName = useAppConfigStore().get('appName');
     :message-width="true"
     :show-type="false">
     <template #image>
-      <div class="flex justify-center rounded-full border border-divide w-8 h-8 bg-main">
+      <div class="border-divide bg-main flex h-8 w-8 justify-center rounded-full border">
         <ly-icon name="lyvely" class="text-pop" />
       </div>
     </template>

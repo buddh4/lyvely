@@ -54,7 +54,7 @@ const { modalTitle, status } = storeToRefs(tagEditStore);
     <div>
       <div
         ref="colorInput"
-        class="flex w-32 space-x-2 mb-2 p-2 cursor-pointer rounded-md border border-divide shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+        class="border-divide mb-2 flex w-32 cursor-pointer space-x-2 rounded-md border p-2 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
         @click="clickColorBox">
         <div class="inline-block rounded" :style="colorStyle">&nbsp;</div>
         <div>{{ color }}</div>
@@ -76,11 +76,11 @@ const { modalTitle, status } = storeToRefs(tagEditStore);
     <div
       v-if="showColorPicker"
       ref="colorPicker"
-      class="absolute z-50 rounded bg-highlight"
+      class="bg-highlight absolute z-50 rounded"
       :style="colorPickerStyle">
       <sketch v-model="color" :disable-alpha="true" />
       <ly-button
-        class="primary px-1 py-0.5 m-1 float-right"
+        class="primary float-right m-1 px-1 py-0.5"
         text="common.close"
         @click="showColorPicker = false" />
     </div>

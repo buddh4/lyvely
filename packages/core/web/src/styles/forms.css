@@ -1,12 +1,11 @@
-
 .vc-sketch {
-    @apply bg-highlight text-main;
+  @apply bg-highlight text-main;
 }
 
 .vc-sketch-field .vc-input__label {
-    @apply text-main;
+  @apply text-main;
 }
 
 .vc-sketch-field .vc-input__input {
-    @apply bg-highlight;
+  @apply bg-highlight;
 }

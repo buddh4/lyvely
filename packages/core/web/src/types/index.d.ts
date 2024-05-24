@@ -16,9 +16,7 @@ declare module '@ckpack/vue-color' {
   const Twitter: Component;
 }
 
-declare module 'virtual:pwa-register/vue' {
-
-}
+declare module 'virtual:pwa-register/vue' {}
 
 // Type definitions for vue-virtual-scroller
 // Project: https://github.com/Akryum/vue-virtual-scroller/
