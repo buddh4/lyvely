@@ -97,7 +97,7 @@ Configure your environment variables in `.env` file
 #### 2. Run setup script
 
 ```
-sh ./docker-compose-setup.sh -fbu
+sh docker/docker-util.sh -fu
 ```
 
 This command will:
@@ -111,13 +111,17 @@ This command will:
  - Create the configuration files:
      - `docker/config/lyvely.ts` which is your backend configuration
      - `docker/config/nginx.conf` which will be used by the nginx container
- - Build the whole project
+
+:::tip
+The `docker-util` script also supports a `-b` flag which will also install and build the project, which is only required
+if you did not build the project manually already.
+:::
 
 ### 3. Configuration
 
 In the `docker-compose` build you can either define a custom `.env` file within the `packages/applications/pwa` package
-(which will require a rebuild of the `pwa` appliction if this file changes) or just use the following environment 
-variables within the `docker/.env` file (preffered). Those variables will only be used in the docker nginx container:
+(which will require a rebuild of the `pwa` application if this file changes) or add the following environment 
+variables within the `docker/.env` file (preferred). Those variables will only be used in the docker nginx container:
 
 - `LYVELY_API_URL`: The url to the api (default: https://www.lyvely.app/api)
 - `LYVELY_APP_BASEURL`: The url to the api (default: lyvely.app)
@@ -157,6 +161,7 @@ Copy your ssh certificate and key file into `docker/certs`:
 #### 4. Run docker compose
 
 ```
+cd docker
 sudo docker compose up --build -d
 ```
 

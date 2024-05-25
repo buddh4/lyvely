@@ -10,6 +10,7 @@ do
 done
 
 SCRIPT_DIR=$(dirname "$0")
+LYVELY_ROOT=$(dirname "$SCRIPT_DIR")
 
 # Create data directories for MongoDB and Redis
 mkdir -p "$SCRIPT_DIR/data/mongo1" "$SCRIPT_DIR/data/mongo2" "$SCRIPT_DIR/data/mongo3" "$SCRIPT_DIR/data/redis"
@@ -84,8 +85,8 @@ fi
 
 if [ "$BUILD" = 1 ]; then
 # Build the web static files which we need for our custom nginx image
-  cd ..
-  npm install && npx nx run-many -t build --all --exclude=@lyvely/docs
+  cd "$LYVELY_ROOT"
+  pnpm install --frozen-lockfile && pnpm nx run-many -t build --all --exclude=@lyvely/docs
 fi
 
 

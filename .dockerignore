@@ -1,11 +1,10 @@
 # Ignore everything
 *
 !package.json
-!package-lock.json
+!pnpm-lock.yaml
+!pnpm-workspace.yaml
 !docker
 !nx.json
-
-# Required server files
 !packages
 
 # Ignore all node_modules directories within packages
