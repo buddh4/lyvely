@@ -26,7 +26,7 @@
    * Specify one of: "pnpmVersion", "npmVersion", or "yarnVersion".  See the Rush documentation
    * for details about these alternatives.
    */
-  "pnpmVersion": "7.33.5",
+  "pnpmVersion": "9.1.1",
 
   // "npmVersion": "6.14.15",
   // "yarnVersion": "1.9.4",
@@ -42,7 +42,7 @@
    * LTS schedule: https://nodejs.org/en/about/releases/
    * LTS versions: https://nodejs.org/en/download/releases/
    */
-  "nodeSupportedVersionRange": ">=14.15.0 <15.0.0 || >=16.13.0 <17.0.0 || >=18.15.0 <19.0.0",
+  "nodeSupportedVersionRange": ">=20.10.0 <21.0.0",
 
   /**
    * If the version check above fails, Rush will display a message showing the current
@@ -102,7 +102,7 @@
    * and set projectFolderMaxDepth to a large number.
    */
   // "projectFolderMinDepth": 2,
-  // "projectFolderMaxDepth": 2,
+  "projectFolderMaxDepth": 4,
 
   /**
    * Today the npmjs.com registry enforces fairly strict naming rules for packages, but in the early
@@ -143,7 +143,7 @@
   //     "tools",      // non-shipping projects that are part of the developer toolchain
   //     "prototypes"  // experiments that should mostly be ignored by the review process
   //   ],
-  // 
+  //
   //   /**
   //    * A list of NPM package scopes that will be excluded from review.
   //    * We recommend to exclude TypeScript typings (the "@types" scope), because
@@ -311,31 +311,35 @@
    * 3. It's useful to have a centralized inventory of all projects and their important metadata.
    */
   "projects": [
+    {
+      "packageName": "@lyvely/devtools",
+      "projectFolder": "packages/libs/devtools"
+    }
     // {
     //   /**
     //    * The NPM package name of the project (must match package.json)
     //    */
     //   "packageName": "my-app",
-    // 
+    //
     //   /**
     //    * The path to the project folder, relative to the rush.json config file.
     //    */
     //   "projectFolder": "apps/my-app",
-    // 
+    //
     //   /**
     //    * This field is only used if "subspacesEnabled" is true in subspaces.json.
     //    * It specifies the subspace that this project belongs to.  If omitted, then the
     //    * project belongs to the "default" subspace.
     //    */
     //   // "subspaceName": "my-subspace",
-    // 
+    //
     //   /**
     //    * An optional category for usage in the "browser-approved-packages.json"
     //    * and "nonbrowser-approved-packages.json" files.  The value must be one of the
     //    * strings from the "reviewCategories" defined above.
     //    */
     //   "reviewCategory": "production",
-    // 
+    //
     //   /**
     //    * A list of Rush project names that are to be installed from NPM
     //    * instead of linking to the local project.
@@ -362,20 +366,20 @@
     //   "decoupledLocalDependencies": [
     //     // "my-toolchain"
     //   ],
-    // 
+    //
     //   /**
     //    * If true, then this project will be ignored by the "rush check" command.
     //    * The default value is false.
     //    */
     //   // "skipRushCheck": false,
-    // 
+    //
     //   /**
     //    * A flag indicating that changes to this project will be published to npm, which affects
     //    * the Rush change and publish workflows. The default value is false.
     //    * NOTE: "versionPolicyName" and "shouldPublish" are alternatives; you cannot specify them both.
     //    */
     //   // "shouldPublish": false,
-    // 
+    //
     //   /**
     //    * Facilitates postprocessing of a project's files prior to publishing.
     //    *
@@ -384,14 +388,14 @@
     //    * must contain its own package.json file, which is typically a build output.
     //    */
     //   // "publishFolder": "temp/publish",
-    // 
+    //
     //   /**
     //    * An optional version policy associated with the project.  Version policies are defined
     //    * in "version-policies.json" file.  See the "rush publish" documentation for more info.
     //    * NOTE: "versionPolicyName" and "shouldPublish" are alternatives; you cannot specify them both.
     //    */
     //   // "versionPolicyName": "",
-    // 
+    //
     //   /**
     //    * An optional set of custom tags that can be used to select this project.  For example,
     //    * adding "my-custom-tag" will allow this project to be selected by the
@@ -401,14 +405,14 @@
     //    */
     //   // "tags": [ "1.0.0-release", "frontend-team" ]
     // },
-    // 
+    //
     // {
     //   "packageName": "my-controls",
     //   "projectFolder": "libraries/my-controls",
     //   "reviewCategory": "production",
     //   "tags": [ "frontend-team" ]
     // },
-    // 
+    //
     // {
     //   "packageName": "my-toolchain",
     //   "projectFolder": "tools/my-toolchain",
