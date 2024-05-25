@@ -35,7 +35,7 @@ new LyvelyWebApp({
   ],
 })
   .init('#app')
-  .then((app) => {
+  .then((app: LyvelyWebApp) => {
     const updateSW = registerSW({
       onNeedRefresh() {
         app.events.emit('app.need.refresh', updateSW);

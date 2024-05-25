@@ -19,7 +19,7 @@ export type LyvelyAppEvents = {
   'app.mount.post': ILyvelyWebApp;
 };
 
-export type LyvelyAppEmitter = Emitter<LyvelyAppEvents>;
+export type LyvelyAppEmitter = Emitter<LyvelyAppEvents & Record<string, any>>;
 
 export interface ILyvelyWebApp {
   vueApp: VueApp;
