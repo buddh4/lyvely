@@ -6,6 +6,10 @@ FROM node:20
 # Create app directory
 WORKDIR /usr/src/app
 
+ENV NODE_ENV=production
+ENV LYVELY_SERVE_STATIC=true
+ENV CYPRESS_INSTALL_BINARY=0
+
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
 COPY .. .
 
@@ -25,10 +29,6 @@ RUN npx nx run-many -t build --exclude=@lyvely/docs
 RUN pnpm prune --production
 
 COPY packages/applications/pwa/dist ./packages/applications/server/static
-
-ENV NODE_ENV=production
-ENV LYVELY_SERVE_STATIC=true
-ENV CYPRESS_INSTALL_BINARY=0
 
 EXPOSE 8080
 

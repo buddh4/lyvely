@@ -6,6 +6,9 @@ FROM node:20
 # Create app directory
 WORKDIR /usr/src/app
 
+ENV CYPRESS_INSTALL_BINARY=0
+ENV NODE_ENV=production
+
 COPY . .
 
 # Copy docker specific application config
@@ -20,8 +23,6 @@ RUN pnpm nx run-many -t build --exclude=@lyvely/docs,@lyvely/web,@lyvely/pwa,@ly
 
 # Remove dev dependencies after build
 RUN pnpm prune --production
-
-ENV NODE_ENV=production
 
 # Start the server using the production build
 CMD  ["npm", "run", "server:prod"]
