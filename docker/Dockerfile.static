@@ -10,7 +10,7 @@ WORKDIR /usr/src/app
 COPY .. .
 
 # Copy docker specific application config
-COPY docker/config/lyvely.ts ./packages/server/config/lyvely.production.ts
+COPY docker/config/lyvely.ts ./packages/server/src/config/lyvely.production.ts
 COPY docker/config/web.env ./package/applications/pwa/.env
 COPY docker/config/web.env ./package/core/web/.env
 

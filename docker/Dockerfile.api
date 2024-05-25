@@ -9,7 +9,7 @@ WORKDIR /usr/src/app
 COPY . .
 
 # Copy docker specific application config
-COPY docker/config/lyvely.ts ./packages/applications/server/config/lyvely.production.config.ts
+COPY docker/config/lyvely.ts ./packages/applications/server/src/config/lyvely.production.config.ts
 
 # Install app dependencies
 RUN npm install -g pnpm
