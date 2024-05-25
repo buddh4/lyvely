@@ -6,12 +6,7 @@ import { resolve } from 'path';
 import dts from 'vite-plugin-dts';
 
 export default defineConfig({
-  plugins: [
-    dts(),
-    vuePlugin(),
-    externalizeDeps({ except: ['zxcvbn'] }),
-    tsconfigPaths({ ignoreConfigErrors: true }),
-  ],
+  plugins: [dts(), vuePlugin(), externalizeDeps(), tsconfigPaths({ ignoreConfigErrors: true })],
   server: {
     port: 3000,
   },
