@@ -165,6 +165,17 @@ cd docker
 sudo docker compose up --build -d
 ```
 
+:::warning
+You may need to manually configure the replicaset as follows:
+
+```shell
+docker container exec -it lyvely-mongo1 sh
+mongosh
+rs.status() // To check if the replset is already configured
+
+```
+:::
+
 
 
 

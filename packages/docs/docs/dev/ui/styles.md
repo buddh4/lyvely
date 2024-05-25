@@ -119,10 +119,10 @@ is responsible for scanning all used and dependant tailwind classes and include 
 This is done by using the following `vite.config.mts`:
 
 ```javascript title=vite.config.ts
-import { useViteWebConfig } from '@lyvely/devtools'
+import { useViteWebLibConfig } from '@lyvely/devtools'
 import { defineConfig } from "vite";
 
-export default defineConfig(useViteWebConfig({ dirname: __dirname }));
+export default defineConfig(useViteWebLibConfig({ dirname: __dirname }));
 ```
 
 - The `postcss.config.cjs` can be imported by the `@lyvely/devoolts` package:

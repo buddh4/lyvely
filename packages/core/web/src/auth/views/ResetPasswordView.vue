@@ -113,7 +113,6 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
             :type="repeatPasswordType"
             :password-toggle="false"
             :required="true" />
-          <ly-password-strength-meter v-model="resetModel.password" />
         </fieldset>
 
         <ly-checkbox property="resetSessions" />

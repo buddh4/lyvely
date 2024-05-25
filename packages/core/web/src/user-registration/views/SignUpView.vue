@@ -140,8 +140,6 @@ const hidePassword = ref(true);
             :type="repeatPasswordType"
             :password-toggle="false"
             :required="true" />
-
-          <ly-password-strength-meter v-model="model.password" />
         </fieldset>
 
         <fieldset class="my-5">

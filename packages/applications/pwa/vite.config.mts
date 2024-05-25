@@ -1,9 +1,10 @@
-import { useViteWebConfig } from '@lyvely/devtools';
+import { useViteWebLibConfig } from '@lyvely/devtools';
 import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
+import { useViteWebAppConfig } from "@lyvely/devtools";
 
 export default defineConfig(
-  useViteWebConfig({
+  useViteWebAppConfig({
     plugins: [
       VitePWA({
         includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'safari-pinned-tab.svg'],

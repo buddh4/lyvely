@@ -1,8 +1,8 @@
-import { useViteWebConfig } from '@lyvely/devtools';
+import { useViteWebLibConfig } from '@lyvely/devtools';
 import { defineConfig } from 'vite';
 
 export default defineConfig(
-  useViteWebConfig({
+  useViteWebLibConfig({
     dirname: __dirname,
   }),
 );

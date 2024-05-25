@@ -19,7 +19,7 @@ const tsconfigPathDefault: (options: any) => Plugin = !!(<any>tsconfigPaths).def
 
 const dtsDefault: (options: any) => Plugin = !!(<any>dts).default ? (<any>dts).default : dts;
 
-export const useViteWebConfig = (options: IOptions) => {
+export const useViteWebLibConfig = (options: IOptions) => {
   const __dirname = process.cwd();
 
   options = { locales: true, ...options };

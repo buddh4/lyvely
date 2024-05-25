@@ -1,1 +1,2 @@
-export * from './web-vite-config';
+export * from './web-lib-vite-config';
+export * from './web-app-vite-config';

@@ -47,7 +47,6 @@ import LySelect from './components/forms/LySelect.vue';
 import LyTextField from './components/forms/LyTextField.vue';
 import LyTextarea from './components/forms/LyTextarea.vue';
 import LyTimeNumberInput from './components/forms/LyTimeNumberInput.vue';
-import LyPasswordStrengthMeter from './components/forms/LyPasswordStrengthMeter.vue';
 import LyResponsive from './components/helpers/LyResponsive.vue';
 import LyConditionalWrapper from './components/helpers/LyConditionalWrapper.vue';
 import LyTable from './components/tables/LyTable.vue';
@@ -120,7 +119,6 @@ const createLyvelyUi = (options?: LyvelyUiOptions) => {
       Vue.component('LyTextField', LyTextField);
       Vue.component('LyTextarea', LyTextarea);
       Vue.component('LyTimeNumberInput', LyTimeNumberInput);
-      Vue.component('LyPasswordStrengthMeter', LyPasswordStrengthMeter);
       Vue.component('LyMarkdownView', LyMarkdownView);
       Vue.component('LyComponentStack', LyComponentStack);
     },
@@ -140,7 +138,6 @@ export type { Translatable, TranslationAdapter };
 export {
   vMobileScrollbar,
   createLyvelyUi,
-  LyPasswordStrengthMeter,
   LyTimeNumberInput,
   LyTextarea,
   LyTextField,

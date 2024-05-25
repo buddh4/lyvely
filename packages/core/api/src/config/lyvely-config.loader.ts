@@ -20,8 +20,8 @@ export const loadConfigs = (
   };
 
   const importConfig = (path: string) => {
-    logger.log('Load config from ' + path);
     const importPath = path.substring(0, path.lastIndexOf('.')) + '.js';
+    logger.log('Load config from ' + importPath);
     return fsPromises
       .access(importPath)
       .then(() => import(importPath))
@@ -37,6 +37,7 @@ export const loadConfigs = (
     }
 
     const { uri, dbName } = mergedConfig.mongodb;
+    logger.log(`Load db config from ${uri}.${dbName}`);
     const client = new MongoClient(uri);
 
     try {
