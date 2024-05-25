@@ -2,6 +2,9 @@
 FROM nginx:1.26.0-alpine
 
 # Define default env, those will have priority over the .env file
+ENV MONGOMS_DISABLE_POSTINSTALL=1
+ENV CYPRESS_INSTALL_BINARY=0
+ENV NODE_ENV=production
 ENV LYVELY_API_URL=https://www.lyvely.app/api
 ENV LYVELY_APP_BASEURL=lyvely.app
 ENV LYVELY_APP_ENV=production
