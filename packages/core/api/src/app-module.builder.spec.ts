@@ -7,12 +7,10 @@ describe('AppModuleBuilder', () => {
     it('build app with default config', async () => {
       const testModule = await Test.createTestingModule({
         imports: [
-          new AppModuleBuilder({
+          await new AppModuleBuilder({
             configFiles: ['testing/test.config.one.js'],
             manual: true,
-          })
-            .importConfigModule()
-            .build(),
+          }).build(),
         ],
       }).compile();
 
@@ -24,12 +22,10 @@ describe('AppModuleBuilder', () => {
     it('default configuration loads', async () => {
       const testModule = await Test.createTestingModule({
         imports: [
-          new AppModuleBuilder({
+          await new AppModuleBuilder({
             configFiles: [],
             manual: true,
-          })
-            .importConfigModule()
-            .build(),
+          }).build(),
         ],
       }).compile();
 
@@ -41,7 +37,7 @@ describe('AppModuleBuilder', () => {
     it('overwrite and merge configuration', async () => {
       const testModule = await Test.createTestingModule({
         imports: [
-          new AppModuleBuilder({
+          await new AppModuleBuilder({
             configFiles: [],
             config: {
               auth: {
@@ -53,9 +49,7 @@ describe('AppModuleBuilder', () => {
               },
             },
             manual: true,
-          })
-            .importConfigModule()
-            .build(),
+          }).build(),
         ],
       }).compile();
 

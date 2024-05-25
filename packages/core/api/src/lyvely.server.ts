@@ -105,7 +105,7 @@ export class LyvelyServer {
   private async createtNestApp() {
     this.server = express();
     return NestFactory.create<NestExpressApplication>(
-      new AppModuleBuilder(this.options).build(),
+      await new AppModuleBuilder(this.options).build(),
       new ExpressAdapter(this.server),
     );
   }

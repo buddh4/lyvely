@@ -46,6 +46,7 @@ import { DeepPartial } from '@lyvely/common';
 import defaultConfig from '@/config/lyvely.default.config';
 import { FilesModule } from '@/files/files.module';
 import { resolve } from 'node:path';
+import { logger } from 'nx/src/utils/logger';
 
 type TModule = Type | DynamicModule | Promise<DynamicModule> | ForwardReference;
 
@@ -80,8 +81,7 @@ export class AppModuleBuilder {
     this.options = { ...defaultOptions, ...options };
 
     if (!this.options.manual) {
-      this.importConfigModule()
-        .importEventEmitterModule()
+      this.importEventEmitterModule()
         .importCoreModules()
         .importI18nModule()
         .importQueueModule()
@@ -93,7 +93,7 @@ export class AppModuleBuilder {
     }
   }
 
-  public importConfigModule() {
+  public async importConfigModule() {
     const configs: Array<string | Partial<ServerConfiguration>> = [];
 
     if (this.options.loadDefaultConfig !== false) {
@@ -108,9 +108,11 @@ export class AppModuleBuilder {
       configs.push(this.options.config as Partial<ServerConfiguration>);
     }
 
+    const config = await loadConfigs(configs)();
+
     return this.importModules(
       ConfigModule.forRoot({
-        load: [loadConfigs(configs)],
+        load: [() => config],
         isGlobal: true,
       }),
     );
@@ -255,7 +257,14 @@ export class AppModuleBuilder {
     return this;
   }
 
-  public build() {
+  public async build() {
+    /*
+     * This is a patch for https://stackoverflow.com/questions/69771141/nestjs-configmodule-forroot-asynchronuous
+     * The config was not loaded before the useFactory calls of other modules.
+     * TODO: Investigate a bit more, maybe open an issue
+     */
+    await this.importConfigModule();
+
     @Global()
     @Module({
       imports: this.imports,
