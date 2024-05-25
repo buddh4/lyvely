@@ -805,6 +805,9 @@ importers:
       class-validator:
         specifier: ^0.14.0
         version: 0.14.1
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
       mongoose:
         specifier: 8.3.4
         version: 8.3.4(@aws-sdk/credential-providers@3.577.0(@aws-sdk/client-sso-oidc@3.577.0))(socks@2.8.3)

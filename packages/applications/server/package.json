@@ -15,7 +15,7 @@
     "dev": "cross-env NODE_ENV=development nest start",
     "dev:debug": "cross-env NODE_ENV=development  nest start --debug --watch",
     "start": "nest start",
-    "start:prod": "node dist/src/main",
+    "start:prod": "node dist/main",
     "start:debug": "nest start --debug --watch"
   },
   "dependencies": {

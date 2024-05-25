@@ -15,6 +15,6 @@ new LyvelyServer().bootstrap({
     LegalModule,
     AnalyticsModule,
   ],
-  configFiles: [`../config/lyvely.${process.env.NODE_ENV}.config.ts`],
+  configFiles: [`config/lyvely.${process.env.NODE_ENV}.config.ts`],
   serveStatic: process.env.LYVELY_SERVE_STATIC === 'true',
 });

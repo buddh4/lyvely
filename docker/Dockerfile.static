@@ -22,7 +22,7 @@ RUN pnpm install --frozen-lockfile
 RUN npx nx run-many -t build --exclude=@lyvely/docs
 
 # Remove dev dependencies after build
-RUN pnpm recursive prune --production
+RUN pnpm prune --production
 
 COPY packages/applications/pwa/dist ./packages/applications/server/static
 

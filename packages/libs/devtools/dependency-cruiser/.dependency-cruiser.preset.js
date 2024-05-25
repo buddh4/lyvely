@@ -149,6 +149,7 @@ module.exports = {
         pathNot: [
           '\\.(spec|test)\\.(js|mjs|cjs|ts|ls|coffee|litcoffee|coffee\\.md)$',
           '^src/.*/test',
+          '^src/main.ts',
           '^src/test',
         ],
       },
