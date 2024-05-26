@@ -338,6 +338,10 @@
     {
       "packageName": "@lyvely/api",
       "projectFolder": "packages/core/api"
+    },
+    {
+      "packageName": "@lyvely/web",
+      "projectFolder": "packages/core/web"
     }
     // {
     //   /**

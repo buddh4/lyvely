@@ -1,10 +1,15 @@
 <script lang="ts" setup>
 import { formatTime, msToTime } from '@lyvely/dates';
-import { TimerModel } from '@lyvely/timers-interface';
 import { computed, ref, watch } from 'vue';
 
+// TODO: Move this component to a timers-web package
+interface ITimerModel {
+  calculateTotalSpan(): number;
+  isStarted(): boolean;
+}
+
 export interface IProps {
-  model: TimerModel;
+  model: ITimerModel;
   min?: number;
   optimal?: number;
   max?: number;

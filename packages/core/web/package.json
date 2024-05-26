@@ -37,12 +37,9 @@
   "dependencies": {
     "@ckpack/vue-color": "^1.5.0",
     "@intlify/core-base": "9.5.0",
-    "@lyvely/calendar-plan-interface": "workspace:*",
     "@lyvely/common": "workspace:*",
     "@lyvely/dates": "workspace:*",
     "@lyvely/interface": "workspace:*",
-    "@lyvely/time-series-interface": "workspace:*",
-    "@lyvely/timers-interface": "workspace:*",
     "@lyvely/ui": "workspace:*",
     "@tailwindcss/forms": "^0.5.3",
     "@tailwindcss/typography": "^0.5.9",
@@ -55,9 +52,7 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
     "cropperjs": "^1.5.13",
-    "dayjs": "^1.11.7",
     "echarts": "^5.4.2",
-    "focus-trap": "^7.4.0",
     "intro.js": "^7.2.0",
     "js-cookie": "^3.0.5",
     "lodash": "^4.17.21",
@@ -65,20 +60,12 @@
     "mitt": "^3.0.0",
     "nprogress": "^0.2.0",
     "pinia": "^2.0.35",
-    "randomcolor": "^0.6.2",
     "reflect-metadata": "0.1.13",
-    "rehype-external-links": "^3.0.0",
-    "slugify": "^1.6.6",
     "vue": "^3.4.25",
     "vue-i18n": "^9.5.0",
     "vue-randomcolor": "^1.0.4",
     "vue-router": "^4.3.2",
-    "vue-virtual-scroller": "^2.0.0-beta.8",
-    "vuedraggable": "^4.1.0",
-    "workbox-core": "^6.5.4",
-    "workbox-precaching": "^6.5.4",
-    "workbox-routing": "^6.5.4",
-    "zxcvbn": "^4.4.2"
+    "vue-virtual-scroller": "^2.0.0-beta.8"
   },
   "devDependencies": {
     "@intlify/unplugin-vue-i18n": "^0.10.0",
@@ -96,6 +83,10 @@
     "tslib": "^2.6.2",
     "@vue/runtime-dom": "^3.4.25",
     "postcss-import": "^16.1.0",
-    "autoprefixer": "^10.4.19"
+    "autoprefixer": "^10.4.19",
+    "vue-tsc": "^2.0.19",
+    "@types/lodash": "^4.17.4",
+    "postcss": "^8.4.31",
+    "postcss-cli": "^11.0.0"
   }
 }

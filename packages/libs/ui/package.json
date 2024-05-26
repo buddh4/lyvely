@@ -115,7 +115,7 @@
     "vue-eslint-parser": "^9.4.2",
     "@types/lodash": "^4.17.4",
     "@types/node": "^20.12.12",
-    "zxcvbn": "^4.4.2",
-    "sass": "^1.77.2"
+    "sass": "^1.77.2",
+    "zxcvbn": "^4.4.2"
   }
 }
