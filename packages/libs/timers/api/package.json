@@ -25,6 +25,12 @@
     "@lyvely/common": "workspace:*",
     "@lyvely/timers-interface": "workspace:*"
   },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "@types/jest": "^29.5.12",
+    "typescript": "^5.4.5",
+    "tslib": "^2.6.2"
+  },
   "jest": {
     "rootDir": ".",
     "setupFilesAfterEnv": [

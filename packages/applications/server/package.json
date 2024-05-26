@@ -19,16 +19,19 @@
     "start:debug": "nest start --debug --watch"
   },
   "dependencies": {
-    "@lyvely/api": "0.1.0-alpha3",
-    "@lyvely/habits": "0.1.0-alpha3",
-    "@lyvely/tasks": "0.1.0-alpha3",
-    "@lyvely/journals": "0.1.0-alpha3",
-    "@lyvely/analytics": "0.1.0-alpha3",
-    "@lyvely/milestones": "0.1.0-alpha3",
-    "@lyvely/legal": "0.1.0-alpha3",
-    "@lyvely/interface": "0.1.0-alpha3"
+    "@lyvely/api": "workspace:*",
+    "@lyvely/habits": "workspace:*",
+    "@lyvely/tasks": "workspace:*",
+    "@lyvely/journals": "workspace:*",
+    "@lyvely/analytics": "workspace:*",
+    "@lyvely/milestones": "workspace:*",
+    "@lyvely/legal": "workspace:*",
+    "@lyvely/interface": "workspace:*"
   },
   "devDependencies": {
+    "typescript": "^5.4.5",
+    "tslib": "^2.6.2",
+    "tsc-alias": "^1.8.10",
     "rimraf": "^5.0.5"
   },
   "config": {

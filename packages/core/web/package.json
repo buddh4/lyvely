@@ -41,8 +41,6 @@
     "@lyvely/dates": "workspace:*",
     "@lyvely/interface": "workspace:*",
     "@lyvely/ui": "workspace:*",
-    "@tailwindcss/forms": "^0.5.3",
-    "@tailwindcss/typography": "^0.5.9",
     "@vueuse/components": "^10.9.0",
     "@vueuse/core": "^10.9.0",
     "@vueuse/integrations": "^10.9.0",
@@ -68,6 +66,9 @@
     "vue-virtual-scroller": "^2.0.0-beta.8"
   },
   "devDependencies": {
+    "@tailwindcss/forms": "^0.5.3",
+    "@tailwindcss/typography": "^0.5.9",
+    "tailwindcss": "^3.4.3",
     "@intlify/unplugin-vue-i18n": "^0.10.0",
     "@lyvely/devtools": "workspace:*",
     "@swc/core": "^1.3.93",

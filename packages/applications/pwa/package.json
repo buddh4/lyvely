@@ -35,6 +35,9 @@
     "@lyvely/devtools": "workspace:*",
     "vite": "^5.2.11",
     "vite-plugin-pwa": "^0.20.0",
-    "@vue/runtime-dom": "^3.4.25"
+    "@vue/runtime-dom": "^3.4.25",
+    "vue-tsc": "^2.0.19",
+    "postcss": "^8.4.31",
+    "postcss-cli": "^11.0.0"
   }
 }

@@ -32,12 +32,18 @@
     "@lyvely/legal-interface": "workspace:*"
   },
   "devDependencies": {
-    "@intlify/unplugin-vue-i18n": "^0.10.0",
     "@lyvely/devtools": "workspace:*",
     "vite-plugin-externalize-deps": "^0.8.0",
-    "vite": "^4.3.9",
+    "vite": "^5.2.10",
     "vite-tsconfig-paths": "^4.3.2",
     "vue-tsc": "^2.0.14",
-    "@vue/runtime-dom": "^3.4.25"
+    "@vue/runtime-dom": "^3.4.25",
+    "vitest": "^1.5.1",
+    "tailwindcss": "^3.4.3",
+    "typescript": "^5.4.5",
+    "tslib": "^2.6.2",
+    "postcss": "^8.4.38",
+    "postcss-cli": "^11.0.0",
+    "vue-router": "^4.3.2"
   }
 }

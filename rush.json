@@ -313,36 +313,189 @@
   "projects": [
     {
       "packageName": "@lyvely/devtools",
-      "projectFolder": "packages/libs/devtools"
+      "projectFolder": "packages/libs/devtools",
+      "tags": ["libs"]
     },
     {
       "packageName": "@lyvely/dates",
-      "projectFolder": "packages/libs/dates"
+      "projectFolder": "packages/libs/dates",
+      "tags": ["libs"]
     },
     {
       "packageName": "@lyvely/common",
-      "projectFolder": "packages/libs/common"
-    },
-    {
-      "packageName": "@lyvely/timers-interface",
-      "projectFolder": "packages/libs/timers/interface"
+      "projectFolder": "packages/libs/common",
+      "tags": ["libs"]
     },
     {
       "packageName": "@lyvely/ui",
-      "projectFolder": "packages/libs/ui"
+      "projectFolder": "packages/libs/ui",
+      "tags": ["libs", "web"]
     },
     {
       "packageName": "@lyvely/interface",
-      "projectFolder": "packages/core/interface"
+      "projectFolder": "packages/core/interface",
+      "tags": ["core", "interfaces"]
     },
     {
       "packageName": "@lyvely/api",
-      "projectFolder": "packages/core/api"
+      "projectFolder": "packages/core/api",
+      "tags": ["core", "apis"]
     },
     {
       "packageName": "@lyvely/web",
-      "projectFolder": "packages/core/web"
+      "projectFolder": "packages/core/web",
+      "tags": ["core", "web"]
+    },
+    {
+      "packageName": "@lyvely/timers-interface",
+      "projectFolder": "packages/libs/timers/interface",
+      "tags": ["libs", "interfaces", "timers"]
+    },
+    {
+      "packageName": "@lyvely/timers",
+      "projectFolder": "packages/libs/timers/api",
+      "tags": ["libs", "apis", "timers"]
+    },
+    {
+      "packageName": "@lyvely/calendar-plan-interface",
+      "projectFolder": "packages/libs/calendar-plan/interface",
+      "tags": ["libs", "interfaces", "calendar-plan"]
+    },
+    {
+      "packageName": "@lyvely/calendar-plan",
+      "projectFolder": "packages/libs/calendar-plan/api",
+      "tags": ["libs", "apis", "calendar-plan"]
+    },
+    {
+      "packageName": "@lyvely/calendar-plan-web",
+      "projectFolder": "packages/libs/calendar-plan/web",
+      "tags": ["libs", "web", "calendar-plan"]
+    },
+    {
+      "packageName": "@lyvely/time-series-interface",
+      "projectFolder": "packages/libs/time-series/interface",
+      "tags": ["libs", "interfaces", "time-series"]
+    },
+    {
+      "packageName": "@lyvely/time-series",
+      "projectFolder": "packages/libs/time-series/api",
+      "tags": ["libs", "apis", "time-series"]
+    },
+    {
+      "packageName": "@lyvely/time-series-web",
+      "projectFolder": "packages/libs/time-series/web",
+      "tags": ["libs", "web", "time-series"]
+    },
+    {
+      "packageName": "@lyvely/milestones-interface",
+      "projectFolder": "packages/features/milestones/interface",
+      "tags": ["features", "interfaces", "milestones"]
+    },
+    {
+      "packageName": "@lyvely/milestones",
+      "projectFolder": "packages/features/milestones/api",
+      "tags": ["features", "apis", "milestones"]
+    },
+    {
+      "packageName": "@lyvely/milestones-web",
+      "projectFolder": "packages/features/milestones/web",
+      "tags": ["features", "web", "milestones"]
+    },
+    {
+      "packageName": "@lyvely/tasks-interface",
+      "projectFolder": "packages/features/tasks/interface",
+      "tags": ["features", "interfaces", "tasks"]
+    },
+    {
+      "packageName": "@lyvely/tasks",
+      "projectFolder": "packages/features/tasks/api",
+      "tags": ["features", "apis", "tasks"]
+    },
+    {
+      "packageName": "@lyvely/tasks-web",
+      "projectFolder": "packages/features/tasks/web",
+      "tags": ["features", "web", "tasks"]
+    },
+    {
+      "packageName": "@lyvely/legal-interface",
+      "projectFolder": "packages/features/legal/interface",
+      "tags": ["features", "interfaces", "legal"]
+    },
+    {
+      "packageName": "@lyvely/legal",
+      "projectFolder": "packages/features/legal/api",
+      "tags": ["features", "apis", "legal"]
+    },
+    {
+      "packageName": "@lyvely/legal-web",
+      "projectFolder": "packages/features/legal/web",
+      "tags": ["features", "web", "legal"]
+    },
+    {
+      "packageName": "@lyvely/journals-interface",
+      "projectFolder": "packages/features/journals/interface",
+      "tags": ["features", "interfaces", "journals"]
+    },
+    {
+      "packageName": "@lyvely/journals",
+      "projectFolder": "packages/features/journals/api",
+      "tags": ["features", "apis", "journals"]
+    },
+    {
+      "packageName": "@lyvely/journals-web",
+      "projectFolder": "packages/features/journals/web",
+      "tags": ["features", "web", "journals"]
+    },
+    {
+      "packageName": "@lyvely/analytics-interface",
+      "projectFolder": "packages/features/analytics/interface",
+      "tags": ["features", "interfaces", "analytics"]
+    },
+    {
+      "packageName": "@lyvely/analytics",
+      "projectFolder": "packages/features/analytics/api",
+      "tags": ["features", "apis", "analytics"]
+    },
+    {
+      "packageName": "@lyvely/analytics-web",
+      "projectFolder": "packages/features/analytics/web",
+      "tags": ["features", "web", "analytics"]
+    },
+    {
+      "packageName": "@lyvely/habits-interface",
+      "projectFolder": "packages/features/habits/interface",
+      "tags": ["features", "interfaces", "habits"]
+    },
+    {
+      "packageName": "@lyvely/habits",
+      "projectFolder": "packages/features/habits/api",
+      "tags": ["features", "apis", "habits"]
+    },
+    {
+      "packageName": "@lyvely/habits-web",
+      "projectFolder": "packages/features/habits/web",
+      "tags": ["features", "web", "habits"]
+    },
+    {
+      "packageName": "@lyvely/activities-web",
+      "projectFolder": "packages/features/activities/web",
+      "tags": ["features", "web", "activities"]
+    },
+    {
+      "packageName": "@lyvely/server",
+      "projectFolder": "packages/applications/server",
+      "tags": ["applications"]
+    },
+    {
+      "packageName": "@lyvely/pwa",
+      "projectFolder": "packages/applications/pwa",
+      "tags": ["applications"]
     }
+    //{
+    //  "packageName": "@lyvely/tasks",
+    // "projectFolder": "packages/features/tasks/api",
+    //  "tags": ["features", "apis", "tasks"]
+    //}
     // {
     //   /**
     //    * The NPM package name of the project (must match package.json)
