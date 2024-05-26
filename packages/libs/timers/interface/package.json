@@ -9,7 +9,7 @@
   "scripts": {
     "lint": "eslint --fix",
     "format": "prettier \"src/**/*.ts\" --write",
-    "build": "tsc -p tsconfig.build.json --outDir dist/lib --declarationDir dist/lib --declaration true && tscpaths -p tsconfig.build.json -s ./src -o dist/lib && rollup -c && rm -f tsconfig.tsbuildinfo",
+    "build": "tsc -p tsconfig.build.json --outDir dist/lib --declarationDir dist/lib --declaration true && tscpaths -p tsconfig.build.json -s ./src -o dist/lib && rollup -c --silent && rm -f tsconfig.tsbuildinfo",
     "prepublish:npm": "pnpm run build",
     "publish:npm": "npm publish --access public",
     "prepublish:next": "pnpm run build",
@@ -22,14 +22,17 @@
   "author": "Julian Harrer",
   "license": "AGPL-3.0",
   "dependencies": {
-    "@lyvely/common": "^0.1.0-alpha3",
-    "@lyvely/dates": "^0.1.0-alpha3",
+    "@lyvely/common": "workspace:*",
+    "@lyvely/dates": "workspace:*",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
     "reflect-metadata": "0.1.13"
   },
   "devDependencies": {
-    "@lyvely/devtools": "^0.1.0-alpha3"
+    "@lyvely/devtools": "workspace:*",
+    "rollup": "^4.18.0",
+    "tslib": "^2.6.2",
+    "tscpaths": "^0.0.9"
   },
   "jest": {
     "rootDir": ".",

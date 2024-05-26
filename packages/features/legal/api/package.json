@@ -25,13 +25,13 @@
     "@nestjs/common": "^10.3.8",
     "@nestjs/config": "^3.2.2",
     "@nestjs/event-emitter": "^2.0.4",
-    "@lyvely/api": "^0.1.0-alpha3",
-    "@lyvely/legal-interface": "^0.1.0-alpha3",
+    "@lyvely/api": "workspace:*",
+    "@lyvely/legal-interface": "workspace:*",
     "reflect-metadata": "0.1.13"
   },
   "devDependencies": {
-    "@lyvely/devtools": "^0.1.0-alpha3",
-    "@lyvely/testing": "^0.1.0-alpha3"
+    "@lyvely/devtools": "workspace:*",
+    "@lyvely/testing": "workspace:*"
   },
   "jest": {
     "rootDir": ".",

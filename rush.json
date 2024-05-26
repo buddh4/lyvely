@@ -314,6 +314,26 @@
     {
       "packageName": "@lyvely/devtools",
       "projectFolder": "packages/libs/devtools"
+    },
+    {
+      "packageName": "@lyvely/dates",
+      "projectFolder": "packages/libs/dates"
+    },
+    {
+      "packageName": "@lyvely/common",
+      "projectFolder": "packages/libs/common"
+    },
+    {
+      "packageName": "@lyvely/timers-interface",
+      "projectFolder": "packages/libs/timers/interface"
+    },
+    {
+      "packageName": "@lyvely/ui",
+      "projectFolder": "packages/libs/ui"
+    },
+    {
+      "packageName": "@lyvely/interface",
+      "projectFolder": "packages/core/interface"
     }
     // {
     //   /**

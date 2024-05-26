@@ -24,6 +24,7 @@ export default async (options) => {
       nodeExternals(nodeExternalsOptions),
       vue(),
       typescript({
+        outputToFilesystem: true,
         paths: {
           '@/*': ['src/*'],
         },

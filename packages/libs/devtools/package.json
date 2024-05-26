@@ -5,7 +5,7 @@
   "module": "dist/esm/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc -p tsconfig.build.json --outDir dist --declarationDir dist --declaration true && tscpaths -p tsconfig.build.json -s ./ -o dist && rollup -c && rm -f tsconfig.tsbuildinfo",
+    "build": "tsc -p tsconfig.build.json --outDir dist --declarationDir dist --declaration true && tscpaths -p tsconfig.build.json -s ./ -o dist && rollup -c --silent && rm -f tsconfig.tsbuildinfo",
     "lint": "eslint --fix",
     "format": "prettier . --write",
     "prettier": "prettier . --check"
@@ -46,6 +46,11 @@
   },
   "devDependencies": {
     "@types/jsonwebtoken": "^9.0.6",
-    "@types/uuid": "^9.0.8"
+    "@types/uuid": "^9.0.8",
+    "tscpaths": "^0.0.9",
+    "eslint": "^8.24.0",
+    "@types/node": "^20.12.12",
+    "vite-plugin-externalize-deps": "^0.8.0",
+    "postcss": "^8.4.31"
   }
 }

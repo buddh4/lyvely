@@ -48,6 +48,7 @@ export default async (options) => {
       typescript({
         sourceMap: !production,
         inlineSources: !production,
+        outputToFilesystem: true,
         paths: {
           '@/*': ['src/*'],
         },

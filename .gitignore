@@ -104,6 +104,7 @@ common/temp/
 common/autoinstallers/*/.npmrc
 **/.rush/temp/
 *.lock
+*.chunks.jsonl
 
 # Heft temporary files
 .cache

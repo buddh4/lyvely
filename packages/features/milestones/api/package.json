@@ -25,18 +25,18 @@
     "@nestjs/common": "^10.3.8",
     "@nestjs/mongoose": "^10.0.6",
     "@nestjs/event-emitter": "^2.0.4",
-    "@lyvely/common": "^0.1.0-alpha3",
-    "@lyvely/api": "^0.1.0-alpha3",
-    "@lyvely/dates": "^0.1.0-alpha3",
-    "@lyvely/timers": "^0.1.0-alpha3",
-    "@lyvely/calendar-plan": "^0.1.0-alpha3",
-    "@lyvely/milestones-interface": "^0.1.0-alpha3",
+    "@lyvely/common": "workspace:*",
+    "@lyvely/api": "workspace:*",
+    "@lyvely/dates": "workspace:*",
+    "@lyvely/timers": "workspace:*",
+    "@lyvely/calendar-plan": "workspace:*",
+    "@lyvely/milestones-interface": "workspace:*",
     "class-validator": "^0.14.0",
     "reflect-metadata": "0.1.13"
   },
   "devDependencies": {
-    "@lyvely/devtools": "^0.1.0-alpha3",
-    "@lyvely/testing": "^0.1.0-alpha3",
+    "@lyvely/devtools": "workspace:*",
+    "@lyvely/testing": "workspace:*",
     "@nestjs/testing": "^10.3.8"
   },
   "jest": {

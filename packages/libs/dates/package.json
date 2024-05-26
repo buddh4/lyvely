@@ -10,7 +10,7 @@
     "lint": "eslint --fix",
     "format": "prettier . --write",
     "prettier": "prettier . --check",
-    "build": "tsc -p tsconfig.build.json --outDir dist/lib --declarationDir dist/lib --declaration true && tscpaths -p tsconfig.build.json -s ./src -o dist/lib && rollup -c && rm -f tsconfig.tsbuildinfo",
+    "build": "tsc -p tsconfig.build.json --outDir dist/lib --declarationDir dist/lib --declaration true && tscpaths -p tsconfig.build.json -s ./src -o dist/lib && rollup --silent -c && rm -f tsconfig.tsbuildinfo",
     "prepublish:npm": "pnpm run build",
     "publish:npm": "npm publish --access public",
     "prepublish:next": "pnpm run build",
@@ -28,7 +28,17 @@
     "dayjs": "^1.11.10"
   },
   "devDependencies": {
-    "rimraf": "^5.0.0"
+    "@lyvely/devtools": "workspace:*",
+    "rimraf": "^5.0.0",
+    "typescript": "^5.4.5",
+    "tscpaths": "^0.0.9",
+    "rollup": "^4.18.0",
+    "@types/node": "^20.12.12",
+    "@rollup/plugin-typescript": "^11.1.0",
+    "@rollup/plugin-commonjs": "^25.0.8",
+    "@rollup/plugin-dynamic-import-vars": "^2.1.2",
+    "@rollup/plugin-node-resolve": "^15.0.2",
+    "rollup-plugin-node-externals": "^6.1.2"
   },
   "jest": {
     "rootDir": ".",

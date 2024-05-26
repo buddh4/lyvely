@@ -26,10 +26,10 @@
     "@nestjs/common": "^10.3.8",
     "@nestjs/mongoose": "^10.0.6",
     "@nestjs/event-emitter": "^2.0.4",
-    "@lyvely/api": "^0.1.0-alpha3",
-    "@lyvely/common": "^0.1.0-alpha3",
-    "@lyvely/dates": "^0.1.0-alpha3",
-    "@lyvely/analytics-interface": "^0.1.0-alpha3",
+    "@lyvely/api": "workspace:*",
+    "@lyvely/common": "workspace:*",
+    "@lyvely/dates": "workspace:*",
+    "@lyvely/analytics-interface": "workspace:*",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
     "lodash": "^4.17.21",
@@ -37,8 +37,8 @@
     "reflect-metadata": "0.1.13"
   },
   "devDependencies": {
-    "@lyvely/devtools": "^0.1.0-alpha3",
-    "@lyvely/testing": "^0.1.0-alpha3"
+    "@lyvely/devtools": "workspace:*",
+    "@lyvely/testing": "workspace:*"
   },
   "jest": {
     "rootDir": ".",

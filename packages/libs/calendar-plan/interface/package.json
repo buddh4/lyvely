@@ -23,16 +23,16 @@
   "author": "Julian Harrer",
   "license": "AGPL-3.0",
   "dependencies": {
-    "@lyvely/common": "^0.1.0-alpha3",
-    "@lyvely/interface": "^0.1.0-alpha3",
-    "@lyvely/dates": "^0.1.0-alpha3",
+    "@lyvely/common": "workspace:*",
+    "@lyvely/interface": "workspace:*",
+    "@lyvely/dates": "workspace:*",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
     "mitt": "^3.0.0",
     "reflect-metadata": "0.1.13"
   },
   "devDependencies": {
-    "@lyvely/devtools": "^0.1.0-alpha3",
+    "@lyvely/devtools": "workspace:*",
     "tslib": "^2.6.2"
   },
   "jest": {

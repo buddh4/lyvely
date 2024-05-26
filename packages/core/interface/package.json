@@ -7,7 +7,7 @@
   "module": "dist/esm/index.js",
   "types": "dist/lib/index.d.ts",
   "scripts": {
-    "build": "rm -rf ./dist && tsc -p tsconfig.build.json --outDir dist/lib --declarationDir dist/lib --declaration true && tscpaths -p tsconfig.build.json -s ./src -o dist/lib && rollup -c && rm -f tsconfig.tsbuildinfo",
+    "build": "rm -rf ./dist && tsc -p tsconfig.build.json --outDir dist/lib --declarationDir dist/lib --declaration true && tscpaths -p tsconfig.build.json -s ./src -o dist/lib && rollup -c --silent && rm -f tsconfig.tsbuildinfo",
     "lint": "eslint --fix",
     "deps": "npx depcruise --config .dependency-cruiser.js src",
     "format": "prettier \"src/**/*.ts\" --write",
@@ -25,9 +25,9 @@
   "license": "AGPL-3.0",
   "dependencies": {
     "@buddh4/mapped-types": "^1.1.0",
-    "@lyvely/common": "^0.1.0-alpha3",
-    "@lyvely/dates": "^0.1.0-alpha3",
-    "@lyvely/devtools": "^0.1.0-alpha3",
+    "@lyvely/common": "workspace:*",
+    "@lyvely/dates": "workspace:*",
+    "@lyvely/devtools": "workspace:*",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
     "lodash": "^4.17.21",
@@ -36,9 +36,19 @@
   },
   "devDependencies": {
     "@types/randomcolor": "^0.5.7",
-    "@lyvely/devtools": "^0.1.0-alpha3",
+    "@lyvely/devtools": "workspace:*",
     "tslib": "^2.6.2",
-    "axios": "^1.6.8"
+    "axios": "^1.6.8",
+    "@types/lodash": "^4.17.4",
+    "typescript": "^5.4.5",
+    "tscpaths": "^0.0.9",
+    "rollup": "^4.18.0",
+    "@types/node": "^20.12.12",
+    "@rollup/plugin-typescript": "^11.1.0",
+    "@rollup/plugin-commonjs": "^25.0.8",
+    "@rollup/plugin-dynamic-import-vars": "^2.1.2",
+    "@rollup/plugin-node-resolve": "^15.0.2",
+    "rollup-plugin-node-externals": "^6.1.2"
   },
   "jest": {
     "rootDir": ".",
