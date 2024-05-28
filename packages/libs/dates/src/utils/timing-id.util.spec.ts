@@ -32,7 +32,7 @@ describe('time series utils', () => {
     interval: CalendarInterval,
     expected: string,
     locale = 'de',
-    preferences?: ICalendarPreferences,
+    preferences?: ICalendarPreferences
   ) {
     expect(toTimingId(date, interval, locale, preferences)).toEqual(expected);
   }

@@ -75,7 +75,7 @@ export class Journal
       content: new ContentDataType({ title, text }),
       tagIds: profile.getTagsByName(model.tagNames || []).map((tag) => assureObjectId(tag.id)),
       config: new JournalConfig(
-        DataPointConfigFactory.initializeConfig(model.valueType, model.inputType, model),
+        DataPointConfigFactory.initializeConfig(model.valueType, model.inputType, model)
       ),
     });
   }

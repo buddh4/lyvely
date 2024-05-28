@@ -46,6 +46,18 @@
       "enableParallelism": true,
       "allowWarningsInSuccessfulBuild": false,
       "incremental": true
+    },
+    {
+      "name": "depcheck",
+      "commandKind": "bulk",
+      "summary": "Runs depcheck",
+      "description": "Run depcheck for all projects that have changed since the last successful run",
+      "safeForSimultaneousRushProcesses": true,
+      "ignoreMissingScript": true,
+      "ignoreDependencyOrder": true,
+      "enableParallelism": true,
+      "allowWarningsInSuccessfulBuild": false,
+      "incremental": true
     }
     // {
     //   /**

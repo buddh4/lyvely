@@ -11,7 +11,7 @@ import { NestedSchema } from '@lyvely/api';
 
 const strategy = DataPointConfigFactory.getStrategyName(
   DataPointValueType.Selection,
-  DataPointInputType.Dropdown,
+  DataPointInputType.Dropdown
 );
 
 @NestedSchema()
@@ -33,5 +33,5 @@ export class DropdownSelectionDataPointConfig extends SelectionDataPointConfig {
 
 export const DropdownSelectionDataPointConfigSchema = DataPointConfigSchemaFactory.createForClass(
   strategy,
-  DropdownSelectionDataPointConfig,
+  DropdownSelectionDataPointConfig
 );

@@ -11,7 +11,7 @@ import { NestedSchema } from '@lyvely/api';
 
 const strategy = DataPointConfigFactory.getStrategyName(
   DataPointValueType.Number,
-  DataPointInputType.Spinner,
+  DataPointInputType.Spinner
 );
 
 @NestedSchema()
@@ -28,5 +28,5 @@ export class SpinnerNumberDataPointConfig extends NumberDataPointConfig {
 
 export const SpinnerNumberDataPointConfigSchema = DataPointConfigSchemaFactory.createForClass(
   strategy,
-  SpinnerNumberDataPointConfig,
+  SpinnerNumberDataPointConfig
 );

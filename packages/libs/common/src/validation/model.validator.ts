@@ -63,7 +63,7 @@ export class ModelValidator<
       const ValidatorType = this.constructor as Type<ModelValidator<T, TOptions>>;
       this.fieldValidator = new ValidatorType(
         this.model,
-        Object.assign({}, this.options, { isFieldValidator: true }),
+        Object.assign({}, this.options, { isFieldValidator: true })
       );
     }
     return this.fieldValidator;
@@ -71,7 +71,7 @@ export class ModelValidator<
 
   addRule(
     property: keyof T,
-    validator: (value: any, result: IFieldValidationResult) => Promise<IFieldValidationResult>,
+    validator: (value: any, result: IFieldValidationResult) => Promise<IFieldValidationResult>
   ) {
     if (!this.options.rules[property]) {
       this.options.rules[property] = [validator];
@@ -147,7 +147,7 @@ export class ModelValidator<
         this.errors[error.property as keyof T] = this._translate(
           error.errors[0],
           error.property as keyof T & string,
-          error.errors[0],
+          error.errors[0]
         );
       }
     }
@@ -157,7 +157,7 @@ export class ModelValidator<
     message: string,
     property: keyof T & string,
     rule: string,
-    context?: ValidationError['contexts'],
+    context?: ValidationError['contexts']
   ) {
     return this.options.translate
       ? this.options.translate({
@@ -228,7 +228,7 @@ export class ModelValidator<
         message,
         error.property as keyof T & string,
         rule,
-        error.contexts,
+        error.contexts
       );
     }
   }

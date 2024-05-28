@@ -28,7 +28,7 @@ const updateTimer = async (value: number) => taskStore.updateTimer(props.model, 
     <template #image>
       <div
         :class="[
-          'bg-main flex h-8 w-8 justify-center rounded-full border',
+          'flex h-8 w-8 justify-center rounded-full border bg-main',
           isDone ? 'border-success' : 'border-divide',
         ]">
         <router-link :to="{ name: 'Tasks' }">

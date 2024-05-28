@@ -37,7 +37,7 @@ export class SelectionDataPointModel<TID = string> extends DataPointModel<TID> {
 }
 
 export function isSelectionDataPointConfig(
-  config: IDataPointConfig,
+  config: IDataPointConfig
 ): config is ISelectionDataPointConfig {
   return config.valueType === DataPointValueType.Selection;
 }

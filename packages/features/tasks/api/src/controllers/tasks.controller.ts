@@ -53,7 +53,7 @@ export class TasksController
   @Get()
   async getByFilter(
     @Query(new ValidationPipe({ transform: true })) filter: CalendarPlanFilter,
-    @Request() req: ProfileRequest,
+    @Request() req: ProfileRequest
   ): Promise<TaskSearchResponse> {
     const { context, user } = req;
     const models = await this.calendarPlanService.findByFilter(context, filter);
@@ -70,7 +70,7 @@ export class TasksController
       context,
       content,
       dto.interval,
-      dto.attachToId,
+      dto.attachToId
     );
     return new SortResponse({ sort });
   }
@@ -79,7 +79,7 @@ export class TasksController
   @Policies(ContentWritePolicy)
   async setDone(
     @Body() dto: UpdateTaskStateModel,
-    @Request() req: ProtectedProfileContentRequest<Task>,
+    @Request() req: ProtectedProfileContentRequest<Task>
   ) {
     const { context, profile, user, content } = req;
 
@@ -94,7 +94,7 @@ export class TasksController
   @Policies(ContentWritePolicy)
   async setUndone(
     @Body() dto: UpdateTaskStateModel,
-    @Request() req: ProtectedProfileContentRequest<Task>,
+    @Request() req: ProtectedProfileContentRequest<Task>
   ) {
     const { context, profile, content } = req;
 
@@ -124,7 +124,7 @@ export class TasksController
   @Policies(ContentWritePolicy)
   async updateTimer(
     @Body() dto: TimerValueUpdateModel,
-    @Request() req: ProtectedProfileContentRequest<Task>,
+    @Request() req: ProtectedProfileContentRequest<Task>
   ) {
     const { context, content } = req;
 

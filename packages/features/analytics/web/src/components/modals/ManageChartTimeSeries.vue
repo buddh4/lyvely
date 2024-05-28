@@ -47,14 +47,14 @@ function getSeriesTypeName(seriesId: string) {
         :key="series.id"
         role="button"
         tabindex="0"
-        class="border-divide flex w-full flex-col gap-1 rounded border p-4 text-sm"
+        class="flex w-full flex-col gap-1 rounded border border-divide p-4 text-sm"
         @click="updateSeries(series.id)"
         @keyup.enter="updateSeries(series.id)">
         <b>{{ series.name }}</b>
         <ly-dimmed class="text-xs" :truncate="true" :text="getSeriesTypeName(series.type)" />
       </div>
       <button
-        class="border-divide flex w-full flex-col items-center justify-center rounded border p-4"
+        class="flex w-full flex-col items-center justify-center rounded border border-divide p-4"
         role="button"
         @click="addSeries">
         <ly-icon name="add-chart" />

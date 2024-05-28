@@ -16,5 +16,5 @@ export class TimeSeriesChartConfig extends ChartConfig {
 
 export const TimeSeriesChartConfigSchema = ChartSchemaFactory.createForClass(
   TIME_SERIES_CHART.id,
-  TimeSeriesChartConfig,
+  TimeSeriesChartConfig
 );

@@ -2,7 +2,7 @@ import { getMetadataStorage, ValidationError } from 'class-validator';
 
 export function getPropertyConstraints<T extends object, P extends keyof T>(
   model: T,
-  property: P,
+  property: P
 ): Array<any> {
   return (
     getMetadataStorage()
@@ -20,8 +20,8 @@ export function getFirstValidationError(error: ValidationError): { message: stri
   const firstRule = constraints?.isNotEmpty
     ? 'isNotEmpty'
     : constraints?.isDefined
-    ? 'isDefined'
-    : rules[0];
+      ? 'isDefined'
+      : rules[0];
 
   return { message: constraints[firstRule], rule: firstRule };
 }

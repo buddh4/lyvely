@@ -52,7 +52,7 @@ function switchCreateContentType(type: string) {
       @success="onCreated"
       @cancel="onCreateCanceled">
       <template #navigation>
-        <div v-if="showContentTypeMenu" class="bg-highlight flex justify-center p-2 shadow">
+        <div v-if="showContentTypeMenu" class="flex justify-center bg-highlight p-2 shadow">
           <ly-slider-menu>
             <template
               v-for="contentTypeOption in getCreateContentTypes()"

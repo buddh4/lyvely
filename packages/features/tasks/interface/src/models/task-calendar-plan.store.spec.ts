@@ -15,24 +15,24 @@ describe('ActivityDataPointStore', () => {
   describe('sort', function () {
     it('sort done tasks after', async () => {
       store.setModel(
-        new TaskModel({ id: 't3', meta: new ContentMetadataModel({ sortOrder: 3 } as any) }),
+        new TaskModel({ id: 't3', meta: new ContentMetadataModel({ sortOrder: 3 } as any) })
       );
       store.setModel(
-        new TaskModel({ id: 't2', meta: new ContentMetadataModel({ sortOrder: 2 } as any) }),
+        new TaskModel({ id: 't2', meta: new ContentMetadataModel({ sortOrder: 2 } as any) })
       );
       store.setModel(
         new TaskModel({
           id: 't1',
           meta: new ContentMetadataModel({ sortOrder: 1 } as any),
           state: new SingleUserTaskStateModel({ done: timingId }),
-        }),
+        })
       );
       store.setModel(
         new TaskModel({
           id: 't0',
           meta: new ContentMetadataModel({ sortOrder: 0 } as any),
           state: new SingleUserTaskStateModel({ done: timingId }),
-        }),
+        })
       );
       const sorted = store.sort(store.getModels());
       expect(sorted[0].id).toEqual('t2');
@@ -53,21 +53,21 @@ describe('ActivityDataPointStore', () => {
         new TaskModel({
           id: 't3',
           config,
-        }),
+        })
       );
       store.setModel(
         new TaskModel({
           id: 't2',
           config,
           state: new SingleUserTaskStateModel({ done: timingId }),
-        }),
+        })
       );
       store.setModel(
         new TaskModel({
           id: 't1',
           config,
           state: new SingleUserTaskStateModel({ done: 'anotherday...' }),
-        }),
+        })
       );
 
       const result = store.getModelsByIntervalFilter(CalendarInterval.Daily, undefined, timingId);

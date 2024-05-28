@@ -38,5 +38,5 @@ export class UserScoreChartSeriesConfig
 export const UserScoreChartSeriesConfigSchema = ChartSchemaFactory.createSeriesForClass(
   CHART_SERIES_USER_SCORE.id,
   TimeSeriesChartConfigSchema,
-  UserScoreChartSeriesConfig,
+  UserScoreChartSeriesConfig
 );

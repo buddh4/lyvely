@@ -45,7 +45,7 @@ export class MilestonesService extends ContentTypeService<
    */
   protected async createInstance(
     context: ProtectedProfileContext,
-    model: CreateMilestoneModel,
+    model: CreateMilestoneModel
   ): Promise<Milestone> {
     const { user, profile } = context;
     const { title, text, interval } = model;
@@ -69,7 +69,7 @@ export class MilestonesService extends ContentTypeService<
   protected async createUpdate(
     context: ProtectedProfileContext,
     milestone: Milestone,
-    update: UpdateMilestoneModel,
+    update: UpdateMilestoneModel
   ): Promise<UpdateQuerySet<Milestone>> {
     return {
       content: {

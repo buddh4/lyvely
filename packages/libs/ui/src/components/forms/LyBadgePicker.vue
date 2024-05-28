@@ -206,15 +206,15 @@ const showEmptyEntry = computed(() => !showAddEntry.value && !props.options.leng
       <div class="mb-2">
         <ly-text-field
           :id="id + '-search'"
-          :data-id="id + '-search'"
           v-model="query"
+          :data-id="id + '-search'"
           :autofocus="true"
           :placeholder="t('common.filter.search')"
           @keyup.down="focusFirst" />
       </div>
 
       <div
-        class="border-divide scrollbar-thin flex flex-col divide-y overflow-auto rounded border md:max-h-96">
+        class="scrollbar-thin flex flex-col divide-y overflow-auto rounded border border-divide md:max-h-96">
         <div
           v-for="option in selectedOptions"
           :key="getOptionKey(option)"
@@ -229,8 +229,8 @@ const showEmptyEntry = computed(() => !showAddEntry.value && !props.options.leng
           <ly-button
             tabindex="-1"
             aria-hidden="true"
-            class="bg-main border-divide flex h-5 w-5 items-center justify-center rounded-full border px-0 py-0 text-sm"
-            ><span class="text-primary text-xs">x</span></ly-button
+            class="flex h-5 w-5 items-center justify-center rounded-full border border-divide bg-main px-0 py-0 text-sm"
+            ><span class="text-xs text-primary">x</span></ly-button
           >
           <ly-badge
             :text="{ plain: getLabel(option) }"
@@ -264,7 +264,7 @@ const showEmptyEntry = computed(() => !showAddEntry.value && !props.options.leng
           @keyup.enter.prevent.stop="addSelection(query)"
           @keyup.down="focusNext"
           @keyup.up="focusPrev">
-          <i18n-t :keypath="addTextKey" tag="span" class="text-dimmed text-center text-sm">
+          <i18n-t :keypath="addTextKey" tag="span" class="text-center text-sm text-dimmed">
             <template #option>
               <b>{{ query }}</b>
             </template>
@@ -273,7 +273,7 @@ const showEmptyEntry = computed(() => !showAddEntry.value && !props.options.leng
         <div
           v-if="showEmptyEntry"
           data-badge-selection
-          class="border-divide bg-main flex items-center gap-2 p-2 md:p-4">
+          class="flex items-center gap-2 border-divide bg-main p-2 md:p-4">
           <span v-if="query">{{ t('common.empty_result_filter') }}</span>
           <span v-else>{{ t('common.empty_result') }}</span>
         </div>

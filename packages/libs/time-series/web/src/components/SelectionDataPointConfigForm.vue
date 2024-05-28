@@ -42,7 +42,7 @@ function setInputType(inputType: DataPointInputType) {
 </script>
 
 <template>
-  <div class="border-divide bg-highlight dark:bg-main flex flex-col gap-2 rounded border p-3">
+  <div class="flex flex-col gap-2 rounded border border-divide bg-highlight p-3 dark:bg-main">
     <div class="flex items-stretch justify-between gap-2">
       <ly-button
         class="secondary outlined w-full text-xs"
@@ -75,7 +75,7 @@ function setInputType(inputType: DataPointInputType) {
       <ly-button class="primary w-12 rounded-r" @click="addOption"> + </ly-button>
     </div>
     <div v-for="option in modelValue.options" :key="option" class="flex">
-      <div class="bg-highlight border-divide clearfix grow rounded-l border p-2">
+      <div class="clearfix grow rounded-l border border-divide bg-highlight p-2">
         {{ option }}
       </div>
       <ly-button class="danger float-right w-12 rounded-r" @click="removeOption(option)">

@@ -4,7 +4,7 @@ import { CalendarTimeInterval } from '../models/calendar-interval.enum';
 export function subtractByInterval(
   date: CalendarDate,
   interval: CalendarTimeInterval,
-  count: number,
+  count: number
 ): Date {
   switch (interval) {
     case CalendarTimeInterval.Unscheduled:
@@ -33,7 +33,7 @@ export function subtractByInterval(
 export function addByInterval(
   date: CalendarDate,
   interval: CalendarTimeInterval,
-  count: number,
+  count: number
 ): Date {
   switch (interval) {
     case CalendarTimeInterval.Unscheduled:

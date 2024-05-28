@@ -122,5 +122,5 @@ export const DataPointConfigSchema = SchemaFactory.createForClass(DefaultDataPoi
 export class DefaultDataPointConfigRevision extends DataPointConfigRevision {}
 
 export const DefaultDataPointConfigRevisionSchema = SchemaFactory.createForClass(
-  DefaultDataPointConfigRevision,
+  DefaultDataPointConfigRevision
 );

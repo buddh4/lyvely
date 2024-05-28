@@ -25,7 +25,7 @@ const appName = useAppConfigStore().get('appName');
     :message-width="true"
     :show-type="false">
     <template #image>
-      <div class="border-divide bg-main flex h-8 w-8 justify-center rounded-full border">
+      <div class="flex h-8 w-8 justify-center rounded-full border border-divide bg-main">
         <ly-icon name="lyvely" class="text-pop" />
       </div>
     </template>
@@ -35,7 +35,9 @@ const appName = useAppConfigStore().get('appName');
     </template>
 
     <template #default>
-      <h1 v-if="model.content.title">{{ t(model.content.title, model.content.params || {}) }}</h1>
+      <h1 v-if="model.content.title">
+        {{ t(model.content.title, model.content.params || {}) }}
+      </h1>
       <span v-if="model.content.text">
         <ly-markdown-view :md="t(model.content.text, model.content.params || {})" />
       </span>

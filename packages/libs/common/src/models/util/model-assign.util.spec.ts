@@ -3,7 +3,10 @@ import { getObjectId } from 'mongo-seeding';
 import { PropertyType } from '../decorators';
 
 class TestClass {
-  constructor(public field: string, public sub?: TestClass) {}
+  constructor(
+    public field: string,
+    public sub?: TestClass
+  ) {}
 }
 
 describe('model assign util', () => {
@@ -132,7 +135,7 @@ describe('model assign util', () => {
           {
             sub: [{}],
           },
-          { skipGetDefaults: true },
+          { skipGetDefaults: true }
         );
         expect(model.sub[0].test).toBeUndefined();
       });
@@ -211,7 +214,7 @@ describe('model assign util', () => {
           {},
           {
             _id: getObjectId('test'),
-          },
+          }
         );
         expect(model.id).toEqual(getObjectId('test').toString());
       });

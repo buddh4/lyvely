@@ -35,5 +35,5 @@ export class ProfileScoreChartSeriesConfig
 export const ProfileScoreChartSeriesConfigSchema = ChartSchemaFactory.createSeriesForClass(
   CHART_SERIES_PROFILE_SCORE.id,
   TimeSeriesChartConfigSchema,
-  ProfileScoreChartSeriesConfig,
+  ProfileScoreChartSeriesConfig
 );

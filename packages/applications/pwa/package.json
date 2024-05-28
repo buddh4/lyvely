@@ -8,12 +8,12 @@
     "build": "lyvely-dev build:web",
     "build:staging": "vite build --mode staging && vue-tsc --emitDeclarationOnly",
     "build:dev": "vite build --mode development && vue-tsc --emitDeclarationOnly",
-    "lint": "eslint \"{src,apps,libs,test}/**/*.{ts,vue}\" --fix",
-    "prettier": "prettier . --check",
-    "format": "prettier .  --write"
+    "lint": "eslint \"src/**/*.{ts,vue}\" --fix",
+    "format": "prettier src --write",
+    "prettier": "prettier src --check"
   },
   "dependencies": {
-    "vue": "^3.4.25",
+    "vue": "^3.4",
     "@lyvely/web": "workspace:*",
     "@lyvely/ui": "workspace:*",
     "@lyvely/activities-web": "workspace:*",
@@ -29,15 +29,25 @@
     "workbox-window": "^7.1.0",
     "workbox-build": "^7.1.0",
     "workbox-precaching": "^7.1.0",
-    "vue-router": "^4.3.2"
+    "vue-router": "^4.3"
   },
   "devDependencies": {
     "@lyvely/devtools": "workspace:*",
-    "vite": "^5.2.11",
+    "vite": "^5.2",
     "vite-plugin-pwa": "^0.20.0",
-    "@vue/runtime-dom": "^3.4.25",
-    "vue-tsc": "^2.0.19",
-    "postcss": "^8.4.31",
-    "postcss-cli": "^11.0.0"
+    "@vue/runtime-dom": "^3.4",
+    "vue-tsc": "^2.0",
+    "postcss": "^8.4",
+    "postcss-cli": "^11.0",
+    "eslint": "^8.24",
+    "@typescript-eslint/eslint-plugin": "^7.9",
+    "@typescript-eslint/parser": "^7.9",
+    "eslint-config-prettier": "^8.8",
+    "eslint-import-resolver-typescript": "^3.5",
+    "eslint-plugin-import": "^2.26",
+    "eslint-plugin-prettier": "^5.1",
+    "eslint-plugin-vue": "^9.25",
+    "prettier-plugin-tailwindcss": "^0.5",
+    "vue-eslint-parser": "^9.4"
   }
 }

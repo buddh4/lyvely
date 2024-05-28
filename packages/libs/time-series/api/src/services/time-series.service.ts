@@ -65,12 +65,12 @@ export abstract class TimeSeriesService<
    * @return {Promise<Array<TModel>>} - A promise that resolves to an array of models*/
   override async findByFilter(
     context: ProfileContext,
-    filter: CalendarPlanFilter,
+    filter: CalendarPlanFilter
   ): Promise<Array<TModel>> {
     const { profile } = context;
     const models = await this.contentDao.findByProfileAndTimingIds(
       context,
-      getTimingIds(filter.date, profile.locale, filter.level, profile.settings?.calendar),
+      getTimingIds(filter.date, profile.locale, filter.level, profile.settings?.calendar)
     );
 
     await this.contentService.populateContentPolicies(models, context);
@@ -89,7 +89,7 @@ export abstract class TimeSeriesService<
    */
   async findTimeSeries(
     context: ProfileContext,
-    filter: CalendarPlanFilter,
+    filter: CalendarPlanFilter
   ): Promise<ITimeSeriesContentSearchResult<TModel, TDataPointModel>> {
     const [models, dataPoints] = await Promise.all([
       this.findByFilter(context, filter),
@@ -109,7 +109,7 @@ export abstract class TimeSeriesService<
    */
   private async findDataPoints(
     context: ProfileContext,
-    filter: CalendarPlanFilter,
+    filter: CalendarPlanFilter
   ): Promise<TDataPointModel[]> {
     return isInFuture(filter.date, true)
       ? []
@@ -130,7 +130,7 @@ export abstract class TimeSeriesService<
     context: ProtectedProfileContext,
     model: TModel,
     date: CalendarDate,
-    value: TValue,
+    value: TValue
   ): Promise<IDataPointUpdateResult<TDataPointModel>> {
     const updateResult = await this.dataPointService.upsertDataPoint(context, model, date, value);
     await this.updateSummary(context, model, updateResult);
@@ -149,7 +149,7 @@ export abstract class TimeSeriesService<
   protected async updateSummary(
     context: ProtectedProfileContext,
     model: TModel,
-    update: IDataPointUpdateResult<TDataPointModel>,
+    update: IDataPointUpdateResult<TDataPointModel>
   ) {
     const { profile } = context;
     const { dataPoint, oldValue } = update;
@@ -198,7 +198,7 @@ export abstract class TimeSeriesService<
   protected override async updateIntervalConfig(
     profile: Profile,
     model: TModel,
-    interval: CalendarInterval,
+    interval: CalendarInterval
   ) {
     const update = { 'config.timeSeries.interval': interval };
     useDataPointConfigHandler().applyUpdate(model, { interval });

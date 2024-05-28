@@ -23,13 +23,13 @@ export class HabitDataPointService extends DataPointService<Habit> {
     context: ProtectedProfileContext,
     habit: Habit,
     updateResult: IDataPointUpdateResult<NumberDataPoint>,
-    updateDate: CalendarDate,
+    updateDate: CalendarDate
   ) {
     const { profile } = context;
     const { dataPoint } = updateResult;
     const oldScore = HabitDataPointService.calculateDataPointScore(
       habit,
-      updateResult.oldValue || 0,
+      updateResult.oldValue || 0
     );
     const newScore = HabitDataPointService.calculateDataPointScore(habit, dataPoint.value);
 
@@ -45,7 +45,7 @@ export class HabitDataPointService extends DataPointService<Habit> {
           // We translate the full day to profile timezone for aggregation purposes.
           date: getFullDayTZDate(updateDate, profile.timezone),
           tid: dataPoint.tid,
-        }),
+        })
       ),
     ]);
   }

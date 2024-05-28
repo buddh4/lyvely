@@ -34,7 +34,7 @@ const userInfo = useUserInfo(props.model.meta.createdBy);
 
 <template>
   <div :data-id="model.id">
-    <div class="bg-shadow border-divide w-full p-2.5 md:px-4">
+    <div class="w-full border-divide bg-shadow p-2.5 md:px-4">
       <div class="flex items-center justify-items-stretch gap-2">
         <slot name="image">
           <ly-avatar
@@ -60,21 +60,21 @@ const userInfo = useUserInfo(props.model.meta.createdBy);
     </div>
     <tag-list
       :tag-ids="model.tagIds"
-      class="bg-main flex w-full px-2.5 pt-2.5 md:px-4 md:pt-4"
+      class="flex w-full bg-main px-2.5 pt-2.5 md:px-4 md:pt-4"
       @select="selectTag">
       <template v-if="showType && contentTypeName" #pre>
         <ly-badge class="bg-secondary-dark">{{ contentTypeName }}</ly-badge>
       </template>
       <template v-if="model.meta.archived" #post>
-        <ly-icon name="archive" class="text-warning ml-auto w-3" />
+        <ly-icon name="archive" class="ml-auto w-3 text-warning" />
       </template>
     </tag-list>
-    <div class="bg-main border-divide rounded-b p-2.5 text-sm md:px-4">
+    <div class="rounded-b border-divide bg-main p-2.5 text-sm md:px-4">
       <slot name="body">
         <ly-markdown-view :md="model.content.text" class="text-sm" />
       </slot>
     </div>
-    <div v-if="$slots.footer" class="bg-main border-divide rounded-b border-t p-2.5 md:p-4">
+    <div v-if="$slots.footer" class="rounded-b border-t border-divide bg-main p-2.5 md:p-4">
       <slot name="footer" />
     </div>
   </div>

@@ -35,7 +35,7 @@ export class DayJsDateTime implements IDateTime {
   constructor(
     date: CalendarDate | dayjs.Dayjs,
     locale?: string,
-    preferences?: ICalendarPreferences,
+    preferences?: ICalendarPreferences
   ) {
     if (dayjs.isDayjs(date)) {
       this.instance = date;
@@ -168,7 +168,7 @@ export class DayJsDateTime implements IDateTime {
 export function dateTimeFactory(
   date?: CalendarDate,
   locale?: string,
-  preferences?: ICalendarPreferences,
+  preferences?: ICalendarPreferences
 ): IDateTime {
   date = date || new Date();
   return new DayJsDateTime(date, locale, preferences);

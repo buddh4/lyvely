@@ -149,7 +149,7 @@ const hidePassword = ref(true);
             <ly-checkbox property="remember" class="text-sm" aria-describedby="remember-me-info" />
             <ly-icon
               name="info"
-              class="text-primary ml-1 w-4 cursor-pointer"
+              class="ml-1 w-4 cursor-pointer text-primary"
               aria-hidden="true"
               @click="showRememberInfo = !showRememberInfo" />
           </div>

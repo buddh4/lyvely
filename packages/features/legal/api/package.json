@@ -9,8 +9,8 @@
     "debug": "nest start:debug",
     "dev:debug": "nest start --debug --watch",
     "lint": "eslint --fix",
-    "prettier": "prettier . --check",
-    "format": "prettier . --write",
+    "prettier": "prettier src --check",
+    "format": "prettier src --write",
     "build": "rm -rf ./dist/* && tsc -p tsconfig.build.json",
     "prepublish:npm": "pnpm run build",
     "publish:npm": "npm publish --access public",
@@ -24,7 +24,7 @@
   "dependencies": {
     "@nestjs/common": "^10.3.8",
     "@nestjs/config": "^3.2.2",
-    "@nestjs/event-emitter": "^2.0.4",
+    "@nestjs/event-emitter": "^2.0",
     "@lyvely/api": "workspace:*",
     "@lyvely/legal-interface": "workspace:*",
     "reflect-metadata": "0.1.13"
@@ -33,8 +33,15 @@
     "@lyvely/devtools": "workspace:*",
     "jest": "^29.7.0",
     "@types/jest": "^29.5.12",
-    "typescript": "^5.4.5",
-    "tslib": "^2.6.2"
+    "typescript": "^5.4",
+    "tslib": "^2.6.2",
+    "eslint": "^8.24",
+    "@typescript-eslint/eslint-plugin": "^7.9",
+    "@typescript-eslint/parser": "^7.9",
+    "eslint-config-prettier": "^8.8",
+    "eslint-import-resolver-typescript": "^3.5",
+    "eslint-plugin-import": "^2.26",
+    "eslint-plugin-prettier": "^5.1"
   },
   "jest": {
     "rootDir": ".",

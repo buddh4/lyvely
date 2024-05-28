@@ -12,7 +12,7 @@ export class TaskCalendarPlanStore extends CalendarPlanStore<TaskModel> {
   override getModelsByIntervalFilter(
     interval: CalendarInterval,
     filter?: TaskFilter,
-    tid?: string,
+    tid?: string
   ): TaskModel[] {
     return <TaskModel[]>this.filterModels((entry) => {
       return (

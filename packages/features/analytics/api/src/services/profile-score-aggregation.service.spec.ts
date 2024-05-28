@@ -45,7 +45,7 @@ describe('ScoreAggregationService', () => {
 
   async function createScores(
     context: ProtectedProfileContext,
-    scores: Array<[number, Date] | [number, Date, PartialPropertiesOf<ProfileScore>]>,
+    scores: Array<[number, Date] | [number, Date, PartialPropertiesOf<ProfileScore>]>
   ) {
     return scoreDao.saveMany(
       scores.map(
@@ -56,9 +56,9 @@ describe('ScoreAggregationService', () => {
               score,
               date,
             },
-            data,
-          ),
-      ),
+            data
+          )
+      )
     );
   }
 

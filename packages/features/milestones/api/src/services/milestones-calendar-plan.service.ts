@@ -55,7 +55,7 @@ export class MilestonesCalendarPlanService extends SortableCalendarPlanService<M
     const relations = await this.relationsService.getRelationsByMilestones(
       context,
       models,
-      filter.date,
+      filter.date
     );
     return { models, relations };
   }
@@ -72,7 +72,7 @@ export class MilestonesCalendarPlanService extends SortableCalendarPlanService<M
   protected async updateIntervalConfig(
     profile: Profile,
     model: Milestone,
-    interval: CalendarInterval,
+    interval: CalendarInterval
   ): Promise<void> {
     await this.contentDao.updateOneByProfileAndIdSet(profile, model, {
       'config.interval': interval,

@@ -19,7 +19,7 @@ export default [
         format: 'cjs',
       },
     ],
-   external: [
+    external: [
       'class-validator',
       'class-transformer',
       'dayjs',

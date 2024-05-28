@@ -30,7 +30,7 @@ export class NumberDataPointModel<TID = string>
 }
 
 export function isNumberDataPointConfig(
-  config: IDataPointConfig,
+  config: IDataPointConfig
 ): config is INumberDataPointConfig {
   return config.valueType === DataPointValueType.Number;
 }

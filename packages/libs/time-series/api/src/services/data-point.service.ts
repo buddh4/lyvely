@@ -39,14 +39,14 @@ export abstract class DataPointService<
   async findDataPointByDate(
     context: ProfileContext,
     content: TModel,
-    date: CalendarDate,
+    date: CalendarDate
   ): Promise<TDataPointModel | null> {
     const { profile } = context;
     const tid = toTimingId(
       date,
       content.timeSeriesConfig.interval,
       profile.locale,
-      profile.settings?.calendar,
+      profile.settings?.calendar
     );
 
     // If it is a per-user strategy we can not determine any data points for guests.
@@ -72,7 +72,7 @@ export abstract class DataPointService<
     context: ProtectedProfileContext,
     model: TModel,
     date: CalendarDate,
-    value: TValue,
+    value: TValue
   ): Promise<IDataPointUpdateResult<TDataPointModel>> {
     const result = await this.findOrCreateDataPointByDate(context, model, date, value);
     await this.updateDataPointValue(context, result.dataPoint, model, value);
@@ -94,7 +94,7 @@ export abstract class DataPointService<
     context: ProtectedProfileContext,
     dataPoint: TDataPointModel,
     model: TModel,
-    newValue: TValue,
+    newValue: TValue
   ): Promise<void> {
     newValue = await this.prepareAndValidateValue(model, dataPoint, newValue);
     if (isEqual(dataPoint.value, newValue)) return;
@@ -116,7 +116,7 @@ export abstract class DataPointService<
     context: ProtectedProfileContext,
     model: TModel,
     updateResult: IDataPointUpdateResult<TDataPointModel>,
-    updateDate: CalendarDate,
+    updateDate: CalendarDate
   ): Promise<void> {
     const { dataPoint } = updateResult;
     const strategy = this.getStrategy(dataPoint.valueType);
@@ -142,7 +142,7 @@ export abstract class DataPointService<
   protected async prepareAndValidateValue(
     model: TModel,
     dataPoint: TDataPointModel,
-    newValue: TValue,
+    newValue: TValue
   ): Promise<TValue> {
     const strategy = this.dataPointStrategyFacade.getService(model.timeSeriesConfig.valueType);
     newValue = strategy.prepareValue(model.timeSeriesConfig, newValue, dataPoint.value);
@@ -178,7 +178,7 @@ export abstract class DataPointService<
     context: ProtectedProfileContext,
     content: TModel,
     date: CalendarDate,
-    value?: TValue,
+    value?: TValue
   ): Promise<IDataPointUpdateResult<TDataPointModel>> {
     const { profile, user } = context;
     let dataPoint = await this.findDataPointByDate(context, content, date);
@@ -194,7 +194,7 @@ export abstract class DataPointService<
         date: toDate(date),
         value,
         valueType: content.timeSeriesConfig.valueType,
-      }),
+      })
     );
 
     return { dataPoint, isNew: true, oldValue: undefined };
@@ -209,7 +209,7 @@ export abstract class DataPointService<
    */
   async findByIntervalLevel(
     context: ProfileContext,
-    filter: CalendarPlanFilter,
+    filter: CalendarPlanFilter
   ): Promise<TDataPointModel[]> {
     return await this.dataPointDao.findByIntervalLevel(context.profile, context.user, filter);
   }

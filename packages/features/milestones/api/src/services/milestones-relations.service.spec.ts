@@ -56,7 +56,7 @@ class TestMilestoneRelationProvider {
           progress: 0.4,
           title: 'Test content',
         } as MilestoneRelationModel<TObjectId>;
-      }),
+      })
     );
   }
 
@@ -108,7 +108,7 @@ describe('MileStonesRelationService', () => {
     const doc = await new TestContentModel(
       new TestContent(context, {
         meta: new ContentMetadata(<ContentMetadata>{ mid }),
-      }),
+      })
     ).save();
 
     return {

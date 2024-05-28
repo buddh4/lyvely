@@ -16,7 +16,7 @@ export abstract class DataPointStrategyDao<T extends DataPoint = DataPoint> exte
       },
       {
         discriminator: buildDiscriminatorName(this.contentName, dataPoint.constructor.name),
-      },
+      }
     );
   }
 
@@ -31,7 +31,7 @@ export abstract class DataPointStrategyDao<T extends DataPoint = DataPoint> exte
   async findUserDataPointByTid(
     content: TimeSeriesContent,
     uid: DocumentIdentity<User>,
-    tid: string,
+    tid: string
   ) {
     // TODO: (TimeSeries History) fetch interval from history
     return this.findOne({
@@ -64,7 +64,7 @@ export abstract class DataPointStrategyDao<T extends DataPoint = DataPoint> exte
   async findByIntervalLevel(
     profile: Profile,
     uid: DocumentIdentity<User> | null | undefined,
-    filter: CalendarPlanFilter,
+    filter: CalendarPlanFilter
   ) {
     // If no uid is given we assume visitor role
     const uidFilter = uid

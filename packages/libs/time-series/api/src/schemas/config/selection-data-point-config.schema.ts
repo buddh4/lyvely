@@ -32,7 +32,7 @@ export class SelectionDataPointConfigRevision
 }
 
 export const SelectionDataPointConfigRevisionSchema = SchemaFactory.createForClass(
-  SelectionDataPointConfigRevision,
+  SelectionDataPointConfigRevision
 );
 
 @Schema({ _id: false, discriminatorKey: 'strategy' })

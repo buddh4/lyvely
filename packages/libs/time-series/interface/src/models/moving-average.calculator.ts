@@ -38,7 +38,7 @@ export class MovingAverageCalculator {
     summary: ITimeSeriesSummary,
     interval: CalendarInterval,
     locale: string,
-    windowSize?: number,
+    windowSize?: number
   ) {
     const calendarPlan = CalendarPlan.getInstance(interval); // 7-day moving average
     windowSize ||= calendarPlan.getDefaultWindowSize();

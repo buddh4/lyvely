@@ -7,7 +7,7 @@ const register = {};
 
 export function registerDataPointStrategy<TClass extends DataPointConfig>(
   strategy: string,
-  type: Type<TClass>,
+  type: Type<TClass>
 ) {
   register[strategy] = type;
 }
@@ -16,14 +16,14 @@ export class DataPointConfigFactory {
   static initializeConfig<T extends DataPointConfig = DataPointConfig>(
     valueType: string,
     inputType: string,
-    settings?: any,
+    settings?: any
   ): T {
     const strategy = DataPointConfigFactory.getStrategyName(valueType, inputType);
     const ConfigType = register[strategy];
 
     if (!ConfigType) {
       throw new IntegrityException(
-        `Could not initialize data point config with strategy '${strategy}'`,
+        `Could not initialize data point config with strategy '${strategy}'`
       );
     }
 
@@ -41,7 +41,7 @@ export class DataPointConfigFactory {
   }
 
   static instantiateConfig<T extends DataPointConfig = DataPointConfig>(
-    config: PropertiesOf<T>,
+    config: PropertiesOf<T>
   ): T {
     const strategy =
       config.strategy || DataPointConfigFactory.getStrategyName(config.valueType, config.inputType);
@@ -49,7 +49,7 @@ export class DataPointConfigFactory {
     const ConfigType = register[strategy];
     if (!ConfigType) {
       throw new IntegrityException(
-        `Could not instantiate data point config with unregistered strategy '${strategy}'`,
+        `Could not instantiate data point config with unregistered strategy '${strategy}'`
       );
     }
 

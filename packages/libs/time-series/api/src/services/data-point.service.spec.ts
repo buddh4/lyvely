@@ -72,7 +72,7 @@ describe('DataPointService', () => {
   async function createTimeSeriesContent(
     user: User,
     profile: Profile,
-    userStrategy: UserAssignmentStrategy = UserAssignmentStrategy.Shared,
+    userStrategy: UserAssignmentStrategy = UserAssignmentStrategy.Shared
   ) {
     const data = {
       someTestField: 'Testing...',
@@ -142,13 +142,13 @@ describe('DataPointService', () => {
         ownerContext,
         content,
         date,
-        1,
+        1
       );
       const { dataPoint: memberDataPoint } = await service.upsertDataPoint(
         memberContext,
         content,
         date,
-        2,
+        2
       );
 
       expect(ownerDataPoint._id).not.toEqual(memberDataPoint._id);
@@ -175,13 +175,13 @@ describe('DataPointService', () => {
         ownerContext,
         content,
         date,
-        1,
+        1
       );
       const { dataPoint: memberDataPoint } = await service.upsertDataPoint(
         memberContext,
         content,
         date,
-        2,
+        2
       );
 
       expect(ownerDataPoint._id).toEqual(memberDataPoint._id);

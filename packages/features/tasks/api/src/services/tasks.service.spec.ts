@@ -36,7 +36,7 @@ describe('TaskService', () => {
   async function createTask(
     context: ProtectedProfileContext,
     userStrategy: UserAssignmentStrategy,
-    timers: Timer[] = [],
+    timers: Timer[] = []
   ) {
     const task = await taskService.createContent(context, {
       title: 'Do something!',

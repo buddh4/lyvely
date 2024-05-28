@@ -28,7 +28,7 @@ export function findAndReplace<T>(
   arr: T[],
   replacement: T,
   condition: keyof T | ((element: T) => boolean),
-  pushIfNotExist = false,
+  pushIfNotExist = false
 ): boolean {
   const check =
     typeof condition === 'function'
@@ -56,7 +56,7 @@ export function findAndReplace<T>(
 export function findAndRemove<T>(
   arr: T[],
   toRemove: T | ((element: T) => boolean),
-  condition?: keyof T | ((element: T) => boolean),
+  condition?: keyof T | ((element: T) => boolean)
 ): boolean {
   const check =
     typeof toRemove === 'function'
@@ -86,7 +86,7 @@ export function findAndRemove<T>(
 export function hasIntersection<T>(
   arr1: T[],
   arr2: T[],
-  compare?: (a: T, b: T) => boolean,
+  compare?: (a: T, b: T) => boolean
 ): boolean {
   if (!arr1?.length || !arr2?.length) return false;
 

@@ -11,7 +11,7 @@ export class TaskMilestoneRelationsService {
       payload.data.contents.map((content) => {
         const progress = payload.data.user && content.getDoneBy(payload.data.user) ? 1 : 0;
         return new MilestoneRelationModel(content, progress);
-      }),
+      })
     );
   }
 }

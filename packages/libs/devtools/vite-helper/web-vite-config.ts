@@ -42,10 +42,10 @@ export const useViteWebConfig = (options: IOptions) => {
         include: [
           resolve(
             __dirname,
-            typeof options.locales === 'string' ? <string>options.locales! : './locales/**',
+            typeof options.locales === 'string' ? <string>options.locales! : './locales/**'
           ),
         ],
-      }) as Plugin,
+      }) as Plugin
     );
   }
 

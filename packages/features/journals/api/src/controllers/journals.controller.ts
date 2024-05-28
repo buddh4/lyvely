@@ -49,7 +49,7 @@ export class JournalsController
   @Get()
   async getByFilter(
     @Query(new ValidationPipe({ transform: true })) filter: CalendarPlanFilter,
-    @Request() req: ProfileRequest,
+    @Request() req: ProfileRequest
   ): Promise<JournalSearchResponse> {
     const { context, user } = req;
     const { models, dataPoints } = await this.timeSeriesService.findTimeSeries(context, filter);
@@ -63,7 +63,7 @@ export class JournalsController
   @Policies(ContentWritePolicy)
   async sort(
     @Body() dto: CalendarPlanSort,
-    @Request() req: ProtectedProfileContentRequest<Journal>,
+    @Request() req: ProtectedProfileContentRequest<Journal>
   ): Promise<SortResponse> {
     const { context, content } = req;
     const sort = await this.timeSeriesService.sort(context, content, dto.interval, dto.attachToId);
@@ -74,7 +74,7 @@ export class JournalsController
   @Policies(ContentWritePolicy)
   async updateDataPoint(
     @Body() dto: UpdateDataPointModel,
-    @Request() req: ProtectedProfileContentRequest<Journal>,
+    @Request() req: ProtectedProfileContentRequest<Journal>
   ): Promise<UpdateDataPointResponse> {
     const { context, content } = req;
 
@@ -82,7 +82,7 @@ export class JournalsController
       context,
       content,
       dto.date,
-      dto.value,
+      dto.value
     );
 
     return new UpdateDataPointResponse({

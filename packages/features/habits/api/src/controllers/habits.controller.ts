@@ -57,14 +57,14 @@ export class HabitsController
   @Get()
   async getByFilter(
     @Query(new ValidationPipe({ transform: true })) filter: CalendarPlanFilter,
-    @Request() req: ProfileRequest,
+    @Request() req: ProfileRequest
   ): Promise<HabitSearchResponse> {
     const { context } = req;
     const { models, dataPoints } = await this.timeSeriesService.findTimeSeries(context, filter);
     return new HabitSearchResponse({
       models: models.map<HabitModel<any>>((c) => c.toModel()),
       dataPoints: dataPoints.map((value) =>
-        DataPointModelConverter.toModel<NumberDataPointModel>(value),
+        DataPointModelConverter.toModel<NumberDataPointModel>(value)
       ),
     });
   }
@@ -81,7 +81,7 @@ export class HabitsController
   @Policies(ContentWritePolicy)
   async updateDataPoint(
     @Body() dto: UpdateHabitDataPointModel,
-    @Request() req: ProtectedProfileContentRequest<Habit>,
+    @Request() req: ProtectedProfileContentRequest<Habit>
   ) {
     const { context, profile, content } = req;
 
@@ -89,7 +89,7 @@ export class HabitsController
       context,
       content,
       dto.date,
-      dto.value,
+      dto.value
     );
 
     return new UpdateHabitDataPointResponse({
@@ -103,7 +103,7 @@ export class HabitsController
   @Policies(ContentWritePolicy)
   async startTimer(
     @Body() dto: TimerUpdateModel,
-    @Request() req: ProtectedProfileContentRequest<Habit>,
+    @Request() req: ProtectedProfileContentRequest<Habit>
   ): Promise<TimerDataPointModel> {
     const { context, content } = req;
     const dataPoint = await this.timerService.startTimer(context, content, dto.date);
@@ -114,7 +114,7 @@ export class HabitsController
   @Policies(ContentWritePolicy)
   async stopTimer(
     @Body() dto: TimerUpdateModel,
-    @Request() req: ProtectedProfileContentRequest<Habit>,
+    @Request() req: ProtectedProfileContentRequest<Habit>
   ): Promise<UpdateHabitDataPointTimerResponse> {
     const { context, content } = req;
 

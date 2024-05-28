@@ -29,14 +29,14 @@ const progress = computed(() => getScaledProgress(score.value || 0));
     <template #trigger="{ toggle }">
       <div data-id="profile-combo-button" class="flex items-stretch justify-center">
         <ly-button
-          class="border-divide rounded-l-2xl border border-r-0 px-3 py-2"
+          class="rounded-l-2xl border border-r-0 border-divide px-3 py-2"
           @click="toggleSidebar">
           <ly-icon name="menu" class="w-3" style="margin-top: -3px" />
         </ly-button>
 
         <div
           role="button"
-          class="border-divide flex items-center justify-center gap-2 border px-3"
+          class="flex items-center justify-center gap-2 border border-divide px-3"
           :aria-label="t('layout.aria.toggle-sidebar')"
           aria-controls="sidebar"
           @click="toggleSidebar">
@@ -69,7 +69,7 @@ const progress = computed(() => getScaledProgress(score.value || 0));
 
         <ly-button
           data-id="btn-toggle-profile-relations"
-          class="border-divide rounded-r-2xl border border-l-0 px-3"
+          class="rounded-r-2xl border border-l-0 border-divide px-3"
           @click="toggle">
           <ly-icon style="margin-top: -1px" name="caret-down" />
         </ly-button>

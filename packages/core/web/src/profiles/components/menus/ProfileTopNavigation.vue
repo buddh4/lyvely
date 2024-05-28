@@ -9,7 +9,7 @@ import { t } from '@/i18n';
 <template>
   <nav
     id="top-navigation"
-    class="no-wrap bg-main z-30 flex items-center justify-between overflow-visible p-0.5 px-2"
+    class="no-wrap z-30 flex items-center justify-between overflow-visible bg-main p-0.5 px-2"
     :aria-label="t('layout.aria.top-nav')">
     <div class="w-1/3">
       <profile-combo-button />

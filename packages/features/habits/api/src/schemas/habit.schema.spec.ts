@@ -76,10 +76,7 @@ describe('Habit', () => {
     expect(habit.content.title).toEqual('Test');
     expect(habit.config.score).toEqual(5);
     expect(habit.timeSeriesConfig.strategy).toEqual(
-      DataPointConfigFactory.getStrategyName(
-        DataPointValueType.Number,
-        DataPointInputType.Checkbox,
-      ),
+      DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Checkbox)
     );
     expect(habit.timeSeriesConfig.inputType).toEqual(DataPointInputType.Checkbox);
     expect(habit.timeSeriesConfig.valueType).toEqual(DataPointValueType.Number);
@@ -96,7 +93,7 @@ describe('Habit', () => {
 
   async function createHabit(
     data?: Partial<CreateHabitModel>,
-    overwrite?: (model: Habit) => void,
+    overwrite?: (model: Habit) => void
   ): Promise<Habit> {
     const { user, profile } = await testData.createUserAndProfile();
     const content = await testData.createHabit(user, profile, data, overwrite);
@@ -129,7 +126,7 @@ describe('Habit', () => {
         (model) => {
           model.meta.archived = true;
           model.meta.sortOrder = 3;
-        },
+        }
       );
 
       const model = instanceToPlain(new HabitModel(search)) as PropertiesOf<HabitModel>;

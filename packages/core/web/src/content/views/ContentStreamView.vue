@@ -34,7 +34,7 @@ async function openCreateContentModal() {
       <div class="flex h-full w-full items-center justify-center">
         <div
           data-id="empty-stream"
-          class="bg-main main border-divide flex cursor-pointer flex-col items-center justify-center gap-3 rounded p-5 md:border md:shadow-lg"
+          class="main flex cursor-pointer flex-col items-center justify-center gap-3 rounded border-divide bg-main p-5 md:border md:shadow-lg"
           @click="openCreateContentModal">
           <img :src="emptyImageUrl" :alt="addButtonText" class="h-72 md:rounded" />
           <h1 class="text-sm font-bold">No content has been added yet</h1>

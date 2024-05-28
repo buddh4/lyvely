@@ -49,7 +49,7 @@ async function seed() {
           Seeder.Transformers.setCreatedAtTimestamp,
           Seeder.Transformers.setUpdatedAtTimestamp,
         ],
-      }),
+      })
     );
   }
 
@@ -154,7 +154,10 @@ function extractFromLatestMail(regex: string, flags: string): string[] {
 }
 
 function createAuthToken(username: string): string {
-  const payload = { sub: getObjectId(username).toString(), purpose: 'jwt-access-token' };
+  const payload = {
+    sub: getObjectId(username).toString(),
+    purpose: 'jwt-access-token',
+  };
   return sign(payload, 'e5d2ece45d3b7919fc7b6a8f19abc0cb7916c71bef385ca11f27a0a3b324e3d2', {
     expiresIn: '30m',
     algorithm: 'HS256',

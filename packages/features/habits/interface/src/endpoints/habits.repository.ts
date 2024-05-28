@@ -27,7 +27,7 @@ export default {
   async updateDataPoint(
     habitId: string,
     model: UpdateHabitDataPointModel,
-    options?: IProfileApiRequestOptions,
+    options?: IProfileApiRequestOptions
   ) {
     return api.post<'updateDataPoint'>(HabitsEndpoints.UPDATE_DATA_POINT(habitId), model, options);
   },

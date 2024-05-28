@@ -21,14 +21,14 @@
     "build": "lyvely-dev build:web",
     "build:staging": "vite build --mode staging && vue-tsc --emitDeclarationOnly",
     "build:dev": "vite build --mode development && vue-tsc --emitDeclarationOnly",
-    "lint": "eslint \"{src,apps,libs,test}/**/*.{ts,vue}\" --fix",
-    "prettier": "prettier . --check",
-    "format": "prettier .  --write"
+    "lint": "eslint \"src/**/*.{ts,vue}\" --fix",
+    "format": "prettier src --write",
+    "prettier": "prettier src --check"
   },
   "author": "Julian Harrer",
   "dependencies": {
-    "vue": "^3.4.25",
-    "@vueuse/core": "^10.9.0",
+    "vue": "^3.4",
+    "@vueuse/core": "^10.9",
     "pinia": "^2.0.35",
     "@lyvely/interface": "workspace:*",
     "@lyvely/calendar-plan-interface": "workspace:*",
@@ -38,19 +38,29 @@
     "@lyvely/dates": "workspace:*",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
-    "vue-router": "^4.3.2"
+    "vue-router": "^4.3"
   },
   "devDependencies": {
     "@lyvely/devtools": "workspace:*",
-    "vite-plugin-externalize-deps": "^0.8.0",
-    "vite": "^5.2.10",
-    "vite-tsconfig-paths": "^4.3.2",
-    "vue-tsc": "^2.0.14",
-    "@vue/runtime-dom": "^3.4.25",
-    "vitest": "^1.5.1",
-    "typescript": "^5.4.5",
+    "vite-plugin-externalize-deps": "^0.8",
+    "vite": "^5.2",
+    "vite-tsconfig-paths": "^4.3",
+    "vue-tsc": "^2.0",
+    "@vue/runtime-dom": "^3.4",
+    "vitest": "^1.5",
+    "typescript": "^5.4",
     "tslib": "^2.6.2",
-    "postcss": "^8.4.38",
-    "postcss-cli": "^11.0.0"
+    "postcss": "^8.4",
+    "postcss-cli": "^11.0",
+    "eslint": "^8.24",
+    "@typescript-eslint/eslint-plugin": "^7.9",
+    "@typescript-eslint/parser": "^7.9",
+    "eslint-config-prettier": "^8.8",
+    "eslint-import-resolver-typescript": "^3.5",
+    "eslint-plugin-import": "^2.26",
+    "eslint-plugin-prettier": "^5.1",
+    "eslint-plugin-vue": "^9.25",
+    "prettier-plugin-tailwindcss": "^0.5",
+    "vue-eslint-parser": "^9.4"
   }
 }

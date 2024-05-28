@@ -26,7 +26,7 @@ export class TasksDao extends ContentTypeDao<Task> implements ICalendarPlanDao<a
   async findByProfileAndInterval(
     profile: Profile,
     plan: CalendarInterval,
-    options: IFetchQueryOptions<Task> = {},
+    options: IFetchQueryOptions<Task> = {}
   ): Promise<Task[]> {
     return this.findAllByProfile(profile, { 'config.interval': plan }, options);
   }
@@ -35,7 +35,7 @@ export class TasksDao extends ContentTypeDao<Task> implements ICalendarPlanDao<a
     profile: Profile,
     user: OptionalUser,
     tIds: string[],
-    options?: IFetchQueryOptions<Task>,
+    options?: IFetchQueryOptions<Task>
   ): Promise<Task[]> {
     // TODO: content visibility and state?
 
@@ -51,7 +51,7 @@ export class TasksDao extends ContentTypeDao<Task> implements ICalendarPlanDao<a
             { 'state.doneBy': { $elemMatch: { tid: { $in: tIds } } } },
           ],
         },
-        options,
+        options
       );
     }
 
@@ -80,14 +80,14 @@ export class TasksDao extends ContentTypeDao<Task> implements ICalendarPlanDao<a
           },
         ],
       },
-      options,
+      options
     );
   }
 
   async pushDoneBy(
     profile: Profile,
     taskId: DocumentIdentity<Task>,
-    doneBy: UserDone,
+    doneBy: UserDone
   ): Promise<boolean> {
     return this.updateOneByProfileAndId(profile, taskId, { $push: { 'state.doneBy': doneBy } });
   }
@@ -95,7 +95,7 @@ export class TasksDao extends ContentTypeDao<Task> implements ICalendarPlanDao<a
   async updateDoneBy(
     profile: Profile,
     taskId: DocumentIdentity<Task>,
-    doneBy: UserDone,
+    doneBy: UserDone
   ): Promise<boolean> {
     const result = await this.updateOneByProfileAndFilter(
       profile,
@@ -106,7 +106,7 @@ export class TasksDao extends ContentTypeDao<Task> implements ICalendarPlanDao<a
       {},
       {
         arrayFilters: [{ 'elem.uid': doneBy.uid }],
-      },
+      }
     );
 
     if (result && taskId instanceof Task) {
@@ -119,7 +119,7 @@ export class TasksDao extends ContentTypeDao<Task> implements ICalendarPlanDao<a
   async pullDoneBy(
     profile: Profile,
     taskId: DocumentIdentity<Task>,
-    user: DocumentIdentity<User>,
+    user: DocumentIdentity<User>
   ): Promise<boolean> {
     const uid = assureObjectId(user);
     const result = await this.updateOneByProfileAndId(profile, taskId, {
@@ -138,7 +138,7 @@ export class TasksDao extends ContentTypeDao<Task> implements ICalendarPlanDao<a
     profile: Profile,
     identity: DocumentIdentity<Task>,
     user: DocumentIdentity<User>,
-    timer: Timer,
+    timer: Timer
   ): Promise<boolean> {
     return this.updateOneByProfileAndFilter(
       profile,
@@ -147,7 +147,7 @@ export class TasksDao extends ContentTypeDao<Task> implements ICalendarPlanDao<a
       {},
       {
         arrayFilters: [{ 'elem.uid': assureObjectId(user) }],
-      },
+      }
     );
   }
 

@@ -47,11 +47,11 @@ const openInviteModal = () => sendInviteStore.openModal(profileStore.profile!.id
       <div
         v-for="relation in profileRelations"
         :key="relation.uid"
-        class="bg-main border-divide flex items-center gap-2 px-3 py-4">
+        class="flex items-center gap-2 border-divide bg-main px-3 py-4">
         <user-relation-avatar v-if="relation.uid === user?.id" />
         <ly-avatar v-else :name="relation.userInfo.displayName" :guid="relation.userInfo.guid" />
         <span>{{ relation.userInfo.displayName }}</span>
-        <ly-badge class="bg-secondary ml-auto">{{ relation.role }}</ly-badge>
+        <ly-badge class="ml-auto bg-secondary">{{ relation.role }}</ly-badge>
       </div>
     </ly-list-page>
   </ly-content-root>

@@ -143,9 +143,9 @@ onMounted(() => {
     :input-error="inputError">
     <input
       :id="inputId"
-      :data-id="dataId"
       ref="input"
       v-model.number="inputValue"
+      :data-id="dataId"
       :placeholder="t(placeholder)"
       :aria-describedby="ariaDescribedby"
       :disabled="disabled"

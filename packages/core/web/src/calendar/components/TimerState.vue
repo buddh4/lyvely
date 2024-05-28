@@ -94,15 +94,15 @@ syncTimerState(isStarted.value);
     >
     <ly-button
       v-if="startable && !model.isStarted()"
-      class="bg-main border-divide flex h-5 w-5 items-center justify-center rounded-full border px-0 py-0 text-sm"
+      class="flex h-5 w-5 items-center justify-center rounded-full border border-divide bg-main px-0 py-0 text-sm"
       @click="emit('start')">
-      <ly-icon name="play" class="text-primary w-3" />
+      <ly-icon name="play" class="w-3 text-primary" />
     </ly-button>
     <ly-button
       v-if="model.isStarted()"
-      class="bg-main border-divide flex h-5 w-5 items-center justify-center rounded-full border px-0 py-0 text-sm"
+      class="flex h-5 w-5 items-center justify-center rounded-full border border-divide bg-main px-0 py-0 text-sm"
       @click="emit('stop')">
-      <ly-icon name="stop" class="text-danger w-3" />
+      <ly-icon name="stop" class="w-3 text-danger" />
     </ly-button>
   </div>
   <ly-modal v-model="showTimerEdit" title="timer.edit.title" @submit="submitEditTimer">

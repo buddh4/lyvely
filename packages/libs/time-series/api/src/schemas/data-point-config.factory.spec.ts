@@ -13,7 +13,7 @@ import { CalendarInterval } from '@lyvely/dates';
 
 const CheckboxNumberStrategy = DataPointConfigFactory.getStrategyName(
   DataPointValueType.Number,
-  DataPointInputType.Checkbox,
+  DataPointInputType.Checkbox
 );
 
 describe('DataPointConfigFactory', () => {
@@ -21,7 +21,7 @@ describe('DataPointConfigFactory', () => {
     it('create checkbox config without settings', async () => {
       const config = DataPointConfigFactory.initializeConfig<CheckboxNumberDataPointConfig>(
         DataPointValueType.Number,
-        DataPointInputType.Checkbox,
+        DataPointInputType.Checkbox
       );
 
       expect(config).toBeDefined();
@@ -47,7 +47,7 @@ describe('DataPointConfigFactory', () => {
       const config = DataPointConfigFactory.initializeConfig<CheckboxNumberDataPointConfig>(
         DataPointValueType.Number,
         DataPointInputType.Checkbox,
-        settings,
+        settings
       );
 
       expectConfig(config, 0, 2, 1);
@@ -67,12 +67,12 @@ describe('DataPointConfigFactory', () => {
       const config = DataPointConfigFactory.initializeConfig<RangeNumberDataPointConfig>(
         DataPointValueType.Number,
         DataPointInputType.Range,
-        settings,
+        settings
       );
 
       expectConfig(config, 0, 2, 1);
       expect(config.strategy).toEqual(
-        DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Range),
+        DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Range)
       );
       expect(config.inputType).toEqual(DataPointInputType.Range);
       expect(config.valueType).toEqual(DataPointValueType.Number);
@@ -88,7 +88,7 @@ describe('DataPointConfigFactory', () => {
       const config = DataPointConfigFactory.initializeConfig<SpinnerNumberDataPointConfig>(
         DataPointValueType.Number,
         DataPointInputType.Spinner,
-        settings,
+        settings
       );
 
       expectConfig(config, 0, 2, 1);
@@ -96,8 +96,8 @@ describe('DataPointConfigFactory', () => {
       expect(config.strategy).toEqual(
         DataPointConfigFactory.getStrategyName(
           DataPointValueType.Number,
-          DataPointInputType.Spinner,
-        ),
+          DataPointInputType.Spinner
+        )
       );
       expect(config.inputType).toEqual(DataPointInputType.Spinner);
       expect(config.valueType).toEqual(DataPointValueType.Number);
@@ -106,16 +106,13 @@ describe('DataPointConfigFactory', () => {
     it('create text config', async () => {
       const config = DataPointConfigFactory.initializeConfig<TextareaTextDataPointConfig>(
         DataPointValueType.Text,
-        DataPointInputType.Textarea,
+        DataPointInputType.Textarea
       );
 
       expect(config).toBeDefined();
       expect(config instanceof TextareaTextDataPointConfig).toEqual(true);
       expect(config.strategy).toEqual(
-        DataPointConfigFactory.getStrategyName(
-          DataPointValueType.Text,
-          DataPointInputType.Textarea,
-        ),
+        DataPointConfigFactory.getStrategyName(DataPointValueType.Text, DataPointInputType.Textarea)
       );
       expect(config.inputType).toEqual(DataPointInputType.Textarea);
       expect(config.valueType).toEqual(DataPointValueType.Text);
@@ -129,7 +126,7 @@ describe('DataPointConfigFactory', () => {
       config: NumberDataPointConfig,
       min: number,
       max: number,
-      optimal: number,
+      optimal: number
     ) {
       expect(config instanceof NumberDataPointConfig).toEqual(true);
       expect(config.min).toEqual(min);

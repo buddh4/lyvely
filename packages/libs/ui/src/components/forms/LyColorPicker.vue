@@ -69,7 +69,7 @@ const colorValue = computed({
 <template>
   <div
     ref="colorInput"
-    class="border-divide mb-2 flex cursor-pointer space-x-2 rounded-md border p-2 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+    class="mb-2 flex cursor-pointer space-x-2 rounded-md border border-divide p-2 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
     @click="clickColorBox">
     <div class="inline-block rounded" :style="colorStyle">&nbsp;</div>
     <div v-if="showHex">{{ modelValue }}</div>
@@ -78,10 +78,10 @@ const colorValue = computed({
     v-model="showColorPicker"
     width="auto"
     :show-header="false"
-    @submit="applyChange"
-    @cancel="cancel"
     submit-button-text="common.select"
-    q>
+    q
+    @submit="applyChange"
+    @cancel="cancel">
     <div ref="colorPicker" class="flex items-center justify-center">
       <sketch
         v-model="colorValue"

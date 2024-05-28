@@ -14,7 +14,10 @@ const createUserData = (username, options) => {
     guid: createHash('sha256').update(username).digest('hex'),
     role: options.role || 'user',
     emails: options.emails || [
-      { email: options.email || username.toLowerCase() + '@test.com', verified: true },
+      {
+        email: options.email || username.toLowerCase() + '@test.com',
+        verified: true,
+      },
     ],
     locale: options.locale || 'en-US',
     timezone: options.timezone || 'America/Los_Angeles',

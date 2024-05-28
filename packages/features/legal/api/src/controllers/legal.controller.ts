@@ -12,11 +12,11 @@ export class LegalController implements LegalEndpoint {
   async getLegalDetails(
     @Param('sectionId') sectionId,
     @Req() req: OptionalUserRequest,
-    @Headers('accept-language') acceptLanguage?: string,
+    @Headers('accept-language') acceptLanguage?: string
   ): Promise<LegalSectionDetails> {
     const section = await this.legalService.getDetails(
       sectionId,
-      req.user?.locale || acceptLanguage,
+      req.user?.locale || acceptLanguage
     );
     if (!section) throw new NotFoundException();
     return section;

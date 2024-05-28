@@ -56,7 +56,7 @@ const padding = 'py-2 md:py-4';
       <ly-responsive>
         <ly-table class="border-collapse">
           <template #body>
-            <tr class="border-divide border-b">
+            <tr class="border-b border-divide">
               <th :class="['w-3/4 text-left', padding]">
                 {{ t('profiles.i18n.week-start') }}
               </th>
@@ -98,7 +98,7 @@ const padding = 'py-2 md:py-4';
       <div
         v-for="(n, i) in 6"
         :key="i"
-        class="hover:bg-highlight flex cursor-pointer rounded p-3"
+        class="flex cursor-pointer rounded p-3 hover:bg-highlight"
         @click="weekStart = i">
         <div class="flex-grow">
           {{ getLocalizedDayName(i, 'long', profile!.locale) }}
@@ -117,7 +117,7 @@ const padding = 'py-2 md:py-4';
       <div
         v-for="(n, i) in 6"
         :key="i"
-        class="hover:bg-highlight flex cursor-pointer rounded p-3"
+        class="flex cursor-pointer rounded p-3 hover:bg-highlight"
         @click="yearStart = i">
         <div class="flex-grow">
           {{ weekStrategy[i] }}

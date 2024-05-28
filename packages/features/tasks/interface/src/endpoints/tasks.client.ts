@@ -27,7 +27,7 @@ import repository from './tasks.repository';
 export class TasksClient implements ITasksClient {
   async getByFilter(
     filter: CalendarPlanFilter,
-    options?: IProfileApiRequestOptions,
+    options?: IProfileApiRequestOptions
   ): Promise<ICalendarPlanResponse<TaskModel>> {
     const { models } = await unwrapResponse(repository.getByFilter(filter, options));
     return {
@@ -38,14 +38,14 @@ export class TasksClient implements ITasksClient {
   sort(
     cid: string,
     move: CalendarPlanSort,
-    options?: IProfileApiRequestOptions,
+    options?: IProfileApiRequestOptions
   ): Promise<SortResponse> {
     return unwrapAndTransformResponse(repository.sort(cid, move, options), SortResponse);
   }
 
   async create(
     dto: CreateTaskModel,
-    options?: IProfileApiRequestOptions,
+    options?: IProfileApiRequestOptions
   ): Promise<UpdateTaskResponse> {
     return unwrapAndTransformResponse(repository.create(dto, options), UpdateTaskResponse);
   }
@@ -53,7 +53,7 @@ export class TasksClient implements ITasksClient {
   update(
     id: string,
     update: UpdateTaskModel,
-    options?: IProfileApiRequestOptions,
+    options?: IProfileApiRequestOptions
   ): Promise<UpdateTaskResponse> {
     return unwrapAndTransformResponse(repository.update(id, update, options), UpdateTaskResponse);
   }
@@ -61,24 +61,24 @@ export class TasksClient implements ITasksClient {
   setDone(
     id: string,
     date: CalendarDate,
-    options?: IProfileApiRequestOptions,
+    options?: IProfileApiRequestOptions
   ): Promise<UpdateTaskStateResponse> {
     const dto = new UpdateTaskStateModel({ date: formatDate(date) });
     return unwrapAndTransformResponse(
       repository.setDone(id, dto, options),
-      UpdateTaskStateResponse,
+      UpdateTaskStateResponse
     );
   }
 
   setUndone(
     id: string,
     date: CalendarDate,
-    options?: IProfileApiRequestOptions,
+    options?: IProfileApiRequestOptions
   ): Promise<UpdateTaskStateResponse> {
     const dto = new UpdateTaskStateModel({ date: formatDate(date) });
     return unwrapAndTransformResponse(
       repository.setUndone(id, dto, options),
-      UpdateTaskStateResponse,
+      UpdateTaskStateResponse
     );
   }
 

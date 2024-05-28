@@ -27,7 +27,7 @@ export class TimeSeriesSummaryWindowEntry implements ITimeSeriesSummaryWindowEnt
 }
 
 const TimeSeriesSummaryWindowEntrySchema = SchemaFactory.createForClass(
-  TimeSeriesSummaryWindowEntry,
+  TimeSeriesSummaryWindowEntry
 );
 
 @NestedSchema()

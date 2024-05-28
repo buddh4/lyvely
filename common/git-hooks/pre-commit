@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# a simple bash function to write out the failure message neatly
+print_error () {
+    printf "[ERROR(git-pre-commit)] Rush has found mismatching package dependencies in your project.\n"
+    printf "\tPlease fix them before committing your work.\n"
+    printf "\t(Run 'rush check' to identify conflicts.)\n"
+}
+
+# run rush check and use the above print_error function if the command has a non zero exit code
+rush check>/dev/null || ( print_error && exit 1 )

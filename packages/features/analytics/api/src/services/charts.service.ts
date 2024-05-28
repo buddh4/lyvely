@@ -33,7 +33,7 @@ export class ChartsService extends ContentTypeService<Chart, CreateChartModel, U
    */
   protected async createInstance(
     context: ProtectedProfileContext,
-    model: CreateChartModel,
+    model: CreateChartModel
   ): Promise<Chart> {
     const { text, title, category } = model;
     const config = this.createChartConfigByCategory(category);
@@ -48,7 +48,7 @@ export class ChartsService extends ContentTypeService<Chart, CreateChartModel, U
     if (model.series) {
       const seriesConfig = await this.chartSeriesService.createAndValidateSeriesConfig(
         chart,
-        model.series,
+        model.series
       );
       chart.addSeries(seriesConfig);
     }
@@ -87,7 +87,7 @@ export class ChartsService extends ContentTypeService<Chart, CreateChartModel, U
   protected async createUpdate(
     context: ProtectedProfileContext,
     content: Chart,
-    model: UpdateChartModel,
+    model: UpdateChartModel
   ): Promise<UpdateQuerySet<Chart>> {
     const update: UpdateQuerySet<Chart> = {};
     if (model.title) {

@@ -59,7 +59,7 @@ describe('TimerDataPointService', () => {
   async function createTimeSeriesContent(
     user: User,
     profile: Profile,
-    userStrategy: UserAssignmentStrategy = UserAssignmentStrategy.Shared,
+    userStrategy: UserAssignmentStrategy = UserAssignmentStrategy.Shared
   ) {
     const data = {
       someTestField: 'Testing...',

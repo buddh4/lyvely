@@ -54,13 +54,11 @@ import LyTable from './components/tables/LyTable.vue';
 import LyMarkdownView from '@/components/markdown/LyMarkdownView.vue';
 import { App } from 'vue';
 import { LyvelySvgIconLibrary } from '@/components/icons/libraries/ly-svg-icon.library';
-import { registerSvgIcon } from '@/components/icons/registries';
+import { registerSvgIcon, registerIconLibrary, LySvgIcons } from '@/components/icons/registries';
 import { LyvelyUiOptions, setConfigOptions } from './config';
 import { Translatable, TranslationAdapter } from './i18n';
 import LyComponentStack from '@/components/stack/LyComponentStack.vue';
 import { vMobileScrollbar } from '@/directives';
-import { registerIconLibrary } from '@/components/icons/registries';
-import { LySvgIcons } from '@/components/icons/registries';
 
 registerIconLibrary(LyvelySvgIconLibrary);
 

@@ -19,7 +19,7 @@ export class ChartsDao extends ContentTypeDao<Chart> {
   async updateSeries(
     chart: DocumentIdentity<Chart>,
     sid: DocumentIdentity<ChartSeriesConfig>,
-    config: IChartSeriesConfig,
+    config: IChartSeriesConfig
   ) {
     sid = assureObjectId(sid);
     const update = { ...config, _id: sid, id: assureStringId(sid) };
@@ -28,7 +28,7 @@ export class ChartsDao extends ContentTypeDao<Chart> {
       chart,
       { $set: { 'config.series.$[elem]': update } },
       {},
-      { arrayFilters: [{ 'elem._id': sid }] },
+      { arrayFilters: [{ 'elem._id': sid }] }
     );
 
     if (result && chart instanceof Chart) {

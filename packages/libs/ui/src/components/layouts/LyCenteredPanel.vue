@@ -41,7 +41,7 @@ const computedIconClass = computed(() =>
   <section class="flex w-full justify-center md:h-screen md:rounded md:p-4">
     <div class="md:max-h-auto m-auto flex w-full flex-col gap-4 md:min-h-0" :class="widthClass">
       <div
-        class="bg-main main h-screen-s border-divide p-4 shadow-xl md:h-auto md:rounded md:border">
+        class="main h-screen-s border-divide bg-main p-4 shadow-xl md:h-auto md:rounded md:border">
         <slot name="header">
           <div class="flex items-center justify-center">
             <ly-icon v-if="icon?.length" :class="computedIconClass" :name="icon" />

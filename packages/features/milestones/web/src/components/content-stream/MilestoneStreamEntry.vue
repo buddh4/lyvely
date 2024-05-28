@@ -15,9 +15,9 @@ const props = defineProps<IProps>();
 <template>
   <content-stream-entry v-bind="props" :merge="true">
     <template #image>
-      <div class="border-divide bg-main flex h-8 w-8 justify-center rounded-full border">
+      <div class="flex h-8 w-8 justify-center rounded-full border border-divide bg-main">
         <router-link :to="{ name: 'Milestones' }">
-          <ly-icon name="target" class="text-main h-3.5" />
+          <ly-icon name="target" class="h-3.5 text-main" />
         </router-link>
       </div>
     </template>
@@ -27,7 +27,7 @@ const props = defineProps<IProps>();
         <span>{{ model.content.title }}</span>
       </div>
       <div>
-        <p v-if="model.content.text?.length" class="text-dimmed mt-2 text-sm">
+        <p v-if="model.content.text?.length" class="mt-2 text-sm text-dimmed">
           {{ model.content.text }}
         </p>
       </div>

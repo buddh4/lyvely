@@ -29,7 +29,7 @@ export class TextDataPointConfigRevision
 }
 
 export const TextDataPointConfigRevisionSchema = SchemaFactory.createForClass(
-  TextDataPointConfigRevision,
+  TextDataPointConfigRevision
 );
 
 @Schema({ _id: false, discriminatorKey: 'strategy' })

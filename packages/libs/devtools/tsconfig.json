@@ -6,6 +6,5 @@
     "baseUrl": "./",
     "types": ["cypress", "node"]
   },
-  "exclude": [
-    "node_modules", "dist", "src/**/tests/**/*", "**/*.spec.ts"]
+  "exclude": ["node_modules", "dist", "src/**/tests/**/*", "**/*.spec.ts"]
 }

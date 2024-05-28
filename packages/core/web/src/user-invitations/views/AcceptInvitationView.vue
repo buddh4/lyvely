@@ -65,7 +65,7 @@ const title = computed(() => (error.value?.length ? 'error.title' : 'invitations
           <span class="text-sm font-bold">{{ userInviteInfo.hostName }}</span>
         </div>
         <div class="m-2 flex items-center justify-center">
-          <ly-icon name="envelope-open" class="text-secondary w-12" />
+          <ly-icon name="envelope-open" class="w-12 text-secondary" />
         </div>
 
         <div class="flex items-center justify-center gap-1">

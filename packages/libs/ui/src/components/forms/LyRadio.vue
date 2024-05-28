@@ -67,10 +67,10 @@ onMounted(() => {
       <label :for="radioId" class="inline-flex items-center">
         <input
           :id="radioId"
-          :data-id="radioDataId"
-          :name="inputId"
           ref="input"
           v-model="inputValue"
+          :data-id="radioDataId"
+          :name="inputId"
           :aria-describedby="ariaDescribedby"
           type="radio"
           :disabled="disabled"
@@ -83,7 +83,7 @@ onMounted(() => {
         <span v-if="label" class="label ml-2 text-sm">{{ t(label) }}</span>
       </label>
     </div>
-    <span v-if="showHelpText && helpText" class="text-dimmed text-sm">
+    <span v-if="showHelpText && helpText" class="text-sm text-dimmed">
       {{ t(helpText) }}
     </span>
   </div>

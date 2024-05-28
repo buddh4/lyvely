@@ -14,5 +14,5 @@ export class DataPointProcessorStrategyRegistry {
 }
 
 export const useDataPointStrategyRegistry = useSingleton(
-  () => new DataPointProcessorStrategyRegistry(),
+  () => new DataPointProcessorStrategyRegistry()
 );

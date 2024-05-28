@@ -97,7 +97,7 @@ onBeforeRouteLeave(unwatchFilter);
           class="search mb-4 w-full py-1"
           :placeholder="t('common.filter.search')"
           type="text" />
-        <ly-icon name="search" class="text-dimmed pointer-events-none absolute right-2.5 top-2" />
+        <ly-icon name="search" class="pointer-events-none absolute right-2.5 top-2 text-dimmed" />
       </div>
 
       <ly-checkbox v-model="filter.archived" class="mb-4" label="common.filter.archive" />

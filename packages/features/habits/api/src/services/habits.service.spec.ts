@@ -40,7 +40,7 @@ describe('HabitService', () => {
 
   const createHabit = async (
     context: ProtectedProfileContext,
-    raw?: PropertiesOf<CreateHabitModel>,
+    raw?: PropertiesOf<CreateHabitModel>
   ) => {
     raw = raw || {
       min: 0,
@@ -87,7 +87,7 @@ describe('HabitService', () => {
           score: 2,
           min: 1,
           optimal: 2,
-        }),
+        })
       );
 
       await habitsService.updateContentSet(context, habit, habit, {
@@ -121,7 +121,7 @@ describe('HabitService', () => {
           min: 1,
           optimal: 1,
           score: 2,
-        }),
+        })
       );
 
       habit.applyUpdate(
@@ -133,7 +133,7 @@ describe('HabitService', () => {
           min: 1,
           optimal: 2,
           score: 2,
-        }),
+        })
       );
 
       expect(habit.config.timeSeries.max).toEqual(8);
@@ -151,7 +151,7 @@ describe('HabitService', () => {
           min: 1,
           optimal: 1,
           score: 2,
-        }),
+        })
       );
 
       habit.applyUpdate(
@@ -162,7 +162,7 @@ describe('HabitService', () => {
           min: 1,
           optimal: 2,
           score: 2,
-        }),
+        })
       );
 
       await habitsService.updateContentSet(context, habit, habit);
@@ -190,7 +190,7 @@ describe('HabitService', () => {
         min: 1,
         optimal: 1,
         score: 2,
-      }),
+      })
     );
 
     habit.applyUpdate(
@@ -201,7 +201,7 @@ describe('HabitService', () => {
         min: 1,
         optimal: 2,
         score: 2,
-      }),
+      })
     );
 
     await habitsService.updateContentSet(context, habit, habit);
@@ -214,7 +214,7 @@ describe('HabitService', () => {
         min: 1,
         optimal: 2,
         score: 2,
-      }),
+      })
     );
 
     await habitsService.updateContentSet(context, habit, habit);

@@ -107,7 +107,7 @@ export class DataPoint implements PropertiesOf<DataPointModel<TObjectId>>, ITimi
     profile: Profile,
     user: User,
     content: TimeSeriesContent,
-    data?: BaseDocumentData<DataPoint>,
+    data?: BaseDocumentData<DataPoint>
   ) {
     BaseDocument.init(this, data);
 

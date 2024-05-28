@@ -44,7 +44,7 @@ const visibilityOptions: ISelectOptions = getProfileVisibilityOptions();
           </div>
           <button
             data-id="btn-change-avatar"
-            class="bg-highlight border-divide ml-3 flex w-20 cursor-pointer items-center justify-center rounded border"
+            class="ml-3 flex w-20 cursor-pointer items-center justify-center rounded border border-divide bg-highlight"
             @click="showUpdateAvatarModal = true">
             <profile-avatar class="m-3" />
           </button>

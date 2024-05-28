@@ -75,24 +75,24 @@ function backToStream() {
     <template #before="{ stream }">
       <div
         v-if="content"
-        class="border-divide mx-0 mb-2 mt-0 flex flex-col border md:mx-2 md:rounded">
+        class="mx-0 mb-2 mt-0 flex flex-col border border-divide md:mx-2 md:rounded">
         <content-details-header :content="content" />
         <div class="border-divide">
           <component :is="getDetailsComponent(content)" :model="content" />
         </div>
       </div>
-      <div v-else class="border-divide bg-main m-4 rounded border p-2 md:p-4">
+      <div v-else class="m-4 rounded border border-divide bg-main p-2 md:p-4">
         <ly-loader />
       </div>
       <div class="mb-2 flex w-full items-center justify-center gap-1">
         <ly-button
-          class="secondary text-xxs text-secondary dark:text-secondary py-1 font-semibold uppercase"
+          class="secondary py-1 text-xxs font-semibold uppercase text-secondary dark:text-secondary"
           @click="backToStream">
           {{ backButtonText }}
         </ly-button>
         <ly-button
           v-if="!stream.state.value.isEnd"
-          class="secondary text-xxs text-secondary dark:text-secondary py-1 font-semibold uppercase"
+          class="secondary py-1 text-xxs font-semibold uppercase text-secondary dark:text-secondary"
           @click="stream.loadTail().then(() => stream.scrollToTail())"
           >{{ t('common.load_more') }}</ly-button
         >

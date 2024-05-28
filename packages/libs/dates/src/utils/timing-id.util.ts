@@ -33,7 +33,7 @@ export function toTimingId(
   cd: CalendarDateTime,
   level = CalendarInterval.Daily,
   locale = 'en',
-  preferences?: ICalendarPreferences,
+  preferences?: ICalendarPreferences
 ) {
   if (level <= CalendarInterval.Unscheduled) return 'U';
   if (level === CalendarInterval.Weekly) return toWeekTimingId(cd, locale, preferences);
@@ -67,7 +67,7 @@ export function toTimingId(
 export function toWeekTimingId(
   cd: CalendarDateTime,
   locale: string,
-  preferences?: ICalendarPreferences,
+  preferences?: ICalendarPreferences
 ): string {
   const date = dateTime(cd, locale, preferences);
   let weekYear: number, month: number, quarter: number, firstDayOfWeek: IDateTime;
@@ -114,7 +114,7 @@ function pad(number: number): string {
 export function getWeekOfYear(
   cd: CalendarDateTime,
   locale: string,
-  preferences?: ICalendarPreferences,
+  preferences?: ICalendarPreferences
 ) {
   const date = dateTime(cd, locale, preferences);
   return preferences?.yearStart === 0 ? date.isoWeek() : date.week();
@@ -151,7 +151,7 @@ export function parseTimingId(tid: string): ITiming {
       }
       return timing;
     },
-    { tid } as ITiming,
+    { tid } as ITiming
   );
 }
 
@@ -171,7 +171,7 @@ export function getTimingIds(
   d: CalendarDateTime,
   locale: string,
   level = CalendarInterval.Unscheduled,
-  preferences?: ICalendarPreferences,
+  preferences?: ICalendarPreferences
 ) {
   const dayId = toTimingId(d, CalendarInterval.Daily, locale);
   const weekId = toWeekTimingId(d, locale, preferences);

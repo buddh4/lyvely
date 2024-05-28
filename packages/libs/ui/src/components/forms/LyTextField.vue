@@ -126,9 +126,9 @@ onMounted(() => {
 
     <input
       :id="inputId"
-      :data-id="dataId"
       ref="input"
       v-model="inputValue"
+      :data-id="dataId"
       :name="name"
       :disabled="disabled"
       :placeholder="t(placeholder)"

@@ -13,7 +13,7 @@ export function registerDataPointConfigStrategy(name: string, schema: Schema) {
 export class TimeSeriesConfigSchemaFactory {
   static createForClass<TClass extends { timeSeries: DataPointConfig } = any>(
     target: Type<TClass>,
-    valueConfigStrategies: string[],
+    valueConfigStrategies: string[]
   ) {
     const Schema = SchemaFactory.createForClass(target);
     valueConfigStrategies.forEach((configStrategy) => {
@@ -21,7 +21,7 @@ export class TimeSeriesConfigSchemaFactory {
       if (schema) {
         Schema.path<Subdocument>('timeSeries').discriminator(
           configStrategy,
-          SchemaMapping[configStrategy],
+          SchemaMapping[configStrategy]
         );
       } else {
         console.warn(`Unknown datapoint strategy ${configStrategy}`);

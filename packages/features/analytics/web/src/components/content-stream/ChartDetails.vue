@@ -28,7 +28,7 @@ useContentStore().onContentUpdated(ChartModel.contentType, (content: ChartModel)
 <template>
   <content-details :model="modelValue">
     <template #image>
-      <div class="border-divide bg-main flex h-8 w-8 justify-center rounded-full border">
+      <div class="flex h-8 w-8 justify-center rounded-full border border-divide bg-main">
         <router-link :to="{ name: 'Analytics' }">
           <ly-icon name="statistics" class="text-main" />
         </router-link>

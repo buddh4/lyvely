@@ -67,7 +67,7 @@ export class CalendarPlanStore<
   getModelsByIntervalFilter(
     interval: CalendarInterval,
     filter?: ContentFilter<Model, any>,
-    tid?: string, // Todo: This is currently only used by task store, probably should move this to filter logic...
+    tid?: string // Todo: This is currently only used by task store, probably should move this to filter logic...
   ) {
     return this.filterModels((entry) => {
       return entry.interval === interval && (!filter || filter.check(entry));

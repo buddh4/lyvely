@@ -18,7 +18,7 @@ const appName = useAppConfigStore().get('appName');
 <template>
   <content-details :model="model">
     <template #image>
-      <div class="border-divide bg-main flex h-8 w-8 justify-center rounded-full border">
+      <div class="flex h-8 w-8 justify-center rounded-full border border-divide bg-main">
         <ly-icon name="lyvely" class="text-pop" />
       </div>
     </template>

@@ -11,7 +11,7 @@ import { NestedSchema } from '@lyvely/api';
 
 const strategy = DataPointConfigFactory.getStrategyName(
   DataPointValueType.Selection,
-  DataPointInputType.Checkbox,
+  DataPointInputType.Checkbox
 );
 
 @NestedSchema()
@@ -32,5 +32,5 @@ export class CheckboxSelectionDataPointConfig extends SelectionDataPointConfig {
 
 export const CheckboxSelectionDataPointConfigSchema = DataPointConfigSchemaFactory.createForClass(
   strategy,
-  CheckboxSelectionDataPointConfig,
+  CheckboxSelectionDataPointConfig
 );

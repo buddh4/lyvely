@@ -37,7 +37,7 @@ const showMore = (value: boolean) => (showAll.value = value);
     <draggable
       :list="tasks"
       tag="div"
-      class="divide-divide divide-y"
+      class="divide-y divide-divide"
       :data-calendar-interval="interval"
       group="tasks"
       handle=".icon-drag"
@@ -51,13 +51,13 @@ const showMore = (value: boolean) => (showAll.value = value);
     </draggable>
     <div
       v-if="hasMore && !showAll"
-      class="bg-main divide-divide border-divide flex cursor-pointer items-center justify-center divide-y border-x border-t p-2"
+      class="flex cursor-pointer items-center justify-center divide-y divide-divide border-x border-t border-divide bg-main p-2"
       @click="showMore(true)">
       Show More
     </div>
     <div
       v-else-if="hasMore && showAll"
-      class="bg-main divide-divide border-divide flex cursor-pointer items-center justify-center divide-y border-x border-t p-2"
+      class="flex cursor-pointer items-center justify-center divide-y divide-divide border-x border-t border-divide bg-main p-2"
       @click="showMore(false)">
       Show Less
     </div>

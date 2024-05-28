@@ -31,20 +31,20 @@ const verifyEmail = (email: string) => {
 
 <template>
   <ly-list-page v-if="user" title="user-account.my-account.info.label" class="mb-2" icon="info">
-    <table class="bg-main w-full border-collapse rounded text-sm">
+    <table class="w-full border-collapse rounded bg-main text-sm">
       <tr>
-        <th class="border-divide border-b p-3 text-left">
+        <th class="border-b border-divide p-3 text-left">
           {{ t('user-account.my-account.info.username') }}
         </th>
-        <td class="border-divide border-b p-3 text-left">
+        <td class="border-b border-divide p-3 text-left">
           {{ user.username }}
         </td>
       </tr>
       <tr>
-        <th class="border-divide border-b p-3 text-left">
+        <th class="border-b border-divide p-3 text-left">
           {{ t('user-account.my-account.info.member-since') }}
         </th>
-        <td class="border-divide border-b p-3 text-left">
+        <td class="border-b border-divide p-3 text-left">
           <ly-formatted-date :date="user.createdAt" />
         </td>
       </tr>
@@ -66,23 +66,23 @@ const verifyEmail = (email: string) => {
     <div
       v-for="userEmail in userEmails"
       :key="userEmail.email"
-      class="bg-main border-divide flex items-center px-3 py-4">
+      class="flex items-center border-divide bg-main px-3 py-4">
       <ly-icon
         v-if="userEmail.email === user.email"
         name="star"
-        class="text-pop mr-1"
+        class="mr-1 text-pop"
         title="user-account.my-account.info.main_email"
         tabindex="0" />
       <ly-icon
         v-else-if="!userEmail.verified"
         name="warning"
-        class="text-warning mr-1"
+        class="mr-1 text-warning"
         title="user-account.my-account.info.unverified_email"
         tabindex="0" />
       <ly-icon
         v-else
         name="success"
-        class="text-success-light mr-1"
+        class="mr-1 text-success-light"
         title="user-account.my-account.info.verified_email"
         tabindex="0" />
 

@@ -30,7 +30,7 @@ export class JournalsService extends ContentTypeService<Journal, CreateJournalMo
    */
   protected override async createInstance(
     context: ProtectedProfileContext,
-    model: CreateJournalModel,
+    model: CreateJournalModel
   ): Promise<Journal> {
     return Journal.create(context, model);
   }
@@ -47,7 +47,7 @@ export class JournalsService extends ContentTypeService<Journal, CreateJournalMo
   protected override async createUpdate(
     context: ProtectedProfileContext,
     content: Journal,
-    model: Partial<CreateJournalModel>,
+    model: Partial<CreateJournalModel>
   ): Promise<UpdateQuerySet<Journal>> {
     return content.applyUpdate(model);
   }

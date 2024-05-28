@@ -45,7 +45,7 @@ export class TasksService extends ContentTypeService<Task, CreateTaskModel> {
    */
   protected override async createInstance(
     context: ProtectedProfileContext,
-    model: CreateTaskModel,
+    model: CreateTaskModel
   ): Promise<Task> {
     const { profile } = context;
     return Task.create(context, model);
@@ -65,7 +65,7 @@ export class TasksService extends ContentTypeService<Task, CreateTaskModel> {
   protected override async createUpdate(
     context: ProtectedProfileContext,
     task: Task,
-    update: UpdateTaskModel,
+    update: UpdateTaskModel
   ): Promise<UpdateQuerySet<Task>> {
     task.applyContentUpdate({
       title: update.title ?? task.content.title,
@@ -94,7 +94,7 @@ export class TasksService extends ContentTypeService<Task, CreateTaskModel> {
       date,
       task.config.interval,
       profile.locale,
-      profile.settings?.calendar,
+      profile.settings?.calendar
     );
     const doneBy = { uid: assureObjectId(user), tid: timingId, date: new Date() };
     const isDoneByUser = task.isDoneByUser(user);
@@ -104,7 +104,7 @@ export class TasksService extends ContentTypeService<Task, CreateTaskModel> {
         context,
         task,
         { 'state.doneBy': [doneBy] },
-        { streamSort: true },
+        { streamSort: true }
       );
     } else if (!isDoneByUser) {
       await this.contentDao.pushDoneBy(profile, task, doneBy);
@@ -123,7 +123,7 @@ export class TasksService extends ContentTypeService<Task, CreateTaskModel> {
     context: ProtectedProfileContext,
     task: Task,
     date: CalendarDate,
-    subtract = false,
+    subtract = false
   ) {
     return this.scoreService.saveScore(
       context,
@@ -133,7 +133,7 @@ export class TasksService extends ContentTypeService<Task, CreateTaskModel> {
         userStrategy: task.config.userStrategy,
         score: subtract ? -task.config.score : task.config.score,
         date: date,
-      }),
+      })
     );
   }
 
@@ -156,7 +156,7 @@ export class TasksService extends ContentTypeService<Task, CreateTaskModel> {
         {
           'state.doneBy': [],
         },
-        { streamSort: true },
+        { streamSort: true }
       );
     } else {
       await this.contentDao.pullDoneBy(profile, task, user);
@@ -220,7 +220,7 @@ export class TasksService extends ContentTypeService<Task, CreateTaskModel> {
   async updateTimerValue(
     context: ProtectedProfileContext,
     task: Task,
-    value: number,
+    value: number
   ): Promise<Timer> {
     const { user } = context;
     const timer = task.getTimer(user) || new Timer(user);

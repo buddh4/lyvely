@@ -48,7 +48,7 @@ describe('HabitDataPointService', () => {
 
       const logs = await habitDataPointService.findByIntervalLevel(
         context,
-        new CalendarPlanFilter('2021-04-03'),
+        new CalendarPlanFilter('2021-04-03')
       );
 
       expect(logs.length).toEqual(0);
@@ -62,7 +62,7 @@ describe('HabitDataPointService', () => {
 
       const logs = await habitDataPointService.findByIntervalLevel(
         context,
-        new CalendarPlanFilter('2021-04-03'),
+        new CalendarPlanFilter('2021-04-03')
       );
 
       expect(logs.length).toEqual(1);
@@ -78,7 +78,7 @@ describe('HabitDataPointService', () => {
 
       const logs = await habitDataPointService.findByIntervalLevel(
         context,
-        new CalendarPlanFilter('2021-04-03'),
+        new CalendarPlanFilter('2021-04-03')
       );
 
       expect(logs.length).toEqual(1);
@@ -95,7 +95,7 @@ describe('HabitDataPointService', () => {
         context,
         habit,
         '2021-01-01',
-        2,
+        2
       );
 
       expect(dataPoint.tid).toEqual(toTimingId('2021-01-01'));
@@ -117,7 +117,7 @@ describe('HabitDataPointService', () => {
         context,
         habit,
         new Date(),
-        2,
+        2
       );
       expect(isNew).toEqual(true);
       expect(dataPoint._id).toBeDefined();
@@ -141,13 +141,13 @@ describe('HabitDataPointService', () => {
         context,
         habit,
         date,
-        3,
+        3
       );
 
       const updatedDataPoint = await habitDataPointService.findDataPointByDate(
         context,
         habit,
-        date,
+        date
       );
 
       expect(isNew).toEqual(false);
@@ -203,7 +203,7 @@ describe('HabitDataPointService', () => {
         context,
         habit,
         new Date(),
-        2,
+        2
       );
       expect(dataPoint._id).toBeDefined();
       expect(dataPoint.uid).toEqual(user._id);
@@ -221,13 +221,13 @@ describe('HabitDataPointService', () => {
         context,
         habit,
         new Date(),
-        2,
+        2
       );
       const { dataPoint: dataPoint2 } = await habitDataPointService.upsertDataPoint(
         context,
         habit,
         new Date(),
-        3,
+        3
       );
       expect(dataPoint2._id).toEqual(dataPoint1._id);
       expect(dataPoint2.value).toEqual(3);
@@ -245,13 +245,13 @@ describe('HabitDataPointService', () => {
         ownerContext,
         habit,
         new Date(),
-        2,
+        2
       );
       const { dataPoint: dataPoint2 } = await habitDataPointService.upsertDataPoint(
         memberContext,
         habit,
         new Date(),
-        3,
+        3
       );
       expect(dataPoint2._id).not.toEqual(dataPoint1._id);
       expect(dataPoint2.value).toEqual(3);

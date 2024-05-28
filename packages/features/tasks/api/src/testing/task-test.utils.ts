@@ -50,7 +50,7 @@ export class TaskTestDataUtil extends ProfileTestDataUtils {
   async createTask(
     context: ProtectedProfileContext,
     data?: Partial<CreateTaskModel>,
-    overwrite?: (model: Task) => void,
+    overwrite?: (model: Task) => void
   ): Promise<Task> {
     const initData = <CreateTaskModel>(
       Object.assign({}, { title: 'test', interval: CalendarInterval.Daily }, data || {})

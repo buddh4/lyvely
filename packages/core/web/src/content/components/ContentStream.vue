@@ -144,7 +144,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div v-if="!isReady" class="bg-body absolute z-50 h-full w-full">
+  <div v-if="!isReady" class="absolute z-50 h-full w-full bg-body">
     <div class="flex h-full w-full items-center justify-center">
       <ly-loader />
     </div>
@@ -154,7 +154,7 @@ onUnmounted(() => {
     ref="streamRoot"
     v-mobile-scrollbar
     data-id="content-stream-root"
-    class="bg-body scrollbar-thin flex-grow overflow-auto pt-2 md:p-1 md:pt-4">
+    class="scrollbar-thin flex-grow overflow-auto bg-body pt-2 md:p-1 md:pt-4">
     <div v-if="isInitialized" class="h-full">
       <slot name="before" :stream="stream"></slot>
       <div class="relative">
@@ -172,7 +172,7 @@ onUnmounted(() => {
         <slot v-else-if="!isLoading" name="stream-empty" :stream="stream"></slot>
       </div>
     </div>
-    <div v-else-if="error" class="bg-body absolute z-50 h-full w-full p-5">
+    <div v-else-if="error" class="absolute z-50 h-full w-full bg-body p-5">
       <ly-alert type="danger" class="justify-center">
         <div class="flex flex-col items-center justify-center gap-2">
           <div>{{ t(error) }}</div>

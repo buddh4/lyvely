@@ -70,12 +70,12 @@ const { direction: overlayDirection } = useSwipe(appDrawerOverlay, {
     ref="appDrawer"
     :class="['z-50 overflow-hidden will-change-transform', { toggled: !showSidebar }]"
     :aria-label="ariaLabel">
-    <div class="h-screen-s flex flex-col flex-wrap content-start items-stretch">
+    <div class="flex h-screen-s flex-col flex-wrap content-start items-stretch">
       <div class="w-full px-3 py-2">
         <a
           class="flex h-10 cursor-pointer items-center gap-2 font-extrabold uppercase tracking-wider no-underline"
           @click="toggleSidebar">
-          <ly-icon name="lyvely" class="text-lyvely w-5 fill-current" />
+          <ly-icon name="lyvely" class="w-5 fill-current text-lyvely" />
           <transition name="fade">
             <img v-if="showLabels" class="lyvely-logo-text" alt="Lyvely Logo" :src="imageUrl" />
           </transition>
@@ -162,7 +162,7 @@ const { direction: overlayDirection } = useSwipe(appDrawerOverlay, {
 }
 
 #app-drawer .nav a.router-link-active {
-  @apply border-pop border-l-4 font-bold;
+  @apply border-l-4 border-pop font-bold;
 }
 
 #app-drawer .nav a:hover:not(.router-link-active) {

@@ -12,7 +12,9 @@ const props = defineProps<IProps>();
 const cssClass = computed(() => [
   'flex border-l-4 hover:bg-highlight cursor-pointer',
   { 'border-transparent': props.notification.seen },
-  { 'hover:border-slate-200 dark:hover:border-slate-600': props.notification.seen },
+  {
+    'hover:border-slate-200 dark:hover:border-slate-600': props.notification.seen,
+  },
   { 'border-pop': !props.notification.seen },
 ]);
 </script>

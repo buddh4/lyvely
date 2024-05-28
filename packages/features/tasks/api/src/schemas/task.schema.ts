@@ -174,7 +174,7 @@ export class Task
 
   public static create(
     context: ProtectedProfileContext,
-    createModel: PropertiesOf<CreateTaskModel>,
+    createModel: PropertiesOf<CreateTaskModel>
   ): Task {
     const { title, text, score, interval, userStrategy } = createModel;
     return new Task(context, {

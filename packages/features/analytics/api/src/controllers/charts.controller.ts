@@ -59,7 +59,7 @@ export class ChartsController
   @Post(ChartsEndpointPaths.ADD_SERIES(':cid'))
   async addSeries(
     @Body() model: UpdateChartSeriesModel,
-    @Request() request: ProtectedProfileContentRequest<Chart>,
+    @Request() request: ProtectedProfileContentRequest<Chart>
   ): Promise<ChartModel> {
     const { content, context } = request;
 
@@ -72,7 +72,7 @@ export class ChartsController
   async updateSeries(
     @Param('sid') sid,
     @Body() model: UpdateChartSeriesModel,
-    @Request() request: ProtectedProfileContentRequest<Chart>,
+    @Request() request: ProtectedProfileContentRequest<Chart>
   ): Promise<ChartModel> {
     const { context, content } = request;
 
@@ -84,7 +84,7 @@ export class ChartsController
   @Delete(ChartsEndpointPaths.DELETE_SERIES(':cid', ':sid'))
   async deleteSeries(
     @Param('sid') sid,
-    @Request() request: ProtectedProfileContentRequest<Chart>,
+    @Request() request: ProtectedProfileContentRequest<Chart>
   ): Promise<ChartModel> {
     const { context, content } = request;
 
@@ -96,7 +96,7 @@ export class ChartsController
   @Get(ChartsEndpointPaths.SERIES_DATA(':cid'))
   async getSeriesData(
     @Query() query: Record<string, string>,
-    @Request() request: ProfileContentRequest<Chart>,
+    @Request() request: ProfileContentRequest<Chart>
   ): Promise<ChartSeriesDataResponse> {
     const { context, content } = request;
     const result = await this.chartSeriesService.getSeriesData(context, content, query);

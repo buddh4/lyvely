@@ -1,9 +1,8 @@
 <script lang="ts" setup>
 import { useBaseInputSetup } from '@/components/forms/BaseInput';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, HTMLAttributes } from 'vue';
 import { useHelpText } from './help-text.util';
 import { t, Translatable } from '@/i18n';
-import { HTMLAttributes } from 'vue';
 
 export interface IProps {
   id?: string;
@@ -95,10 +94,10 @@ onMounted(() => {
     <div class="flex">
       <label class="inline-flex items-center">
         <input
-          ref="checkbox"
           :id="inputId"
-          :data-id="dataId"
+          ref="checkbox"
           v-model="inputValue"
+          :data-id="dataId"
           :aria-describedby="ariaDescribedby"
           type="checkbox"
           :disabled="disabled"
@@ -113,7 +112,7 @@ onMounted(() => {
       <ly-icon
         v-if="hasHelpText"
         name="info"
-        class="text-info-dark ml-1 w-4"
+        class="ml-1 w-4 text-info-dark"
         @click="showHelpText = !showHelpText" />
     </div>
     <ly-alert

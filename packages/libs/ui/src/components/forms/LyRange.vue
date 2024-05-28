@@ -102,9 +102,9 @@ const { inputId, dataId } = useBaseInputSetup(props, emit);
     <label v-if="label" :for="inputId" class="form-label">{{ t(label) }}</label>
     <input
       :id="inputId"
-      :data-id="dataId"
       ref="input"
       v-model="inputValue"
+      :data-id="dataId"
       :disabled="disabled"
       :aria-describedby="ariaDescribedby"
       :step="step"
@@ -116,7 +116,7 @@ const { inputId, dataId } = useBaseInputSetup(props, emit);
       type="range"
       @change="onChange"
       @focusout="onFocusOut" />
-    <span v-if="showHelpText && helpText" class="text-dimmed text-sm">
+    <span v-if="showHelpText && helpText" class="text-sm text-dimmed">
       {{ t(helpText) }}
     </span>
   </section>

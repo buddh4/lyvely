@@ -73,7 +73,7 @@ describe('TimeSeriesService', () => {
   async function createTimeSeriesContent(
     user: User,
     profile: Profile,
-    userStrategy: UserAssignmentStrategy = UserAssignmentStrategy.Shared,
+    userStrategy: UserAssignmentStrategy = UserAssignmentStrategy.Shared
   ) {
     const data = {
       someTestField: 'Testing...',
@@ -111,7 +111,7 @@ describe('TimeSeriesService', () => {
       expect(updatedContent!.timeSeriesSummary.window?.length).toEqual(1);
       expect(updatedContent!.timeSeriesSummary.window[0].value).toEqual(5);
       expect(updatedContent!.timeSeriesSummary.window[0].tid).toEqual(
-        toTimingId(date, CalendarInterval.Daily),
+        toTimingId(date, CalendarInterval.Daily)
       );
     });
 
@@ -139,7 +139,7 @@ describe('TimeSeriesService', () => {
       expect(updatedContent!.timeSeriesSummary.window?.length).toEqual(1);
       expect(updatedContent!.timeSeriesSummary.window[0].value).toEqual(5);
       expect(updatedContent!.timeSeriesSummary.window[0].tid).toEqual(
-        toTimingId(date, CalendarInterval.Daily),
+        toTimingId(date, CalendarInterval.Daily)
       );
     });
 
@@ -155,10 +155,10 @@ describe('TimeSeriesService', () => {
 
       expect(updatedContent!.timeSeriesSummary.window?.length).toEqual(2);
       expect(updatedContent!.timeSeriesSummary.window[0].tid).toEqual(
-        toTimingId(yesterday, CalendarInterval.Daily),
+        toTimingId(yesterday, CalendarInterval.Daily)
       );
       expect(updatedContent!.timeSeriesSummary.window[1].tid).toEqual(
-        toTimingId(today, CalendarInterval.Daily),
+        toTimingId(today, CalendarInterval.Daily)
       );
     });
   });

@@ -63,7 +63,7 @@ export class Habit
 
   public static create(
     context: { user: User; profile: Profile },
-    update: PropertiesOf<CreateHabitModel>,
+    update: PropertiesOf<CreateHabitModel>
   ) {
     const { title, text } = update;
     const { profile } = context;
@@ -72,7 +72,7 @@ export class Habit
       tagIds: profile.getTagsByName(update.tagNames || []).map((tag) => assureObjectId(tag.id)),
       config: new HabitConfig(
         DataPointConfigFactory.initializeConfig(update.valueType, update.inputType, update),
-        update.score,
+        update.score
       ),
     });
   }
@@ -85,9 +85,9 @@ export class Habit
         {
           min: 0,
           max: 1,
-        },
+        }
       ),
-      2,
+      2
     );
   }
 

@@ -45,7 +45,7 @@ function toDocs() {
       v-if="isNewUser"
       keypath="help.modal.text_intro"
       tag="p"
-      class="text-dimmed mb-5 text-center text-sm">
+      class="mb-5 text-center text-sm text-dimmed">
       <template #appName>
         {{ appName }}
       </template>

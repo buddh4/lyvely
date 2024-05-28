@@ -21,7 +21,7 @@ export function isBlacklistedProperty(prop: string) {
  * @returns True if the value is a plain object, false otherwise.
  */
 export function isPlainObject<T extends object = Record<PropertyKey, unknown>>(
-  value: any,
+  value: any
 ): value is T {
   return !!value && getToStringType(value) === '[object Object]';
 }
@@ -76,7 +76,7 @@ export function hasNonNullableProperty<
 export function getOwnNonNullableProperty<T extends object = any, K extends keyof T = keyof T>(
   value: any,
   property: K,
-  defaultValue?: T[K],
+  defaultValue?: T[K]
 ): T[K] | null {
   return hasOwnNonNullableProperty<T, K>(value, property) ? value[property] : defaultValue || null;
 }
@@ -92,7 +92,7 @@ export function getOwnNonNullableProperty<T extends object = any, K extends keyo
 export function getNonNullableProperty<T extends object = any, K extends keyof T = keyof T>(
   value: any,
   property: K,
-  defaultValue?: T[K],
+  defaultValue?: T[K]
 ): T[K] | null {
   return hasNonNullableProperty<T, K>(value, property) ? value[property] : defaultValue || null;
 }
@@ -138,17 +138,17 @@ interface FindByPathCreateOptions {
 export function findByPath<T>(
   model: Record<string, any> | undefined | null,
   path: string,
-  options: FindByPathCreateOptions,
+  options: FindByPathCreateOptions
 ): T;
 export function findByPath<T>(
   model: Record<string, any> | undefined | null,
   path: string,
-  options?: FindByPathOptions,
+  options?: FindByPathOptions
 ): T | undefined;
 export function findByPath<T>(
   model: Record<string, any> | undefined | null,
   path: string,
-  options?: FindByPathOptions,
+  options?: FindByPathOptions
 ): T | undefined {
   if (!path.includes('.')) {
     if (isBlacklistedProperty(path)) throw new Error('Tried to access blacklisted property');

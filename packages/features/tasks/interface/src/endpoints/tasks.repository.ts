@@ -23,7 +23,7 @@ export default {
   async update(
     taskId: string,
     model: Partial<UpdateTaskModel>,
-    options?: IProfileApiRequestOptions,
+    options?: IProfileApiRequestOptions
   ) {
     return api.put<'update'>(taskId, model, options);
   },
@@ -51,7 +51,7 @@ export default {
   async updateTimer(
     cid: string,
     model: TimerValueUpdateModel,
-    options?: IProfileApiRequestOptions,
+    options?: IProfileApiRequestOptions
   ) {
     return api.post<'stopTimer'>(TasksEndpoints.UPDATE_TIMER(cid), model, options);
   },

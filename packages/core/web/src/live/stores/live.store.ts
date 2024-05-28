@@ -54,7 +54,9 @@ export const useLiveStore = defineStore('live', () => {
   }
 
   function connectUserEventSource() {
-    const eventSource = new EventSource(createApiUrl('/live/user'), { withCredentials: true });
+    const eventSource = new EventSource(createApiUrl('/live/user'), {
+      withCredentials: true,
+    });
     eventSource.onerror = (error) => console.error(error);
     eventSource.onopen = () => console.debug('Live connection onopen');
     eventSource.onmessage = ({ data }) => {
@@ -73,7 +75,9 @@ export const useLiveStore = defineStore('live', () => {
 
     guestPid = pid;
 
-    guestSource = new EventSource(createApiUrl(`/live/${pid}/guest`), { withCredentials: true });
+    guestSource = new EventSource(createApiUrl(`/live/${pid}/guest`), {
+      withCredentials: true,
+    });
     guestSource.onerror = (error) => console.error(error);
     guestSource.onopen = () => console.debug('Live connection onopen');
     guestSource.onmessage = ({ data }) => {

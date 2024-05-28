@@ -65,10 +65,10 @@ export class HabitTestDataUtil extends ProfileTestDataUtils {
     profile: Profile,
     habit: Habit,
     date: CalendarDate,
-    value?: any,
+    value?: any
   ): Promise<NumberDataPoint> {
     const log = new this.HabitDataPointModel(
-      new NumberDataPoint(profile, user, habit, { date: toDate(date), value }),
+      new NumberDataPoint(profile, user, habit, { date: toDate(date), value })
     );
     await log.save();
     return createBaseDocumentInstance(NumberDataPoint, log.toObject());
@@ -78,7 +78,7 @@ export class HabitTestDataUtil extends ProfileTestDataUtils {
     user: User,
     profile: Profile,
     data?: Partial<CreateHabitModel>,
-    overwrite?: (habit: Habit) => void,
+    overwrite?: (habit: Habit) => void
   ): Promise<Habit> {
     const initData = <CreateHabitModel>Object.assign(
       {},
@@ -88,7 +88,7 @@ export class HabitTestDataUtil extends ProfileTestDataUtils {
         valueType: DataPointValueType.Number,
         inputType: DataPointInputType.Checkbox,
       },
-      data || {},
+      data || {}
     );
     const model = Habit.create({ profile, user }, initData);
     if (overwrite) overwrite(model);

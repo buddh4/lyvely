@@ -78,9 +78,9 @@ onMounted(() => {
     :input-error="inputError">
     <textarea
       :id="inputId"
-      :data-id="dataId"
       ref="input"
       v-model="inputValue"
+      :data-id="dataId"
       :placeholder="t(placeholder)"
       :aria-describedby="ariaDescribedby"
       :rows="rows"

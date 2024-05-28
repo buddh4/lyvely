@@ -34,14 +34,14 @@ export class HabitStatisticsService {
   async aggregateHabitValues(
     profile: Profile,
     habit: Habit,
-    options: IHabitValueAggregateOptions,
+    options: IHabitValueAggregateOptions
   ): Promise<Array<{ _id: number; value: number }>> {
     if (habit.timeSeriesConfig.valueType !== DataPointValueType.Number)
       throw new IntegrityException('Can not aggregate non number habit values.');
 
     if (options.interval && options.interval > habit.interval)
       throw new IntegrityException(
-        'Can not aggregate habit values due to invalid aggregation interval.',
+        'Can not aggregate habit values due to invalid aggregation interval.'
       );
 
     const { matchFilter, groupId } = this.getGroupIdAndMatchFilter(profile, habit, options);
@@ -66,7 +66,7 @@ export class HabitStatisticsService {
   private getGroupIdAndMatchFilter(
     profile: Profile,
     habit: Habit,
-    options: IHabitValueAggregateOptions,
+    options: IHabitValueAggregateOptions
   ) {
     const now = new Date();
     const year = options.year || now.getFullYear();
