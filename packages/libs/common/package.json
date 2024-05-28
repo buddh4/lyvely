@@ -10,6 +10,7 @@
     "lint": "eslint --fix",
     "format": "prettier src --write",
     "prettier": "prettier src --check",
+    "depcheck": "depcheck --quiet",
     "test": "jest --passWithNoTests",
     "clear": "rm -rf ./dist && rm -f ./tsconfig.tsbuildinfo",
     "prebuild": "rimraf dist && rimraf tsconfig.build.tsbuildinfo",
@@ -62,7 +63,8 @@
     "eslint-config-prettier": "^8.8",
     "eslint-import-resolver-typescript": "^3.5",
     "eslint-plugin-import": "^2.26",
-    "eslint-plugin-prettier": "^5.1"
+    "eslint-plugin-prettier": "^5.1",
+    "depcheck": "^1.4"
   },
   "jest": {
     "rootDir": "./",

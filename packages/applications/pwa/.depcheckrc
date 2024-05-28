@@ -1,0 +1,6 @@
+ignores: [
+  "postcss",
+  "postcss-cli",
+  "prettier-plugin-tailwindcss",
+  "virtual:pwa-register",
+  ]

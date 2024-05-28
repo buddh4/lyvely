@@ -6,30 +6,32 @@
   "scripts": {
     "dev": "vite",
     "build": "lyvely-dev build:web",
-    "build:staging": "vite build --mode staging && vue-tsc --emitDeclarationOnly",
-    "build:dev": "vite build --mode development && vue-tsc --emitDeclarationOnly",
     "lint": "eslint \"src/**/*.{ts,vue}\" --fix",
     "format": "prettier src --write",
-    "prettier": "prettier src --check"
+    "prettier": "prettier src --check",
+    "depcheck": "depcheck --quiet",
+    "build:staging": "vite build --mode staging && vue-tsc --emitDeclarationOnly",
+    "build:dev": "vite build --mode development && vue-tsc --emitDeclarationOnly"
   },
   "dependencies": {
-    "vue": "^3.4",
     "@lyvely/web": "workspace:*",
     "@lyvely/ui": "workspace:*",
     "@lyvely/activities-web": "workspace:*",
+    "@lyvely/calendar-plan-web": "workspace:*",
+    "@lyvely/time-series-web": "workspace:*",
     "@lyvely/analytics-web": "workspace:*",
-    "@lyvely/api": "workspace:*",
     "@lyvely/habits-web": "workspace:*",
     "@lyvely/journals-web": "workspace:*",
     "@lyvely/legal-web": "workspace:*",
     "@lyvely/milestones-web": "workspace:*",
     "@lyvely/tasks-web": "workspace:*",
+    "vue": "^3.4",
     "workbox-core": "^7.1.0",
     "workbox-routing": "^7.1.0",
     "workbox-window": "^7.1.0",
     "workbox-build": "^7.1.0",
     "workbox-precaching": "^7.1.0",
-    "vue-router": "^4.3"
+    "reflect-metadata": "0.1.13"
   },
   "devDependencies": {
     "@lyvely/devtools": "workspace:*",
@@ -48,6 +50,7 @@
     "eslint-plugin-prettier": "^5.1",
     "eslint-plugin-vue": "^9.25",
     "prettier-plugin-tailwindcss": "^0.5",
-    "vue-eslint-parser": "^9.4"
+    "vue-eslint-parser": "^9.4",
+    "depcheck": "^1.4"
   }
 }

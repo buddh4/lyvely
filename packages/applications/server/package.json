@@ -12,6 +12,7 @@
     "build": "tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
     "format": "prettier src --write",
     "prettier": "prettier src --check",
+    "depcheck": "depcheck src --quiet",
     "dev": "cross-env NODE_ENV=development nest start",
     "dev:debug": "cross-env NODE_ENV=development  nest start --debug --watch",
     "start": "nest start",
@@ -29,10 +30,19 @@
     "@lyvely/interface": "workspace:*"
   },
   "devDependencies": {
+    "@lyvely/devtools": "workspace:*",
     "typescript": "^5.4",
     "tslib": "^2.6.2",
     "tsc-alias": "^1.8.10",
-    "rimraf": "^5.0"
+    "rimraf": "^5.0",
+    "depcheck": "^1.4",
+    "eslint": "^8.24",
+    "@typescript-eslint/eslint-plugin": "^7.9",
+    "@typescript-eslint/parser": "^7.9",
+    "eslint-config-prettier": "^8.8",
+    "eslint-import-resolver-typescript": "^3.5",
+    "eslint-plugin-import": "^2.26",
+    "eslint-plugin-prettier": "^5.1"
   },
   "config": {
     "mongodbMemoryServer": {

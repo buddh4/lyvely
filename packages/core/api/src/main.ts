@@ -1,4 +1,4 @@
-import { LyvelyServer } from './lyvely.server';
+import { LyvelyServer } from './server/lyvely.server';
 
 new LyvelyServer().bootstrap({
   serveStatic: false,

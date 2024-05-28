@@ -44,7 +44,8 @@ export function generateCaptcha(options: ICaptchaOptions = {}): { image: Buffer;
 
 function initCanvas(options: ICaptchaOptions) {
   const canvas = createCanvas(options.width!, options.height!);
-  const context = (<any>canvas.getContext('2d')) as CanvasRenderingContext2D;
+  // We need to wait for node-canvas 3.0 for a proper typing here
+  const context: CanvasRenderingContext2D = canvas.getContext('2d') as any;
   context.fillStyle = getBackgroundColor(options);
   context.fillRect(0, 0, options.width!, options.height!);
   return { canvas, context };
@@ -58,7 +59,7 @@ export function generateCaptchaToken(options = {} as ICaptchaOptions) {
   if (process.env.NODE_ENV === 'e2e') return '01234';
   options.length = options.length || DEFAULT_LENGTH;
   return Array.from({ length: options.length }, () =>
-    DEFAULT_CAPTCHA_CHARS.charAt(randomInt(0, DEFAULT_CAPTCHA_CHARS.length - 1)),
+    DEFAULT_CAPTCHA_CHARS.charAt(randomInt(0, DEFAULT_CAPTCHA_CHARS.length - 1))
   ).join('');
 }
 

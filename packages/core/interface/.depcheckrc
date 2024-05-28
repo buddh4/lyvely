@@ -1,0 +1,9 @@
+ignores: [
+  "tslib",
+  "@types/node",
+  "@rollup/plugin-typescript",
+  "@rollup/plugin-commonjs",
+  "@rollup/plugin-dynamic-import-vars",
+  "@rollup/plugin-node-resolve",
+  "rollup-plugin-node-externals",
+  ]

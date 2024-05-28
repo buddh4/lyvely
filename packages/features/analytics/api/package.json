@@ -9,6 +9,7 @@
     "lint": "eslint src --fix",
     "format": "prettier src --write",
     "prettier": "prettier src --check",
+    "depcheck": "depcheck --quiet",
     "dev": "nest start",
     "dev:debug": "nest start --debug --watch",
     "deps": "npx depcruise --config .dependency-cruiser.js src",
@@ -48,7 +49,8 @@
     "eslint-config-prettier": "^8.8",
     "eslint-import-resolver-typescript": "^3.5",
     "eslint-plugin-import": "^2.26",
-    "eslint-plugin-prettier": "^5.1"
+    "eslint-plugin-prettier": "^5.1",
+    "depcheck": "^1.4"
   },
   "jest": {
     "rootDir": ".",

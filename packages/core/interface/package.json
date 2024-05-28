@@ -11,6 +11,7 @@
     "lint": "eslint \"src/**/*.ts\" --fix",
     "format": "prettier src --write",
     "prettier": "prettier src --check",
+    "depcheck": "depcheck --quiet",
     "deps": "npx depcruise --config .dependency-cruiser.js src",
     "prepublish:npm": "pnpm run build",
     "publish:npm": "npm publish --access public",
@@ -55,7 +56,8 @@
     "eslint-config-prettier": "^8.8",
     "eslint-import-resolver-typescript": "^3.5",
     "eslint-plugin-import": "^2.26",
-    "eslint-plugin-prettier": "^5.1"
+    "eslint-plugin-prettier": "^5.1",
+    "depcheck": "^1.4"
   },
   "jest": {
     "rootDir": ".",

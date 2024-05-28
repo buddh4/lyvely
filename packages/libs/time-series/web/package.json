@@ -19,6 +19,7 @@
     "build:dev": "lyvely-dev build:web:development",
     "lint": "eslint \"src/**/*.{ts,vue}\" --fix",
     "prettier": "prettier src --check",
+    "depcheck": "depcheck --quiet",
     "format": "prettier .  --write"
   },
   "author": "Julian Harrer",
@@ -59,6 +60,7 @@
     "eslint-plugin-prettier": "^5.1",
     "eslint-plugin-vue": "^9.25",
     "prettier-plugin-tailwindcss": "^0.5",
-    "vue-eslint-parser": "^9.4"
+    "vue-eslint-parser": "^9.4",
+    "depcheck": "^1.4"
   }
 }

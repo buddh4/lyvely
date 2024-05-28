@@ -1,3 +1,4 @@
+import csurf from 'csurf';
 import { NestFactory } from '@nestjs/core';
 import {
   Logger as NestLogger,
@@ -7,18 +8,17 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Headers } from '@lyvely/interface';
-import { AuthModule, RootAuthGuard } from './auth';
+import { AuthModule, RootAuthGuard } from '../auth';
 import { ServiceExceptionsFilter } from '@/core';
 import { ConfigurationPath, ILyvelyCsrfOptions } from '@/config';
-import { FeatureGuard, FeaturesModule } from './features';
+import { FeatureGuard, FeaturesModule } from '../features';
 import cookieParser from 'cookie-parser';
 import mongoose from 'mongoose';
-import { AppModuleBuilder, IAppModuleBuilderOptions } from './app-module.builder';
+import { AppModuleBuilder, IAppModuleBuilderOptions } from '../app-module.builder';
 import helmet from 'helmet';
 import express from 'express';
 import http from 'http';
 import https from 'https';
-import csurf from 'csurf';
 import compression from 'compression';
 import { useDayJsDateTimeAdapter } from '@lyvely/dates';
 import { ExpressAdapter, NestExpressApplication } from '@nestjs/platform-express';
@@ -106,7 +106,7 @@ export class LyvelyServer {
     this.server = express();
     return NestFactory.create<NestExpressApplication>(
       await new AppModuleBuilder(this.options).build(),
-      new ExpressAdapter(this.server),
+      new ExpressAdapter(this.server)
     );
   }
 
@@ -192,7 +192,7 @@ export class LyvelyServer {
 
     if (!cors && !staticServe) {
       this.logger.warn(
-        'Not cors origin and no serve static configuration set, this is probably a misconfiguration.',
+        'Not cors origin and no serve static configuration set, this is probably a misconfiguration.'
       );
     }
 
@@ -215,7 +215,22 @@ export class LyvelyServer {
       'cookie',
     ];
 
-    Object.keys(Headers).forEach((key) => (<string[]>cors!.allowedHeaders).push(Headers[key]));
+    const allowedHeaders =
+      typeof cors.allowedHeaders === 'string'
+        ? cors.allowedHeaders.split(',')
+        : cors.allowedHeaders || [];
+
+    allowedHeaders.push(
+      'Accept-Language',
+      'csrf-token',
+      'access-control-allow-origin',
+      'content-type',
+      'cookie'
+    );
+
+    Object.keys(Headers).forEach((key) => allowedHeaders.push(Headers[key]));
+
+    cors.allowedHeaders = allowedHeaders;
 
     this.logger.log('Allow headers:');
     this.logger.log(cors.allowedHeaders);

@@ -1,0 +1,7 @@
+ignores: [
+  "tslib",
+  "rimraf",
+  "@types/qs",
+  "@types/express-serve-static-core",
+  "@types/jest"
+  ]
