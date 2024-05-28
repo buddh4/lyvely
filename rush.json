@@ -484,11 +484,15 @@
     {
       "packageName": "@lyvely/server",
       "projectFolder": "packages/applications/server",
+      "reviewCategory": "production",
+      "shouldPublish": false,
       "tags": ["applications"]
     },
     {
       "packageName": "@lyvely/pwa",
       "projectFolder": "packages/applications/pwa",
+      "reviewCategory": "production",
+      "shouldPublish": false,
       "tags": ["applications"]
     }
     //{
