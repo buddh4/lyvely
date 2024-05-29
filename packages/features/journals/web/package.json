@@ -28,10 +28,9 @@
     "vue": "^3.4",
     "@vueuse/core": "^10.9",
     "vuedraggable": "^4.1.0",
-    "pinia": "^2.0.35",
+    "pinia": "^2.0",
     "@lyvely/web": "workspace:*",
     "@lyvely/ui": "workspace:*",
-    "@lyvely/common": "workspace:*",
     "@lyvely/journals-interface": "workspace:*",
     "@lyvely/calendar-plan-web": "workspace:*",
     "@lyvely/time-series-web": "workspace:*"
@@ -50,7 +49,6 @@
     "tslib": "^2.6.2",
     "postcss": "^8.4",
     "postcss-cli": "^11.0",
-    "vue-router": "^4.3",
     "mitt": "^3.0",
     "eslint": "^8.24",
     "@typescript-eslint/eslint-plugin": "^7.9",
@@ -62,6 +60,7 @@
     "eslint-plugin-vue": "^9.25",
     "prettier-plugin-tailwindcss": "^0.5",
     "vue-eslint-parser": "^9.4",
-    "depcheck": "^1.4"
+    "depcheck": "^1.4",
+    "reflect-metadata": "^0.1"
   }
 }

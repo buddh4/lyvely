@@ -11,7 +11,7 @@ import {
   buildProfileTest,
 } from '@lyvely/api';
 import { DataPoint } from '@lyvely/time-series';
-import { ILyvelyTestingModule } from '@lyvely/testing';
+import { ILyvelyTestingModule } from '@lyvely/api';
 
 describe('HabitDataPointService', () => {
   let habitDataPointService: HabitDataPointService;

@@ -1,0 +1,10 @@
+ignores: [
+  "tslib",
+  "postcss",
+  "postcss-cli",
+  "tailwindcss",
+  "prettier-plugin-tailwindcss",
+  "vitest",
+  "vite-plugin-externalize-deps",
+  "vite-tsconfig-paths",
+  ]

@@ -28,7 +28,7 @@
     "@nestjs/event-emitter": "^2.0",
     "@lyvely/api": "workspace:*",
     "@lyvely/legal-interface": "workspace:*",
-    "reflect-metadata": "0.1.13"
+    "reflect-metadata": "^0.1"
   },
   "devDependencies": {
     "@lyvely/devtools": "workspace:*",

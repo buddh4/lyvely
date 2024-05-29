@@ -267,7 +267,7 @@ export class ChartSeriesService {
 
     const allDocs = await this.chartDao.findAllByProfile(profile, {
       excludeIds: model._id,
-      sort: <QuerySort<Chart>>{ 'meta.sortOrder': 1 },
+      sort: { 'meta.sortOrder': 1 } as QuerySort<Chart>,
     });
 
     const newIndex = attachTo ? allDocs.findIndex((m) => m.id === attachTo.id) + 1 : 0;

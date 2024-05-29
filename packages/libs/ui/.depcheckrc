@@ -11,5 +11,6 @@ ignores: [
   "@storybook/*",
   "react",
   "react-dom",
-  "vue-docgen-api"
+  "vue-docgen-api",
+  "prettier-plugin-*"
   ]

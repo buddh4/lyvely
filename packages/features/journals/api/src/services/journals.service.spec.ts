@@ -19,7 +19,7 @@ import {
 } from '@lyvely/api';
 import { JournalsService } from '../services';
 import { JournalsDao } from '../daos';
-import { ILyvelyTestingModule } from '@lyvely/testing';
+import { ILyvelyTestingModule } from '@lyvely/api';
 import { Journal, JournalSchema } from '../schemas';
 
 const Models = [

@@ -180,15 +180,18 @@ Cypress.Commands.add(
     options = { ...options };
     options.url = `http://127.0.0.1:8080/api${path}`;
     options.body = body;
-    options.headers ||= {};
-    (<any>options.headers)['x-api-version'] ??= '1';
     options.failOnStatusCode = false;
 
+    const headers: Record<string, string> = {...options.headers};
+    headers['x-api-version'] ??= '1';
+
     if (!options.as) {
-      (<any>options.headers)['x-visitor-access'] = '1';
+      headers!['x-visitor-access'] = '1';
     } else {
       cy.authenticatedAs(options.as);
     }
+
+    options.headers = headers;
 
     return cy.request(options);
   }

@@ -7,7 +7,7 @@ import { HabitDataPointService } from './habit-data-point.service';
 import { HabitsService } from './habits.service';
 import { Habit } from '../schemas';
 import { HabitTimeSeriesService } from './habit-time-series.service';
-import { ILyvelyTestingModule } from '@lyvely/testing';
+import { ILyvelyTestingModule } from '@lyvely/api';
 
 describe('HabitTimeSeriesService', () => {
   let habitsTimeSeriesService: HabitTimeSeriesService;

@@ -26,14 +26,15 @@
   "author": "Julian Harrer",
   "dependencies": {
     "vue": "^3.4",
-    "pinia": "^2.0.35",
+    "pinia": "^2.0",
     "@lyvely/web": "workspace:*",
     "@lyvely/common": "workspace:*",
     "@lyvely/ui": "workspace:*",
     "@lyvely/dates": "workspace:*",
     "@lyvely/tasks-web": "workspace:*",
     "@lyvely/habits-web": "workspace:*",
-    "@lyvely/milestones-web": "workspace:*"
+    "@lyvely/milestones-web": "workspace:*",
+    "reflect-metadata": "^0.1"
   },
   "devDependencies": {
     "@lyvely/devtools": "workspace:*",

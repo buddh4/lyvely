@@ -28,7 +28,7 @@
     "@lyvely/timers": "workspace:*",
     "@lyvely/calendar-plan": "workspace:*",
     "@lyvely/time-series-interface": "workspace:*",
-    "reflect-metadata": "0.1.13",
+    "reflect-metadata": "^0.1",
     "lodash": "^4.17"
   },
   "devDependencies": {

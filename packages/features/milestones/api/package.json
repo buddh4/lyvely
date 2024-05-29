@@ -29,11 +29,10 @@
     "@lyvely/common": "workspace:*",
     "@lyvely/api": "workspace:*",
     "@lyvely/dates": "workspace:*",
-    "@lyvely/timers": "workspace:*",
     "@lyvely/calendar-plan": "workspace:*",
     "@lyvely/milestones-interface": "workspace:*",
     "class-validator": "^0.14.0",
-    "reflect-metadata": "0.1.13"
+    "reflect-metadata": "^0.1"
   },
   "devDependencies": {
     "@lyvely/devtools": "workspace:*",

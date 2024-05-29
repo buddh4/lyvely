@@ -25,16 +25,15 @@
   "author": "Julian Harrer",
   "dependencies": {
     "vue": "^3.4",
-    "pinia": "^2.0.35",
+    "pinia": "^2.0",
     "@lyvely/web": "workspace:*",
     "@lyvely/ui": "workspace:*",
     "@lyvely/common": "workspace:*",
-    "@lyvely/interface": "workspace:*",
-    "@lyvely/dates": "workspace:*",
     "@lyvely/analytics-interface": "workspace:*",
     "echarts": "^5.4.2",
     "lodash": "^4.17",
-    "vuedraggable": "^4.1.0"
+    "vuedraggable": "^4.1.0",
+    "reflect-metadata": "^0.1"
   },
   "devDependencies": {
     "@lyvely/devtools": "workspace:*",

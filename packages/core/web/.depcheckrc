@@ -9,6 +9,7 @@ ignores: [
   "postcss",
   "postcss-import",
   "postcss-cli",
+  "@types/ms",
   "prettier-plugin-tailwindcss",
   "autoprefixer"
   ]

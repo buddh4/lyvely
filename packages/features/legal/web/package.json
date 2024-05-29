@@ -25,12 +25,10 @@
   },
   "author": "Julian Harrer",
   "dependencies": {
-    "vue": "^3.4",
-    "pinia": "^2.0.35",
     "@lyvely/web": "workspace:*",
     "@lyvely/ui": "workspace:*",
-    "@lyvely/common": "workspace:*",
-    "@lyvely/legal-interface": "workspace:*"
+    "@lyvely/legal-interface": "workspace:*",
+    "vue": "^3.4"
   },
   "devDependencies": {
     "@lyvely/devtools": "workspace:*",
@@ -45,7 +43,6 @@
     "tslib": "^2.6.2",
     "postcss": "^8.4",
     "postcss-cli": "^11.0",
-    "vue-router": "^4.3",
     "eslint": "^8.24",
     "@typescript-eslint/eslint-plugin": "^7.9",
     "@typescript-eslint/parser": "^7.9",
@@ -56,6 +53,7 @@
     "eslint-plugin-vue": "^9.25",
     "prettier-plugin-tailwindcss": "^0.5",
     "vue-eslint-parser": "^9.4",
-    "depcheck": "^1.4"
+    "depcheck": "^1.4",
+    "reflect-metadata": "^0.1"
   }
 }

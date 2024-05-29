@@ -1,6 +1,7 @@
 ignores: [
   "tslib",
   "rimraf",
+  "@types/multer",
   "@types/qs",
   "@types/express-serve-static-core",
   "@types/jest"

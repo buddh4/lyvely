@@ -33,7 +33,7 @@
       "ignoreDependencyOrder": true,
       "enableParallelism": true,
       "allowWarningsInSuccessfulBuild": false,
-      "incremental": true
+      "incremental": false
     },
     {
       "name": "format",
@@ -45,7 +45,7 @@
       "ignoreDependencyOrder": true,
       "enableParallelism": true,
       "allowWarningsInSuccessfulBuild": false,
-      "incremental": true
+      "incremental": false
     },
     {
       "name": "depcheck",
@@ -57,7 +57,7 @@
       "ignoreDependencyOrder": true,
       "enableParallelism": true,
       "allowWarningsInSuccessfulBuild": false,
-      "incremental": true
+      "incremental": false
     },
     {
       "name": "pwa:dev",

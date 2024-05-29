@@ -3,8 +3,7 @@ import { TaskTestDataUtil, taskITestPlugin } from '../testing';
 import { TasksDao } from '../daos';
 import { UserDone } from '../schemas';
 import { TaskCalendarPlanService } from './task-calendar-plan.service';
-import { ILyvelyTestingModule } from '@lyvely/testing';
-import { buildProfileTest } from '@lyvely/api';
+import { ILyvelyTestingModule, buildProfileTest } from '@lyvely/api';
 
 describe('TaskCalendarPlanService', () => {
   let testingModule: ILyvelyTestingModule;

@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import {
-  assureObjectId,
   DocumentIdentity,
   IntegrityException,
   Model,
@@ -10,7 +9,7 @@ import {
 import { Habit } from '../schemas';
 import { CalendarInterval, getWeekOfYear } from '@lyvely/dates';
 import { DataPoint, DataPointValueType, InjectDataPointModel } from '@lyvely/time-series';
-import * as mongoose from 'mongoose';
+import type { PipelineStage } from 'mongoose';
 
 export enum StatisticAccumulation {
   Sum = 'sum',
@@ -116,7 +115,7 @@ export class HabitStatisticsService {
   }
 
   private getAggregationGroup(groupId: string, accumulator: StatisticAccumulation) {
-    let group: mongoose.PipelineStage.Group['$group'];
+    let group: PipelineStage.Group['$group'];
 
     switch (accumulator) {
       case StatisticAccumulation.Sum:

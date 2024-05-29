@@ -21,7 +21,6 @@ export default [
     ],
     external: [
       'class-validator',
-      'class-transformer',
       'dayjs',
       'dayjs/plugin/weekOfYear',
       'dayjs/plugin/weekYear',

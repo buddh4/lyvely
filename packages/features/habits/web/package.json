@@ -27,7 +27,7 @@
   "author": "Julian Harrer",
   "dependencies": {
     "vue": "^3.4",
-    "pinia": "^2.0.35",
+    "pinia": "^2.0",
     "@lyvely/web": "workspace:*",
     "@lyvely/analytics-web": "workspace:*",
     "@lyvely/ui": "workspace:*",
@@ -64,6 +64,8 @@
     "eslint-plugin-vue": "^9.25",
     "prettier-plugin-tailwindcss": "^0.5",
     "vue-eslint-parser": "^9.4",
-    "depcheck": "^1.4"
+    "depcheck": "^1.4",
+    "cypress": "^13.6",
+    "reflect-metadata": "^0.1"
   }
 }

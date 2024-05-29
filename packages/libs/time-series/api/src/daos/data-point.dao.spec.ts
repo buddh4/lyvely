@@ -1,4 +1,4 @@
-import { getObjectId, ILyvelyTestingModule } from '@lyvely/testing';
+import { getObjectId, ILyvelyTestingModule } from '@lyvely/api';
 import {
   CheckboxNumberDataPointConfig,
   DataPointValueType,

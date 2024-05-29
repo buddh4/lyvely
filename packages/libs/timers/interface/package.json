@@ -10,6 +10,7 @@
     "lint": "eslint --fix",
     "format": "prettier src --write",
     "build": "tsc -p tsconfig.build.json --outDir dist/lib --declarationDir dist/lib --declaration true && tscpaths -p tsconfig.build.json -s ./src -o dist/lib && rollup -c --silent && rm -f tsconfig.tsbuildinfo",
+    "depcheck": "depcheck --quiet",
     "prepublish:npm": "pnpm run build",
     "publish:npm": "npm publish --access public",
     "prepublish:next": "pnpm run build",
@@ -26,16 +27,14 @@
     "@lyvely/dates": "workspace:*",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
-    "reflect-metadata": "0.1.13"
+    "reflect-metadata": "^0.1"
   },
   "devDependencies": {
     "@lyvely/devtools": "workspace:*",
     "rollup": "^4.18",
     "tslib": "^2.6.2",
-    "@types/lodash": "^4.17",
     "typescript": "^5.4",
     "tscpaths": "^0.0.9",
-    "@types/node": "^20.12",
     "@rollup/plugin-typescript": "^11.1",
     "@rollup/plugin-commonjs": "^25.0",
     "@rollup/plugin-dynamic-import-vars": "^2.1.2",
@@ -47,7 +46,8 @@
     "eslint-config-prettier": "^8.8",
     "eslint-import-resolver-typescript": "^3.5",
     "eslint-plugin-import": "^2.26",
-    "eslint-plugin-prettier": "^5.1"
+    "eslint-plugin-prettier": "^5.1",
+    "depcheck": "^1.4"
   },
   "jest": {
     "rootDir": ".",

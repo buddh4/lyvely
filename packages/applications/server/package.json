@@ -12,7 +12,7 @@
     "build": "rimraf ./dist && tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
     "format": "prettier src --write",
     "prettier": "prettier src --check",
-    "depcheck": "depcheck src --quiet",
+    "depcheck": "depcheck --quiet",
     "dev": "cross-env NODE_ENV=development nest start",
     "dev:debug": "cross-env NODE_ENV=development nest start --debug --watch",
     "start": "nest start",

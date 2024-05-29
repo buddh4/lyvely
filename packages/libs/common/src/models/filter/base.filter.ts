@@ -66,7 +66,9 @@ export abstract class Filter<
 
   setOption<T extends keyof TOptions>(key: T, value: TOptions[T]) {
     if (this.options[key] !== value) {
-      this.setOptions(<any>{ [key]: value });
+      const option: Partial<TOptions> = {};
+      option[key] = value;
+      this.setOptions(option);
     }
   }
 
@@ -131,7 +133,7 @@ export abstract class Filter<
   }
 
   protected getDefaultOptions(): TOptions {
-    return <any>{};
+    return {} as TOptions;
   }
 
   reset() {

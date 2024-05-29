@@ -26,12 +26,11 @@
   "author": "Julian Harrer",
   "dependencies": {
     "vue": "^3.4",
-    "pinia": "^2.0.35",
+    "pinia": "^2.0",
     "@lyvely/web": "workspace:*",
     "@lyvely/milestones-interface": "workspace:*",
     "@lyvely/calendar-plan-web": "workspace:*",
     "@lyvely/ui": "workspace:*",
-    "@lyvely/common": "workspace:*",
     "@lyvely/dates": "workspace:*",
     "vue-router": "^4.3",
     "vuedraggable": "^4.1.0"
@@ -61,6 +60,7 @@
     "eslint-plugin-vue": "^9.25",
     "prettier-plugin-tailwindcss": "^0.5",
     "vue-eslint-parser": "^9.4",
-    "depcheck": "^1.4"
+    "depcheck": "^1.4",
+    "reflect-metadata": "^0.1"
   }
 }

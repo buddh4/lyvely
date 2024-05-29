@@ -12,7 +12,7 @@ import { UpdateHabitModel, CreateHabitModel } from '@lyvely/habits-interface';
 import { HabitTestDataUtil, habitITestPlugin } from '../testing';
 import { HabitsDao } from '../daos';
 import { Habit } from '../schemas';
-import { ILyvelyTestingModule } from '@lyvely/testing';
+import { ILyvelyTestingModule } from '@lyvely/api';
 
 describe('HabitService', () => {
   let habitsService: HabitsService;

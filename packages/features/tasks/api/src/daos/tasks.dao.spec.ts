@@ -1,4 +1,4 @@
-import { ILyvelyTestingModule } from '@lyvely/testing';
+import { ILyvelyTestingModule } from '@lyvely/api';
 import { CalendarInterval, toTimingId, addDays, subtractDays } from '@lyvely/dates';
 import { buildProfileTest, UserAssignmentStrategy } from '@lyvely/api';
 import { Task, UserDone } from '../schemas';

@@ -1,4 +1,4 @@
-import { ILyvelyTestingModule } from '@lyvely/testing';
+import { ILyvelyTestingModule } from '@lyvely/api';
 import {
   UserAssignmentStrategy,
   User,

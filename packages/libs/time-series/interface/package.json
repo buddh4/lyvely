@@ -32,7 +32,7 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
     "lodash": "^4.17",
-    "reflect-metadata": "0.1.13"
+    "reflect-metadata": "^0.1"
   },
   "devDependencies": {
     "@lyvely/devtools": "workspace:*",
@@ -42,7 +42,6 @@
     "tslib": "^2.6.2",
     "typescript": "^5.4",
     "tscpaths": "^0.0.9",
-    "@types/node": "^20.12",
     "@rollup/plugin-typescript": "^11.1",
     "@rollup/plugin-commonjs": "^25.0",
     "@rollup/plugin-dynamic-import-vars": "^2.1.2",

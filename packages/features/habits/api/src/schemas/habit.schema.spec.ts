@@ -17,7 +17,7 @@ import {
   NumberDataPointConfig,
 } from '@lyvely/time-series';
 import { PropertiesOf } from '@lyvely/common';
-import { getObjectId, ILyvelyTestingModule } from '@lyvely/testing';
+import { getObjectId, ILyvelyTestingModule } from '@lyvely/api';
 import { instanceToPlain } from 'class-transformer';
 import { HabitTestDataUtil, habitITestPlugin } from '../testing';
 import { HabitsDao } from '../daos';

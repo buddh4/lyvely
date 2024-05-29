@@ -30,15 +30,11 @@
   "dependencies": {
     "vue": "^3.4",
     "@vueuse/core": "^10.9",
-    "pinia": "^2.0.35",
-    "@lyvely/interface": "workspace:*",
+    "pinia": "^2.0",
     "@lyvely/calendar-plan-interface": "workspace:*",
     "@lyvely/ui": "workspace:*",
     "@lyvely/web": "workspace:*",
-    "@lyvely/common": "workspace:*",
     "@lyvely/dates": "workspace:*",
-    "class-transformer": "^0.5.1",
-    "class-validator": "^0.14.0",
     "vue-router": "^4.3"
   },
   "devDependencies": {

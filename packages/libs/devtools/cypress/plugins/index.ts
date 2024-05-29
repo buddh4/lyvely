@@ -127,7 +127,7 @@ function getLatestMailContent(): string {
     const latestFilePath = fileStats[0].filePath;
     return fs.readFileSync(latestFilePath, 'utf-8');
   } catch (error) {
-    return (<any>error).message;
+    return (error as any).message;
   }
 }
 

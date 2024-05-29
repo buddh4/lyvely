@@ -13,11 +13,11 @@ interface IOptions {
   plugins?: Plugin[];
 }
 
-const tsconfigPathDefault: (options: any) => Plugin = !!(<any>tsconfigPaths).default
-  ? (<any>tsconfigPaths).default
+const tsconfigPathDefault: (options: any) => Plugin = !!(tsconfigPaths as any).default
+  ? (tsconfigPaths as any).default
   : tsconfigPaths;
 
-const dtsDefault: (options: any) => Plugin = !!(<any>dts).default ? (<any>dts).default : dts;
+const dtsDefault: (options: any) => Plugin = !!(dts as any).default ? (dts as any).default : dts;
 
 export const useViteWebConfig = (options: IOptions) => {
   const __dirname = process.cwd();
@@ -42,7 +42,7 @@ export const useViteWebConfig = (options: IOptions) => {
         include: [
           resolve(
             __dirname,
-            typeof options.locales === 'string' ? <string>options.locales! : './locales/**'
+            typeof options.locales === 'string' ? options.locales! : './locales/**'
           ),
         ],
       }) as Plugin

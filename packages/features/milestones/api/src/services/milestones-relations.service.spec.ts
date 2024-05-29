@@ -10,7 +10,7 @@ import {
   Model,
   buildContentTest,
 } from '@lyvely/api';
-import { getObjectId, ILyvelyTestingModule } from '@lyvely/testing';
+import { getObjectId, ILyvelyTestingModule } from '@lyvely/api';
 import { MilestonesRelationsService } from './milestones-relations.service';
 import { Schema, SchemaFactory } from '@nestjs/mongoose';
 import { CalendarInterval, formatDate } from '@lyvely/dates';

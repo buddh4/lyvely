@@ -23,7 +23,7 @@
     "@lyvely/api": "workspace:*",
     "@lyvely/dates": "workspace:*",
     "@lyvely/calendar-plan-interface": "workspace:*",
-    "reflect-metadata": "0.1.13"
+    "reflect-metadata": "^0.1"
   },
   "devDependencies": {
     "@lyvely/devtools": "workspace:*",

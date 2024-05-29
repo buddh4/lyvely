@@ -1,4 +1,4 @@
-import { ILyvelyTestingModule } from '@lyvely/testing';
+import { ILyvelyTestingModule } from '@lyvely/api';
 import { INestApplication } from '@nestjs/common';
 import { Content, ContentSchema, ProfileTestDataUtils, Model, buildContentTest } from '@lyvely/api';
 import { TestTimeSeriesContent, TestTimeSeriesContentSchema } from '../testing';

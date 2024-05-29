@@ -26,16 +26,16 @@
     "@lyvely/milestones-web": "workspace:*",
     "@lyvely/tasks-web": "workspace:*",
     "vue": "^3.4",
-    "vue-router": "^4.3",
     "workbox-core": "^7.1.0",
     "workbox-routing": "^7.1.0",
     "workbox-window": "^7.1.0",
     "workbox-build": "^7.1.0",
     "workbox-precaching": "^7.1.0",
-    "reflect-metadata": "0.1.13"
+    "reflect-metadata": "^0.1"
   },
   "devDependencies": {
     "@lyvely/devtools": "workspace:*",
+    "vue-router": "^4.3",
     "vite": "^5.2",
     "vite-plugin-pwa": "^0.20.0",
     "@vue/runtime-dom": "^3.4",
