@@ -124,7 +124,7 @@
    * The approvals are tracked in two config files "browser-approved-packages.json"
    * and "nonbrowser-approved-packages.json".  See the Rush documentation for details.
    */
-  // "approvedPackagesPolicy": {
+   "approvedPackagesPolicy": {
   //   /**
   //    * The review categories allow you to say for example "This library is approved for usage
   //    * in prototypes, but not in production code."
@@ -137,12 +137,13 @@
   //    * Designate categories with whatever granularity is appropriate for your review process,
   //    * or you could just have a single category called "default".
   //    */
-  //   "reviewCategories": [
-  //     // Some example categories:
-  //     "production", // projects that ship to production
-  //     "tools",      // non-shipping projects that are part of the developer toolchain
-  //     "prototypes"  // experiments that should mostly be ignored by the review process
-  //   ],
+     "reviewCategories": [
+       "application", // projects that ship to production
+       "core", // core package
+       "feature",      // non-shipping projects that are part of the developer toolchain
+       "lib",  // experiments that should mostly be ignored by the review process
+       "tool" // build and dev tools
+     ],
   //
   //   /**
   //    * A list of NPM package scopes that will be excluded from review.
@@ -150,8 +151,8 @@
   //    * if the underlying package was already approved, this would imply that the typings
   //    * are also approved.
   //    */
-  //   // "ignoredNpmScopes": ["@types"]
-  // },
+       "ignoredNpmScopes": ["@types"]
+   },
 
   /**
    * If you use Git as your version control system, this section has some additional
@@ -188,7 +189,7 @@
      * you might configure your system's trigger to look for a special string such as "[skip-ci]"
      * in the commit message, and then customize Rush's message to contain that string.
      */
-    // "versionBumpCommitMessage": "Bump versions [skip ci]",
+     "versionBumpCommitMessage": "Bump versions [skip ci]",
 
     /**
      * The commit message to use when committing changes during 'rush version'.
@@ -197,14 +198,14 @@
      * you might configure your system's trigger to look for a special string such as "[skip-ci]"
      * in the commit message, and then customize Rush's message to contain that string.
      */
-    // "changeLogUpdateCommitMessage": "Update changelogs [skip ci]",
+    "changeLogUpdateCommitMessage": "Update changelogs [skip ci]",
 
     /**
      * The commit message to use when commiting changefiles during 'rush change --commit'
      *
      * If no commit message is set it will default to 'Rush change'
      */
-     // "changefilesCommitMessage": "Rush change"
+     "changefilesCommitMessage": "Rush change"
   },
 
   "repository": {
@@ -314,184 +315,254 @@
     {
       "packageName": "@lyvely/devtools",
       "projectFolder": "packages/libs/devtools",
+      "reviewCategory": "tool",
+      "versionPolicyName": "lyvely-lib",
       "tags": ["libs"]
     },
     {
       "packageName": "@lyvely/dates",
       "projectFolder": "packages/libs/dates",
+      "reviewCategory": "lib",
+      "versionPolicyName": "lyvely-lib",
       "tags": ["libs"]
     },
     {
       "packageName": "@lyvely/common",
       "projectFolder": "packages/libs/common",
+      "reviewCategory": "lib",
+      "versionPolicyName": "lyvely-lib",
       "tags": ["libs"]
     },
     {
       "packageName": "@lyvely/ui",
       "projectFolder": "packages/libs/ui",
+      "reviewCategory": "lib",
+      "versionPolicyName": "lyvely-lib",
       "tags": ["libs", "web"]
     },
     {
       "packageName": "@lyvely/interface",
       "projectFolder": "packages/core/interface",
+      "reviewCategory": "core",
+      "versionPolicyName": "lyvely-core",
       "tags": ["core", "interfaces"]
     },
     {
       "packageName": "@lyvely/api",
       "projectFolder": "packages/core/api",
+      "reviewCategory": "core",
+      "versionPolicyName": "lyvely-core",
       "tags": ["core", "apis"]
     },
     {
       "packageName": "@lyvely/web",
       "projectFolder": "packages/core/web",
+      "reviewCategory": "core",
+      "versionPolicyName": "lyvely-core",
       "tags": ["core", "web"]
     },
     {
       "packageName": "@lyvely/timers-interface",
       "projectFolder": "packages/libs/timers/interface",
+      "reviewCategory": "lib",
+      "versionPolicyName": "lyvely-timers",
       "tags": ["libs", "interfaces", "timers"]
     },
     {
       "packageName": "@lyvely/timers",
       "projectFolder": "packages/libs/timers/api",
+      "reviewCategory": "lib",
+      "versionPolicyName": "lyvely-timers",
       "tags": ["libs", "apis", "timers"]
     },
     {
       "packageName": "@lyvely/calendar-plan-interface",
       "projectFolder": "packages/libs/calendar-plan/interface",
+      "reviewCategory": "lib",
+      "versionPolicyName": "lyvely-calendar-plan",
       "tags": ["libs", "interfaces", "calendar-plan"]
     },
     {
       "packageName": "@lyvely/calendar-plan",
       "projectFolder": "packages/libs/calendar-plan/api",
+      "reviewCategory": "lib",
+      "versionPolicyName": "lyvely-calendar-plan",
       "tags": ["libs", "apis", "calendar-plan"]
     },
     {
       "packageName": "@lyvely/calendar-plan-web",
       "projectFolder": "packages/libs/calendar-plan/web",
+      "reviewCategory": "lib",
+      "versionPolicyName": "lyvely-calendar-plan",
       "tags": ["libs", "web", "calendar-plan"]
     },
     {
       "packageName": "@lyvely/time-series-interface",
       "projectFolder": "packages/libs/time-series/interface",
+      "reviewCategory": "lib",
+      "versionPolicyName": "lyvely-time-series",
       "tags": ["libs", "interfaces", "time-series"]
     },
     {
       "packageName": "@lyvely/time-series",
       "projectFolder": "packages/libs/time-series/api",
+      "reviewCategory": "lib",
+      "versionPolicyName": "lyvely-time-series",
       "tags": ["libs", "apis", "time-series"]
     },
     {
       "packageName": "@lyvely/time-series-web",
       "projectFolder": "packages/libs/time-series/web",
+      "reviewCategory": "lib",
+      "versionPolicyName": "lyvely-time-series",
       "tags": ["libs", "web", "time-series"]
     },
     {
       "packageName": "@lyvely/milestones-interface",
       "projectFolder": "packages/features/milestones/interface",
+      "reviewCategory": "feature",
+      "versionPolicyName": "lyvely-milestones",
       "tags": ["features", "interfaces", "milestones"]
     },
     {
       "packageName": "@lyvely/milestones",
       "projectFolder": "packages/features/milestones/api",
+      "reviewCategory": "feature",
+      "versionPolicyName": "lyvely-milestones",
       "tags": ["features", "apis", "milestones"]
     },
     {
       "packageName": "@lyvely/milestones-web",
       "projectFolder": "packages/features/milestones/web",
+      "reviewCategory": "feature",
+      "versionPolicyName": "lyvely-milestones",
       "tags": ["features", "web", "milestones"]
     },
     {
       "packageName": "@lyvely/tasks-interface",
       "projectFolder": "packages/features/tasks/interface",
+      "reviewCategory": "feature",
+      "versionPolicyName": "lyvely-tasks",
       "tags": ["features", "interfaces", "tasks"]
     },
     {
       "packageName": "@lyvely/tasks",
       "projectFolder": "packages/features/tasks/api",
+      "reviewCategory": "feature",
+      "versionPolicyName": "lyvely-tasks",
       "tags": ["features", "apis", "tasks"]
     },
     {
       "packageName": "@lyvely/tasks-web",
       "projectFolder": "packages/features/tasks/web",
+      "reviewCategory": "feature",
+      "versionPolicyName": "lyvely-tasks",
       "tags": ["features", "web", "tasks"]
     },
     {
       "packageName": "@lyvely/legal-interface",
       "projectFolder": "packages/features/legal/interface",
+      "reviewCategory": "feature",
+      "versionPolicyName": "lyvely-legal",
       "tags": ["features", "interfaces", "legal"]
     },
     {
       "packageName": "@lyvely/legal",
       "projectFolder": "packages/features/legal/api",
+      "reviewCategory": "feature",
+      "versionPolicyName": "lyvely-legal",
       "tags": ["features", "apis", "legal"]
     },
     {
       "packageName": "@lyvely/legal-web",
       "projectFolder": "packages/features/legal/web",
+      "reviewCategory": "feature",
+      "versionPolicyName": "lyvely-legal",
       "tags": ["features", "web", "legal"]
     },
     {
       "packageName": "@lyvely/journals-interface",
       "projectFolder": "packages/features/journals/interface",
+      "reviewCategory": "feature",
+      "versionPolicyName": "lyvely-journals",
       "tags": ["features", "interfaces", "journals"]
     },
     {
       "packageName": "@lyvely/journals",
       "projectFolder": "packages/features/journals/api",
+      "reviewCategory": "feature",
+      "versionPolicyName": "lyvely-journals",
       "tags": ["features", "apis", "journals"]
     },
     {
       "packageName": "@lyvely/journals-web",
       "projectFolder": "packages/features/journals/web",
+      "reviewCategory": "feature",
+      "versionPolicyName": "lyvely-journals",
       "tags": ["features", "web", "journals"]
     },
     {
       "packageName": "@lyvely/analytics-interface",
       "projectFolder": "packages/features/analytics/interface",
+      "reviewCategory": "feature",
+      "versionPolicyName": "lyvely-analytics",
       "tags": ["features", "interfaces", "analytics"]
     },
     {
       "packageName": "@lyvely/analytics",
       "projectFolder": "packages/features/analytics/api",
+      "reviewCategory": "feature",
+      "versionPolicyName": "lyvely-analytics",
       "tags": ["features", "apis", "analytics"]
     },
     {
       "packageName": "@lyvely/analytics-web",
       "projectFolder": "packages/features/analytics/web",
+      "reviewCategory": "feature",
+      "versionPolicyName": "lyvely-analytics",
       "tags": ["features", "web", "analytics"]
     },
     {
       "packageName": "@lyvely/habits-interface",
       "projectFolder": "packages/features/habits/interface",
+      "reviewCategory": "feature",
+      "versionPolicyName": "lyvely-habits",
       "tags": ["features", "interfaces", "habits"]
     },
     {
       "packageName": "@lyvely/habits",
       "projectFolder": "packages/features/habits/api",
+      "reviewCategory": "feature",
+      "versionPolicyName": "lyvely-habits",
       "tags": ["features", "apis", "habits"]
     },
     {
       "packageName": "@lyvely/habits-web",
       "projectFolder": "packages/features/habits/web",
+      "reviewCategory": "feature",
+      "versionPolicyName": "lyvely-habits",
       "tags": ["features", "web", "habits"]
     },
     {
       "packageName": "@lyvely/activities-web",
       "projectFolder": "packages/features/activities/web",
+      "reviewCategory": "feature",
+      "versionPolicyName": "lyvely-activities",
       "tags": ["features", "web", "activities"]
     },
     {
       "packageName": "@lyvely/server",
       "projectFolder": "packages/applications/server",
-      "reviewCategory": "production",
+      "reviewCategory": "application",
+      "versionPolicyName": "lyvely-app",
       "shouldPublish": false,
       "tags": ["applications"]
     },
     {
       "packageName": "@lyvely/pwa",
       "projectFolder": "packages/applications/pwa",
-      "reviewCategory": "production",
+      "reviewCategory": "application",
+      "versionPolicyName": "lyvely-app",
       "shouldPublish": false,
       "tags": ["applications"]
     }
