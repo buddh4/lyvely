@@ -6,7 +6,9 @@ gulp.task('clean', function () {
 });
 
 function copyFonts() {
-  return gulp.src('./src/captcha/utils/*.ttf').pipe(gulp.dest('./dist/captcha/utils/'));
+  return gulp
+    .src('./src/captcha/utils/*.ttf', { encoding: false })
+    .pipe(gulp.dest('./dist/captcha/utils/'));
 }
 
 function copyMailTemplates() {
