@@ -51,6 +51,9 @@ importers:
       vue:
         specifier: ^3.4
         version: 3.4.27(typescript@5.4.5)
+      vue-router:
+        specifier: ^4.3
+        version: 4.3.2(vue@3.4.27(typescript@5.4.5))
       workbox-build:
         specifier: ^7.1.0
         version: 7.1.0(@types/babel__core@7.20.5)
@@ -80,7 +83,7 @@ importers:
         specifier: ^3.4
         version: 3.4.27
       depcheck:
-        specifier: ^1.4.7
+        specifier: ^1.4
         version: 1.4.7
       eslint:
         specifier: ^8.24
@@ -158,8 +161,11 @@ importers:
       '@typescript-eslint/parser':
         specifier: ^7.9
         version: 7.11.0(eslint@8.57.0)(typescript@5.4.5)
+      cross-env:
+        specifier: ^7.0
+        version: 7.0.3
       depcheck:
-        specifier: ^1.4.7
+        specifier: ^1.4
         version: 1.4.7
       eslint:
         specifier: ^8.24
@@ -223,7 +229,7 @@ importers:
         version: 10.2.0(@nestjs/common@10.3.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.13)(rxjs@7.8.1))
       '@nestjs/mongoose':
         specifier: ^10.0.6
-        version: 10.0.6(@nestjs/common@10.3.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.13)(rxjs@7.8.1))(@nestjs/core@10.3.8(@nestjs/common@10.3.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.13)(rxjs@7.8.1))(@nestjs/platform-express@10.3.8)(reflect-metadata@0.1.13)(rxjs@7.8.1))(mongoose@8.3.4(@aws-sdk/credential-providers@3.583.0(@aws-sdk/client-sso-oidc@3.583.0))(socks@2.8.3))(rxjs@7.8.1)
+        version: 10.0.6(@nestjs/common@10.3.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.13)(rxjs@7.8.1))(@nestjs/core@10.3.8(@nestjs/common@10.3.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.13)(rxjs@7.8.1))(@nestjs/platform-express@10.3.8)(reflect-metadata@0.1.13)(rxjs@7.8.1))(mongoose@8.3.4(@aws-sdk/credential-providers@3.583.0)(socks@2.8.3))(rxjs@7.8.1)
       '@nestjs/passport':
         specifier: ^10.0.3
         version: 10.0.3(@nestjs/common@10.3.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.13)(rxjs@7.8.1))(passport@0.6.0)
@@ -278,21 +284,15 @@ importers:
       lodash:
         specifier: ^4.17
         version: 4.17.21
-      minimatch:
-        specifier: ^9.0.0
-        version: 9.0.4
       mongodb:
         specifier: '6.5'
-        version: 6.5.0(@aws-sdk/credential-providers@3.583.0(@aws-sdk/client-sso-oidc@3.583.0))(socks@2.8.3)
+        version: 6.5.0(@aws-sdk/credential-providers@3.583.0)(socks@2.8.3)
       mongoose:
         specifier: 8.3.4
-        version: 8.3.4(@aws-sdk/credential-providers@3.583.0(@aws-sdk/client-sso-oidc@3.583.0))(socks@2.8.3)
+        version: 8.3.4(@aws-sdk/credential-providers@3.583.0)(socks@2.8.3)
       ms:
         specifier: ^2.1.3
         version: 2.1.3
-      multer:
-        specifier: ^1.4.5-lts.1
-        version: 1.4.5-lts.1
       nestjs-i18n:
         specifier: 10.4.5
         version: 10.4.5(@nestjs/common@10.3.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.13)(rxjs@7.8.1))(@nestjs/core@10.3.8(@nestjs/common@10.3.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.13)(rxjs@7.8.1))(@nestjs/platform-express@10.3.8)(reflect-metadata@0.1.13)(rxjs@7.8.1))(class-validator@0.14.1)(rxjs@7.8.1)
@@ -348,9 +348,6 @@ importers:
       '@types/jest':
         specifier: ^29.5.12
         version: 29.5.12
-      '@types/minimatch':
-        specifier: ^5.1.2
-        version: 5.1.2
       '@types/multer':
         specifier: ^1.4.11
         version: 1.4.11
@@ -366,11 +363,14 @@ importers:
       '@typescript-eslint/parser':
         specifier: ^7.9
         version: 7.11.0(eslint@8.57.0)(typescript@5.4.5)
+      cross-env:
+        specifier: ^7.0
+        version: 7.0.3
       del:
         specifier: ^6.1.1
         version: 6.1.1
       depcheck:
-        specifier: ^1.4.7
+        specifier: ^1.4
         version: 1.4.7
       eslint:
         specifier: ^8.24
@@ -396,12 +396,9 @@ importers:
       jest:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@20.12.12)
-      migrate-mongo:
-        specifier: ^11.0.0
-        version: 11.0.0(mongodb@6.5.0(@aws-sdk/credential-providers@3.583.0(@aws-sdk/client-sso-oidc@3.583.0))(socks@2.8.3))
       mongo-seeding:
         specifier: ^4.0
-        version: 4.0.0(@aws-sdk/credential-providers@3.583.0(@aws-sdk/client-sso-oidc@3.583.0))(socks@2.8.3)
+        version: 4.0.0(@aws-sdk/credential-providers@3.583.0)(socks@2.8.3)
       mongodb-memory-server:
         specifier: ^8.13.0
         version: 8.16.0(@aws-sdk/client-sso-oidc@3.583.0)
@@ -476,7 +473,7 @@ importers:
         specifier: ^1.6.8
         version: 1.7.2
       depcheck:
-        specifier: ^1.4.7
+        specifier: ^1.4
         version: 1.4.7
       eslint:
         specifier: ^8.24
@@ -529,15 +526,9 @@ importers:
       '@lyvely/ui':
         specifier: workspace:*
         version: link:../../libs/ui
-      '@vueuse/components':
-        specifier: ^10.9.0
-        version: 10.9.0(vue@3.4.27(typescript@5.4.5))
       '@vueuse/core':
         specifier: ^10.9
         version: 10.9.0(vue@3.4.27(typescript@5.4.5))
-      '@vueuse/integrations':
-        specifier: ^10.9.0
-        version: 10.9.0(axios@1.7.2)(nprogress@0.2.0)(sortablejs@1.14.0)(vue@3.4.27(typescript@5.4.5))
       animate.css:
         specifier: ^4.1.1
         version: 4.1.1
@@ -547,9 +538,6 @@ importers:
       axios-auth-refresh:
         specifier: ^3.3.6
         version: 3.3.6(axios@1.7.2)
-      class-transformer:
-        specifier: ^0.5.1
-        version: 0.5.1
       class-validator:
         specifier: ^0.14.0
         version: 0.14.1
@@ -589,9 +577,6 @@ importers:
       vue-i18n:
         specifier: ^9.5.0
         version: 9.13.1(vue@3.4.27(typescript@5.4.5))
-      vue-randomcolor:
-        specifier: ^1.0.4
-        version: 1.0.4
       vue-router:
         specifier: ^4.3
         version: 4.3.2(vue@3.4.27(typescript@5.4.5))
@@ -605,12 +590,6 @@ importers:
       '@lyvely/devtools':
         specifier: workspace:*
         version: link:../../libs/devtools
-      '@swc/core':
-        specifier: ^1.3.93
-        version: 1.5.7
-      '@tailwindcss/forms':
-        specifier: ^0.5
-        version: 0.5.7(tailwindcss@3.4.3)
       '@tailwindcss/typography':
         specifier: ^0.5
         version: 0.5.13(tailwindcss@3.4.3)
@@ -620,9 +599,9 @@ importers:
       '@types/lodash':
         specifier: ^4.17
         version: 4.17.4
-      '@types/ms':
-        specifier: ^0.7.34
-        version: 0.7.34
+      '@types/node':
+        specifier: ^20.12
+        version: 20.12.12
       '@types/nprogress':
         specifier: ^0.2.3
         version: 0.2.3
@@ -635,6 +614,9 @@ importers:
       '@vitejs/plugin-vue':
         specifier: ^5.0
         version: 5.0.4(vite@5.2.11(@types/node@20.12.12)(sass@1.77.2)(terser@5.31.0))(vue@3.4.27(typescript@5.4.5))
+      '@vue/runtime-core':
+        specifier: ^3.4
+        version: 3.4.27
       '@vue/runtime-dom':
         specifier: ^3.4
         version: 3.4.27
@@ -645,7 +627,7 @@ importers:
         specifier: ^13.6
         version: 13.10.0
       depcheck:
-        specifier: ^1.4.7
+        specifier: ^1.4
         version: 1.4.7
       eslint:
         specifier: ^8.24
@@ -668,9 +650,6 @@ importers:
       jsdom:
         specifier: ^23.0
         version: 23.2.0(canvas@2.11.2)
-      jsonwebtoken:
-        specifier: ^9.0
-        version: 9.0.2
       postcss:
         specifier: ^8.4
         version: 8.4.38
@@ -689,9 +668,12 @@ importers:
       tslib:
         specifier: ^2.6.2
         version: 2.6.2
-      uuid:
-        specifier: ^9.0
-        version: 9.0.1
+      typescript:
+        specifier: ^5.4
+        version: 5.4.5
+      vite:
+        specifier: ^5.2
+        version: 5.2.11(@types/node@20.12.12)(sass@1.77.2)(terser@5.31.0)
       vitest:
         specifier: ^1.5
         version: 1.6.0(@types/node@20.12.12)(jsdom@23.2.0)(sass@1.77.2)(terser@5.31.0)
@@ -745,7 +727,7 @@ importers:
         specifier: ^3.4
         version: 3.4.27
       depcheck:
-        specifier: ^1.4.7
+        specifier: ^1.4
         version: 1.4.7
       eslint:
         specifier: ^8.24
@@ -857,7 +839,7 @@ importers:
         specifier: ^7.9
         version: 7.11.0(eslint@8.57.0)(typescript@5.4.5)
       depcheck:
-        specifier: ^1.4.7
+        specifier: ^1.4
         version: 1.4.7
       eslint:
         specifier: ^8.24
@@ -942,7 +924,7 @@ importers:
         specifier: ^1.6.8
         version: 1.7.2
       depcheck:
-        specifier: ^1.4.7
+        specifier: ^1.4
         version: 1.4.7
       eslint:
         specifier: ^8.24
@@ -1030,7 +1012,7 @@ importers:
         specifier: ^3.4
         version: 3.4.27
       depcheck:
-        specifier: ^1.4.7
+        specifier: ^1.4
         version: 1.4.7
       eslint:
         specifier: ^8.24
@@ -1145,7 +1127,7 @@ importers:
         specifier: ^7.9
         version: 7.11.0(eslint@8.57.0)(typescript@5.4.5)
       depcheck:
-        specifier: ^1.4.7
+        specifier: ^1.4
         version: 1.4.7
       eslint:
         specifier: ^8.24
@@ -1233,7 +1215,7 @@ importers:
         specifier: ^1.6.8
         version: 1.7.2
       depcheck:
-        specifier: ^1.4.7
+        specifier: ^1.4
         version: 1.4.7
       eslint:
         specifier: ^8.24
@@ -1321,7 +1303,7 @@ importers:
         specifier: ^3.4
         version: 3.4.27
       depcheck:
-        specifier: ^1.4.7
+        specifier: ^1.4
         version: 1.4.7
       eslint:
         specifier: ^8.24
@@ -1430,7 +1412,7 @@ importers:
         specifier: ^7.9
         version: 7.11.0(eslint@8.57.0)(typescript@5.4.5)
       depcheck:
-        specifier: ^1.4.7
+        specifier: ^1.4
         version: 1.4.7
       eslint:
         specifier: ^8.24
@@ -1518,7 +1500,7 @@ importers:
         specifier: ^1.6.8
         version: 1.7.2
       depcheck:
-        specifier: ^1.4.7
+        specifier: ^1.4
         version: 1.4.7
       eslint:
         specifier: ^8.24
@@ -1603,7 +1585,7 @@ importers:
         specifier: ^3.4
         version: 3.4.27
       depcheck:
-        specifier: ^1.4.7
+        specifier: ^1.4
         version: 1.4.7
       eslint:
         specifier: ^8.24
@@ -1700,7 +1682,7 @@ importers:
         specifier: ^7.9
         version: 7.11.0(eslint@8.57.0)(typescript@5.4.5)
       depcheck:
-        specifier: ^1.4.7
+        specifier: ^1.4
         version: 1.4.7
       eslint:
         specifier: ^8.24
@@ -1776,7 +1758,7 @@ importers:
         specifier: ^1.6.8
         version: 1.7.2
       depcheck:
-        specifier: ^1.4.7
+        specifier: ^1.4
         version: 1.4.7
       eslint:
         specifier: ^8.24
@@ -1846,7 +1828,7 @@ importers:
         specifier: ^3.4
         version: 3.4.27
       depcheck:
-        specifier: ^1.4.7
+        specifier: ^1.4
         version: 1.4.7
       eslint:
         specifier: ^8.24
@@ -1955,7 +1937,7 @@ importers:
         specifier: ^7.9
         version: 7.11.0(eslint@8.57.0)(typescript@5.4.5)
       depcheck:
-        specifier: ^1.4.7
+        specifier: ^1.4
         version: 1.4.7
       eslint:
         specifier: ^8.24
@@ -2040,7 +2022,7 @@ importers:
         specifier: ^1.6.8
         version: 1.7.2
       depcheck:
-        specifier: ^1.4.7
+        specifier: ^1.4
         version: 1.4.7
       eslint:
         specifier: ^8.24
@@ -2122,7 +2104,7 @@ importers:
         specifier: ^3.4
         version: 3.4.27
       depcheck:
-        specifier: ^1.4.7
+        specifier: ^1.4
         version: 1.4.7
       eslint:
         specifier: ^8.24
@@ -2231,7 +2213,7 @@ importers:
         specifier: ^7.9
         version: 7.11.0(eslint@8.57.0)(typescript@5.4.5)
       depcheck:
-        specifier: ^1.4.7
+        specifier: ^1.4
         version: 1.4.7
       eslint:
         specifier: ^8.24
@@ -2319,7 +2301,7 @@ importers:
         specifier: ^1.6.8
         version: 1.7.2
       depcheck:
-        specifier: ^1.4.7
+        specifier: ^1.4
         version: 1.4.7
       eslint:
         specifier: ^8.24
@@ -2410,7 +2392,7 @@ importers:
         specifier: ^3.4
         version: 3.4.27
       depcheck:
-        specifier: ^1.4.7
+        specifier: ^1.4
         version: 1.4.7
       eslint:
         specifier: ^8.24
@@ -2498,7 +2480,7 @@ importers:
         specifier: ^7.9
         version: 7.11.0(eslint@8.57.0)(typescript@5.4.5)
       depcheck:
-        specifier: ^1.4.7
+        specifier: ^1.4
         version: 1.4.7
       eslint:
         specifier: ^8.24
@@ -2577,7 +2559,7 @@ importers:
         specifier: ^7.9
         version: 7.11.0(eslint@8.57.0)(typescript@5.4.5)
       depcheck:
-        specifier: ^1.4.7
+        specifier: ^1.4
         version: 1.4.7
       eslint:
         specifier: ^8.24
@@ -2665,7 +2647,7 @@ importers:
         specifier: ^3.4
         version: 3.4.27
       depcheck:
-        specifier: ^1.4.7
+        specifier: ^1.4
         version: 1.4.7
       eslint:
         specifier: ^8.24
@@ -2774,7 +2756,7 @@ importers:
         specifier: ^7.9
         version: 7.11.0(eslint@8.57.0)(typescript@5.4.5)
       depcheck:
-        specifier: ^1.4.7
+        specifier: ^1.4
         version: 1.4.7
       eslint:
         specifier: ^8.24
@@ -2853,7 +2835,7 @@ importers:
         specifier: ^7.9
         version: 7.11.0(eslint@8.57.0)(typescript@5.4.5)
       depcheck:
-        specifier: ^1.4.7
+        specifier: ^1.4
         version: 1.4.7
       eslint:
         specifier: ^8.24
@@ -2977,7 +2959,7 @@ importers:
         specifier: ^9.0
         version: 9.0.8
       depcheck:
-        specifier: ^1.4.7
+        specifier: ^1.4
         version: 1.4.7
       eslint:
         specifier: ^8.24
@@ -3038,7 +3020,7 @@ importers:
         specifier: ^7.9
         version: 7.11.0(eslint@8.57.0)(typescript@5.4.5)
       depcheck:
-        specifier: ^1.4.7
+        specifier: ^1.4
         version: 1.4.7
       eslint:
         specifier: ^8.24
@@ -3126,7 +3108,7 @@ importers:
         specifier: ^7.9
         version: 7.11.0(eslint@8.57.0)(typescript@5.4.5)
       depcheck:
-        specifier: ^1.4.7
+        specifier: ^1.4
         version: 1.4.7
       eslint:
         specifier: ^8.24
@@ -3220,7 +3202,7 @@ importers:
         specifier: ^3.4
         version: 3.4.27
       depcheck:
-        specifier: ^1.4.7
+        specifier: ^1.4
         version: 1.4.7
       eslint:
         specifier: ^8.24
@@ -3305,7 +3287,7 @@ importers:
         specifier: ^7.9
         version: 7.11.0(eslint@8.57.0)(typescript@5.4.5)
       depcheck:
-        specifier: ^1.4.7
+        specifier: ^1.4
         version: 1.4.7
       eslint:
         specifier: ^8.24
@@ -3535,7 +3517,7 @@ importers:
         specifier: ^2.4
         version: 2.4.6
       depcheck:
-        specifier: ^1.4.7
+        specifier: ^1.4
         version: 1.4.7
       dependency-cruiser:
         specifier: ^14.1
@@ -6217,81 +6199,6 @@ packages:
   '@surma/rollup-plugin-off-main-thread@2.2.3':
     resolution: {integrity: sha512-lR8q/9W7hZpMWweNiAKU7NQerBnzQQLvi8qnTDU/fxItPhtZVMbPV3lbCwjhIlNBe9Bbr5V+KHshvWmVSG9cxQ==}
 
-  '@swc/core-darwin-arm64@1.5.7':
-    resolution: {integrity: sha512-bZLVHPTpH3h6yhwVl395k0Mtx8v6CGhq5r4KQdAoPbADU974Mauz1b6ViHAJ74O0IVE5vyy7tD3OpkQxL/vMDQ==}
-    engines: {node: '>=10'}
-    cpu: [arm64]
-    os: [darwin]
-
-  '@swc/core-darwin-x64@1.5.7':
-    resolution: {integrity: sha512-RpUyu2GsviwTc2qVajPL0l8nf2vKj5wzO3WkLSHAHEJbiUZk83NJrZd1RVbEknIMO7+Uyjh54hEh8R26jSByaw==}
-    engines: {node: '>=10'}
-    cpu: [x64]
-    os: [darwin]
-
-  '@swc/core-linux-arm-gnueabihf@1.5.7':
-    resolution: {integrity: sha512-cTZWTnCXLABOuvWiv6nQQM0hP6ZWEkzdgDvztgHI/+u/MvtzJBN5lBQ2lue/9sSFYLMqzqff5EHKlFtrJCA9dQ==}
-    engines: {node: '>=10'}
-    cpu: [arm]
-    os: [linux]
-
-  '@swc/core-linux-arm64-gnu@1.5.7':
-    resolution: {integrity: sha512-hoeTJFBiE/IJP30Be7djWF8Q5KVgkbDtjySmvYLg9P94bHg9TJPSQoC72tXx/oXOgXvElDe/GMybru0UxhKx4g==}
-    engines: {node: '>=10'}
-    cpu: [arm64]
-    os: [linux]
-
-  '@swc/core-linux-arm64-musl@1.5.7':
-    resolution: {integrity: sha512-+NDhK+IFTiVK1/o7EXdCeF2hEzCiaRSrb9zD7X2Z7inwWlxAntcSuzZW7Y6BRqGQH89KA91qYgwbnjgTQ22PiQ==}
-    engines: {node: '>=10'}
-    cpu: [arm64]
-    os: [linux]
-
-  '@swc/core-linux-x64-gnu@1.5.7':
-    resolution: {integrity: sha512-25GXpJmeFxKB+7pbY7YQLhWWjkYlR+kHz5I3j9WRl3Lp4v4UD67OGXwPe+DIcHqcouA1fhLhsgHJWtsaNOMBNg==}
-    engines: {node: '>=10'}
-    cpu: [x64]
-    os: [linux]
-
-  '@swc/core-linux-x64-musl@1.5.7':
-    resolution: {integrity: sha512-0VN9Y5EAPBESmSPPsCJzplZHV26akC0sIgd3Hc/7S/1GkSMoeuVL+V9vt+F/cCuzr4VidzSkqftdP3qEIsXSpg==}
-    engines: {node: '>=10'}
-    cpu: [x64]
-    os: [linux]
-
-  '@swc/core-win32-arm64-msvc@1.5.7':
-    resolution: {integrity: sha512-RtoNnstBwy5VloNCvmvYNApkTmuCe4sNcoYWpmY7C1+bPR+6SOo8im1G6/FpNem8AR5fcZCmXHWQ+EUmRWJyuA==}
-    engines: {node: '>=10'}
-    cpu: [arm64]
-    os: [win32]
-
-  '@swc/core-win32-ia32-msvc@1.5.7':
-    resolution: {integrity: sha512-Xm0TfvcmmspvQg1s4+USL3x8D+YPAfX2JHygvxAnCJ0EHun8cm2zvfNBcsTlnwYb0ybFWXXY129aq1wgFC9TpQ==}
-    engines: {node: '>=10'}
-    cpu: [ia32]
-    os: [win32]
-
-  '@swc/core-win32-x64-msvc@1.5.7':
-    resolution: {integrity: sha512-tp43WfJLCsKLQKBmjmY/0vv1slVywR5Q4qKjF5OIY8QijaEW7/8VwPyUyVoJZEnDgv9jKtUTG5PzqtIYPZGnyg==}
-    engines: {node: '>=10'}
-    cpu: [x64]
-    os: [win32]
-
-  '@swc/core@1.5.7':
-    resolution: {integrity: sha512-U4qJRBefIJNJDRCCiVtkfa/hpiZ7w0R6kASea+/KLp+vkus3zcLSB8Ub8SvKgTIxjWpwsKcZlPf5nrv4ls46SQ==}
-    engines: {node: '>=10'}
-    peerDependencies:
-      '@swc/helpers': ^0.5.0
-    peerDependenciesMeta:
-      '@swc/helpers':
-        optional: true
-
-  '@swc/counter@0.1.3':
-    resolution: {integrity: sha512-e2BR4lsJkkRlKZ/qCHPw9ZaSxc0MVUd7gtbtaB7aMvHeJVYe8sOB8DBZkP2DtISHGSku9sCK6T6cnY0CtXrOCQ==}
-
-  '@swc/types@0.1.7':
-    resolution: {integrity: sha512-scHWahbHF0eyj3JsxG9CFJgFdFNaVQCNAimBlT6PzS3n/HptxqREjsm4OH6AN3lYcffZYSPxXW8ua2BEHp0lJQ==}
-
   '@tailwindcss/forms@0.5.7':
     resolution: {integrity: sha512-QE7X69iQI+ZXwldE+rzasvbJiyV/ju1FGHH0Qn2W3FKbuYtqp8LKcy6iSw79fVUT5/Vvf+0XgLCeYVG+UV6hOw==}
     peerDependencies:
@@ -6701,52 +6608,8 @@ packages:
   '@vue/test-utils@2.4.6':
     resolution: {integrity: sha512-FMxEjOpYNYiFe0GkaHsnJPXFHxQ6m4t8vI/ElPGpMWxZKpmRvQ33OIrvRXemy6yha03RxhOlQuy+gZMC3CQSow==}
 
-  '@vueuse/components@10.9.0':
-    resolution: {integrity: sha512-BHQpA0yIi3y7zKa1gYD0FUzLLkcRTqVhP8smnvsCK6GFpd94Nziq1XVPD7YpFeho0k5BzbBiNZF7V/DpkJ967A==}
-
   '@vueuse/core@10.9.0':
     resolution: {integrity: sha512-/1vjTol8SXnx6xewDEKfS0Ra//ncg4Hb0DaZiwKf7drgfMsKFExQ+FnnENcN6efPen+1kIzhLQoGSy0eDUVOMg==}
-
-  '@vueuse/integrations@10.9.0':
-    resolution: {integrity: sha512-acK+A01AYdWSvL4BZmCoJAcyHJ6EqhmkQEXbQLwev1MY7NBnS+hcEMx/BzVoR9zKI+UqEPMD9u6PsyAuiTRT4Q==}
-    peerDependencies:
-      async-validator: '*'
-      axios: '*'
-      change-case: '*'
-      drauu: '*'
-      focus-trap: '*'
-      fuse.js: '*'
-      idb-keyval: '*'
-      jwt-decode: '*'
-      nprogress: '*'
-      qrcode: '*'
-      sortablejs: '*'
-      universal-cookie: '*'
-    peerDependenciesMeta:
-      async-validator:
-        optional: true
-      axios:
-        optional: true
-      change-case:
-        optional: true
-      drauu:
-        optional: true
-      focus-trap:
-        optional: true
-      fuse.js:
-        optional: true
-      idb-keyval:
-        optional: true
-      jwt-decode:
-        optional: true
-      nprogress:
-        optional: true
-      qrcode:
-        optional: true
-      sortablejs:
-        optional: true
-      universal-cookie:
-        optional: true
 
   '@vueuse/metadata@10.9.0':
     resolution: {integrity: sha512-iddNbg3yZM0X7qFY2sAotomgdHK7YJ6sKUvQqbvwnf7TmaVPxS4EJydcNsVejNdS8iWCtDk+fYXr7E32nyTnGA==}
@@ -7648,6 +7511,11 @@ packages:
   cropperjs@1.6.2:
     resolution: {integrity: sha512-nhymn9GdnV3CqiEHJVai54TULFAE3VshJTXSqSJKa8yXAKyBKDWdhHarnlIPrshJ0WMFTGuFvG02YjLXfPiuOA==}
 
+  cross-env@7.0.3:
+    resolution: {integrity: sha512-+/HKd6EgcQCJGh2PSjZuUitQBQynKor4wrFbRg4DtAgS1aWO+gU52xpH7M9ScGgXSYmAVS9bIJ8EzuaGw0oNAw==}
+    engines: {node: '>=10.14', npm: '>=6', yarn: '>=1'}
+    hasBin: true
+
   cross-spawn@6.0.5:
     resolution: {integrity: sha512-eTVLrBSt7fjbDygz805pMnstIs2VTBNkRm0qxZd+M7A5XDdxVRWO5MxGBXZhjY4cqLYLdtrGqRf8mBPmzwSpWQ==}
     engines: {node: '>=4.8'}
@@ -7720,10 +7588,6 @@ packages:
   data-view-byte-offset@1.0.0:
     resolution: {integrity: sha512-t/Ygsytq+R995EJ5PZlD4Cu56sWa8InXySaViRzw9apusqsOO2bQP+SbYzAhR0pFKoB+43lYy8rWban9JSuXnA==}
     engines: {node: '>= 0.4'}
-
-  date-fns@2.30.0:
-    resolution: {integrity: sha512-fnULvOpxnC5/Vg3NCiWelDsLiUc9bRwAPs/+LfTLNvetFCtCTN+yQz15C/fs4AwX1R9K5GLtLfn8QW+dWisaAw==}
-    engines: {node: '>=0.11'}
 
   dayjs@1.11.11:
     resolution: {integrity: sha512-okzr3f11N6WuqYtZSvm+F776mB41wRZMhKP+hc34YdW+KmtYYK9iqvHSwo2k9FEH3fhGXvOPV6yz2IcSrfRUDg==}
@@ -8486,10 +8350,6 @@ packages:
     resolution: {integrity: sha512-0OEk9Gr+Yj7wjDW2KgaNYUypKau71jAfFyeLQF5iVtxqc6uJHag/MT7pmaEApf4qM7u86DkBcd4ualddYMfbLw==}
     engines: {node: '>=0.4.0'}
 
-  fn-args@5.0.0:
-    resolution: {integrity: sha512-CtbfI3oFFc3nbdIoHycrfbrxiGgxXBXXuyOl49h47JawM1mYrqpiRqnH5CB2mBatdXvHHOUO6a+RiAuuvKt0lw==}
-    engines: {node: '>=8'}
-
   follow-redirects@1.15.6:
     resolution: {integrity: sha512-wWN62YITEaOpSK584EZXJafH1AGpO8RVgElfkuXbTOrPX4fIfOyEpW/CsiNd8JdYrAoOvafRTOEnvsO++qCqFA==}
     engines: {node: '>=4.0'}
@@ -8542,10 +8402,6 @@ packages:
 
   fs-constants@1.0.0:
     resolution: {integrity: sha512-y6OAwoSIf7FyjMIv94u+b5rdheZEjzR63GTyZJm5qh4Bi+2YgwLCcI/fPFZkL5PSixOt6ZNKm+w+Hfp/Bciwow==}
-
-  fs-extra@10.1.0:
-    resolution: {integrity: sha512-oRXApq54ETRj4eMiFzGnHWGy+zo5raudjuxN0b8H7s/RU2oW0Wvsx9O0ACRN/kRq9E8Vu/ReskGB5o3ji+FzHQ==}
-    engines: {node: '>=12'}
 
   fs-extra@11.1.1:
     resolution: {integrity: sha512-MGIE4HOvQCeUCzmlHs0vXpih4ysz4wg9qiSAu6cd42lVwPbTM1TjV7RusoyQqMmk/95gdQZX72u+YW+c3eEpFQ==}
@@ -10086,13 +9942,6 @@ packages:
     resolution: {integrity: sha512-LPP/3KorzCwBxfeUuZmaR6bG2kdeHSbe0P2tY3FLRU4vYrjYz5hI4QZwV0njUx3jeuKe67YukQ1LSPZBKDqO/Q==}
     engines: {node: '>=8.6'}
 
-  migrate-mongo@11.0.0:
-    resolution: {integrity: sha512-GB/gHzUwp/fL1w6ksNGihTyb+cSrm6NbVLlz1OSkQKaLlzAXMwH7iKK2ZS7W5v+I8vXiY2rL58WTUZSAL6QR+A==}
-    engines: {node: '>=8'}
-    hasBin: true
-    peerDependencies:
-      mongodb: ^4.4.1 || ^5.0.0 || ^6.0.0
-
   mime-db@1.52.0:
     resolution: {integrity: sha512-sPU4uV7dYlvtWJxwwxHD0PuihVNiE7TyAbQ5SWxDCB9mUYvOgroQOwYQQOKPJ8CIbE+1ETVlOoK1UC2nU3gYvg==}
     engines: {node: '>= 0.6'}
@@ -10378,10 +10227,6 @@ packages:
     resolution: {integrity: sha512-WeSGziVj6+Z2/MwQo3GvqzgR+9Uc+qt8SwHKh3gvNPiISKfsMfG4SvCOFYlxxgkXt7yIV2i1yczehm0EOKIxIg==}
     engines: {node: '>= 6.0.0'}
 
-  multer@1.4.5-lts.1:
-    resolution: {integrity: sha512-ywPWvcDMeH+z9gQq5qYHCCy+ethsk4goepZ45GLD63fOu0YcNecQxi64nDs3qluZB+murG3/D4dJ7+dGctcCQQ==}
-    engines: {node: '>= 6.0.0'}
-
   multimatch@5.0.0:
     resolution: {integrity: sha512-ypMKuglUrZUD99Tk2bUQ+xNQj43lPEfAeX2o9cTteAmShXy2VHDJpuwu1o0xqoKCt9jLVAvwyFKdLTPXKAfJyA==}
     engines: {node: '>=10'}
@@ -10623,10 +10468,6 @@ packages:
 
   ospath@1.2.2:
     resolution: {integrity: sha512-o6E5qJV5zkAbIDNhGSIlyOhScKXgQrSRMilfph0clDfM0nEnBOlKlH4sWDmG95BW/CvwNz0vmm7dJVtU2KlMiA==}
-
-  p-each-series@2.2.0:
-    resolution: {integrity: sha512-ycIL2+1V32th+8scbpTvyHNaHe02z0sjgh91XXjAk+ZeXoPN4Z46DVUnzdso0aX4KckKw0FNNFHdjZ2UsZvxiA==}
-    engines: {node: '>=8'}
 
   p-event@4.2.0:
     resolution: {integrity: sha512-KXatOjCRXXkSePPb1Nbi0p0m+gQAwdlbhi4wQKJPI1HsMQS9g+Sqp2o+QHziPr7eYJyOZet836KoHEVM1mwOrQ==}
@@ -12700,9 +12541,6 @@ packages:
     peerDependencies:
       vue: ^3.0.0
 
-  vue-randomcolor@1.0.4:
-    resolution: {integrity: sha512-mEZmWrfoO7fydTESAXtKfXRJQIc0MMITg5/rxqjpPSSQAwZ4jkShpKgsHkEq8pLH8gqUNxrBVRibIMTGLByJ6w==}
-
   vue-resize@2.0.0-alpha.1:
     resolution: {integrity: sha512-7+iqOueLU7uc9NrMfrzbG8hwMqchfVfSzpVlCMeJQe4pyibqyoifDNbKTZvwxZKDvGkB+PdFeKvnGZMoEb8esg==}
     peerDependencies:
@@ -13325,49 +13163,11 @@ snapshots:
       - aws-crt
     optional: true
 
-  '@aws-sdk/credential-provider-ini@3.583.0(@aws-sdk/client-sts@3.583.0)':
-    dependencies:
-      '@aws-sdk/client-sts': 3.583.0
-      '@aws-sdk/credential-provider-env': 3.577.0
-      '@aws-sdk/credential-provider-process': 3.577.0
-      '@aws-sdk/credential-provider-sso': 3.583.0(@aws-sdk/client-sso-oidc@3.583.0)
-      '@aws-sdk/credential-provider-web-identity': 3.577.0(@aws-sdk/client-sts@3.583.0)
-      '@aws-sdk/types': 3.577.0
-      '@smithy/credential-provider-imds': 3.0.0
-      '@smithy/property-provider': 3.0.0
-      '@smithy/shared-ini-file-loader': 3.0.0
-      '@smithy/types': 3.0.0
-      tslib: 2.6.2
-    transitivePeerDependencies:
-      - '@aws-sdk/client-sso-oidc'
-      - aws-crt
-    optional: true
-
   '@aws-sdk/credential-provider-node@3.583.0(@aws-sdk/client-sso-oidc@3.583.0)(@aws-sdk/client-sts@3.583.0)':
     dependencies:
       '@aws-sdk/credential-provider-env': 3.577.0
       '@aws-sdk/credential-provider-http': 3.582.0
       '@aws-sdk/credential-provider-ini': 3.583.0(@aws-sdk/client-sso-oidc@3.583.0)(@aws-sdk/client-sts@3.583.0)
-      '@aws-sdk/credential-provider-process': 3.577.0
-      '@aws-sdk/credential-provider-sso': 3.583.0(@aws-sdk/client-sso-oidc@3.583.0)
-      '@aws-sdk/credential-provider-web-identity': 3.577.0(@aws-sdk/client-sts@3.583.0)
-      '@aws-sdk/types': 3.577.0
-      '@smithy/credential-provider-imds': 3.0.0
-      '@smithy/property-provider': 3.0.0
-      '@smithy/shared-ini-file-loader': 3.0.0
-      '@smithy/types': 3.0.0
-      tslib: 2.6.2
-    transitivePeerDependencies:
-      - '@aws-sdk/client-sso-oidc'
-      - '@aws-sdk/client-sts'
-      - aws-crt
-    optional: true
-
-  '@aws-sdk/credential-provider-node@3.583.0(@aws-sdk/client-sts@3.583.0)':
-    dependencies:
-      '@aws-sdk/credential-provider-env': 3.577.0
-      '@aws-sdk/credential-provider-http': 3.582.0
-      '@aws-sdk/credential-provider-ini': 3.583.0(@aws-sdk/client-sts@3.583.0)
       '@aws-sdk/credential-provider-process': 3.577.0
       '@aws-sdk/credential-provider-sso': 3.583.0(@aws-sdk/client-sso-oidc@3.583.0)
       '@aws-sdk/credential-provider-web-identity': 3.577.0(@aws-sdk/client-sts@3.583.0)
@@ -13413,29 +13213,6 @@ snapshots:
       '@smithy/property-provider': 3.0.0
       '@smithy/types': 3.0.0
       tslib: 2.6.2
-    optional: true
-
-  '@aws-sdk/credential-providers@3.583.0':
-    dependencies:
-      '@aws-sdk/client-cognito-identity': 3.583.0
-      '@aws-sdk/client-sso': 3.583.0
-      '@aws-sdk/client-sts': 3.583.0
-      '@aws-sdk/credential-provider-cognito-identity': 3.583.0
-      '@aws-sdk/credential-provider-env': 3.577.0
-      '@aws-sdk/credential-provider-http': 3.582.0
-      '@aws-sdk/credential-provider-ini': 3.583.0(@aws-sdk/client-sts@3.583.0)
-      '@aws-sdk/credential-provider-node': 3.583.0(@aws-sdk/client-sts@3.583.0)
-      '@aws-sdk/credential-provider-process': 3.577.0
-      '@aws-sdk/credential-provider-sso': 3.583.0(@aws-sdk/client-sso-oidc@3.583.0)
-      '@aws-sdk/credential-provider-web-identity': 3.577.0(@aws-sdk/client-sts@3.583.0)
-      '@aws-sdk/types': 3.577.0
-      '@smithy/credential-provider-imds': 3.0.0
-      '@smithy/property-provider': 3.0.0
-      '@smithy/types': 3.0.0
-      tslib: 2.6.2
-    transitivePeerDependencies:
-      - '@aws-sdk/client-sso-oidc'
-      - aws-crt
     optional: true
 
   '@aws-sdk/credential-providers@3.583.0(@aws-sdk/client-sso-oidc@3.583.0)':
@@ -15091,13 +14868,6 @@ snapshots:
       '@nestjs/common': 10.3.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       '@types/jsonwebtoken': 9.0.5
       jsonwebtoken: 9.0.2
-
-  '@nestjs/mongoose@10.0.6(@nestjs/common@10.3.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.13)(rxjs@7.8.1))(@nestjs/core@10.3.8(@nestjs/common@10.3.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.13)(rxjs@7.8.1))(@nestjs/platform-express@10.3.8)(reflect-metadata@0.1.13)(rxjs@7.8.1))(mongoose@8.3.4(@aws-sdk/credential-providers@3.583.0(@aws-sdk/client-sso-oidc@3.583.0))(socks@2.8.3))(rxjs@7.8.1)':
-    dependencies:
-      '@nestjs/common': 10.3.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.13)(rxjs@7.8.1)
-      '@nestjs/core': 10.3.8(@nestjs/common@10.3.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.13)(rxjs@7.8.1))(@nestjs/platform-express@10.3.8)(reflect-metadata@0.1.13)(rxjs@7.8.1)
-      mongoose: 8.3.4(@aws-sdk/credential-providers@3.583.0(@aws-sdk/client-sso-oidc@3.583.0))(socks@2.8.3)
-      rxjs: 7.8.1
 
   '@nestjs/mongoose@10.0.6(@nestjs/common@10.3.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.13)(rxjs@7.8.1))(@nestjs/core@10.3.8(@nestjs/common@10.3.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.13)(rxjs@7.8.1))(@nestjs/platform-express@10.3.8)(reflect-metadata@0.1.13)(rxjs@7.8.1))(mongoose@8.3.4(@aws-sdk/credential-providers@3.583.0)(socks@2.8.3))(rxjs@7.8.1)':
     dependencies:
@@ -16865,58 +16635,6 @@ snapshots:
       magic-string: 0.25.9
       string.prototype.matchall: 4.0.11
 
-  '@swc/core-darwin-arm64@1.5.7':
-    optional: true
-
-  '@swc/core-darwin-x64@1.5.7':
-    optional: true
-
-  '@swc/core-linux-arm-gnueabihf@1.5.7':
-    optional: true
-
-  '@swc/core-linux-arm64-gnu@1.5.7':
-    optional: true
-
-  '@swc/core-linux-arm64-musl@1.5.7':
-    optional: true
-
-  '@swc/core-linux-x64-gnu@1.5.7':
-    optional: true
-
-  '@swc/core-linux-x64-musl@1.5.7':
-    optional: true
-
-  '@swc/core-win32-arm64-msvc@1.5.7':
-    optional: true
-
-  '@swc/core-win32-ia32-msvc@1.5.7':
-    optional: true
-
-  '@swc/core-win32-x64-msvc@1.5.7':
-    optional: true
-
-  '@swc/core@1.5.7':
-    dependencies:
-      '@swc/counter': 0.1.3
-      '@swc/types': 0.1.7
-    optionalDependencies:
-      '@swc/core-darwin-arm64': 1.5.7
-      '@swc/core-darwin-x64': 1.5.7
-      '@swc/core-linux-arm-gnueabihf': 1.5.7
-      '@swc/core-linux-arm64-gnu': 1.5.7
-      '@swc/core-linux-arm64-musl': 1.5.7
-      '@swc/core-linux-x64-gnu': 1.5.7
-      '@swc/core-linux-x64-musl': 1.5.7
-      '@swc/core-win32-arm64-msvc': 1.5.7
-      '@swc/core-win32-ia32-msvc': 1.5.7
-      '@swc/core-win32-x64-msvc': 1.5.7
-
-  '@swc/counter@0.1.3': {}
-
-  '@swc/types@0.1.7':
-    dependencies:
-      '@swc/counter': 0.1.3
-
   '@tailwindcss/forms@0.5.7(tailwindcss@3.4.3)':
     dependencies:
       mini-svg-data-uri: 1.4.4
@@ -17420,34 +17138,12 @@ snapshots:
       js-beautify: 1.15.1
       vue-component-type-helpers: 2.0.19
 
-  '@vueuse/components@10.9.0(vue@3.4.27(typescript@5.4.5))':
-    dependencies:
-      '@vueuse/core': 10.9.0(vue@3.4.27(typescript@5.4.5))
-      '@vueuse/shared': 10.9.0(vue@3.4.27(typescript@5.4.5))
-      vue-demi: 0.14.7(vue@3.4.27(typescript@5.4.5))
-    transitivePeerDependencies:
-      - '@vue/composition-api'
-      - vue
-
   '@vueuse/core@10.9.0(vue@3.4.27(typescript@5.4.5))':
     dependencies:
       '@types/web-bluetooth': 0.0.20
       '@vueuse/metadata': 10.9.0
       '@vueuse/shared': 10.9.0(vue@3.4.27(typescript@5.4.5))
       vue-demi: 0.14.7(vue@3.4.27(typescript@5.4.5))
-    transitivePeerDependencies:
-      - '@vue/composition-api'
-      - vue
-
-  '@vueuse/integrations@10.9.0(axios@1.7.2)(nprogress@0.2.0)(sortablejs@1.14.0)(vue@3.4.27(typescript@5.4.5))':
-    dependencies:
-      '@vueuse/core': 10.9.0(vue@3.4.27(typescript@5.4.5))
-      '@vueuse/shared': 10.9.0(vue@3.4.27(typescript@5.4.5))
-      vue-demi: 0.14.7(vue@3.4.27(typescript@5.4.5))
-    optionalDependencies:
-      axios: 1.7.2
-      nprogress: 0.2.0
-      sortablejs: 1.14.0
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
@@ -18431,6 +18127,10 @@ snapshots:
 
   cropperjs@1.6.2: {}
 
+  cross-env@7.0.3:
+    dependencies:
+      cross-spawn: 7.0.3
+
   cross-spawn@6.0.5:
     dependencies:
       nice-try: 1.0.5
@@ -18556,10 +18256,6 @@ snapshots:
       call-bind: 1.0.7
       es-errors: 1.3.0
       is-data-view: 1.0.1
-
-  date-fns@2.30.0:
-    dependencies:
-      '@babel/runtime': 7.24.6
 
   dayjs@1.11.11: {}
 
@@ -19601,8 +19297,6 @@ snapshots:
 
   flow-parser@0.236.0: {}
 
-  fn-args@5.0.0: {}
-
   follow-redirects@1.15.6(debug@4.3.4):
     optionalDependencies:
       debug: 4.3.4(supports-color@8.1.1)
@@ -19647,12 +19341,6 @@ snapshots:
   fresh@0.5.2: {}
 
   fs-constants@1.0.0: {}
-
-  fs-extra@10.1.0:
-    dependencies:
-      graceful-fs: 4.2.11
-      jsonfile: 6.1.0
-      universalify: 2.0.1
 
   fs-extra@11.1.1:
     dependencies:
@@ -21688,17 +21376,6 @@ snapshots:
       braces: 3.0.3
       picomatch: 2.3.1
 
-  migrate-mongo@11.0.0(mongodb@6.5.0(@aws-sdk/credential-providers@3.583.0(@aws-sdk/client-sso-oidc@3.583.0))(socks@2.8.3)):
-    dependencies:
-      cli-table3: 0.6.5
-      commander: 9.5.0
-      date-fns: 2.30.0
-      fn-args: 5.0.0
-      fs-extra: 10.1.0
-      lodash: 4.17.21
-      mongodb: 6.5.0(@aws-sdk/credential-providers@3.583.0(@aws-sdk/client-sso-oidc@3.583.0))(socks@2.8.3)
-      p-each-series: 2.2.0
-
   mime-db@1.52.0: {}
 
   mime-types@2.1.35:
@@ -22076,24 +21753,6 @@ snapshots:
       pkg-types: 1.1.1
       ufo: 1.5.3
 
-  mongo-seeding@4.0.0(@aws-sdk/credential-providers@3.583.0(@aws-sdk/client-sso-oidc@3.583.0))(socks@2.8.3):
-    dependencies:
-      bson: 6.7.0
-      connection-string: 4.4.0
-      debug: 4.3.4(supports-color@8.1.1)
-      extend: 3.0.2
-      import-fresh: 3.3.0
-      mongodb: 6.5.0(@aws-sdk/credential-providers@3.583.0(@aws-sdk/client-sso-oidc@3.583.0))(socks@2.8.3)
-    transitivePeerDependencies:
-      - '@aws-sdk/credential-providers'
-      - '@mongodb-js/zstd'
-      - gcp-metadata
-      - kerberos
-      - mongodb-client-encryption
-      - snappy
-      - socks
-      - supports-color
-
   mongo-seeding@4.0.0(@aws-sdk/credential-providers@3.583.0)(socks@2.8.3):
     dependencies:
       bson: 6.7.0
@@ -22165,7 +21824,7 @@ snapshots:
       - '@aws-sdk/client-sso-oidc'
       - aws-crt
 
-  mongodb@6.5.0(@aws-sdk/credential-providers@3.583.0(@aws-sdk/client-sso-oidc@3.583.0))(socks@2.8.3):
+  mongodb@6.5.0(@aws-sdk/credential-providers@3.583.0)(socks@2.8.3):
     dependencies:
       '@mongodb-js/saslprep': 1.1.7
       bson: 6.7.0
@@ -22173,34 +21832,6 @@ snapshots:
     optionalDependencies:
       '@aws-sdk/credential-providers': 3.583.0(@aws-sdk/client-sso-oidc@3.583.0)
       socks: 2.8.3
-
-  mongodb@6.5.0(@aws-sdk/credential-providers@3.583.0)(socks@2.8.3):
-    dependencies:
-      '@mongodb-js/saslprep': 1.1.7
-      bson: 6.7.0
-      mongodb-connection-string-url: 3.0.1
-    optionalDependencies:
-      '@aws-sdk/credential-providers': 3.583.0
-      socks: 2.8.3
-
-  mongoose@8.3.4(@aws-sdk/credential-providers@3.583.0(@aws-sdk/client-sso-oidc@3.583.0))(socks@2.8.3):
-    dependencies:
-      bson: 6.7.0
-      kareem: 2.6.3
-      mongodb: 6.5.0(@aws-sdk/credential-providers@3.583.0(@aws-sdk/client-sso-oidc@3.583.0))(socks@2.8.3)
-      mpath: 0.9.0
-      mquery: 5.0.0
-      ms: 2.1.3
-      sift: 17.1.3
-    transitivePeerDependencies:
-      - '@aws-sdk/credential-providers'
-      - '@mongodb-js/zstd'
-      - gcp-metadata
-      - kerberos
-      - mongodb-client-encryption
-      - snappy
-      - socks
-      - supports-color
 
   mongoose@8.3.4(@aws-sdk/credential-providers@3.583.0)(socks@2.8.3):
     dependencies:
@@ -22256,16 +21887,6 @@ snapshots:
   muggle-string@0.4.1: {}
 
   multer@1.4.4-lts.1:
-    dependencies:
-      append-field: 1.0.0
-      busboy: 1.6.0
-      concat-stream: 1.6.2
-      mkdirp: 0.5.6
-      object-assign: 4.1.1
-      type-is: 1.6.18
-      xtend: 4.0.2
-
-  multer@1.4.5-lts.1:
     dependencies:
       append-field: 1.0.0
       busboy: 1.6.0
@@ -22550,8 +22171,6 @@ snapshots:
       wcwidth: 1.0.1
 
   ospath@1.2.2: {}
-
-  p-each-series@2.2.0: {}
 
   p-event@4.2.0:
     dependencies:
@@ -24737,8 +24356,6 @@ snapshots:
   vue-observe-visibility@2.0.0-alpha.1(vue@3.4.27(typescript@5.4.5)):
     dependencies:
       vue: 3.4.27(typescript@5.4.5)
-
-  vue-randomcolor@1.0.4: {}
 
   vue-resize@2.0.0-alpha.1(vue@3.4.27(typescript@5.4.5)):
     dependencies:

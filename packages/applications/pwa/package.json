@@ -26,6 +26,7 @@
     "@lyvely/milestones-web": "workspace:*",
     "@lyvely/tasks-web": "workspace:*",
     "vue": "^3.4",
+    "vue-router": "^4.3",
     "workbox-core": "^7.1.0",
     "workbox-routing": "^7.1.0",
     "workbox-window": "^7.1.0",

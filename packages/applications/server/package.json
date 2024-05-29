@@ -8,13 +8,13 @@
   "types": "dist/src/index.d.ts",
   "private": true,
   "scripts": {
-    "prebuild": "rimraf dist",
-    "build": "tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
+    "clean": "rimraf ./dist",
+    "build": "rimraf ./dist && tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
     "format": "prettier src --write",
     "prettier": "prettier src --check",
     "depcheck": "depcheck src --quiet",
     "dev": "cross-env NODE_ENV=development nest start",
-    "dev:debug": "cross-env NODE_ENV=development  nest start --debug --watch",
+    "dev:debug": "cross-env NODE_ENV=development nest start --debug --watch",
     "start": "nest start",
     "start:prod": "node dist/main",
     "start:debug": "nest start --debug --watch"
@@ -42,7 +42,8 @@
     "eslint-config-prettier": "^8.8",
     "eslint-import-resolver-typescript": "^3.5",
     "eslint-plugin-import": "^2.26",
-    "eslint-plugin-prettier": "^5.1"
+    "eslint-plugin-prettier": "^5.1",
+    "cross-env": "^7.0"
   },
   "config": {
     "mongodbMemoryServer": {

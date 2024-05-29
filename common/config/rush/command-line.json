@@ -58,6 +58,54 @@
       "enableParallelism": true,
       "allowWarningsInSuccessfulBuild": false,
       "incremental": true
+    },
+    {
+      "name": "pwa:dev",
+      "commandKind": "global",
+      "summary": "Starts pwa application with all features in dev mode",
+      "description": "Starts the pwa application in development mode, including all feature modules. This requires a build and configuration (\"packages/applications/pwa/.env\") of the \"@lyvely/pwa\" workspace. A development server can be started with \"rush server:dev\".",
+      "shellCommand": "pnpm --filter @lyvely/pwa run dev",
+      "safeForSimultaneousRushProcesses": true
+    },
+    {
+      "name": "server:dev",
+      "commandKind": "global",
+      "summary": "Starts the lyvely server with all features",
+      "description": "Starts the lyvely server application in development mode, including all feature modules. This requires a full build and configuration of the @lyvely/pwa (\"packages/applications/server/src/config/lyvely.development.config.ts\") workspace. The dev frontend can be started with \"rush pwa:dev\".",
+      "shellCommand": "pnpm --filter @lyvely/server run dev",
+      "safeForSimultaneousRushProcesses": true
+    },
+    {
+      "name": "server:debug",
+      "commandKind": "global",
+      "summary": "Starts the lyvely server with all features in debug mode",
+      "description": "Starts the lyvely server application in debug mode with, including all feature modules. This requires a full build and configuration of the @lyvely/pwa (\"packages/applications/server/src/config/lyvely.development.config.ts\") workspace. The dev frontend can be started with \"rush pwa:dev\".",
+      "shellCommand": "pnpm --filter @lyvely/server run dev:debug",
+      "safeForSimultaneousRushProcesses": true
+    },
+    {
+      "name": "web:dev",
+      "commandKind": "global",
+      "summary": "Starts the core web dev server",
+      "description": "Starts the core web server in development mode, without any feature modules. This requires the build and configuration (\"packages/core/web/.env\") of the @lyvely/api workspace. The core api server can be started with \"rush api:dev\".",
+      "shellCommand": "pnpm --filter @lyvely/web run dev",
+      "safeForSimultaneousRushProcesses": true
+    },
+    {
+      "name": "api:dev",
+      "commandKind": "global",
+      "summary": "Starts a core api dev server",
+      "description": "Starts the core api server in development mode, without any feature modules. This requires the build and configuration (\"packages/core/api/src/config/lyvely.development.config.ts\") of the @lyvely/api workspace. The dev frontend can be started with \"rush web:dev\".",
+      "shellCommand": "pnpm --filter @lyvely/api run dev",
+      "safeForSimultaneousRushProcesses": true
+    },
+    {
+      "name": "api:debug",
+      "commandKind": "global",
+      "summary": "Starts a core api dev server in debug mode",
+      "description": "Starts the core api server in development mode, without any feature modules. This requires the build and configuration (\"packages/core/api/src/config/lyvely.development.config.ts\") of the @lyvely/api workspace. The dev frontend can be started with \"rush web:dev\".",
+      "shellCommand": "pnpm --filter @lyvely/api run dev:debug",
+      "safeForSimultaneousRushProcesses": true
     }
     // {
     //   /**
