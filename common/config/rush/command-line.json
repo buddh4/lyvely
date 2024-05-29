@@ -15,7 +15,7 @@
       "name": "test",
       "commandKind": "bulk",
       "summary": "Runs unit tests",
-      "description": "Run unit tests for all projects that have changed since the last successful run",
+      "description": "Run unit tests for all projects that have changed since the last successful run.",
       "safeForSimultaneousRushProcesses": true,
       "ignoreMissingScript": true,
       "ignoreDependencyOrder": true,
@@ -27,7 +27,7 @@
       "name": "lint",
       "commandKind": "bulk",
       "summary": "Runs eslint",
-      "description": "Run eslint for all projects that have changed since the last successful run",
+      "description": "Run eslint for all projects that have changed since the last successful run.",
       "safeForSimultaneousRushProcesses": true,
       "ignoreMissingScript": true,
       "ignoreDependencyOrder": true,
@@ -39,7 +39,7 @@
       "name": "format",
       "commandKind": "bulk",
       "summary": "Runs prettier",
-      "description": "Run prettier for all projects that have changed since the last successful run",
+      "description": "Run prettier for all projects that have changed since the last successful run.",
       "safeForSimultaneousRushProcesses": false,
       "ignoreMissingScript": true,
       "ignoreDependencyOrder": true,
@@ -51,7 +51,7 @@
       "name": "depcheck",
       "commandKind": "bulk",
       "summary": "Runs depcheck",
-      "description": "Run depcheck for all projects that have changed since the last successful run",
+      "description": "Run depcheck for all projects that have changed since the last successful run.",
       "safeForSimultaneousRushProcesses": true,
       "ignoreMissingScript": true,
       "ignoreDependencyOrder": true,
@@ -106,7 +106,15 @@
       "description": "Starts the core api server in development mode, without any feature modules. This requires the build and configuration (\"packages/core/api/src/config/lyvely.development.config.ts\") of the @lyvely/api workspace. The dev frontend can be started with \"rush web:dev\".",
       "shellCommand": "pnpm --filter @lyvely/api run dev:debug",
       "safeForSimultaneousRushProcesses": true
-    }
+    },
+    {
+      "name": "run",
+      "commandKind": "global",
+      "summary": "Execute a script in a specified workspace",
+      "description": "This command is used to execute a specified script in the specified project using pnpm.",
+      "safeForSimultaneousRushProcesses": true,
+      "shellCommand": "node common/scripts/rush-run.js"
+    },
     // {
     //   /**
     //    * (Required) Determines the type of custom command.
@@ -278,6 +286,24 @@
    * For example, you might define a "--production" parameter for the "rush build" command.
    */
   "parameters": [
+    {
+      "parameterKind": "string",
+      "shortName": "-t",
+      "longName": "--to",
+      "associatedCommands": ["run"],
+      "required": true,
+      "argumentName": "TARGET_WORKSPACE",
+      "description": "Sets the target workspace."
+    },
+    {
+      "parameterKind": "string",
+      "shortName": "-s",
+      "longName": "--script",
+      "associatedCommands": ["run"],
+      "required": true,
+      "argumentName": "SCRIPT",
+      "description": "The package.json script to run on the target workspace."
+    }
     // {
     //   /**
     //    * (Required) Determines the type of custom parameter.

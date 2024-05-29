@@ -1,29 +1,67 @@
 # This dockerfile is used in combination with our docker-compose.yml
 FROM nginx:1.26.0-alpine
 
+#########
+# Setup #
+#########
+
 # Define default env, those will have priority over the .env file
 ENV MONGOMS_DISABLE_POSTINSTALL=1
 ENV CYPRESS_INSTALL_BINARY=0
-ENV NODE_ENV=production
+
 ENV LYVELY_API_URL=https://www.lyvely.app/api
 ENV LYVELY_APP_BASEURL=lyvely.app
 ENV LYVELY_APP_ENV=production
 
+# Install app dependencies
+RUN npm install -g pnpm @microsoft/rush
+
+# We set NODE_ENV after npm install here since we need devDependencies for the build
+ENV NODE_ENV=production
+
+#########
+# BUILD #
+#########
+
+# Install app dependencies
+RUN npm install -g pnpm @microsoft/rush
+
+# Copy the whole project to a build dir
+COPY . build
+RUN cd build
+
+#########
+# BUILD #
+#########
+
+# Add docker specific web configuration to the build
+COPY docker/config/web.env build/packages/applications/pwa/.env
+
+# Use install for CI environments
+RUN rush install --to @lyvely/pwa
+
+# We set NODE_ENV here since we need devDependencies for building
+ENV NODE_ENV=production
+
+# Build all packages
+RUN rush build --to @lyvely/pwa
+
+##########
+# DEPLOY #
+#########
+
+# Deploy dist to nginx
+RUN cp build/packages/applications/pwa/dist /usr/share/nginx/html/
+
+# Cleanup
+RUN rm -rf ./build
+
+###################
+# CONFIGURE NGINX #
+##################
+
 # Remove the default Nginx configuration
 RUN rm /etc/nginx/conf.d/default.conf
 
-# Copy your custom configuration file
+# Copy docker specific nginx configuration file
 COPY docker/config/nginx.conf /etc/nginx/conf.d/
-
-# Copy our entry point
-COPY docker/nginx-entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-
-# Copy your static files to the container
-COPY packages/applications/pwa/dist /usr/share/nginx/html/
-
-# Set the entry point
-ENTRYPOINT ["/entrypoint.sh"]
-
-# Default command to start Nginx
-CMD ["nginx", "-g", "daemon off;"]
