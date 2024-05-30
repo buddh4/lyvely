@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Queue } from 'bullmq';
+import type { Queue } from 'bullmq';
 import { InjectQueue } from '@nestjs/bullmq';
 import { Notification, NotificationType } from '../schemas';
 import { Subscription } from '@/user-subscriptions';
@@ -15,7 +15,7 @@ export class NotificationService {
   constructor(
     @InjectQueue(QUEUE_NOTIFICATIONS_SEND)
     private notificationQueue: Queue<ISendNotificationJob>,
-    private notificationDao: NotificationDao,
+    private notificationDao: NotificationDao
   ) {}
 
   async findOne(identity: DocumentIdentity<Notification>) {

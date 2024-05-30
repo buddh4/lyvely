@@ -3,7 +3,7 @@ import { QUEUE_NOTIFICATIONS_SEND } from '../notification.constants';
 import { ISendNotificationJob } from '../interfaces';
 import { UserSubscriptionService, IUserSubscriptionContext } from '@/user-subscriptions';
 import { Notification, NotificationChannelDeliveryStatus, UserNotification } from '../schemas';
-import { Job } from 'bullmq';
+import type { Job } from 'bullmq';
 import { NotificationChannelRegistry, NotificationDecider } from '../components';
 import { Logger } from '@nestjs/common';
 import { DocumentIdentity } from '@/core';
@@ -21,7 +21,7 @@ export class NotificationSenderProcessor extends WorkerHost {
     private notificationService: NotificationService,
     private subscriptionService: UserSubscriptionService,
     private decider: NotificationDecider,
-    private channelRegistry: NotificationChannelRegistry,
+    private channelRegistry: NotificationChannelRegistry
   ) {
     super();
   }
@@ -36,15 +36,15 @@ export class NotificationSenderProcessor extends WorkerHost {
     if (!notification) throw new ServiceException('Invalid notification id');
 
     const userSubscriptions = await this.subscriptionService.getSubscriptionContext(
-      notification.subscription,
+      notification.subscription
     );
 
     const promises: Promise<any>[] = [];
     userSubscriptions.forEach((userSubscription) => {
       promises.push(
         this.processUserNotification(userSubscription, notification).catch((err) =>
-          this.logger.error(err),
-        ),
+          this.logger.error(err)
+        )
       );
     });
 
@@ -53,11 +53,11 @@ export class NotificationSenderProcessor extends WorkerHost {
 
   private async processUserNotification(
     context: IUserSubscriptionContext,
-    notification: Notification,
+    notification: Notification
   ) {
     let userNotification = await this.userNotificationService.findOneByNotification(
       context.user,
-      notification,
+      notification
     );
 
     if (userNotification && !this.decider.checkResend(context, notification, userNotification)) {
@@ -71,7 +71,7 @@ export class NotificationSenderProcessor extends WorkerHost {
       return this.userNotificationService.markAsUnSeen(
         context.user,
         userNotification,
-        notification.sortOrder,
+        notification.sortOrder
       );
     }
 
@@ -89,7 +89,7 @@ export class NotificationSenderProcessor extends WorkerHost {
   private async send(
     context: IUserSubscriptionContext,
     notification: Notification,
-    userNotification: UserNotification,
+    userNotification: UserNotification
   ): Promise<any> {
     const promises: Promise<any>[] = [];
     const { user } = context;
@@ -101,12 +101,12 @@ export class NotificationSenderProcessor extends WorkerHost {
           channel
             .send(context, notification, userNotification)
             .then((status: NotificationChannelDeliveryStatus) =>
-              userNotification.setChannelDeliveryStatus(status),
+              userNotification.setChannelDeliveryStatus(status)
             )
             .catch((err) => {
               userNotification.setDeliveryErrorStatus(channel.getId(), err);
               this.logger.error(err);
-            }),
+            })
         );
       }
     });
