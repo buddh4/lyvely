@@ -15,11 +15,11 @@ import { mergeFeatureConfig, IProfileFeatureInfo } from './profile-feature-confi
  */
 export function getProfileFeaturesWithSettings(
   profile: IProfileFeatureInfo,
-  config: IFeatureConfig,
+  config: IFeatureConfig
 ): IFeature[] {
   const featureDefinition = mergeFeatureConfig(profile, config);
   return getProfileFeatures().filter(
-    (feature) => feature.configurable || _isInstallableProfileFeature(feature, featureDefinition),
+    (feature) => feature.configurable || _isInstallableProfileFeature(feature, featureDefinition)
   );
 }
 
@@ -33,7 +33,7 @@ export function getProfileFeatures(): IFeature[] {
 export function isEnabledProfileOrGlobalFeature(
   featureOrId: string | IFeature,
   profile?: IProfileFeatureInfo,
-  config: IFeatureConfig = {},
+  config: IFeatureConfig = {}
 ) {
   const feature = getFeature(featureOrId);
   if (!feature) return false;
@@ -52,7 +52,7 @@ export function isEnabledProfileOrGlobalFeature(
 export function isEnabledProfileFeature(
   featureOrId: string | IFeature,
   profile?: IProfileFeatureInfo,
-  config: IFeatureConfig = {},
+  config: IFeatureConfig = {}
 ) {
   if (!profile) return false;
   return _isEnabledProfileFeature(featureOrId, profile, mergeFeatureConfig(profile, config));
@@ -61,7 +61,7 @@ export function isEnabledProfileFeature(
 function _isEnabledProfileFeature(
   featureOrId: string | IFeature,
   profile?: IProfileFeatureInfo,
-  featureDefinition: IFeatureConfigDefinition = {},
+  featureDefinition: IFeatureConfigDefinition = {}
 ) {
   if (!profile) return false;
   const feature = getProfileFeature(featureOrId);
@@ -76,7 +76,7 @@ function _isEnabledProfileFeature(
     : feature.dependencies.reduce(
         (result, dependency) =>
           result && _isEnabledProfileFeature(dependency, profile, featureDefinition),
-        true,
+        true
       );
 
   if (!dependenciesEnabled) return false;
@@ -136,14 +136,14 @@ export function getProfileFeature(featureOrId: string | IFeature) {
 export function isInstallableProfileFeature(
   featureId: string,
   profile: IProfileFeatureInfo,
-  config?: IFeatureConfig,
+  config?: IFeatureConfig
 ) {
   return _isInstallableProfileFeature(featureId, mergeFeatureConfig(profile, config));
 }
 
 function _isInstallableProfileFeature(
   featureOrId: string | IFeature,
-  featureDefinition: IFeatureConfigDefinition,
+  featureDefinition: IFeatureConfigDefinition
 ) {
   const feature = getProfileFeature(featureOrId);
   if (!feature || feature.global) return false;

@@ -11,7 +11,7 @@ export class ConfigurationUserCanInvitePolicy extends UserCanInvitePolicy {
   async verify(context: IUserContext): Promise<boolean> {
     const inviteConfig = this.configService.get<IInvitationsConfiguration>(
       'modules.user-invite',
-      {},
+      {}
     );
     const { user } = context;
     return !!user && !!inviteConfig.allowedHosts?.includes(user.email);

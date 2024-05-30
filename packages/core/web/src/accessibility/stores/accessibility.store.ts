@@ -35,7 +35,7 @@ export const useAccessibilityStore = defineStore('accessibility', () => {
       if (!activeAppElement) {
         console.warn(
           'Could not find focusable element after app changed to aria-hidden to true',
-          focusContextElement,
+          focusContextElement
         );
       }
 

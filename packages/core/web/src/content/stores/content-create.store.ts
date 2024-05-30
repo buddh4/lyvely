@@ -39,7 +39,7 @@ export const useContentCreateStore = defineStore('content-create', () => {
   function createContentType(
     type?: string,
     options?: ICreateContentInitOptions,
-    withContentTypeMenu = false,
+    withContentTypeMenu = false
   ): Promise<any> {
     reset();
 

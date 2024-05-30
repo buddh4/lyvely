@@ -9,14 +9,14 @@ export type MenuEntryRegistration<TContext = any> =
 
 export const registerMenuEntries = <TContext = any>(
   menuId: string,
-  entry: MenuEntryRegistration<TContext>[],
+  entry: MenuEntryRegistration<TContext>[]
 ) => {
   entry.forEach((e) => registerMenuEntry<TContext>(menuId, e));
 };
 
 export const registerMenuEntry = <TContext = any>(
   menuId: string,
-  entry: MenuEntryRegistration<TContext>,
+  entry: MenuEntryRegistration<TContext>
 ) => {
   if (!menusMap.has(menuId)) menusMap.set(menuId, ref([]));
   const entries = menusMap.get(menuId)!;
@@ -25,7 +25,7 @@ export const registerMenuEntry = <TContext = any>(
 
 export const getMenuEntries = <TContext = any>(
   menuId: string,
-  context?: TContext,
+  context?: TContext
 ): IMenuEntry[] => {
   if (!menusMap.has(menuId)) menusMap.set(menuId, ref([]));
   return menusMap

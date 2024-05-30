@@ -113,7 +113,7 @@ export class AppModuleBuilder {
       ConfigModule.forRoot({
         load: [() => config],
         isGlobal: true,
-      }),
+      })
     );
   }
 
@@ -135,7 +135,7 @@ export class AppModuleBuilder {
       UsersModule,
       AuthModule,
       CaptchaModule,
-      FilesModule,
+      FilesModule
     );
   }
 
@@ -151,7 +151,7 @@ export class AppModuleBuilder {
         loaderOptions: {},
         resolvers: [AcceptLanguageResolver],
       }),
-      I18nModule,
+      I18nModule
     );
   }
 
@@ -163,7 +163,7 @@ export class AppModuleBuilder {
         useFactory: async (configService: ConfigService<ConfigurationPath>) => {
           return { connection: configService.get('redis')! };
         },
-      }),
+      })
     );
   }
 
@@ -182,7 +182,7 @@ export class AppModuleBuilder {
             }),
           ];
         },
-      }),
+      })
     );
   }
 
@@ -209,7 +209,7 @@ export class AppModuleBuilder {
 
           return options;
         },
-      }),
+      })
     );
   }
 
@@ -226,7 +226,7 @@ export class AppModuleBuilder {
             },
           ],
         }),
-      }),
+      })
     ).useProviders({
       provide: APP_GUARD,
       useClass: ReverseProxyThrottlerGuard,
@@ -242,7 +242,7 @@ export class AppModuleBuilder {
       AvatarsModule,
       MessageModule,
       UserRegistrationModule,
-      UserInvitationsModule,
+      UserInvitationsModule
     );
   }
 

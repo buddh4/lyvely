@@ -4,12 +4,12 @@ describe('Time Series Chart Helper', () => {
   describe('getChartCategoryByKey', () => {
     it('should return the correct chart category for 7D interval key', () => {
       expect(getChartCategoryByKey({ year: 2024, month: 4, day: 25 }, '7D', 'de')).toEqual(
-        '25. Apr.',
+        '25. Apr.'
       );
     });
     it('should return the correct chart category for 1M interval key', () => {
       expect(getChartCategoryByKey({ year: 2024, month: 4, day: 25 }, '1M', 'de')).toEqual(
-        '25. Apr.',
+        '25. Apr.'
       );
     });
     it('should return the correct chart category for 6M interval key', () => {

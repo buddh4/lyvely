@@ -37,7 +37,7 @@ describe('UserSubscriptionService', () => {
     it('test single user subscription without profile', async () => {
       const user = await testData.createUser();
       const userContexts = await userSubscriptionService.getSubscriptionContext(
-        new SingleUserSubscription(user),
+        new SingleUserSubscription(user)
       );
 
       expect(userContexts.length).toEqual(1);
@@ -51,7 +51,7 @@ describe('UserSubscriptionService', () => {
       const user2 = await testData.createUser('user2');
       const userContexts = await userSubscriptionService.getSubscriptionContext(
         new SingleUserSubscription(user2),
-        profile,
+        profile
       );
 
       expect(userContexts.length).toEqual(1);
@@ -64,7 +64,7 @@ describe('UserSubscriptionService', () => {
       const { member, profile } = await testData.createSimpleGroup();
       const userContexts = await userSubscriptionService.getSubscriptionContext(
         new SingleUserSubscription(member),
-        profile,
+        profile
       );
 
       expect(userContexts.length).toEqual(1);
@@ -72,7 +72,7 @@ describe('UserSubscriptionService', () => {
       expect(userContexts![0].profile!._id).toEqual(profile._id);
       expect(userContexts![0].profileRelations?.length).toEqual(1);
       expect(userContexts![0].profileRelations![0].type).toEqual(
-        BaseUserProfileRelationType.Membership,
+        BaseUserProfileRelationType.Membership
       );
     });
 
@@ -80,7 +80,7 @@ describe('UserSubscriptionService', () => {
       const user1 = await testData.createUser();
       const user2 = await testData.createUser('user2');
       const userContexts = await userSubscriptionService.getSubscriptionContext(
-        new MultiUserSubscription([user1, user2]),
+        new MultiUserSubscription([user1, user2])
       );
 
       expect(userContexts.length).toEqual(2);
@@ -98,14 +98,14 @@ describe('UserSubscriptionService', () => {
       const user = await testData.createUser('user2');
       const userContexts = await userSubscriptionService.getSubscriptionContext(
         new MultiUserSubscription([member, user]),
-        profile,
+        profile
       );
 
       expect(userContexts.length).toEqual(2);
       expect(userContexts![0].user._id).toEqual(member._id);
       expect(userContexts![0].profile!._id).toEqual(profile._id);
       expect(userContexts![0].profileRelations![0].type).toEqual(
-        BaseUserProfileRelationType.Membership,
+        BaseUserProfileRelationType.Membership
       );
 
       expect(userContexts[1].user._id).toEqual(user._id);
@@ -117,20 +117,20 @@ describe('UserSubscriptionService', () => {
       const { member, owner, profile } = await testData.createSimpleGroup();
       const userContexts = await userSubscriptionService.getSubscriptionContext(
         new ProfileSubscription(profile),
-        profile,
+        profile
       );
 
       expect(userContexts.length).toEqual(2);
       expect(userContexts![0].user._id).toEqual(owner._id);
       expect(userContexts![0].profile!._id).toEqual(profile._id);
       expect(userContexts![0].profileRelations![0].type).toEqual(
-        BaseUserProfileRelationType.Membership,
+        BaseUserProfileRelationType.Membership
       );
 
       expect(userContexts[1].user._id).toEqual(member._id);
       expect(userContexts[1].profile!._id).toEqual(profile._id);
       expect(userContexts[1].profileRelations![0].type).toEqual(
-        BaseUserProfileRelationType.Membership,
+        BaseUserProfileRelationType.Membership
       );
     });
   });

@@ -25,7 +25,7 @@ watch(
     } else {
       introJs().exit(true);
     }
-  },
+  }
 );
 
 onMounted(() => {

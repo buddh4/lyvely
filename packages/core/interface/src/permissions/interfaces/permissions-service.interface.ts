@@ -15,6 +15,6 @@ export interface IPermissionsService<
     permissionOrId: string | TPermission,
     subject: TSubject,
     object: TObject,
-    config: TConfig,
+    config: TConfig
   ): boolean;
 }

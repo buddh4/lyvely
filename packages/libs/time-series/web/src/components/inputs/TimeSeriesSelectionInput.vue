@@ -40,7 +40,7 @@ const singleValueSelection = computed({
 });
 
 const dropDownOptions = computed(() =>
-  props.config.options.map((value) => ({ label: value, value })),
+  props.config.options.map((value) => ({ label: value, value }))
 );
 </script>
 

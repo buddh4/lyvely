@@ -83,8 +83,8 @@ describe('NotificationDao', () => {
             testProp: 'testProp',
             nonProp: 'nonProb',
           }),
-          new SingleUserSubscription(user),
-        ),
+          new SingleUserSubscription(user)
+        )
       )) as Notification<MyTestNotification>;
       expect(notification).toBeDefined();
       expect(notification.data instanceof MyTestNotification).toEqual(true);
@@ -109,8 +109,8 @@ describe('NotificationDao', () => {
             testProp: 'testValue',
             nonProp: 'nonProb',
           }),
-          new SingleUserSubscription(user),
-        ),
+          new SingleUserSubscription(user)
+        )
       )) as Notification<MyTestNotification>;
       expect(notification).toBeDefined();
       expect(notification.data instanceof MyTestNotification).toEqual(true);
@@ -127,8 +127,8 @@ describe('NotificationDao', () => {
             testProp: 'testValue',
             nonProp: 'nonProp',
           }),
-          new SingleUserSubscription(user),
-        ),
+          new SingleUserSubscription(user)
+        )
       )) as Notification<MyTestNotification>;
       expect(notification).toBeDefined();
       expect(notification.data instanceof MyTestNotification).toEqual(true);

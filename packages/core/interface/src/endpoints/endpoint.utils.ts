@@ -9,7 +9,7 @@ type UnwrappedResponse<T extends Promise<AxiosResponse>> = T extends null | unde
     : never; // non-object or non-thenable
 
 export function unwrapResponse<T extends Promise<AxiosResponse>>(
-  promise: T,
+  promise: T
 ): Promise<UnwrappedResponse<T>> {
   return promise
     .then(({ data }) => data)

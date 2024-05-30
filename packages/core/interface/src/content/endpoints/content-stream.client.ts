@@ -10,7 +10,7 @@ export class ContentStreamClient implements IContentStreamClient {
   async loadEntry(
     id: string,
     filter?: ContentRequestFilter,
-    options?: IProfileApiRequestOptions,
+    options?: IProfileApiRequestOptions
   ): Promise<ContentModel> {
     return this.createModel(await unwrapResponse(repositry.loadEntry(id, options)));
   }
@@ -19,7 +19,7 @@ export class ContentStreamClient implements IContentStreamClient {
     state: IStreamState,
     options: IStreamOptions,
     filter?: ContentRequestFilter,
-    requestOptions?: IProfileApiRequestOptions,
+    requestOptions?: IProfileApiRequestOptions
   ): Promise<IStreamResponse<ContentModel>> {
     const response = await unwrapResponse(
       repositry.loadTail(
@@ -28,8 +28,8 @@ export class ContentStreamClient implements IContentStreamClient {
           filter,
           batchSize: options.batchSize,
         },
-        requestOptions,
-      ),
+        requestOptions
+      )
     );
     return this.createModels(response);
   }
@@ -38,7 +38,7 @@ export class ContentStreamClient implements IContentStreamClient {
     state: IStreamState,
     options: IStreamOptions,
     filter?: ContentRequestFilter,
-    requestOptions?: IProfileApiRequestOptions,
+    requestOptions?: IProfileApiRequestOptions
   ): Promise<IStreamResponse<ContentModel>> {
     const response = await unwrapResponse(
       repositry.loadHead(
@@ -47,8 +47,8 @@ export class ContentStreamClient implements IContentStreamClient {
           filter,
           batchSize: options.batchSize,
         },
-        requestOptions,
-      ),
+        requestOptions
+      )
     );
 
     return this.createModels(response);

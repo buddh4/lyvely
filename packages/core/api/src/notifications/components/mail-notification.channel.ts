@@ -25,7 +25,7 @@ export class MailNotificationChannel implements INotificationChannel {
     private mailService: MailService,
     private i18n: I18n,
     private channelRegistry: NotificationChannelRegistry,
-    private urlGenerator: UrlGenerator,
+    private urlGenerator: UrlGenerator
   ) {
     channelRegistry.registerChannel(this);
   }
@@ -53,7 +53,7 @@ export class MailNotificationChannel implements INotificationChannel {
   async send(
     context: IUserSubscriptionContext,
     notification: Notification,
-    userNotification: UserNotification,
+    userNotification: UserNotification
   ): Promise<NotificationChannelDeliveryStatus> {
     try {
       return this.sendMail(context, notification, userNotification);
@@ -70,7 +70,7 @@ export class MailNotificationChannel implements INotificationChannel {
   private async sendMail(
     context: IUserSubscriptionContext,
     notification: Notification,
-    userNotification: UserNotification,
+    userNotification: UserNotification
   ) {
     const email = this.getEmail(context);
     if (!email) {
@@ -86,14 +86,14 @@ export class MailNotificationChannel implements INotificationChannel {
 
     const subject = this.i18n.t(
       data.getTitle({ receiver: user, format: RenderFormat.PLAINTEXT }),
-      user,
+      user
     );
     const title = this.i18n.t(
       data.getTitle({
         receiver: user,
         format: RenderFormat.HTML,
       }),
-      user,
+      user
     );
     const body = this.renderMailBody(user, userNotification, data);
 
@@ -128,7 +128,7 @@ export class MailNotificationChannel implements INotificationChannel {
 
   private getEmail(context: IUserSubscriptionContext) {
     const membershipMail = useUserProfileRelationHelper(
-      context.profileRelations || [],
+      context.profileRelations || []
     ).getMembership()?.userInfo.email;
     return membershipMail || context.user.email;
   }

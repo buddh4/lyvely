@@ -8,7 +8,7 @@ import type { IFileInfo } from '@/files';
 export class ProfileAvatarService {
   constructor(
     private readonly profileDao: ProfileDao,
-    private readonly avatarService: AvatarService,
+    private readonly avatarService: AvatarService
   ) {}
 
   /**

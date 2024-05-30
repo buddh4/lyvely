@@ -23,19 +23,19 @@ export abstract class AbstractStreamController<
   @Post(StreamEndpoints.TAIL)
   async loadTail(
     @Body() streamRequest: StreamRequest<TFilter>,
-    @Req() req: { context: TContext },
+    @Req() req: { context: TContext }
   ): Promise<StreamResponse<TResult>> {
     const context = req.context;
     const response = await this.streamEntryService.loadTail(
       context,
-      new StreamRequest(streamRequest),
+      new StreamRequest(streamRequest)
     );
     return this.mapResponse(response, context);
   }
 
   private async mapResponse(
     response: StreamResponse<TModel>,
-    context: TContext,
+    context: TContext
   ): Promise<StreamResponse<TResult>> {
     const models = await this.mapToResultModel(response.models, context);
     return new StreamResponse<TResult>({
@@ -48,12 +48,12 @@ export abstract class AbstractStreamController<
   @Post(StreamEndpoints.HEAD)
   async loadHead(
     @Body() streamRequest: StreamRequest,
-    @Req() req: { context: TContext },
+    @Req() req: { context: TContext }
   ): Promise<IStreamResponse<TResult>> {
     const context = req.context;
     const response = await this.streamEntryService.loadHead(
       context,
-      new StreamRequest(streamRequest as PropertiesOf<StreamRequest>),
+      new StreamRequest(streamRequest as PropertiesOf<StreamRequest>)
     );
     return this.mapResponse(response, context);
   }

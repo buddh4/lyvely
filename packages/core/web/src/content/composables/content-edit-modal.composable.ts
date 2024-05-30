@@ -25,7 +25,7 @@ export function useContentEditModal<
 >(
   props: IEditOrCreateModalProps<TModel>,
   emit: (emit: TContentEditModalEmits, val?: any) => void,
-  options: IUpdateModelStoreOptions<TModel, TCreateModel, TUpdateModel, TResponse>,
+  options: IUpdateModelStoreOptions<TModel, TCreateModel, TUpdateModel, TResponse>
 ) {
   const { content, type } = props;
   const contentStore = useContentStore();

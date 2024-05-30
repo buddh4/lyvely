@@ -12,11 +12,11 @@ const { user } = storeToRefs(authStore);
 const profileRelationInfosStore = useProfileRelationInfosStore();
 const profileRelations = await profileRelationInfosStore.getRelations();
 const orgCount = profileRelations.profiles.filter(
-  (p) => p.type === ProfileType.Organization,
+  (p) => p.type === ProfileType.Organization
 ).length;
 const groupCount = profileRelations.profiles.filter((p) => p.type === ProfileType.Group).length;
 const userProfileCount = profileRelations.profiles.filter(
-  (p) => p.type === ProfileType.User,
+  (p) => p.type === ProfileType.User
 ).length;
 
 const showUpdateAvatarModal = ref(false);

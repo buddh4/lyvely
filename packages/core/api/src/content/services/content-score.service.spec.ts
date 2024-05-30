@@ -107,7 +107,7 @@ describe('ContentScoreService', () => {
             score: 5,
             userStrategy: UserAssignmentStrategy.PerUser,
             date: new Date(),
-          }),
+          })
         );
 
         const memberScore = await contentScoreService.saveScore(
@@ -118,7 +118,7 @@ describe('ContentScoreService', () => {
             score: -2,
             userStrategy: UserAssignmentStrategy.PerUser,
             date: new Date(),
-          }),
+          })
         );
 
         expect(ownerScore._id).toBeDefined();
@@ -144,7 +144,7 @@ describe('ContentScoreService', () => {
             score: 5,
             userStrategy: UserAssignmentStrategy.Shared,
             date: new Date(),
-          }),
+          })
         );
 
         const memberScore = await contentScoreService.saveScore(
@@ -155,7 +155,7 @@ describe('ContentScoreService', () => {
             score: -2,
             userStrategy: UserAssignmentStrategy.Shared,
             date: new Date(),
-          }),
+          })
         );
 
         expect(ownerScore._id).toBeDefined();
@@ -184,7 +184,7 @@ describe('ContentScoreService', () => {
           score: 5,
           userStrategy: UserAssignmentStrategy.Shared,
           date: new Date(),
-        }),
+        })
       );
 
       await contentScoreService.saveScore(
@@ -195,13 +195,13 @@ describe('ContentScoreService', () => {
           score: 6,
           userStrategy: UserAssignmentStrategy.Shared,
           date: new Date(),
-        }),
+        })
       );
 
       const search = await contentScoreService.findScoresByContent(
         memberContext,
         content,
-        UserAssignmentStrategy.Shared,
+        UserAssignmentStrategy.Shared
       );
       expect(search.length).toEqual(2);
       expect(profile.score).toEqual(11);
@@ -218,7 +218,7 @@ describe('ContentScoreService', () => {
           score: 5,
           userStrategy: UserAssignmentStrategy.PerUser,
           date: new Date(),
-        }),
+        })
       );
 
       const memberScore = await contentScoreService.saveScore(
@@ -229,13 +229,13 @@ describe('ContentScoreService', () => {
           score: -2,
           userStrategy: UserAssignmentStrategy.PerUser,
           date: new Date(),
-        }),
+        })
       );
 
       const ownerSearch = await contentScoreService.findScoresByContent(
         ownerContext,
         content,
-        UserAssignmentStrategy.PerUser,
+        UserAssignmentStrategy.PerUser
       );
       expect(ownerSearch.length).toEqual(1);
       expect(ownerSearch[0]._id).toEqual(ownerScore._id);
@@ -243,7 +243,7 @@ describe('ContentScoreService', () => {
       const memberSearch = await contentScoreService.findScoresByContent(
         memberContext,
         content,
-        UserAssignmentStrategy.PerUser,
+        UserAssignmentStrategy.PerUser
       );
       expect(memberSearch.length).toEqual(1);
       expect(memberSearch[0]._id).toEqual(memberScore._id);
@@ -282,12 +282,12 @@ describe('ContentScoreService', () => {
           score: 5,
           date: new Date(),
         },
-        { special: 'TestValue' },
+        { special: 'TestValue' }
       );
 
       const model = await contentScoreService.saveScore<ExtendedTestContentScore>(
         context,
-        testScore,
+        testScore
       );
 
       expect(model._id).toBeDefined();
@@ -317,7 +317,7 @@ describe('ContentScoreService', () => {
           score: 5,
           date: new Date(),
         },
-        { special: 'TestValue' },
+        { special: 'TestValue' }
       );
 
       const model = await contentScoreService.saveScore(context, testScore);

@@ -61,7 +61,7 @@ export function getContentTypeOptions(contentType: string) {
 
 export function registerCreateContentModalComponent(
   contentType: string,
-  component: ComponentRegistration<ICreateContentModalProps>,
+  component: ComponentRegistration<ICreateContentModalProps>
 ) {
   console.debug(`Register create content component ${contentType}`);
   createContentModalRegistry.set(contentType, resolveComponentRegistration(component));
@@ -69,12 +69,12 @@ export function registerCreateContentModalComponent(
 
 export function getCreateContentTypes() {
   return Array.from(contentTypeOptionsRegistry.values()).filter(
-    (options) => !!createContentModalRegistry.get(options.type),
+    (options) => !!createContentModalRegistry.get(options.type)
   );
 }
 
 export function getCreateContentModalComponent(
-  contentOrType: string | ContentModel,
+  contentOrType: string | ContentModel
 ): Component<ICreateContentModalProps> | undefined {
   const type = typeof contentOrType === 'string' ? contentOrType : contentOrType.type;
   return createContentModalRegistry.get(type);
@@ -82,14 +82,14 @@ export function getCreateContentModalComponent(
 
 export function registerEditContentModalComponent(
   contentType: string,
-  component: ComponentRegistration<IEditContentModalProps>,
+  component: ComponentRegistration<IEditContentModalProps>
 ) {
   console.debug(`Register edit content component ${contentType}`);
   editContentModalRegistry.set(contentType, resolveComponentRegistration(component));
 }
 
 export function getEditContentModalComponent(
-  contentOrType: string | ContentModel,
+  contentOrType: string | ContentModel
 ): Component<IEditContentModalProps> | undefined {
   const type = typeof contentOrType === 'string' ? contentOrType : contentOrType.type;
   return editContentModalRegistry.get(type);
@@ -97,14 +97,14 @@ export function getEditContentModalComponent(
 
 export function registerContentStreamEntryComponent(
   contentType: string,
-  component: ComponentRegistration<IStreamEntryProps>,
+  component: ComponentRegistration<IStreamEntryProps>
 ) {
   console.debug(`Register content component ${contentType}`);
   streamEntryRegistry.set(contentType, resolveComponentRegistration(component));
 }
 
 export function getContentStreamEntryComponent(
-  contentOrType: string | ContentModel,
+  contentOrType: string | ContentModel
 ): Component<IStreamEntryProps> | undefined {
   const type = typeof contentOrType === 'string' ? contentOrType : contentOrType.type;
   return streamEntryRegistry.get(type);
@@ -112,14 +112,14 @@ export function getContentStreamEntryComponent(
 
 export function registerContentDetailsComponent(
   contentType: string,
-  component: ComponentRegistration<IContentDetailsProps>,
+  component: ComponentRegistration<IContentDetailsProps>
 ) {
   console.debug(`Register content detail component ${contentType}`);
   contentDetailRegistry.set(contentType, resolveComponentRegistration(component));
 }
 
 export function getContentDetailsComponent(
-  contentOrType: string | ContentModel,
+  contentOrType: string | ContentModel
 ): Component<IContentDetailsProps> | undefined {
   // Todo: maybe provide a fallback component type
   const type = typeof contentOrType === 'string' ? contentOrType : contentOrType.type;

@@ -12,7 +12,7 @@ const resetPasswordStore = useResetPasswordStore();
 const sendResetPasswordMailStore = useSendResetPasswordMailStore();
 const { model: resetModel, validator: resetValidator, stage } = storeToRefs(resetPasswordStore);
 const { model: sendMailModel, validator: sendMailValidator } = storeToRefs(
-  sendResetPasswordMailStore,
+  sendResetPasswordMailStore
 );
 
 const router = useRouter();

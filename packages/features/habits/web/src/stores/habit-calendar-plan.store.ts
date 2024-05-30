@@ -41,7 +41,7 @@ export const useHabitCalendarPlanStore = defineStore('habitCalendarPlan', () => 
     try {
       const updatedDataPoint = await habitsClient.startTimer(
         habit.id,
-        new TimerUpdateModel(calendarPlanStore.date),
+        new TimerUpdateModel(calendarPlanStore.date)
       );
       cache.value.setDataPoint(updatedDataPoint);
     } catch (e) {
@@ -53,7 +53,7 @@ export const useHabitCalendarPlanStore = defineStore('habitCalendarPlan', () => 
     try {
       const result = await habitsClient.stopTimer(
         habit.id,
-        new TimerUpdateModel(calendarPlanStore.date),
+        new TimerUpdateModel(calendarPlanStore.date)
       );
       cache.value.setDataPoint(result.dataPoint);
       profileStore.updateScore(result.score);

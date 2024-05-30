@@ -22,7 +22,7 @@ export class InvitationsController implements UserInvitationsEndpoint {
     private invitationsService: InvitationsService,
     private sendInviteService: SendInvitationsService,
     private mailInviteService: MailInvitationService,
-    private userInviteService: UserInvitationsService,
+    private userInviteService: UserInvitationsService
   ) {}
 
   @Post()

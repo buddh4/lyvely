@@ -23,12 +23,12 @@ export class UserSubscriptionService {
   constructor(
     private usersService: UsersService,
     private profilesService: ProfilesService,
-    private profileRelationsService: ProfileRelationsService,
+    private profileRelationsService: ProfileRelationsService
   ) {}
 
   async getSubscriptionContext(
     subscription: UserSubscription,
-    pid?: DocumentIdentity<Profile>,
+    pid?: DocumentIdentity<Profile>
   ): Promise<Array<IUserSubscriptionContext>> {
     if (isSingleUserSubscription(subscription)) {
       return this.getSingleUserSubscriptionContext(subscription, pid);
@@ -48,7 +48,7 @@ export class UserSubscriptionService {
 
   private async getSingleUserSubscriptionContext(
     subscription: SingleUserSubscription,
-    pid?: DocumentIdentity<Profile>,
+    pid?: DocumentIdentity<Profile>
   ): Promise<IUserSubscriptionContext[]> {
     if (!subscription.uid)
       throw new IntegrityException('SingleUserSubscription without uid requested.');
@@ -64,7 +64,7 @@ export class UserSubscriptionService {
 
   private async getMultiUserSubscriptionContext(
     subscription: MultiUserSubscription,
-    pid?: DocumentIdentity<Profile>,
+    pid?: DocumentIdentity<Profile>
   ): Promise<IUserSubscriptionContext[]> {
     if (!subscription?.uids?.length) return [];
 
@@ -80,14 +80,14 @@ export class UserSubscriptionService {
   }
 
   private profileContextToSubscriptionContext(
-    ctx: IUserWithProfileRelation,
+    ctx: IUserWithProfileRelation
   ): IUserSubscriptionContext {
     const { user, profile, relations } = ctx;
     return { user, profile, profileRelations: relations };
   }
 
   private async getProfileSubscriptionContext(
-    pid: DocumentIdentity<Profile>,
+    pid: DocumentIdentity<Profile>
   ): Promise<IUserSubscriptionContext[]> {
     if (!pid) return [];
 

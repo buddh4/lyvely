@@ -57,7 +57,7 @@ describe('AbstractUserProfileActionService', () => {
       const { user, profile, context } = await testData.createUserAndProfile();
       const model = await testProfileActionService.saveScore(
         context,
-        new TestProfileScore({ context, score: 5 }, { text: 'test' }),
+        new TestProfileScore({ context, score: 5 }, { text: 'test' })
       );
 
       expect(model).toBeDefined();
@@ -77,7 +77,7 @@ describe('AbstractUserProfileActionService', () => {
 
       await testProfileActionService.saveScore(
         context,
-        new TestProfileScore({ context, score: 5 }, { text: 'test' }),
+        new TestProfileScore({ context, score: 5 }, { text: 'test' })
       );
 
       expect(profile.score).toEqual(5);
@@ -92,12 +92,12 @@ describe('AbstractUserProfileActionService', () => {
 
       await testProfileActionService.saveScore(
         context,
-        new TestProfileScore({ context, score: 5 }, { text: 'test' }),
+        new TestProfileScore({ context, score: 5 }, { text: 'test' })
       );
 
       await testProfileActionService.saveScore(
         context,
-        new TestProfileScore({ context, score: -2 }, { text: 'test2' }),
+        new TestProfileScore({ context, score: -2 }, { text: 'test2' })
       );
 
       expect(profile.score).toEqual(3);
@@ -112,7 +112,7 @@ describe('AbstractUserProfileActionService', () => {
 
       await testProfileActionService.saveScore(
         context,
-        new TestProfileScore({ context, score: -10 }, { text: 'test' }),
+        new TestProfileScore({ context, score: -10 }, { text: 'test' })
       );
 
       expect(profile.score).toEqual(0);

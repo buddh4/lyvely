@@ -12,7 +12,7 @@ export class MessageClient implements IMessageClient {
   async update(
     id: string,
     model: Partial<CreateMessageModel>,
-    options?: IProfileApiRequestOptions,
+    options?: IProfileApiRequestOptions
   ) {
     return unwrapAndTransformResponse(repository.update(id, model, options), MessageUpdateResponse);
   }

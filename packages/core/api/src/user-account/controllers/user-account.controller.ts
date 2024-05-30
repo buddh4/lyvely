@@ -25,7 +25,7 @@ import type { IFileInfo } from '@/files';
 export class UserAccountController implements UserAccountEndpoint {
   constructor(
     private userAccountService: UserAccountService,
-    private accountAvatarService: AccountAvatarService,
+    private accountAvatarService: AccountAvatarService
   ) {}
 
   @Post(UserAccountEndpoints.ADD_EMAIL)
@@ -46,7 +46,7 @@ export class UserAccountController implements UserAccountEndpoint {
   @Post(UserAccountEndpoints.SET_CALENDAR_PREFERENCES)
   async setCalendarPreferences(
     @Body() model: CalendarPreferences,
-    @Req() req: UserRequest,
+    @Req() req: UserRequest
   ): Promise<SettingsUpdateResponse> {
     const settings = await this.userAccountService.setCalendarPreferences(req.user, model);
     return new SettingsUpdateResponse({ settings });

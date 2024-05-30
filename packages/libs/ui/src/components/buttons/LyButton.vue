@@ -116,7 +116,7 @@ function getAriaSelected($attrs: any) {
 }
 
 const confirmOptions = computed(
-  () => (typeof props.confirm === 'boolean' ? {} : props.confirm) || {},
+  () => (typeof props.confirm === 'boolean' ? {} : props.confirm) || {}
 );
 
 function getAriaPressed($attrs: any) {

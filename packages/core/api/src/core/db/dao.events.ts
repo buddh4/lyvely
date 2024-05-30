@@ -2,7 +2,7 @@ export abstract class AbstractModelEvent<S, M> {
   constructor(
     public sender: S,
     public model: M,
-    public modelName: string,
+    public modelName: string
   ) {}
 }
 

@@ -55,7 +55,7 @@ describe('ProfileGuard', () => {
     it('enabled profile level feature', async () => {
       const { profile } = ProfileTestDataUtils.createDummyUserAndProfile(
         {},
-        { enabledFeatures: ['test'] },
+        { enabledFeatures: ['test'] }
       );
 
       registerFeatures([{ id: 'test', moduleId: 'test', title: 'Test', installable: true }]);
@@ -71,7 +71,7 @@ describe('ProfileGuard', () => {
     it('disabled profile level feature', async () => {
       const { profile } = ProfileTestDataUtils.createDummyUserAndProfile(
         {},
-        { disabledFeatures: ['test'] },
+        { disabledFeatures: ['test'] }
       );
 
       registerFeatures([

@@ -60,9 +60,9 @@ export const useSendInviteUsersStore = defineStore('send-invitations', () => {
           new InvitationRequest({
             invites: emails.value.map((email) => new MailInvite({ email })),
             pid: profileId.value || undefined,
-          }),
+          })
         ),
-        status,
+        status
       ).then(() => stage.value === 'success');
     }
     return Promise.resolve();

@@ -47,7 +47,7 @@ export class MessageService extends ContentTypeService<Message, CreateMessageMod
   protected async createUpdate(
     context: ProtectedProfileContext,
     message: Message,
-    model: Partial<CreateMessageModel>,
+    model: Partial<CreateMessageModel>
   ): Promise<UpdateQuerySet<Message>> {
     if (model.text) {
       message.content.text = model.text;

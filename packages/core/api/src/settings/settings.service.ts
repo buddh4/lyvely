@@ -28,7 +28,7 @@ export abstract class SettingsService<TModel extends BaseDocument & { settings: 
 
         return result;
       },
-      {} as Record<string, any>,
+      {} as Record<string, any>
     );
 
     if (validationErrors.length) throw new FieldValidationException(validationErrors);

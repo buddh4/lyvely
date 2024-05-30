@@ -24,7 +24,7 @@ export class ContentPermissionsManager extends AbstractProfilePermissionsManager
    * @return {IContentPermission | undefined} - The retrieved profile permission.
    */
   override getPermission(
-    permissionOrId: string | IContentPermission,
+    permissionOrId: string | IContentPermission
   ): IContentPermission | undefined {
     return getPermission<IContentPermission>(permissionOrId, BasePermissionType.Content);
   }

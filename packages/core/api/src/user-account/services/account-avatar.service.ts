@@ -18,7 +18,7 @@ export class AccountAvatarService {
   constructor(
     private userDao: UserDao,
     private avatarService: AvatarService,
-    private gravatarService: GravatarService,
+    private gravatarService: GravatarService
   ) {}
 
   /**

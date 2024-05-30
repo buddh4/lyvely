@@ -29,7 +29,7 @@ const props = withDefaults(defineProps<IProps>(), {
 });
 
 const { helpTextId, showHelpText, translatedHelpText, hasHelpText, ariaDescribedBy } = useHelpText(
-  props.helpText,
+  props.helpText
 );
 
 const wrapperClasses = computed(() => {

@@ -6,7 +6,7 @@ export interface IArchiveModelStoreOptions<TModel extends IArchivable, TID = str
   onSubmitError?: ((err: any) => void) | false;
 }
 export function useArchiveModel<TModel extends IArchivable, TID = string>(
-  options: IArchiveModelStoreOptions<TModel, TID>,
+  options: IArchiveModelStoreOptions<TModel, TID>
 ) {
   async function archiveModel(modelId: TID, model: TModel) {
     return _handleUpdate(modelId, model, true);

@@ -37,7 +37,7 @@ export class ProfileContentContext<
   content: TContent;
 
   constructor(
-    data: ProfileContextData<ProfileContentContext<TContent, TProfile>> & { content: TContent },
+    data: ProfileContextData<ProfileContentContext<TContent, TProfile>> & { content: TContent }
   ) {
     super(false);
     BaseModel.init(this, data);
@@ -126,7 +126,7 @@ export class Content<
 
   constructor(
     context: { user: User; profile: Profile },
-    obj?: BaseDocumentData<Content<TConfig, TStatus, TData>>,
+    obj?: BaseDocumentData<Content<TConfig, TStatus, TData>>
   ) {
     const { profile, user: createdBy } = context;
     super();
@@ -269,7 +269,7 @@ export class Content<
 
   toModel(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    user?: User,
+    user?: User
   ): TModel {
     const ModelConstructor: Type<ContentModel> = implementsGetModelConstructor(this)
       ? this.getModelConstructor()

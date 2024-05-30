@@ -26,7 +26,7 @@ const options = computed(
       key: relation.uid,
       label: relation.userInfo.displayName,
       avatar: { guid: relation.userInfo.guid },
-    })) || [],
+    })) || []
 );
 
 const emit = defineEmits(['update:modelValue']);

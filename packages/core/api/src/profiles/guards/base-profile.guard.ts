@@ -69,7 +69,7 @@ export class BaseProfileGuard implements CanActivate {
   private getProfileRoleFromContext(context: ExecutionContext) {
     return this.reflector.getAllAndOverride<ProfileRelationRole | undefined>(
       META_PROFILE_ROLE_LEVEL,
-      [context.getHandler(), context.getClass()],
+      [context.getHandler(), context.getClass()]
     );
   }
 }

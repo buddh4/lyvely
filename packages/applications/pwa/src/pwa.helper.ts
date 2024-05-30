@@ -6,7 +6,7 @@
  */
 export function getInjectedEnv<TReturn = string>(
   tokenOrValue: string,
-  defaultVal: TReturn,
+  defaultVal: TReturn
 ): TReturn {
   return /^{{[a-zA-Z0-9_]+}}$/.test(tokenOrValue) ? defaultVal : (tokenOrValue as TReturn);
 }

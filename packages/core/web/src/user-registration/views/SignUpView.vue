@@ -61,7 +61,7 @@ const validateUserDebounced = useDebounceFn(() => {
       if (err instanceof FieldValidationException) {
         validator.value.setError(
           'username',
-          err.getFirstError('user-registration.username.invalid'),
+          err.getFirstError('user-registration.username.invalid')
         );
       } else {
         validator.value.setError('username', 'user-registration.username.invalid');

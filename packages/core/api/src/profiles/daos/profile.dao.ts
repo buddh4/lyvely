@@ -72,22 +72,22 @@ export class ProfileDao extends AbstractDao<Profile> {
   async findByTypeAndId(
     identity: DocumentIdentity<Profile>,
     type: ProfileType.User,
-    options?: IBaseFetchQueryOptions<Profile>,
+    options?: IBaseFetchQueryOptions<Profile>
   ): Promise<UserProfile>;
   async findByTypeAndId(
     identity: DocumentIdentity<Profile>,
     type: ProfileType.Group,
-    options?: IBaseFetchQueryOptions<Profile>,
+    options?: IBaseFetchQueryOptions<Profile>
   ): Promise<GroupProfile>;
   async findByTypeAndId(
     identity: DocumentIdentity<Profile>,
     type: ProfileType.Organization,
-    options?: IBaseFetchQueryOptions<Profile>,
+    options?: IBaseFetchQueryOptions<Profile>
   ): Promise<Organization>;
   async findByTypeAndId(
     identity: DocumentIdentity<Profile>,
     type: ProfileType,
-    options?: IBaseFetchQueryOptions<Profile>,
+    options?: IBaseFetchQueryOptions<Profile>
   ): Promise<Profile | null> {
     return this.findByIdAndFilter(identity, { type }, options);
   }
@@ -95,21 +95,21 @@ export class ProfileDao extends AbstractDao<Profile> {
   async findByTypeAndHandle(
     handle: string,
     type: ProfileType,
-    options?: IBaseFetchQueryOptions<Profile>,
+    options?: IBaseFetchQueryOptions<Profile>
   ): Promise<Profile | null> {
     return this.findOne({ type, handle }, options);
   }
 
   async findByHandle(
     handle: string,
-    options?: IBaseFetchQueryOptions<Profile>,
+    options?: IBaseFetchQueryOptions<Profile>
   ): Promise<Profile | null> {
     return this.findOne({ handle }, options);
   }
 
   async findByHandles(
     handles: string[],
-    options?: IFetchQueryOptions<Profile>,
+    options?: IFetchQueryOptions<Profile>
   ): Promise<Profile[]> {
     if (!handles.length) return [];
     return this.findAll({ handle: { $in: handles } }, options);
@@ -117,7 +117,7 @@ export class ProfileDao extends AbstractDao<Profile> {
 
   async findByVisibility(
     visibility: ProfileVisibilityLevel,
-    options?: IFetchQueryOptions<Profile>,
+    options?: IFetchQueryOptions<Profile>
   ): Promise<Profile[]> {
     return this.findAll({ visibility: { $gte: visibility } }, options);
   }
@@ -142,7 +142,7 @@ export class ProfileDao extends AbstractDao<Profile> {
       {},
       {
         arrayFilters: [{ 'tag._id': assureObjectId(identity) }],
-      },
+      }
     );
   }
 
@@ -162,7 +162,7 @@ export class ProfileDao extends AbstractDao<Profile> {
     const ProfileType = getProfileConstructorByType(model.type);
     if (!ProfileType) {
       throw new IntegrityException(
-        'Could not construct profile model due to invalid type: ' + model.type,
+        'Could not construct profile model due to invalid type: ' + model.type
       );
     }
     return ProfileType;

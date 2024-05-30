@@ -33,7 +33,7 @@ describe('ProfileDao', () => {
     it('find profile by ObjectId', async () => {
       const user = await testData.createUser();
       const profile = await profileDao.save(
-        new UserProfile(user, { name: 'test', handle: 'test' }),
+        new UserProfile(user, { name: 'test', handle: 'test' })
       );
       const search = await profileDao.findById(profile._id);
       expect(search).toBeDefined();
@@ -43,7 +43,7 @@ describe('ProfileDao', () => {
     it('find profile by string id', async () => {
       const user = await testData.createUser();
       const profile = await profileDao.save(
-        new UserProfile(user, { name: 'test', handle: 'test' }),
+        new UserProfile(user, { name: 'test', handle: 'test' })
       );
       const search = await profileDao.findById(profile._id);
       expect(search).toBeDefined();
@@ -55,7 +55,7 @@ describe('ProfileDao', () => {
     it('find profile by handle', async () => {
       const user = ProfileTestDataUtils.createDummyUser();
       const profile = await profileDao.save(
-        new UserProfile(user, { name: 'test', handle: 'test' }),
+        new UserProfile(user, { name: 'test', handle: 'test' })
       );
       const search = await profileDao.findByHandle('test');
       expect(search).toBeDefined();
@@ -74,7 +74,7 @@ describe('ProfileDao', () => {
     it('find profile by valid type', async () => {
       const user = ProfileTestDataUtils.createDummyUser();
       const profile = await profileDao.save(
-        new UserProfile(user, { name: 'test', handle: 'test' }),
+        new UserProfile(user, { name: 'test', handle: 'test' })
       );
       const search = await profileDao.findByTypeAndHandle('test', ProfileType.User);
       expect(search).toBeDefined();
@@ -86,7 +86,7 @@ describe('ProfileDao', () => {
     it('save profile with updated name', async () => {
       const user = await testData.createUser();
       const profile = await profileDao.save(
-        new UserProfile(user, { name: 'test', handle: 'test' }),
+        new UserProfile(user, { name: 'test', handle: 'test' })
       );
       profile.name = 'overwritten';
       await profileDao.updateOneSetById(profile, { name: 'overwritten' });
@@ -97,7 +97,7 @@ describe('ProfileDao', () => {
     it('update the score of a profile', async () => {
       const user = await testData.createUser();
       let profile: Profile | null = await profileDao.save(
-        new UserProfile(user, { name: 'test', handle: 'test' }),
+        new UserProfile(user, { name: 'test', handle: 'test' })
       );
       await profileDao.updateOneSetById(profile, { score: 10 });
       profile = await profileDao.reload(profile);
@@ -109,7 +109,7 @@ describe('ProfileDao', () => {
     it('add single tags', async () => {
       const user = await testData.createUser();
       const profile = await profileDao.save(
-        new UserProfile(user, { name: 'test', handle: 'test' }),
+        new UserProfile(user, { name: 'test', handle: 'test' })
       );
       await profileDao.addTags(profile, [Tag.create({ name: 'Test1' })]);
       const update = await profileDao.reload(profile);

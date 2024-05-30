@@ -31,7 +31,7 @@ export class ProfilePermissionsService {
    */
   constructor(
     private readonly configService: ConfigService<ServerConfiguration>,
-    private readonly globalPermissionsService: GlobalPermissionsService,
+    private readonly globalPermissionsService: GlobalPermissionsService
   ) {}
 
   /**
@@ -48,7 +48,7 @@ export class ProfilePermissionsService {
     if (!permissions?.length) return true;
     return permissions.reduce(
       (result, permissionId) => result && this.verifyPermission(context, permissionId),
-      true,
+      true
     );
   }
 
@@ -66,7 +66,7 @@ export class ProfilePermissionsService {
     if (!permissions?.length) return true;
     return permissions.reduce(
       (result, permissionId) => result || this.verifyPermission(context, permissionId),
-      false,
+      false
     );
   }
 
@@ -82,7 +82,7 @@ export class ProfilePermissionsService {
    */
   verifyPermission(
     context: ProfileContext,
-    permissionOrId: string | IProfilePermission | IGlobalPermission,
+    permissionOrId: string | IProfilePermission | IGlobalPermission
   ): boolean {
     if (!context?.profile) return false;
 
@@ -108,7 +108,7 @@ export class ProfilePermissionsService {
         relationStatus: membership?.relationStatus,
       },
       profile,
-      config,
+      config
     );
   }
 }

@@ -12,7 +12,7 @@ export abstract class StorageProvider<TOptions> implements IStorageProvider {
   constructor(
     public readonly id: string,
     protected options: TOptions,
-    protected moduleRef: ModuleRef,
+    protected moduleRef: ModuleRef
   ) {}
 
   /**

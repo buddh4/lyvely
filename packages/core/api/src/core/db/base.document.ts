@@ -66,7 +66,7 @@ export abstract class BaseDocument<ID = TObjectId> implements IEntity<ID> {
   static init<T extends BaseDocument>(
     instance: T,
     data?: BaseDocumentData<T>,
-    options?: InitModelDataOptions,
+    options?: InitModelDataOptions
   ) {
     if (data === false) return;
     return assignEntityData(instance, data, options);
@@ -77,7 +77,7 @@ export abstract class BaseDocument<ID = TObjectId> implements IEntity<ID> {
 export function assignEntityData<T extends Record<string, any>, U>(
   instance: T,
   obj?: U,
-  options?: InitModelDataOptions,
+  options?: InitModelDataOptions
 ) {
   if (obj instanceof Document) {
     return initBaseModelData(instance, obj.toObject(), options);

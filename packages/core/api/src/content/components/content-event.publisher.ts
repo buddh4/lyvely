@@ -14,7 +14,7 @@ export class ContentEventPublisher {
   constructor(
     private readonly configService: ConfigService<ConfigurationPath>,
     private readonly liveService: LiveService,
-    @InjectModel(Content.name) private readonly contentModel: Model<Content>,
+    @InjectModel(Content.name) private readonly contentModel: Model<Content>
   ) {
     /*if (configService.get('mongodb.replicaSet')) {
       const changeStream = contentModel.watch([{ $match: { operationType: 'insert' } }]);
@@ -45,7 +45,7 @@ export class ContentEventPublisher {
         parentId: content.getParentId() ? assureStringId(content.getParentId()) : undefined,
         streamSort: content.meta.streamSort,
         cid: content.id,
-      }),
+      })
     );
   }
 }

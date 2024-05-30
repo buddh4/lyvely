@@ -8,7 +8,7 @@ import { ConfigurationPath, ServerConfiguration } from '@/config';
 @Injectable()
 export class FeaturesEvents {
   constructor(
-    private readonly configService: ConfigService<ServerConfiguration<ConfigurationPath>>,
+    private readonly configService: ConfigService<ServerConfiguration<ConfigurationPath>>
   ) {}
 
   @OnEvent(EVENT_MODULE_APP_CONFIG_ASSEMBLY)

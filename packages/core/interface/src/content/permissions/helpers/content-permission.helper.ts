@@ -21,7 +21,7 @@ export function getContentUserRoleLevel(role: ContentUserRole) {
  * @throws {IntegrityException} - If the given profile visibility level is invalid.
  */
 export function getContentUserRoleLevelByProfileVisibility(
-  visibility: ProfileVisibilityLevel,
+  visibility: ProfileVisibilityLevel
 ): number {
   switch (visibility) {
     case ProfileVisibilityLevel.Member:
@@ -59,7 +59,7 @@ export function verifyContentRoleLevel(userRole: ContentUserRole, minRole: Conte
  * @return {boolean} - Returns true if the permission is a content permission, otherwise returns false.
  */
 export function isContentPermission(
-  permission: IPermission<any, any>,
+  permission: IPermission<any, any>
 ): permission is IContentPermission {
   return permission.type === BasePermissionType.Content;
 }
@@ -84,7 +84,7 @@ export function createContentWritePermission(
   moduleId: string,
   name: string,
   description: string,
-  options?: Partial<IContentPermission>,
+  options?: Partial<IContentPermission>
 ): IContentPermission {
   return {
     min: ContentUserRole.Manager,
@@ -128,7 +128,7 @@ export function createContentDeletePermission(
   moduleId: string,
   name: string,
   description: string,
-  options?: Partial<IContentPermission>,
+  options?: Partial<IContentPermission>
 ): IContentPermission {
   return {
     min: ContentUserRole.Manager,
@@ -172,7 +172,7 @@ export function createContentManagePermission(
   moduleId: string,
   name: string,
   description: string,
-  options?: Partial<IContentPermission>,
+  options?: Partial<IContentPermission>
 ): IContentPermission {
   return {
     min: ContentUserRole.Manager,

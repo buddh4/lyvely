@@ -50,7 +50,7 @@ describe('ProfileFeaturesService', () => {
 
       const result = await profileFeaturesService.setFeatureState(
         profile,
-        new UpdateFeatureModel({ featureId: 'test', state: true }),
+        new UpdateFeatureModel({ featureId: 'test', state: true })
       );
 
       expect(result.enabled).toEqual(['test']);
@@ -73,7 +73,7 @@ describe('ProfileFeaturesService', () => {
 
       const result = await profileFeaturesService.setFeatureState(
         profile,
-        new UpdateFeatureModel({ featureId: 'test', state: true }),
+        new UpdateFeatureModel({ featureId: 'test', state: true })
       );
 
       expect(result.disabled).toEqual(['another']);
@@ -96,7 +96,7 @@ describe('ProfileFeaturesService', () => {
       try {
         await profileFeaturesService.setFeatureState(
           profile,
-          new UpdateFeatureModel({ featureId: 'test', state: true }),
+          new UpdateFeatureModel({ featureId: 'test', state: true })
         );
       } catch (e) {
         expect(e instanceof ForbiddenServiceException).toEqual(true);
@@ -124,7 +124,7 @@ describe('ProfileFeaturesService', () => {
 
       const result = await profileFeaturesService.setFeatureState(
         profile,
-        new UpdateFeatureModel({ featureId: 'test.sub', state: true }),
+        new UpdateFeatureModel({ featureId: 'test.sub', state: true })
       );
 
       expect(result.enabled).toEqual(['test.sub', 'test']);
@@ -145,7 +145,7 @@ describe('ProfileFeaturesService', () => {
 
       const result = await profileFeaturesService.setFeatureState(
         profile,
-        new UpdateFeatureModel({ featureId: 'test', state: false }),
+        new UpdateFeatureModel({ featureId: 'test', state: false })
       );
 
       expect(result.disabled).toEqual(['test']);
@@ -168,7 +168,7 @@ describe('ProfileFeaturesService', () => {
 
       const result = await profileFeaturesService.setFeatureState(
         profile,
-        new UpdateFeatureModel({ featureId: 'test', state: false }),
+        new UpdateFeatureModel({ featureId: 'test', state: false })
       );
 
       expect(result.enabled).toEqual(['another']);
@@ -198,7 +198,7 @@ describe('ProfileFeaturesService', () => {
 
       const result = await profileFeaturesService.setFeatureState(
         profile,
-        new UpdateFeatureModel({ featureId: 'test', state: false }),
+        new UpdateFeatureModel({ featureId: 'test', state: false })
       );
 
       expect(result.disabled).toEqual(['test', 'test.sub']);
@@ -240,7 +240,7 @@ describe('ProfileFeaturesService', () => {
 
       const result = await profileFeaturesService.setFeatureState(
         profile,
-        new UpdateFeatureModel({ featureId: 'test', state: true }),
+        new UpdateFeatureModel({ featureId: 'test', state: true })
       );
 
       expect(result.disabled).toEqual(['test.sub2', 'another']);
@@ -267,7 +267,7 @@ describe('ProfileFeaturesService', () => {
       try {
         await profileFeaturesService.setFeatureState(
           profile,
-          new UpdateFeatureModel({ featureId: 'test', state: true }),
+          new UpdateFeatureModel({ featureId: 'test', state: true })
         );
       } catch (e) {
         expect(e instanceof DocumentNotFoundException).toEqual(true);

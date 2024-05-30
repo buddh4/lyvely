@@ -27,7 +27,7 @@ export const useAddEmailStore = defineStore('add-email', () => {
           },
         ],
       },
-    }),
+    })
   );
 
   async function addEmail() {
@@ -35,8 +35,8 @@ export const useAddEmailStore = defineStore('add-email', () => {
       await loadingStatus(
         () => userAccountClient.addEmail(model.value),
         status,
-        validator.value as I18nModelValidator<AddEmailDto>,
-      ),
+        validator.value as I18nModelValidator<AddEmailDto>
+      )
     );
   }
 

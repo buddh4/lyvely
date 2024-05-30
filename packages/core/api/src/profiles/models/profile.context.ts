@@ -168,7 +168,7 @@ export class ProfileContext<TProfile extends Profile = Profile>
     return getProfileRelationRole(
       this.user,
       this.relations,
-      this.getOrganizationContext()?.relations,
+      this.getOrganizationContext()?.relations
     );
   }
 

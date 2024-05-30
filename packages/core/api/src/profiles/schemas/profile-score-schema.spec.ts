@@ -80,7 +80,7 @@ describe('ProfileScore', () => {
       const createdBy = getObjectId('OtherUser');
       const model = new TestProfileScore(
         { context, score: 5, userStrategy: UserAssignmentStrategy.Shared },
-        { createdBy },
+        { createdBy }
       );
       expect(model.createdBy).toEqual(createdBy);
     });

@@ -9,7 +9,7 @@ const props = withDefaults(
   }>(),
   {
     progress: 0,
-  },
+  }
 );
 
 defineOptions({
@@ -27,8 +27,8 @@ const colorClass = computed(() => {
 const progressClass = computed(() =>
   twMerge(
     'progress rounded-full border border-divide w-full h-4 overflow-hidden',
-    normalizeClass(attrs.class),
-  ),
+    normalizeClass(attrs.class)
+  )
 );
 </script>
 

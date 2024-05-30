@@ -32,7 +32,7 @@ const progress = computed(() => {
     calendarPlanStore.date,
     props.model.interval,
     locale.value,
-    profileStore.getSetting('calendar'),
+    profileStore.getSetting('calendar')
   );
   return milestoneStore.cache.calculateProgress(props.model, tid);
 });

@@ -43,7 +43,7 @@ export class AvatarService extends BaseAvatarService {
         guid,
         bucket: STORAGE_BUCKET_AVATARS,
         createdBy: assureObjectId(user),
-      }),
+      })
     );
   }
 

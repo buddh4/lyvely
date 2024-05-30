@@ -35,7 +35,7 @@ export abstract class BaseContentManagePolicy extends BaseContentPolicy {
 
     const permission = getPermission(
       getContentManagePermissionId(content.type),
-      BasePermissionType.Content,
+      BasePermissionType.Content
     );
 
     // If a custom manage permission is set, we only allow management permission access.
@@ -50,7 +50,7 @@ export abstract class BaseContentManagePolicy extends BaseContentPolicy {
       context.getMembership(
         ProfileMembershipRole.Owner,
         ProfileMembershipRole.Admin,
-        ProfileMembershipRole.Moderator,
+        ProfileMembershipRole.Moderator
       )
     ) {
       return true;

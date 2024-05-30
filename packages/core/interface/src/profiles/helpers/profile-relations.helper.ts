@@ -17,7 +17,7 @@ export function useRelationHelper<
   }
 
   function getRelationOfType<T extends TRelation | TMembership = TRelation | TMembership>(
-    type: string,
+    type: string
   ): T | undefined {
     return <T>getAllRelationsOfType(type)[0];
   }
@@ -44,7 +44,7 @@ export function useRelationHelper<
 export function getProfileRelationRole(
   user: PropertiesOf<UserModel<any>> | null | undefined,
   relations: ProfileRelationModel<any>[],
-  orgRelations?: ProfileRelationModel<any>[],
+  orgRelations?: ProfileRelationModel<any>[]
 ): ProfileRelationRole {
   const membership = useRelationHelper(relations).getMembership();
 

@@ -49,8 +49,8 @@ watch(visible, () => (query.value = ''));
 const optionsToAdd = computed(
   () =>
     props.options.filter(
-      (option: any) => !isSelected(getOptionKey(option)) && filterOption(option),
-    ) || [],
+      (option: any) => !isSelected(getOptionKey(option)) && filterOption(option)
+    ) || []
 );
 
 function getOptionKey(option: IPickerOptions): string {
@@ -89,7 +89,7 @@ const selection = computed(() => model.value.map(getOption));
 
 const selectedOptions = computed(
   () =>
-    model.value.map((key: string) => getOption(key)).filter(filterOption) as Array<IPickerOptions>,
+    model.value.map((key: string) => getOption(key)).filter(filterOption) as Array<IPickerOptions>
 );
 
 function addSelection(option: IPickerOptions) {
@@ -104,7 +104,7 @@ function removeSelection(option: IPickerOptions) {
   query.value = '';
   emit(
     'update:modelValue',
-    model.value.filter((key: any) => getOptionKey(option) !== key),
+    model.value.filter((key: any) => getOptionKey(option) !== key)
   );
   focusOption(option);
 }
@@ -113,7 +113,7 @@ function focusOption(option: IPickerOptions) {
   const optionKey = getOptionKey(option);
   nextTick(() => {
     const entry = picker.value?.querySelector(
-      `[data-badge-selection="${optionKey}"]`,
+      `[data-badge-selection="${optionKey}"]`
     ) as HTMLElement;
     if (entry) entry.focus();
   });
@@ -169,7 +169,7 @@ function getAvatar(options: IPickerOptions) {
 }
 
 const showAddEntry = computed(
-  () => props.add && query.value.length && !isExistingOption(query.value),
+  () => props.add && query.value.length && !isExistingOption(query.value)
 );
 const showEmptyEntry = computed(() => !showAddEntry.value && !props.options.length);
 </script>

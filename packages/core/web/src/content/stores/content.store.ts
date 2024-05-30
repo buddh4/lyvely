@@ -50,7 +50,7 @@ export const useContentStore = defineStore('content', () => {
   function onContentEvent<T extends ContentModel = ContentModel>(
     type: '*' | string,
     event: ContentEventType,
-    handler: (content: T) => void,
+    handler: (content: T) => void
   ): void {
     return useEventBus<any>().on(`content.${type.toLowerCase()}.${event}.post`, handler!);
   }
@@ -58,63 +58,63 @@ export const useContentStore = defineStore('content', () => {
   function offContentEvent<T extends ContentModel = ContentModel>(
     type: '*' | string,
     event: ContentEventType,
-    handler: (content: T) => void,
+    handler: (content: T) => void
   ): void {
     return useEventBus<any>().off(`content.${type.toLowerCase()}.${event}.post`, handler!);
   }
 
   function onContentCreated<T extends ContentModel = ContentModel>(
     type: '*' | string,
-    handler: (content: T) => void,
+    handler: (content: T) => void
   ): void {
     return onContentEvent(type, 'created', handler);
   }
 
   function offContentCreated<T extends ContentModel = ContentModel>(
     type: string,
-    handler: (content: T) => void,
+    handler: (content: T) => void
   ): void {
     return offContentEvent(type, 'created', handler);
   }
 
   function onContentUpdated<T extends ContentModel = ContentModel>(
     type: string,
-    handler: (content: T) => void,
+    handler: (content: T) => void
   ): void {
     return onContentEvent(type, 'updated', handler);
   }
 
   function offContentUpdated<T extends ContentModel = ContentModel>(
     type: string,
-    handler: (content: T) => void,
+    handler: (content: T) => void
   ): void {
     return offContentEvent(type, 'updated', handler);
   }
 
   function onContentRestored<T extends ContentModel = ContentModel>(
     type: string,
-    handler: (content: T) => void,
+    handler: (content: T) => void
   ): void {
     return onContentEvent(type, 'restored', handler);
   }
 
   function offContentRestored<T extends ContentModel = ContentModel>(
     type: string,
-    handler: (content: T) => void,
+    handler: (content: T) => void
   ): void {
     return offContentEvent(type, 'restored', handler);
   }
 
   function onContentArchived<T extends ContentModel = ContentModel>(
     type: string,
-    handler: (content: T) => void,
+    handler: (content: T) => void
   ): void {
     return onContentEvent(type, 'archived', handler);
   }
 
   function offContentArchived<T extends ContentModel = ContentModel>(
     type: string,
-    handler: (content: T) => void,
+    handler: (content: T) => void
   ): void {
     return offContentEvent(type, 'archived', handler);
   }

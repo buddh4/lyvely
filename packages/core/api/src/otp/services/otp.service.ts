@@ -29,7 +29,7 @@ export class OtpService<TContext = any> {
 
   async createOrUpdateUserOtp(
     user: User,
-    options: IGenerateOtpOptions<TContext>,
+    options: IGenerateOtpOptions<TContext>
   ): Promise<{ otpModel: UserOtp<TContext>; otp: string }> {
     if (user.status === UserStatus.Disabled) throw new UnauthorizedException();
 
@@ -45,7 +45,7 @@ export class OtpService<TContext = any> {
         context: options.context,
         issuedAt: new Date(),
         expiresIn: ms(options.expiresIn || DEFAULT_OTP_EXPIRATION),
-      }),
+      })
     );
 
     if (!otpModel) throw new IntegrityException('Could not upsert otp model');
@@ -72,7 +72,7 @@ export class OtpService<TContext = any> {
     user: User,
     purpose: string,
     otp: string,
-    options: IOtpValidationOptions<TContext> = {},
+    options: IOtpValidationOptions<TContext> = {}
   ) {
     options.max = options.max || DEFAULT_MAX_OTP_ATTEMPTS;
     const otpModel = await this.findOtpByUserAndPurpose(user, purpose);
@@ -102,7 +102,7 @@ export class OtpService<TContext = any> {
     purpose: string,
     otp: string,
     otpModel: UserOtp<TContext>,
-    options: IOtpValidationOptions<TContext> = {},
+    options: IOtpValidationOptions<TContext> = {}
   ) {
     options.max = options.max || DEFAULT_MAX_OTP_ATTEMPTS;
     return (
@@ -118,7 +118,7 @@ export class OtpService<TContext = any> {
 
   private async runContextValidation(
     otpModel: UserOtp<TContext>,
-    options: IOtpValidationOptions<TContext>,
+    options: IOtpValidationOptions<TContext>
   ): Promise<boolean> {
     return options.contextValidator ? options.contextValidator(otpModel.context) : true;
   }

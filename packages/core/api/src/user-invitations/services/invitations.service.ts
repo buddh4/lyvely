@@ -16,7 +16,7 @@ export class InvitationsService {
     private membershipService: ProfileMembershipService,
     private inviteDao: InvitationDao,
     private mailInvitationsService: MailInvitationService,
-    private userInvitationsService: UserInvitationsService,
+    private userInvitationsService: UserInvitationsService
   ) {}
 
   public async getMailInvitationContext(token: string) {
@@ -33,7 +33,7 @@ export class InvitationsService {
 
   public async acceptUserInvitation(
     user: User,
-    profile: DocumentIdentity<Profile>,
+    profile: DocumentIdentity<Profile>
   ): Promise<Membership | undefined> {
     // TODO: invalidate notification
     const invitation = await this.userInvitationsService.getInvitation({ user, profile });
@@ -43,7 +43,7 @@ export class InvitationsService {
 
   public async declineUserInvitation(
     user: User,
-    profile: DocumentIdentity<Profile>,
+    profile: DocumentIdentity<Profile>
   ): Promise<number> {
     // TODO: invalidate notification
     return this.inviteDao.deleteMany({ uid: assureObjectId(user), pid: assureObjectId(profile) });

@@ -33,7 +33,7 @@ export class SystemMessagesService extends ContentTypeService<SystemMessage, ICr
    */
   protected async createInstance(
     context: ProtectedProfileContext,
-    model: ICreateSystemMessage,
+    model: ICreateSystemMessage
   ): Promise<SystemMessage> {
     const { text, title, params } = model;
     return new SystemMessage(context, {

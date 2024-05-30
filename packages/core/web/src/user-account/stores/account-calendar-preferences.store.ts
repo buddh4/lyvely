@@ -16,5 +16,5 @@ export const useAccountCalendarPreferencesStore = defineStore(
         useAuthStore().user!.settings = settings;
       },
     });
-  },
+  }
 );

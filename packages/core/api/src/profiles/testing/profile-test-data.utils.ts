@@ -34,7 +34,7 @@ export class ProfileTestDataUtils extends UserTestDataUtils {
   async createUserAndProfile(
     username = 'test',
     password = 'test',
-    email?: string,
+    email?: string
   ): Promise<{ user: User; profile: UserProfile; context: ProtectedProfileContext }> {
     const user = await this.createUser(username, { password, email });
     const profile = await this.createProfile(user);
@@ -55,7 +55,7 @@ export class ProfileTestDataUtils extends UserTestDataUtils {
   async createSimpleOrganization(
     options: Partial<ICreateProfileOptions> = {},
     owner?: User,
-    member?: User,
+    member?: User
   ) {
     owner ??= await this.createUser('owner', { role: GlobalPermissionRole.Admin });
     member ??= await this.createUser('member');
@@ -65,7 +65,7 @@ export class ProfileTestDataUtils extends UserTestDataUtils {
       options.name || 'TestOrg',
       ProfileType.Organization,
       options.visibility || ProfileVisibilityLevel.Member,
-      options,
+      options
     );
     await this.addProfileMember(organization, member);
 
@@ -123,7 +123,7 @@ export class ProfileTestDataUtils extends UserTestDataUtils {
     options: Partial<ICreateProfileOptions> = {},
     organization?: Organization,
     owner?: User,
-    member?: User,
+    member?: User
   ) {
     owner ??= await this.createUser('owner');
     member ??= await this.createUser('member');
@@ -131,7 +131,7 @@ export class ProfileTestDataUtils extends UserTestDataUtils {
       owner,
       options.name || 'TestGroup',
       visibility,
-      options,
+      options
     );
 
     await this.addProfileMember(profile, member);
@@ -172,7 +172,7 @@ export class ProfileTestDataUtils extends UserTestDataUtils {
   createOrganizationContext(
     user: User,
     organization: Organization,
-    role: ProfileMembershipRole = ProfileMembershipRole.Member,
+    role: ProfileMembershipRole = ProfileMembershipRole.Member
   ) {
     return new ProtectedProfileContext<Organization>({
       user,
@@ -207,7 +207,7 @@ export class ProfileTestDataUtils extends UserTestDataUtils {
     owner: User,
     name?: string,
     visibility: ProfileVisibilityLevel = ProfileVisibilityLevel.Member,
-    options: Partial<ICreateProfileOptions> = {},
+    options: Partial<ICreateProfileOptions> = {}
   ): Promise<Profile> {
     const profile = await this.createProfile(owner, name, ProfileType.Group, visibility, options);
     return new Profile(owner, profile);
@@ -218,7 +218,7 @@ export class ProfileTestDataUtils extends UserTestDataUtils {
     organization: Organization,
     type: ProfileType = ProfileType.User,
     visibility: ProfileVisibilityLevel = ProfileVisibilityLevel.Member,
-    options: Partial<ICreateProfileOptions> = {},
+    options: Partial<ICreateProfileOptions> = {}
   ): Promise<Profile> {
     return this.createProfile(owner, options.name || 'subProfile', type, visibility, {
       organization,
@@ -231,7 +231,7 @@ export class ProfileTestDataUtils extends UserTestDataUtils {
     name?: string,
     type: ProfileType = ProfileType.User,
     visibility: ProfileVisibilityLevel = ProfileVisibilityLevel.Member,
-    options: Partial<ICreateProfileOptions> = {},
+    options: Partial<ICreateProfileOptions> = {}
   ): Promise<Profile> {
     const profile = await this._createProfile(
       ProfilesFactory.createProfile(
@@ -241,8 +241,8 @@ export class ProfileTestDataUtils extends UserTestDataUtils {
           name: name || owner.username,
           handle: options.handle || name || owner.username,
           visibility: visibility,
-        }),
-      ),
+        })
+      )
     );
 
     await this.addProfileMember(profile, owner, ProfileMembershipRole.Owner);
@@ -267,7 +267,7 @@ export class ProfileTestDataUtils extends UserTestDataUtils {
     profile: Profile,
     user: User,
     type: string,
-    role: string,
+    role: string
   ): Promise<UserProfileRelation> {
     return new this.UserProfileRelationModel(
       UserProfileRelation.create({
@@ -275,27 +275,27 @@ export class ProfileTestDataUtils extends UserTestDataUtils {
         profile: profile,
         type: type,
         role: role,
-      }),
+      })
     ).save();
   }
 
   async addProfileMember(
     profile: Profile,
     user: User,
-    role: ProfileMembershipRole = ProfileMembershipRole.Member,
+    role: ProfileMembershipRole = ProfileMembershipRole.Member
   ): Promise<Membership> {
     return new this.MembershipModel(
       Membership.create({
         user: user,
         profile: profile,
         role: role,
-      }),
+      })
     ).save();
   }
 
   static createDummyUserAndProfile(
     userData: Partial<User> = {},
-    profileData: Partial<Profile> = {},
+    profileData: Partial<Profile> = {}
   ) {
     const user = this.createDummyUser(userData);
     const profile = this.createDummyProfile(user, profileData);

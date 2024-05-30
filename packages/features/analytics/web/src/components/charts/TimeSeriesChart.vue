@@ -54,7 +54,7 @@ interface IChartSeries {
 }
 
 async function transformResponseToChartData(
-  response: TimeSeriesChartDataResponse,
+  response: TimeSeriesChartDataResponse
 ): Promise<IChartSeries[]> {
   const { result } = response;
   const chartSeries = [];
@@ -69,7 +69,7 @@ async function transformResponseToChartData(
 
 async function transformSeriesData(
   seriesId: string,
-  seriesData: TimeSeriesChartData[],
+  seriesData: TimeSeriesChartData[]
 ): Promise<IChartSeries[]> {
   const seriesConfig = props.model.config.series.find((s) => s.id === seriesId);
   if (!seriesConfig) {
@@ -91,7 +91,7 @@ async function transformSeriesData(
 
 async function transformSeries(
   seriesConfig: ITimeSeriesChartSeriesConfig,
-  series: TimeSeriesChartData | ChartErrorData,
+  series: TimeSeriesChartData | ChartErrorData
 ): Promise<IChartSeries> {
   if (series.type === ChartSeriesDataTypes.ERROR) {
     throw new Error(series.data);
@@ -100,8 +100,8 @@ async function transformSeries(
   const data = axisData[intervalFilter.value].map(
     (category: string) =>
       series.data.find(
-        (val) => getChartCategoryByKey(val.key, intervalFilter.value, locale) === category,
-      )?.value || 0,
+        (val) => getChartCategoryByKey(val.key, intervalFilter.value, locale) === category
+      )?.value || 0
   );
 
   const type = series.chartType || seriesConfig.chartType || TimeSeriesChartType.Line;
@@ -139,7 +139,7 @@ async function renderChart() {
       yAxis: {},
       series,
     },
-    true,
+    true
   );
 }
 
@@ -152,7 +152,7 @@ async function loadSeriesData() {
     useChartsClient().getSeriesData(props.model.id, {
       interval: intervalFilter.value,
     }),
-    status,
+    status
   );
 }
 

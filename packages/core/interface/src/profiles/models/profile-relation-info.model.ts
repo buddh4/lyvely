@@ -72,7 +72,7 @@ export class ProfileRelationInfo {
     return !!this.relations.find(
       (relation) =>
         relation.type === BaseUserProfileRelationType.Membership &&
-        (!role || relation.role === role),
+        (!role || relation.role === role)
     );
   }
 }

@@ -71,7 +71,7 @@ export class NotificationChannelDeliveryStatus {
 }
 
 const NotificationChannelDeliveryStatusSchema = SchemaFactory.createForClass(
-  NotificationChannelDeliveryStatus,
+  NotificationChannelDeliveryStatus
 );
 
 @NestedSchema()

@@ -34,7 +34,7 @@ export class SendInvitationsService {
     private jwtService: JwtService,
     private configService: ConfigService<ConfigurationPath>,
     private inviteDao: InvitationDao,
-    private notificationService: NotificationService,
+    private notificationService: NotificationService
   ) {}
 
   public async sendInvitations(host: User, inviteRequest: InvitationRequest) {
@@ -68,7 +68,7 @@ export class SendInvitationsService {
           email,
           createdBy: assureObjectId(host),
           token: this.createMailInviteToken(invite.email),
-        }),
+        })
       );
     }
 
@@ -80,16 +80,16 @@ export class SendInvitationsService {
         return this.sendInviteMail(
           (<MailInvitation>inviteModel).email,
           host,
-          inviteModel.token!,
+          inviteModel.token!
         ).then(() => inviteModel);
-      }),
+      })
     );
   }
 
   private async sendProfileInvites(
     host: User,
     inviteRequest: InvitationRequest,
-    profile?: Profile,
+    profile?: Profile
   ) {
     const { pid, invites } = inviteRequest;
 
@@ -101,7 +101,7 @@ export class SendInvitationsService {
     const existingMembers = await this.profileService.findProfileContextsByUsers(
       pid,
       existingUsers,
-      true,
+      true
     );
     const invitationEntities: Invitation[] = [];
 
@@ -123,7 +123,7 @@ export class SendInvitationsService {
             uid: existingUser._id,
             createdBy: assureObjectId(host),
             role: invite.role,
-          }),
+          })
         );
       } else {
         invitationEntities.push(
@@ -133,7 +133,7 @@ export class SendInvitationsService {
             createdBy: assureObjectId(host),
             role: invite.role,
             token: this.createMailInviteToken(invite.email),
-          }),
+          })
         );
       }
     }
@@ -157,15 +157,15 @@ export class SendInvitationsService {
   private async sendMailInvitations(invitations: MailInvitation[], host: User, profile?: Profile) {
     return Promise.all(
       invitations.map((inviteModel) =>
-        this.sendInviteMail(inviteModel.email, host, inviteModel.token!, profile),
-      ),
+        this.sendInviteMail(inviteModel.email, host, inviteModel.token!, profile)
+      )
     );
   }
 
   private async sendUserInvitations(invitations: UserInvitation[], host: User, profile: Profile) {
     return this.notificationService.sendNotification(
       new ProfileInvitationNotification(profile, host),
-      new MultiUserSubscription(invitations.map((i) => i.uid)),
+      new MultiUserSubscription(invitations.map((i) => i.uid))
     );
   }
 

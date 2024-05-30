@@ -44,7 +44,7 @@ export class ProfilePermissionSettingsService {
    */
   async setPermission(
     profile: Profile,
-    setting: IProfilePermissionSetting<any>,
+    setting: IProfilePermissionSetting<any>
   ): Promise<ProfilePermissionSetting> {
     const { id, groups } = setting;
     const { role } = setting;
@@ -82,7 +82,7 @@ export class ProfilePermissionSettingsService {
   public validatePermissionSetting(
     profile: Profile,
     setting: IProfilePermissionSetting<any>,
-    permission: any,
+    permission: any
   ) {
     if (isProfilePermission(permission)) {
       this.validateProfileSetting(profile, setting.role as ProfileRelationRole, permission);
@@ -103,7 +103,7 @@ export class ProfilePermissionSettingsService {
   private validateProfileSetting(
     profile: Profile,
     role: ProfileRelationRole,
-    permission: IProfilePermission,
+    permission: IProfilePermission
   ) {
     if (getProfileRoleLevel(role) < getProfileRoleLevel(permission.min)) {
       throw new FieldValidationException([{ property: 'role', errors: ['min'] }]);
@@ -111,7 +111,7 @@ export class ProfilePermissionSettingsService {
 
     const maxLevel = Math.min(
       getProfileRoleLevel(permission.max),
-      getProfileRoleLevelByProfileVisibility(profile.visibility),
+      getProfileRoleLevelByProfileVisibility(profile.visibility)
     );
 
     if (getProfileRoleLevel(role) > maxLevel) {
@@ -131,7 +131,7 @@ export class ProfilePermissionSettingsService {
   private validateContentSetting(
     profile: Profile,
     role: ContentUserRole,
-    permission: IContentPermission,
+    permission: IContentPermission
   ) {
     if (getContentUserRoleLevel(role) < getContentUserRoleLevel(permission.min)) {
       throw new FieldValidationException([{ property: 'role', errors: ['min'] }]);
@@ -139,7 +139,7 @@ export class ProfilePermissionSettingsService {
 
     const maxLevel = Math.min(
       getContentUserRoleLevel(permission.max),
-      getContentUserRoleLevelByProfileVisibility(profile.visibility),
+      getContentUserRoleLevelByProfileVisibility(profile.visibility)
     );
 
     if (getContentUserRoleLevel(role) > maxLevel) {

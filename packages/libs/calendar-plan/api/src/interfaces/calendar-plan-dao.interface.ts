@@ -7,6 +7,6 @@ export interface ICalendarPlanDao<TModel extends CalendarPlanEntity>
   findByProfileAndInterval(
     profile: Profile,
     plan: CalendarInterval,
-    options: IFetchQueryOptions<TModel>,
+    options: IFetchQueryOptions<TModel>
   ): Promise<TModel[]>;
 }

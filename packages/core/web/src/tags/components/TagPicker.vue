@@ -29,7 +29,7 @@ const options = computed(
       key: props.optionKey === 'id' ? tag.id : tag.name,
       label: tag.name,
       color: tag.color,
-    })) || [],
+    })) || []
 );
 
 const emit = defineEmits(['update:modelValue']);

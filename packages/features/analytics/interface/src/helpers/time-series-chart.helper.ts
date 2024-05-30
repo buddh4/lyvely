@@ -14,7 +14,7 @@ import {
  * @returns {Object.<TimeSeriesAggregationInterval, string[]>} An object containing the time series interval categories for the X-axis.
  */
 export const getTimeSeriesIntervalXAxis = (
-  locale: string,
+  locale: string
 ): Record<TimeSeriesAggregationInterval, string[]> => ({
   '7D': getDailyChartAxisCategories(subtractDays(new Date(), 6), new Date(), locale),
   '1M': getDailyChartAxisCategories(subtractMonths(new Date(), 1), new Date(), locale),
@@ -30,7 +30,7 @@ export const getTimeSeriesIntervalXAxis = (
  * @returns True if the value is a valid TimeSeriesAggregationInterval, false otherwise.
  */
 export function isTimeSeriesAggregationInterval(
-  val: string | undefined,
+  val: string | undefined
 ): val is TimeSeriesAggregationInterval {
   if (!val) return false;
   return timeSeriesIntervalFilters.includes(val as TimeSeriesAggregationInterval);
@@ -39,7 +39,7 @@ export function isTimeSeriesAggregationInterval(
 export function getChartCategoryByKey(
   key: TimeSeriesCategoryKey,
   interval: TimeSeriesAggregationInterval,
-  locale: string,
+  locale: string
 ) {
   const date = new Date(key.year, (key.month || 1) - 1, key.day || 1);
   switch (interval) {

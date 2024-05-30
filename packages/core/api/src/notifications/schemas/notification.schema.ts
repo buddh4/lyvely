@@ -53,5 +53,5 @@ export class Notification<
 
 export const NotificationSchema = UserSubscriptionSchemaAddition.addSubscriptionsSchemas(
   SchemaFactory.createForClass(Notification),
-  'subscription',
+  'subscription'
 );

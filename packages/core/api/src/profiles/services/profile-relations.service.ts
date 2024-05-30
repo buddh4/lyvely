@@ -11,7 +11,7 @@ export class ProfileRelationsService {
   constructor(
     private profileDao: ProfileDao,
     private profileRelationsDao: UserProfileRelationsDao,
-    private usersService: UsersService,
+    private usersService: UsersService
   ) {}
 
   /**
@@ -39,7 +39,7 @@ export class ProfileRelationsService {
    */
   async findAllProfileRelationsByUsers(
     profile: DocumentIdentity<Profile>,
-    uids: DocumentIdentity<User>[],
+    uids: DocumentIdentity<User>[]
   ): Promise<UserProfileRelation[]> {
     return this.profileRelationsDao.findAll({
       pid: assureObjectId(profile),
@@ -55,7 +55,7 @@ export class ProfileRelationsService {
    */
   async findAllProfileAndOrganizationRelationsByUser(
     profile: Profile,
-    user: DocumentIdentity<User> | null | undefined,
+    user: DocumentIdentity<User> | null | undefined
   ): Promise<{
     profileRelations: UserProfileRelation[];
     organizationRelations?: UserProfileRelation[];
@@ -70,7 +70,7 @@ export class ProfileRelationsService {
    * @param identity
    */
   async findAllUserProfileRelations(
-    identity: DocumentIdentity<Profile>,
+    identity: DocumentIdentity<Profile>
   ): Promise<IUserWithProfileRelation[]> {
     const profile = await this.findProfileByIdentity(identity);
 

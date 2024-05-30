@@ -29,11 +29,11 @@ const widthClass = computed(
         [Size.XS]: 'max-w-xs',
         [Size.Full]: 'max-w-full',
       }) as Record<string, string>
-    )[props.width] || 'max-w-sm',
+    )[props.width] || 'max-w-sm'
 );
 
 const computedIconClass = computed(() =>
-  twMerge(props.iconClass, 'fill-current text-lyvely mr-2 w-6'),
+  twMerge(props.iconClass, 'fill-current text-lyvely mr-2 w-6')
 );
 </script>
 

@@ -23,7 +23,7 @@ export class UserInvitationsService extends AbstractInvitationsService<
   constructor(
     private profilesService: ProfilesService,
     private userInvitationDao: UserInvitationDao,
-    private usersService: UsersService,
+    private usersService: UsersService
   ) {
     super();
   }

@@ -24,7 +24,7 @@ export class ContentWritePolicy extends BaseContentWritePolicy {
     if (ContentWritePolicyType) {
       const contentWritePolicy = this.moduleRef.get<IContentPolicy>(
         getPolicyToken(ContentWritePolicyType.name),
-        { strict: false },
+        { strict: false }
       );
 
       return contentWritePolicy.verify(context);

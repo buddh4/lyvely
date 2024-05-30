@@ -29,7 +29,7 @@ const store = useContentEditModal<MilestoneModel, CreateMilestoneModel, UpdateMi
   emit,
   {
     client: useMilestonesClient(),
-  },
+  }
 );
 
 const { showModal, isCreate, model, validator, submit, status } = store;

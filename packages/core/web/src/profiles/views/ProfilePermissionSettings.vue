@@ -15,7 +15,7 @@ const filteredPermissions = computed(() => {
     (p) =>
       p.moduleId.includes(searchValue) ||
       t(p.description).toLowerCase().includes(searchValue) ||
-      t(p.name).toLowerCase().includes(searchValue),
+      t(p.name).toLowerCase().includes(searchValue)
   );
 });
 

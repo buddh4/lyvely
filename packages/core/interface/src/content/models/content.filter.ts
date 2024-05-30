@@ -29,7 +29,7 @@ export class ContentFilter<
   tagProvider?: () => TagModel[];
 
   constructor(
-    options?: FilterConstructorOptions<TModel, TOptions> & { tagProvider?: TagProvider },
+    options?: FilterConstructorOptions<TModel, TOptions> & { tagProvider?: TagProvider }
   ) {
     const tagProvider = options?.tagProvider;
     delete options?.tagProvider;
@@ -47,7 +47,7 @@ export class ContentFilter<
     this.tagProvider = provider;
     const tagAddition = (model: TModel, filter: IContentFilter<TModel, TOptions>) => {
       const includeOnlyOnFilterTags = filter.tagProvider!().filter(
-        (tag) => tag.includeOnFilter && model.tagIds.includes(tag.id),
+        (tag) => tag.includeOnFilter && model.tagIds.includes(tag.id)
       );
       return !(filter.isEmpty() && includeOnlyOnFilterTags.length);
     };
@@ -70,7 +70,7 @@ export class ContentFilter<
     if (
       this.options.query?.length &&
       !((model.content.title || '') + (model.content.text || '')).match(
-        new RegExp(escapeRegExp(this.options.query), 'i'),
+        new RegExp(escapeRegExp(this.options.query), 'i')
       )
     ) {
       return false;

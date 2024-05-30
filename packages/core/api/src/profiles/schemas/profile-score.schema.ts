@@ -138,7 +138,7 @@ export class ProfileScore {
         this.date,
         CalendarInterval.Daily,
         profile.locale,
-        calendarPreferences,
+        calendarPreferences
       );
       Object.assign(this, parseTimingId(this.tid));
     }

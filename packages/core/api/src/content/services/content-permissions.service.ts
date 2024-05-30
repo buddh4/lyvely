@@ -35,7 +35,7 @@ export class ContentPermissionsService {
   constructor(
     private readonly configService: ConfigService<ServerConfiguration>,
     private readonly globalPermissionsService: GlobalPermissionsService,
-    private readonly profilePermissionsService: ProfilePermissionsService,
+    private readonly profilePermissionsService: ProfilePermissionsService
   ) {}
 
   /**
@@ -52,7 +52,7 @@ export class ContentPermissionsService {
     if (!permissions?.length) return true;
     return permissions.reduce(
       (result, permissionId) => result && this.verifyPermission(context, permissionId),
-      true,
+      true
     );
   }
 
@@ -70,7 +70,7 @@ export class ContentPermissionsService {
     if (!permissions?.length) return true;
     return permissions.reduce(
       (result, permissionOrId) => result || this.verifyPermission(context, permissionOrId),
-      false,
+      false
     );
   }
 
@@ -114,7 +114,7 @@ export class ContentPermissionsService {
         relationStatus: membership?.relationStatus,
       },
       context,
-      config,
+      config
     );
   }
 }

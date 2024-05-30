@@ -62,7 +62,7 @@ export class ProfilesService {
     private profileSettingsService: ProfileSettingsService,
     private profilePermissionsService: ProfilePermissionsService,
     private globalPermissionsService: GlobalPermissionsService,
-    @InjectConnection() private readonly connection: Connection,
+    @InjectConnection() private readonly connection: Connection
   ) {}
 
   /**
@@ -100,7 +100,7 @@ export class ProfilesService {
    */
   async createUserProfile(
     owner: User,
-    options: ICreateProfileOptions,
+    options: ICreateProfileOptions
   ): Promise<ProtectedProfileContext> {
     if (!this.globalPermissionsService.verifyPermission(owner, CreateUserProfilePermission)) {
       throw new ForbiddenServiceException('Insufficient permissions to create user profile.');
@@ -122,7 +122,7 @@ export class ProfilesService {
    */
   async createGroupProfile(
     owner: User,
-    options: ICreateProfileOptions,
+    options: ICreateProfileOptions
   ): Promise<ProtectedProfileContext> {
     if (!this.globalPermissionsService.verifyPermission(owner, CreateGroupProfilePermission)) {
       throw new ForbiddenServiceException('Insufficient permissions to create group profile.');
@@ -149,12 +149,12 @@ export class ProfilesService {
       if (options.organization) {
         throw new UniqueConstraintException(
           'name',
-          'Can not create user profile, profile name already exists in organization',
+          'Can not create user profile, profile name already exists in organization'
         );
       }
       throw new UniqueConstraintException(
         'name',
-        'Can not create user profile, user already owns a profile with this name',
+        'Can not create user profile, user already owns a profile with this name'
       );
     }
   }
@@ -170,27 +170,27 @@ export class ProfilesService {
    */
   async createOrganization(
     owner: User,
-    options: Omit<ICreateProfileOptions, 'organization'>,
+    options: Omit<ICreateProfileOptions, 'organization'>
   ): Promise<ProtectedProfileContext> {
     if (
       !this.globalPermissionsService.verifyPermission(owner, CreateOrganizationProfilePermission)
     ) {
       throw new ForbiddenServiceException(
-        'Insufficient permissions to create organization profile.',
+        'Insufficient permissions to create organization profile.'
       );
     }
 
     if (await this.profileDao.findExistingProfileByOrganizationName(owner, options.name)) {
       throw new UniqueConstraintException(
         'name',
-        'Can not create organization, name is already in use',
+        'Can not create organization, name is already in use'
       );
     }
 
     options.locale = options.locale || owner.locale;
     return this.createProfile(
       owner,
-      Object.assign({}, options, { type: ProfileType.Organization }),
+      Object.assign({}, options, { type: ProfileType.Organization })
     );
   }
 
@@ -207,7 +207,7 @@ export class ProfilesService {
    */
   protected async createProfile(
     owner: User,
-    options: ICreateProfileTypeOptions & { oid?: DocumentIdentity<Organization> },
+    options: ICreateProfileTypeOptions & { oid?: DocumentIdentity<Organization> }
   ): Promise<ProtectedProfileContext> {
     return withTransaction(this.connection, async (transaction) => {
       // TODO (profile visibility) implement max profile visibility in configuration (default member)
@@ -223,7 +223,7 @@ export class ProfilesService {
         !(await this.canAddOrganizationProfile(owner, options.organization))
       ) {
         throw new ForbiddenServiceException(
-          'User is not allowed to create profiles for this organization.',
+          'User is not allowed to create profiles for this organization.'
         );
       }
 
@@ -240,7 +240,7 @@ export class ProfilesService {
         profile,
         owner,
         ProfileMembershipRole.Owner,
-        transaction,
+        transaction
       );
 
       return new ProtectedProfileContext({
@@ -253,12 +253,12 @@ export class ProfilesService {
 
   private async canAddOrganizationProfile(
     user: User,
-    organization: Organization,
+    organization: Organization
   ): Promise<boolean> {
     const context = await this._createProfileContext(user, organization);
     return this.profilePermissionsService.verifyPermission(
       context,
-      AddProfileToOrganizationPermission,
+      AddProfileToOrganizationPermission
     );
   }
 
@@ -342,7 +342,7 @@ export class ProfilesService {
    */
   async findProfileById(
     identity: DocumentIdentity<Profile> | null | undefined,
-    throwsException = false,
+    throwsException = false
   ): Promise<Profile | null> {
     if (!identity && throwsException) throw new DocumentNotFoundException('Profile not found.');
     if (!identity) return null;
@@ -407,17 +407,17 @@ export class ProfilesService {
   async findProfileContext(
     user: User,
     pid: DocumentIdentity<Profile>,
-    oid?: DocumentIdentity<Organization>,
+    oid?: DocumentIdentity<Organization>
   ): Promise<ProtectedProfileContext>;
   async findProfileContext(
     user: OptionalUser,
     pid: DocumentIdentity<Profile>,
-    oid?: DocumentIdentity<Organization>,
+    oid?: DocumentIdentity<Organization>
   ): Promise<ProfileContext>;
   async findProfileContext(
     user: OptionalUser,
     pid: DocumentIdentity<Profile>,
-    oid?: DocumentIdentity<Organization>,
+    oid?: DocumentIdentity<Organization>
   ): Promise<ProfileContext> {
     const { profile, organization } = await this.findProfileWithOrganization(pid, oid);
 
@@ -452,17 +452,17 @@ export class ProfilesService {
   private async _createProfileContext(
     user: User,
     profile: Profile,
-    organization?: Organization | null,
+    organization?: Organization | null
   ): Promise<ProtectedProfileContext>;
   private async _createProfileContext(
     user: OptionalUser,
     profile: Profile,
-    organization?: Organization | null,
+    organization?: Organization | null
   ): Promise<ProfileContext>;
   private async _createProfileContext(
     user: OptionalUser,
     profile: Profile,
-    organization?: Organization | null,
+    organization?: Organization | null
   ): Promise<ProfileContext> {
     const { profileRelations, organizationRelations } =
       await this.relationsService.findAllProfileAndOrganizationRelationsByUser(profile, user);
@@ -498,7 +498,7 @@ export class ProfilesService {
    * @param handle The profile handle.
    */
   async findProfileWithOrganizationByHandle(
-    handle: string,
+    handle: string
   ): Promise<{ profile: Profile; organization: Organization | null }> {
     const profile = await this.profileDao.findByHandle(handle);
     let organization: Organization | null = null;
@@ -525,7 +525,7 @@ export class ProfilesService {
    */
   async findProfileWithOrganization(
     pid: DocumentIdentity<Profile>,
-    oid?: DocumentIdentity<Profile>,
+    oid?: DocumentIdentity<Profile>
   ): Promise<{ profile: Profile; organization: Organization | null }> {
     let profile: Profile | undefined | null;
     let organization: Organization | undefined | null = null;
@@ -535,7 +535,7 @@ export class ProfilesService {
       const profiles = await this.profileDao.findAllByIds([pid, oid]);
       profile = profiles.find((p) => p._id.equals(assureObjectId(pid)));
       organization = profiles.find(
-        (p) => p.type === ProfileType.Organization && p._id.equals(assureObjectId(oid)),
+        (p) => p.type === ProfileType.Organization && p._id.equals(assureObjectId(oid))
       );
     } else if (pid instanceof Profile && oid instanceof Profile) {
       // Both already instances
@@ -572,7 +572,7 @@ export class ProfilesService {
   async findProfileContextsByUsers(
     identity: DocumentIdentity<Profile>,
     users: User[],
-    skipEmptyRelations = false,
+    skipEmptyRelations = false
   ): Promise<ProtectedProfileContext[]> {
     if (!users?.length) return [];
 
@@ -589,14 +589,14 @@ export class ProfilesService {
           user,
           profile,
           relations: [] as UserProfileRelation[],
-        }),
+        })
       );
       return user._id;
     });
 
     const relations = await this.relationsService.findAllProfileRelationsByUsers(
       assureObjectId(profile),
-      uids,
+      uids
     );
 
     relations.forEach((relation) => {
@@ -619,7 +619,7 @@ export class ProfilesService {
     if (!userRelations.length) return [];
 
     const profiles = await this.profileDao.findAllByIds(
-      userRelations.map((relation) => relation.pid),
+      userRelations.map((relation) => relation.pid)
     );
 
     return profiles.map(
@@ -628,7 +628,7 @@ export class ProfilesService {
           user,
           profile,
           relations: userRelations.filter((relation) => relation.pid.equals(profile._id)),
-        }),
+        })
     );
   }
 
@@ -668,7 +668,7 @@ export class ProfilesService {
    */
   async setCalendarPreferences(
     profile: Profile,
-    preferences: CalendarPreferences,
+    preferences: CalendarPreferences
   ): Promise<Record<string, any>> {
     const update: ISettingUpdate = [];
 

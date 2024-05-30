@@ -128,7 +128,7 @@ export const useAuthStore = defineStore('user-auth', () => {
     return queuePromise('auth-store-refresh', () => authClient.refresh(visitorId!)).then(
       ({ token_expiration }) => {
         authStore.authTokenExpiration = token_expiration;
-      },
+      }
     );
   }
 

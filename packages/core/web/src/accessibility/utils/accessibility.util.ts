@@ -25,7 +25,7 @@ export function accessibilityFocus(elem?: string | HTMLElement | null) {
       () => {
         element.classList.remove('focus-hidden');
       },
-      { once: true },
+      { once: true }
     );
   }
 }

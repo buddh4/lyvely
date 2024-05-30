@@ -18,7 +18,7 @@ export default {
   async getProfileRelationUserInfo(pid: string, uid: string, options?: IProfileApiRequestOptions) {
     return api.get<'getProfileRelationUserInfo'>(
       ProfileRelationInfosEndpoints.PROFILE_RELATION_INFO(pid, uid),
-      options,
+      options
     );
   },
 };

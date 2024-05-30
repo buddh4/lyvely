@@ -26,14 +26,14 @@ watch(
   () => props.avatar,
   () => {
     imgError.value = false;
-  },
+  }
 );
 
 watch(
   () => props.guid,
   () => {
     imgError.value = false;
-  },
+  }
 );
 
 const imgUrl = computed(() => {
@@ -48,14 +48,14 @@ const imgUrl = computed(() => {
 
 const initials = computed(() => (imgUrl.value ? undefined : props.name?.substring(0, 2)));
 const color = computed(() =>
-  imgUrl.value ? undefined : randomColor({ seed: props.name + '_user' + imgGuid.value || '' }),
+  imgUrl.value ? undefined : randomColor({ seed: props.name + '_user' + imgGuid.value || '' })
 );
 const textClass = computed(() =>
   !imgUrl.value && color.value
     ? getContrast(color.value!) === 'dark'
       ? 'text-slate-900'
       : 'text-slate-100'
-    : '',
+    : ''
 );
 
 function getClassNames(attrClasses: any, textClass: string) {

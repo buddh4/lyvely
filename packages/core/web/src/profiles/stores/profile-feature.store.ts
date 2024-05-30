@@ -57,7 +57,7 @@ export const useProfileFeatureStore = defineStore('profile-feature-store', () =>
 
     try {
       const { disabled, enabled } = await useProfileFeaturesClient().updateState(
-        new UpdateFeatureModel({ featureId, state }),
+        new UpdateFeatureModel({ featureId, state })
       );
 
       disabled.forEach((featureId) => _setState(featureId, false));

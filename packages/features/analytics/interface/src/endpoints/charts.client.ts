@@ -31,7 +31,7 @@ export class ChartsClient implements IChartsEndpointClient {
    */
   async create(
     model: CreateChartModel,
-    options?: IProfileApiRequestOptions,
+    options?: IProfileApiRequestOptions
   ): Promise<UpdateChartResponseModel> {
     return unwrapAndTransformResponse(repository.create(model, options), UpdateChartResponseModel);
   }
@@ -47,11 +47,11 @@ export class ChartsClient implements IChartsEndpointClient {
   async update(
     id: string,
     model: UpdateChartModel,
-    options?: IProfileApiRequestOptions,
+    options?: IProfileApiRequestOptions
   ): Promise<UpdateChartResponseModel> {
     return unwrapAndTransformResponse(
       repository.update(id, model, options),
-      UpdateChartResponseModel,
+      UpdateChartResponseModel
     );
   }
 
@@ -81,11 +81,11 @@ export class ChartsClient implements IChartsEndpointClient {
     cid: string,
     sid: string,
     model: UpdateChartSeriesModel,
-    options?: IProfileApiRequestOptions,
+    options?: IProfileApiRequestOptions
   ) {
     return unwrapAndTransformResponse(
       repository.updateSeries(cid, sid, model, options),
-      ChartModel,
+      ChartModel
     );
   }
 
@@ -123,7 +123,7 @@ export class ChartsClient implements IChartsEndpointClient {
   sort(
     cid: string,
     sort: ISortRequest,
-    options?: IProfileApiRequestOptions,
+    options?: IProfileApiRequestOptions
   ): Promise<SortResponse> {
     return unwrapAndTransformResponse(repository.sort(cid, sort, options), SortResponse);
   }
@@ -138,11 +138,11 @@ export class ChartsClient implements IChartsEndpointClient {
   async getSeriesData(
     cid: string,
     query?: Record<string, string>,
-    options?: IProfileApiRequestOptions,
+    options?: IProfileApiRequestOptions
   ): Promise<ChartSeriesDataResponse> {
     return unwrapAndTransformResponse(
       repository.getSeriesData(cid, query, options),
-      ChartSeriesDataResponse,
+      ChartSeriesDataResponse
     );
   }
 }

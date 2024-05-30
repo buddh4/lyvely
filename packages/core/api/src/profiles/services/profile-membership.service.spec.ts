@@ -34,7 +34,7 @@ describe('ProfileMembershipService', () => {
     it('create group membership', async () => {
       const { profile } = ProfileTestDataUtils.createDummyUserAndProfile(
         {},
-        { type: ProfileType.Group },
+        { type: ProfileType.Group }
       );
 
       const user = ProfileTestDataUtils.createDummyUser();
@@ -56,7 +56,7 @@ describe('ProfileMembershipService', () => {
   it('can not create two memberships on user profile', async () => {
     const { profile } = ProfileTestDataUtils.createDummyUserAndProfile(
       {},
-      { type: ProfileType.User },
+      { type: ProfileType.User }
     );
 
     const owner = ProfileTestDataUtils.createDummyUser();
@@ -65,7 +65,7 @@ describe('ProfileMembershipService', () => {
     try {
       await membershipService.createMembership(
         profile,
-        ProfileTestDataUtils.createDummyUser({ username: 'user2' }),
+        ProfileTestDataUtils.createDummyUser({ username: 'user2' })
       );
     } catch (e) {
       expect(e instanceof ForbiddenServiceException).toEqual(true);
@@ -75,7 +75,7 @@ describe('ProfileMembershipService', () => {
   it('can only create ownership on user profile', async () => {
     const { profile } = ProfileTestDataUtils.createDummyUserAndProfile(
       {},
-      { type: ProfileType.User },
+      { type: ProfileType.User }
     );
 
     try {
@@ -89,7 +89,7 @@ describe('ProfileMembershipService', () => {
   it('update role if membership already exists', async () => {
     const { profile } = ProfileTestDataUtils.createDummyUserAndProfile(
       {},
-      { type: ProfileType.Group },
+      { type: ProfileType.Group }
     );
 
     const user = ProfileTestDataUtils.createDummyUser();

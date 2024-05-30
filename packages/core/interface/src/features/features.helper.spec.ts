@@ -81,7 +81,7 @@ describe('isEnabledProfileFeature', function () {
     expect(
       isEnabledGlobalFeature('test.sub', {
         global: { enabled: ['test.sub'], disabled: ['test'] },
-      }),
+      })
     ).toEqual(false);
   });
 

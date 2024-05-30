@@ -37,7 +37,7 @@ export function useApiRepository() {
 export function useApiRequestInterceptor(
   onFulfilled?: AxiosInterceptorOnFulfilled<InternalAxiosRequestConfig>,
   onRejected?: AxiosInterceptorOnRejected,
-  options?: AxiosInterceptorOptions,
+  options?: AxiosInterceptorOptions
 ): number {
   if (!_repository) {
     throw new MisconfigurationException('getRepository called before useApiRequestInterceptor.');
@@ -48,7 +48,7 @@ export function useApiRequestInterceptor(
 export function useApiResponseInterceptor(
   onFulfilled?: AxiosInterceptorOnFulfilled<AxiosResponse>,
   onRejected?: AxiosInterceptorOnRejected,
-  options?: AxiosInterceptorOptions,
+  options?: AxiosInterceptorOptions
 ): number {
   if (!_repository) {
     throw new MisconfigurationException('getRepository called before useApiResponseInterceptor.');

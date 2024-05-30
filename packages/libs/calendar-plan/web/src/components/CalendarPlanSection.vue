@@ -54,7 +54,7 @@ function open() {
 
 // Unscheduled is the last section and needs some style alignments.
 const isEmptyUnscheduled = computed(
-  () => props.interval === CalendarInterval.Unscheduled && props.count === 0,
+  () => props.interval === CalendarInterval.Unscheduled && props.count === 0
 );
 </script>
 

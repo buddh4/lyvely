@@ -41,7 +41,7 @@ export interface IUpdateModelStoreOptions<
   client:
     | IEditModelClient<TResponse, TCreateModel, TUpdateModel, TID>
     | ((
-        editModel: TCreateModel | TUpdateModel,
+        editModel: TCreateModel | TUpdateModel
       ) => IEditModelClient<TResponse, TCreateModel, TUpdateModel, TID>);
 
   /**
@@ -96,7 +96,7 @@ export function useUpdateModelStore<
   let original: TEditModel | undefined = undefined;
   const modelId = ref<TID>();
   const validator = reactive(
-    new I18nModelValidator<TEditModel>(),
+    new I18nModelValidator<TEditModel>()
   ) as I18nModelValidator<TEditModel>;
   const isActive = ref(false);
   const isCreate = ref(false);
@@ -155,7 +155,7 @@ export function useUpdateModelStore<
       () => {
         localStorage.setItem(getBackupKey(), JSON.stringify(toValue(model.value)));
       },
-      { deep: true },
+      { deep: true }
     );
   }
 
@@ -237,7 +237,7 @@ export function useUpdateModelStore<
     return loadingStatus(
       _getClient(model.value).create(<TCreateModel>model.value),
       status,
-      validator,
+      validator
     );
   }
 
@@ -263,7 +263,7 @@ export function useUpdateModelStore<
     return loadingStatus(
       _getClient(model.value).update(modelId.value, update as TUpdateModel),
       status,
-      validator,
+      validator
     );
   }
 

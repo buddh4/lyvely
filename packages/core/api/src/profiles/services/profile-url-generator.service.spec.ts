@@ -64,7 +64,7 @@ describe('UrlGenrator', () => {
         pid: pid.toString(),
       });
       expect(testUrl.href).toEqual(
-        `https://test.com/p/${assureStringId(pid)}/so%3Fme/path?t%26st=t%26stVal`,
+        `https://test.com/p/${assureStringId(pid)}/so%3Fme/path?t%26st=t%26stVal`
       );
     });
   });
@@ -109,7 +109,7 @@ describe('UrlGenrator', () => {
         pid: pid.toString(),
       });
       expect(testUrl.href).toEqual(
-        `https://api.test.com/so%3Fme/path?t%26st=t%26stVal&pid=${assureStringId(pid)}`,
+        `https://api.test.com/so%3Fme/path?t%26st=t%26stVal&pid=${assureStringId(pid)}`
       );
     });
   });

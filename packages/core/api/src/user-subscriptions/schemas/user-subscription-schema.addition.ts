@@ -20,7 +20,7 @@ export class UserSubscriptionSchemaAddition {
   static addSubscriptionsSchemas<TClass = any>(
     Schema: Schema<TClass>,
     path: string,
-    types?: Array<Type<UserSubscription> & { typeName: string }>,
+    types?: Array<Type<UserSubscription> & { typeName: string }>
   ): Schema<TClass> {
     types ||= [ProfileSubscription, MultiUserSubscription, SingleUserSubscription];
     types.forEach((SubscriptionType) => {
@@ -28,7 +28,7 @@ export class UserSubscriptionSchemaAddition {
       const SubscriptionTypeSchema = SchemaFactory.createForClass(SubscriptionType);
       Schema.path<Subdocument>(path).discriminator(
         SubscriptionType.typeName,
-        SubscriptionTypeSchema,
+        SubscriptionTypeSchema
       );
     });
     return Schema;

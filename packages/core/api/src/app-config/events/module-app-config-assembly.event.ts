@@ -7,7 +7,7 @@ export class ModuleAppConfigAssemblyEvent {
 
   setModuleConfig<T extends Record<string, unknown> = Record<string, unknown>>(
     moduleId: string,
-    config: T,
+    config: T
   ) {
     this.config[moduleId] = config;
   }

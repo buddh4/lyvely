@@ -10,7 +10,7 @@ export interface IContentFilterComposableOptions<TFilter extends IContentFilter 
   queryHandler?: (filter: TFilter, query: LocationQuery) => void;
 }
 export function useContentFilter<TFilter extends IContentFilter = IContentFilter>(
-  options: IContentFilterComposableOptions<TFilter>,
+  options: IContentFilterComposableOptions<TFilter>
 ) {
   let filterPath: string | undefined = undefined;
 
@@ -52,7 +52,7 @@ export function useContentFilter<TFilter extends IContentFilter = IContentFilter
         setFilterFromRoute();
       }
     },
-    { immediate: true },
+    { immediate: true }
   );
 
   function stopWatch() {

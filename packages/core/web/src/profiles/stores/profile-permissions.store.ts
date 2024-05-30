@@ -36,8 +36,8 @@ export const useProfilePermissionsStore = defineStore('profile-permissions-store
             permission,
             profile,
             getPermissionConfig(),
-            permissionManager.getRoleLevel(role),
-          ) === permissionManager.getRoleLevel(role),
+            permissionManager.getRoleLevel(role)
+          ) === permissionManager.getRoleLevel(role)
       )
       .map((value) => ({
         label: `profiles.settings.permissions.roles.${value}`,
@@ -49,7 +49,7 @@ export const useProfilePermissionsStore = defineStore('profile-permissions-store
     return _getPermissionManager(permission).getActiveRole(
       permission,
       useProfileStore().profile as IProfilePermissionObject,
-      getPermissionConfig(),
+      getPermissionConfig()
     );
   }
 
@@ -59,11 +59,11 @@ export const useProfilePermissionsStore = defineStore('profile-permissions-store
         new ProfilePermissionSettingModel({
           id: permission.id,
           role: role as ContentUserRole | ProfileRelationRole,
-        }),
-      ),
+        })
+      )
     )
       .then((setting) =>
-        findAndReplace(useProfileStore().profile!.permissions, setting, 'id', true),
+        findAndReplace(useProfileStore().profile!.permissions, setting, 'id', true)
       )
       .catch((e) => {
         console.error(e);
@@ -91,7 +91,7 @@ export const useProfilePermissionsStore = defineStore('profile-permissions-store
         role: currentProfile.role,
       },
       currentProfile as IProfilePermissionObject,
-      getPermissionConfig(),
+      getPermissionConfig()
     );
   }
 
@@ -116,7 +116,7 @@ export const useProfilePermissionsStore = defineStore('profile-permissions-store
         role: getProfileRelationRole(user, userRelations, userOrganizationRelations),
       },
       currentProfile as IProfilePermissionObject,
-      getPermissionConfig(),
+      getPermissionConfig()
     );
   }
 
@@ -128,7 +128,7 @@ export const useProfilePermissionsStore = defineStore('profile-permissions-store
   }
 
   function _getPermissionManager(
-    permission: IPermission,
+    permission: IPermission
   ): AbstractPermissionsManager<any, any, any> {
     return isProfilePermission(permission)
       ? useProfilePermissionsManager()

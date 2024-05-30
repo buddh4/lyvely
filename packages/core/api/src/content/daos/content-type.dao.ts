@@ -18,7 +18,7 @@ export abstract class ContentTypeDao<
       content,
       this.createUserUpdateQuerySet(user, {
         'meta.archived': true,
-      }),
+      })
     );
   }
 
@@ -29,7 +29,7 @@ export abstract class ContentTypeDao<
       this.createUserUpdateQuerySet(user, {
         'meta.archived': false,
         'meta.deleted': false,
-      }),
+      })
     );
   }
 
@@ -57,7 +57,7 @@ export abstract class ContentTypeDao<
     const maxSortOrderEntry = await this.findAllByProfile(
       profile,
       {},
-      { sort: <any>{ 'meta.sortOrder': -1 }, limit: 1 },
+      { sort: <any>{ 'meta.sortOrder': -1 }, limit: 1 }
     );
     return !maxSortOrderEntry.length || typeof maxSortOrderEntry[0].meta.sortOrder !== 'number'
       ? 0
@@ -66,7 +66,7 @@ export abstract class ContentTypeDao<
 
   createUserUpdateQuery(
     user: DocumentIdentity<User>,
-    update?: UpdateQuery<Content>,
+    update?: UpdateQuery<Content>
   ): UpdateQuery<Content> {
     if (!update) update = {};
     if (!update['$set']) update['$set'] = {};
@@ -77,7 +77,7 @@ export abstract class ContentTypeDao<
 
   createUserUpdateQuerySet(
     user: DocumentIdentity<User>,
-    update?: UpdateQuerySet<Content>,
+    update?: UpdateQuerySet<Content>
   ): UpdateQuerySet<Content> {
     if (!update) update = {};
     update['meta.updatedBy'] = assureObjectId(user);

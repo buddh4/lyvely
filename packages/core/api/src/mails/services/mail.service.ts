@@ -31,11 +31,11 @@ export class MailService {
   constructor(
     protected readonly mailerService: MailerService,
     protected readonly configService: ConfigService<ServerConfiguration>,
-    protected readonly urlGenerator: UrlGenerator,
+    protected readonly urlGenerator: UrlGenerator
   ) {}
 
   async sendMail(
-    sendMailOptions: ISendMailOptions,
+    sendMailOptions: ISendMailOptions
   ): Promise<SentMessageInfo & { messageFile?: Promise<void> }> {
     sendMailOptions.template = sendMailOptions.template || 'main';
     this.setDefaultContext(sendMailOptions);

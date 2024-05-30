@@ -11,7 +11,7 @@ describe('SystemMessage', () => {
         { profile, user },
         {
           content: new SystemMessageContent({ text: 'test.message' }),
-        },
+        }
       );
       const transformed = instanceToPlain(systemMessage);
       expect(transformed.content.text).toEqual('test.message');
@@ -23,7 +23,7 @@ describe('SystemMessage', () => {
         { profile, user },
         {
           content: new SystemMessageContent({ text: 'test.message' }),
-        },
+        }
       );
       const response = new StreamResponse({ models: [systemMessage.toModel()], state: {} });
       const transformed = instanceToPlain(response);

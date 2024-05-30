@@ -30,7 +30,7 @@ const { tags, stopWatch, activeTagId, setTagFilter, queryFilter, archiveFilter }
     queryHandler: (filter: any, query: LocationQuery) => {
       emit('queryHandler', filter, query);
     },
-  },
+  }
 );
 
 const commonButtonClassNames = 'secondary outlined inline-flex items-center text-xs py-1 px-1';

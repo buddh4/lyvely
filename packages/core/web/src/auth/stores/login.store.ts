@@ -24,7 +24,7 @@ export const useLoginStore = defineStore('user-login', () => {
     return loadingStatus(
       () => authClient.login(loginModel.value),
       status,
-      validator as I18nModelValidator<LoginModel>,
+      validator as I18nModelValidator<LoginModel>
     )
       .then(authStore.handleLogin)
       .then(() => ({ path: '/' }))

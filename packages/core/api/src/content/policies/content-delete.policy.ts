@@ -23,7 +23,7 @@ export class ContentDeletePolicy extends BaseContentDeletePolicy {
     if (contentDeletePolicyType) {
       const contentDeletePolicy = this.moduleRef.get<IContentPolicy>(
         getPolicyToken(contentDeletePolicyType.name),
-        { strict: false },
+        { strict: false }
       );
 
       if (content) return contentDeletePolicy.verify(context);

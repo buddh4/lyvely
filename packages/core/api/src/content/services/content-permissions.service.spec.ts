@@ -99,7 +99,7 @@ describe('ContentPermissionsService', () => {
         },
       ]);
       expect(permissionsService.verifyEveryPermission(memberContext, 'test1', 'test2')).toEqual(
-        false,
+        false
       );
     });
   });
@@ -157,7 +157,7 @@ describe('ContentPermissionsService', () => {
         },
       ]);
       expect(permissionsService.verifyEveryPermission(memberContext, 'test1', 'test2')).toEqual(
-        false,
+        false
       );
     });
   });

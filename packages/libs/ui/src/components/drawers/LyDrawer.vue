@@ -52,7 +52,7 @@ useInfiniteScroll(
   () => {
     emit('infiniteScroll');
   },
-  { distance: 10 },
+  { distance: 10 }
 );
 
 const { direction } = useSwipe(root, {

@@ -24,7 +24,7 @@ import { ProfilePermissionSetting } from '@/profiles/schemas';
  * @returns {ProfilePermissionSetting[]} - The sanitized permission settings.
  */
 export function sanitizePermissionSettings(
-  context: ProfileContext,
+  context: ProfileContext
 ): IProfilePermissionSetting<any>[] {
   const settings = context.profile.permissions;
 
@@ -63,7 +63,7 @@ export function sanitizePermissionSettings(
 function sanitizePermissionSetting(
   setting: ProfilePermissionSetting,
   context: ProfileContext,
-  role: ProfileRelationRole,
+  role: ProfileRelationRole
 ): ProfilePermissionSetting | null {
   try {
     const result: ProfilePermissionSetting = new ProfilePermissionSetting(setting);
@@ -120,7 +120,7 @@ export function useProfileMappings() {
   });
 
   const profileContextToProfileWithRelationsModel = (
-    context: ProfileContext,
+    context: ProfileContext
   ): ProfileWithRelationsModel<string> => {
     const { relations, profile } = context;
     return new ProfileWithRelationsModel<any>({
@@ -134,12 +134,12 @@ export function useProfileMappings() {
   registerMapping(
     ProfileContext,
     ProfileWithRelationsModel<any>,
-    profileContextToProfileWithRelationsModel,
+    profileContextToProfileWithRelationsModel
   );
 
   registerMapping(
     ProtectedProfileContext,
     ProfileWithRelationsModel<any>,
-    profileContextToProfileWithRelationsModel,
+    profileContextToProfileWithRelationsModel
   );
 }

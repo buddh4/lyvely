@@ -42,7 +42,7 @@ describe('ProfilePermissionsManager', function () {
       userStatus?: UserStatus;
       relationStatus?: UserStatus;
       groups?: string[];
-    },
+    }
   ) => {
     profile ||= new ProfileModel({});
     const permissionId = options?.id || 'test';
@@ -55,7 +55,7 @@ describe('ProfilePermissionsManager', function () {
         groups: options?.groups || [],
       },
       profile,
-      options?.config || { visitorStrategy: { mode: VisitorMode.Disabled } },
+      options?.config || { visitorStrategy: { mode: VisitorMode.Disabled } }
     );
   };
 
@@ -201,7 +201,7 @@ describe('ProfilePermissionsManager', function () {
     });
 
     expect(
-      verifyTestPermission(ProfileRelationRole.Member, profile, { groups: [testGroup] }),
+      verifyTestPermission(ProfileRelationRole.Member, profile, { groups: [testGroup] })
     ).toEqual(true);
     expect(verifyTestPermission(ProfileRelationRole.Member, profile)).toEqual(false);
   });
@@ -221,7 +221,7 @@ describe('ProfilePermissionsManager', function () {
     });
 
     expect(
-      verifyTestPermission(ProfileRelationRole.Member, profile, { groups: [testGroup] }),
+      verifyTestPermission(ProfileRelationRole.Member, profile, { groups: [testGroup] })
     ).toEqual(false);
   });
 

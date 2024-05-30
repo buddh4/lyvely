@@ -15,7 +15,7 @@ export class UserThrottlerGuard extends ReverseProxyThrottlerGuard {
     ttl: number,
     throttler: ThrottlerOptions,
     getTracker: ThrottlerGetTrackerFunction,
-    generateKey: ThrottlerGenerateKeyFunction,
+    generateKey: ThrottlerGenerateKeyFunction
   ): Promise<boolean> {
     const { req } = this.getRequestResponse(context);
 

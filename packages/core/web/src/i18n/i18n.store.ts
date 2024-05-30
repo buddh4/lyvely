@@ -43,7 +43,7 @@ export const useI18nStore = defineStore('i18n', () => {
       .getModuleConfig<I18nAppConfig, ILocaleDefinition[]>(
         I18N_MODULE_ID,
         'locales',
-        getLocaleDefinitions(DEFAULT_ENABLED_LOCALES),
+        getLocaleDefinitions(DEFAULT_ENABLED_LOCALES)
       )
       .filter(({ locale }) => LOCALES_SUPPORTED.includes(locale));
   }

@@ -65,7 +65,7 @@ const editValue = ref('');
 
 const { inputId, dataId, inputValue, inputClass, onChange, onFocusOut } = useBaseInputSetup(
   props,
-  emit,
+  emit
 );
 
 onMounted(() => {

@@ -6,7 +6,7 @@ import nprogress from 'nprogress';
 export const showLoaderProgress = (
   to: RouteLocation,
   from: RouteLocation,
-  next: NavigationGuardNext,
+  next: NavigationGuardNext
 ) => {
   if (to.name) nprogress.start();
 
@@ -18,7 +18,7 @@ export const showLoaderProgress = (
 export const resolveLayoutGuard = async (
   to: RouteLocation,
   from: RouteLocation,
-  next: NavigationGuardNext,
+  next: NavigationGuardNext
 ) => {
   if (to.meta.layout) {
     await resolveLayoutComponent(to.meta.layout);

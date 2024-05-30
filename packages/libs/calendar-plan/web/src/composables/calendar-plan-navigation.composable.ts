@@ -20,7 +20,7 @@ export function useCalendarPlanPlanNavigation(interval: CalendarInterval) {
     // For weekly
     const localeValue = (isWeekly ? profileStore.locale : locale) || getFallbackLocale();
     let title = t(
-      calendarPlan.getAccessibleTitle(d, localeValue, profileStore.getSetting('calendar')),
+      calendarPlan.getAccessibleTitle(d, localeValue, profileStore.getSetting('calendar'))
     );
 
     if (isDaily && isTodayUtil(d)) {
@@ -31,7 +31,7 @@ export function useCalendarPlanPlanNavigation(interval: CalendarInterval) {
   }
 
   const title = computed(() =>
-    t(calendarPlan.getTitle(date.value, locale, profileStore.getSetting('calendar'))),
+    t(calendarPlan.getTitle(date.value, locale, profileStore.getSetting('calendar')))
   );
 
   const accessibleTitle = computed(() => t(getAccessibleTitle(date.value)));

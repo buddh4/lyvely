@@ -44,7 +44,7 @@ describe('content dao', () => {
       {
         content: new TestContentData({ testData: 'test' }),
         meta: new ContentMetadata({ archived }),
-      },
+      }
     );
     const entity = await testContentModel.create(testContent);
     return new TestContent({ profile, user }, entity.toObject());

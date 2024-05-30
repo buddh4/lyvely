@@ -28,10 +28,10 @@ export function clearPermissions() {
  */
 export function getPermission<TPermission extends IPermission<any, any> = IPermission<any, any>>(
   permissionOrId: string | IPermission<any, any>,
-  type?: string,
+  type?: string
 ): TPermission | undefined {
   const permission = permissions.get(
-    typeof permissionOrId === 'string' ? permissionOrId : permissionOrId.id,
+    typeof permissionOrId === 'string' ? permissionOrId : permissionOrId.id
   );
 
   if (permission && type) return permission.type === type ? <TPermission>permission : undefined;

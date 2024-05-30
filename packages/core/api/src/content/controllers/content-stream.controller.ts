@@ -19,7 +19,7 @@ export class ContentStreamController extends AbstractStreamController<
 
   protected async mapToResultModel(
     models: Content[],
-    context: ProfileContext,
+    context: ProfileContext
   ): Promise<ContentModel<any>[]> {
     return models.map((content) => content.toModel(context.user));
   }

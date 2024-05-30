@@ -25,7 +25,7 @@ export const useUpdateProfileMembershipSettingsStore = defineStore(
       new UpdateProfileMembershipSettings({
         displayName: membership?.userInfo.displayName || '',
         description: membership?.userInfo.description || '',
-      }),
+      })
     );
 
     const validator = new I18nModelValidator(model.value);
@@ -70,5 +70,5 @@ export const useUpdateProfileMembershipSettingsStore = defineStore(
       update,
       revoke,
     };
-  },
+  }
 );

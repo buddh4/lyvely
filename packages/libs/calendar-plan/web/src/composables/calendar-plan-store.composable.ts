@@ -160,7 +160,7 @@ export function useCalendarPlan<
     try {
       const sortResult = await client.sort(
         model.id,
-        new CalendarPlanSort({ interval: moveEvent.toInterval, attachToId: attachTo?.id }),
+        new CalendarPlanSort({ interval: moveEvent.toInterval, attachToId: attachTo?.id })
       );
 
       sortResult.sort.forEach((update: SortResult) => {

@@ -11,7 +11,7 @@ export function LogExceptionHandler(msg: string, status?: boolean, context?: Sta
 
 export function DialogExceptionHandler(
   options: IShowAlertOptions | string,
-  context?: StatusSetter,
+  context?: StatusSetter
 ) {
   return (err?: any) => {
     options = typeof options === 'string' ? { message: options } : options;

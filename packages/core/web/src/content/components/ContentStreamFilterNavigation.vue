@@ -45,7 +45,7 @@ const unwatchFilter = watch(
       router.replace({ path: currentRoute.path, query: query });
     }
   },
-  { deep: true },
+  { deep: true }
 );
 
 const commonButtonClassNames = 'secondary outlined inline-flex items-center py-1 px-1 text-xs';

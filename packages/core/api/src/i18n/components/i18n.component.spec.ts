@@ -48,16 +48,13 @@ describe('I18n', () => {
 
     it('translate with param', async () => {
       expect(
-        i18n.t(
-          { key: 'i18n.test.testWithParams', params: { value: 'VALUE' } },
-          { locale: 'en-us' },
-        ),
+        i18n.t({ key: 'i18n.test.testWithParams', params: { value: 'VALUE' } }, { locale: 'en-us' })
       ).toEqual('Test VALUE');
     });
 
     it('translate nested', async () => {
       expect(i18n.t({ key: 'i18n.test.nested.test.key' }, { locale: 'en-us' })).toEqual(
-        'Nested Value',
+        'Nested Value'
       );
     });
   });

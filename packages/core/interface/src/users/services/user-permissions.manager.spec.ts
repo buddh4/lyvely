@@ -40,7 +40,7 @@ describe('UserPermissionsService', function () {
       userStatus?: UserStatus;
       relationStatus?: UserStatus;
       groups?: string[];
-    },
+    }
   ) => {
     user ||= new UserModel({} as any);
     return service.verifyPermission(
@@ -52,7 +52,7 @@ describe('UserPermissionsService', function () {
         groups: options?.groups || [],
       },
       user,
-      options?.config || { visitorStrategy: { mode: VisitorMode.Disabled } },
+      options?.config || { visitorStrategy: { mode: VisitorMode.Disabled } }
     );
   };
 
@@ -217,7 +217,7 @@ describe('UserPermissionsService', function () {
     });
 
     expect(verifyTestPermission(UserRelationRole.Contact, user, { groups: [testGroup] })).toEqual(
-      true,
+      true
     );
     expect(verifyTestPermission(UserRelationRole.Contact, user)).toEqual(false);
   });
@@ -237,7 +237,7 @@ describe('UserPermissionsService', function () {
     });
 
     expect(verifyTestPermission(UserRelationRole.Contact, user, { groups: [testGroup] })).toEqual(
-      false,
+      false
     );
   });
 

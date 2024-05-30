@@ -30,7 +30,7 @@ export declare global {
     glob<T = any>(path: string, options: { eager: true }): Record<string, T>;
     glob<T = any, TOptions extends ImportMetaOptions = ImportMetaOptions>(
       path: string,
-      options?: TOptions,
+      options?: TOptions
     ): Record<string, Promise<T>>;
     env: {
       DEV: boolean;

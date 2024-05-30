@@ -4,7 +4,7 @@ import { isDevelopEnvironment } from '../util';
 export const ifDevelopEnvironment = (
   to: RouteLocation,
   from: RouteLocation,
-  next: NavigationGuardNext,
+  next: NavigationGuardNext
 ): void => {
   if (isDevelopEnvironment()) {
     next();

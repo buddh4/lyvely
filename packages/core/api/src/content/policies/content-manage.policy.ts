@@ -31,7 +31,7 @@ export class ContentManagePolicy extends BaseContentManagePolicy {
     if (contentManagePolicyType) {
       const contentManagePolicy = this.moduleRef.get<IContentPolicy>(
         getPolicyToken(contentManagePolicyType.name),
-        { strict: false },
+        { strict: false }
       );
 
       return contentManagePolicy.verify(context);

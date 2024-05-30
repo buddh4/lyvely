@@ -21,7 +21,7 @@ export class ResetPasswordService {
     private jwtService: JwtService,
     private i18n: I18n,
     private configService: ConfigService<ConfigurationPath>,
-    private urlGenerator: UrlGenerator,
+    private urlGenerator: UrlGenerator
   ) {}
 
   async sendMail(usernameOrEmail: string) {
@@ -34,7 +34,7 @@ export class ResetPasswordService {
 
     const appName = escapeHTML(this.configService.get('appName')!);
     const forgotPasswordUrl = escapeHTML(
-      encodeURI(this.urlGenerator.getAppUrl({ path: '/reset-password' }).href),
+      encodeURI(this.urlGenerator.getAppUrl({ path: '/reset-password' }).href)
     );
     const token = this.createResetPasswordToken(user);
     const resetUrl = this.urlGenerator.getAppUrl({ path: '/reset-password/', query: { t: token } });
@@ -91,7 +91,7 @@ export class ResetPasswordService {
 
     return this.jwtService.sign(
       { sub: user._id.toString(), purpose: JWT_RESET_PASSWORD_TOKEN },
-      options,
+      options
     );
   }
 

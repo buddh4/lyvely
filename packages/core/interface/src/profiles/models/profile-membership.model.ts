@@ -34,7 +34,7 @@ export class MembershipModel<TID = string>
  * @return {boolean} - Returns true if the relation is a membership relation, false otherwise.
  */
 export function isMembershipRelation(
-  relation: ProfileRelationModel<any>,
+  relation: ProfileRelationModel<any>
 ): relation is MembershipModel {
   return relation?.type === BaseUserProfileRelationType.Membership;
 }

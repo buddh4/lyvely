@@ -85,7 +85,7 @@ export function getProfileRoleLevelByRoleVisibility(visibility: RoleVisibilityLe
  */
 export function verifyProfileRoleLevel(
   userRole: ProfileRelationRole,
-  minRole: ProfileRelationRole,
+  minRole: ProfileRelationRole
 ) {
   return getProfileRoleLevel(userRole) <= getProfileRoleLevel(minRole);
 }
@@ -100,7 +100,7 @@ export function verifyProfileRoleLevel(
  */
 export function verifyProfileVisibilityLevel(
   userRole: ProfileRelationRole,
-  visibility: ProfileVisibilityLevel,
+  visibility: ProfileVisibilityLevel
 ) {
   return getProfileRoleLevel(userRole) <= getProfileRoleLevelByProfileVisibility(visibility);
 }
@@ -112,7 +112,7 @@ export function verifyProfileVisibilityLevel(
  * @return {boolean} - True if the permission is a profile permission, false otherwise.
  */
 export function isProfilePermission(
-  permission: IPermission<any, any>,
+  permission: IPermission<any, any>
 ): permission is IProfilePermission {
   return permission.type === BasePermissionType.Profile;
 }

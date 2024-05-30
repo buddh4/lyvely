@@ -81,13 +81,13 @@ describe('NotificationSendProcessor', () => {
       const user = await testData.createUser();
       const notification = new Notification(
         new MyTestNotification({ testProp: 'testValue', userInfo: new UserInfo(user) }),
-        new SingleUserSubscription(user),
+        new SingleUserSubscription(user)
       );
       await notificationDao.save(notification);
       await processor.processNotification(notification);
       const userNotification = await userNotificationService.findOneByNotification(
         user,
-        notification,
+        notification
       );
       expect(userNotification).toBeDefined();
       const emailDelivery = userNotification?.getChannelDeliveryStatus('email');

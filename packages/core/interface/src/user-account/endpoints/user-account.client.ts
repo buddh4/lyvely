@@ -39,7 +39,7 @@ export class UserAccountClient implements IUserAccountClient {
   async setCalendarPreferences(dto: CalendarPreferences): Promise<SettingsUpdateResponse> {
     return unwrapAndTransformResponse(
       userAccountRepository.setCalendarPreferences(dto),
-      SettingsUpdateResponse,
+      SettingsUpdateResponse
     );
   }
 }

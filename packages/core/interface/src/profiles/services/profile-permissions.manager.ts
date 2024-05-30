@@ -24,7 +24,7 @@ export class ProfilePermissionsManager extends AbstractProfilePermissionsManager
    * @return {IProfilePermission | undefined} - The retrieved profile permission.
    */
   override getPermission(
-    permissionOrId: string | IProfilePermission,
+    permissionOrId: string | IProfilePermission
   ): IProfilePermission | undefined {
     return getPermission<IProfilePermission>(permissionOrId, BasePermissionType.Profile);
   }

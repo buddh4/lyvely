@@ -16,7 +16,7 @@ import { isNil } from '@lyvely/common';
 export const ifIsMultiUserProfile = async (
   to: RouteLocation,
   from: RouteLocation,
-  next: NavigationGuardNext,
+  next: NavigationGuardNext
 ) => {
   if (!isMultiUserProfile(useProfileStore().profile)) {
     // TODO: Maybe use a profile internal 404 page here
@@ -46,7 +46,7 @@ export const ifIsMultiUserProfile = async (
 export const loadProfileGuard = async (
   to: RouteLocation,
   from: RouteLocation,
-  next: NavigationGuardNext,
+  next: NavigationGuardNext
 ) => {
   // Ignore routes not related to profiles
   if (to.meta?.isPublic) return next();
@@ -86,7 +86,7 @@ export const loadProfileGuard = async (
 const loadProfileByHandle = async (
   to: RouteLocation,
   from: RouteLocation,
-  next: NavigationGuardNext,
+  next: NavigationGuardNext
 ) => {
   const profileStore = useProfileStore();
   if ((!to.params.handle && to.path === '/') || to.params.handle === ':handle') {
@@ -116,7 +116,7 @@ const loadProfileByHandle = async (
 const loadProfileById = async (
   to: RouteLocation,
   from: RouteLocation,
-  next: NavigationGuardNext,
+  next: NavigationGuardNext
 ) => {
   const profileStore = useProfileStore();
   const profile = await profileStore.loadProfileById(to.params.pid as string);
@@ -142,7 +142,7 @@ const loadProfileById = async (
 export const toProfileHome = async (
   to: RouteLocation,
   from: RouteLocation,
-  next: NavigationGuardNext,
+  next: NavigationGuardNext
 ) => {
   next(useProfileStore().getRoute());
 };

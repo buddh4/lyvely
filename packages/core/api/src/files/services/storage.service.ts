@@ -53,7 +53,7 @@ export class StorageService implements IStorageService {
   constructor(
     private readonly fileMimeTypeRegistry: FileMimeTypeRegistry,
     private readonly configService: ConfigService<ServerConfiguration>,
-    private moduleRef: ModuleRef,
+    private moduleRef: ModuleRef
   ) {
     const filesConfig = this.configService.get<LyvelyFileOptions>('files', {});
     const storageConfig = filesConfig.storage || DEFAULT_STORAGE_CONFIG;
@@ -120,7 +120,7 @@ export class StorageService implements IStorageService {
     // Default provider must exist in providers configuration.
     if (config.default && !config.providers?.find((def) => def.id === config.default)) {
       throw new MisconfigurationException(
-        `Invalid default storage provider configured: ${config.default}.`,
+        `Invalid default storage provider configured: ${config.default}.`
       );
     }
   }
@@ -148,7 +148,7 @@ export class StorageService implements IStorageService {
     const ProviderClass = definition.class;
     this.storages.set(
       definition.id,
-      new ProviderClass(definition.id, { ...definition.options }, this.moduleRef),
+      new ProviderClass(definition.id, { ...definition.options }, this.moduleRef)
     );
   }
 
@@ -160,7 +160,7 @@ export class StorageService implements IStorageService {
   async onModuleInit(): Promise<void> {
     try {
       await Promise.all(
-        Array.from(this.storages.values()).map((provider) => provider.initialize()),
+        Array.from(this.storages.values()).map((provider) => provider.initialize())
       );
     } catch (e) {
       console.error('There was an error initializing a storage prvider.');
@@ -220,7 +220,7 @@ export class StorageService implements IStorageService {
     await storage.upload(upload);
     const FileType: Type<File> = this.fileMimeTypeRegistry.getTypeConstructor(
       upload.file.mimetype,
-      GenericFile,
+      GenericFile
     );
 
     return createBaseModelAndInit(FileType, {

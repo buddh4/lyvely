@@ -24,6 +24,6 @@ export abstract class CalendarPlanService<TModel extends CalendarPlanEntity> {
    */
   abstract findByFilter(
     context: ProfileContext,
-    filter: CalendarPlanFilter,
+    filter: CalendarPlanFilter
   ): Promise<Array<TModel>>;
 }

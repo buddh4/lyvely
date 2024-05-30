@@ -40,7 +40,7 @@ export const useUpdateProfileStore = defineStore('update-profile', () => {
         profile.value.id,
         (relation: ProfileRelationInfo) => {
           relation.archived = true;
-        },
+        }
       );
     } catch (e) {
       useFlashStore().addUnknownErrorFlash();
@@ -56,7 +56,7 @@ export const useUpdateProfileStore = defineStore('update-profile', () => {
         profile.value.id,
         (relation: ProfileRelationInfo) => {
           relation.archived = false;
-        },
+        }
       );
     } catch (e) {
       useFlashStore().addUnknownErrorFlash();

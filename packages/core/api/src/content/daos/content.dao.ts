@@ -10,7 +10,7 @@ import { ProfileShardData } from '@/profiles';
 export class ContentDao extends ContentTypeDao<Content> {
   constructor(
     @InjectModel(Content.name) protected model: Model<Content>,
-    protected contentTypeRegistry: ContentTypeRegistry,
+    protected contentTypeRegistry: ContentTypeRegistry
   ) {
     super();
   }
@@ -24,7 +24,7 @@ export class ContentDao extends ContentTypeDao<Content> {
       context,
       parent,
       { $inc: { 'meta.childCount': 1 } },
-      { 'meta.childCount': { $gt: 0 } },
+      { 'meta.childCount': { $gt: 0 } }
     );
   }
 

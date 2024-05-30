@@ -78,7 +78,7 @@ describe('AbstractDao', () => {
     testingModule = await createCoreTestingModule(
       TEST_KEY,
       [TestEntityDao, EventTester],
-      [TestEntityModelDefinition],
+      [TestEntityModelDefinition]
     ).compile();
     dao = testingModule.get(TestEntityDao);
     eventTester = testingModule.get(EventTester);
@@ -143,7 +143,7 @@ describe('AbstractDao', () => {
         (evt: ModelSaveEvent<TestEntityDao, TestEntity>) => {
           expect(evt.model).toEqual(model);
           wasCalled = true;
-        },
+        }
       );
       await dao.save(model);
       expect(wasCalled).toEqual(true);
@@ -158,7 +158,7 @@ describe('AbstractDao', () => {
           expect(evt.model._id).toBeDefined();
           expect(evt.model.requiredField).toEqual('We need this...');
           wasCalled = true;
-        },
+        }
       );
       await dao.save(model);
       expect(wasCalled).toEqual(true);
@@ -339,7 +339,7 @@ describe('AbstractDao', () => {
       await dao.updateOneSetById(
         model,
         { specialValue: 'updated' },
-        { discriminator: SubTestEntity.name },
+        { discriminator: SubTestEntity.name }
       );
       const search = (await dao.reload(model)) as SubTestEntity;
       expect(search.specialField).toEqual('updated');
@@ -349,7 +349,7 @@ describe('AbstractDao', () => {
       it('upsert non existing entity', async () => {
         const model = await dao.upsert(
           { requiredField: 'upserted' },
-          { requiredField: 'upserted', numberField: 5 },
+          { requiredField: 'upserted', numberField: 5 }
         );
         expect(model instanceof TestEntity).toEqual(true);
         expect(model?._id).toBeDefined();
@@ -361,7 +361,7 @@ describe('AbstractDao', () => {
         const model = await dao.upsert(
           { requiredField: 'upserted' },
           { requiredField: 'upserted', numberField: 5 },
-          { new: false },
+          { new: false }
         );
         expect(model).toBeNull();
       });
@@ -370,7 +370,7 @@ describe('AbstractDao', () => {
         const model = await dao.save(new TestEntity({ requiredField: '1', numberField: 4 }));
         const upserted = await dao.upsert(
           { requiredField: '1' },
-          { requiredField: 'upserted', numberField: 5 },
+          { requiredField: 'upserted', numberField: 5 }
         );
         expect(upserted instanceof TestEntity).toEqual(true);
         expect(upserted?._id.equals(model._id)).toBeDefined();
@@ -383,7 +383,7 @@ describe('AbstractDao', () => {
         const upserted = await dao.upsert(
           { requiredField: '1' },
           { requiredField: 'upserted', numberField: 5 },
-          { new: false },
+          { new: false }
         );
         expect(upserted instanceof TestEntity).toEqual(true);
         expect(upserted?._id.equals(model._id)).toBeDefined();
@@ -409,7 +409,7 @@ describe('AbstractDao', () => {
         const result = await dao.findOneAndSetById(
           model,
           { requiredField: 'updated' },
-          { new: false },
+          { new: false }
         );
         expect(model.requiredField).toEqual('updated');
         expect(result?.requiredField).toEqual('1');
@@ -426,7 +426,7 @@ describe('AbstractDao', () => {
         const result = await dao.findOneAndSetById(
           getObjectId('whatever'),
           { requiredField: 'upserted' },
-          { upsert: true },
+          { upsert: true }
         );
         expect(result).toBeDefined();
         expect(result?.requiredField).toEqual('upserted');
@@ -436,7 +436,7 @@ describe('AbstractDao', () => {
         const result = await dao.findOneAndSetById(
           getObjectId('whatever'),
           { requiredField: 'upserted' },
-          { upsert: true, new: false },
+          { upsert: true, new: false }
         );
         expect(result).toBeNull();
       });
@@ -448,7 +448,7 @@ describe('AbstractDao', () => {
         const result = await dao.findOneAndSetById(
           model,
           { requiredField: 'updated' },
-          { apply: false },
+          { apply: false }
         );
         expect(model.requiredField).toEqual('1');
         expect(result?.requiredField).toEqual('updated');

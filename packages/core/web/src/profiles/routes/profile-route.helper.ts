@@ -11,7 +11,7 @@ export function profileIdPath(pid: string, name?: string): string {
 export function profileIdRoute(
   pid: string,
   options?: { viewName?: string; path?: string },
-  query: LocationQueryRaw = {},
+  query: LocationQueryRaw = {}
 ): RouteLocationRaw {
   if (options?.path) {
     query.path = options.path;
@@ -22,7 +22,7 @@ export function profileIdRoute(
 export function profilePathRoute(
   handle = ':handle',
   path = '/',
-  query: LocationQueryRaw = {},
+  query: LocationQueryRaw = {}
 ): RouteLocationRaw {
   return { path: profilePath(path, handle), query };
 }
@@ -30,7 +30,7 @@ export function profilePathRoute(
 export function profileRoute(
   name: string,
   handle = ':handle',
-  query?: LocationQueryRaw,
+  query?: LocationQueryRaw
 ): RouteLocationRaw {
   return { name, params: { handle }, query };
 }

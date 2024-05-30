@@ -28,7 +28,7 @@ export class ContentStreamService extends AbstractStreamService<
 
   protected override createLoadEntryQueryFilter(
     context: ProfileContext,
-    filter?: ContentRequestFilter,
+    filter?: ContentRequestFilter
   ): FilterQuery<Content> {
     const query = this.createQueryFilter(context, filter);
     // In case we load a single entry we do need to remove the auto parent = null filter

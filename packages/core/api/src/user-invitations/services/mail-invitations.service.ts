@@ -24,7 +24,7 @@ export class MailInvitationService extends AbstractInvitationsService<
     private configService: ConfigService<ConfigurationPath>,
     private mailInvitationDao: MailInvitationDao,
     private userService: UsersService,
-    private profileService: ProfilesService,
+    private profileService: ProfilesService
   ) {
     super();
   }

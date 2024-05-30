@@ -29,7 +29,7 @@ export const useAppConfigStore = defineStore('app-config', () => {
   function get<T extends ConfigKey>(cfg: T, defaultValue?: undefined): ConfigValue<T> | undefined;
   function get<T extends ConfigKey>(
     cfg: T,
-    defaultValue?: ConfigValue<T>,
+    defaultValue?: ConfigValue<T>
   ): ConfigValue<T> | undefined {
     if (!config.value) return defaultValue;
     return config.value[cfg] ?? defaultValue;

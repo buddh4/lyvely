@@ -87,13 +87,13 @@ export abstract class AbstractPermissionsManager<
     permissionOrIds: Array<TPermission | string>,
     subject: TSubject,
     object: TObject,
-    config: TConfig,
+    config: TConfig
   ) {
     if (!permissionOrIds?.length) return true;
     return permissionOrIds.reduce(
       (result, permissionId) =>
         result && this.verifyPermission(permissionId, subject, object, config),
-      true,
+      true
     );
   }
 
@@ -111,13 +111,13 @@ export abstract class AbstractPermissionsManager<
     permissionOrIds: Array<TPermission | string>,
     subject: TSubject,
     object: TObject,
-    config: TConfig,
+    config: TConfig
   ) {
     if (!permissionOrIds?.length) return true;
     return permissionOrIds.reduce(
       (result, permissionId) =>
         result || this.verifyPermission(permissionId, subject, object, config),
-      false,
+      false
     );
   }
 
@@ -135,7 +135,7 @@ export abstract class AbstractPermissionsManager<
     permissionOrId: TPermission | string,
     subject: TSubject,
     object: TObject,
-    config: TConfig,
+    config: TConfig
   ): boolean {
     return this._verifyPermission(permissionOrId, subject, object, config);
   }
@@ -156,7 +156,7 @@ export abstract class AbstractPermissionsManager<
     subject: TSubject,
     object: TObject,
     config: TConfig,
-    checkedPermissions: Set<string> = new Set(),
+    checkedPermissions: Set<string> = new Set()
   ): boolean {
     // We need a permission role
     if (!subject.role) return false;
@@ -190,7 +190,7 @@ export abstract class AbstractPermissionsManager<
    */
   private checkCircularDependency(
     permissionOrId: TPermission | string,
-    checkedPermissions: Set<string>,
+    checkedPermissions: Set<string>
   ) {
     const permissionId = typeof permissionOrId === 'string' ? permissionOrId : permissionOrId.id;
     if (checkedPermissions.has(permissionId)) {
@@ -229,7 +229,7 @@ export abstract class AbstractPermissionsManager<
     subject: TSubject,
     object: TObject,
     config: TConfig,
-    checkedPermissions: Set<string>,
+    checkedPermissions: Set<string>
   ) {
     if (!permission.dependencies?.length) return true;
 
@@ -294,13 +294,13 @@ export abstract class AbstractPermissionsManager<
     permission: TPermission,
     subject: TSubject,
     object: TObject,
-    config: TConfig,
+    config: TConfig
   ) {
     const roleLevel = this.getRoleLevel(subject.role);
 
     if (roleLevel === -1) {
       throw new IntegrityException(
-        'Invalid role given provided in permission check: ' + subject.role,
+        'Invalid role given provided in permission check: ' + subject.role
       );
     }
 
@@ -336,7 +336,7 @@ export abstract class AbstractPermissionsManager<
     permission: TPermission,
     object: TObject,
     config: TConfig,
-    roleLevel: number,
+    roleLevel: number
   ): number {
     if (roleLevel === -1) {
       throw new IntegrityException('Can not verify permission against non existing role');
@@ -383,12 +383,12 @@ export abstract class AbstractPermissionsManager<
   private getConfiguredRoleLevel(
     permission: TPermission,
     object: TObject,
-    config: TConfig,
+    config: TConfig
   ): number {
     const permissionSettings = this.getPermissionSettings(permission, object);
     const permissionConfig = this.getPermissionConfig(permission, config);
     return this.getRoleLevel(
-      permissionSettings?.role || permissionConfig?.role || permission.default,
+      permissionSettings?.role || permissionConfig?.role || permission.default
     );
   }
 
@@ -429,7 +429,7 @@ export abstract class AbstractPermissionsManager<
     permission: TPermission,
     subject: TSubject,
     object: TObject,
-    config: TConfig,
+    config: TConfig
   ): boolean {
     if (!subject.groups?.length) return false;
     const permissionSettings = this.getPermissionSettings(permission, object);

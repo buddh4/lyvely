@@ -35,6 +35,6 @@ export const registerCoreModules = () => {
     userInvitationsModule(),
     userRegistrationModule(),
     chartsModule(),
-    captchaModule(),
+    captchaModule()
   );
 };

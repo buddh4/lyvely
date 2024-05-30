@@ -41,14 +41,14 @@ export const useApi = <TClient>(resource: string, version?: string) => {
      */
     get: async <T extends ResultType<TClient>, R = AxiosResponse<ApiResponse<T, TClient>>, D = any>(
       path?: string | ApiRequestConfig<D>,
-      config?: ApiRequestConfig<D>,
+      config?: ApiRequestConfig<D>
     ) => {
       try {
         config = (isPlainObject(path) ? path : config) || {};
         path = typeof path === 'string' ? path : undefined;
         return await useApiRepository().get<T, R, D>(
           createPath(resource, path, config),
-          prepareConfig(config, version),
+          prepareConfig(config, version)
         );
       } catch (e) {
         throw errorToServiceException(e);
@@ -75,14 +75,14 @@ export const useApi = <TClient>(resource: string, version?: string) => {
       D = any,
     >(
       path?: string | ApiRequestConfig<D>,
-      config?: ApiRequestConfig<D>,
+      config?: ApiRequestConfig<D>
     ) => {
       try {
         config = isPlainObject(path) ? path : config;
         path = typeof path === 'string' ? path : undefined;
         return await useApiRepository().delete<T, R, D>(
           createPath(resource, path, config),
-          prepareConfig(config, version),
+          prepareConfig(config, version)
         );
       } catch (e) {
         throw errorToServiceException(e);
@@ -109,14 +109,14 @@ export const useApi = <TClient>(resource: string, version?: string) => {
       D = any,
     >(
       path?: string | ApiRequestConfig<D>,
-      config?: ApiRequestConfig<D>,
+      config?: ApiRequestConfig<D>
     ) => {
       try {
         config = isPlainObject(path) ? path : config;
         path = typeof path === 'string' ? path : undefined;
         return await useApiRepository().head<T, R, D>(
           createPath(resource, path, config),
-          prepareConfig(config, version),
+          prepareConfig(config, version)
         );
       } catch (e) {
         throw errorToServiceException(e);
@@ -143,14 +143,14 @@ export const useApi = <TClient>(resource: string, version?: string) => {
       D = any,
     >(
       path?: string | ApiRequestConfig<D>,
-      config?: ApiRequestConfig<D>,
+      config?: ApiRequestConfig<D>
     ) => {
       try {
         config = isPlainObject(path) ? path : config;
         path = typeof path === 'string' ? path : undefined;
         return await useApiRepository().options<T, R, D>(
           createPath(resource, path, config),
-          prepareConfig(config, version),
+          prepareConfig(config, version)
         );
       } catch (e) {
         throw errorToServiceException(e);
@@ -180,7 +180,7 @@ export const useApi = <TClient>(resource: string, version?: string) => {
     >(
       path?: string | D,
       data?: D | ApiRequestConfig<D>,
-      config?: ApiRequestConfig<D>,
+      config?: ApiRequestConfig<D>
     ) => {
       try {
         const {
@@ -191,7 +191,7 @@ export const useApi = <TClient>(resource: string, version?: string) => {
         return await useApiRepository().post<T, ApiResponse<R, TClient>, D>(
           createPath(resource, pathArg, config),
           dataArg,
-          prepareConfig(configArg, version),
+          prepareConfig(configArg, version)
         );
       } catch (e) {
         throw errorToServiceException(e);
@@ -216,7 +216,7 @@ export const useApi = <TClient>(resource: string, version?: string) => {
     put: async <T extends ResultType<TClient>, R = AxiosResponse<ApiResponse<T, TClient>>, D = any>(
       path?: string | D,
       data?: D | ApiRequestConfig<D>,
-      config?: ApiRequestConfig<D>,
+      config?: ApiRequestConfig<D>
     ) => {
       try {
         const {
@@ -227,7 +227,7 @@ export const useApi = <TClient>(resource: string, version?: string) => {
         return await useApiRepository().put<T, ApiResponse<R, TClient>, D>(
           createPath(resource, pathArg, config),
           dataArg,
-          prepareConfig(configArg, version),
+          prepareConfig(configArg, version)
         );
       } catch (e) {
         throw errorToServiceException(e);
@@ -256,7 +256,7 @@ export const useApi = <TClient>(resource: string, version?: string) => {
     >(
       path?: string | D,
       data?: D | ApiRequestConfig<D>,
-      config?: ApiRequestConfig<D>,
+      config?: ApiRequestConfig<D>
     ) => {
       try {
         const {
@@ -267,7 +267,7 @@ export const useApi = <TClient>(resource: string, version?: string) => {
         return await useApiRepository().patch<T, ApiResponse<R, TClient>, D>(
           createPath(resource, pathArg, config),
           dataArg,
-          prepareConfig(configArg, version),
+          prepareConfig(configArg, version)
         );
       } catch (e) {
         throw errorToServiceException(e);
@@ -286,7 +286,7 @@ function prepareConfig(config?: ApiRequestConfig, version = DEFAULT_API_VERSION)
 function getArgsWithData<D = any>(
   path?: string | D,
   data?: D | ApiRequestConfig<D>,
-  config?: ApiRequestConfig<D>,
+  config?: ApiRequestConfig<D>
 ): { path?: string; data?: D; config?: ApiRequestConfig<D> } {
   if (typeof path === 'string' || config) {
     return {
@@ -324,7 +324,7 @@ function createPath(resource: string, path?: string, config?: ApiRequestConfig) 
   resource = toRelative(resource);
   return setProfileApiPrefix(
     path?.length ? resource + '/' + toRelative(path) : resource,
-    config?.pid,
+    config?.pid
   );
 }
 

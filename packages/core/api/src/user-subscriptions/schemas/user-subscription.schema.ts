@@ -32,7 +32,7 @@ export class ProfileSubscription extends UserSubscription {
 }
 
 export function isProfileUserSubscription(
-  subscription: UserSubscription,
+  subscription: UserSubscription
 ): subscription is ProfileSubscription {
   return subscription.type === ProfileSubscription.typeName;
 }
@@ -52,7 +52,7 @@ export class MultiUserSubscription extends UserSubscription {
 }
 
 export function isMultiUserSubscription(
-  subscription: UserSubscription,
+  subscription: UserSubscription
 ): subscription is MultiUserSubscription {
   return subscription.type === MultiUserSubscription.typeName;
 }
@@ -72,7 +72,7 @@ export class SingleUserSubscription extends UserSubscription {
 }
 
 export function isSingleUserSubscription(
-  subscription: UserSubscription,
+  subscription: UserSubscription
 ): subscription is SingleUserSubscription {
   return subscription.type === SingleUserSubscription.typeName;
 }

@@ -1,11 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import {
-  DocumentIdentity,
-  IntegrityException,
-  Model,
-  Profile,
-  User,
-} from '@lyvely/api';
+import { DocumentIdentity, IntegrityException, Model, Profile, User } from '@lyvely/api';
 import { Habit } from '../schemas';
 import { CalendarInterval, getWeekOfYear } from '@lyvely/dates';
 import { DataPoint, DataPointValueType, InjectDataPointModel } from '@lyvely/time-series';

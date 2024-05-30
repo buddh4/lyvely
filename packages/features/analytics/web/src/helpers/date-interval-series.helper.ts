@@ -1,7 +1,7 @@
 export function getDailyChartAxisCategories(
   start: Date,
   end: Date,
-  locale: string = navigator.language,
+  locale: string = navigator.language
 ): string[] {
   const chartAxisCategories: string[] = [];
 
@@ -15,7 +15,7 @@ export function getDailyChartAxisCategories(
 export function getMonthlyChartAxisCategories(
   start: Date,
   end: Date,
-  locale: string = navigator.language,
+  locale: string = navigator.language
 ): string[] {
   const chartAxisCategories: string[] = [];
 

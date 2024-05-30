@@ -84,14 +84,14 @@ describe('UserNotificationsService', () => {
     user: User,
     profile: Profile,
     uids: TObjectId[],
-    sortOrder?: number,
+    sortOrder?: number
   ) {
     const notification = new BaseNotification(
       new MyTestNotification({
         userInfo: new UserInfo(user),
         profileInfo: new ProfileInfo(profile),
       }),
-      new MultiUserSubscription(uids),
+      new MultiUserSubscription(uids)
     );
 
     if (sortOrder) {
@@ -110,7 +110,7 @@ describe('UserNotificationsService', () => {
       const user = await testData.createUser();
       const result = await userNotificationsService.loadTail(
         { user },
-        new StreamRequest({ batchSize: 5 }),
+        new StreamRequest({ batchSize: 5 })
       );
       expect(result.models.length).toEqual(0);
       expect(result.state.headIds).toBeUndefined();
@@ -131,7 +131,7 @@ describe('UserNotificationsService', () => {
       const userNotification = await createTestUserNotification(receiver, notification);
       const result = await userNotificationsService.loadTail(
         { user: receiver },
-        new StreamRequest({ batchSize: 5 }),
+        new StreamRequest({ batchSize: 5 })
       );
       expect(result.models.length).toEqual(1);
       expect(result.state.headIds).toEqual([userNotification.id]);
@@ -150,26 +150,26 @@ describe('UserNotificationsService', () => {
         sender,
         profile,
         [assureObjectId(receiver)],
-        Date.now() - 1000,
+        Date.now() - 1000
       );
       const notification2 = await createTestNotification(
         sender,
         profile,
         [assureObjectId(receiver)],
-        Date.now() - 500,
+        Date.now() - 500
       );
       const notification3 = await createTestNotification(
         sender,
         profile,
         [assureObjectId(receiver)],
-        Date.now() - 200,
+        Date.now() - 200
       );
       const userNotification1 = await createTestUserNotification(receiver, notification1);
       const userNotification2 = await createTestUserNotification(receiver, notification2);
       const userNotification3 = await createTestUserNotification(receiver, notification3);
       const result = await userNotificationsService.loadTail(
         { user: receiver },
-        new StreamRequest({ batchSize: 2 }),
+        new StreamRequest({ batchSize: 2 })
       );
       expect(result.models.length).toEqual(2);
       expect(result.state.headIds).toEqual([userNotification3.id]);
@@ -190,19 +190,19 @@ describe('UserNotificationsService', () => {
         sender,
         profile,
         [assureObjectId(receiver)],
-        Date.now() - 1000,
+        Date.now() - 1000
       );
       const notification2 = await createTestNotification(
         sender,
         profile,
         [assureObjectId(receiver)],
-        Date.now() - 500,
+        Date.now() - 500
       );
       const notification3 = await createTestNotification(
         sender,
         profile,
         [assureObjectId(receiver)],
-        Date.now() - 200,
+        Date.now() - 200
       );
       const userNotification1 = await createTestUserNotification(receiver, notification1);
       const userNotification2 = await createTestUserNotification(receiver, notification2);
@@ -217,7 +217,7 @@ describe('UserNotificationsService', () => {
             tailIds: [userNotification1.id],
             tail: userNotification1.sortOrder,
           },
-        }),
+        })
       );
 
       expect(result.models.length).toEqual(2);

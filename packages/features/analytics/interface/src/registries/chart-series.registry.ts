@@ -16,7 +16,7 @@ function registerChartSeriesDefinition(definition: IChartSeriesDefinition) {
     chartSeriesConfigTypes,
     { name: id, value: configType || ChartSeriesConfigModel },
     'name',
-    true,
+    true
   );
 }
 

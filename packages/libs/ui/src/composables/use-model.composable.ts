@@ -4,7 +4,7 @@ import { clone } from '@lyvely/common';
 export function useModel<TModel, TModelName extends string = 'modelValue'>(
   model: TModel,
   emit: (emit: `update:${TModelName}`, val?: any) => void,
-  propName: TModelName = 'modelValue' as TModelName,
+  propName: TModelName = 'modelValue' as TModelName
 ): { formValue: Ref<UnwrapRef<TModel>> } {
   const formValue = ref<TModel>(clone(model));
 
@@ -13,7 +13,7 @@ export function useModel<TModel, TModelName extends string = 'modelValue'>(
     (newVal: TModel) => {
       formValue.value = clone(newVal) as UnwrapRef<TModel>;
     },
-    { deep: true },
+    { deep: true }
   );
 
   watch(
@@ -21,7 +21,7 @@ export function useModel<TModel, TModelName extends string = 'modelValue'>(
     (newVal) => {
       emit(`update:${propName}`, newVal);
     },
-    { deep: true },
+    { deep: true }
   );
 
   return { formValue };

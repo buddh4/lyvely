@@ -23,7 +23,7 @@ export const useProfileRelationInfosStore = defineStore('profile-relation-infos'
       undefined,
       (result) => {
         relations.value = result;
-      },
+      }
     );
   }
 

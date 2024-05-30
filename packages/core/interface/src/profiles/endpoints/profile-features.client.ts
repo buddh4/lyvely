@@ -8,11 +8,11 @@ class ProfileFeaturesClient implements IProfileFeaturesClient {
   async updateState(model: UpdateFeatureModel): Promise<UpdateFeatureResponseModel> {
     return unwrapAndTransformResponse(
       profileFeaturesRepository.updateState(model),
-      UpdateFeatureResponseModel,
+      UpdateFeatureResponseModel
     );
   }
 }
 
 export const useProfileFeaturesClient = useSingleton<ProfileFeaturesClient>(
-  () => new ProfileFeaturesClient(),
+  () => new ProfileFeaturesClient()
 );

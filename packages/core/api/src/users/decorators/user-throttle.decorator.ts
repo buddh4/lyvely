@@ -10,7 +10,7 @@ export const UserThrottle = (limit = 20, ttl = 60_000): MethodDecorator & ClassD
   return (
     target: any,
     propertyKey?: string | symbol,
-    descriptor?: TypedPropertyDescriptor<any>,
+    descriptor?: TypedPropertyDescriptor<any>
   ) => {
     if (descriptor) {
       setThrottlerMetadata(descriptor.value, limit, ttl);

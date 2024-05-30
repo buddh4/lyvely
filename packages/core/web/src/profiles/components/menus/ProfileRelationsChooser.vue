@@ -34,14 +34,14 @@ function filterRelation(relation: ProfileRelationInfo) {
 
 const organizations = computed(() =>
   allProfileRelations.value.profiles.filter(
-    (r) => r.type === ProfileType.Organization && filterRelation(r),
-  ),
+    (r) => r.type === ProfileType.Organization && filterRelation(r)
+  )
 );
 
 const profiles = computed(() =>
   allProfileRelations.value.profiles.filter(
-    (r) => r.type !== ProfileType.Organization && filterRelation(r),
-  ),
+    (r) => r.type !== ProfileType.Organization && filterRelation(r)
+  )
 );
 
 const { show: showCreateProfile, isOrganization } = storeToRefs(useCreateProfileStore());
@@ -53,11 +53,11 @@ const createOrganization = () => {
 
 const { isAllowed: canCreateProfile } = useGlobalPermissions(
   CreateUserProfilePermission,
-  CreateGroupProfilePermission,
+  CreateGroupProfilePermission
 );
 
 const { isAllowed: canCreateOrganization } = useGlobalPermissions(
-  CreateOrganizationProfilePermission,
+  CreateOrganizationProfilePermission
 );
 
 // TODO: A user might have multiple relations with a single profile...

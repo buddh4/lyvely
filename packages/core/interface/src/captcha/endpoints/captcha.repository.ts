@@ -17,7 +17,7 @@ export default {
       {
         identity,
       },
-      options,
+      options
     );
   },
 };

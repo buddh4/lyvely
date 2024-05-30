@@ -33,7 +33,7 @@ export class UserDao extends AbstractDao<User> {
           locale: 'en',
           strength: 1,
         },
-      },
+      }
     );
   }
 
@@ -63,7 +63,7 @@ export class UserDao extends AbstractDao<User> {
           locale: 'en',
           strength: 1,
         },
-      },
+      }
     );
   }
 
@@ -79,7 +79,7 @@ export class UserDao extends AbstractDao<User> {
           locale: 'en',
           strength: 1,
         },
-      },
+      }
     );
   }
 
@@ -140,7 +140,7 @@ export class UserDao extends AbstractDao<User> {
           locale: 'en',
           strength: 1,
         },
-      },
+      }
     );
   }
 
@@ -159,7 +159,7 @@ export class UserDao extends AbstractDao<User> {
           locale: 'en',
           strength: 1,
         },
-      },
+      }
     );
   }
 
@@ -180,7 +180,7 @@ export class UserDao extends AbstractDao<User> {
           locale: 'en',
           strength: 1,
         },
-      },
+      }
     );
 
     if (user instanceof User && user.getUserEmail(email)) {
@@ -206,12 +206,12 @@ export class UserDao extends AbstractDao<User> {
           locale: 'en',
           strength: 1,
         },
-      },
+      }
     );
 
     if (user instanceof User) {
       user.emails = user.emails.filter(
-        (userEmail) => userEmail.email.toLowerCase() !== email.toLowerCase(),
+        (userEmail) => userEmail.email.toLowerCase() !== email.toLowerCase()
       );
     }
 
@@ -222,7 +222,7 @@ export class UserDao extends AbstractDao<User> {
     user: User,
     type: ProfileType,
     amount = 1,
-    options?: UpdateOptions<User>,
+    options?: UpdateOptions<User>
   ) {
     let path = 'profilesCount.';
     let count;
@@ -269,7 +269,7 @@ export class UserDao extends AbstractDao<User> {
           'refreshTokens.$.expiration': token.expiration,
         },
       },
-      { 'refreshTokens.vid': token.vid },
+      { 'refreshTokens.vid': token.vid }
     );
 
     // This is required since we do not support automatic $set updates of array elements
@@ -318,7 +318,7 @@ export class UserDao extends AbstractDao<User> {
   async updatePassword(
     identity: DocumentIdentity<User>,
     newPassword: string,
-    resetSession: boolean,
+    resetSession: boolean
   ) {
     const date = new Date();
     const update = { password: newPassword, passwordResetAt: date } as UpdateQuerySet<User>;

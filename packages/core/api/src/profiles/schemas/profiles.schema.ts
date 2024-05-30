@@ -313,5 +313,5 @@ export const ProfileSchema = SchemaFactory.createForClass(Profile);
 
 ProfileSchema.index(
   { handle: 1 },
-  { unique: true, collation: { locale: 'en', strength: 1 }, name: 'UniqueProfileHandleIndex' },
+  { unique: true, collation: { locale: 'en', strength: 1 }, name: 'UniqueProfileHandleIndex' }
 );

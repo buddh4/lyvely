@@ -25,7 +25,7 @@ export class I18n {
 
   constructor(
     private readonly configService: ConfigService<I18nConfigPath>,
-    private readonly i18nService: I18nService,
+    private readonly i18nService: I18nService
   ) {
     setEnabledLocales(this.getEnabledLocales());
   }

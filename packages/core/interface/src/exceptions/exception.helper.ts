@@ -24,25 +24,25 @@ export function isAxiosError(error: any): error is AxiosError {
 }
 
 export function isAxiosErrorWithResponse<T = any>(
-  error: any,
+  error: any
 ): error is AxiosError<T> & { response: AxiosResponse<T> } {
   return isAxiosError(error) && !!error.response;
 }
 
 export function isAxiosErrorWithResponseData<T = any>(
-  error: any,
+  error: any
 ): error is AxiosError<T> & { response: AxiosResponse<T> } {
   return isAxiosError(error) && !!error.response?.data;
 }
 
 export function isAxiosErrorWithoutResponseData<T = any>(
-  error: any,
+  error: any
 ): error is AxiosError<T> & { response: undefined } {
   return isAxiosError(error) && !error.response;
 }
 
 export function isFieldValidationError(
-  error: any,
+  error: any
 ): error is AxiosError<IFieldValidationResponse> & {
   response: AxiosResponse<IFieldValidationResponse>;
 } {
@@ -62,7 +62,7 @@ export function isUnauthorizedForbidden(error: any): error is AxiosError {
 }
 
 export function isModelValidationError(
-  error: any,
+  error: any
 ): error is AxiosError<IModelValidationResponse> & {
   response: AxiosResponse<IModelValidationResponse>;
 } {
@@ -112,7 +112,7 @@ export function errorToServiceException(error: any, throws = false): ServiceExce
   } else if (isRateLimitError(error)) {
     result = new RateLimitException(
       error,
-      parseInt(error.response?.headers['Retry-After'] || '20'),
+      parseInt(error.response?.headers['Retry-After'] || '20')
     );
   } else if (isNotFoundError(error)) {
     result = new DocumentNotFoundException(error.response?.data);

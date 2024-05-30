@@ -86,7 +86,7 @@ export abstract class TestBuilder {
       [...new Set(this._providers)],
       [...new Set(this._models)],
       [...new Set(this._imports)],
-      this._config,
+      this._config
     );
     this._plugins.forEach((plugin) => plugin.prepare?.(moduleBuilder));
     return moduleBuilder;
@@ -124,7 +124,7 @@ export function createCoreTestingModule(
   providers: Provider[] = [],
   models: ModelDefinition[] = [],
   imports: Array<Type | DynamicModule | Promise<DynamicModule> | ForwardReference> = [],
-  config = {},
+  config = {}
 ): TestingModuleBuilder {
   return Test.createTestingModule({
     imports: [

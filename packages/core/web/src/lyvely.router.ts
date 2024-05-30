@@ -60,7 +60,7 @@ function moduleGuards(guards: Array<GuardDefinition>) {
   return async (
     to: RouteLocationNormalized,
     from: RouteLocationNormalized,
-    next: NavigationGuardNext,
+    next: NavigationGuardNext
   ) => {
     async function applyGuards() {
       let nextArg: any;
@@ -119,7 +119,7 @@ router.beforeEach((to: RouteLocation, from: RouteLocation, next: NavigationGuard
           }
         }, 0);
       },
-      false,
+      false
     );
   }
   next();

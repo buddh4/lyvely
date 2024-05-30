@@ -13,8 +13,7 @@ const selectedMainFeature = ref<string>();
 const displayFeatures = computed(() => {
   if (!selectedMainFeature.value) return mainFeatures;
   return allFeatures.filter(
-    (feature) =>
-      !feature.dependencies?.length || hasDependency(feature, selectedMainFeature.value!),
+    (feature) => !feature.dependencies?.length || hasDependency(feature, selectedMainFeature.value!)
   );
 });
 

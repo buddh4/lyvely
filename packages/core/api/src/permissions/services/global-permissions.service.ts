@@ -39,7 +39,7 @@ export class GlobalPermissionsService implements IGlobalPermissionsService {
     if (!permissions?.length) return true;
     return permissions.reduce(
       (result, permissionId) => result && this.verifyPermission(user, permissionId),
-      true,
+      true
     );
   }
 
@@ -57,7 +57,7 @@ export class GlobalPermissionsService implements IGlobalPermissionsService {
     if (!permissions?.length) return true;
     return permissions.reduce(
       (result, permissionId) => result || this.verifyPermission(user, permissionId),
-      false,
+      false
     );
   }
 
@@ -81,7 +81,7 @@ export class GlobalPermissionsService implements IGlobalPermissionsService {
         getPermissionSettings: () => [],
         getPermissionGroups: () => [],
       },
-      config,
+      config
     );
   }
 

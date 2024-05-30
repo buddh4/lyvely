@@ -18,7 +18,7 @@ export class PolicyRegistry extends AbstractTypeRegistry<IPolicy<any>> {
     const moduleRegistry = useModuleRegistry<ModuleRegistry<IPolicyModuleMetadata>>();
     moduleRegistry.getAllMeta().forEach((moduleMeta) => this.registerOverwrites(moduleMeta));
     moduleRegistry.onRegistration((moduleMeta: IModuleMetadata<IPolicyModuleMetadata>) =>
-      this.registerOverwrites(moduleMeta),
+      this.registerOverwrites(moduleMeta)
     );
   }
 

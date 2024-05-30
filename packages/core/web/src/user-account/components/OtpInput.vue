@@ -19,7 +19,7 @@ const emit = defineEmits(['update:modelValue', 'update:isValid']);
 const otp = ref(Array.from({ length: 6 }, () => ''));
 
 const isValid = computed(
-  () => otp.value.filter((f) => /^[0-9]$/.test(f)).length === otp.value.length,
+  () => otp.value.filter((f) => /^[0-9]$/.test(f)).length === otp.value.length
 );
 
 watchEffect(() => {
@@ -85,7 +85,7 @@ function getValueToSet(val?: string | null) {
 }
 
 const text = computed(() =>
-  isEmail(props.subject) ? 'otp.email.text_with_address' : 'otp.email.text',
+  isEmail(props.subject) ? 'otp.email.text_with_address' : 'otp.email.text'
 );
 </script>
 

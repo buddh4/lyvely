@@ -33,7 +33,7 @@ export abstract class AbstractProfilePermissionsManager<
     permission: TPermission,
     object: TObject,
     config: TConfig,
-    roleLevel: number,
+    roleLevel: number
   ): number {
     roleLevel = super.getValidRoleLevel(permission, object, config, roleLevel);
 

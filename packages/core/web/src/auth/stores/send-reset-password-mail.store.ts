@@ -17,7 +17,7 @@ export const useSendResetPasswordMailStore = defineStore('send-reset-password-ma
   const validator = ref(
     new I18nModelValidator<SendResetPasswordMail>(model.value, {
       labelKey: 'auth.reset_password.fields',
-    }),
+    })
   );
 
   function setUsernameOrEmail(usernameOrEmail: string) {
@@ -36,7 +36,7 @@ export const useSendResetPasswordMailStore = defineStore('send-reset-password-ma
     return loadingStatus(
       () => resetPasswordClient.sendMail(model.value),
       status,
-      validator.value as I18nModelValidator<SendResetPasswordMail>,
+      validator.value as I18nModelValidator<SendResetPasswordMail>
     )
       .then(() => resetPasswordStore.setStage('sent'))
       .catch((e) => console.log(e));

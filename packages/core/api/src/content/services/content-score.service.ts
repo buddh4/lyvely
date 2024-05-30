@@ -13,7 +13,7 @@ export class ContentScoreService extends ProfileScoreService<ContentScore> {
   async findScoresByContent(
     context: ProtectedProfileContext,
     content: DocumentIdentity<Content>,
-    strategy: UserAssignmentStrategy,
+    strategy: UserAssignmentStrategy
   ): Promise<ContentScore[]> {
     const { user, profile } = context;
     return strategy === UserAssignmentStrategy.Shared

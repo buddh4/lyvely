@@ -28,7 +28,7 @@ function validate() {
 }
 
 const borderColorClass = computed(() =>
-  validator.value.getError('captcha') ? 'border-danger' : 'border-divide',
+  validator.value.getError('captcha') ? 'border-danger' : 'border-divide'
 );
 
 defineExpose({ validate });

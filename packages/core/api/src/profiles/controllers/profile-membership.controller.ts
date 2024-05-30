@@ -25,13 +25,13 @@ import type { IFileInfo } from '@/files';
 export class ProfileMembershipController implements ProfileMembershipEndpoint {
   constructor(
     private readonly membershipService: ProfileMembershipService,
-    private readonly membershipAvatarService: ProfileMembershipAvatarService,
+    private readonly membershipAvatarService: ProfileMembershipAvatarService
   ) {}
 
   @Put()
   async update(
     @Body() update: UpdateProfileMembershipSettings,
-    @Req() req: ProfileMembershipRequest,
+    @Req() req: ProfileMembershipRequest
   ): Promise<MembershipModel> {
     const membership = req.context.getMembership();
     await this.membershipService.updateMembershipInfo(membership, update);
@@ -47,7 +47,7 @@ export class ProfileMembershipController implements ProfileMembershipEndpoint {
       role: getProfileRelationRole(
         user,
         context.relations,
-        context.getOrganizationContext()?.relations,
+        context.getOrganizationContext()?.relations
       ),
     });
   }
@@ -58,7 +58,7 @@ export class ProfileMembershipController implements ProfileMembershipEndpoint {
   @UseInterceptors(FileInterceptor('file'))
   async updateAvatar(
     @UploadedFile(AvatarUploadPipe) file: IFileInfo,
-    @Req() req: ProfileMembershipRequest,
+    @Req() req: ProfileMembershipRequest
   ): Promise<AvatarModel> {
     const avatar = await this.membershipAvatarService.updateAvatar(req.context, file);
     return new AvatarModel(avatar);

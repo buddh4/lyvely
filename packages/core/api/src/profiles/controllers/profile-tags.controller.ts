@@ -39,7 +39,7 @@ export class ProfileTagsController implements ProfileTagsEndpoint {
   async update(
     @Param('id') id: string,
     @Body() dto: UpdateTagModel,
-    @Request() req: ProfileRequest,
+    @Request() req: ProfileRequest
   ) {
     const profile = this._getMemberProfile(req);
     const tag = this._getTagById(profile, id);

@@ -8,7 +8,7 @@ export interface IProps {
 const props = defineProps<IProps>();
 
 const dateObj = computed(() =>
-  typeof props.date === 'string' ? new Date(props.date) : props.date,
+  typeof props.date === 'string' ? new Date(props.date) : props.date
 );
 </script>
 

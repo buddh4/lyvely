@@ -11,7 +11,7 @@ export function createUserTestingModule(
   key: string,
   providers: Provider[] = [],
   models: ModelDefinition[] = [],
-  imports: Array<Type | DynamicModule | Promise<DynamicModule> | ForwardReference> = [],
+  imports: Array<Type | DynamicModule | Promise<DynamicModule> | ForwardReference> = []
 ): TestingModuleBuilder {
   imports.push(UsersModule);
   providers.push(UserTestDataUtils);

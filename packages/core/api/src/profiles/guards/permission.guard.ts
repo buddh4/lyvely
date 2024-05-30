@@ -52,7 +52,7 @@ export class PermissionGuard implements CanActivate {
     if (!permissionIds?.length) return true;
     return permissionIds.reduce(
       (result, permissionId) => result && this.verifyPermission(context, user, permissionId),
-      true,
+      true
     );
   }
 
@@ -60,7 +60,7 @@ export class PermissionGuard implements CanActivate {
     if (!permissionIds?.length) return true;
     return permissionIds.reduce(
       (result, permissionId) => result || this.verifyPermission(context, user, permissionId),
-      false,
+      false
     );
   }
 

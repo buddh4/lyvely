@@ -48,7 +48,7 @@ describe('ProfileService', () => {
           organization,
           ProfileType.Group,
           ProfileVisibilityLevel.Member,
-          { handle: 'SubProfile' },
+          { handle: 'SubProfile' }
         );
         const context = await profileService.findProfileContextByHandle(owner, 'SubProfile');
 
@@ -68,7 +68,7 @@ describe('ProfileService', () => {
           organization,
           ProfileType.Group,
           ProfileVisibilityLevel.Member,
-          { handle: 'SubProfile' },
+          { handle: 'SubProfile' }
         );
         const context = await profileService.findProfileContextByHandle(member, 'SubProfile');
 
@@ -117,7 +117,7 @@ describe('ProfileService', () => {
         const context = await profileService.findProfileContext(
           member,
           subProfile._id,
-          organization._id,
+          organization._id
         );
 
         expect(context instanceof ProtectedProfileContext).toEqual(true);
@@ -378,7 +378,7 @@ describe('ProfileService', () => {
           ProfileTestDataUtils.createDummyUser(),
           {
             name: 'test',
-          },
+          }
         );
 
         expect(profile.handle).not.toEqual('test');
@@ -455,7 +455,7 @@ describe('ProfileService', () => {
     it('find non sub profile by pid', async () => {
       const { profile: userProfile } = await testData.createUserAndProfile();
       const { profile, organization } = await profileService.findProfileWithOrganization(
-        userProfile._id,
+        userProfile._id
       );
       expect(profile._id).toEqual(userProfile._id);
       expect(organization).toBeNull();
@@ -465,7 +465,7 @@ describe('ProfileService', () => {
       const { owner, organization: myOrg } = await testData.createSimpleOrganization();
       const subProfile = await testData.createSubProfile(owner, myOrg);
       const { profile, organization } = await profileService.findProfileWithOrganization(
-        subProfile._id,
+        subProfile._id
       );
       expect(profile._id).toEqual(subProfile._id);
       expect(organization).toBeDefined();
@@ -488,7 +488,7 @@ describe('ProfileService', () => {
       const subProfile = await testData.createSubProfile(owner, myOrg);
       const { profile, organization } = await profileService.findProfileWithOrganization(
         subProfile,
-        someProfile,
+        someProfile
       );
       expect(profile._id).toEqual(subProfile._id);
       expect(organization).toBeDefined();
@@ -501,7 +501,7 @@ describe('ProfileService', () => {
       const subProfile = await testData.createSubProfile(owner, myOrg);
       const { profile, organization } = await profileService.findProfileWithOrganization(
         subProfile._id,
-        someProfile.id,
+        someProfile.id
       );
       expect(profile._id).toEqual(subProfile._id);
       expect(organization).toBeDefined();
@@ -514,7 +514,7 @@ describe('ProfileService', () => {
       const subProfile = await testData.createSubProfile(owner, myOrg);
       const { profile, organization } = await profileService.findProfileWithOrganization(
         subProfile._id,
-        someProfile,
+        someProfile
       );
       expect(profile._id).toEqual(subProfile._id);
       expect(organization).toBeDefined();

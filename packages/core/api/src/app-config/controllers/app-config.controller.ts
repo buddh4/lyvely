@@ -11,7 +11,7 @@ import { ConfigurationPath } from '@/config';
 export class AppConfigController implements AppConfigEndpoint {
   constructor(
     private readonly appConfigService: AppConfigService,
-    private readonly configService: ConfigService<ConfigurationPath>,
+    private readonly configService: ConfigService<ConfigurationPath>
   ) {}
 
   @Public()

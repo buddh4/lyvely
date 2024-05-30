@@ -83,7 +83,7 @@ describe('MembershipDao', () => {
         profile,
         follower,
         'Followership',
-        'Follower',
+        'Follower'
       );
 
       // Just make sure the model actually was saved

@@ -3,7 +3,7 @@ import { getAllFeatures, getFeature } from './feature.registry';
 
 export const isEnabledGlobalFeature = (
   featureOrId: string | IFeature,
-  config: IFeatureConfig = {},
+  config: IFeatureConfig = {}
 ) => {
   const feature = getFeature(featureOrId);
 
@@ -18,7 +18,7 @@ export const isEnabledGlobalFeature = (
     ? true
     : feature.dependencies.reduce(
         (result, dependency) => result && isEnabledGlobalFeature(dependency, config),
-        true,
+        true
       );
 
   if (!dependenciesEnabled) return false;
@@ -71,7 +71,7 @@ export const hasDependency = (subFeatureOrId: string | IFeature, featureOrId: st
  */
 export const isDependencyOf = (
   dependencyFeatureOrId: string | IFeature,
-  featureOrId: string | IFeature,
+  featureOrId: string | IFeature
 ) => {
   const dependency = getFeature(dependencyFeatureOrId);
   const feature = getFeature(featureOrId);
@@ -94,7 +94,7 @@ export const isDependencyOf = (
 export function getAffectedFeatures(
   featureOrId: string | IFeature,
   updatedState: boolean,
-  excludeIds: string[] = [],
+  excludeIds: string[] = []
 ): IFeature[] {
   const feature = getFeature(featureOrId);
 

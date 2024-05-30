@@ -26,7 +26,7 @@ function selectTag(tagId: string) {
 }
 
 const contentTypeName = computed(() =>
-  translate(getContentTypeOptions(props.model.type)?.name || ''),
+  translate(getContentTypeOptions(props.model.type)?.name || '')
 );
 
 const userInfo = useUserInfo(props.model.meta.createdBy);

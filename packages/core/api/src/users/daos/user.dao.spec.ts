@@ -41,7 +41,7 @@ describe('UserDao', () => {
           new UserEmail('new_' + email, false),
           new UserEmail('alt_' + email, true),
         ],
-      }),
+      })
     );
   }
 
@@ -77,7 +77,7 @@ describe('UserDao', () => {
             email: 'test@test.de',
             status: UserStatus.Active,
             locale: 'de',
-          }),
+          })
         );
         expect(true).toEqual(false);
       } catch (e: any) {
@@ -465,33 +465,33 @@ describe('UserDao', () => {
 
       await userDao.updateRefreshToken(
         user,
-        new RefreshToken({ vid: 'vid6', hash: 'someHash6', expiration: addMinutes(new Date(), 1) }),
+        new RefreshToken({ vid: 'vid6', hash: 'someHash6', expiration: addMinutes(new Date(), 1) })
       );
 
       await userDao.updateRefreshToken(
         user,
-        new RefreshToken({ vid: 'vid5', hash: 'someHash5', expiration: addMinutes(new Date(), 1) }),
+        new RefreshToken({ vid: 'vid5', hash: 'someHash5', expiration: addMinutes(new Date(), 1) })
       );
 
       await userDao.updateRefreshToken(
         user,
-        new RefreshToken({ vid: 'vid1', hash: 'someHash1', expiration: addMinutes(new Date(), 1) }),
+        new RefreshToken({ vid: 'vid1', hash: 'someHash1', expiration: addMinutes(new Date(), 1) })
       );
 
       await userDao.updateRefreshToken(
         user,
-        new RefreshToken({ vid: 'vid3', hash: 'someHash1', expiration: addMinutes(new Date(), 1) }),
+        new RefreshToken({ vid: 'vid3', hash: 'someHash1', expiration: addMinutes(new Date(), 1) })
       );
 
       await userDao.updateRefreshToken(
         user,
-        new RefreshToken({ vid: 'vid2', hash: 'someHash1', expiration: addMinutes(new Date(), 1) }),
+        new RefreshToken({ vid: 'vid2', hash: 'someHash1', expiration: addMinutes(new Date(), 1) })
       );
 
       await userDao.createRefreshToken(
         user,
         new RefreshToken({ vid: 'vid7', hash: 'someHash7', expiration: addMinutes(new Date(), 1) }),
-        6,
+        6
       );
 
       const persistedUser = await userDao.reload(user);

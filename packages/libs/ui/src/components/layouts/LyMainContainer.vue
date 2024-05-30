@@ -20,7 +20,7 @@ const widthClass = computed(
         [Size.XS]: 'max-w-screen-xs',
         [Size.Full]: 'max-w-full',
       }) as Record<string, string>
-    )[props.width] || 'max-w-screen-lg',
+    )[props.width] || 'max-w-screen-lg'
 );
 
 const classNames = computed(() => {

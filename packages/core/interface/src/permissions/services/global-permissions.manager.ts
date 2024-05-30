@@ -27,7 +27,7 @@ class GlobalPermissionsManager extends AbstractPermissionsManager<
    * @return {IGlobalPermission | undefined} - The global permission object if found, or undefined if not found.
    */
   override getPermission(
-    permissionOrId: string | IGlobalPermission,
+    permissionOrId: string | IGlobalPermission
   ): IGlobalPermission | undefined {
     return getPermission(permissionOrId, BasePermissionType.Global);
   }

@@ -37,7 +37,7 @@ export class UserAccountService {
     private configService: ConfigService<ConfigurationPath>,
     private userSettingsService: UserSettingsService,
     private mailService: MailService,
-    private userOtpService: OtpService<IOtpEmailVerificationContext>,
+    private userOtpService: OtpService<IOtpEmailVerificationContext>
   ) {}
 
   /**
@@ -131,7 +131,7 @@ export class UserAccountService {
       user,
       OTP_PURPOSE_VERIFY_SECONDARY_EMAIL,
       verifyEmail.otp,
-      { contextValidator: async (context) => context!.email === email },
+      { contextValidator: async (context) => context!.email === email }
     );
 
     if (!isValid) throw new InvalidOtpException();
@@ -186,7 +186,7 @@ export class UserAccountService {
    */
   async setCalendarPreferences(
     user: User,
-    preferences: CalendarPreferences,
+    preferences: CalendarPreferences
   ): Promise<Record<string, any>> {
     const update: ISettingUpdate = [];
 

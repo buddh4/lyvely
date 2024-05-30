@@ -9,7 +9,7 @@ import { COLLECTION_CONFIG } from './config.constants';
 const logger = new Logger('loadConfigs');
 
 export const loadConfigs = (
-  files: Array<string | Partial<ServerConfiguration>>,
+  files: Array<string | Partial<ServerConfiguration>>
 ): (() => Promise<ServerConfiguration>) => {
   const resolvePath = (file: string) => {
     if (isAbsolute(file)) {
@@ -29,7 +29,7 @@ export const loadConfigs = (
   };
 
   const loadDbConfig = async (
-    mergedConfig: ServerConfiguration,
+    mergedConfig: ServerConfiguration
   ): Promise<Partial<ServerConfiguration>> => {
     if (!mergedConfig.mongodb) {
       logger.warn('Could not load db configuration, no mongodb options configured...');
@@ -54,13 +54,13 @@ export const loadConfigs = (
 
   return () => {
     const configPromises = files.map((config) =>
-      typeof config === 'string' ? importConfig(resolvePath(config)) : Promise.resolve(config),
+      typeof config === 'string' ? importConfig(resolvePath(config)) : Promise.resolve(config)
     );
 
     return Promise.all(configPromises)
       .then((configs) => configs.reduce((acc, config) => _.merge(acc, config), {}))
       .then((mergedConfig) =>
-        loadDbConfig(mergedConfig).then((dbConfig) => ({ dbConfig, mergedConfig })),
+        loadDbConfig(mergedConfig).then((dbConfig) => ({ dbConfig, mergedConfig }))
       )
       .then(({ dbConfig, mergedConfig }) => _.merge({}, mergedConfig, dbConfig))
       .catch((error) => {

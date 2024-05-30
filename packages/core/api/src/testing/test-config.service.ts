@@ -9,7 +9,7 @@ export class TestConfigService {
   constructor(
     @Optional()
     @Inject(CONFIGURATION_TOKEN)
-    private internalConfig: Record<string, any> = {},
+    private internalConfig: Record<string, any> = {}
   ) {
     this.initialConfig = internalConfig;
   }

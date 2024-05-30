@@ -24,7 +24,7 @@ import { ServerConfiguration } from '@/config';
 export class ProfileFeaturesService {
   constructor(
     private profileDao: ProfileDao,
-    private configService: ConfigService<ServerConfiguration>,
+    private configService: ConfigService<ServerConfiguration>
   ) {}
 
   /**
@@ -49,7 +49,7 @@ export class ProfileFeaturesService {
    */
   async setFeatureState(
     profile: Profile,
-    update: UpdateFeatureModel,
+    update: UpdateFeatureModel
   ): Promise<UpdateFeatureResponseModel> {
     const { featureId, state } = update;
     const feature = getProfileFeature(featureId);

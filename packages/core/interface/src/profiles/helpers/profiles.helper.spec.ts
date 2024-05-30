@@ -15,7 +15,7 @@ describe('ProfileUtil', () => {
         getScaledProgress(20, [
           [0, 10],
           [10, 20],
-        ]),
+        ])
       ).toEqual(0.5);
     });
 
@@ -24,7 +24,7 @@ describe('ProfileUtil', () => {
         getScaledProgress(105, [
           [0, 10],
           [10, 20],
-        ]),
+        ])
       ).toEqual(0.75);
     });
 
@@ -33,7 +33,7 @@ describe('ProfileUtil', () => {
         getScaledProgress(30, [
           [0, 10],
           [10, 20],
-        ]),
+        ])
       ).toEqual(0);
     });
   });

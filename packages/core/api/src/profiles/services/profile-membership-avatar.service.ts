@@ -9,7 +9,7 @@ export class ProfileMembershipAvatarService {
   constructor(
     private readonly membershipDao: MembershipsDao,
     private readonly avatarService: AvatarService,
-    private readonly gravatarService: GravatarService,
+    private readonly gravatarService: GravatarService
   ) {}
   /**
    * Updates the avatar of a profile membership.
@@ -40,7 +40,7 @@ export class ProfileMembershipAvatarService {
     const { user } = context;
     const oldGuid = context.getMembership().userInfo.guid;
     const avatar = await this.gravatarService.createAvatar(
-      context.getMembership().userInfo.email || user.email,
+      context.getMembership().userInfo.email || user.email
     );
 
     await Promise.any([

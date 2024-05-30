@@ -96,7 +96,7 @@ export function useStream<
 
     nextPromise = loadingStatus(
       client.loadTail(state.value, options, <any>filter.value),
-      loadTailStatus,
+      loadTailStatus
     );
 
     const response = await nextPromise;
@@ -128,7 +128,7 @@ export function useStream<
   }
 
   async function restore(
-    history: IStreamHistory<TModel, TRestoreState, TFilter, TState, TOptions>,
+    history: IStreamHistory<TModel, TRestoreState, TFilter, TState, TOptions>
   ) {
     isInitialized.value = false;
     isReady.value = false;
@@ -221,7 +221,7 @@ export function useStream<
       {
         distance: infiniteScrollOptions.distance || 50,
         direction: options.direction === StreamDirection.BBT ? 'top' : 'bottom',
-      },
+      }
     );
   }
 
@@ -266,7 +266,7 @@ export function useStream<
 
     const response = await loadingStatus(
       client.loadHead(state.value, options, <any>filter.value),
-      loadHeadStatus,
+      loadHeadStatus
     );
 
     state.value = response.state;

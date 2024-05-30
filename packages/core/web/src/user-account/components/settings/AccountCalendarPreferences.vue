@@ -17,7 +17,7 @@ const updateCalendarPreferencesStore = useAccountCalendarPreferencesStore();
 
 const { setWeekStart, reset, setYearStart } = updateCalendarPreferencesStore;
 const { showWeekStartModal, weekStart, showYearStartModal, yearStart } = storeToRefs(
-  updateCalendarPreferencesStore,
+  updateCalendarPreferencesStore
 );
 
 const weekStartName = computed(() => {

@@ -20,7 +20,7 @@
     "lint": "eslint \"src/**/*.{ts,vue}\" --fix",
     "prettier": "prettier src --check",
     "depcheck": "depcheck --quiet",
-"ncu": "ncu",
+    "ncu": "ncu",
     "format": "prettier .  --write"
   },
   "author": "Julian Harrer",

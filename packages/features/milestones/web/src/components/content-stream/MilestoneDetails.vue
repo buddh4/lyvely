@@ -36,7 +36,7 @@ const progress = computed(() => {
     calendarPlanStore.date,
     props.model.interval,
     locale.value,
-    profileStore.getSetting('calendar'),
+    profileStore.getSetting('calendar')
   );
   return milestoneStore.value.calculateProgress(props.model, tid);
 });
@@ -46,7 +46,7 @@ const relations = computed(() => {
     calendarPlanStore.date,
     props.model.interval,
     locale.value,
-    profileStore.getSetting('calendar'),
+    profileStore.getSetting('calendar')
   );
   return milestoneStore.value.getRelations(props.model, tid);
 });
@@ -63,7 +63,7 @@ onBeforeMount(async () => {
   const result = await useMilestonePlanClient().getByFilter(
     new CalendarPlanFilter(new Date(), props.model.interval, {
       cid: props.model.id,
-    }),
+    })
   );
 
   milestoneStore.value.setModels(result.models);

@@ -54,7 +54,7 @@ export abstract class ContentTypeService<
    */
   protected abstract createInstance(
     context: ProtectedProfileContext,
-    model: TCreateModel,
+    model: TCreateModel
   ): Promise<T>;
 
   /**
@@ -69,7 +69,7 @@ export abstract class ContentTypeService<
   protected abstract createUpdate(
     context: ProtectedProfileContext,
     content: T,
-    model: TUpdateModel,
+    model: TUpdateModel
   ): Promise<UpdateQuerySet<T>>;
 
   /**
@@ -158,7 +158,7 @@ export abstract class ContentTypeService<
   async updateContent(
     context: ProtectedProfileContext,
     content: T,
-    model: TUpdateModel,
+    model: TUpdateModel
   ): Promise<T> {
     const update = await this.createUpdate(context, content, model);
     await this.updateContentSet(context, content, update, {
@@ -180,7 +180,7 @@ export abstract class ContentTypeService<
     context: ProtectedProfileContext,
     content: T,
     updateSet: UpdateQuerySet<T>,
-    options?: IContentUpdateOptions,
+    options?: IContentUpdateOptions
   ) {
     const { user, profile } = context;
     if (options?.streamSort) {
@@ -283,7 +283,7 @@ export abstract class ContentTypeService<
   private async mergeTagsForUpdate(
     profile: Profile,
     update: UpdateQuerySet<T>,
-    tagNames?: string[],
+    tagNames?: string[]
   ) {
     if (!tagNames || !update) return;
 

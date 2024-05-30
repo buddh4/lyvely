@@ -162,7 +162,7 @@ describe('UserRegistrationService', () => {
             locale: 'de',
             passwordRepeat: 'testpw',
             timezone: 'Europe/Berlin',
-          }),
+          })
         );
       } catch (err) {
         expect(err instanceof FieldValidationException).toEqual(true);
@@ -239,7 +239,7 @@ describe('UserRegistrationService', () => {
       const email = 'invitee@test.de';
       const invitation = await createMailInvitation(email, user);
       await registerService.register(
-        createUserRegistrationInstance({ email, inviteToken: invitation.token }),
+        createUserRegistrationInstance({ email, inviteToken: invitation.token })
       );
       const updatedInvitation = await invitationDao.reload(invitation);
       const registeredUser = await findUserByMail(email);
@@ -256,7 +256,7 @@ describe('UserRegistrationService', () => {
       const invitation = await createMailInvitation(email, user);
       const invitation2 = await createMailInvitation(email, user2);
       await registerService.register(
-        createUserRegistrationInstance({ email, inviteToken: invitation.token }),
+        createUserRegistrationInstance({ email, inviteToken: invitation.token })
       );
       const updatedInvitation = await invitationDao.reload(invitation);
       const registeredUser = await findUserByMail(email);
@@ -276,7 +276,7 @@ describe('UserRegistrationService', () => {
         new VerifyEmailDto({
           otp: '000000',
           emailOrUsername: validRegistration.email,
-        }),
+        })
       );
 
       expect(user).toBeDefined();
@@ -292,7 +292,7 @@ describe('UserRegistrationService', () => {
           new VerifyEmailDto({
             otp: '001111',
             emailOrUsername: validRegistration.email,
-          }),
+          })
         );
       } catch (e) {
         expect(e instanceof UnauthorizedException).toEqual(true);
@@ -312,8 +312,8 @@ describe('UserRegistrationService', () => {
           passwordRepeat: 'testpw',
           timezone: 'Europe/Berlin',
         },
-        raw,
-      ),
+        raw
+      )
     );
   }
 
@@ -324,7 +324,7 @@ describe('UserRegistrationService', () => {
   async function createMailInvitation(
     email: string,
     host: DocumentIdentity<User>,
-    pid?: DocumentIdentity<Profile>,
+    pid?: DocumentIdentity<Profile>
   ) {
     return invitationDao.save(
       new MailInvitation({
@@ -332,7 +332,7 @@ describe('UserRegistrationService', () => {
         token: sendInvitationService.createMailInviteToken(email),
         email,
         pid: assureObjectId(pid, true),
-      }),
+      })
     );
   }
 });

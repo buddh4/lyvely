@@ -16,14 +16,14 @@ const updateCalendarPreferencesStore = useProfileCalendarPreferencesStore();
 
 const { setWeekStart, reset, setYearStart } = updateCalendarPreferencesStore;
 const { showWeekStartModal, weekStart, showYearStartModal, yearStart } = storeToRefs(
-  updateCalendarPreferencesStore,
+  updateCalendarPreferencesStore
 );
 
 const weekStartName = computed(() => {
   let { weekStart } = getDefaultCalendarPreferences(profile.value!.locale || getFallbackLocale());
   weekStart = profileStore.getSetting<number>(
     USER_SETTING_CALENDAR_PREFERENCE_WEEKSTART,
-    weekStart,
+    weekStart
   );
   return getLocalizedDayName(weekStart, 'long', profile.value!.locale || getFallbackLocale());
 });
@@ -42,7 +42,7 @@ const yearStartName = computed(() => {
   let { yearStart } = getDefaultCalendarPreferences(profile.value!.locale || getFallbackLocale());
   yearStart = profileStore.getSetting<number>(
     USER_SETTING_CALENDAR_PREFERENCE_YEARSTART,
-    yearStart,
+    yearStart
   );
   return weekStrategy[yearStart];
 });

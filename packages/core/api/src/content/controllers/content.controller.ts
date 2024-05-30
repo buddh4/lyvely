@@ -37,7 +37,7 @@ export class ContentController implements ContentEndpoint {
   async setMilestone(
     @Body() model: SetMilestoneModel,
     @Param('cid') cid: string,
-    @Request() req: ProtectedProfileContentRequest,
+    @Request() req: ProtectedProfileContentRequest
   ) {
     const { profile, user, content } = req;
     await this.contentService.setMilestone(profile, user, content, model.mid);

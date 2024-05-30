@@ -16,7 +16,7 @@ import type { ProfileMembershipContext } from '../models';
 export class ProfileMembershipService {
   constructor(
     private readonly membershipDao: MembershipsDao,
-    private usersService: UsersService,
+    private usersService: UsersService
   ) {}
 
   /**
@@ -55,7 +55,7 @@ export class ProfileMembershipService {
 
     const owners = await this.membershipDao.findByRole(
       context.profile,
-      ProfileMembershipRole.Owner,
+      ProfileMembershipRole.Owner
     );
 
     if (owners.length === 1) {
@@ -75,7 +75,7 @@ export class ProfileMembershipService {
    */
   async updateMembershipInfo(
     membership: Membership,
-    { displayName, description }: Pick<ProfileRelationUserInfo, 'displayName' | 'description'>,
+    { displayName, description }: Pick<ProfileRelationUserInfo, 'displayName' | 'description'>
   ) {
     return await this.membershipDao.updateOneSetById(membership, {
       'userInfo.displayName': displayName,
@@ -98,12 +98,12 @@ export class ProfileMembershipService {
     profile: Profile,
     member: User,
     role: ProfileMembershipRole = ProfileMembershipRole.Member,
-    transaction?: Transaction,
+    transaction?: Transaction
   ): Promise<Membership> {
     const existingMembership = await this.membershipDao.findByProfileAndUser(
       profile,
       member,
-      transaction,
+      transaction
     );
 
     if (
@@ -111,7 +111,7 @@ export class ProfileMembershipService {
       (existingMembership || role !== ProfileMembershipRole.Owner)
     ) {
       throw new ForbiddenServiceException(
-        'Can not create additional or non owner membership for user profile',
+        'Can not create additional or non owner membership for user profile'
       );
     }
 

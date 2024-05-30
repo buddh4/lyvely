@@ -23,7 +23,7 @@ export class MembershipsDao extends AbstractUserProfileRelationsDao<Membership> 
    */
   async findByRole(
     profile: DocumentIdentity<Profile>,
-    role: ProfileMembershipRole,
+    role: ProfileMembershipRole
   ): Promise<Membership[]> {
     return this.findAll({
       _id: assureObjectId(profile),
@@ -45,7 +45,7 @@ export class MembershipsDao extends AbstractUserProfileRelationsDao<Membership> 
     profile: Profile,
     user: User,
     role: ProfileMembershipRole = ProfileMembershipRole.Member,
-    options?: SaveOptions,
+    options?: SaveOptions
   ): Promise<Membership> {
     return this.save(Membership.create({ profile, user, role }), options);
   }
@@ -61,14 +61,14 @@ export class MembershipsDao extends AbstractUserProfileRelationsDao<Membership> 
   async findByProfileAndUser(
     profile: DocumentIdentity<Profile>,
     user: DocumentIdentity<User>,
-    options?: IBaseQueryOptions,
+    options?: IBaseQueryOptions
   ): Promise<Membership | null> {
     return this.findOne(
       {
         uid: assureObjectId(user),
         pid: assureObjectId(profile),
       },
-      options,
+      options
     );
   }
 

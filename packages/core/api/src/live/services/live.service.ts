@@ -29,14 +29,14 @@ export class LiveService {
     private profilesService: ProfilesService,
     private profileRelationsService: ProfileRelationsService,
     @InjectPolicy(ProfileVisibilityPolicy.name)
-    private profileVisibilityPolicy: ProfileVisibilityPolicy,
+    private profileVisibilityPolicy: ProfileVisibilityPolicy
   ) {}
 
   emitProfileEvent(event: ILiveProfileEvent) {
     this.logger.log(
       `Send live event ${event.module}.${event.name} for profile ${this.buildLiveProfileEventName(
-        event.pid,
-      )}`,
+        event.pid
+      )}`
     );
     return this.emit(this.buildLiveProfileEventName(event.pid), event);
   }
@@ -44,8 +44,8 @@ export class LiveService {
   emitUserEvent(event: ILiveUserEvent) {
     this.logger.log(
       `Send live event ${event.module}.${event.name} to user ${this.buildLiveUserEventName(
-        event.uid,
-      )}`,
+        event.uid
+      )}`
     );
     return this.emit(this.buildLiveUserEventName(event.uid), event);
   }
@@ -64,8 +64,8 @@ export class LiveService {
     if (this.isStandaloneServer()) {
       const observables = new Set(
         (await this.profileRelationsService.findAllProfileRelationsByUser(user)).map((relation) =>
-          fromEvent(this.eventEmitter, this.buildLiveProfileEventName(relation.pid!)),
-        ),
+          fromEvent(this.eventEmitter, this.buildLiveProfileEventName(relation.pid!))
+        )
       );
 
       observables.add(fromEvent(this.eventEmitter, this.buildLiveUserEventName(user)));

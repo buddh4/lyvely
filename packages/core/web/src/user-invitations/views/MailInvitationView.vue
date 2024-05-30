@@ -28,7 +28,7 @@ function logoutAndRegister() {
 
 function register() {
   document.location = `/register?invite=${encodeURIComponent(token)}&email=${encodeURIComponent(
-    mailInviteInfo.value!.email,
+    mailInviteInfo.value!.email
   )}`;
 }
 

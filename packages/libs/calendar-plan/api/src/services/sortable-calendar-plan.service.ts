@@ -35,7 +35,7 @@ export abstract class SortableCalendarPlanService<
   protected abstract updateIntervalConfig(
     profile: Profile,
     model: TModel,
-    interval: CalendarInterval,
+    interval: CalendarInterval
   ): Promise<void>;
 
   /**
@@ -52,7 +52,7 @@ export abstract class SortableCalendarPlanService<
     context: ProtectedProfileContext,
     model: TModel,
     interval?: CalendarInterval,
-    attachToId?: DocumentIdentity<TModel>,
+    attachToId?: DocumentIdentity<TModel>
   ): Promise<SortResult[]> {
     interval = interval ?? model.interval;
 

@@ -70,7 +70,7 @@ const groups = computed<Map<string, { id: string; label: string; options: ISelec
     }
     optGroup.options.push(option);
     return optGroups;
-  }, new Map<string, { id: string; label: string; options: ISelectOption[] }>()),
+  }, new Map<string, { id: string; label: string; options: ISelectOption[] }>())
 );
 
 onMounted(() => {

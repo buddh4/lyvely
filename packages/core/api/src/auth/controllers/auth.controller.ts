@@ -29,7 +29,7 @@ import { GlobalController } from '@/common';
 export class AuthController extends AbstractJwtAuthController implements AuthEndpoint {
   constructor(
     private authService: JwtAuthService,
-    protected override configService: ConfigService<ConfigurationPath>,
+    protected override configService: ConfigService<ConfigurationPath>
   ) {
     super(configService);
   }
@@ -42,7 +42,7 @@ export class AuthController extends AbstractJwtAuthController implements AuthEnd
     loginModel.remember ??= false;
     const { accessToken, refreshToken, vid } = await this.authService.login(
       user,
-      loginModel.remember,
+      loginModel.remember
     );
 
     if (user.status === UserStatus.EmailVerification) {
@@ -82,7 +82,7 @@ export class AuthController extends AbstractJwtAuthController implements AuthEnd
     this.setRefreshCookie(
       req,
       await this.authService.createRefreshToken(user, vid, !!oldRefreshToken.remember),
-      !!oldRefreshToken.remember,
+      !!oldRefreshToken.remember
     );
 
     return { token_expiration: ms(this.configService.get<string>('auth.jwt.access.expiresIn')!) };

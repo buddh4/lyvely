@@ -38,7 +38,7 @@ export function createCoreTestingModule(
   providers: Provider[] = [],
   models: ModelDefinition[] = [],
   imports: Array<Type | DynamicModule | Promise<DynamicModule> | ForwardReference> = [],
-  config = {},
+  config = {}
 ): TestingModuleBuilder {
   return Test.createTestingModule({
     imports: [

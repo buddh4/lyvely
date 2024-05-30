@@ -10,7 +10,7 @@ export class TestMailService extends MailService {
   static messageInfos: SentMessageInfo[] = [];
 
   override async sendMail(
-    sendMailOptions: ISendMailOptions,
+    sendMailOptions: ISendMailOptions
   ): Promise<SentMessageInfo & { messageFile?: Promise<void> }> {
     TestMailService.sentMailOptions.push(sendMailOptions);
 

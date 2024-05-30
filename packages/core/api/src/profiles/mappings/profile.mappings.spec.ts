@@ -39,7 +39,7 @@ describe('Profile model mapping', () => {
       context.profile.tags = [tag];
 
       const result = instanceToPlain(
-        mapType(ProfileContext, ProfileWithRelationsModel<any>, context),
+        mapType(ProfileContext, ProfileWithRelationsModel<any>, context)
       );
 
       expect(result.tags).toEqual([omit(tag, '_id', 'isNew')]);

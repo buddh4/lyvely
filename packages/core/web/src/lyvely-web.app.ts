@@ -85,7 +85,7 @@ export class LyvelyWebApp implements ILyvelyWebApp {
         env: this.options.env,
         avatarUrlProvider: (guid: string, v?: number) =>
           createApiUrl(`/avatars/${guid}`, v ? { v: v.toString() } : {}),
-      }),
+      })
     );
     this.setGlobalComponents();
     this.initDirectives();

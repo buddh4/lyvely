@@ -98,7 +98,7 @@ describe('AbstractDao', () => {
     testingModule = await createCoreTestingModule(
       TEST_KEY,
       [TestEntityDao],
-      [TestEntityModelDefinition],
+      [TestEntityModelDefinition]
     ).compile();
     dao = testingModule.get(TestEntityDao);
   });

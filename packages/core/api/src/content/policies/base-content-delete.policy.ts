@@ -26,7 +26,7 @@ export abstract class BaseContentDeletePolicy extends BaseContentPolicy {
 
     const permission = getPermission(
       getContentDeletePermissionId(content.type),
-      BasePermissionType.Content,
+      BasePermissionType.Content
     );
 
     if (permission && this.getContentPermissionsService().verifyPermission(context, permission)) {

@@ -38,8 +38,8 @@ const timezones = computed(() =>
     .filter(
       (tz) =>
         !timezoneSearch.value.length ||
-        tz.toLowerCase().includes(timezoneSearch.value.toLowerCase()),
-    ),
+        tz.toLowerCase().includes(timezoneSearch.value.toLowerCase())
+    )
 );
 </script>
 

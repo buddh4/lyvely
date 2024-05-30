@@ -37,7 +37,7 @@ function getClassNames(attrClasses: any, clickable: boolean) {
     `badge inline-block leading-3 overflow-hidden rounded select-none py-0.5 px-1.5 text-xs`,
     textClass.value,
     clickable && 'cursor-pointer',
-    attrClasses,
+    attrClasses
   );
 }
 

@@ -10,7 +10,7 @@ import { ModuleAppConfigAssemblyEvent } from '../events';
 export class AppConfigService {
   constructor(
     private readonly configService: ConfigService<ConfigurationPath & any>,
-    private readonly emitter: EventEmitter2,
+    private readonly emitter: EventEmitter2
   ) {}
 
   /**
@@ -31,7 +31,7 @@ export class AppConfigService {
 
     this.emitter.emit(
       EVENT_MODULE_APP_CONFIG_ASSEMBLY,
-      new ModuleAppConfigAssemblyEvent(config.modules),
+      new ModuleAppConfigAssemblyEvent(config.modules)
     );
 
     return config;

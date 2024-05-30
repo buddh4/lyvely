@@ -63,7 +63,7 @@ export const authGuard: NavigationGuardWithThis<undefined> = async (to, from, ne
 function handleVisitorAccess(
   to: RouteLocationNormalized,
   from: RouteLocationNormalized,
-  next: NavigationGuardNext,
+  next: NavigationGuardNext
 ): void {
   if (to.params.handle && to.path === '/') return next(PATH_LOGIN);
 
@@ -84,7 +84,7 @@ function handleVisitorAccess(
 export const ifNotAuthenticated = (
   to: RouteLocation,
   from: RouteLocation,
-  next: NavigationGuardNext,
+  next: NavigationGuardNext
 ): void => {
   if (!useAuthStore().isAuthenticated) {
     next();

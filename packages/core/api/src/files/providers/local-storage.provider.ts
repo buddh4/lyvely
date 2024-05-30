@@ -30,11 +30,11 @@ export class LocalStorageProvider extends StorageProvider<ILocalStorageProviderO
   constructor(
     public override readonly id: string,
     protected override options: ILocalStorageProviderOptions,
-    protected override moduleRef: ModuleRef,
+    protected override moduleRef: ModuleRef
   ) {
     super(id, options, moduleRef);
     this.options.dest ??= LocalStorageProvider.getLocalStorageRoot(
-      moduleRef.get(ConfigService, { strict: false }),
+      moduleRef.get(ConfigService, { strict: false })
     );
 
     if (!this.options.dest?.length)
@@ -51,7 +51,7 @@ export class LocalStorageProvider extends StorageProvider<ILocalStorageProviderO
     await mkdir(this.options.dest!, { recursive: true }).catch((e) => {
       this.logger.error(
         `Could not initialize local storage directory (${this.id}): ${this.options.dest}`,
-        (<Error>e).stack,
+        (<Error>e).stack
       );
     });
   }

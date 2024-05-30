@@ -6,7 +6,7 @@ import ChartSeriesForm from '@/components/forms/ChartSeriesForm.vue';
 
 const { deleteSeries, reset, submit, isCreate, model, showModal } = useUpsertChartSeriesStore();
 const title = computed(() =>
-  isCreate.value ? 'analytics.series.add.title' : 'analytics.series.edit.title',
+  isCreate.value ? 'analytics.series.add.title' : 'analytics.series.edit.title'
 );
 </script>
 

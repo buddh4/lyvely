@@ -142,7 +142,7 @@ describe('UserService', () => {
           hash: 'someHash',
           expiration: addDays(new Date(), 1),
           remember: true,
-        }),
+        })
       );
       expect(user.refreshTokens.length).toEqual(1);
       const persistedUser = await userService.findUserById(user);
@@ -175,7 +175,7 @@ describe('UserService', () => {
           vid: vid,
           hash: 'someNewHash',
           expiration: addDays(new Date(), 1),
-        }),
+        })
       );
 
       expect(user.refreshTokens.length).toEqual(1);

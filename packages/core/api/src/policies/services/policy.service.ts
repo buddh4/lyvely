@@ -6,7 +6,7 @@ import { getPolicyToken, IPolicy, PolicyHandler } from '../interfaces';
 export class PolicyService {
   constructor(
     private reflector: Reflector,
-    private moduleRef: ModuleRef,
+    private moduleRef: ModuleRef
   ) {}
 
   async checkEvery<T = any>(context: T, ...policies: PolicyHandler<T>[]): Promise<boolean> {

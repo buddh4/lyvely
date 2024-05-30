@@ -17,15 +17,15 @@ export type EntityData<T> = Omit<T, '_id' | 'id' | '__v'>;
 // We use any here since we need to use this when defining sub documents
 export function assureObjectId<T extends BaseDocument<any> = BaseDocument<any>>(
   identity: DocumentIdentity<T> | undefined | null,
-  optional?: false,
+  optional?: false
 ): TObjectId;
 export function assureObjectId<T extends BaseDocument<any> = BaseDocument<any>>(
   identity: DocumentIdentity<T> | undefined | null,
-  optional: true,
+  optional: true
 ): TObjectId | undefined;
 export function assureObjectId<T extends BaseDocument<any> = BaseDocument<any>>(
   identity: DocumentIdentity<T> | undefined | null,
-  optional?: boolean,
+  optional?: boolean
 ): TObjectId {
   if (!identity && optional) return undefined as any;
 
@@ -58,7 +58,7 @@ export function assureObjectId<T extends BaseDocument<any> = BaseDocument<any>>(
 
 export function applyUpdateTo<T extends BaseDocument<any>>(
   identity: DocumentIdentity<T>,
-  update: UpdateQuery<T>,
+  update: UpdateQuery<T>
 ) {
   if (typeof identity !== 'object') {
     return;
@@ -114,7 +114,7 @@ export function applyInc<T extends object = object>(model: T, incData: Record<st
 
 export function applyPush<T extends object>(
   model: T,
-  pushData: { [key in string | `${string}.${string}`]?: any },
+  pushData: { [key in string | `${string}.${string}`]?: any }
 ): T {
   Object.keys(pushData).forEach((key) => {
     // Make sure we do not try to push complex query strings

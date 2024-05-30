@@ -26,7 +26,7 @@ export class NotificationDao extends AbstractDao<Notification> {
     if (result.data?.type) {
       result.data = createBaseDocumentInstance(
         this.notificationTypeRegistry.getTypeConstructor(result.data.type)!,
-        lean.data!,
+        lean.data!
       );
     }
     return result;

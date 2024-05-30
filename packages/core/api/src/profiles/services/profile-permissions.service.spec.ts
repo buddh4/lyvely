@@ -82,7 +82,7 @@ describe('ProfilePermissionsService', () => {
         },
       ]);
       expect(permissionsService.verifyEveryPermission(memberContext, 'test1', 'test2')).toEqual(
-        false,
+        false
       );
     });
   });
@@ -140,7 +140,7 @@ describe('ProfilePermissionsService', () => {
         },
       ]);
       expect(permissionsService.verifyEveryPermission(memberContext, 'test1', 'test2')).toEqual(
-        false,
+        false
       );
     });
   });

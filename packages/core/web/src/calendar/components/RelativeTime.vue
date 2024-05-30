@@ -27,7 +27,7 @@ if (diff < 86_400 /* Less than a day */) {
 }
 
 const relativeTime = computed(() =>
-  getRelativeTime(props.ts - now.value, locale.value, props.style),
+  getRelativeTime(props.ts - now.value, locale.value, props.style)
 );
 </script>
 

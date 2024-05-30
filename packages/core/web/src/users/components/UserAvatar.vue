@@ -8,7 +8,7 @@ withDefaults(
   }>(),
   {
     border: true,
-  },
+  }
 );
 
 const user = computed(() => useAuthStore().user);

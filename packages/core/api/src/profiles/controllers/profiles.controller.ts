@@ -60,13 +60,13 @@ export class ProfilesController implements ProfilesEndpoint {
     private readonly profileAvatarService: ProfileAvatarService,
     private readonly profilesRelationsService: ProfileRelationsService,
     @InjectPolicy(ProfileVisibilityPolicy.name)
-    private readonly profileVisibilityPolicy: ProfileVisibilityPolicy,
+    private readonly profileVisibilityPolicy: ProfileVisibilityPolicy
   ) {}
 
   @Post()
   async create(
     @Body() model: CreateProfileModel,
-    @Request() req: UserRequest,
+    @Request() req: UserRequest
   ): Promise<ProfileWithRelationsModel> {
     const { user } = req;
 
@@ -104,7 +104,7 @@ export class ProfilesController implements ProfilesEndpoint {
   @UseGuards(ProfileGuard)
   async getProfileByHandle(
     @Param('handle') handle: string,
-    @Request() req: ProfileRequest,
+    @Request() req: ProfileRequest
   ): Promise<ProfileWithRelationsModel> {
     const { context } = req;
     return this.mapAndPopulateProfileWithRelations(context);
@@ -122,7 +122,7 @@ export class ProfilesController implements ProfilesEndpoint {
   @ProfileRoleLevel(ProfileRelationRole.Admin)
   async update(
     @Body() model: UpdateProfileModel,
-    @Request() req: ProfileMembershipRequest,
+    @Request() req: ProfileMembershipRequest
   ): Promise<ProfileWithRelationsModel> {
     const { profile, context } = req;
     await this.profilesService.updateProfile(profile, model);
@@ -153,7 +153,7 @@ export class ProfilesController implements ProfilesEndpoint {
   @UseInterceptors(FileInterceptor('file'))
   async updateAvatar(
     @UploadedFile(AvatarUploadPipe) file: IFileInfo,
-    @Req() req: ProfileMembershipRequest,
+    @Req() req: ProfileMembershipRequest
   ): Promise<AvatarModel> {
     const avatar = await this.profileAvatarService.updateAvatar(req.context, file);
     return new AvatarModel(avatar);
@@ -165,7 +165,7 @@ export class ProfilesController implements ProfilesEndpoint {
   @Post(ProfilesEndpoints.SET_CALENDAR_PREFERENCES)
   async setCalendarPreferences(
     @Body() model: CalendarPreferences,
-    @Req() req: ProfileMembershipRequest,
+    @Req() req: ProfileMembershipRequest
   ): Promise<SettingsUpdateResponse> {
     const { profile, context } = req;
     if (!context.getMembership(ProfileMembershipRole.Admin, ProfileMembershipRole.Owner)) {
@@ -177,7 +177,7 @@ export class ProfilesController implements ProfilesEndpoint {
   }
 
   private async mapAndPopulateProfileWithRelations(
-    context: ProfileContext,
+    context: ProfileContext
   ): Promise<ProfileWithRelationsModel> {
     return assignRawDataTo(mapType(ProfileContext, ProfileWithRelationsModel<any>, context), {
       profileRelations: await this.profilesRelationsService.findProfileRelations(context.profile),

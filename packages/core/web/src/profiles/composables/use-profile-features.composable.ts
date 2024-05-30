@@ -11,8 +11,8 @@ export const useProfileFeatures = (...features: Array<string>) => {
   const isEnabled = computed(() =>
     features.reduce(
       (result, featureId) => result && profileFeatureStore.isFeatureEnabled(featureId),
-      true,
-    ),
+      true
+    )
   );
 
   return { isEnabled };

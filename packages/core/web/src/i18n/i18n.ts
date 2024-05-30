@@ -80,7 +80,7 @@ const loadedCoreLocales: string[] = [];
 export function isModuleMessagesLoaded(
   moduleId: string,
   section = DEFAULT_TRANSLATION_SECTION,
-  locale?: string,
+  locale?: string
 ) {
   section ??= DEFAULT_TRANSLATION_SECTION;
   locale ??= activeLocale;
@@ -94,7 +94,7 @@ const baseModuleLocales: string[] = [];
 function setModuleMessagesLoaded(
   module: string,
   section = DEFAULT_TRANSLATION_SECTION,
-  locale?: string,
+  locale?: string
 ) {
   section ??= DEFAULT_TRANSLATION_SECTION;
   locale ??= activeLocale;
@@ -106,7 +106,7 @@ function setModuleMessagesLoaded(
 export async function loadModuleMessages(
   moduleId: string,
   section = DEFAULT_TRANSLATION_SECTION,
-  locale?: string,
+  locale?: string
 ): Promise<any> {
   section ??= DEFAULT_TRANSLATION_SECTION;
   locale ??= activeLocale;
@@ -129,7 +129,7 @@ export async function loadModuleMessages(
       .then(() => nextTick())
       .catch((e) => {
         console.error(`Error loading module message file: ${moduleId} for locale ${locale}`, e);
-      }),
+      })
   );
 
   return Promise.all(promises);

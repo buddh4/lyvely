@@ -37,7 +37,7 @@ export class NotificationsController
   async test(@Req() req: UserRequest): Promise<boolean> {
     await this.notificationsService.sendNotification(
       new TestNotification({ testValue: 'Test', userInfo: new UserInfo(req.user) }),
-      new SingleUserSubscription(req.user),
+      new SingleUserSubscription(req.user)
     );
     return true;
   }

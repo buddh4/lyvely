@@ -28,7 +28,7 @@ export interface IModuleLoaderOptions {
 }
 
 export async function importModules(
-  moduleImport: IModulesGlobImport | IModuleImport,
+  moduleImport: IModulesGlobImport | IModuleImport
 ): Promise<IModule[]> {
   if (moduleImport instanceof Promise) {
     moduleImport = await moduleImport;
@@ -84,7 +84,7 @@ export function registerModule(module: IModule) {
     registerFeatures(typeof module.features === 'function' ? module.features() : module.features);
   if (module.permissions) {
     registerPermissions(
-      typeof module.permissions === 'function' ? module.permissions() : module.permissions,
+      typeof module.permissions === 'function' ? module.permissions() : module.permissions
     );
   }
 

@@ -21,7 +21,7 @@ export default {
       {
         skipAuthRefresh: true,
         headers: { [Headers.X_VISITOR_ID]: visitorId || '' },
-      },
+      }
     );
   },
   async logout(visitorId?: string | null) {
@@ -31,7 +31,7 @@ export default {
       {
         skipAuthRefresh: true,
         headers: { [Headers.X_VISITOR_ID]: visitorId || '' },
-      },
+      }
     );
   },
 };

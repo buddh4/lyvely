@@ -22,10 +22,10 @@ export function isLazyComponentRegistration(obj: any): obj is Lazy<Component> {
 }
 
 export async function loadComponentRegistration(
-  registration: ComponentRegistration,
+  registration: ComponentRegistration
 ): Promise<Component>;
 export async function loadComponentRegistration(
-  registration: ComponentRegistration | undefined,
+  registration: ComponentRegistration | undefined
 ): Promise<Component | undefined> {
   if (!registration) return;
 

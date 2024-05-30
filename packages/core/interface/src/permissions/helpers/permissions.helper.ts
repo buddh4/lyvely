@@ -7,7 +7,7 @@ import { BasePermissionType, IGlobalPermission, IPermission } from '../interface
  * @return {boolean} - Returns true if the permission is a content permission, otherwise returns false.
  */
 export function isGlobalPermission(
-  permission: IPermission<any, any>,
+  permission: IPermission<any, any>
 ): permission is IGlobalPermission {
   return permission.type === BasePermissionType.Global;
 }

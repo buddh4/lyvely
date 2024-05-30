@@ -20,7 +20,7 @@ describe('Content Filter', () => {
     it('archived entries are excluded by default', async () => {
       const filter = new ContentFilter();
       const result = filter.check(
-        new TestContent({ meta: new ContentMetadataModel(<any>{ archived: true }) }),
+        new TestContent({ meta: new ContentMetadataModel(<any>{ archived: true }) })
       );
       expect(result).toEqual(false);
     });
@@ -28,7 +28,7 @@ describe('Content Filter', () => {
     it('archive filter includes archived content', async () => {
       const filter = new ContentFilter({ archived: true });
       const result = filter.check(
-        new TestContent({ meta: new ContentMetadataModel(<any>{ archived: true }) }),
+        new TestContent({ meta: new ContentMetadataModel(<any>{ archived: true }) })
       );
       expect(result).toEqual(true);
     });
@@ -36,7 +36,7 @@ describe('Content Filter', () => {
     it('archive filter does not include non archived content', async () => {
       const filter = new ContentFilter({ archived: true });
       const result = filter.check(
-        new TestContent({ meta: new ContentMetadataModel(<any>{ archived: false }) }),
+        new TestContent({ meta: new ContentMetadataModel(<any>{ archived: false }) })
       );
       expect(result).toEqual(false);
     });

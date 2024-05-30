@@ -64,7 +64,7 @@ export const useProfileStore = defineStore('profile', () => {
     try {
       const loadedProfile = await loadingStatus(
         handle ? profileClient.getProfileByHandle(handle) : profileClient.getDefaultProfile(),
-        status,
+        status
       );
       await setActiveProfile(loadedProfile);
       status.setStatus(Status.SUCCESS);
@@ -100,7 +100,7 @@ export const useProfileStore = defineStore('profile', () => {
   }
 
   function onSwitchProfile(
-    handler: (profile: ProfileWithRelationsModel, oldProfile?: ProfileWithRelationsModel) => void,
+    handler: (profile: ProfileWithRelationsModel, oldProfile?: ProfileWithRelationsModel) => void
   ) {
     watch(profile, (newProfile, oldProfile) => {
       if (newProfile && newProfile?.id !== oldProfile?.id) handler(newProfile, oldProfile);

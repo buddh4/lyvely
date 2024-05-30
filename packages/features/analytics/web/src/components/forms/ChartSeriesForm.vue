@@ -15,7 +15,7 @@ const props = withDefaults(
     isCreate: true,
     embedded: false,
     category: undefined,
-  },
+  }
 );
 
 const emit = defineEmits(['update:modelValue']);

@@ -18,7 +18,7 @@ function select(tagId: string) {
 const tags = computed(() =>
   useProfileStore()
     .getTags()
-    .filter((tag) => !tag.archived && props.tagIds.includes(tag.id)),
+    .filter((tag) => !tag.archived && props.tagIds.includes(tag.id))
 );
 </script>
 

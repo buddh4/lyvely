@@ -22,7 +22,7 @@ export const useNotificationStore = defineStore('notifications', () => {
       batchSize: 15,
       direction: StreamDirection.TTB,
     },
-    notificationClient,
+    notificationClient
   );
 
   live.on(moduleId, NotificationUpdateStateLiveEvent.eventName, handleNotificationUpdateStateEvent);

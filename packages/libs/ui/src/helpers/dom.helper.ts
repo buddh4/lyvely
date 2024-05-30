@@ -32,7 +32,7 @@ export function isTextSelection() {
  */
 export function findParent(
   element: HTMLElement | null | undefined,
-  selector: string,
+  selector: string
 ): HTMLElement | null {
   if (!element) return null;
   if (element.matches(selector)) return element;
@@ -49,7 +49,7 @@ export function findParent(
  */
 export function findFirst(
   element: HTMLElement | null | undefined,
-  selector: string,
+  selector: string
 ): HTMLElement | null {
   if (!element) return null;
   if (element.matches(selector)) return element;

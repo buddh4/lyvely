@@ -33,7 +33,7 @@ export class UserRegistrationService {
     private userOtpService: OtpService,
     private invitationsService: InvitationsService,
     private systemMessageService: SystemMessagesService,
-    private i18n: I18n,
+    private i18n: I18n
   ) {}
 
   /**
@@ -115,7 +115,7 @@ export class UserRegistrationService {
         locale: userRegistration.locale,
         password: userRegistration.password,
         timezone: userRegistration.timezone,
-      }),
+      })
     );
   }
 
@@ -183,7 +183,7 @@ export class UserRegistrationService {
   private getRegistrationMode() {
     return this.configService.get<UserRegistrationMode>(
       'userRegistration.mode',
-      UserRegistrationMode.PUBLIC,
+      UserRegistrationMode.PUBLIC
     );
   }
 
@@ -197,7 +197,7 @@ export class UserRegistrationService {
    */
   private async getAndValidateInvitation(userRegistration: UserRegistration) {
     const invitationContext = await this.invitationsService.getMailInvitationContext(
-      userRegistration.inviteToken!,
+      userRegistration.inviteToken!
     );
 
     if (
@@ -219,7 +219,7 @@ export class UserRegistrationService {
   private async sendEmailVerificationMail(user: User, otp: string) {
     const appName = escapeHTML(this.configService.get('appName')!);
     const contactMailHref = escapeHTML(
-      encodeURI(`mailto:${this.configService.get('contactMail')}`),
+      encodeURI(`mailto:${this.configService.get('contactMail')}`)
     );
     const contactMail = escapeHTML(this.configService.get('contactMail')!);
 
@@ -284,7 +284,7 @@ export class UserRegistrationService {
     const { isValid, remember } = await this.userOtpService.runValidation(
       user,
       OTP_PURPOSE_VERIFY_REGISTRATION_EMAIL,
-      verifyEmail.otp,
+      verifyEmail.otp
     );
 
     if (!isValid) throw new UnauthorizedException();

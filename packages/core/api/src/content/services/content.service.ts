@@ -29,7 +29,7 @@ export class ContentService {
     protected contentDeletePolicy: ContentDeletePolicy,
 
     @InjectPolicy(ContentManagePolicy.name)
-    protected contentManagePolicy: ContentManagePolicy,
+    protected contentManagePolicy: ContentManagePolicy
   ) {}
 
   /**
@@ -48,7 +48,7 @@ export class ContentService {
   >(
     profileRelation: ProfileShardData,
     id: DocumentIdentity<Content>,
-    throwException?: B,
+    throwException?: B
   ): Promise<B extends false | undefined | null ? Content | undefined : Content> {
     const content = await this.contentDao.findByProfileAndId(profileRelation, id);
 
@@ -224,7 +224,7 @@ export class ContentService {
     profileRelation: ProfileShardData,
     user: User,
     cid: DocumentIdentity<Content>,
-    mid: TObjectId | string,
+    mid: TObjectId | string
   ): Promise<boolean> {
     mid = assureObjectId(mid);
     const milestone = this.contentDao.findByProfileAndId(profileRelation, mid);

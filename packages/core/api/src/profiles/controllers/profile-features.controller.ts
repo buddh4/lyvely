@@ -19,7 +19,7 @@ export class ProfileFeaturesController implements ProfileFeaturesEndpoint {
   @Post()
   async updateState(
     @Body() update: UpdateFeatureModel,
-    @Request() req: ProfileRequest,
+    @Request() req: ProfileRequest
   ): Promise<UpdateFeatureResponseModel> {
     return this.profileFeaturesService.setFeatureState(req.profile, update);
   }

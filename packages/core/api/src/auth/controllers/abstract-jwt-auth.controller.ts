@@ -23,12 +23,9 @@ export abstract class AbstractJwtAuthController {
     const authCookieName = getAuthCookieName(this.configService);
     const expirationMS = Math.max(
       ms(
-        this.configService.get<string>(
-          'auth.jwt.access.expiresIn',
-          DEFAULT_ACCESS_TOKEN_EXPIRES_IN,
-        ),
+        this.configService.get<string>('auth.jwt.access.expiresIn', DEFAULT_ACCESS_TOKEN_EXPIRES_IN)
       ),
-      MIN_ACCESS_TOKEN_EXPIRES_IN,
+      MIN_ACCESS_TOKEN_EXPIRES_IN
     );
     req.res!.cookie(authCookieName, token, {
       sameSite: this.configService.get('auth.jwt.access.sameSite', DEFAULT_SAME_SITE),

@@ -36,32 +36,32 @@ export abstract class ProfileShardDao<
   async findByProfileAndId(
     profileRelation: ProfileShardData,
     identity: DocumentIdentity<T>,
-    options?: IBaseFetchQueryOptions<T>,
+    options?: IBaseFetchQueryOptions<T>
   ) {
     return this.findOne(
       applyShardQueryFilter(profileRelation, {
         _id: this.assureDocumentId(identity),
       }),
-      options,
+      options
     );
   }
 
   async findAllByProfileAndIds(
     profileRelation: ProfileShardData,
     ids: DocumentIdentity<T>[],
-    options?: IFetchQueryOptions<T>,
+    options?: IFetchQueryOptions<T>
   ) {
     return this.findAllByProfile(
       profileRelation,
       { _id: { $in: ids.map((id) => this.assureDocumentId(id)) } },
-      options,
+      options
     );
   }
 
   async findAllByProfile<C = T>(
     profileRelation: ProfileShardData,
     filter?: FilterQuery<C>,
-    options?: IFetchQueryOptions<T>,
+    options?: IFetchQueryOptions<T>
   ): Promise<T[]> {
     return this.findAll(applyShardQueryFilter(profileRelation, filter), options);
   }
@@ -69,7 +69,7 @@ export abstract class ProfileShardDao<
   async findOneByProfile<C = T>(
     profileRelation: ProfileShardData,
     filter: FilterQuery<C>,
-    options?: IBaseFetchQueryOptions<T>,
+    options?: IBaseFetchQueryOptions<T>
   ): Promise<T | null> {
     return this.findOne(applyShardQueryFilter(profileRelation, filter), options);
   }
@@ -78,7 +78,7 @@ export abstract class ProfileShardDao<
     profileRelation: ProfileShardData,
     id: DocumentIdentity<T>,
     updateSet: UpdateQuerySet<T>,
-    options?: UpdateOptions<T>,
+    options?: UpdateOptions<T>
   ) {
     return this.updateOneByProfileAndId(profileRelation, id, { $set: <any>updateSet }, options);
   }
@@ -87,7 +87,7 @@ export abstract class ProfileShardDao<
     profileRelation: ProfileShardData,
     id: DocumentIdentity<T>,
     update: UpdateQuery<T>,
-    options?: UpdateOptions<T>,
+    options?: UpdateOptions<T>
   ) {
     return this.updateOneByFilter(id, update, applyShardQueryFilter(profileRelation), options);
   }
@@ -97,13 +97,13 @@ export abstract class ProfileShardDao<
     identity: DocumentIdentity<T>,
     update: UpdateQuery<T>,
     filter?: FilterQuery<T>,
-    options?: UpdateOptions<T>,
+    options?: UpdateOptions<T>
   ): Promise<boolean> {
     return this.updateOneByFilter(
       identity,
       update,
       applyShardQueryFilter(profileRelation, filter),
-      options,
+      options
     );
   }
 
@@ -111,13 +111,13 @@ export abstract class ProfileShardDao<
     profileRelation: ProfileShardData,
     id: DocumentIdentity<T>,
     updateSet: UpdateQuerySet<T>,
-    options?: IFindAndUpdateQueryOptions<T>,
+    options?: IFindAndUpdateQueryOptions<T>
   ): Promise<T | null> {
     return this.findOneAndUpdateByProfileAndId(
       profileRelation,
       id,
       { $set: <any>updateSet },
-      options,
+      options
     );
   }
 
@@ -125,13 +125,13 @@ export abstract class ProfileShardDao<
     profileRelation: ProfileShardData,
     id: DocumentIdentity<T>,
     update: UpdateQuery<T>,
-    options?: IFindAndUpdateQueryOptions<T>,
+    options?: IFindAndUpdateQueryOptions<T>
   ): Promise<T | null> {
     return this.findOneAndUpdateByFilter(
       id,
       update,
       applyShardQueryFilter(profileRelation),
-      options,
+      options
     );
   }
 
@@ -140,20 +140,20 @@ export abstract class ProfileShardDao<
     id: DocumentIdentity<T>,
     update: UpdateQuery<T>,
     filter?: FilterQuery<T>,
-    options?: IFindAndUpdateQueryOptions<T>,
+    options?: IFindAndUpdateQueryOptions<T>
   ): Promise<T | null> {
     return this.findOneAndUpdateByFilter(
       id,
       update,
       applyShardQueryFilter(profileRelation, filter),
-      options,
+      options
     );
   }
 
   async updateSetBulkByProfile(
     profileRelation: ProfileShardData,
     updates: { id: DocumentIdentity<T>; update: UpdateQuerySet<T> }[],
-    options?: IBulkBaseQueryOptions,
+    options?: IBulkBaseQueryOptions
   ) {
     await this.model.bulkWrite(
       updates.map((update) => ({
@@ -164,13 +164,13 @@ export abstract class ProfileShardDao<
           update: { $set: update.update },
         },
       })),
-      options,
+      options
     );
   }
 
   async deleteAllByProfile(
     profileRelation: ProfileShardData,
-    options?: DeleteOptions,
+    options?: DeleteOptions
   ): Promise<number> {
     return this.deleteMany(applyShardQueryFilter(profileRelation), options);
   }
@@ -178,7 +178,7 @@ export abstract class ProfileShardDao<
   async deleteManyByProfile(
     profileRelation: ProfileShardData,
     filter: FilterQuery<T>,
-    options?: DeleteOptions,
+    options?: DeleteOptions
   ): Promise<number> {
     return this.deleteMany(applyShardQueryFilter(profileRelation, filter), options);
   }
@@ -186,7 +186,7 @@ export abstract class ProfileShardDao<
   async deleteOneByProfile(
     profileRelation: ProfileShardData,
     filter: FilterQuery<T>,
-    options?: DeleteOptions,
+    options?: DeleteOptions
   ): Promise<boolean> {
     return this.deleteOne(applyShardQueryFilter(profileRelation, filter), options);
   }

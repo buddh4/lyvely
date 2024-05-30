@@ -41,7 +41,7 @@ describe('GlobalPermissionsManager', function () {
       userStatus?: UserStatus;
       relationStatus?: UserStatus;
       groups?: string[];
-    },
+    }
   ) => {
     settings ||= {
       getPermissionGroups: () => [],
@@ -56,7 +56,7 @@ describe('GlobalPermissionsManager', function () {
         groups: options?.groups || [],
       },
       settings,
-      options?.config || { visitorStrategy: { mode: VisitorMode.Disabled } },
+      options?.config || { visitorStrategy: { mode: VisitorMode.Disabled } }
     );
   };
 
@@ -214,7 +214,7 @@ describe('GlobalPermissionsManager', function () {
     };
 
     expect(
-      verifyTestPermission(GlobalPermissionRole.User, settings, { groups: [testGroup] }),
+      verifyTestPermission(GlobalPermissionRole.User, settings, { groups: [testGroup] })
     ).toEqual(true);
     expect(verifyTestPermission(GlobalPermissionRole.User, settings)).toEqual(false);
   });
@@ -236,7 +236,7 @@ describe('GlobalPermissionsManager', function () {
     };
 
     expect(
-      verifyTestPermission(GlobalPermissionRole.User, settings, { groups: [testGroup] }),
+      verifyTestPermission(GlobalPermissionRole.User, settings, { groups: [testGroup] })
     ).toEqual(false);
   });
 

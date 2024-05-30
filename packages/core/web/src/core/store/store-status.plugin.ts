@@ -91,7 +91,7 @@ export async function loadingState<T = any, R = T | void>(
   promise: Promise<T>,
   loading?: Ref<boolean>,
   resolve?: (result: T) => R,
-  reject?: (e: any) => any,
+  reject?: (e: any) => any
 ): Promise<R extends void | undefined ? T : R> {
   loading ||= ref(false);
   loading.value = true;
@@ -134,7 +134,7 @@ export async function loadingStatus<T = any, R = T | void>(
   status: StoreStatusPlugin,
   validator?: ModelValidator<any>,
   resolve?: (result: T) => R,
-  reject?: (e: any) => any,
+  reject?: (e: any) => any
 ): Promise<R extends void | undefined ? T : R> {
   if (typeof promise === 'function' && validator && !(await validator.validate())) {
     status.setStatus(Status.ERROR);

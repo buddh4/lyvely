@@ -37,7 +37,7 @@ describe('Content Model', () => {
         { profile, user },
         {
           meta: new ContentMetadata({ createdAs: new CreatedAs(profile) }),
-        },
+        }
       );
       expect(content.meta instanceof ContentMetadata).toEqual(true);
       expect(content.meta.createdAs).toBeDefined();
@@ -50,7 +50,7 @@ describe('Content Model', () => {
         { profile, user },
         {
           content: new ContentDataType({ title: 'test title' }),
-        },
+        }
       );
       expect(content.meta.createdBy).toEqual(user._id);
       expect(content.content instanceof ContentDataType);

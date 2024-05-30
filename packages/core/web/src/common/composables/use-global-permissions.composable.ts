@@ -35,7 +35,7 @@ export const useGlobalPermissions = (...permissions: Array<string | IGlobalPermi
         getPermissionSettings: () => [],
         getPermissionGroups: () => [],
       },
-      getPermissionConfig(),
+      getPermissionConfig()
     );
   });
 
@@ -56,7 +56,7 @@ export const useGlobalPermissions = (...permissions: Array<string | IGlobalPermi
         getPermissionSettings: () => [],
         getPermissionGroups: () => [],
       },
-      getPermissionConfig(),
+      getPermissionConfig()
     );
   });
 

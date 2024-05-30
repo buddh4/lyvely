@@ -11,7 +11,7 @@ export interface ISortableStore {
 
 export function useCalendarPlanItem<TModel extends ICalendarPlanEntry>(
   model: TModel,
-  store: ISortableStore,
+  store: ISortableStore
 ) {
   const { isInFuture } = storeToRefs(useCalendarPlanStore());
 
@@ -20,11 +20,11 @@ export function useCalendarPlanItem<TModel extends ICalendarPlanEntry>(
   function prepareMoveEvent(
     model: TModel,
     element: HTMLElement,
-    newIndex: (current: number) => number,
+    newIndex: (current: number) => number
   ) {
     const draggableElement = element.closest('[data-draggable]')!;
     const currentIndex = Array.from(draggableElement.parentNode!.children).indexOf(
-      draggableElement,
+      draggableElement
     );
 
     return {
@@ -55,7 +55,7 @@ export function useCalendarPlanItem<TModel extends ICalendarPlanEntry>(
     const { event, draggable } = prepareMoveEvent(
       model,
       element,
-      (currentIndex) => currentIndex + 1,
+      (currentIndex) => currentIndex + 1
     );
 
     if (draggable.parentNode!.children.length === event.newIndex) {
@@ -69,13 +69,13 @@ export function useCalendarPlanItem<TModel extends ICalendarPlanEntry>(
 
   function afterSort(evt: IMoveEntryEvent) {
     setTimeout(() =>
-      document.querySelector<HTMLElement>(`[data-cid="${evt.cid}"] .item-drag-button`)?.focus(),
+      document.querySelector<HTMLElement>(`[data-cid="${evt.cid}"] .item-drag-button`)?.focus()
     );
     useAccessibilityStore().addMessage(
       translate('calendar-plan.aria.move-success', {
         from: `${evt.oldIndex}`,
         to: `${evt.newIndex}`,
-      }),
+      })
     );
   }
 

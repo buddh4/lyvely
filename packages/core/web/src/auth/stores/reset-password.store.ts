@@ -16,7 +16,7 @@ export const useResetPasswordStore = defineStore('reset-password', () => {
   const validator = ref(
     new I18nModelValidator<ResetPassword>(model.value, {
       labelKey: 'auth.reset_password.fields',
-    }),
+    })
   );
 
   function reset() {
@@ -32,7 +32,7 @@ export const useResetPasswordStore = defineStore('reset-password', () => {
     return loadingStatus(
       resetPasswordClient.resetPassword(model.value),
       status,
-      validator.value as I18nModelValidator<ResetPassword>,
+      validator.value as I18nModelValidator<ResetPassword>
     ).then(() => ({ path: PATH_LOGIN }));
 
     // loadingStatus(resetPasswordService.sendMail);

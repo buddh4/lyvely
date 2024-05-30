@@ -15,7 +15,7 @@ export class JwtAuthService {
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
-    private configService: ConfigService<ConfigurationPath>,
+    private configService: ConfigService<ConfigurationPath>
   ) {}
 
   async login(user: User, remember: boolean) {
@@ -43,7 +43,7 @@ export class JwtAuthService {
   public async createRefreshToken(
     user: User,
     visitorId: string,
-    remember: boolean,
+    remember: boolean
   ): Promise<string> {
     const expiresIn = getRefreshCookieExpiresIn(remember, this.configService);
 
@@ -62,7 +62,7 @@ export class JwtAuthService {
         purpose: JWT_REFRESH_TOKEN,
         remember: remember,
       },
-      options,
+      options
     );
 
     // TODO: there should be a limit of refresh tokens...
@@ -71,7 +71,7 @@ export class JwtAuthService {
       visitorId,
       token,
       addMilliSeconds(new Date(), ms(expiresIn!)),
-      remember,
+      remember
     );
 
     return token;
@@ -86,7 +86,7 @@ export class JwtAuthService {
     visitorId: string,
     token: string,
     expiration: Date,
-    remember: boolean,
+    remember: boolean
   ) {
     return this.usersService.setRefreshToken(
       user,
@@ -95,7 +95,7 @@ export class JwtAuthService {
         hash: await bcrypt.hash(token, 10),
         expiration: expiration,
         remember: remember,
-      }),
+      })
     );
   }
 

@@ -58,7 +58,7 @@ export function useTimeSeriesCalendarPlan<
     TResponse
   > = ITimeSeriesCalendarPlanClient<TModel, TDataPoint, TResponse>,
 >(
-  options: ITimeSeriesCalendarPlanOptions<TModel, TFilter, TDataPoint, TResponse, TStore, TClient>,
+  options: ITimeSeriesCalendarPlanOptions<TModel, TFilter, TDataPoint, TResponse, TStore, TClient>
 ) {
   const profileStore = useProfileStore();
   const { locale } = storeToRefs(profileStore);
@@ -73,7 +73,7 @@ export function useTimeSeriesCalendarPlan<
       calendarPlanStore.date,
       model.timeSeriesConfig.interval,
       locale.value,
-      profileStore.getSetting('calendar'),
+      profileStore.getSetting('calendar')
     );
     return cache.value.getDataPoint(model, timingId, true);
   }
@@ -82,7 +82,7 @@ export function useTimeSeriesCalendarPlan<
     dataPoint: DataPointModel,
     value: any,
     oldValue?: any,
-    debounce = false,
+    debounce = false
   ) {
     if (debounce) {
       await debounceUpdate(dataPoint, value, oldValue);
@@ -114,7 +114,7 @@ export function useTimeSeriesCalendarPlan<
     (dataPoint: DataPointModel, selection: number, oldValue?: number) => {
       return updateDataPoint(dataPoint, selection, oldValue);
     },
-    500,
+    500
   );
 
   return {

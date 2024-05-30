@@ -26,7 +26,7 @@ export function getRefreshCookieName(configService: ConfigService<ConfigurationP
 
 export function extractRefreshCookie(
   req: Request,
-  configService: ConfigService<ConfigurationPath>,
+  configService: ConfigService<ConfigurationPath>
 ) {
   return req.cookies && req.cookies[getRefreshCookieName(configService)];
 }

@@ -287,7 +287,7 @@ export abstract class AbstractDao<
    */
   private async _transformDocument(
     lean: LeanDoc<TVersions>,
-    update: boolean,
+    update: boolean
   ): Promise<[LeanDoc<T>, boolean]> {
     const [result, wasTransformed] = this.transformer.transformDocument(lean);
 
@@ -405,12 +405,12 @@ export abstract class AbstractDao<
    */
   async findById(
     identity: DocumentIdentity<T>,
-    options?: IBaseFetchQueryOptions<T>,
+    options?: IBaseFetchQueryOptions<T>
   ): Promise<T | null> {
     const query = this.getModel(options).findById<PropertiesOf<TVersions>>(
       this.assureDocumentId(identity),
       options?.projection,
-      options,
+      options
     );
 
     if (options?.collation) {
@@ -453,7 +453,7 @@ export abstract class AbstractDao<
   async findByIdAndFilter(
     identity: DocumentIdentity<T>,
     filter?: FilterQuery<T>,
-    options?: IBaseFetchQueryOptions<T>,
+    options?: IBaseFetchQueryOptions<T>
   ): Promise<T | null> {
     filter ||= {};
     filter._id = this.assureDocumentId(identity);
@@ -491,7 +491,7 @@ export abstract class AbstractDao<
     }
 
     return this.transformAndConstructModels(
-      await this.applyFetchQueryOptions(query, options).lean(),
+      await this.applyFetchQueryOptions(query, options).lean()
     );
   }
 
@@ -511,7 +511,7 @@ export abstract class AbstractDao<
    */
   async findOne<C = T>(
     filter: FilterQuery<C>,
-    options?: IBaseFetchQueryOptions<T>,
+    options?: IBaseFetchQueryOptions<T>
   ): Promise<T | null> {
     const query = this.getModel(options).findOne(filter, options?.projection, options);
 
@@ -532,7 +532,7 @@ export abstract class AbstractDao<
   async upsert(
     filter: FilterQuery<T>,
     update: UpdateQuery<T>,
-    options: IUpsertQueryOptions = {},
+    options: IUpsertQueryOptions = {}
   ): Promise<T | null> {
     options.new ??= true;
     const query = this.getModel(options).findOneAndUpdate(filter, update, {
@@ -573,7 +573,7 @@ export abstract class AbstractDao<
    */
   protected applyFetchQueryOptions(
     query: EntityQuery<T>,
-    options: IFetchQueryOptions<T>,
+    options: IFetchQueryOptions<T>
   ): EntityQuery<T> {
     const { sort, pagination } = options;
 
@@ -598,7 +598,7 @@ export abstract class AbstractDao<
   async findOneAndSetById(
     id: DocumentIdentity<T>,
     updateSet: UpdateQuerySet<T>,
-    options?: IFindAndUpdateQueryOptions<T>,
+    options?: IFindAndUpdateQueryOptions<T>
   ): Promise<T | null> {
     return this.findOneAndUpdateById(id, { $set: updateSet }, options);
   }
@@ -612,7 +612,7 @@ export abstract class AbstractDao<
   async findOneAndUpdateById(
     id: DocumentIdentity<T>,
     update: UpdateQuery<T>,
-    options?: IFindAndUpdateQueryOptions<T>,
+    options?: IFindAndUpdateQueryOptions<T>
   ): Promise<T | null> {
     return this.findOneAndUpdateByFilter(id, update, {}, options);
   }
@@ -629,7 +629,7 @@ export abstract class AbstractDao<
     id: DocumentIdentity<T>,
     update: UpdateQuerySet<T>,
     filter?: FilterQuery<T>,
-    options?: IFindAndUpdateQueryOptions<T>,
+    options?: IFindAndUpdateQueryOptions<T>
   ): Promise<T | null> {
     return this.findOneAndUpdateByFilter(id, { $set: update }, filter, options);
   }
@@ -645,7 +645,7 @@ export abstract class AbstractDao<
     id: DocumentIdentity<T>,
     update: UpdateQuery<T>,
     filter?: FilterQuery<T>,
-    options?: IFindAndUpdateQueryOptions<T>,
+    options?: IFindAndUpdateQueryOptions<T>
   ): Promise<T | null> {
     if (!(await this.beforeUpdate(id, update))) return null;
 
@@ -684,7 +684,7 @@ export abstract class AbstractDao<
   async updateOneSetById(
     id: DocumentIdentity<T>,
     updateSet: UpdateQuerySet<T>,
-    options?: UpdateOptions<TDoc>,
+    options?: UpdateOptions<TDoc>
   ): Promise<boolean> {
     return this.updateOneById(id, { $set: updateSet }, options);
   }
@@ -699,7 +699,7 @@ export abstract class AbstractDao<
   async updateOneUnsetById(
     id: DocumentIdentity<T>,
     updateUnset: UpdateQueryUnset<T>,
-    options?: UpdateOptions<TDoc>,
+    options?: UpdateOptions<TDoc>
   ): Promise<boolean> {
     return this.updateOneById(id, { $unset: updateUnset }, options);
   }
@@ -713,7 +713,7 @@ export abstract class AbstractDao<
   async updateOneById(
     id: DocumentIdentity<T>,
     update: UpdateQuery<T>,
-    options?: UpdateOptions<TDoc>,
+    options?: UpdateOptions<TDoc>
   ): Promise<boolean> {
     return this.updateOneByFilter(id, update, {}, options);
   }
@@ -729,7 +729,7 @@ export abstract class AbstractDao<
     identity: DocumentIdentity<T>,
     update: UpdateQuery<T>,
     filter?: FilterQuery<T>,
-    options?: UpdateOptions<T>,
+    options?: UpdateOptions<T>
   ): Promise<boolean> {
     // TODO: trigger events
     const clonedUpdate = cloneDeep(update);
@@ -791,7 +791,7 @@ export abstract class AbstractDao<
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     id: DocumentIdentity<T>,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    update: UpdateQuery<T>,
+    update: UpdateQuery<T>
   ): Promise<PartialEntityData<T> | boolean> {
     return Promise.resolve(true);
   }
@@ -803,7 +803,7 @@ export abstract class AbstractDao<
    */
   async updateBulk(
     updates: { id: DocumentIdentity<T>; update: UpdateQuery<T> }[],
-    options?: MongooseBulkWriteOptions,
+    options?: MongooseBulkWriteOptions
   ): Promise<Pick<BulkWriteResult, 'modifiedCount'>> {
     if (!updates.length) return { modifiedCount: 0 };
     const { modifiedCount } = await this.getModel(options).bulkWrite(
@@ -813,7 +813,7 @@ export abstract class AbstractDao<
           update: <any>update.update,
         },
       })),
-      <MongooseBulkWriteOptions>options,
+      <MongooseBulkWriteOptions>options
     );
 
     return { modifiedCount };
@@ -826,7 +826,7 @@ export abstract class AbstractDao<
    */
   async updateSetBulk(
     updates: { id: DocumentIdentity<T>; update: UpdateQuerySet<T> }[],
-    options?: MongooseBulkWriteOptions,
+    options?: MongooseBulkWriteOptions
   ): Promise<Pick<BulkWriteResult, 'modifiedCount'>> {
     if (!updates.length) return { modifiedCount: 0 };
     const { modifiedCount } = await this.getModel(options).bulkWrite(
@@ -836,7 +836,7 @@ export abstract class AbstractDao<
           update: <any>{ $set: update },
         },
       })),
-      options,
+      options
     );
 
     return { modifiedCount };

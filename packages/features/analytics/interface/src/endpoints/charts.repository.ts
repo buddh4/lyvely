@@ -65,7 +65,7 @@ export default {
     cid: string,
     sid: string,
     model: UpdateChartSeriesModel,
-    options?: IProfileApiRequestOptions,
+    options?: IProfileApiRequestOptions
   ) {
     return api.put<'updateSeries'>(ChartsEndpointPaths.UPDATE_SERIES(cid, sid), model, options);
   },
@@ -90,7 +90,7 @@ export default {
   async getSeriesData(
     cid: string,
     query?: Record<string, string>,
-    options?: IProfileApiRequestOptions,
+    options?: IProfileApiRequestOptions
   ) {
     return api.get<'getSeriesData'>(ChartsEndpointPaths.SERIES_DATA(cid), {
       ...options,

@@ -111,7 +111,7 @@ describe('AbstractDao Transformations', () => {
     testingModule = await createCoreTestingModule(
       TEST_KEY,
       [TestEntityDao, EventTester],
-      TestEntityModelDefinition,
+      TestEntityModelDefinition
     ).compile();
     dao = testingModule.get(TestEntityDao);
     dao.registerTransformations(new TestEntityV1ToV2Transformation());

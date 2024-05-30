@@ -18,7 +18,7 @@ interface IEmailVerificationOptions {
 export function useEmailVerificationStore(options: IEmailVerificationOptions) {
   const model = ref(new VerifyEmailDto());
   const validator = ref(
-    new I18nModelValidator<VerifyEmailDto>(model.value, options.validatorOptions),
+    new I18nModelValidator<VerifyEmailDto>(model.value, options.validatorOptions)
   );
   const attempts = ref(0);
   const errorMsg = ref<undefined | string>();
@@ -26,7 +26,7 @@ export function useEmailVerificationStore(options: IEmailVerificationOptions) {
 
   const startVerificationOf = async (
     emailOrUsername: string,
-    otpOrRemember?: OtpInfo | boolean,
+    otpOrRemember?: OtpInfo | boolean
   ) => {
     model.value.emailOrUsername = emailOrUsername;
     if (otpOrRemember instanceof OtpInfo) {
@@ -91,7 +91,7 @@ export function useEmailVerificationStore(options: IEmailVerificationOptions) {
         new ResendOtp({
           emailOrUsername: model.value.emailOrUsername,
           remember: remember,
-        }),
+        })
       );
     } catch (e: any) {
       handleError(e);

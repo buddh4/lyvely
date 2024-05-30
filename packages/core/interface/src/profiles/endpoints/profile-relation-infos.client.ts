@@ -10,18 +10,18 @@ const pendingCache = new Map<string, Promise<ProfileRelationUserInfoModel>>();
 
 class ProfileRelationInfosClient implements IProfileRelationInfosClient {
   async getAllProfileRelationInfos(
-    options?: IProfileApiRequestOptions,
+    options?: IProfileApiRequestOptions
   ): Promise<ProfileRelationInfos> {
     return unwrapAndTransformResponse(
       profileRelationsRepository.getRelations(options),
-      ProfileRelationInfos,
+      ProfileRelationInfos
     );
   }
 
   async getProfileRelationUserInfo(
     pid: string,
     uid: string,
-    options?: IProfileApiRequestOptions,
+    options?: IProfileApiRequestOptions
   ): Promise<ProfileRelationUserInfoModel> {
     const cacheKey = pid + '_' + uid;
     const cached = userInfoCache.get(cacheKey);
@@ -38,7 +38,7 @@ class ProfileRelationInfosClient implements IProfileRelationInfosClient {
 
     const promise = unwrapAndTransformResponse(
       profileRelationsRepository.getProfileRelationUserInfo(pid, uid, options),
-      ProfileRelationUserInfoModel,
+      ProfileRelationUserInfoModel
     );
 
     pendingCache.set(cacheKey, promise);

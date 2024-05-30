@@ -20,7 +20,7 @@ const props = withDefaults(
     status: undefined,
     autoValidation: true,
     showAlert: true,
-  },
+  }
 );
 
 const validator = props.validator;

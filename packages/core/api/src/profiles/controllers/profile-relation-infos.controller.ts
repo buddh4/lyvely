@@ -19,12 +19,12 @@ import { GlobalController } from '@/common';
 export class ProfileRelationInfosController implements ProfileRelationInfosEndpoint {
   constructor(
     private profilesService: ProfilesService,
-    private usersService: UsersService,
+    private usersService: UsersService
   ) {}
 
   @Get()
   async getAllProfileRelationInfos(
-    @Request() req: OptionalUserRequest,
+    @Request() req: OptionalUserRequest
   ): Promise<ProfileRelationInfos> {
     const { user } = req;
     const relations = user
@@ -36,7 +36,7 @@ export class ProfileRelationInfosController implements ProfileRelationInfosEndpo
   @Get(ProfileRelationInfosEndpoints.PROFILE_RELATION_INFO(':pid', ':uid'))
   async getProfileRelationUserInfo(
     @Param('pid') pid,
-    @Param('uid') uid,
+    @Param('uid') uid
   ): Promise<ProfileRelationUserInfoModel> {
     const user = await this.usersService.findUserById(uid);
 

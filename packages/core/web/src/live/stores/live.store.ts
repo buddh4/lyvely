@@ -28,7 +28,7 @@ export const useLiveStore = defineStore('live', () => {
             console.debug(`Connect to user event source`);
             connectUserEventSource();
             window.addEventListener('beforeunload', resolve);
-          }),
+          })
       );
     } else {
       connectUserEventSource();
@@ -46,7 +46,7 @@ export const useLiveStore = defineStore('live', () => {
             releaseGuestLock = resolve;
             connectProfileGuestEventSource(pid);
             window.addEventListener('beforeunload', resolve);
-          }),
+          })
       );
     } else {
       connectProfileGuestEventSource(pid);
@@ -113,7 +113,7 @@ export const useLiveStore = defineStore('live', () => {
   function on<TEvent extends ILiveEvent = ILiveEvent>(
     module: string,
     event: string,
-    handler: (event: TEvent) => void,
+    handler: (event: TEvent) => void
   ) {
     return useEventBus<any>().on(createLiveEventType(module, event), handler);
   }
@@ -121,7 +121,7 @@ export const useLiveStore = defineStore('live', () => {
   function off<TEvent extends ILiveEvent = ILiveEvent>(
     module: string,
     event: string,
-    handler: (event: TEvent) => void,
+    handler: (event: TEvent) => void
   ) {
     return useEventBus<any>().off(createLiveEventType(module, event), handler);
   }

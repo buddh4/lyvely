@@ -29,7 +29,7 @@ export class TimeSeriesChartConfigModel implements IChartConfig {
  * @returns {boolean} - Returns true if the chart is a graph chart, otherwise returns false.
  */
 export function isTimeSeriesChart<T = string>(
-  chart: ChartModel<T>,
+  chart: ChartModel<T>
 ): chart is ChartModel<T, TimeSeriesChartConfigModel> {
   return chart.config.category === TIME_SERIES_CHART.id;
 }

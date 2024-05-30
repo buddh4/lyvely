@@ -37,14 +37,14 @@ export class UserNotificationsService extends AbstractStreamService<
     private notificationDao: NotificationDao,
     private i18n: I18n,
     private liveService: LiveService,
-    private usersService: UsersService,
+    private usersService: UsersService
   ) {
     super();
   }
 
   async findOneByNotification(
     userIdentity: DocumentIdentity<User>,
-    notificationIdentity: DocumentIdentity<Notification>,
+    notificationIdentity: DocumentIdentity<Notification>
   ) {
     return this.streamEntryDao.findOne({
       uid: assureObjectId(userIdentity),
@@ -54,14 +54,14 @@ export class UserNotificationsService extends AbstractStreamService<
 
   override async loadEntry(
     context: IUserContext,
-    identity: DocumentIdentity<UserNotification>,
+    identity: DocumentIdentity<UserNotification>
   ): Promise<UserNotification> {
     const userNotification = await this.streamEntryDao.findOneAndUpdateSetByFilter(
       identity,
       { seen: true },
       {
         uid: assureObjectId(context.user),
-      },
+      }
     );
 
     if (!userNotification) throw new DocumentNotFoundException();
@@ -78,7 +78,7 @@ export class UserNotificationsService extends AbstractStreamService<
 
   override async loadTail(
     context: IUserContext,
-    request: StreamRequest,
+    request: StreamRequest
   ): Promise<IStreamResponse<UserNotification>> {
     if (!context.user)
       throw new IntegrityException('Can not load notifications without user identity');
@@ -97,7 +97,7 @@ export class UserNotificationsService extends AbstractStreamService<
       .updateNotificationUpdateState(identity, state)
       .catch((err) => this.logger.error(err));
     this.liveService.emitUserEvent(
-      new NotificationUpdateStateLiveEvent(assureStringId(identity), state),
+      new NotificationUpdateStateLiveEvent(assureStringId(identity), state)
     );
   }
 
@@ -109,7 +109,7 @@ export class UserNotificationsService extends AbstractStreamService<
 
   override async loadHead(
     context: IUserContext,
-    request: StreamRequest,
+    request: StreamRequest
   ): Promise<StreamResponse<UserNotification>> {
     if (!context.user)
       throw new IntegrityException('Can not load notifications without user identity');
@@ -133,7 +133,7 @@ export class UserNotificationsService extends AbstractStreamService<
 
     userNotifications.forEach((userNotification) => {
       const notification = notifications.find((notification) =>
-        notification._id.equals(userNotification.nid),
+        notification._id.equals(userNotification.nid)
       );
 
       if (!notification) {
@@ -154,7 +154,7 @@ export class UserNotificationsService extends AbstractStreamService<
           userInfo: notificationType.userInfo?.toModel(),
           profileInfo: notificationType.profileInfo?.toModel(),
           route: notificationType.getUrl(),
-        }),
+        })
       );
     });
 
@@ -188,7 +188,7 @@ export class UserNotificationsService extends AbstractStreamService<
   async markAsUnSeen(
     user: DocumentIdentity<User>,
     nid: DocumentIdentity<UserNotification>,
-    sortOrder?: number,
+    sortOrder?: number
   ) {
     const result = this.updateSeenState(user, nid, false, sortOrder);
     this.setUpdateAvailableState(user, true);
@@ -199,7 +199,7 @@ export class UserNotificationsService extends AbstractStreamService<
     user: DocumentIdentity<User>,
     notificationIdentity: DocumentIdentity<UserNotification>,
     seen: boolean,
-    sortOrder?: number,
+    sortOrder?: number
   ) {
     let notification: UserNotification | null;
     let oldState: boolean;
@@ -214,7 +214,7 @@ export class UserNotificationsService extends AbstractStreamService<
         notificationIdentity,
         update,
         { uid: assureObjectId(user) },
-        { new: false },
+        { new: false }
       );
       if (!notification) throw new IntegrityException('Could not find user notification');
       oldState = notification.seen;
@@ -227,8 +227,8 @@ export class UserNotificationsService extends AbstractStreamService<
         new NotificationSeenStateLiveEvent(
           assureStringId(user),
           assureStringId(notificationIdentity),
-          seen,
-        ),
+          seen
+        )
       );
     }
   }

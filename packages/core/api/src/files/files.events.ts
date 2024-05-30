@@ -30,7 +30,7 @@ export class FilesEvents implements OnModuleInit {
     };
 
     IMAGE_MIME_TYPES.forEach((mime) =>
-      this.fileTypeRegistry.registerType(ImageFile, mime, imageTypeDefinition),
+      this.fileTypeRegistry.registerType(ImageFile, mime, imageTypeDefinition)
     );
   }
 }

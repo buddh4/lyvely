@@ -25,7 +25,7 @@ export const activitiesRoutes = [
             if (
               activityStore.activeView &&
               ['ActivityHabits', 'ActivityTasks', 'ActivityMilestones'].includes(
-                activityStore.activeView,
+                activityStore.activeView
               )
             ) {
               next({ name: activityStore.activeView });

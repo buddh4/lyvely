@@ -39,7 +39,7 @@ export abstract class AbstractContentGuard<C extends Content = Content>
 
   abstract canActivateContent(
     profileContentContext: ProfileContentContext<C>,
-    context: ExecutionContext,
+    context: ExecutionContext
   ): Promise<boolean>;
 
   override async canActivate(context: ExecutionContext): Promise<boolean> {

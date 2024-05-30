@@ -26,7 +26,7 @@ export abstract class AbstractUserProfileRelationsDao<
    */
   async findAllByUser(
     user: DocumentIdentity<User>,
-    options: IFetchQueryOptions<T> = defaultFetchOptions,
+    options: IFetchQueryOptions<T> = defaultFetchOptions
   ): Promise<T[]> {
     return this.findAll({ uid: assureObjectId(user) }, options);
   }
@@ -39,7 +39,7 @@ export abstract class AbstractUserProfileRelationsDao<
    */
   async findOldestRelation(
     user: DocumentIdentity<User>,
-    options: IFetchQueryOptions<T> = defaultFetchOptions,
+    options: IFetchQueryOptions<T> = defaultFetchOptions
   ): Promise<T | null> {
     options.sort = { createdAt: -1 } as QuerySort<T>;
     return this.findOne({ uid: assureObjectId(user) }, options);
@@ -55,7 +55,7 @@ export abstract class AbstractUserProfileRelationsDao<
   async findAllByUserAndProfile(
     user: DocumentIdentity<User>,
     profile: DocumentIdentity<Profile>,
-    options: IFetchQueryOptions<T> = defaultFetchOptions,
+    options: IFetchQueryOptions<T> = defaultFetchOptions
   ): Promise<T[]> {
     return this.findAll({ uid: assureObjectId(user), pid: assureObjectId(profile) }, options);
   }
@@ -70,7 +70,7 @@ export abstract class AbstractUserProfileRelationsDao<
   async findAllProfileAndOrganizationRelationsByUser(
     profile: Profile,
     user?: DocumentIdentity<User> | null | undefined,
-    options: IFetchQueryOptions<T> = defaultFetchOptions,
+    options: IFetchQueryOptions<T> = defaultFetchOptions
   ): Promise<{ profileRelations: T[]; organizationRelations?: T[] }> {
     if (!user) return { profileRelations: [], organizationRelations: [] };
 
@@ -85,7 +85,7 @@ export abstract class AbstractUserProfileRelationsDao<
           { uid: assureObjectId(user), pid: assureObjectId(profile.oid) },
         ],
       },
-      options,
+      options
     );
 
     return {
@@ -102,7 +102,7 @@ export abstract class AbstractUserProfileRelationsDao<
   async findAllByProfile(profile: DocumentIdentity<Profile>): Promise<T[]> {
     return this.findAll(
       { pid: assureObjectId(profile) },
-      { sort: { createdAt: 1 } as QuerySort<T> },
+      { sort: { createdAt: 1 } as QuerySort<T> }
     );
   }
 
@@ -114,7 +114,7 @@ export abstract class AbstractUserProfileRelationsDao<
    */
   async findByUserAndProfile(
     user: DocumentIdentity<User>,
-    profile: DocumentIdentity<Profile>,
+    profile: DocumentIdentity<Profile>
   ): Promise<T[]> {
     return this.findAll({
       uid: assureObjectId(user),

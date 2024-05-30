@@ -75,7 +75,7 @@ declare module 'virtual:pwa-register/vue' {
      */
     onRegisteredSW?: (
       swScriptUrl: string,
-      registration: ServiceWorkerRegistration | undefined,
+      registration: ServiceWorkerRegistration | undefined
     ) => void;
     onRegisterError?: (error: any) => void;
   }

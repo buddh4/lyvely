@@ -23,7 +23,7 @@ export class ContentReadPolicy extends BaseContentReadPolicy {
     if (ContentReadPolicyType) {
       const contentReadPolicy = this.moduleRef.get<IContentPolicy>(
         getPolicyToken(ContentReadPolicyType.name),
-        { strict: false },
+        { strict: false }
       );
 
       return contentReadPolicy.verify(context);

@@ -3,7 +3,7 @@ import { computed } from 'vue';
 
 export const useFilterOption = <TOptions = any>(
   filter: Pick<Filter<any, TOptions>, 'option' | 'setOption'>,
-  key: keyof TOptions,
+  key: keyof TOptions
 ) => {
   return computed({
     get: () => filter.option(key),

@@ -58,12 +58,12 @@ export interface IStreamClient<
   loadTail(
     state: IStreamState,
     options: TOptions,
-    filter?: TFilter,
+    filter?: TFilter
   ): Promise<IStreamResponse<TModel, TState>>;
   loadHead(
     state: IStreamState,
     options: TOptions,
-    filter?: TFilter,
+    filter?: TFilter
   ): Promise<IStreamResponse<TModel, TState>>;
   loadEntry(id: string, filter?: TFilter): Promise<TModel>;
 }

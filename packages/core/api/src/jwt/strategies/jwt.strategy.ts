@@ -22,7 +22,7 @@ abstract class JwtStrategyClass<
 }
 
 export function JwtStrategy<TPayload extends JwtTokenPayloadIF = JwtTokenPayloadIF>(
-  options: JwtStrategyOptionsIF,
+  options: JwtStrategyOptionsIF
 ): abstract new (...args: any[]) => InstanceType<Type<JwtStrategyClass>> {
   options.purpose = options?.purpose || options.name;
 

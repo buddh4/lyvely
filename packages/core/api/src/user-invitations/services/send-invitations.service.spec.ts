@@ -69,7 +69,7 @@ describe('SendInvitations', () => {
         new InvitationRequest({
           pid: profile.id,
           invites: [new MailInvite({ email: 'invited@mail.de' })],
-        }),
+        })
       );
 
       expect(result.length).toEqual(1);
@@ -91,7 +91,7 @@ describe('SendInvitations', () => {
         new InvitationRequest({
           pid: profile.id,
           invites: [new MailInvite({ email: user.email })],
-        }),
+        })
       );
 
       expect(notificationQueueTester.notificationQueue.add).toHaveBeenCalledTimes(1);
@@ -107,7 +107,7 @@ describe('SendInvitations', () => {
           new InvitationRequest({
             pid: profile.id,
             invites: [new MailInvite({ email: 'invited@mail.de' })],
-          }),
+          })
         );
       } catch (e) {
         expect(e instanceof ForbiddenServiceException).toEqual(true);
@@ -121,7 +121,7 @@ describe('SendInvitations', () => {
         new InvitationRequest({
           pid: profile.id,
           invites: [new MailInvite({ email: member.email })],
-        }),
+        })
       );
 
       expect(result.length).toEqual(0);
@@ -136,7 +136,7 @@ describe('SendInvitations', () => {
           invites: [
             new MailInvite({ email: member.getVerifiedUserEmails()[1].email.toUpperCase() }),
           ],
-        }),
+        })
       );
 
       expect(result.length).toEqual(0);
@@ -150,7 +150,7 @@ describe('SendInvitations', () => {
         user,
         new InvitationRequest({
           invites: [new MailInvite({ email: 'invited@mail.de' })],
-        }),
+        })
       );
 
       expect(result.length).toEqual(1);
@@ -170,13 +170,13 @@ describe('SendInvitations', () => {
         owner,
         new InvitationRequest({
           invites: [new MailInvite({ email: member.getUnverifiedUserEmails()[0].email })],
-        }),
+        })
       );
 
       expect(result.length).toEqual(1);
       expect(TestMailService.sentMailOptions.length).toEqual(1);
       expect(TestMailService.sentMailOptions[0].to).toEqual(
-        member.getUnverifiedUserEmails()[0].email,
+        member.getUnverifiedUserEmails()[0].email
       );
     });
 
@@ -186,7 +186,7 @@ describe('SendInvitations', () => {
         owner,
         new InvitationRequest({
           invites: [new MailInvite({ email: owner.email.toUpperCase() })],
-        }),
+        })
       );
 
       expect(result.length).toEqual(0);
@@ -201,7 +201,7 @@ describe('SendInvitations', () => {
           invites: [
             new MailInvite({ email: owner.getVerifiedUserEmails()[1].email.toUpperCase() }),
           ],
-        }),
+        })
       );
 
       expect(result.length).toEqual(0);
@@ -216,7 +216,7 @@ describe('SendInvitations', () => {
           invites: [
             new MailInvite({ email: owner.getUnverifiedUserEmails()[0].email.toUpperCase() }),
           ],
-        }),
+        })
       );
 
       expect(result.length).toEqual(0);
@@ -229,7 +229,7 @@ describe('SendInvitations', () => {
         owner,
         new InvitationRequest({
           invites: [new MailInvite({ email: owner.email.toUpperCase() })],
-        }),
+        })
       );
 
       expect(result.length).toEqual(0);
@@ -242,7 +242,7 @@ describe('SendInvitations', () => {
         owner,
         new InvitationRequest({
           invites: [new MailInvite({ email: member.email })],
-        }),
+        })
       );
 
       expect(result.length).toEqual(0);
@@ -255,7 +255,7 @@ describe('SendInvitations', () => {
         owner,
         new InvitationRequest({
           invites: [new MailInvite({ email: member.email.toUpperCase() })],
-        }),
+        })
       );
 
       expect(result.length).toEqual(0);
@@ -268,7 +268,7 @@ describe('SendInvitations', () => {
         owner,
         new InvitationRequest({
           invites: [new MailInvite({ email: member.getVerifiedUserEmails()[1].email })],
-        }),
+        })
       );
 
       expect(result.length).toEqual(0);
@@ -283,7 +283,7 @@ describe('SendInvitations', () => {
           invites: [
             new MailInvite({ email: member.getVerifiedUserEmails()[1].email.toUpperCase() }),
           ],
-        }),
+        })
       );
 
       expect(result.length).toEqual(0);
@@ -299,7 +299,7 @@ describe('SendInvitations', () => {
         new InvitationRequest({
           pid: profile.id,
           invites: [new MailInvite({ email: 'test@mail.de' })],
-        }),
+        })
       );
 
       expect(result.length).toEqual(1);

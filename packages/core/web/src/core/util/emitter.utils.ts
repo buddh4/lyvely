@@ -12,7 +12,7 @@ export function useAsEmitter<Events extends Record<EventType, unknown>>(): Emitt
   function on(type: '*', handler: WildcardHandler<Events>): void;
   function on<Key extends keyof Events>(
     type: Key | '*',
-    handler: Handler<Events[Key]> | WildcardHandler<Events>,
+    handler: Handler<Events[Key]> | WildcardHandler<Events>
   ): void {
     this.emitter.on(type, handler);
   }
@@ -21,7 +21,7 @@ export function useAsEmitter<Events extends Record<EventType, unknown>>(): Emitt
   function off(type: '*', handler: WildcardHandler<Events>): void;
   function off<Key extends keyof Events>(
     type: Key | '*',
-    handler?: Handler<Events[Key]> | WildcardHandler<Events>,
+    handler?: Handler<Events[Key]> | WildcardHandler<Events>
   ): void {
     this.emitter.off(type, handler);
   }
@@ -30,7 +30,7 @@ export function useAsEmitter<Events extends Record<EventType, unknown>>(): Emitt
   function emit<Key extends keyof Events>(type: undefined extends Events[Key] ? Key : never): void;
   function emit<Key extends keyof Events>(
     type: undefined extends Events[Key] ? Key : never,
-    event?: Events[Key],
+    event?: Events[Key]
   ): void {
     this.emitter.emit(type, event);
   }
@@ -58,7 +58,7 @@ export class DelegateEmitter<Events extends Record<EventType, unknown>>
   on(type: '*', handler: WildcardHandler<Events>): void;
   on<Key extends keyof Events>(
     type: Key | '*',
-    handler: Handler<Events[Key]> | WildcardHandler<Events>,
+    handler: Handler<Events[Key]> | WildcardHandler<Events>
   ): void {
     this.emitter.on(type, <any>handler);
   }
@@ -67,7 +67,7 @@ export class DelegateEmitter<Events extends Record<EventType, unknown>>
   off(type: '*', handler: WildcardHandler<Events>): void;
   off<Key extends keyof Events>(
     type: Key | '*',
-    handler?: Handler<Events[Key]> | WildcardHandler<Events>,
+    handler?: Handler<Events[Key]> | WildcardHandler<Events>
   ): void {
     this.emitter.off(type, <any>handler);
   }
@@ -76,7 +76,7 @@ export class DelegateEmitter<Events extends Record<EventType, unknown>>
   emit<Key extends keyof Events>(type: undefined extends Events[Key] ? Key : never): void;
   emit<Key extends keyof Events>(
     type: undefined extends Events[Key] ? Key : never,
-    event?: Events[Key],
+    event?: Events[Key]
   ): void {
     this.emitter.emit(type, <any>event);
   }

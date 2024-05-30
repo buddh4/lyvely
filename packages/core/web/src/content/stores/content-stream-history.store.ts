@@ -27,7 +27,7 @@ export const useContentStreamHistoryStore = defineStore('content-stream-history'
   function setHistoryState(
     stream: IStream<ContentModel, ContentRequestFilter>,
     parent = 'root',
-    scrollTop: number,
+    scrollTop: number
   ) {
     const { state, filter, options, models } = stream;
     stack.set(parent, {

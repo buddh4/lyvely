@@ -38,7 +38,7 @@ const usageOptions = [
 const usageLabel = (usage: string) => translate('profiles.usage.' + usage.toLowerCase());
 
 const { isAllowed: canCreateOrganization } = useGlobalPermissions(
-  CreateOrganizationProfilePermission,
+  CreateOrganizationProfilePermission
 );
 const { isAllowed: canCreateGroupProfile } = useGlobalPermissions(CreateGroupProfilePermission);
 const { isAllowed: canCreateUserProfile } = useGlobalPermissions(CreateUserProfilePermission);

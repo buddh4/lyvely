@@ -24,7 +24,7 @@ export class UserPermissionsManager extends AbstractPermissionsManager<
    * @return {IProfilePermission | undefined} - The retrieved profile permission.
    */
   override getPermission(
-    permissionOrId: string | IUserRelationPermission,
+    permissionOrId: string | IUserRelationPermission
   ): IUserRelationPermission | undefined {
     return getPermission<IUserRelationPermission>(permissionOrId, BasePermissionType.User);
   }

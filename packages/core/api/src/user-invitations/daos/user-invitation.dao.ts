@@ -10,7 +10,7 @@ export class UserInvitationDao extends AbstractDao<UserInvitation> {
 
   async findByProfileAndInvitee(
     profile: DocumentIdentity<Profile>,
-    invitee: DocumentIdentity<User>,
+    invitee: DocumentIdentity<User>
   ) {
     return this.findOne({
       pid: assureObjectId(profile),

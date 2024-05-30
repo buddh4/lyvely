@@ -12,7 +12,7 @@ export default {
     return api.post<'setMilestone'>(
       ContentEndpoints.SET_MILESTONE(cid),
       new SetMilestoneModel({ mid }),
-      options,
+      options
     );
   },
 

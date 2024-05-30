@@ -39,13 +39,13 @@ export class ProfilesFactory {
 
     if (!ProfileTypeClass) {
       throw new IntegrityException(
-        'Could not create profile, invalid profile due to invalid profile type',
+        'Could not create profile, invalid profile due to invalid profile type'
       );
     }
 
     if (options.organization && !options.organization.isOrganization()) {
       throw new IntegrityException(
-        'Could not create a profile due to invalid organization profile type',
+        'Could not create a profile due to invalid organization profile type'
       );
     }
 

@@ -33,7 +33,7 @@ describe('Users schema', () => {
           username: 'Test',
           password: 'Password',
           email: 'Tester@test.de',
-        }),
+        })
       );
 
       expect(user.username).toEqual('Test');
@@ -51,7 +51,7 @@ describe('Users schema', () => {
   describe('assure password is hashed on low level updates', () => {
     it('create', async () => {
       const user = await UserModel.create(
-        new User({ username: 'Test', password: 'Password', email: 'Tester@test.de' }),
+        new User({ username: 'Test', password: 'Password', email: 'Tester@test.de' })
       );
       expect(user.password).not.toEqual('Password');
       const updated = await UserModel.findById(user._id);
@@ -61,7 +61,7 @@ describe('Users schema', () => {
 
     it('save', async () => {
       const user = await UserModel.create(
-        new User({ username: 'Test', password: 'Password', email: 'Tester@test.de' }),
+        new User({ username: 'Test', password: 'Password', email: 'Tester@test.de' })
       );
       const oldPassword = user.password;
       user.password = 'newPassword';
@@ -129,7 +129,7 @@ describe('Users schema', () => {
       const updated = await UserModel.findOneAndUpdate(
         { _id: user._id },
         { password: 'newPassword' },
-        { new: true },
+        { new: true }
       );
       expect(updated!.password).not.toEqual(oldPassword);
       expect(updated!.password).not.toEqual('newPassword');
@@ -141,7 +141,7 @@ describe('Users schema', () => {
       const oldPassword = user.password;
       await UserModel.replaceOne(
         { _id: user._id },
-        new User({ username: 'Test', password: 'newPassword', email: 'Tester@test.de' }),
+        new User({ username: 'Test', password: 'newPassword', email: 'Tester@test.de' })
       );
       const updated = await UserModel.findById(user._id);
       expect(updated!.password).not.toEqual(oldPassword);
@@ -155,7 +155,7 @@ describe('Users schema', () => {
       const updated = await UserModel.findOneAndReplace(
         { _id: user._id },
         new User({ username: 'Test', password: 'newPassword', email: 'Tester@test.de' }),
-        { new: true },
+        { new: true }
       );
       expect(updated!.password).not.toEqual(oldPassword);
       expect(updated!.password).not.toEqual('newPassword');
@@ -177,7 +177,7 @@ describe('Users schema', () => {
               expiration: addDays(new Date(), 1),
             }),
           ],
-        }),
+        })
       );
 
       const json = user.toJSON();

@@ -42,7 +42,7 @@ export interface IBaseInputSetupOptions {
 function getComputedInputValue<T extends AllowedInputValueTypes = any>(
   props: IBaseInputProps,
   emit: any,
-  formModelData?: IFormModelData,
+  formModelData?: IFormModelData
 ) {
   const model = formModelData?.model;
   const property = props.property;
@@ -52,7 +52,7 @@ function getComputedInputValue<T extends AllowedInputValueTypes = any>(
         get: () => model[property],
         set: (val: T) =>
           setTimeout(
-            () => (model[property] = typeof val === 'string' && props.trim ? val.trim() : val),
+            () => (model[property] = typeof val === 'string' && props.trim ? val.trim() : val)
           ),
       })
     : computed<T>({
@@ -88,7 +88,7 @@ function getComputedHelpText(props: IBaseInputProps, formModelData?: IFormModelD
 function getComputedCssClasses(
   props: IBaseInputProps,
   options: IBaseInputSetupOptions,
-  inputError: string,
+  inputError: string
 ) {
   return computed(() => {
     let result: any = [];
@@ -97,13 +97,13 @@ function getComputedCssClasses(
 
     if (props.inputClass) {
       result = result.concat(
-        Array.isArray(props.inputClass) ? props.inputClass : [props.inputClass],
+        Array.isArray(props.inputClass) ? props.inputClass : [props.inputClass]
       );
     }
 
     if (options.inputClass) {
       result = result.concat(
-        Array.isArray(options.inputClass) ? options.inputClass : [options.inputClass],
+        Array.isArray(options.inputClass) ? options.inputClass : [options.inputClass]
       );
     }
 
@@ -127,7 +127,7 @@ function getComputedInputError(props: IBaseInputProps, formModelData?: IFormMode
   return computed(() =>
     formModelData?.validator && props.property
       ? formModelData.validator.getError(props.property)
-      : props.error,
+      : props.error
   );
 }
 
@@ -146,7 +146,7 @@ function getId(props: IBaseInputProps, formModelData?: IFormModelData): string |
 function getDataId(
   props: IBaseInputProps,
   inputId?: string,
-  formModelData?: IFormModelData,
+  formModelData?: IFormModelData
 ): string | undefined {
   if (formModelData?.id && props.property) {
     return slugify(`${formModelData.id}-${props.property}`, { lower: true });
@@ -172,7 +172,7 @@ function getComputedAutoCompleteValue(props: IBaseInputProps) {
 export function useBaseInputSetup<T extends AllowedInputValueTypes = any>(
   props: IBaseInputProps,
   emit: (event: any, ...args: any[]) => void,
-  options: IBaseInputSetupOptions = {},
+  options: IBaseInputSetupOptions = {}
 ) {
   const root = ref<HTMLElement | null>(null);
   const formModelData = inject<IFormModelData | undefined>('formModelData', undefined);
@@ -207,7 +207,7 @@ export function useBaseInputSetup<T extends AllowedInputValueTypes = any>(
     helpText: getComputedHelpText(props, formModelData),
     editable: computed(() => !props.disabled && !props.readonly),
     hasFocus: computed(
-      () => root.value && document.activeElement && root.value.contains(document.activeElement),
+      () => root.value && document.activeElement && root.value.contains(document.activeElement)
     ),
     onChange: (evt: any) => {
       if (useAutoValidation || inputError.value) {

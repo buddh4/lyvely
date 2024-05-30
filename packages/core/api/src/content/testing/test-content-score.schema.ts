@@ -14,7 +14,7 @@ export class ExtendedTestContentScore extends ContentScore {
 
   constructor(
     options: ICreateContentScore,
-    data: PartialPropertiesOf<ExtendedTestContentScore> = {},
+    data: PartialPropertiesOf<ExtendedTestContentScore> = {}
   ) {
     super(options, data);
     if (data?.special) {

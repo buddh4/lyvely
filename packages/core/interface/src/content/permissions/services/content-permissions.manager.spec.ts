@@ -41,7 +41,7 @@ describe('ContentPermissionsManager', function () {
       userStatus?: UserStatus;
       relationStatus?: UserStatus;
       groups?: string[];
-    },
+    }
   ) => {
     const permissionId = options?.id || 'test';
     return manager.verifyPermission(
@@ -53,7 +53,7 @@ describe('ContentPermissionsManager', function () {
         groups: options?.groups || [],
       },
       profile || new ProfileModel({}),
-      options?.config || { visitorStrategy: { mode: VisitorMode.Disabled } },
+      options?.config || { visitorStrategy: { mode: VisitorMode.Disabled } }
     );
   };
 
@@ -251,7 +251,7 @@ describe('ContentPermissionsManager', function () {
     });
 
     expect(verifyTestPermission(ContentUserRole.Member, profile, { groups: [testGroup] })).toEqual(
-      true,
+      true
     );
     expect(verifyTestPermission(ContentUserRole.Member, profile)).toEqual(false);
   });
@@ -271,7 +271,7 @@ describe('ContentPermissionsManager', function () {
     });
 
     expect(verifyTestPermission(ContentUserRole.Member, profile, { groups: [testGroup] })).toEqual(
-      false,
+      false
     );
   });
 

@@ -14,27 +14,26 @@ export const useChartTemplates = (
   formValue: Ref<CreateChartModel | UpdateChartModel>,
   seriesTypeId: Ref<string>,
   category?: string,
-  isCreate?: boolean,
+  isCreate?: boolean
 ) => {
   const seriesTypeDefinition = computed(() => getChartDefinition(seriesTypeId.value));
 
   const seriesFormComponent = computed(() =>
     seriesTypeDefinition.value?.form
       ? resolveComponentRegistration(seriesTypeDefinition.value?.form)
-      : null,
+      : null
   );
 
   const categoryOptions = computed(() =>
     getChartCategoryDefinitions()
       .filter(
         (def) =>
-          !isFunction(def.condition) ||
-          (def.condition() && (!category || category === def.type.id)),
+          !isFunction(def.condition) || (def.condition() && (!category || category === def.type.id))
       )
       .reduce((options, definition) => {
         options.push({ value: definition.type.id, label: definition.label });
         return options;
-      }, [] as ISelectOptions),
+      }, [] as ISelectOptions)
   );
 
   const seriesTypeOptions = computed(() =>
@@ -43,12 +42,12 @@ export const useChartTemplates = (
         options.push({ value: definition.type.id, label: definition.label });
       }
       return options;
-    }, [] as ISelectOptions),
+    }, [] as ISelectOptions)
   );
 
   const seriesConfigModel = ref<ChartSeriesConfigModel | undefined>(formValue.value.series);
   const validator = reactive(
-    new I18nModelValidator<ChartSeriesConfigModel>(),
+    new I18nModelValidator<ChartSeriesConfigModel>()
   ) as I18nModelValidator<ChartSeriesConfigModel>;
 
   watch(
@@ -61,7 +60,7 @@ export const useChartTemplates = (
       } else if (seriesTypeDefinition.value?.type?.configType) {
         seriesConfigModel.value = createBaseModelAndInit(
           seriesTypeDefinition.value.type.configType,
-          {},
+          {}
         );
         seriesConfigModel.value!.type ??= seriesTypeDefinition.value?.type.id;
       } else {
@@ -76,7 +75,7 @@ export const useChartTemplates = (
 
       formValue.value!.series = seriesConfigModel.value;
     },
-    { immediate: isCreate },
+    { immediate: isCreate }
   );
 
   watch(seriesConfigModel, (newValue) => {

@@ -71,7 +71,7 @@ watch(
   () => props.hide,
   (val?: boolean) => {
     hiddenState.value = !!val;
-  },
+  }
 );
 
 const internalType = computed(() => {

@@ -182,7 +182,7 @@ Cypress.Commands.add(
     options.body = body;
     options.failOnStatusCode = false;
 
-    const headers: Record<string, string> = {...options.headers};
+    const headers: Record<string, string> = { ...options.headers };
     headers['x-api-version'] ??= '1';
 
     if (!options.as) {

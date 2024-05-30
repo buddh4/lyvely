@@ -11,11 +11,11 @@ import { IProfileApiRequestOptions, unwrapAndTransformResponse, unwrapResponse }
 class ProfileMembershipClient implements IProfileMembershipClient {
   async update(
     dto: UpdateProfileMembershipSettings,
-    options?: IProfileApiRequestOptions,
+    options?: IProfileApiRequestOptions
   ): Promise<MembershipModel> {
     return unwrapAndTransformResponse(
       profileMembershipRepository.update(dto, options),
-      MembershipModel,
+      MembershipModel
     );
   }
 
@@ -30,11 +30,11 @@ class ProfileMembershipClient implements IProfileMembershipClient {
   async revoke(): Promise<UpdateUserRelationsResponse> {
     return unwrapAndTransformResponse(
       profileMembershipRepository.revoke(),
-      UpdateUserRelationsResponse,
+      UpdateUserRelationsResponse
     );
   }
 }
 
 export const useProfileMembershipClient = useSingleton<ProfileMembershipClient>(
-  () => new ProfileMembershipClient(),
+  () => new ProfileMembershipClient()
 );

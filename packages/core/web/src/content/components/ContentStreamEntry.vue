@@ -39,11 +39,11 @@ const prevEntry = computed(() => props.stream?.getStreamEntryAt(props.index - 1)
 const nextEntry = computed(() => props.stream?.getStreamEntryAt(props.index + 1));
 
 const showTimeSeparator = computed(
-  () => prevEntry.value && props.model.meta.streamSort - prevEntry.value.meta.streamSort > 1800_000,
+  () => prevEntry.value && props.model.meta.streamSort - prevEntry.value.meta.streamSort > 1800_000
 );
 
 const showNextTimeSep = computed(
-  () => nextEntry.value && nextEntry.value.meta.streamSort - props.model.meta.streamSort > 1800_000,
+  () => nextEntry.value && nextEntry.value.meta.streamSort - props.model.meta.streamSort > 1800_000
 );
 
 const timeSeparator = computed(() => {
@@ -59,7 +59,7 @@ const mergeWithPrev = computed(
     props.merge &&
     !showTimeSeparator.value &&
     prevEntry.value.type === props.model.type &&
-    prevEntry.value.meta.createdAs?.authorId === props.model.meta.createdAs?.authorId,
+    prevEntry.value.meta.createdAs?.authorId === props.model.meta.createdAs?.authorId
 );
 
 const mergeWithNext = computed(
@@ -68,7 +68,7 @@ const mergeWithNext = computed(
     props.merge &&
     !showNextTimeSep.value &&
     nextEntry.value.type === props.model.type &&
-    nextEntry.value.meta.createdAs?.authorId === props.model.meta.createdAs?.authorId,
+    nextEntry.value.meta.createdAs?.authorId === props.model.meta.createdAs?.authorId
 );
 
 const cssClass = computed(() => {
@@ -92,7 +92,7 @@ const bodyWrapperClass = computed(
       none: 'relative',
       message: `relative message-bubble ${bgClass} inline-block transition duration-100 cursor-pointer hover:bg-highlight dark:hover:bg-highlight border border-divide px-4 py-1.5`,
       block: `relative inline-flex flex-col border border-divide p-4 rounded-xl ${bgClass} inline-block`,
-    })[props.bodyStyle],
+    })[props.bodyStyle]
 );
 
 // Just experimental

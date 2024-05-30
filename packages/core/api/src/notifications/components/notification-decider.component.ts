@@ -19,7 +19,7 @@ export class NotificationDecider {
   checkResend(
     context: IUserSubscriptionContext,
     notification: Notification,
-    userNotification?: UserNotification,
+    userNotification?: UserNotification
   ) {
     if (!userNotification) return true;
     if (!userNotification.status.deliveredAt) return true;
@@ -34,7 +34,7 @@ export class NotificationDecider {
   checkChannelDelivery(
     context: IUserSubscriptionContext,
     notification: Notification,
-    channel: INotificationChannel,
+    channel: INotificationChannel
   ) {
     const { user } = context;
     return (
@@ -47,7 +47,7 @@ export class NotificationDecider {
   private checkUserPreferences(
     user: User,
     notification: Notification,
-    channel: INotificationChannel,
+    channel: INotificationChannel
   ) {
     if (user.status !== UserStatus.Active) return false;
 

@@ -12,7 +12,7 @@ import { UrlGenerator } from '@/core';
 export class CaptchaService {
   constructor(
     private captchaDao: CaptchaDao,
-    private urlGenerator: UrlGenerator,
+    private urlGenerator: UrlGenerator
   ) {}
 
   async createCaptcha(): Promise<CaptchaChallenge> {

@@ -83,7 +83,7 @@ export const useUpsertChartSeriesStore = () => {
 
     const newChart = await loadingStatus(
       () => client.addSeries(chart.value!.id, new CreateChartSeriesModel(model.value.series!)),
-      status,
+      status
     );
 
     useContentStore().emitPostContentCreateEvent(ChartModel.contentType, newChart);
@@ -98,9 +98,9 @@ export const useUpsertChartSeriesStore = () => {
         client.updateSeries(
           chart.value!.id,
           sid.value,
-          new UpdateChartSeriesModel(model.value.series!),
+          new UpdateChartSeriesModel(model.value.series!)
         ),
-      status,
+      status
     );
     useContentStore().emitPostContentUpdateEvent(ChartModel.contentType, update);
     return update;
@@ -110,7 +110,7 @@ export const useUpsertChartSeriesStore = () => {
     if (!chart.value || !sid.value) throw new IntegrityException('No chart model or sid selected!');
     const update = await loadingStatus(
       () => client.deleteSeries(chart.value!.id, sid.value),
-      status,
+      status
     );
     useChartsStore().updateOrPushChart(update);
     reset();

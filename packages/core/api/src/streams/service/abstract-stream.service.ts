@@ -41,11 +41,11 @@ export abstract class AbstractStreamService<
   async loadEntry(
     context: TContext,
     identity: DocumentIdentity<TModel>,
-    filter?: TFilter,
+    filter?: TFilter
   ): Promise<TModel> {
     const streamEntry = await this.streamEntryDao.findByIdAndFilter(
       identity,
-      this.createLoadEntryQueryFilter(context, filter),
+      this.createLoadEntryQueryFilter(context, filter)
     );
 
     if (!streamEntry) throw new DocumentNotFoundException();
@@ -61,7 +61,7 @@ export abstract class AbstractStreamService<
 
   async loadTail(
     context: TContext,
-    request: StreamRequest<TFilter>,
+    request: StreamRequest<TFilter>
   ): Promise<IStreamResponse<TModel>> {
     const filter = this.createQueryFilter(context, request.filter);
 
@@ -121,7 +121,7 @@ export abstract class AbstractStreamService<
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     model: TModel,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    context: TContext,
+    context: TContext
   ) {
     // Nothing todo.
   }
@@ -132,7 +132,7 @@ export abstract class AbstractStreamService<
 
   async loadHead(
     context: TContext,
-    request: StreamRequest<TFilter>,
+    request: StreamRequest<TFilter>
   ): Promise<IStreamResponse<TModel>> {
     const filter = this.createQueryFilter(context, request.filter);
 

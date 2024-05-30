@@ -36,7 +36,7 @@ export class UrlGenerator {
 
     if (!appUrl) {
       throw new MisconfigurationException(
-        'Could not generate app url, no http.appUrl setting configured',
+        'Could not generate app url, no http.appUrl setting configured'
       );
     }
 
@@ -48,7 +48,7 @@ export class UrlGenerator {
 
     if (!appUrl) {
       throw new MisconfigurationException(
-        'Could not generate app url, no http.appUrl setting configured',
+        'Could not generate app url, no http.appUrl setting configured'
       );
     }
 

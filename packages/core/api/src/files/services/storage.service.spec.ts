@@ -101,7 +101,7 @@ describe('StorageService', () => {
       const storageService = new StorageService(
         new FileMimeTypeRegistry(),
         <any>configService,
-        moduleRef,
+        moduleRef
       );
 
       await storageService.upload(
@@ -109,7 +109,7 @@ describe('StorageService', () => {
           guid: uniqueGuid(),
           bucket: 'test',
           file: <any>{ mimetype: 'image/jpeg' },
-        }),
+        })
       );
     });
 
@@ -133,7 +133,7 @@ describe('StorageService', () => {
       const storageService = new StorageService(
         new FileMimeTypeRegistry(),
         <any>configService,
-        moduleRef,
+        moduleRef
       );
 
       await storageService.upload(
@@ -141,7 +141,7 @@ describe('StorageService', () => {
           guid: uniqueGuid(),
           bucket: 'unknown',
           file: <any>{ mimetype: 'image/jpeg' },
-        }),
+        })
       );
     });
   });

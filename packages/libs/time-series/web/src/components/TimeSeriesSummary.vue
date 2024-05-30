@@ -28,7 +28,7 @@ let chart: echarts.EChartsType;
 watch(
   () => props.summary,
   () => renderSummaryChart(props.summary),
-  { deep: true },
+  { deep: true }
 );
 
 const { isDark } = storeToRefs(usePageStore());
@@ -46,7 +46,7 @@ function renderSummaryChart(summary: ITimeSeriesSummary) {
   const { tids, values, movingAverages } = MovingAverageCalculator.calculateMovingAverage(
     summary,
     props.interval,
-    locale.value!,
+    locale.value!
   );
 
   chart = echarts.init(chartRoot.value!);

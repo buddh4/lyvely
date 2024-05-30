@@ -21,7 +21,7 @@ export const useUserRegistrationStore = defineStore('user-registration', () => {
     return loadingStatus(
       userRegistrationClient.register(model.value),
       status,
-      validator as I18nModelValidator<UserRegistration>,
+      validator as I18nModelValidator<UserRegistration>
     )
       .then((otp) => verifyEmailStore.startVerificationOf(model.value.email, otp))
       .then(() => true)

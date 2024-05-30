@@ -15,7 +15,7 @@ export interface IProfileFeatureInfo {
 
 type IFindDefinition = (
   c: IFeatureConfig,
-  p: IProfileFeatureInfo,
+  p: IProfileFeatureInfo
 ) => IFeatureConfigDefinition | IFeatureConfigDefinition[] | undefined;
 type IMergePipeEntry = {
   find: IFindDefinition;
@@ -122,7 +122,7 @@ const pipe: IMergePipeEntry[] = [
 
 export function mergeFeatureConfig(
   profile: IProfileFeatureInfo,
-  config: IFeatureConfig | undefined,
+  config: IFeatureConfig | undefined
 ): IFeatureConfigDefinition {
   if (!config || isEmpty(config)) return {};
 
@@ -140,7 +140,7 @@ function mergeDefinition(
   profile: IProfileFeatureInfo,
   entry: IMergePipeEntry,
   config: IFeatureConfig,
-  match: IFeatureConfigDefinition | IFeatureConfigDefinition[],
+  match: IFeatureConfigDefinition | IFeatureConfigDefinition[]
 ) {
   const result: Partial<IFeatureConfigDefinition> = {};
   ['installable', 'nonInstallable', 'enabled', 'disabled', 'fixed', 'suggested'].forEach((key) => {
@@ -155,7 +155,7 @@ function mergeProp(
   config: IFeatureConfig,
   entry: IMergePipeEntry,
   match: IFeatureConfigDefinition | IFeatureConfigDefinition[],
-  prop: keyof IFeatureConfigDefinition,
+  prop: keyof IFeatureConfigDefinition
 ): string[] | undefined {
   let currentEntry: IMergePipeEntry | undefined = entry;
   let currentMatch: IFeatureConfigDefinition | IFeatureConfigDefinition[] | undefined = <
@@ -173,7 +173,7 @@ function mergeProp(
           currentMatch.reduce((featureSet, config) => {
             config?.[prop]?.forEach((feat: string) => featureSet.add(feat));
             return featureSet;
-          }, new Set<string>()),
+          }, new Set<string>())
         ),
       } as IFeatureConfigDefinition;
     }

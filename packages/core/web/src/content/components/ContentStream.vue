@@ -62,7 +62,7 @@ const stream = useStream<ContentModel, ContentRequestFilter>(
     infiniteScroll: props.infiniteScroll ? { distance: 100 } : false,
     scrollToHead: doScrollToHead,
   },
-  useContentStreamClient(),
+  useContentStreamClient()
 );
 
 const { models, isReady, isInitialized, isLoading } = stream;
@@ -100,7 +100,7 @@ onBeforeRouteLeave((to) => {
     useContentStreamHistoryStore().setHistoryState(
       stream,
       filter.value.parentId,
-      streamRoot.value.scrollTop,
+      streamRoot.value.scrollTop
     );
   }
 });

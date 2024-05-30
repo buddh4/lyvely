@@ -26,7 +26,7 @@ export abstract class BaseContentWritePolicy extends BaseContentPolicy {
 
     const permission = getPermission(
       getContentWritePermissionId(content.type),
-      BasePermissionType.Content,
+      BasePermissionType.Content
     );
 
     if (permission && this.getContentPermissionsService().verifyPermission(context, permission)) {

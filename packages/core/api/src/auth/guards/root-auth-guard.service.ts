@@ -23,7 +23,7 @@ import { ConfigurationPath } from '@/config';
 export class RootAuthGuard extends AuthGuard(JWT_ACCESS_TOKEN) {
   constructor(
     private reflector: Reflector,
-    private configService: ConfigService<ConfigurationPath>,
+    private configService: ConfigService<ConfigurationPath>
   ) {
     super();
   }

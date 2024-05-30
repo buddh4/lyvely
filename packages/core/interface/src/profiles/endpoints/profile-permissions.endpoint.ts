@@ -3,7 +3,7 @@ import { ProfilePermissionSettingModel } from '../models';
 
 export interface IProfilePermissionsClient {
   updateProfilePermission(
-    update: ProfilePermissionSettingModel,
+    update: ProfilePermissionSettingModel
   ): Promise<ProfilePermissionSettingModel>;
 }
 

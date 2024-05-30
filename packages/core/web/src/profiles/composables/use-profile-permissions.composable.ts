@@ -22,11 +22,11 @@ export const useProfilePermissions = (...permissions: Array<string | IProfilePer
 
   // TODO: Support global user permissions
   const isAllowed = computed(() =>
-    useProfilePermissionsStore().verifyAnyPermission(...permissions),
+    useProfilePermissionsStore().verifyAnyPermission(...permissions)
   );
 
   const isAllowedStrict = computed(() =>
-    useProfilePermissionsStore().verifyEachPermission(...permissions),
+    useProfilePermissionsStore().verifyEachPermission(...permissions)
   );
 
   return {

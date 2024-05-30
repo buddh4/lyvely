@@ -117,7 +117,7 @@ export class UniqueConstraintException extends FieldValidationException {
   constructor(field: string, msg?: string) {
     super(
       [{ property: field, errors: ['unique'] }],
-      msg || `Unique constraint violation for field ${field}`,
+      msg || `Unique constraint violation for field ${field}`
     );
   }
 }

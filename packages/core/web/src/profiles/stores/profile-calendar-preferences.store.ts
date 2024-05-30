@@ -16,5 +16,5 @@ export const useProfileCalendarPreferencesStore = defineStore(
         profileStore.profile!.settings = settings;
       },
     });
-  },
+  }
 );

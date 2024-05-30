@@ -6,11 +6,11 @@ import { useSingleton } from '@lyvely/common';
 
 export class ProfilePermissionsClient implements IProfilePermissionsClient {
   async updateProfilePermission(
-    update: ProfilePermissionSettingModel,
+    update: ProfilePermissionSettingModel
   ): Promise<ProfilePermissionSettingModel> {
     return unwrapAndTransformResponse(
       repository.updateProfilePermission(update),
-      ProfilePermissionSettingModel,
+      ProfilePermissionSettingModel
     );
   }
 }

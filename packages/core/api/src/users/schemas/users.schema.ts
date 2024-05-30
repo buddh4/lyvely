@@ -217,7 +217,7 @@ export class User
    */
   getVerifiedUserEmail(email: string) {
     return this.emails.find(
-      (userEmail) => userEmail.verified && userEmail.email.toLowerCase() === email.toLowerCase(),
+      (userEmail) => userEmail.verified && userEmail.email.toLowerCase() === email.toLowerCase()
     );
   }
 
@@ -227,7 +227,7 @@ export class User
    */
   getUnverifiedUserEmail(email: string) {
     return this.emails.find(
-      (userEmail) => !userEmail.verified && userEmail.email.toLowerCase() === email.toLowerCase(),
+      (userEmail) => !userEmail.verified && userEmail.email.toLowerCase() === email.toLowerCase()
     );
   }
 
@@ -385,10 +385,10 @@ function preUpdateModel(update: User, next) {
 
 UserSchema.index(
   { username: 1 },
-  { unique: true, collation: { locale: 'en', strength: 1 }, name: 'UniqueUsernameIndex' },
+  { unique: true, collation: { locale: 'en', strength: 1 }, name: 'UniqueUsernameIndex' }
 );
 
 UserSchema.index(
   { 'emails.email': 1 },
-  { collation: { locale: 'en', strength: 1 }, name: 'UserEmailIndex' },
+  { collation: { locale: 'en', strength: 1 }, name: 'UserEmailIndex' }
 );

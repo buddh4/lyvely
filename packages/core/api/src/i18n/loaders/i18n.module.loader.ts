@@ -21,7 +21,7 @@ export class I18nModuleLoader extends I18nLoader implements OnModuleDestroy {
     private moduleRegistry: ModuleRegistry,
     @Inject(I18N_LOADER_OPTIONS)
     private options: I18nModuleLoaderOptionsIF, //private i18n: I18n,
-    private configService: ConfigService<I18nConfigPath>,
+    private configService: ConfigService<I18nConfigPath>
   ) {
     super();
     this.options.watch ??= false;
@@ -130,9 +130,9 @@ export class I18nModuleLoader extends I18nLoader implements OnModuleDestroy {
           }),
           scan((acc, value) => {
             return { ...acc, ...(value as any) };
-          }, {}),
+          }, {})
         );
-      },
+      }
     );
   }
 }

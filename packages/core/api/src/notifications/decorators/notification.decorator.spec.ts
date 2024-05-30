@@ -55,7 +55,7 @@ describe('Notification decorator', () => {
     expect(notificationInstance.constructor.name).toEqual(MyNotificationType.name);
     expect(notificationInstance instanceof MyNotificationType).toEqual(true);
     expect(notificationRegistry.getTypeConstructor(MyNotificationType.typeName)).toEqual(
-      MyNotificationType,
+      MyNotificationType
     );
   });
 });

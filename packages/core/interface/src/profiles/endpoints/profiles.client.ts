@@ -10,14 +10,14 @@ class ProfilesClient implements IProfilesClient {
   async create(update: CreateProfileModel): Promise<ProfileWithRelationsModel> {
     return unwrapAndTransformResponse(
       profileRepository.createProfile(update),
-      ProfileWithRelationsModel,
+      ProfileWithRelationsModel
     );
   }
 
   async update(id: string, model: UpdateProfileModel): Promise<ProfileWithRelationsModel> {
     return unwrapAndTransformResponse(
       profileRepository.updateProfile(model),
-      ProfileWithRelationsModel,
+      ProfileWithRelationsModel
     );
   }
 
@@ -32,21 +32,21 @@ class ProfilesClient implements IProfilesClient {
   async getProfileByHandle(handle: string): Promise<ProfileWithRelationsModel> {
     return unwrapAndTransformResponse(
       profileRepository.getProfileByHandle(handle),
-      ProfileWithRelationsModel,
+      ProfileWithRelationsModel
     );
   }
 
   async getProfileById(id: string): Promise<ProfileWithRelationsModel> {
     return unwrapAndTransformResponse(
       profileRepository.getProfileById(id),
-      ProfileWithRelationsModel,
+      ProfileWithRelationsModel
     );
   }
 
   async getDefaultProfile(): Promise<ProfileWithRelationsModel> {
     return unwrapAndTransformResponse(
       profileRepository.getDefaultProfile(),
-      ProfileWithRelationsModel,
+      ProfileWithRelationsModel
     );
   }
 
@@ -57,7 +57,7 @@ class ProfilesClient implements IProfilesClient {
   async setCalendarPreferences(dto: CalendarPreferences): Promise<SettingsUpdateResponse> {
     return unwrapAndTransformResponse(
       profileRepository.setCalendarPreferences(dto),
-      SettingsUpdateResponse,
+      SettingsUpdateResponse
     );
   }
 }
