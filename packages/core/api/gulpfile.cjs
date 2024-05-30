@@ -1,5 +1,5 @@
-var gulp = require('gulp');
-var del = require('del');
+const gulp = require('gulp');
+const del = require('del');
 
 gulp.task('clean', function () {
   return del('dist/**', { force: true });
