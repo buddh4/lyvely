@@ -69,7 +69,7 @@
       "ignoreDependencyOrder": true,
       "enableParallelism": true,
       "allowWarningsInSuccessfulBuild": false,
-      "incremental": false
+      "incremental": true
     },
     {
       "name": "pwa:dev",
