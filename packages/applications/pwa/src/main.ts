@@ -12,26 +12,28 @@ import { milestonesModule } from '@lyvely/milestones-web';
 import { legalModule } from '@lyvely/legal-web';
 import { registerSW } from 'virtual:pwa-register';
 import { analyticsModule } from '@lyvely/analytics-web';
+import { journalsModule } from '@lyvely/journals-web';
 import { getInjectedEnv } from '@/pwa.helper';
 
 new LyvelyWebApp({
   baseUrl: getInjectedEnv(
     '{{LYVELY_APP_BASEURL}}',
-    import.meta.env.VITE_APP_BASEURL || 'http://127.0.0.1:3000',
+    import.meta.env.VITE_APP_BASEURL || 'http://127.0.0.1:3000'
   ),
   apiUrl: getInjectedEnv(
     '{{LYVELY_API_URL}}',
-    import.meta.env.VITE_APP_API_URL || 'http://127.0.0.1:8080/api',
+    import.meta.env.VITE_APP_API_URL || 'http://127.0.0.1:8080/api'
   ),
   env: getInjectedEnv('{{LYVELY_APP_ENV}}', import.meta.env.VITE_APP_ENV || 'production'),
   modules: [
     activitiesModule(),
     tasksModule(),
+    journalsModule(),
     habitsModule(),
-    analyticsModule(),
-    pwaModule(),
     milestonesModule(),
     legalModule(),
+    analyticsModule(),
+    pwaModule(),
   ],
 })
   .init('#app')
