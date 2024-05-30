@@ -4,7 +4,6 @@ ignores: [
   "cropperjs",
   "@tailwindcss/typography",
   "tailwindcss",
-  "@intlify/unplugin-vue-i18n",
   "@vitejs/plugin-vue",
   "postcss",
   "postcss-import",
