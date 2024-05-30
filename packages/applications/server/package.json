@@ -13,6 +13,7 @@
     "format": "prettier src --write",
     "prettier": "prettier src --check",
     "depcheck": "depcheck --quiet",
+"ncu": "ncu",
     "dev": "cross-env NODE_ENV=development nest start",
     "dev:debug": "cross-env NODE_ENV=development nest start --debug --watch",
     "start": "nest start",

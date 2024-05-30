@@ -9,6 +9,7 @@
     "format": "prettier src --write",
     "prettier": "prettier src --check",
     "depcheck": "depcheck --quiet",
+"ncu": "ncu",
     "build": "rm -rf ./dist/* && tsc -p tsconfig.build.json",
     "prepublish:npm": "pnpm run build",
     "publish:npm": "npm publish --access public",
@@ -23,7 +24,7 @@
     "@lyvely/api": "workspace:*",
     "@lyvely/dates": "workspace:*",
     "@lyvely/calendar-plan-interface": "workspace:*",
-    "reflect-metadata": "^0.1"
+    "reflect-metadata": "^0.1.12 || ^0.2.0"
   },
   "devDependencies": {
     "@lyvely/devtools": "workspace:*",

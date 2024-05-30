@@ -27,7 +27,7 @@
     "jsonwebtoken": "^9.0",
     "mini-svg-data-uri": "^1.4",
     "mongo-seeding": "^4.0",
-    "mongodb": "6.5",
+    "mongodb": "6.6.2",
     "rollup-plugin-node-externals": "^6.1",
     "rollup-plugin-vue": "^6.0",
     "slugify": "^1.6",

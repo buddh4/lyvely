@@ -20,6 +20,7 @@
     "lint": "eslint \"src/**/*.{ts,vue}\" --fix",
     "prettier": "prettier src --check",
     "depcheck": "depcheck --quiet",
+"ncu": "ncu",
     "format": "prettier .  --write"
   },
   "author": "Julian Harrer",
@@ -34,7 +35,7 @@
     "@lyvely/calendar-plan-web": "workspace:*",
     "@lyvely/dates": "workspace:*",
     "@lyvely/timers-interface": "workspace:*",
-    "echarts": "^5.4.2",
+    "echarts": "^5.5",
     "class-validator": "^0.14.0"
   },
   "devDependencies": {

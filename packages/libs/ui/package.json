@@ -28,6 +28,7 @@
     "format": "prettier src --write",
     "prettier": "prettier src --check",
     "depcheck": "depcheck --quiet",
+"ncu": "ncu",
     "test": "vitest",
     "dev": "vite",
     "build": "lyvely-dev build:web && node bin/generate-types.js",
@@ -43,7 +44,6 @@
     "vue": "^3.4",
     "vue-router": "^4.3",
     "@ckpack/vue-color": "^1.5",
-    "@ctrl/tinycolor": "^3.6",
     "@vueuse/core": "^10.9",
     "lodash": "^4.17",
     "randomcolor": "^0.6",
@@ -56,7 +56,7 @@
     "remark-parse": "^11.0",
     "remark-rehype": "^11.0",
     "slugify": "^1.6",
-    "tailwind-merge": "^1.14",
+    "tailwind-merge": "^2.3.0",
     "unified": "^11.0"
   },
   "devDependencies": {
@@ -109,6 +109,7 @@
     "eslint-plugin-prettier": "^5.1",
     "eslint-plugin-vue": "^9.25",
     "prettier-plugin-tailwindcss": "^0.5",
-    "vue-eslint-parser": "^9.4"
+    "vue-eslint-parser": "^9.4",
+    "@ctrl/tinycolor": "^3.6"
   }
 }

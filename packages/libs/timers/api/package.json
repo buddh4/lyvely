@@ -9,6 +9,7 @@
     "format": "prettier src --write",
     "prettier": "prettier src --check",
     "depcheck": "depcheck --quiet",
+"ncu": "ncu",
     "build": "rm -rf ./dist/* && tsc -p tsconfig.build.json",
     "prepublish:npm": "pnpm run build",
     "publish:npm": "npm publish --access public",
@@ -21,7 +22,7 @@
   "license": "AGPL-3.0",
   "dependencies": {
     "@nestjs/mongoose": "^10.0.6",
-    "reflect-metadata": "^0.1",
+    "reflect-metadata": "^0.1.12 || ^0.2.0",
     "@lyvely/api": "workspace:*",
     "@lyvely/common": "workspace:*",
     "@lyvely/timers-interface": "workspace:*"

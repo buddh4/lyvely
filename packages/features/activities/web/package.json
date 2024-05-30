@@ -34,7 +34,7 @@
     "@lyvely/tasks-web": "workspace:*",
     "@lyvely/habits-web": "workspace:*",
     "@lyvely/milestones-web": "workspace:*",
-    "reflect-metadata": "^0.1"
+    "reflect-metadata": "^0.1.12 || ^0.2.0"
   },
   "devDependencies": {
     "@lyvely/devtools": "workspace:*",

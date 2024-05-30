@@ -10,6 +10,7 @@
     "format": "prettier src --write",
     "prettier": "prettier src --check",
     "depcheck": "depcheck --quiet",
+"ncu": "ncu",
     "build:staging": "vite build --mode staging && vue-tsc --emitDeclarationOnly",
     "build:dev": "vite build --mode development && vue-tsc --emitDeclarationOnly"
   },
@@ -31,7 +32,7 @@
     "workbox-window": "^7.1.0",
     "workbox-build": "^7.1.0",
     "workbox-precaching": "^7.1.0",
-    "reflect-metadata": "^0.1"
+    "reflect-metadata": "^0.1.12 || ^0.2.0"
   },
   "devDependencies": {
     "@lyvely/devtools": "workspace:*",
