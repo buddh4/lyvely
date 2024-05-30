@@ -5,6 +5,7 @@ import { computed, ComputedRef, Ref } from 'vue';
 
 interface IProps {
   id: string;
+  props?: Record<string, unknown>;
 }
 
 const props = defineProps<IProps>();
@@ -26,7 +27,7 @@ const componentDefinitions = computed<
       id: definition.id,
       modelValue: !!definition.props?.modelValue,
       component: resolveComponentRegistration(definition.component),
-      props: definition.props || {},
+      props: { ...definition.props, ...props.props },
       on: definition.on || {},
       condition: typeof definition.condition === 'undefined' ? true : definition.condition,
     });
