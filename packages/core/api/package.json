@@ -80,7 +80,7 @@
     "@types/multer": "^1.4.11",
     "@types/pug": "2.0.6",
     "@types/express-serve-static-core": "^4.19.0",
-    "del": "^7.1",
+    "del": "^6.1.1",
     "rimraf": "^5.0",
     "@types/qs": "^6.9.15",
     "gulp": "^5.0.0",
