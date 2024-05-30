@@ -107,6 +107,16 @@ export function isNil(value: any): value is null | undefined {
   return value === null || value === undefined;
 }
 
+/**
+ * Checks if a value is not null or undefined
+ *
+ * @param {any} value - The value to be checked
+ * @return {boolean} - true if the value is null or undefined, false otherwise
+ */
+export function isNotNil<TVal = any>(value: TVal | null | undefined): value is TVal {
+  return !isNil(value);
+}
+
 interface FindByPathOptions {
   returnParent?: boolean;
   create?: boolean;
