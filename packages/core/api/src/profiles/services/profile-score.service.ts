@@ -4,7 +4,7 @@ import { createBaseDocumentInstance } from '@/core';
 import { ProfilesService } from './profiles.service';
 import { Injectable } from '@nestjs/common';
 import { Type } from '@lyvely/common';
-import { ProfileContext } from '@/profiles';
+import { ProfileContext } from '../contexts';
 
 @Injectable()
 export abstract class ProfileScoreService<E extends ProfileScore> {

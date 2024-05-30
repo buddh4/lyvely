@@ -1,6 +1,6 @@
 import { Injectable, CanActivate, ExecutionContext, Inject } from '@nestjs/common';
 import { ProfileRequest } from '../types';
-import { ProfileContext } from '../models';
+import { ProfileContext } from '../contexts';
 import { BaseProfileGuard } from './base-profile.guard';
 import { ProfilePermissionsService } from '../services';
 import { META_PERMISSIONS_SOME, META_PERMISSIONS_STRICT } from '../profiles.constants';

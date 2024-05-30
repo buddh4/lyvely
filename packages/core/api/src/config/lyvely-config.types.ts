@@ -7,8 +7,7 @@ import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.int
 import { ServerOptions } from 'https';
 import { MongooseModuleOptions } from '@nestjs/mongoose/dist/interfaces/mongoose-options.interface';
 import { IFeatureConfig, GlobalPermissionRole, IPermissionConfig } from '@lyvely/interface';
-import type { IStorageProviderDefinition } from '@/files/interfaces';
-import type { ILocalStorageProviderOptions } from '@/files';
+import type { IStorageProviderDefinition, ILocalStorageProviderOptions } from '@/files/interfaces';
 import type { RedisOptions } from 'ioredis/built/redis/RedisOptions';
 
 export type LyvelyMailOptions = MailerOptions & {

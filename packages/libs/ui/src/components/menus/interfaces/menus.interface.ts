@@ -1,5 +1,5 @@
 import { Translatable } from '@/i18n';
-import { IconOptionsIF } from '@/types';
+import { IconOptionsIF } from '@/components/icons';
 import { RouteLocationRaw } from 'vue-router';
 
 export interface IconBindingsIf {

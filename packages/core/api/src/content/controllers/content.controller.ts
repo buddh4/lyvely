@@ -39,7 +39,7 @@ export class ContentController implements ContentEndpoint {
     @Param('cid') cid: string,
     @Request() req: ProtectedProfileContentRequest
   ) {
-    const { profile, user, content } = req;
-    await this.contentService.setMilestone(profile, user, content, model.mid);
+    const { context } = req;
+    await this.contentService.setMilestone(context, model.mid);
   }
 }

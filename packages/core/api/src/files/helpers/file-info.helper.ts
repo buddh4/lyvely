@@ -1,4 +1,4 @@
-import type { IDiskFileInfo, IFileInfo, IMemoryFileInfo } from '@/files';
+import type { IDiskFileInfo, IFileInfo, IMemoryFileInfo } from '../interfaces';
 import { isNil } from '@lyvely/common';
 
 export function isMemoryFile(file: IFileInfo | Express.Multer.File): file is IMemoryFileInfo {

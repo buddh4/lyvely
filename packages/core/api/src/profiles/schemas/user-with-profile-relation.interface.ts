@@ -1,5 +1,6 @@
 import { User } from '@/users';
-import { Profile, UserProfileRelation } from '../schemas';
+import { Profile } from './profiles.schema';
+import { UserProfileRelation } from './user-profile-relations.schema';
 
 export interface IUserWithProfileRelation {
   profile: Profile;

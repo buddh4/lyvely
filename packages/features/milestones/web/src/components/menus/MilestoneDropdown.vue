@@ -8,15 +8,13 @@ import { LyDropdown, LyLoader, LyIcon } from '@lyvely/ui';
 
 interface IProps {
   content: ContentModel;
-  editable?: boolean;
 }
 
-const props = withDefaults(defineProps<IProps>(), {
-  editable: false,
-});
+const props = defineProps<IProps>();
 
 const mid = computed(() => props.content.meta.mid);
 
+const editable = true;
 const isLoaded = ref(!mid.value);
 const milestone = ref<MilestoneModel | null>(null);
 const isMilestone = computed(() => props.content.type === MilestoneModel.contentType);

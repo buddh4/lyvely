@@ -42,19 +42,17 @@ export class MilestonesRelationsService {
     context: ProfileContext,
     milestones: DocumentIdentity<Milestone>[],
     date?: CalendarDateTime
-  ) {
+  ): Promise<MilestoneRelationModel<TObjectId>[]> {
     const { profile, user } = context;
     if (!milestones.length) return [];
 
-    const contents = await this.contentDao.findAllByProfile(
-      profile,
-      DBQuery.and<Content>([
-        ContentCondition.NOT_ARCHIVED,
-        ContentCondition.withMilestones(milestones.map((mid) => assureObjectId(mid))),
-      ])
-    );
+    const contents = await this.contentDao.findAllByFilter(profile, {
+      archived: false,
+      roleLevel: context.getRoleLevel(),
+      conditions: [ContentCondition.withMilestones(milestones.map((mid) => assureObjectId(mid)))],
+    });
 
-    if (!contents.length) return;
+    if (!contents.length) return [];
 
     const contentTypeMap = contents.reduce((map, content) => {
       if (!map.has(content.type)) map.set(content.type, [content]);

@@ -40,10 +40,9 @@ export class MilestonesController
   protected updateResponseType = UpdateMilestoneResponse;
 
   @Get()
-  @Policies(ContentReadPolicy)
   async getAll(@Request() req: ProfileRequest): Promise<MilestoneListResponse> {
-    const { profile } = req;
-    const models = await this.contentService.findAllByProfile(profile, { archived: false });
+    const { context } = req;
+    const models = await this.contentService.findAllByContext(context, { archived: false });
     return new MilestoneListResponse({
       models: models.map((model) => model.toModel() as MilestoneModel<any>),
     });

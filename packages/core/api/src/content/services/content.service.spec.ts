@@ -56,13 +56,13 @@ describe('content dao', () => {
 
   describe('archive', () => {
     it('archive content', async () => {
-      const { owner, member, profile } = await testData.createSimpleGroup();
+      const { owner, ownerContext, member, profile } = await testData.createSimpleGroup();
       const content = await createTestContent(member, profile);
       expect(content.meta.archived).toEqual(false);
       const updatedAt = content.meta.updatedAt;
       await contentService.archive(owner, content);
       expect(content.meta.archived).toEqual(true);
-      const persisted = await contentService.findContentByProfileAndId(profile, content);
+      const persisted = await contentService.findByContextAndId(ownerContext, content);
       expect(persisted?.meta.archived).toEqual(true);
       expect(persisted?.meta.updatedAt).not.toEqual(updatedAt);
       expect(persisted?.meta.updatedBy).toEqual(owner._id);
@@ -71,13 +71,13 @@ describe('content dao', () => {
 
   describe('restore', () => {
     it('restore content', async () => {
-      const { owner, member, profile } = await testData.createSimpleGroup();
+      const { owner, ownerContext, member, profile } = await testData.createSimpleGroup();
       const content = await createTestContent(member, profile, true);
       expect(content.meta.archived).toEqual(true);
       const updatedAt = content.meta.updatedAt;
       await contentService.restore(owner, content);
       expect(content.meta.archived).toEqual(false);
-      const persisted = await contentService.findContentByProfileAndId(profile, content);
+      const persisted = await contentService.findByContextAndId(ownerContext, content);
       expect(persisted?.meta.archived).toEqual(false);
       expect(persisted?.meta.updatedAt).not.toEqual(updatedAt);
       expect(persisted?.meta.updatedBy).toEqual(owner._id);

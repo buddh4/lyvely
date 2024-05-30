@@ -1,9 +1,18 @@
-import { buildContentFilterQuery, Content } from '../schemas';
-import { assureObjectId, DocumentIdentity, UpdateQuerySet, UpdateQuery } from '@/core';
+import { Content } from '../schemas';
+import { buildContentFilterQuery } from './content-query.builder';
+import {
+  assureObjectId,
+  DocumentIdentity,
+  UpdateQuerySet,
+  UpdateQuery,
+  IFetchQueryOptions,
+  IBaseFetchQueryOptions,
+  type FilterQuery,
+} from '@/core';
 import { ProfileShardDao, Profile, type ProfileShardData } from '@/profiles';
 import { User } from '@/users';
 import { SortResult } from '@lyvely/interface';
-import { IContentSearchFilter } from '@/content';
+import { IContentSearchFilter } from './content-search-filter.interface';
 
 /**
  * An abstract class representing a DAO (Data Access Object) for ContentTypes.
@@ -14,6 +23,7 @@ import { IContentSearchFilter } from '@/content';
  */
 export abstract class ContentTypeDao<
   T extends Content,
+  TFilter extends IContentSearchFilter = IContentSearchFilter,
   TVersions extends Content = T,
 > extends ProfileShardDao<T, TVersions> {
   protected override getModelType(): string | null {
@@ -25,13 +35,15 @@ export abstract class ContentTypeDao<
    *
    * @param profileRelation
    * @param {IContentSearchFilter} filter - The filter object used to search for items.
+   * @param options
    * @return {Promise<T>} - A promise that will resolve to the array of filtered items.
    */
   async findAllByFilter(
     profileRelation: ProfileShardData,
-    filter?: IContentSearchFilter
+    filter?: TFilter,
+    options?: IFetchQueryOptions<T>
   ): Promise<T[]> {
-    return this.findAllByProfile(profileRelation, buildContentFilterQuery(filter) || {});
+    return this.findAllByProfile(profileRelation, this.buildFilterQuery(filter) || {}, options);
   }
 
   /**
@@ -39,13 +51,28 @@ export abstract class ContentTypeDao<
    *
    * @param profileRelation
    * @param {IContentSearchFilter} filter - The filter object used to search for items.
+   * @param options
    * @return {Promise<T>} - A promise that will resolve to the array of filtered items.
    */
   async findOneByFilter(
     profileRelation: ProfileShardData,
-    filter?: IContentSearchFilter
+    filter?: TFilter,
+    options?: IBaseFetchQueryOptions<T>
   ): Promise<T | null> {
-    return this.findOneByProfile(profileRelation, buildContentFilterQuery(filter) || {});
+    return this.findOneByProfile(profileRelation, this.buildFilterQuery(filter) || {}, options);
+  }
+
+  /**
+   * Builds a filter query based on the given filter object.
+   *
+   * Subclasses may overwrite this function to add additional filter.
+   *
+   * @param {TFilter} filter - The filter object to build the query from.
+   * @protected
+   * @return {FilterQuery<T> | undefined} - The filter query object or undefined if the filter is not provided.
+   */
+  protected buildFilterQuery(filter?: TFilter): FilterQuery<T> | undefined {
+    return buildContentFilterQuery<T, TFilter>(filter);
   }
 
   /**

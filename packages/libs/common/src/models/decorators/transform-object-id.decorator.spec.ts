@@ -1,5 +1,5 @@
 import { TransformObjectId } from './transform-object-id.decorator';
-import { BaseModel } from '../base.model';
+import { BaseModel } from '../util';
 import { instanceToPlain } from 'class-transformer';
 
 describe('TransformObjectIdDecorator', () => {

@@ -1,5 +1,5 @@
 import { Exclude, Expose, instanceToPlain } from 'class-transformer';
-import { BaseModel } from './base.model';
+import { BaseModel } from './model-assign.util';
 
 class MockObjectId {
   constructor(value: any) {

@@ -17,7 +17,7 @@ import {
   UserProfile,
   UserProfileRelation,
 } from '../schemas';
-import { ProfileContext, ProtectedProfileContext } from '../models';
+import { ProfileContext, ProtectedProfileContext } from '../contexts';
 import { createBaseDocumentInstance, createObjectId, Model } from '@/core';
 import { getObjectId as mongoSeedingGetObjectId } from 'mongo-seeding';
 

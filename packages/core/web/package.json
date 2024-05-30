@@ -31,10 +31,10 @@
     "format": "prettier src --write",
     "prettier": "prettier src --check",
     "depcheck": "depcheck --quiet",
-"ncu": "ncu",
+    "ncu": "ncu",
     "dev": "vite",
     "dev:e2e": "cross-env NODE_ENV=e2e pnpm run dev",
-    "deps": "npx depcruise --config .dependency-cruiser.js src"
+    "deps": "pnpm depcruise --config .dependency-cruiser.js src"
   },
   "dependencies": {
     "@ckpack/vue-color": "^1.5",

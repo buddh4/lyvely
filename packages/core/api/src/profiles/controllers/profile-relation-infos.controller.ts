@@ -11,7 +11,7 @@ import {
   DocumentNotFoundException,
 } from '@lyvely/interface';
 import { mapType } from '@lyvely/common';
-import { ProfileContext } from '../models';
+import { ProfileContext } from '../contexts';
 import { GlobalController } from '@/common';
 
 @GlobalController(API_PROFILE_RELATION_INFOS)

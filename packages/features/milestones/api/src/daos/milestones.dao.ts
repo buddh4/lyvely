@@ -1,15 +1,16 @@
-import { ContentTypeDao, Model, Profile, IFetchQueryOptions } from '@lyvely/api';
+import { Model } from '@lyvely/api';
 import { Milestone } from '../schemas';
 import { InjectModel } from '@nestjs/mongoose';
-import { ICalendarPlanDao } from '@lyvely/calendar-plan';
-import { CalendarInterval } from '@lyvely/dates';
+import { CalendarPlanDao } from '@lyvely/calendar-plan';
 
-export class MilestonesDao
-  extends ContentTypeDao<Milestone>
-  implements ICalendarPlanDao<Milestone>
-{
+export class MilestonesDao extends CalendarPlanDao<Milestone> {
   @InjectModel(Milestone.name)
   protected model: Model<Milestone>;
+
+  /**
+   * Defines the document query path of the interval field.
+   */
+  override intervalPath = 'config.interval';
 
   getModelConstructor() {
     return Milestone;
@@ -17,13 +18,5 @@ export class MilestonesDao
 
   getModuleId(): string {
     return 'milestones';
-  }
-
-  findByProfileAndInterval(
-    profile: Profile,
-    plan: CalendarInterval,
-    options: IFetchQueryOptions<Milestone>
-  ): Promise<Milestone[]> {
-    return this.findAllByProfile(profile, { 'config.interval': plan }, options);
   }
 }

@@ -2,11 +2,13 @@ import {
   IModule,
   translation,
   registerContentType,
+  STACK_CONTENT_DETAILS_HEAD_ADDITION,
+  IContentDetailsHeadAdditionStackSpec,
   MENU_PROFILE_DRAWER,
   MENU_PROFILE_MOBILE_FOOTER,
   useProfileFeatureStore,
 } from '@lyvely/web';
-import { registerMenuEntry } from '@lyvely/ui';
+import { registerComponentStackEntry, registerMenuEntry } from '@lyvely/ui';
 import {
   MilestoneModel,
   CreateMilestoneModel,
@@ -73,6 +75,15 @@ export default () => {
           },
         },
       });
+
+      registerComponentStackEntry<IContentDetailsHeadAdditionStackSpec>(
+        STACK_CONTENT_DETAILS_HEAD_ADDITION,
+        {
+          id: 'milestone-chooser',
+          component: () => import('./components/menus/MilestoneDropdown.vue'),
+          sortOrder: 100,
+        }
+      );
     },
   } as IModule;
 };

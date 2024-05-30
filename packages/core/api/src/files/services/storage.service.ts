@@ -4,12 +4,13 @@ import type {
   IStorageProvider,
   IStorageProviderDefinition,
   IStorageService,
+  ILocalStorageProviderOptions,
 } from '../interfaces';
 import { ConfigService } from '@nestjs/config';
 import { Injectable, Logger } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import type { IStorageConfig, LyvelyFileOptions, ServerConfiguration } from '@/config';
-import { ILocalStorageProviderOptions, LocalStorageProvider } from '../providers';
+import { LocalStorageProvider } from '../providers';
 import { IntegrityException, MisconfigurationException } from '@lyvely/interface';
 import { FileUpload } from '../models';
 import { createBaseModelAndInit, isGuid, type Type } from '@lyvely/common';

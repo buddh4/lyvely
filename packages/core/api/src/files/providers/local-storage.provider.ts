@@ -8,15 +8,11 @@ import { rename, unlink, access, mkdir, writeFile } from 'node:fs/promises';
 import { REGEX_STORAGE_BUCKET } from '../files.constants';
 import type { Readable } from 'node:stream';
 import fs from 'node:fs';
-import type { FileAccess } from '../interfaces';
+import type { FileAccess, ILocalStorageProviderOptions } from '../interfaces';
 import { ConfigService } from '@nestjs/config';
 import { Logger } from '@nestjs/common';
 import { isMemoryFile } from '@/files/helpers/file-info.helper';
 import { copyFile } from 'fs/promises';
-
-export interface ILocalStorageProviderOptions {
-  dest?: string;
-}
 
 /**
  * The LocalStorageProvider class provides methods to interact with the local file system for file storage.

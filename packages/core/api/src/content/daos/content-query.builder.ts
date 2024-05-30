@@ -1,7 +1,7 @@
 import { FilterQuery, assureObjectId, DocumentIdentity, DBQuery } from '@/core';
-import { Content } from './content.schema';
+import { Content } from '../schemas/content.schema';
 import { ProfileRoleLevel } from '@lyvely/interface';
-import { IContentSearchFilter } from '@/content';
+import { IContentSearchFilter } from './content-search-filter.interface';
 import { isNotNil } from '@lyvely/common';
 
 export class ContentCondition {
@@ -34,14 +34,21 @@ export class ContentCondition {
   }
 }
 
-export function buildContentFilterQuery(
-  filter?: IContentSearchFilter
-): FilterQuery<Content> | undefined {
+export function buildContentFilterQuery<
+  T extends Content = Content,
+  TFilter extends IContentSearchFilter = IContentSearchFilter,
+>(filter?: TFilter): FilterQuery<T> | undefined {
   if (!filter) return undefined;
 
-  return DBQuery.and([
+  const conditions = [
     isNotNil(filter.cid) ? ContentCondition.cid(filter.cid!) : null,
     isNotNil(filter.archived) ? ContentCondition.archived(filter.archived!) : null,
     isNotNil(filter.roleLevel) ? ContentCondition.visibility(filter.roleLevel!) : null,
-  ]);
+  ];
+
+  if (isNotNil(filter.conditions)) {
+    conditions.push(...filter.conditions);
+  }
+
+  return DBQuery.and(conditions);
 }

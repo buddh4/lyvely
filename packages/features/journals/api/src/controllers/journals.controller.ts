@@ -65,8 +65,8 @@ export class JournalsController
     @Body() dto: CalendarPlanSort,
     @Request() req: ProtectedProfileContentRequest<Journal>
   ): Promise<SortResponse> {
-    const { context, content } = req;
-    const sort = await this.timeSeriesService.sort(context, content, dto.interval, dto.attachToId);
+    const { context } = req;
+    const sort = await this.timeSeriesService.sort(context, dto.interval, dto.attachToId);
     return new SortResponse({ sort });
   }
 

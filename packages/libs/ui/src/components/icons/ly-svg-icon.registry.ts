@@ -1,9 +1,4 @@
-export interface LySvgIconDefinitionIF {
-  name: string;
-  alias?: string[];
-  viewBox: string;
-  paths: string[];
-}
+import type { LySvgIconDefinitionIF } from './ly-svg-icon-definition.interface';
 
 export const LySvgIcons: { [n: string]: LySvgIconDefinitionIF } = {
   play: {

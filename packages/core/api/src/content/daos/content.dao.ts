@@ -2,7 +2,7 @@ import { Content } from '../schemas';
 import { Injectable } from '@nestjs/common';
 import { ContentTypeRegistry } from '../components';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, DocumentIdentity, LeanDoc } from '@/core';
+import { Model, DocumentIdentity, LeanDoc, TObjectId } from '@/core';
 import { ContentTypeDao } from './content-type.dao';
 import { ProfileShardData } from '@/profiles';
 
@@ -26,6 +26,14 @@ export class ContentDao extends ContentTypeDao<Content> {
       { $inc: { 'meta.childCount': 1 } },
       { 'meta.childCount': { $gt: 0 } }
     );
+  }
+
+  updateMilestone(
+    context: ProfileShardData,
+    content: DocumentIdentity<Content>,
+    mid: TObjectId | string
+  ) {
+    return this.updateOneByProfileAndIdSet(context, content, { 'meta.mid': mid });
   }
 
   getModelConstructor(model: LeanDoc<Content>) {

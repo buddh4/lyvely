@@ -1,7 +1,13 @@
 import { Profile, ProfileContext, ProfileTagsService, ProtectedProfileContext } from '@/profiles';
-import { ContentTypeDao, ContentDao } from '../daos';
+import { ContentTypeDao, ContentDao, IContentSearchFilter } from '../daos';
 import { User } from '@/users';
-import { assureObjectId, DocumentIdentity, UpdateQuerySet } from '@/core';
+import {
+  assureObjectId,
+  DocumentIdentity,
+  IBaseFetchQueryOptions,
+  IFetchQueryOptions,
+  UpdateQuerySet,
+} from '@/core';
 import { Content } from '../schemas';
 import {
   DocumentNotFoundException,
@@ -10,7 +16,8 @@ import {
 } from '@lyvely/interface';
 import { Inject, Logger } from '@nestjs/common';
 import { ContentEventPublisher } from '../components';
-import { IContentSearchFilter, IContentUpdateOptions } from '../interfaces';
+import { IContentUpdateOptions } from '../interfaces';
+import { ContentPolicyService } from '@/content';
 
 /**
  * Base service class for content types, responsible for common fetch and update scenarios as well as providing a
@@ -24,14 +31,15 @@ export abstract class ContentTypeService<
   T extends Content,
   TCreateModel extends CreateContentModel,
   TUpdateModel extends Partial<TCreateModel> = Partial<TCreateModel>,
+  TFilter extends IContentSearchFilter = IContentSearchFilter,
 > {
   /** Content type specific dao, used for general data access. **/
-  protected abstract contentDao: ContentTypeDao<T>;
+  protected abstract contentDao: ContentTypeDao<T, TFilter>;
 
   /** Class specific logger. **/
   protected abstract logger: Logger;
 
-  /** ProfileTagsService, responsible for creating new tags assigned to content. **/
+  /** Responsible for creating new tags assigned to content. **/
   @Inject()
   protected profileTagsService: ProfileTagsService;
 
@@ -39,9 +47,13 @@ export abstract class ContentTypeService<
   @Inject()
   private baseContentDao: ContentDao;
 
-  /** ContentEventPublisher, responsible for triggering content specific events. **/
+  /** Responsible for triggering content specific events. **/
   @Inject()
   protected contentEvents: ContentEventPublisher;
+
+  /** Responsible for populating content policies. **/
+  @Inject()
+  protected contentPolicyService: ContentPolicyService;
 
   /**
    * Template function, responsible for creating an actual content model by create model.
@@ -72,58 +84,58 @@ export abstract class ContentTypeService<
   ): Promise<UpdateQuerySet<T>>;
 
   /**
-   * Finds all content type models associated with the given profile and filtered by the given filter.
+   * Finds a single content document of this type and populates its content policies. When using this function, you either need to
+   * manually validate the required policies or use the `roleLevel` search filter.
    *
-   * Note: When searching for user accessible content, the `findAllByContext` should be preferred unless you
-   * have a good reason to not use it. In this case you need to manage and validate the `roleLevel` filter manually.
-   *
-   * @param {Profile} profile - The profile to search for.
-   * @param {IContentSearchFilter} [filter] - Optional filter for the search.
-   * @returns {Promise<T[]>} - A promise that resolves to an array of objects of type T.
-   */
-  async findAllByProfile(profile: Profile, filter?: IContentSearchFilter): Promise<T[]> {
-    return this.contentDao.findAllByFilter(profile, filter);
-  }
-
-  /**
-   * Finds all content type models visible for the given context.
-   *
-   * @param {Profile} context - The profile context to search for.
-   * @param {IContentSearchFilter} [filter] - Optional filter for the search.
-   * @returns {Promise<T[]>} - A promise that resolves to an array of objects of type T.
-   */
-  async findAllByContext(context: ProfileContext, filter?: IContentSearchFilter): Promise<T[]> {
-    filter = { ...filter, roleLevel: context.getRoleLevel() };
-    return this.contentDao.findAllByFilter(context.profile, filter);
-  }
-
-  /**
-   * Finds a document by its profile and id.
-   *
-   * Note: When searching for user accessible content, the `findByContextAndId` should be preferred unless you
-   * have a good reason to not use it. In this case you need to manage and validate the `roleLevel` filter manually.
-   *
-   * @param {Profile} profile - The profile of the document.
-   * @param {DocumentIdentity<T>} id - The id of the document.
-   *
-   * @return {Promise<T | null>} A Promise that resolves to the found document, or null if not found.
-   */
-  async findByProfileAndId(profile: Profile, id: DocumentIdentity<T>): Promise<T | null> {
-    return this.contentDao.findByProfileAndId(profile, id);
-  }
-
-  /**
-   * Finds a specific content document visible for the given profile relation context.
-   *
-   * @return {Promise<T | null>} A Promise that resolves to the found document, or null if not found.
    * @param context
    * @param cid
+   * @param filter
+   * @param options
+   * @private
+   * @throws ForbiddenException
    */
-  async findByContextAndId(context: ProfileContext, cid: DocumentIdentity<T>): Promise<T | null> {
-    return this.contentDao.findOneByFilter(context.profile, {
-      cid,
-      roleLevel: context.getRoleLevel(),
-    });
+  public async findByContextAndId(
+    context: ProfileContext,
+    cid: DocumentIdentity<Content>,
+    filter?: TFilter,
+    options?: IBaseFetchQueryOptions<T>
+  ): Promise<T | null> {
+    const content = await this.contentDao.findOneByFilter(
+      context.profile,
+      {
+        ...filter,
+        cid,
+      } as TFilter,
+      options
+    );
+
+    if (!content) return null;
+
+    await this.contentPolicyService.populateContentPolicies(context, content);
+
+    return content;
+  }
+
+  /**
+   * Finds all content documents of this type filtered by the given filter and populates its content policies. When using this function, you either need to
+   * manually validate the required policies or use the `roleLevel` search filter.
+   *
+   * @param context
+   * @param filter
+   * @param options
+   * @private
+   * @throws ForbiddenException
+   */
+  async findAllByContext(
+    context: ProfileContext,
+    filter?: TFilter,
+    options?: IFetchQueryOptions<T>
+  ): Promise<T[]> {
+    const contents = await this.contentDao.findAllByFilter(context.profile, filter, options);
+
+    await this.contentPolicyService.populateContentPolicies(context, contents);
+
+    return contents;
   }
 
   /**
@@ -156,7 +168,7 @@ export abstract class ContentTypeService<
     const instance = await this.createInstance(context, model);
 
     // This needs to be the first step since we throw an exception in case the parent does not exist
-    const parent = await this.handleSubContentCreation(profile, instance, model);
+    const parent = await this.handleSubContentCreation(context, instance, model);
 
     instance.tagIds = profile.getTagIdsByName(model.tagNames || []);
     instance.meta.createdBy = assureObjectId(user);
@@ -271,7 +283,7 @@ export abstract class ContentTypeService<
   /**
    * Handles the creation of sub content.
    *
-   * @param {Profile} profile - The profile of the user creating the sub content.
+   * @param context
    * @param {T} instance - The instance of the sub content being created.
    * @param {TCreateModel} model - The model containing the data for creating the sub content.
    *
@@ -281,13 +293,24 @@ export abstract class ContentTypeService<
    * @throws {DocumentNotFoundException} - If the parent content is not found.
    * @throws {ForbiddenServiceException} - If the parent content is archived or locked.
    */
-  private async handleSubContentCreation(profile: Profile, instance: T, model: TCreateModel) {
-    if (!model.parentId) return;
+  private async handleSubContentCreation(
+    context: ProtectedProfileContext,
+    instance: T,
+    model: TCreateModel
+  ): Promise<Content | null> {
+    if (!model.parentId) return null;
+
+    const { profile } = context;
 
     const parent = await this.baseContentDao.findByProfileAndId(profile, model.parentId);
+
     if (!parent) throw new DocumentNotFoundException();
     if (!parent.pid.equals(profile._id)) throw new DocumentNotFoundException();
     if (parent.meta.archived || parent.meta.locked) throw new ForbiddenServiceException();
+    if (!parent.getTypeMeta().commentable) throw new ForbiddenServiceException();
+    if (!(await this.contentPolicyService.canRead(context, parent))) {
+      throw new ForbiddenServiceException();
+    }
 
     instance.meta.parentId = parent._id;
     instance.meta.parentPath = parent.meta.parentPath

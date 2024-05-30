@@ -10,7 +10,7 @@ import {
   ProfileMembershipRole,
   ProfileType,
 } from '@lyvely/interface';
-import type { ProfileMembershipContext } from '../models';
+import type { ProfileMembershipContext } from '../contexts';
 
 @Injectable()
 export class ProfileMembershipService {

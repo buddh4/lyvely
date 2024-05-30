@@ -15,12 +15,13 @@ import { BaseProfileGuard, META_PERMISSIONS_SOME, META_PERMISSIONS_STRICT } from
 import { ContentPermissionsService } from '@/content/services/content-permissions.service';
 
 /**
- * This guard will try to extract a content id, usually by :cid parameter and will add a ProfileContentContext to the
- * request and a permission check supporting the @@Permissions and @StrictPermissions decorators for global, profile and content level permissions.
+ * This guard will try to extract a content id, usually from a :cid parameter and will add a ProfileContentContext to the
+ * request.
  *
- * Subclasses may add additional access checks by overwriting `canActivateContent`.
+ * By itself, this guard does not run any checks other than ensuring the content exists. Other checks can be added by
+ * using for example `@Permissions` and `@Policies` decorators.
  *
- * Other access checks can be applied on controller level by adding policies to the endpoint.
+ * Subclasses may add additional restrictions by overwriting `canActivateContent`.
  */
 export abstract class AbstractContentGuard<C extends Content = Content>
   extends BaseProfileGuard
@@ -47,7 +48,7 @@ export abstract class AbstractContentGuard<C extends Content = Content>
 
     const request = context.switchToHttp().getRequest<ProfileContentRequest<C>>();
     const contentId = this.getContentIdFromRequest(request, context);
-    const { profile, context: profileContentContext } = request;
+    const { context: profileContentContext } = request;
 
     if (!request.content && !contentId && this.isContentRequired()) {
       throw new DocumentNotFoundException();
@@ -58,14 +59,13 @@ export abstract class AbstractContentGuard<C extends Content = Content>
     }
 
     const content =
-      request.content || (await this.contentService.findContentByProfileAndId(profile, contentId));
+      request.content ||
+      (await this.contentService.findByContextAndId(profileContentContext, contentId));
 
-    if (!content) return false;
+    if (!content) throw new DocumentNotFoundException();
 
     request.content = profileContentContext.content = content as C;
     request.context = new ProfileContentContext<any>({ ...request.context, content });
-
-    await this.contentService.populateContentPolicies(request.content, request.context);
 
     return (
       this.verifyPermissions(request.context, context) &&

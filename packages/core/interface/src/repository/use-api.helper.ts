@@ -1,5 +1,5 @@
 import { useApiRepository } from './api.repository';
-import { AxiosResponse, AxiosRequestConfig } from 'axios';
+import type { AxiosResponse, AxiosRequestConfig } from 'axios';
 import { EndpointResult, setProfileApiPrefix } from '@/endpoints';
 import { isPlainObject } from '@lyvely/common';
 import { errorToServiceException } from '@/exceptions';

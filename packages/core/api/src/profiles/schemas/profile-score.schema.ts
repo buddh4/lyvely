@@ -3,13 +3,13 @@ import { BaseDocument, ObjectIdArrayProp, ObjectIdProp, TObjectId } from '@/core
 import { getNumberEnumValues, type PartialPropertiesOf } from '@lyvely/common';
 import { CalendarPreferences, UserAssignmentStrategy } from '@lyvely/interface';
 import { CalendarDate, CalendarInterval, parseTimingId, toDate, toTimingId } from '@lyvely/dates';
-import { ProtectedProfileContext } from '@/profiles';
+import type { IUserWithProfile } from './user-with-profile.interface';
 
 /**
  * Represents the data required to create a profile score.
  */
 export interface ICreateProfileScore {
-  context: ProtectedProfileContext;
+  context: IUserWithProfile;
   score: number;
   title?: string;
   /**

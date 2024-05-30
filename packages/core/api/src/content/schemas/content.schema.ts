@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory, ModelDefinition } from '@nestjs/mongoose';
-import { PropertyType, assignRawDataTo, Type, PropertiesOf, BaseModel } from '@lyvely/common';
+import { PropertyType, assignRawDataTo, Type, BaseModel } from '@lyvely/common';
 import {
   IContent,
   ContentModel,
@@ -18,14 +18,7 @@ import { ContentLog, ContentLogSchema } from './content-log.schema';
 import { ContentMetadata, ContentMetadataSchema } from './content-metadata.schema';
 import { CreatedAs, Author } from './content-author.schema';
 import { OptionalUser, User } from '@/users';
-import {
-  Profile,
-  ProfileShard,
-  Tag,
-  ProfileContext,
-  ProtectedProfileContext,
-  type ProfileContextData,
-} from '@/profiles';
+import { Profile, ProfileShard, Tag, ProfileContext, type ProfileContextData } from '@/profiles';
 import { ContentDataType, ContentDataTypeSchema } from './content-data-type.schema';
 import { IPolicy } from '@/policies';
 import type { IContentPolicies } from '@lyvely/interface';
@@ -37,7 +30,9 @@ export class ProfileContentContext<
   content: TContent;
 
   constructor(
-    data: ProfileContextData<ProfileContentContext<TContent, TProfile>> & { content: TContent }
+    data:
+      | (ProfileContextData<ProfileContentContext<TContent, TProfile>> & { content: TContent })
+      | false
   ) {
     super(false);
     BaseModel.init(this, data);
@@ -55,10 +50,16 @@ export class ProfileContentContext<
 export class ProtectedProfileContentContext<
   TContent extends Content = Content,
   TProfile extends Profile = Profile,
-> extends ProtectedProfileContext<TProfile> {
-  content: TContent;
+> extends ProfileContentContext<TContent, TProfile> {
+  override user: User;
 
-  constructor(data: PropertiesOf<ProtectedProfileContentContext<TContent, TProfile>>) {
+  constructor(
+    data:
+      | (ProfileContextData<ProtectedProfileContentContext<TContent, TProfile>> & {
+          content: TContent;
+        })
+      | false
+  ) {
     super(false);
     BaseModel.init(this, data);
   }

@@ -5,6 +5,7 @@ import {
   UpdateChartSeriesModel,
   UpdateChartModel,
   TIME_SERIES_CHART,
+  CreateChartSeriesModel,
 } from '@lyvely/analytics-interface';
 import {
   I18nModelValidator,
@@ -14,7 +15,6 @@ import {
   useStatus,
 } from '@lyvely/web';
 import { useChartsStore } from '@/store/charts.store';
-import { CreateChartSeriesModel } from '@lyvely/analytics-interface/src';
 
 const model = ref(new UpdateChartModel({}));
 const showModal = ref(false);

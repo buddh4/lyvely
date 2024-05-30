@@ -32,7 +32,7 @@ import {
   UpdateProfileModel,
 } from '@lyvely/interface';
 import { ProfileAvatarService, ProfileRelationsService, ProfilesService } from '../services';
-import { ProfileContext, ProtectedProfileContext } from '../models';
+import { ProfileContext, ProtectedProfileContext } from '../contexts';
 import { OptionalUserRequest, UserRequest, UserThrottle, UserThrottlerGuard } from '@/users';
 import { ProfileVisibilityPolicy } from '../policies';
 import { InjectPolicy } from '@/policies';

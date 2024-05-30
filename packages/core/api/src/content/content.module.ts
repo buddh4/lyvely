@@ -2,7 +2,12 @@ import { Global, Inject, Injectable, Module, OnModuleInit, Scope, Type } from '@
 import { UsersModule } from '@/users';
 import { Content, ContentSchema, ContentScore, ContentScoreSchema } from './schemas';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ContentScoreService, ContentService, ContentStreamService } from './services';
+import {
+  ContentScoreService,
+  ContentService,
+  ContentStreamService,
+  ContentPolicyService,
+} from './services';
 import { ProfileScore, ProfilesModule } from '@/profiles';
 import { ContentDao, ContentScoreDao } from './daos';
 import {
@@ -55,6 +60,7 @@ const ContentScoreActionModel = MongooseModule.forFeature([
   controllers: [ContentController, ContentStreamController],
   providers: [
     ContentService,
+    ContentPolicyService,
     ContentDao,
     ContentEventPublisher,
     ContentTypeRegistry,
@@ -67,6 +73,7 @@ const ContentScoreActionModel = MongooseModule.forFeature([
   ],
   exports: [
     ContentService,
+    ContentPolicyService,
     ContentDao,
     ContentScoreService,
     ContentTypeRegistry,

@@ -50,14 +50,8 @@ export class MilestonePlanController implements MilestonePlanEndpoint {
     @Body() dto: CalendarPlanSort,
     @Request() req: ProtectedProfileContentRequest<Milestone>
   ) {
-    const { context, content } = req;
-
-    const sort = await this.calendarPlanService.sort(
-      context,
-      content,
-      dto.interval,
-      dto.attachToId
-    );
+    const { context } = req;
+    const sort = await this.calendarPlanService.sort(context, dto.interval, dto.attachToId);
     return new SortResponse({ sort });
   }
 }

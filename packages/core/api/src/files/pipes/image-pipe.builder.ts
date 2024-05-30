@@ -8,7 +8,8 @@ import {
   FileTypeValidator,
   ParseFilePipe,
 } from '@nestjs/common';
-import { type IFileInfo, type ImageMime, MimeTypeValidator } from '@/files';
+import { type IFileInfo, type ImageMime } from '../interfaces';
+import { MimeTypeValidator } from '../validators';
 import { ImageTransformationPipe } from '@/files/pipes/image-transformation.pipe';
 import { IMAGE_MIME_TYPES } from '@/files/files.constants';
 

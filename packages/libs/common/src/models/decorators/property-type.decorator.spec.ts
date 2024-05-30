@@ -1,5 +1,5 @@
 import { PropertyType } from './property-type.decorator';
-import { BaseModel } from '../base.model';
+import { BaseModel } from '../util';
 import { plainToClass } from 'class-transformer';
 
 describe('PropertyType', () => {

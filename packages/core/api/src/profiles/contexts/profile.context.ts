@@ -1,20 +1,23 @@
 import { Membership, Organization, Profile, UserProfileRelation } from '../schemas';
-import { IOptionalUserContext, IUserContext, User } from '@/users';
 import { useUserProfileRelationHelper } from '../helpers';
-import { BaseModel, type BaseModelData, PropertyType } from '@lyvely/common';
+import { IOptionalUserContext, User } from '@/users';
+import type { BaseModelData } from '@lyvely/common';
 import {
-  BaseUserProfileRelationType,
   getProfileRelationRole,
+  getProfileRoleLevel,
+  UserStatus,
+  ProfileMembershipRole,
+} from '@lyvely/interface';
+import type {
+  BaseUserProfileRelationType,
+  IProfilePermissionObject,
   IPermissionSetting,
   IProfilePermissionData,
-  IProfilePermissionObject,
-  ProfileMembershipRole,
   ProfileRelationRole,
   ProfileRoleLevel,
-  UserStatus,
-  getProfileRoleLevel,
 } from '@lyvely/interface';
-import { IUserWithProfileRelation } from '../interfaces/user-with-profile-relation.interface';
+import { BaseModel, PropertyType } from '@lyvely/common';
+import type { IOptionalUserWithProfile } from '../schemas';
 
 export type ProfileContextData<T extends ProfileContext = ProfileContext> = BaseModelData<
   Omit<T, 'oid' | 'pid' | 'organization'>
@@ -27,7 +30,7 @@ export type ProfileContextData<T extends ProfileContext = ProfileContext> = Base
  * @template T - The type of the profile.
  */
 export class ProfileContext<TProfile extends Profile = Profile>
-  implements IOptionalUserContext, IProfilePermissionObject
+  implements IOptionalUserContext, IProfilePermissionObject, IOptionalUserWithProfile
 {
   /**
    * Represents the user of the context.
@@ -229,29 +232,4 @@ export class ProfileContext<TProfile extends Profile = Profile>
   getProfilePermissionData(): IProfilePermissionData {
     return this.profile;
   }
-}
-
-/**
- * Represents a profile context for authenticated users, which means it does not support visitors.
- */
-export class ProtectedProfileContext<T extends Profile = Profile>
-  extends ProfileContext<T>
-  implements IUserContext, IUserWithProfileRelation
-{
-  override user: User;
-
-  constructor(data: ProfileContextData<ProtectedProfileContext<T>>) {
-    super(false);
-    BaseModel.init(this, data);
-  }
-}
-
-/**
- * Represents a profile context for member users. This can be used on endpoints with a membership guard.
- */
-// eslint-disable-next-line @typescript-eslint/naming-convention
-export interface ProfileMembershipContext<T extends Profile = Profile>
-  extends ProtectedProfileContext<T> {
-  getMembership(): Membership;
-  getMembership(...roles: ProfileMembershipRole[]): Membership | undefined;
 }

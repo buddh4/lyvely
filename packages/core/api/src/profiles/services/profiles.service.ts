@@ -18,7 +18,7 @@ import {
   CreateOrganizationProfilePermission,
 } from '@lyvely/interface';
 import { MembershipsDao, ProfileDao } from '../daos';
-import { ProfileContext, ProtectedProfileContext } from '../models';
+import { ProfileContext, ProtectedProfileContext } from '../contexts';
 import slugify from 'slugify';
 import {
   assureObjectId,

@@ -1,6 +1,6 @@
 import { Avatar, AvatarService } from '@/avatars';
 import { Injectable } from '@nestjs/common';
-import type { ProfileMembershipContext } from '../models';
+import type { ProfileMembershipContext } from '../contexts';
 import { ProfileDao } from '../daos';
 import type { IFileInfo } from '@/files';
 

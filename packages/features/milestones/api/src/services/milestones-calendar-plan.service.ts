@@ -1,11 +1,12 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Milestone } from '../schemas';
-import { Profile, ContentCondition, DBQuery, FilterQuery, ProfileContext } from '@lyvely/api';
+import { Profile, ProfileContext } from '@lyvely/api';
 import { CalendarInterval } from '@lyvely/dates';
 import { CalendarPlanFilter, SortableCalendarPlanService } from '@lyvely/calendar-plan';
 import { MilestonesDao } from '../daos';
 import { MilestonesRelationsService } from './milestones-relations.service';
-import { isDefined } from 'class-validator';
+import { MilestoneRelationModel } from '@lyvely/milestones-interface';
+import type { TObjectId } from '@lyvely/api';
 
 /**
  * Service for managing milestones in a calendar plan.
@@ -23,34 +24,16 @@ export class MilestonesCalendarPlanService extends SortableCalendarPlanService<M
   protected relationsService: MilestonesRelationsService;
 
   /**
-   * Find milestones by filter.
+   * Find milestones with relations.
    *
    * @param {ProfileContext} context - The profile context.
    * @param {CalendarPlanFilter} filter - The filter to apply.
-   * @return {Promise<Array<Milestone>>} - A promise that resolves to an array of milestones that match the filter.
+   * @return {Promise<{ models: Milestone[], relations: MilestoneRelationModel<TObjectId>[] }>} - The promise that resolves to an object containing the found milestones and their relations.
    */
-  findByFilter(context: ProfileContext, filter: CalendarPlanFilter): Promise<Array<Milestone>> {
-    const conditions: FilterQuery<Milestone>[] = [];
-
-    if (!isDefined(filter.cid) || isDefined(filter.archived)) {
-      conditions.push(ContentCondition.archived(filter.archived!));
-    }
-
-    if (isDefined(filter.cid)) {
-      conditions.push(ContentCondition.cid(filter.cid!));
-    }
-
-    return this.contentDao.findAllByProfile(context.profile, DBQuery.and(conditions));
-  }
-
-  /**
-   * Find milestones with their relations.
-   *
-   * @param {ProfileContext} context - The profile context.
-   * @param {CalendarPlanFilter} filter - The filter to apply.
-   * @return {Promise<{ models: Milestone[], relations: Relation[] }>} - The promise that resolves to an object containing the found milestones and their relations.
-   */
-  async findMilestonesWithRelations(context: ProfileContext, filter: CalendarPlanFilter) {
+  async findMilestonesWithRelations(
+    context: ProfileContext,
+    filter: CalendarPlanFilter
+  ): Promise<{ models: Milestone[]; relations: MilestoneRelationModel<TObjectId>[] }> {
     const models = await this.findByFilter(context, filter);
     const relations = await this.relationsService.getRelationsByMilestones(
       context,
@@ -69,7 +52,7 @@ export class MilestonesCalendarPlanService extends SortableCalendarPlanService<M
    * @protected
    * @returns {Promise<void>} - A Promise that resolves after the update is completed.
    */
-  protected async updateIntervalConfig(
+  protected override async updateIntervalConfig(
     profile: Profile,
     model: Milestone,
     interval: CalendarInterval

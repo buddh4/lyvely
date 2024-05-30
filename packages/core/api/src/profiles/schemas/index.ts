@@ -11,3 +11,5 @@ export * from './user-profiles.schema';
 export * from './profiles.factory';
 export * from './profile-info.schema';
 export * from './tags.schema';
+export * from './user-with-profile.interface';
+export * from './user-with-profile-relation.interface';

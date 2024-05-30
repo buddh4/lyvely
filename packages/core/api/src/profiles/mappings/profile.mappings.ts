@@ -1,4 +1,4 @@
-import { ProfileContext, ProtectedProfileContext } from '../models';
+import { ProfileContext, ProtectedProfileContext } from '../contexts';
 import {
   getPermission,
   getProfileRelationRole,

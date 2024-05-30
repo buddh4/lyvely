@@ -1,6 +1,6 @@
 import { Request } from 'express';
 import { Profile } from '../schemas';
-import { ProfileContext, ProfileMembershipContext, ProtectedProfileContext } from '../models';
+import { ProfileContext, ProfileMembershipContext, ProtectedProfileContext } from '../contexts';
 import { RequestAdditions } from '@/core';
 import { OptionalUserRequest, UserRequest } from '@/users';
 

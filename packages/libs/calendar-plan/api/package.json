@@ -23,7 +23,9 @@
   "dependencies": {
     "@lyvely/api": "workspace:*",
     "@lyvely/dates": "workspace:*",
+    "@lyvely/common": "workspace:*",
     "@lyvely/calendar-plan-interface": "workspace:*",
+    "@nestjs/common": "^10.3.8",
     "reflect-metadata": "^0.1.12 || ^0.2.0"
   },
   "devDependencies": {

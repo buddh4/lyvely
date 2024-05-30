@@ -1,7 +1,7 @@
 import { Injectable, PipeTransform } from '@nestjs/common';
 import sharp from 'sharp';
-import type { IFileInfo } from '@/files';
-import { isMemoryFile } from '@/files';
+import type { IFileInfo } from '../interfaces';
+import { isMemoryFile } from '../helpers';
 
 export interface ImageResizePipeOptionsIF {
   maxWidth?: number;

@@ -65,13 +65,8 @@ export class TasksController
   @Post(TasksEndpoints.SORT(':cid'))
   @Policies(ContentWritePolicy)
   async sort(@Body() dto: CalendarPlanSort, @Request() req: ProtectedProfileContentRequest<Task>) {
-    const { context, content } = req;
-    const sort = await this.calendarPlanService.sort(
-      context,
-      content,
-      dto.interval,
-      dto.attachToId
-    );
+    const { context } = req;
+    const sort = await this.calendarPlanService.sort(context, dto.interval, dto.attachToId);
     return new SortResponse({ sort });
   }
 

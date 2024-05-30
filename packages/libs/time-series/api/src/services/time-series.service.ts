@@ -1,4 +1,9 @@
-import { ContentService, Profile, ProfileContext, ProtectedProfileContext } from '@lyvely/api';
+import {
+  Profile,
+  ProfileContext,
+  ProtectedProfileContext,
+  ContentPolicyService,
+} from '@lyvely/api';
 import { CalendarDate, CalendarInterval, getTimingIds, isInFuture } from '@lyvely/dates';
 import {
   CalendarPlanFilter,
@@ -12,9 +17,8 @@ import {
   TimeSeriesSummaryWindowEntry,
   useDataPointConfigHandler,
 } from '../schemas';
-import { IDataPointUpdateResult } from '../interfaces';
+import { IDataPointUpdateResult, ITimeSeriesContentSearchResult } from '../interfaces';
 import { DataPointService } from './data-point.service';
-import { ITimeSeriesContentSearchResult } from '../interfaces/time-series-content-search.result';
 import { TimeSeriesContentDao } from '../daos';
 import { isEqual } from 'lodash';
 import { Inject } from '@nestjs/common';
@@ -48,35 +52,6 @@ export abstract class TimeSeriesService<
    * @template TDataPointModel - The type of the data-point model representing a calendar plan.
    */
   protected abstract dataPointService: DataPointService<TModel, TDataPointModel>;
-
-  /**
-   * Content Service instance, used to populate content entries.
-   * @class
-   */
-  @Inject()
-  protected contentService: ContentService;
-
-  /**
-   * Retrieves an array of models based on the specified filter.
-   *
-   * @param {ProfileContext} context - The context of the profile.
-   * @param {CalendarPlanFilter} filter - The filter to be applied on the models.
-   *
-   * @return {Promise<Array<TModel>>} - A promise that resolves to an array of models*/
-  override async findByFilter(
-    context: ProfileContext,
-    filter: CalendarPlanFilter
-  ): Promise<Array<TModel>> {
-    const { profile } = context;
-    const models = await this.contentDao.findByProfileAndTimingIds(
-      context,
-      getTimingIds(filter.date, profile.locale, filter.level, profile.settings?.calendar)
-    );
-
-    await this.contentService.populateContentPolicies(models, context);
-
-    return models;
-  }
 
   /**
    * Finds time series content and related data-points based on the given context and filter.

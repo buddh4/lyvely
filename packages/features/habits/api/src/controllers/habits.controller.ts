@@ -72,8 +72,8 @@ export class HabitsController
   @Post(HabitsEndpoints.SORT(':cid'))
   @Policies(ContentWritePolicy)
   async sort(@Body() dto: CalendarPlanSort, @Request() req: ProtectedProfileContentRequest<Habit>) {
-    const { context, content } = req;
-    const sort = await this.timeSeriesService.sort(context, content, dto.interval, dto.attachToId);
+    const { context } = req;
+    const sort = await this.timeSeriesService.sort(context, dto.interval, dto.attachToId);
     return new SortResponse({ sort });
   }
 

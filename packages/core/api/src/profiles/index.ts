@@ -10,6 +10,7 @@ export * from './policies';
 export * from './types';
 export * from './helpers';
 export * from './testing';
+export * from './contexts';
 export * from './services';
 export * from './profiles.module';
 export * from './profiles.constants';

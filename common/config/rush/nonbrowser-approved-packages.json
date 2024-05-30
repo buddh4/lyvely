@@ -308,7 +308,7 @@
     },
     {
       "name": "mongo-seeding",
-      "allowedCategories": [ "core", "tool" ]
+      "allowedCategories": [ "core", "lib", "tool" ]
     },
     {
       "name": "mongodb",

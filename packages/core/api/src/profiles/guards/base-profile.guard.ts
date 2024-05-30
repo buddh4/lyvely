@@ -7,7 +7,7 @@ import { ProfileVisibilityPolicy } from '../policies';
 import { ProfileDao } from '../daos';
 import { Reflector } from '@nestjs/core';
 import { InjectPolicy } from '@/policies';
-import { ProfileContext } from '../models';
+import { ProfileContext } from '../contexts';
 import { META_PROFILE_ROLE_LEVEL } from '../profiles.constants';
 
 /**

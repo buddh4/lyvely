@@ -1,7 +1,7 @@
 import { ConfigService } from '@nestjs/config';
 import { ServerConfiguration } from '@/config';
 import { Injectable } from '@nestjs/common';
-import { ProfileContext } from '../models';
+import { ProfileContext } from '../contexts';
 import {
   getPermission,
   useProfilePermissionsManager,

@@ -5,7 +5,7 @@ import {
   DocumentIdentity,
   QuerySort,
   Profile,
-  ProtectedProfileContext,
+  ProtectedProfileContentContext,
 } from '@lyvely/api';
 import { CalendarInterval } from '@lyvely/dates';
 import { ICalendarPlanDao, CalendarPlanEntity } from '../interfaces';
@@ -43,24 +43,22 @@ export abstract class SortableCalendarPlanService<
    * calendar plan accordingly.
    *
    * @param context
-   * @param model
    * @param attachToId
    * @param interval
    * @throws ForbiddenServiceException
    */
   async sort(
-    context: ProtectedProfileContext,
-    model: TModel,
+    context: ProtectedProfileContentContext<TModel>,
     interval?: CalendarInterval,
     attachToId?: DocumentIdentity<TModel>
   ): Promise<SortResult[]> {
-    interval = interval ?? model.interval;
+    const { content, profile } = context;
 
-    const { profile } = context;
+    interval = interval ?? content.interval;
 
     const attachToObjectId = attachToId ? assureObjectId(attachToId) : undefined;
 
-    if (attachToObjectId && model._id.equals(attachToObjectId)) {
+    if (attachToObjectId && content._id.equals(attachToObjectId)) {
       return Promise.resolve([]);
     }
 
@@ -68,26 +66,30 @@ export abstract class SortableCalendarPlanService<
       ? await this.contentDao.findByProfileAndId(profile, attachToObjectId)
       : undefined;
 
-    if (attachTo && model.type !== attachTo.type) {
+    if (attachTo && content.type !== attachTo.type) {
       throw new IntegrityException('Can not sort different content types');
     }
 
-    interval = attachTo ? attachTo.interval : interval ? interval : model.interval;
+    interval = attachTo ? attachTo.interval : interval ? interval : content.interval;
 
-    const isSameInterval = interval === model.interval;
+    const isSameInterval = interval === content.interval;
 
     if (!isSameInterval) {
-      await this.updateIntervalConfig(profile, model, interval);
+      await this.contentDao.updateInterval(context, interval);
     }
 
-    const modelsByInterval = await this.contentDao.findByProfileAndInterval(profile, interval, {
-      excludeIds: model._id,
-      sort: <QuerySort<TModel>>{ 'meta.sortOrder': 1 },
-    });
+    const modelsByInterval = await this.contentDao.findByInterval(
+      context,
+      { archived: false, interval },
+      {
+        excludeIds: content._id,
+        sort: <QuerySort<TModel>>{ 'meta.sortOrder': 1 },
+      }
+    );
 
     const newIndex = attachTo ? modelsByInterval.findIndex((m) => m.id === attachTo.id) + 1 : 0;
 
-    modelsByInterval.splice(newIndex, 0, model);
+    modelsByInterval.splice(newIndex, 0, content);
 
     return await this.contentDao.updateSortOrder(modelsByInterval);
   }

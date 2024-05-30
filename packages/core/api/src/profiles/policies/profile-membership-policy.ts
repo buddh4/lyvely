@@ -1,5 +1,5 @@
 import { IPolicy } from '@/policies';
-import { ProfileContext } from '@/profiles/models';
+import { ProfileContext } from '../contexts';
 
 /**
  * A policy which assures the user is an active profile member of the profile.

@@ -1,4 +1,4 @@
-import type { ILyvelyWebApp } from '@/core';
+import type { ILyvelyWebApp } from '@/core/interfaces';
 import { useEventBus } from '../events';
 
 let appInstance: ILyvelyWebApp;

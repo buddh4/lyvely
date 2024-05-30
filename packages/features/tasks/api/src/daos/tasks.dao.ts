@@ -5,85 +5,105 @@ import {
   DocumentIdentity,
   IFetchQueryOptions,
   Model,
-  OptionalUser,
   User,
   Profile,
   ProfileType,
-  ContentTypeDao,
   UserAssignmentStrategy,
 } from '@lyvely/api';
 import { InjectModel } from '@nestjs/mongoose';
 import { Timer } from '@lyvely/timers';
-import { CalendarInterval } from '@lyvely/dates';
-import { ICalendarPlanDao } from '@lyvely/calendar-plan';
+import { ICalendarPlanDao, CalendarPlanDao } from '@lyvely/calendar-plan';
 import { findAndReplace } from '@lyvely/common';
+import type { ICalendarPlanTidSearchFilter } from '@lyvely/calendar-plan';
+import { type FilterQuery, ProfileContext } from '@lyvely/api';
 
 @Injectable()
-export class TasksDao extends ContentTypeDao<Task> implements ICalendarPlanDao<any> {
+export class TasksDao extends CalendarPlanDao<Task> implements ICalendarPlanDao<Task> {
   @InjectModel(Task.name)
   protected model: Model<Task>;
 
-  async findByProfileAndInterval(
-    profile: Profile,
-    plan: CalendarInterval,
-    options: IFetchQueryOptions<Task> = {}
-  ): Promise<Task[]> {
-    return this.findAllByProfile(profile, { 'config.interval': plan }, options);
-  }
+  /**
+   * Defines the document query path of the interval field.
+   */
+  override intervalPath = 'config.interval';
 
-  async findByProfileAndTimingIds(
-    profile: Profile,
-    user: OptionalUser,
-    tIds: string[],
+  /**
+   * Finds all tasks by given tid filter.
+   * Completed tasks will only be included in case they were within the given timing ids filter while respecting
+   * the userStrategy of the task.
+   *
+   * @param context
+   * @param filter
+   * @param options
+   */
+  override async findByTimingIds(
+    context: ProfileContext,
+    filter: ICalendarPlanTidSearchFilter,
     options?: IFetchQueryOptions<Task>
   ): Promise<Task[]> {
     // TODO: content visibility and state?
+    const conditions: FilterQuery<Task>[] = filter.conditions ? [...filter.conditions] : [];
+    conditions.push(this.getTidQueryFilter(context, filter.tIds));
 
-    if (!profile.isOfType(ProfileType.Group)) {
-      // Just a small optimization for non group profiles
-      return this.findAllByProfile(
-        profile,
-        {
-          $or: [
-            // TODO: This condition only matches legacy tasks < 0.1.0.alpha. This can be removed in later versions.
-            { state: { $exists: false } },
-            { 'state.doneBy': [] },
-            { 'state.doneBy': { $elemMatch: { tid: { $in: tIds } } } },
-          ],
-        },
-        options
-      );
-    }
-
-    const uid = assureObjectId(user, true);
-
-    return this.findAllByProfile(
-      profile,
+    return this.findAllByFilter(
+      context.profile,
       {
-        $or: [
-          // TODO: This condition only matches legacy tasks < 0.1.0.alpha. This can be removed in later versions.
-          { state: { $exists: false } },
-          // Not done by any user
-          { 'state.doneBy': [] },
-          // Shared task done at within given tids
-          {
-            'config.userStrategy': UserAssignmentStrategy.Shared,
-            'state.doneBy': { $elemMatch: { tid: { $in: tIds } } },
-          },
-          // Per user task done by user within given tids
-          {
-            'config.userStrategy': UserAssignmentStrategy.PerUser,
-            $or: [
-              { 'state.doneBy': { $elemMatch: { uid: uid, tid: { $in: tIds } } } },
-              { 'state.doneBy': { $not: { $elemMatch: { uid: uid } } } },
-            ],
-          },
-        ],
+        ...filter,
+        conditions,
       },
       options
     );
   }
 
+  /**
+   * Returns a filter query object based on the given context and tids.
+   *
+   * @param {ProfileContext} context - The context object containing profile and user information.
+   * @param {string[]} tids - An array of tids (task IDs) to filter by.
+   * @returns {FilterQuery<Task>} - A filter query object to be used in a database query.
+   * @private
+   */
+  private getTidQueryFilter(context: ProfileContext, tids: string[]): FilterQuery<Task> {
+    const { profile, user } = context;
+
+    if (!profile.isOfType(ProfileType.Group)) {
+      // Just a small optimization for non group profiles
+      return {
+        $or: [{ 'state.doneBy': [] }, { 'state.doneBy': { $elemMatch: { tid: { $in: tids } } } }],
+      };
+    }
+
+    const uid = assureObjectId(user, true);
+
+    return {
+      $or: [
+        // Not done by any user
+        { 'state.doneBy': [] },
+        // Shared task done at within given tids
+        {
+          'config.userStrategy': UserAssignmentStrategy.Shared,
+          'state.doneBy': { $elemMatch: { tid: { $in: tids } } },
+        },
+        // Per user task done by user within given tids
+        {
+          'config.userStrategy': UserAssignmentStrategy.PerUser,
+          $or: [
+            { 'state.doneBy': { $elemMatch: { uid: uid, tid: { $in: tids } } } },
+            { 'state.doneBy': { $not: { $elemMatch: { uid: uid } } } },
+          ],
+        },
+      ],
+    };
+  }
+
+  /**
+   * Updates the "doneBy" field of a task with the given user information.
+   *
+   * @param {Profile} profile The profile of the task.
+   * @param {DocumentIdentity<Task>} taskId The unique identifier of the task.
+   * @param {UserDone} doneBy The user information to add to the doneBy field.
+   * @return {Promise<boolean>} A Promise that resolves to true if the update was successful, false otherwise.
+   */
   async pushDoneBy(
     profile: Profile,
     taskId: DocumentIdentity<Task>,
@@ -92,6 +112,14 @@ export class TasksDao extends ContentTypeDao<Task> implements ICalendarPlanDao<a
     return this.updateOneByProfileAndId(profile, taskId, { $push: { 'state.doneBy': doneBy } });
   }
 
+  /**
+   * Updates the "doneBy" field of a task.
+   *
+   * @param {Profile} profile - The profile in which the task belongs.
+   * @param {DocumentIdentity<Task>} taskId - The ID of the task to be updated.
+   * @param {UserDone} doneBy - The user information of the user who completed the task.
+   * @return {Promise<boolean>} - A promise that resolves to a boolean indicating whether the update was successful or not.
+   */
   async updateDoneBy(
     profile: Profile,
     taskId: DocumentIdentity<Task>,

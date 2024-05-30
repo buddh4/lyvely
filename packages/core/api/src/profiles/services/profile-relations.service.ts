@@ -2,9 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { assureObjectId, DocumentIdentity } from '@/core';
 import { User, UsersService } from '@/users';
 import { DocumentNotFoundException } from '@lyvely/interface';
-import { Profile, UserProfileRelation } from '../schemas';
+import { Profile, UserProfileRelation, IUserWithProfileRelation } from '../schemas';
 import { ProfileDao, UserProfileRelationsDao } from '../daos';
-import { IUserWithProfileRelation } from '../interfaces';
 
 @Injectable()
 export class ProfileRelationsService {

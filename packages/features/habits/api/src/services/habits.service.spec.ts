@@ -94,7 +94,7 @@ describe('HabitService', () => {
         tagNames: ['SomeCategory'],
       });
 
-      const search = await habitsService.findByProfileAndId(profile, habit._id);
+      const search = await habitsService.findByContextAndId(context, habit._id);
       expect(search).toBeDefined();
       expect(search!.content.title).toEqual('Updated Title');
       expect(search!.content.text).toEqual('Updated description');
@@ -167,7 +167,7 @@ describe('HabitService', () => {
 
       await habitsService.updateContentSet(context, habit, habit);
 
-      const search = await habitsService.findByProfileAndId(profile, habit._id);
+      const search = await habitsService.findByContextAndId(context, habit._id);
       expect(search).toBeDefined();
       expect(search!.timeSeriesConfig.history).toBeDefined();
       expect(search!.timeSeriesConfig.history.length).toEqual(1);
@@ -219,7 +219,7 @@ describe('HabitService', () => {
 
     await habitsService.updateContentSet(context, habit, habit);
 
-    const search = await habitsService.findByProfileAndId(profile, habit);
+    const search = await habitsService.findByContextAndId(context, habit);
     expect(search).toBeDefined();
     expect(search!.timeSeriesConfig.history).toBeDefined();
     expect(search!.timeSeriesConfig.history.length).toEqual(1);
@@ -229,40 +229,41 @@ describe('HabitService', () => {
 
   describe('findByProfileAndId', () => {
     it('find habit by profile and ObjectId', async () => {
-      const { user, profile } = await testData.createUserAndProfile('user1');
+      const { user, context, profile } = await testData.createUserAndProfile('user1');
       const habit = await testData.createHabit(user, profile);
-      const search = await habitsService.findByProfileAndId(profile, habit._id);
+      const search = await habitsService.findByContextAndId(context, habit._id);
       expect(search).toBeDefined();
       expect(search!.id).toEqual(habit.id);
     });
 
     it('find habit by profile and string id', async () => {
-      const { user, profile } = await testData.createUserAndProfile('user1');
+      const { user, context, profile } = await testData.createUserAndProfile('user1');
       const habit = await testData.createHabit(user, profile);
-      const search = await habitsService.findByProfileAndId(profile, assureStringId(habit._id));
+      const search = await habitsService.findByContextAndId(context, assureStringId(habit._id));
       expect(search).toBeDefined();
       expect(search!.id).toEqual(habit.id);
     });
 
     it('do not find habits of another profile', async () => {
-      const { user, profile } = await testData.createUserAndProfile('user1');
+      const { user, context, profile } = await testData.createUserAndProfile('user1');
       const profile2 = await testData.createProfile(user, 'profile2');
+      context.profile = profile2;
       const habit = await testData.createHabit(user, profile);
-      const search = await habitsService.findByProfileAndId(profile2, assureStringId(habit._id));
+      const search = await habitsService.findByContextAndId(context, assureStringId(habit._id));
       expect(search).toBeNull();
     });
 
     it('find habit by object id', async () => {
-      const { user, profile } = await testData.createUserAndProfile();
+      const { user, context, profile } = await testData.createUserAndProfile();
       const habit = await testData.createHabit(user, profile);
-      const search = await habitsService.findByProfileAndId(profile, habit._id);
+      const search = await habitsService.findByContextAndId(context, habit._id);
       expect(search!._id).toEqual(habit._id);
     });
 
     it('find habit by string id', async () => {
-      const { user, profile } = await testData.createUserAndProfile();
+      const { user, context, profile } = await testData.createUserAndProfile();
       const habit = await testData.createHabit(user, profile);
-      const search = await habitsService.findByProfileAndId(profile, habit._id.toString());
+      const search = await habitsService.findByContextAndId(context, habit._id.toString());
       expect(search!._id).toEqual(habit._id);
     });
   });

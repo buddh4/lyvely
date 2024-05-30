@@ -48,8 +48,8 @@ export class ChartsController
 
   @Get()
   async getCharts(@Request() req: ProfileRequest): Promise<ChartListModel> {
-    const { profile, user } = req;
-    const charts = (await this.contentService.findAllByProfile(profile, { archived: false }))
+    const { context, profile, user } = req;
+    const charts = (await this.contentService.findAllByContext(context, { archived: false }))
       .map((document) => document.toModel(user))
       .sort(sortBySortOrder);
 
