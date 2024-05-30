@@ -14,7 +14,19 @@
     {
       "name": "test",
       "commandKind": "bulk",
-      "summary": "Runs unit tests",
+      "summary": "Runs unit tests of all projects",
+      "description": "Run unit tests for all projects that have changed since the last successful run.",
+      "safeForSimultaneousRushProcesses": true,
+      "ignoreMissingScript": true,
+      "ignoreDependencyOrder": true,
+      "enableParallelism": false,
+      "allowWarningsInSuccessfulBuild": true,
+      "incremental": true
+    },
+    {
+      "name": "ncu",
+      "commandKind": "bulk",
+      "summary": "Runs a ncu check for all projects",
       "description": "Run unit tests for all projects that have changed since the last successful run.",
       "safeForSimultaneousRushProcesses": true,
       "ignoreMissingScript": true,
