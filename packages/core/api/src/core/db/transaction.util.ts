@@ -1,5 +1,5 @@
 import { ClientSession, Connection } from 'mongoose';
-import { TransactionOptions } from 'mongodb';
+import type { TransactionOptions } from 'mongodb';
 
 let transactionSupport = false;
 
@@ -15,11 +15,10 @@ export async function startSession(connection: Connection): Promise<ClientSessio
 
 export async function startTransaction(
   connection: Connection,
-  options?: TransactionOptions,
+  options?: TransactionOptions
 ): Promise<{ session?: ClientSession }> {
   const session = await startSession(connection);
-  // The <any> cast prevents an "Type instantiation is excessivley deep ts error
-  if (session) session.startTransaction(<any>options);
+  if (session) session.startTransaction(options);
   return { session };
 }
 
@@ -38,7 +37,7 @@ export async function abortTransaction(transaction: Transaction) {
 export async function withTransaction<T>(
   connection: Connection,
   handler: (transaction: Transaction) => Promise<T>,
-  options?: TransactionOptions,
+  options?: TransactionOptions
 ): Promise<T> {
   const transaction = await startTransaction(connection, options);
   try {
