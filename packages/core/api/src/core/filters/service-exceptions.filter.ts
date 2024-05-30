@@ -12,8 +12,10 @@ export class ServiceExceptionsFilter implements ExceptionFilter {
     const responseData = exception.getResponse();
     const status = exception.status;
 
-    if (status && status >= 500) {
+    if (!status || status >= 500) {
       this.logger.error(exception.message, exception.stack);
+    } else if (status && status >= 400) {
+      this.logger.warn(exception.message, exception.stack);
     }
 
     if (!responseData) {
