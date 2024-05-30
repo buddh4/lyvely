@@ -19,6 +19,7 @@ const sidebars = {
     ],
     Development: [
         'dev/intro/overview',
+        'dev/intro/qa',
         {
             type: 'category',
             label: 'Framework',
