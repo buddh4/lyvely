@@ -1,9 +1,17 @@
-import { Content } from '../schemas';
+import { buildContentFilterQuery, Content } from '../schemas';
 import { assureObjectId, DocumentIdentity, UpdateQuerySet, UpdateQuery } from '@/core';
-import { ProfileShardDao, Profile } from '@/profiles';
+import { ProfileShardDao, Profile, type ProfileShardData } from '@/profiles';
 import { User } from '@/users';
 import { SortResult } from '@lyvely/interface';
+import { IContentSearchFilter } from '@/content';
 
+/**
+ * An abstract class representing a DAO (Data Access Object) for ContentTypes.
+ * The ContentTypeDao is used to query or update specific content types.
+ *
+ * @template T - The type of the Content.
+ * @template TVersions - The type of the Versions.
+ */
 export abstract class ContentTypeDao<
   T extends Content,
   TVersions extends Content = T,
@@ -12,6 +20,39 @@ export abstract class ContentTypeDao<
     return 'content';
   }
 
+  /**
+   * Finds all documents based on the given filter.
+   *
+   * @param profileRelation
+   * @param {IContentSearchFilter} filter - The filter object used to search for items.
+   * @return {Promise<T>} - A promise that will resolve to the array of filtered items.
+   */
+  async findAllByFilter(
+    profileRelation: ProfileShardData,
+    filter?: IContentSearchFilter
+  ): Promise<T[]> {
+    return this.findAllByProfile(profileRelation, buildContentFilterQuery(filter) || {});
+  }
+
+  /**
+   * Finds a single documents based on the given filter.
+   *
+   * @param profileRelation
+   * @param {IContentSearchFilter} filter - The filter object used to search for items.
+   * @return {Promise<T>} - A promise that will resolve to the array of filtered items.
+   */
+  async findOneByFilter(
+    profileRelation: ProfileShardData,
+    filter?: IContentSearchFilter
+  ): Promise<T | null> {
+    return this.findOneByProfile(profileRelation, buildContentFilterQuery(filter) || {});
+  }
+
+  /**
+   *
+   * @param user
+   * @param content
+   */
   async archive(user: User, content: T): Promise<boolean> {
     return this.updateOneByProfileAndIdSet(
       content,

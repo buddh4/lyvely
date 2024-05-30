@@ -1,5 +1,5 @@
 import { Body, Delete, Put, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
-import { ProfileController, ProfileRoleLevel } from '../decorators';
+import { ProfileController, ProfileRole } from '../decorators';
 import { UseClassSerializer } from '@/core';
 import {
   API_PROFILE_MEMBERSHIP,
@@ -20,7 +20,7 @@ import { AvatarUploadPipe } from '@/avatars';
 import type { IFileInfo } from '@/files';
 
 @ProfileController(API_PROFILE_MEMBERSHIP)
-@ProfileRoleLevel(ProfileRelationRole.Member)
+@ProfileRole(ProfileRelationRole.Member)
 @UseClassSerializer()
 export class ProfileMembershipController implements ProfileMembershipEndpoint {
   constructor(

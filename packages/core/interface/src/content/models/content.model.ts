@@ -20,7 +20,7 @@ import type {
   IContentMetadata,
   IContentTypeMeta,
 } from '../interfaces';
-import { RoleVisibilityLevel } from '@/profiles';
+import { ProfileRoleLevel } from '@/profiles';
 
 export class ContentDataTypeModel implements IContentDataType {
   @IsString()
@@ -74,7 +74,7 @@ export class ContentMetadataModel<TID = string> implements IContentMetadata<TID>
 
   streamSort: number;
   sortOrder?: number;
-  visibility: RoleVisibilityLevel;
+  visibility: ProfileRoleLevel;
   archived?: boolean;
   childCount?: number;
   locked?: boolean;

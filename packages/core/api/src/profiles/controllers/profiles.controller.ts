@@ -37,7 +37,7 @@ import { OptionalUserRequest, UserRequest, UserThrottle, UserThrottlerGuard } fr
 import { ProfileVisibilityPolicy } from '../policies';
 import { InjectPolicy } from '@/policies';
 import { ProfileMembershipRequest, ProfileRequest } from '../types';
-import { ProfileEndpoint, ProfileRoleLevel } from '../decorators';
+import { ProfileEndpoint, ProfileRole } from '../decorators';
 import { ProfileGuard } from '../guards';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AvatarUploadPipe } from '@/avatars';
@@ -119,7 +119,7 @@ export class ProfilesController implements ProfilesEndpoint {
 
   @Put(':pid')
   @ProfileEndpoint()
-  @ProfileRoleLevel(ProfileRelationRole.Admin)
+  @ProfileRole(ProfileRelationRole.Admin)
   async update(
     @Body() model: UpdateProfileModel,
     @Request() req: ProfileMembershipRequest
@@ -132,7 +132,7 @@ export class ProfilesController implements ProfilesEndpoint {
   @Put(ProfilesEndpoints.ARCHIVE)
   @ProfileEndpoint()
   @HttpCode(HttpStatus.NO_CONTENT)
-  @ProfileRoleLevel(ProfileRelationRole.Owner)
+  @ProfileRole(ProfileRelationRole.Owner)
   async archive(@Request() req: ProfileMembershipRequest): Promise<void> {
     await this.profilesService.archive(req.profile);
   }
@@ -140,14 +140,14 @@ export class ProfilesController implements ProfilesEndpoint {
   @Put(ProfilesEndpoints.RESTORE)
   @ProfileEndpoint()
   @HttpCode(HttpStatus.NO_CONTENT)
-  @ProfileRoleLevel(ProfileRelationRole.Owner)
+  @ProfileRole(ProfileRelationRole.Owner)
   async restore(@Request() req: ProfileMembershipRequest): Promise<void> {
     await this.profilesService.restore(req.profile);
   }
 
   @Put(ProfilesEndpoints.UPDATE_AVATAR)
   @ProfileEndpoint()
-  @ProfileRoleLevel(ProfileRelationRole.Admin)
+  @ProfileRole(ProfileRelationRole.Admin)
   @UseGuards(UserThrottlerGuard)
   @UserThrottle(20, 60_000)
   @UseInterceptors(FileInterceptor('file'))
@@ -160,7 +160,7 @@ export class ProfilesController implements ProfilesEndpoint {
   }
 
   @ProfileEndpoint()
-  @ProfileRoleLevel(ProfileRelationRole.Admin)
+  @ProfileRole(ProfileRelationRole.Admin)
   @ProfileEndpoint()
   @Post(ProfilesEndpoints.SET_CALENDAR_PREFERENCES)
   async setCalendarPreferences(

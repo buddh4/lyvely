@@ -9,7 +9,7 @@ import {
 } from '@/core';
 import { Author, ContentAuthorSchema, CreatedAs } from './content-author.schema';
 import { getNumberEnumValues, PropertyType } from '@lyvely/common';
-import { IContentMetadata, RoleVisibilityLevel } from '@lyvely/interface';
+import { IContentMetadata, ProfileRoleLevel } from '@lyvely/interface';
 
 @NestedSchema()
 export class ContentMetadata implements IContentMetadata {
@@ -53,9 +53,9 @@ export class ContentMetadata implements IContentMetadata {
   @PropertyType(Number, { default: () => Date.now() })
   streamSort: number;
 
-  @Prop({ enum: getNumberEnumValues(RoleVisibilityLevel) })
-  @PropertyType(Number, { default: RoleVisibilityLevel.Member })
-  visibility: RoleVisibilityLevel;
+  @Prop({ enum: getNumberEnumValues(ProfileRoleLevel) })
+  @PropertyType(Number, { default: ProfileRoleLevel.Member })
+  visibility: ProfileRoleLevel;
 
   @Prop({ type: Number, min: 0 })
   @PropertyType(Number, { default: () => Date.now() })

@@ -2,7 +2,7 @@ import { ILyvelyTestingModule } from '@/testing';
 import { Content, ContentSchema, ProfileContentContext } from '../schemas';
 import { buildContentTest, TestContent, TestContentSchema } from '../testing';
 import { ProfileTestDataUtils } from '@/profiles';
-import { RoleVisibilityLevel } from '@lyvely/interface';
+import { ProfileRoleLevel } from '@lyvely/interface';
 import { getPolicyToken, IPolicy } from '@/policies';
 import { BaseContentReadPolicy } from './base-content-read.policy';
 import { Type } from '@lyvely/common';
@@ -88,7 +88,7 @@ describe('ContentReadPolicy', () => {
     const { user, profile, context } = await testData.createUserAndProfile();
 
     const content = new TestContent(context);
-    content.meta.visibility = RoleVisibilityLevel.Owner;
+    content.meta.visibility = ProfileRoleLevel.Owner;
 
     (<ProfileContentContext>context).content = content;
 
@@ -103,7 +103,7 @@ describe('ContentReadPolicy', () => {
     const { owner, ownerContext, memberContext, profile } = await testData.createSimpleGroup();
 
     const content = new TestContent(ownerContext);
-    content.meta.visibility = RoleVisibilityLevel.Owner;
+    content.meta.visibility = ProfileRoleLevel.Owner;
 
     (<ProfileContentContext>memberContext).content = content;
 

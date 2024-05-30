@@ -4,5 +4,5 @@ export * from './profile-permission.interface';
 export * from './base-user-profile-relation-type.enum';
 export * from './profile-relation.interface';
 export * from './profile-membership.interface';
-export * from './profile-relation-role.enum';
+export * from './profile-relation-role.interface';
 export * from './profile-membership-role.enum';

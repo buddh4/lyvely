@@ -1,8 +1,8 @@
-import { Profile, ProfileTagsService, ProtectedProfileContext } from '@/profiles';
+import { Profile, ProfileContext, ProfileTagsService, ProtectedProfileContext } from '@/profiles';
 import { ContentTypeDao, ContentDao } from '../daos';
 import { User } from '@/users';
-import { assureObjectId, DocumentIdentity, UpdateQuerySet, FilterQuery } from '@/core';
-import { Content, ContentCondition } from '../schemas';
+import { assureObjectId, DocumentIdentity, UpdateQuerySet } from '@/core';
+import { Content } from '../schemas';
 import {
   DocumentNotFoundException,
   ForbiddenServiceException,
@@ -10,7 +10,6 @@ import {
 } from '@lyvely/interface';
 import { Inject, Logger } from '@nestjs/common';
 import { ContentEventPublisher } from '../components';
-import { isDefined } from 'class-validator';
 import { IContentSearchFilter, IContentUpdateOptions } from '../interfaces';
 
 /**
@@ -75,20 +74,34 @@ export abstract class ContentTypeService<
   /**
    * Finds all content type models associated with the given profile and filtered by the given filter.
    *
+   * Note: When searching for user accessible content, the `findAllByContext` should be preferred unless you
+   * have a good reason to not use it. In this case you need to manage and validate the `roleLevel` filter manually.
+   *
    * @param {Profile} profile - The profile to search for.
    * @param {IContentSearchFilter} [filter] - Optional filter for the search.
    * @returns {Promise<T[]>} - A promise that resolves to an array of objects of type T.
    */
   async findAllByProfile(profile: Profile, filter?: IContentSearchFilter): Promise<T[]> {
-    let queryFilter: FilterQuery<Content> | undefined = undefined;
-    if (isDefined(filter?.archived)) {
-      queryFilter = ContentCondition.archived(filter!.archived!);
-    }
-    return this.contentDao.findAllByProfile(profile, queryFilter);
+    return this.contentDao.findAllByFilter(profile, filter);
+  }
+
+  /**
+   * Finds all content type models visible for the given context.
+   *
+   * @param {Profile} context - The profile context to search for.
+   * @param {IContentSearchFilter} [filter] - Optional filter for the search.
+   * @returns {Promise<T[]>} - A promise that resolves to an array of objects of type T.
+   */
+  async findAllByContext(context: ProfileContext, filter?: IContentSearchFilter): Promise<T[]> {
+    filter = { ...filter, roleLevel: context.getRoleLevel() };
+    return this.contentDao.findAllByFilter(context.profile, filter);
   }
 
   /**
    * Finds a document by its profile and id.
+   *
+   * Note: When searching for user accessible content, the `findByContextAndId` should be preferred unless you
+   * have a good reason to not use it. In this case you need to manage and validate the `roleLevel` filter manually.
    *
    * @param {Profile} profile - The profile of the document.
    * @param {DocumentIdentity<T>} id - The id of the document.
@@ -97,6 +110,20 @@ export abstract class ContentTypeService<
    */
   async findByProfileAndId(profile: Profile, id: DocumentIdentity<T>): Promise<T | null> {
     return this.contentDao.findByProfileAndId(profile, id);
+  }
+
+  /**
+   * Finds a specific content document visible for the given profile relation context.
+   *
+   * @return {Promise<T | null>} A Promise that resolves to the found document, or null if not found.
+   * @param context
+   * @param cid
+   */
+  async findByContextAndId(context: ProfileContext, cid: DocumentIdentity<T>): Promise<T | null> {
+    return this.contentDao.findOneByFilter(context.profile, {
+      cid,
+      roleLevel: context.getRoleLevel(),
+    });
   }
 
   /**

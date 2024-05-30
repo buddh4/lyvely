@@ -11,7 +11,7 @@ import { META_PERMISSIONS_SOME, META_PERMISSIONS_STRICT } from '../profiles.cons
  * This guard will try to extract a profile id from the request usually by :pid parameter and then will add the
  * ProfileContext to the request object.
  *
- * This guard also includes a check for the @ProfileRoleLevel decorator as well as a profile visibility check.
+ * This guard also includes a check for the @ProfileRole decorator as well as a profile visibility check.
  *
  * This guard furthermore includes a profile permission checks supporting the @Permissions and @StrictPermissions decorators
  * with global and profile level permissions.

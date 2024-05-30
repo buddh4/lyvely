@@ -5,24 +5,8 @@ import {
   IPermissionObject,
   IPermissionSetting,
 } from '@/permissions';
-import { ProfileRelationRole } from './profile-relation-role.enum';
+import { ProfileRelationRole } from './profile-relation-role.interface';
 import type { ProfileType, ProfileVisibilityLevel } from './profile.interface';
-
-/**
- * Defines a flat hierarchy of profile relation roles. This is used for permissions and access rules in which a
- * role with a lower level e.g. an admin includes permissions and access rights of higher levels e.g. members.
- */
-export const profileRelationRoleHierarchy = [
-  ProfileRelationRole.Owner,
-  ProfileRelationRole.Admin,
-  ProfileRelationRole.Moderator,
-  ProfileRelationRole.Member,
-  ProfileRelationRole.Guest,
-  ProfileRelationRole.Organization,
-  ProfileRelationRole.Follower,
-  ProfileRelationRole.User,
-  ProfileRelationRole.Visitor,
-];
 
 /**
  * Interface used to define profile level permissions.

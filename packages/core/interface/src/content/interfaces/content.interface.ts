@@ -1,5 +1,5 @@
 import { ISortable } from '@/common';
-import { RoleVisibilityLevel } from '@/profiles';
+import { ProfileRoleLevel } from '@/profiles';
 
 export interface IContentDataType {
   title?: string;
@@ -27,7 +27,7 @@ export interface IContentMetadata<TID = any> {
   updatedAt: Date;
   streamSort: number;
   sortOrder?: number;
-  visibility: RoleVisibilityLevel;
+  visibility: ProfileRoleLevel;
   childCount?: number;
   archived?: boolean;
   deleted?: boolean;

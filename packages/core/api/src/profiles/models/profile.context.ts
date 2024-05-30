@@ -10,7 +10,9 @@ import {
   IProfilePermissionObject,
   ProfileMembershipRole,
   ProfileRelationRole,
+  ProfileRoleLevel,
   UserStatus,
+  getProfileRoleLevel,
 } from '@lyvely/interface';
 import { IUserWithProfileRelation } from '../interfaces/user-with-profile-relation.interface';
 
@@ -170,6 +172,15 @@ export class ProfileContext<TProfile extends Profile = Profile>
       this.relations,
       this.getOrganizationContext()?.relations
     );
+  }
+
+  /**
+   * Retrieves the role level of the user in this profile context.
+   *
+   * @returns {ProfileRoleLevel} The role level of the profile.
+   */
+  getRoleLevel(): ProfileRoleLevel {
+    return getProfileRoleLevel(this.getRole());
   }
 
   /**

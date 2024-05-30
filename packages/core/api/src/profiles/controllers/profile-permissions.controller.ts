@@ -1,4 +1,4 @@
-import { ProfileController, ProfileRoleLevel } from '../decorators';
+import { ProfileController, ProfileRole } from '../decorators';
 import {
   API_PROFILE_PERMISSIONS,
   ProfilePermissionsEndpoint,
@@ -12,7 +12,7 @@ import { ProfilePermissionSettingsService } from '@/profiles/services/profile-pe
 
 @ProfileController(API_PROFILE_PERMISSIONS)
 @UseClassSerializer()
-@ProfileRoleLevel(ProfileRelationRole.Admin)
+@ProfileRole(ProfileRelationRole.Admin)
 export class ProfilePermissionsController implements ProfilePermissionsEndpoint {
   constructor(
     private readonly profilePermissionSettingsService: ProfilePermissionSettingsService
