@@ -3,6 +3,7 @@ import { ContentModel } from '@lyvely/interface';
 import { useRouter } from 'vue-router';
 import { usePageStore } from '@/ui';
 import { t } from '@/i18n';
+import { STACK_CONTENT_DETAILS_HEAD_ADDITION } from '@/content/content.constants';
 
 interface IProps {
   content: ContentModel;
@@ -34,8 +35,8 @@ const hasHistory = usePageStore().hasHistory;
           :title="t('common.archived')"
           class="ml-auto w-4 text-warning" />
       </div>
-      <div v-if="!content.meta.archived" class="ml-auto">
-        <!-- milestone-chooser :content="content" :editable="true" /-->
+      <div class="ml-auto">
+        <ly-component-stack :id="STACK_CONTENT_DETAILS_HEAD_ADDITION" :props="{ content }" />
       </div>
     </div>
   </div>
