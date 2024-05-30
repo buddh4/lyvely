@@ -64,7 +64,10 @@ export function registerCreateContentModalComponent(
   component: ComponentRegistration<ICreateContentModalProps>
 ) {
   console.debug(`Register create content component ${contentType}`);
-  createContentModalRegistry.set(contentType, resolveComponentRegistration(component));
+  createContentModalRegistry.set(
+    contentType,
+    resolveComponentRegistration<ICreateContentModalProps>(component)
+  );
 }
 
 export function getCreateContentTypes() {

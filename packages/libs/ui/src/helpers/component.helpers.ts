@@ -2,7 +2,9 @@ import { ComponentRegistration } from '../types';
 import { Component, defineAsyncComponent } from 'vue';
 import { Lazy } from '@lyvely/common';
 
-export function resolveComponentRegistration(component: ComponentRegistration) {
+export function resolveComponentRegistration<TProps = any>(
+  component: ComponentRegistration<TProps>
+): Component<TProps> {
   return typeof component === 'function'
     ? defineAsyncComponent(component as Lazy<Component>)
     : component;

@@ -1,14 +1,24 @@
-import { IComponentStackEntry } from './component-stack.interface';
+import { IComponentStackEntry, type IComponentStackEntrySpec } from './component-stack.interface';
 import { ref, Ref, shallowRef } from 'vue';
 import { isVueComponent, sortBySortOrder } from '@/helpers';
 
 const stackMap = new Map<string, Ref<IComponentStackEntry[]>>();
 
-export const registerComponentStackEntries = (id: string, entries: IComponentStackEntry[]) => {
+export const registerComponentStackEntries = <
+  TSpec extends IComponentStackEntrySpec = IComponentStackEntrySpec,
+>(
+  id: string,
+  entries: IComponentStackEntry<TSpec>[]
+) => {
   entries.forEach((e) => registerComponentStackEntry(id, e));
 };
 
-export const registerComponentStackEntry = (id: string, entry: IComponentStackEntry) => {
+export const registerComponentStackEntry = <
+  TSpec extends IComponentStackEntrySpec = IComponentStackEntrySpec,
+>(
+  id: string,
+  entry: IComponentStackEntry<TSpec>
+) => {
   entry = { ...entry };
   if (isVueComponent(entry.component)) {
     entry.component = shallowRef(entry.component);
