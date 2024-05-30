@@ -28,7 +28,7 @@
     "format": "prettier src --write",
     "prettier": "prettier src --check",
     "depcheck": "depcheck --quiet",
-"ncu": "ncu",
+    "ncu": "ncu",
     "test": "vitest",
     "dev": "vite",
     "build": "lyvely-dev build:web && node bin/generate-types.js",
@@ -36,7 +36,7 @@
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "deps": "npx depcruise --config .dependency-cruiser.cjs src"
+    "deps": "pnpm depcruise --config .dependency-cruiser.cjs src"
   },
   "dependencies": {
     "@lyvely/common": "workspace:*",

@@ -1,5 +1,6 @@
-import { ComponentRegistration, IconOptionsIF } from '@/types';
-import { Translatable } from '@/i18n';
+import type { IconOptionsIF } from './icon-options.interface';
+import type { ComponentRegistration } from '@/types';
+import type { Translatable } from '@/i18n';
 
 export interface IconProps {
   name?: string;

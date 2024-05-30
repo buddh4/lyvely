@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { IconName, getSvgIconByName } from './registries';
+import { IconName, getSvgIconByName } from './ly-svg-icon.registry';
 import { computed } from 'vue';
-import { IconOptionsIF } from '@/types';
+import { IconOptionsIF } from './icon-options.interface';
 import { includesUtilityClass } from '@/helpers';
 import { t, Translatable } from '@/i18n';
 

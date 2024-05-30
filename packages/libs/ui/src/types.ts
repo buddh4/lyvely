@@ -1,4 +1,3 @@
-import { LySvgIconDefinitionIF, IconName } from './components/icons/registries';
 import { Component } from 'vue';
 import { Lazy } from '@lyvely/common';
 
@@ -13,13 +12,6 @@ export enum Color {
 }
 
 export type ComponentRegistration<Props = any> = Component<Props> | Lazy<Component<Props>>;
-
-export interface IconOptionsIF {
-  color?: Omit<Color, 'inverted'>;
-  fill?: string;
-  name?: IconName;
-  definition: LySvgIconDefinitionIF;
-}
 
 export type TextSize =
   | 'xs'

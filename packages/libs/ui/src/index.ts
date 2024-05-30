@@ -13,6 +13,7 @@ import LyModal from './components/dialogs/LyModal.vue';
 import LyConfirmModal from './components/dialogs/LyConfirmModal.vue';
 import LyAddButton from './components/buttons/LyAddButton.vue';
 import LyButton from './components/buttons/LyButton.vue';
+import LyConfirmButton from './components/buttons/LyConfirmButton.vue';
 import LyUpdateIndicator from './components/buttons/LyUpdateIndicator.vue';
 import LyFloatingAddButton from './components/buttons/LyFloatingAddButton.vue';
 import LyDialog from './components/dialogs/LyDialog.vue';
@@ -52,8 +53,7 @@ import LyConditionalWrapper from './components/helpers/LyConditionalWrapper.vue'
 import LyTable from './components/tables/LyTable.vue';
 import LyMarkdownView from '@/components/markdown/LyMarkdownView.vue';
 import { App } from 'vue';
-import { LyvelySvgIconLibrary } from '@/components/icons/libraries/ly-svg-icon.library';
-import { registerSvgIcon, registerIconLibrary, LySvgIcons } from '@/components/icons/registries';
+import { LyvelySvgIconLibrary, registerIconLibrary } from '@/components/icons';
 import { LyvelyUiOptions, setConfigOptions } from './config';
 import { Translatable, TranslationAdapter } from './i18n';
 import LyComponentStack from '@/components/stack/LyComponentStack.vue';
@@ -80,6 +80,7 @@ const createLyvelyUi = (options?: LyvelyUiOptions) => {
       Vue.component('LyModal', LyModal);
       Vue.component('LyConfirmModal', LyConfirmModal);
       Vue.component('LyButton', LyButton);
+      Vue.component('LyConfirmButton', LyConfirmButton);
       Vue.component('LyUpdateIndicator', LyUpdateIndicator);
       Vue.component('LyFloatingAddButton', LyFloatingAddButton);
       Vue.component('LyAddButton', LyAddButton);
@@ -130,8 +131,8 @@ export * from './types';
 export * from './components/layouts/interfaces';
 export * from './interfaces';
 export * from './components/menus';
-
 export * from './composables';
+export * from './components/icons';
 export type { Translatable, TranslationAdapter };
 export {
   vMobileScrollbar,
@@ -170,6 +171,7 @@ export {
   LyIcon,
   LyDialog,
   LyButton,
+  LyConfirmButton,
   LyUpdateIndicator,
   LyFloatingAddButton,
   LyAddButton,
@@ -187,8 +189,5 @@ export {
   LyMarkdownView,
   LyComponentStack,
   LyConditionalWrapper,
-  registerSvgIcon,
-  registerIconLibrary,
-  LySvgIcons,
   LyColorPicker,
 };

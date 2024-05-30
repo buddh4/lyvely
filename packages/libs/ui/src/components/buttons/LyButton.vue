@@ -5,13 +5,11 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { ref, onMounted, Ref, computed } from 'vue';
+import { ref, onMounted, Ref } from 'vue';
 import { includesUtilityClass } from '@/helpers';
 import { RouteLocationRaw } from 'vue-router';
-import { IConfirmOptions } from '../dialogs/confirm-options.interface';
 import { isDevelopmentEnvironment } from '@/config';
 import { t, Translatable } from '@/i18n';
-import LyConfirmModal from '../dialogs/LyConfirmModal.vue';
 
 export interface IProps {
   submit?: boolean;
@@ -24,7 +22,6 @@ export interface IProps {
   isToggle?: boolean;
   outlined?: boolean;
   route?: RouteLocationRaw;
-  confirm?: IConfirmOptions | boolean;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
@@ -37,7 +34,6 @@ const props = withDefaults(defineProps<IProps>(), {
   rounded: true,
   route: undefined,
   isToggle: false,
-  confirm: undefined,
   outlined: false,
 });
 
@@ -61,16 +57,6 @@ function getClassNames(attrClasses: any, isActive?: boolean, loading?: boolean) 
 const buttonType: 'submit' | 'button' = props.submit ? 'submit' : 'button';
 
 const emit = defineEmits(['click']);
-
-const showConfirm = ref(false);
-
-function onClick() {
-  if (props.confirm) {
-    showConfirm.value = true;
-  } else {
-    emit('click');
-  }
-}
 
 const button = ref<HTMLElement>() as Ref<HTMLElement>;
 
@@ -115,10 +101,6 @@ function getAriaSelected($attrs: any) {
   }
 }
 
-const confirmOptions = computed(
-  () => (typeof props.confirm === 'boolean' ? {} : props.confirm) || {}
-);
-
 function getAriaPressed($attrs: any) {
   if ($attrs['aria-pressed']) {
     return $attrs['aria-pressed'];
@@ -156,14 +138,6 @@ function getAriaPressed($attrs: any) {
       <slot :active="isActive">{{ t(text) }}</slot>
     </button>
   </router-link>
-
-  <ly-confirm-modal
-    v-if="confirm"
-    v-model="showConfirm"
-    :options="confirmOptions"
-    @submit="$emit('click')">
-    <slot name="confirmBody"></slot>
-  </ly-confirm-modal>
 </template>
 
 <style>

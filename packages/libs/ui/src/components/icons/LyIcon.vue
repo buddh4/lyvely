@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { IconOptionsIF } from '@/types';
+import type { IconOptionsIF } from './icon-options.interface';
 import { Translatable } from '@/i18n';
-import { getIconLibrary } from '@/components/icons/registries';
+import { getIconLibrary } from './icon-library.registry';
 import { computed } from 'vue';
 
 export interface IProps {

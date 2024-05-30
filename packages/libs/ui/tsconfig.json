@@ -18,7 +18,7 @@
     "outDir": "dist",
     "jsx": "preserve",
     "rootDir": "./src",
-
+    "types": ["vite/client"],
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
