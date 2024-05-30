@@ -5,7 +5,7 @@ import { TasksService } from './tasks.service';
 import { TaskTestDataUtil, taskITestPlugin } from '../testing';
 import { TasksDao } from '../daos';
 import { Task, TaskState } from '../schemas';
-import { ILyvelyTestingModule } from '@lyvely/testing';
+import { ILyvelyTestingModule } from '@lyvely/api';
 
 describe('TaskService', () => {
   let testingModule: ILyvelyTestingModule;
@@ -36,7 +36,7 @@ describe('TaskService', () => {
   async function createTask(
     context: ProtectedProfileContext,
     userStrategy: UserAssignmentStrategy,
-    timers: Timer[] = [],
+    timers: Timer[] = []
   ) {
     const task = await taskService.createContent(context, {
       title: 'Do something!',

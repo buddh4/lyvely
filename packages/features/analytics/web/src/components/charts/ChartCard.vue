@@ -14,10 +14,10 @@ const ChartComponent = category?.component
 </script>
 
 <template>
-  <div class="chart-card border-divide bg-main rounded border p-5 drop-shadow-md">
+  <div class="chart-card rounded border border-divide bg-main p-5 drop-shadow-md">
     <div class="relative flex justify-center text-sm font-bold">
       <div class="mr-auto">
-        <button class="item-drag-button text-secondary my-auto mr-2 w-5 cursor-move">
+        <button class="item-drag-button my-auto mr-2 w-5 cursor-move text-secondary">
           <ly-icon name="drag" class="w-5 md:hidden" />
         </button>
       </div>

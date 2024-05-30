@@ -59,10 +59,10 @@ nav a {
 }
 
 nav a:hover:not(.router-link-active) {
-  @apply text-highlight border-l-4 border-slate-200 dark:border-slate-600;
+  @apply border-l-4 border-slate-200 text-highlight dark:border-slate-600;
 }
 
 nav a.router-link-active {
-  @apply border-pop text-highlight border-l-4;
+  @apply border-l-4 border-pop text-highlight;
 }
 </style>

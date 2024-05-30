@@ -49,13 +49,13 @@ describe('ChartSeriesService', () => {
 
   async function createTimeSeriesChart(
     context: ProtectedProfileContext,
-    series: ChartSeriesConfig[],
+    series: ChartSeriesConfig[]
   ): Promise<Chart<TimeSeriesChartConfig>> {
     return chartsDao.save(
       new Chart<TimeSeriesChartConfig>(context, {
         content: new ContentDataType({ title: 'Test' }),
         config: new TimeSeriesChartConfig({ series }),
-      }),
+      })
     ) as Promise<Chart<TimeSeriesChartConfig>>;
   }
 
@@ -71,7 +71,7 @@ describe('ChartSeriesService', () => {
         new ChartSeriesConfig({
           type: CHART_SERIES_PROFILE_SCORE.id,
           name: 'TestScore',
-        }),
+        })
       );
       expect(chart.config.series.length).toEqual(1);
       const persisted = (await chartsDao.reload(chart)) as Chart<TimeSeriesChartConfig>;

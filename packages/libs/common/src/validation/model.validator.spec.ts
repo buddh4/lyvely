@@ -78,7 +78,7 @@ describe('ModelValidator', () => {
       await validator.validate();
       expect(validator.getError('someNumber')).toBeDefined();
       expect(validator.getError('someNumber')).toEqual(
-        'someNumber must be a number conforming to the specified constraints',
+        'someNumber must be a number conforming to the specified constraints'
       );
     });
   });
@@ -108,7 +108,7 @@ describe('ModelValidator', () => {
               },
             ],
           },
-        },
+        }
       );
 
       expect(await validator.validate()).toEqual(false);

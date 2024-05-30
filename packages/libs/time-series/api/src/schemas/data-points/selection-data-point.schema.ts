@@ -49,7 +49,7 @@ export class SelectionDataPoint
     profile: Profile,
     user: User,
     content: TimeSeriesContent,
-    data?: BaseDocumentData<SelectionDataPoint>,
+    data?: BaseDocumentData<SelectionDataPoint>
   ) {
     super(profile, user, content, data);
     BaseDocument.init(this, pick(data, 'value'));
@@ -58,5 +58,5 @@ export class SelectionDataPoint
 
 export const SelectionDataPointSchema = DataPointSchemaFactory.createForClass(
   DataPointValueType.Selection,
-  SelectionDataPoint,
+  SelectionDataPoint
 );

@@ -30,7 +30,7 @@ export class CalendarPlanFilter implements ICalendarPlanFilter {
   constructor(
     date: CalendarDate,
     level: CalendarInterval = CalendarInterval.Unscheduled,
-    data?: Partial<CalendarPlanFilter>,
+    data?: Partial<CalendarPlanFilter>
   ) {
     BaseModel.init(this, data);
     this.date = formatDate(date);

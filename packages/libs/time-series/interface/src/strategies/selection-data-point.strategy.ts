@@ -71,13 +71,13 @@ export class SelectionDataPointStrategy extends DataPointStrategy<
         config.options.includes(key) ||
         (config.inputType !== DataPointInputType.Dropdown &&
           this.allowOtherValue(config) &&
-          key === SELECTION_OTHER_OPTION_KEY),
+          key === SELECTION_OTHER_OPTION_KEY)
     );
 
     if (
       value.selection?.length > 1 &&
       [DataPointInputType.Dropdown, DataPointInputType.Radio].includes(
-        config.inputType || DEFAULT_INPUT_TYPE,
+        config.inputType || DEFAULT_INPUT_TYPE
       )
     ) {
       value.selection = [value.selection[0]];
@@ -99,5 +99,5 @@ export class SelectionDataPointStrategy extends DataPointStrategy<
 
 useDataPointStrategyFacade().registerType(
   DataPointValueType.Selection,
-  new SelectionDataPointStrategy(),
+  new SelectionDataPointStrategy()
 );

@@ -29,13 +29,13 @@ export class MilestonePlanController implements MilestonePlanEndpoint {
   @Get()
   async getByFilter(
     @Query(new ValidationPipe({ transform: true })) filter: CalendarPlanFilter,
-    @Request() req: ProfileRequest,
+    @Request() req: ProfileRequest
   ): Promise<MilestoneSearchResponse> {
     const { context } = req;
 
     const { models, relations } = await this.calendarPlanService.findMilestonesWithRelations(
       context,
-      filter,
+      filter
     );
 
     return new MilestoneSearchResponse({
@@ -48,7 +48,7 @@ export class MilestonePlanController implements MilestonePlanEndpoint {
   @Policies(ContentWritePolicy)
   async sort(
     @Body() dto: CalendarPlanSort,
-    @Request() req: ProtectedProfileContentRequest<Milestone>,
+    @Request() req: ProtectedProfileContentRequest<Milestone>
   ) {
     const { context, content } = req;
 
@@ -56,7 +56,7 @@ export class MilestonePlanController implements MilestonePlanEndpoint {
       context,
       content,
       dto.interval,
-      dto.attachToId,
+      dto.attachToId
     );
     return new SortResponse({ sort });
   }

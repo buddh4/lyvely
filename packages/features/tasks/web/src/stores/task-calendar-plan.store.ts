@@ -9,6 +9,8 @@ import { CalendarInterval, toTimingId } from '@lyvely/dates';
 import { useProfileStore, useGlobalDialogStore } from '@lyvely/web';
 import { useCalendarPlan, useCalendarPlanStore } from '@lyvely/calendar-plan-web';
 import { ref } from 'vue';
+// TODO: https://github.com/microsoft/TypeScript/issues/47663
+import type {} from 'mitt';
 
 const MAX_DONE_TASKS = 2;
 

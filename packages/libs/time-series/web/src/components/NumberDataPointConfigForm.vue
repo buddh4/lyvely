@@ -44,7 +44,7 @@ function setInputType(inputType: DataPointInputType) {
 </script>
 
 <template>
-  <div class="border-divide bg-highlight dark:bg-main flex flex-col gap-2 rounded border p-3">
+  <div class="flex flex-col gap-2 rounded border border-divide bg-highlight p-3 dark:bg-main">
     <div v-if="showInputTypeSelection" class="flex items-stretch justify-between gap-2">
       <ly-button
         class="secondary outlined w-full text-xs"
@@ -128,7 +128,7 @@ function setInputType(inputType: DataPointInputType) {
           :min="-100" />
         <div
           v-if="modelValue.inputType === DataPointInputType.Timer"
-          class="border-divide bg-highlight text-dimmed flex h-full gap-2 rounded border p-2 text-xs">
+          class="flex h-full gap-2 rounded border border-divide bg-highlight p-2 text-xs text-dimmed">
           <div>
             <ly-icon name="info" class="text-info-light" />
           </div>

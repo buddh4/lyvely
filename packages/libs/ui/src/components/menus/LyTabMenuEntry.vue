@@ -26,10 +26,10 @@ const menuLabel = computed(() => {
 <template>
   <ly-button
     :route="toRoute"
-    @click="entry?.click"
     :data-id="$attrs['data-id'] || entry?.id"
     role="tab"
-    class="secondary outlined grow px-1 py-1">
+    class="secondary outlined grow px-1 py-1"
+    @click="entry?.click">
     <template #default="{ active }">
       <slot :active="active">
         <template v-if="menuLabel">

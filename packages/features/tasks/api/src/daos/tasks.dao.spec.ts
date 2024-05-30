@@ -1,4 +1,4 @@
-import { ILyvelyTestingModule } from '@lyvely/testing';
+import { ILyvelyTestingModule } from '@lyvely/api';
 import { CalendarInterval, toTimingId, addDays, subtractDays } from '@lyvely/dates';
 import { buildProfileTest, UserAssignmentStrategy } from '@lyvely/api';
 import { Task, UserDone } from '../schemas';
@@ -87,7 +87,7 @@ describe('Tasks DAO', () => {
           },
           (model) => {
             model.state.doneBy = [new UserDone(member, todayTimingId, new Date())];
-          },
+          }
         );
 
         const search = await tasksDao.findByProfileAndTimingIds(profile, member, [todayTimingId]);
@@ -107,7 +107,7 @@ describe('Tasks DAO', () => {
           },
           (model) => {
             model.state.doneBy = [new UserDone(owner, todayTimingId, new Date())];
-          },
+          }
         );
 
         const search = await tasksDao.findByProfileAndTimingIds(profile, member, [todayTimingId]);
@@ -126,7 +126,7 @@ describe('Tasks DAO', () => {
           { userStrategy: UserAssignmentStrategy.Shared },
           (model) => {
             model.state.doneBy = [new UserDone(owner, tomorrowTid, new Date())];
-          },
+          }
         );
 
         const search = await tasksDao.findByProfileAndTimingIds(profile, member, [todayTid]);
@@ -158,7 +158,7 @@ describe('Tasks DAO', () => {
           },
           (model) => {
             model.state.doneBy = [new UserDone(member, todayTid, new Date())];
-          },
+          }
         );
 
         const search = await tasksDao.findByProfileAndTimingIds(profile, member, [todayTid]);
@@ -180,7 +180,7 @@ describe('Tasks DAO', () => {
               new UserDone(member, tomorrowTid, new Date()),
               new UserDone(owner, todayTid, new Date()),
             ];
-          },
+          }
         );
 
         const search = await tasksDao.findByProfileAndTimingIds(profile, member, [todayTid]);
@@ -198,7 +198,7 @@ describe('Tasks DAO', () => {
           },
           (model) => {
             model.state.doneBy = [new UserDone(owner, todayTid, new Date())];
-          },
+          }
         );
 
         const search = await tasksDao.findByProfileAndTimingIds(profile, member, [todayTid]);
@@ -221,7 +221,7 @@ describe('Tasks DAO', () => {
         },
         (model) => {
           model.state.doneBy = [new UserDone(member, yesterdayTid)];
-        },
+        }
       );
 
       const result = await tasksDao.updateDoneBy(profile, task, doneToday);
@@ -246,7 +246,7 @@ describe('Tasks DAO', () => {
           model.state.doneBy = [
             new UserDone(member, toTimingId(new Date(), CalendarInterval.Daily)),
           ];
-        },
+        }
       );
 
       const result = await tasksDao.pullDoneBy(profile, task, member);

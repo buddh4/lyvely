@@ -5,20 +5,20 @@ export type GenericObject<T = {}> = Record<Primitive, unknown> & T;
 type Join<L extends Primitive | undefined, R extends Primitive | undefined> = L extends undefined
   ? R
   : L extends string | number
-  ? R extends string | number
-    ? `${L}.${R}`
-    : L
-  : R extends string | number
-  ? R
-  : undefined;
+    ? R extends string | number
+      ? `${L}.${R}`
+      : L
+    : R extends string | number
+      ? R
+      : undefined;
 
 type Union<L extends unknown | undefined, R extends unknown | undefined> = L extends undefined
   ? R extends undefined
     ? undefined
     : R
   : R extends undefined
-  ? L
-  : L | R;
+    ? L
+    : L | R;
 
 /**
  * NestedPaths
@@ -50,10 +50,10 @@ export type TypeFromPath<T extends GenericObject, Path extends NestedPaths<T>> =
   [K in Path]: K extends keyof T
     ? T[K]
     : K extends `${infer P}.${infer S}`
-    ? T[P] extends GenericObject
-      ? S extends NestedPaths<T[P]>
-        ? TypeFromPath<T[P], S>
+      ? T[P] extends GenericObject
+        ? S extends NestedPaths<T[P]>
+          ? TypeFromPath<T[P], S>
+          : never
         : never
-      : never
-    : never;
+      : never;
 }[Path];

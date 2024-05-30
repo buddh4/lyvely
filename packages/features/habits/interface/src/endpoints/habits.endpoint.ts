@@ -15,7 +15,7 @@ export interface IHabitsEndpointClient
     ITimeSeriesCalendarPlanClient<HabitModel> {
   updateDataPoint(
     cid: string,
-    update: UpdateHabitDataPointModel,
+    update: UpdateHabitDataPointModel
   ): Promise<UpdateHabitDataPointResponse>;
   startTimer(cid: string, dto: TimerUpdateModel): Promise<TimerDataPointModel>;
   stopTimer(cid: string, dto: TimerUpdateModel): Promise<UpdateHabitDataPointTimerResponse>;

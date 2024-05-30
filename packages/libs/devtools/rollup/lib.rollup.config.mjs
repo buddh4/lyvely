@@ -1,6 +1,6 @@
 import typescript from '@rollup/plugin-typescript';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
-import  commonjs from '@rollup/plugin-commonjs';
+import commonjs from '@rollup/plugin-commonjs';
 import { nodeExternals } from 'rollup-plugin-node-externals';
 
 const production = !process.env.ROLLUP_WATCH;
@@ -23,42 +23,45 @@ const production = !process.env.ROLLUP_WATCH;
  * myFunction();
  */
 export default async (options) => {
-
   options ||= {};
   const nodeExternalsOptions = options.nodeExternals || { devDeps: true };
   delete options.nodeExternals;
 
-  return Object.assign( {
-    input: './src/index.ts',
-    output: [
-      {
-        sourcemap: !production,
-        dir: 'dist/esm',
-        format: 'esm',
-      },
-      {
-        sourcemap: !production,
-        dir: 'dist/cjs',
-        format: 'cjs',
-        entryFileNames: '[name].cjs',
-      },
-    ],
-    plugins: [
-      nodeExternals(nodeExternalsOptions),
-      typescript({
-        sourceMap: !production,
-        inlineSources: !production,
-        paths: {
-          '@/*': ['src/*'],
+  return Object.assign(
+    {
+      input: './src/index.ts',
+      output: [
+        {
+          sourcemap: !production,
+          dir: 'dist/esm',
+          format: 'esm',
         },
-      }),
-      nodeResolve({
-        resolveOnly: ['he'],
-      }),
-      commonjs({}),
-    ],
-    watch: {
-      clearScreen: false,
+        {
+          sourcemap: !production,
+          dir: 'dist/cjs',
+          format: 'cjs',
+          entryFileNames: '[name].cjs',
+        },
+      ],
+      plugins: [
+        nodeExternals(nodeExternalsOptions),
+        typescript({
+          sourceMap: !production,
+          inlineSources: !production,
+          outputToFilesystem: true,
+          paths: {
+            '@/*': ['src/*'],
+          },
+        }),
+        nodeResolve({
+          resolveOnly: ['he'],
+        }),
+        commonjs({}),
+      ],
+      watch: {
+        clearScreen: false,
+      },
     },
-  }, options)
-}
+    options
+  );
+};

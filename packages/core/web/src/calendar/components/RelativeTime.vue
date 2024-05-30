@@ -32,7 +32,7 @@ const relativeTime = computed(() =>
 </script>
 
 <template>
-  <span class="text-dimmed text-xs">
+  <span class="text-xs text-dimmed">
     {{ relativeTime }}
   </span>
 </template>

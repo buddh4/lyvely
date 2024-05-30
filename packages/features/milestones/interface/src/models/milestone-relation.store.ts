@@ -51,7 +51,7 @@ export class MilestoneRelationsStore extends CalendarPlanStore<
 
   private _setRelation(
     relation: MilestoneRelationModel,
-    relations: Map<MID, Map<TID | undefined, MilestoneRelationModel[]>>,
+    relations: Map<MID, Map<TID | undefined, MilestoneRelationModel[]>>
   ) {
     const mid = relation.mid;
 

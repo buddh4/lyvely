@@ -27,7 +27,7 @@ export abstract class TimerDataPointService<T extends TimeSeriesContent = TimeSe
   async startTimer(
     context: ProtectedProfileContext,
     model: T,
-    date: CalendarDate,
+    date: CalendarDate
   ): Promise<TimerDataPoint> {
     if (!isTimerDataPointConfig(model.timeSeriesConfig))
       throw new IntegrityException('Can not start timer of non timer time series.');
@@ -35,7 +35,7 @@ export abstract class TimerDataPointService<T extends TimeSeriesContent = TimeSe
     const { dataPoint } = await this.dataPointService.findOrCreateDataPointByDate(
       context,
       model,
-      date,
+      date
     );
 
     if (!this.isTimerDataPoint(dataPoint))
@@ -49,7 +49,7 @@ export abstract class TimerDataPointService<T extends TimeSeriesContent = TimeSe
       context,
       model,
       date,
-      dataPoint.value,
+      dataPoint.value
     );
 
     return updatedDataPoint as TimerDataPoint;
@@ -67,7 +67,7 @@ export abstract class TimerDataPointService<T extends TimeSeriesContent = TimeSe
   async stopTimer(
     context: ProtectedProfileContext,
     model: T,
-    date: CalendarDate,
+    date: CalendarDate
   ): Promise<TimerDataPoint> {
     if (!isTimerDataPointConfig(model.timeSeriesConfig))
       throw new IntegrityException('Can not start timer of non timer time series.');
@@ -75,7 +75,7 @@ export abstract class TimerDataPointService<T extends TimeSeriesContent = TimeSe
     const { dataPoint } = await this.dataPointService.findOrCreateDataPointByDate(
       context,
       model,
-      date,
+      date
     );
 
     if (!this.isTimerDataPoint(dataPoint))
@@ -89,7 +89,7 @@ export abstract class TimerDataPointService<T extends TimeSeriesContent = TimeSe
       context,
       model,
       date,
-      dataPoint.value,
+      dataPoint.value
     );
 
     return updatedDataPoint as TimerDataPoint;

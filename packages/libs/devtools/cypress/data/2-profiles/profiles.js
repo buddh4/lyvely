@@ -10,7 +10,9 @@ const createProfile = (idSeed, ownerSeed, options) => {
     ownerId: getObjectId(ownerSeed),
     name: options.name || idSeed,
     handle: options.handle || slugify(idSeed),
-    guid: createHash('sha256').update(options.name || idSeed,).digest('hex'),
+    guid: createHash('sha256')
+      .update(options.name || idSeed)
+      .digest('hex'),
     locale: options.locale || 'en-US',
     usage: options.usage || [],
     archived: options.archived ?? false,
@@ -32,7 +34,7 @@ const createProfile = (idSeed, ownerSeed, options) => {
 module.exports = [
   createProfile('owner-profile', 'owner', {
     usage: ['Private'],
-    name: "Owner Profile",
+    name: 'Owner Profile',
     type: 'user',
     tags: [
       {
@@ -59,15 +61,15 @@ module.exports = [
 
   createProfile('admin-profile', 'owner', {
     usage: ['Private'],
-    name: "Admin Profile",
-    type: 'group'
+    name: 'Admin Profile',
+    type: 'group',
   }),
 
   createProfile('archived-group', 'owner', {
     usage: ['Project'],
-    name: "Archived Group",
+    name: 'Archived Group',
     type: 'group',
-    archived: true
+    archived: true,
   }),
 
   createProfile('private-group', 'owner', {

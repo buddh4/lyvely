@@ -31,10 +31,10 @@ const filterModuleId = (moduleId: string) => (search.value = moduleId);
             v-model="search"
             type="text"
             :placeholder="t('profiles.settings.permissions.search')"
-            class="search border-divide bg-main w-full rounded-r-3xl p-1 pl-2 text-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" />
+            class="search w-full rounded-r-3xl border-divide bg-main p-1 pl-2 text-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" />
           <ly-icon
             :name="!search.length ? 'search' : 'close'"
-            class="text-dimmed absolute right-2.5 top-2 cursor-pointer"
+            class="absolute right-2.5 top-2 cursor-pointer text-dimmed"
             @click="search = ''" />
         </div>
       </div>

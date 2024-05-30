@@ -120,6 +120,7 @@ services:
     build:
       context: ../
       dockerfile: docker/Dockerfile.api
+    image: lyvely-api
     hostname: lyvely
     networks:
       - lyvely-network
@@ -142,6 +143,7 @@ services:
     build:
       context: ../
       dockerfile: docker/Dockerfile.nginx
+    image: lyvely-web
     networks:
       - lyvely-network
     hostname: nginx

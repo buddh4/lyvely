@@ -30,13 +30,6 @@ module.exports = {
     },
   },
   rules: {
-    /*'@nx/enforce-module-boundaries': [
-      'error',
-      {
-        allow: [],
-        banTransitiveDependencies: true,
-      },
-    ],*/
     '@typescript-eslint/naming-convention': [
       'warn',
       {
@@ -48,6 +41,7 @@ module.exports = {
         },
       },
     ],
+    'import/no-named-as-default': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-empty-interface': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',
@@ -56,11 +50,10 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': 'warn',
     '@typescript-eslint/ban-types': 'off',
     'object-curly-spacing': ['error', 'always'],
-    //'import/named': 'off',
     'import/no-unresolved': 'off',
     'import/no-named-as-default-member': 'off',
     'multiline-ternary': ['error', 'always-multiline'],
     'function-call-argument-newline': ['error', 'consistent'],
   },
-  ignorePatterns: ['.eslintrc.js', '*.d.ts', 'gulp.js'],
+  ignorePatterns: ['.eslintrc.js', '*.d.ts', 'gulp.js', '*.spec.ts', '*.test.ts'],
 };

@@ -1,4 +1,4 @@
-import { getObjectId } from '@lyvely/testing';
+import { getObjectId } from '@lyvely/api';
 import { Task } from './index';
 import { UserAssignmentStrategy, User, Profile } from '@lyvely/api';
 import { CalendarInterval, toTimingId } from '@lyvely/dates';
@@ -15,7 +15,7 @@ describe('Task', () => {
             interval: CalendarInterval.Daily,
             userStrategy: UserAssignmentStrategy.Shared,
           },
-        },
+        }
       );
 
       const tid = toTimingId('2021-04-03');
@@ -41,7 +41,7 @@ describe('Task', () => {
             interval: CalendarInterval.Daily,
             userStrategy: UserAssignmentStrategy.Shared,
           },
-        },
+        }
       );
 
       const tid = toTimingId('2021-04-03');
@@ -68,7 +68,7 @@ describe('Task', () => {
             interval: CalendarInterval.Daily,
             userStrategy: UserAssignmentStrategy.PerUser,
           },
-        },
+        }
       );
 
       const tid = toTimingId('2021-04-03');
@@ -94,7 +94,7 @@ describe('Task', () => {
             interval: CalendarInterval.Daily,
             userStrategy: UserAssignmentStrategy.PerUser,
           },
-        },
+        }
       );
 
       const tid = toTimingId('2021-04-03');
@@ -127,7 +127,7 @@ describe('Task', () => {
             interval: CalendarInterval.Daily,
             userStrategy: UserAssignmentStrategy.PerUser,
           },
-        },
+        }
       );
 
       const tid = toTimingId('2021-04-03');
@@ -161,7 +161,7 @@ describe('Task', () => {
             interval: CalendarInterval.Daily,
             userStrategy: UserAssignmentStrategy.PerUser,
           },
-        },
+        }
       );
 
       const tid = toTimingId('2021-04-03');
@@ -185,7 +185,7 @@ describe('Task', () => {
             interval: CalendarInterval.Daily,
             userStrategy: UserAssignmentStrategy.Shared,
           },
-        },
+        }
       );
 
       const tid = toTimingId('2021-04-03');
@@ -209,7 +209,7 @@ describe('Task', () => {
             interval: CalendarInterval.Daily,
             userStrategy: UserAssignmentStrategy.PerUser,
           },
-        },
+        }
       );
 
       const tid = toTimingId('2021-04-03');
@@ -237,7 +237,7 @@ describe('Task', () => {
             interval: CalendarInterval.Daily,
             userStrategy: UserAssignmentStrategy.PerUser,
           },
-        },
+        }
       );
 
       const tid = toTimingId('2021-04-03');
@@ -266,7 +266,7 @@ describe('Task', () => {
             interval: CalendarInterval.Daily,
             userStrategy: UserAssignmentStrategy.Shared,
           },
-        },
+        }
       );
 
       expect(task.isDoneByUser(user1)).toEqual(false);
@@ -292,7 +292,7 @@ describe('Task', () => {
             interval: CalendarInterval.Daily,
             userStrategy: UserAssignmentStrategy.PerUser,
           },
-        },
+        }
       );
 
       expect(task.isDoneByUser(user1)).toEqual(false);

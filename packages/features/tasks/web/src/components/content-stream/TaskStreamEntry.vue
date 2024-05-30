@@ -15,7 +15,7 @@ const props = defineProps<IProps>();
 <template>
   <content-stream-entry v-bind="props" :merge="true">
     <template #image>
-      <div class="border-divide bg-main flex h-8 w-8 justify-center rounded-full border">
+      <div class="flex h-8 w-8 justify-center rounded-full border border-divide bg-main">
         <router-link :to="{ name: 'Tasks' }">
           <ly-icon name="task" class="text-main" />
         </router-link>
@@ -27,7 +27,7 @@ const props = defineProps<IProps>();
         <div class="flex items-center gap-1">
           <span>{{ model.content.title }}</span>
         </div>
-        <p v-if="model.content.text?.length" class="text-dimmed text-sm">
+        <p v-if="model.content.text?.length" class="text-sm text-dimmed">
           {{ model.content.text }}
         </p>
       </div>

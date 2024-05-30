@@ -6,7 +6,7 @@ export function getMonthNameByIndex(id: number, short = false) {
 
 export function getLocalizedDays(
   format: 'long' | 'short' | 'narrow' | undefined = 'long',
-  locale?: string,
+  locale?: string
 ) {
   const days: string[] = [];
 
@@ -20,7 +20,7 @@ export function getLocalizedDays(
 
 export function getLocalizedMonths(
   format: 'numeric' | '2-digit' | 'long' | 'short' | 'narrow' | undefined = 'long',
-  locale?: string,
+  locale?: string
 ) {
   const months: string[] = [];
 
@@ -35,7 +35,7 @@ export function getLocalizedMonths(
 export function getLocalizedDayName(
   dayNumber: number,
   format: 'long' | 'short' | 'narrow' | undefined = 'long',
-  locale?: string,
+  locale?: string
 ) {
   // Create a new date - let's start with Sunday (day 0)
   const date = new Date(Date.UTC(2021, 0, 3 + dayNumber)); // January 3, 2021, is a Sunday
@@ -88,7 +88,7 @@ export function formatDateWithTime(date: CalendarDateTime, format = 'YYYY.MM.DD,
 export function getRelativeTime(
   timeInMs: number,
   locale: string,
-  style: Intl.RelativeTimeFormatStyle = 'long',
+  style: Intl.RelativeTimeFormatStyle = 'long'
 ) {
   const rtf1 = new Intl.RelativeTimeFormat(locale, { style: style });
 

@@ -1,4 +1,4 @@
-import { ILyvelyTestingModule } from '@lyvely/testing';
+import { ILyvelyTestingModule } from '@lyvely/api';
 import { Model, buildContentTest } from '@lyvely/api';
 import { NumberDataPoint, NumberDataPointSchema } from '../index';
 

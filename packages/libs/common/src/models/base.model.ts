@@ -38,7 +38,7 @@ export const BaseModel = {
   init<TModel extends Object = any>(
     instance: TModel,
     data?: BaseModelData<TModel>,
-    options?: InitModelDataOptions,
+    options?: InitModelDataOptions
   ) {
     if (data === false) return;
     return initBaseModelData(instance, data, options);

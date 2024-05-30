@@ -21,7 +21,7 @@ export class TextDataPoint
     profile: Profile,
     user: User,
     content: TimeSeriesContent,
-    data?: BaseDocumentData<TextDataPoint>,
+    data?: BaseDocumentData<TextDataPoint>
   ) {
     super(profile, user, content, data);
     BaseDocument.init(this, pick(data, 'value'));
@@ -30,5 +30,5 @@ export class TextDataPoint
 
 export const TextDataPointSchema = DataPointSchemaFactory.createForClass(
   DataPointValueType.Text,
-  TextDataPoint,
+  TextDataPoint
 );

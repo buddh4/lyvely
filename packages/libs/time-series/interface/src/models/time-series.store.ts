@@ -64,7 +64,7 @@ export class TimeSeriesStore<
 
   private _setDataPoint(
     dataPoint: TDataPointModel,
-    dataPoints: Map<string, Map<string, TDataPointModel>>,
+    dataPoints: Map<string, Map<string, TDataPointModel>>
   ) {
     const modelId = dataPoint.cid;
 
@@ -80,7 +80,7 @@ export class TimeSeriesStore<
   getDataPoint(
     identity: TimeSeriesContentIdentity,
     timingId: string,
-    create = false,
+    create = false
   ): TDataPointModel | null {
     const modelId = this.getId(identity);
     if (!this.hasDataPoint(modelId, timingId)) {

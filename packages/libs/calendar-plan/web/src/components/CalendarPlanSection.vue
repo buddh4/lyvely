@@ -66,8 +66,8 @@ const isEmptyUnscheduled = computed(
     :aria-label="t('calendar-plan.aria.header', { time: accessibleTitle })"
     :data-count="count"
     :class="[
-      'bg-shadow relative px-3 py-2 text-center',
-      'border-divide border first:rounded-t ',
+      'relative bg-shadow px-3 py-2 text-center',
+      'border border-divide first:rounded-t ',
       { 'border-b-0': !isEmptyUnscheduled },
       { 'rounded-b border-b': isEmptyUnscheduled },
     ]"
@@ -132,7 +132,7 @@ const isEmptyUnscheduled = computed(
     role="list"
     data-calendar-plan-item-container
     :class="[
-      'border-divide border-x p-0',
+      'border-x border-divide p-0',
       { 'last:rounded-b last:border-b': count !== 0 },
       { hidden: collapsed },
     ]">

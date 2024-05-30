@@ -22,7 +22,7 @@ export default {
   async update(
     milestoneId: string,
     model: Partial<UpdateMilestoneModel>,
-    options?: IProfileApiRequestOptions,
+    options?: IProfileApiRequestOptions
   ) {
     return api.put<'update'>(milestoneId, model, options);
   },

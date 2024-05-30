@@ -26,7 +26,7 @@ const childCount = computed(() => {
     <slot name="pre" />
     <ly-button
       :route="toContentDetails(model)"
-      class="bg-main border-divide -bottom-2.5 right-2.5 inline-flex items-center justify-center gap-1 rounded border px-2 py-1 text-xs">
+      class="-bottom-2.5 right-2.5 inline-flex items-center justify-center gap-1 rounded border border-divide bg-main px-2 py-1 text-xs">
       <ly-icon name="stream" />
       <span v-if="childCount != '0'">{{ childCount }}</span>
     </ly-button>

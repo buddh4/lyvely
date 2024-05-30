@@ -101,7 +101,7 @@ const maxWidth = true;
 
 <template>
   <div data-stream-entry :class="cssClass" :data-id="model.id">
-    <div v-if="showTimeSeparator" class="text-dimmed flex items-center justify-center text-xs">
+    <div v-if="showTimeSeparator" class="flex items-center justify-center text-xs text-dimmed">
       {{ timeSeparator }}
     </div>
     <div class="flex w-full items-stretch gap-1">
@@ -142,7 +142,7 @@ const maxWidth = true;
                     <ly-icon
                       v-if="model.meta.archived"
                       name="archive"
-                      class="text-warning ml-auto w-3" />
+                      class="ml-auto w-3 text-warning" />
                     <ly-icon v-if="model.meta.locked" name="locked" class="ml-auto w-3" />
                   </template>
                 </tag-list>
@@ -153,12 +153,12 @@ const maxWidth = true;
                     <div v-if="model.content.title?.length" class="flex items-center gap-1">
                       <span>{{ model.content.title }}</span>
                     </div>
-                    <p v-if="model.content.text?.length" class="text-dimmed text-sm">
+                    <p v-if="model.content.text?.length" class="text-sm text-dimmed">
                       {{ model.content.text }}
                     </p>
                     <div
                       v-if="!model.content.text?.length && !model.content.title?.length"
-                      class="text-dimmed flex items-center gap-1 text-sm">
+                      class="flex items-center gap-1 text-sm text-dimmed">
                       <ly-icon name="warning" class="text-warning" />
                       {{ t('content.stream.empty') }}
                     </div>

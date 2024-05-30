@@ -98,7 +98,7 @@ function cancel() {
 }
 </script>
 <template>
-  <div class="text-main cursor-pointer">
+  <div class="cursor-pointer text-main">
     <div v-if="!isEdit" class="flex justify-between gap-2" @click="edit">
       <div class="flex-grow">
         <template v-if="inputValue?.length">
@@ -109,16 +109,16 @@ function cancel() {
         </template>
       </div>
       <div class="flex flex-col justify-end">
-        <a class="text-secondary text-xs">{{ t('common.edit') }}</a>
+        <a class="text-xs text-secondary">{{ t('common.edit') }}</a>
       </div>
     </div>
     <div v-else class="flex flex-col gap-1">
       <div class="flex-grow">
         <textarea
           :id="inputId"
-          :data-id="dataId"
           ref="input"
           v-model="editValue"
+          :data-id="dataId"
           :placeholder="t(placeholder)"
           :aria-describedby="ariaDescribedby"
           :rows="rows"

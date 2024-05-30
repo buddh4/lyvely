@@ -27,7 +27,7 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 export class MilestonesRelationsService {
   constructor(
     private contentDao: ContentDao,
-    private eventEmitter: EventEmitter2,
+    private eventEmitter: EventEmitter2
   ) {}
 
   /**
@@ -41,7 +41,7 @@ export class MilestonesRelationsService {
   public async getRelationsByMilestones(
     context: ProfileContext,
     milestones: DocumentIdentity<Milestone>[],
-    date?: CalendarDateTime,
+    date?: CalendarDateTime
   ) {
     const { profile, user } = context;
     if (!milestones.length) return [];
@@ -51,7 +51,7 @@ export class MilestonesRelationsService {
       DBQuery.and<Content>([
         ContentCondition.NOT_ARCHIVED,
         ContentCondition.withMilestones(milestones.map((mid) => assureObjectId(mid))),
-      ]),
+      ])
     );
 
     if (!contents.length) return;
@@ -72,12 +72,12 @@ export class MilestonesRelationsService {
 
       await this.eventEmitter.emitAsync(
         MilestoneRelationEvent.getKeyByContentType(contents[0].type),
-        event,
+        event
       );
 
       if (!event.getResult()?.length) {
         contents.forEach((content) =>
-          relations.push(new MilestoneRelationModel<TObjectId>(content)),
+          relations.push(new MilestoneRelationModel<TObjectId>(content))
         );
       } else {
         event.getResult().forEach((relation) => relations.push(relation));

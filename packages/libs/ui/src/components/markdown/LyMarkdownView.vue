@@ -4,7 +4,6 @@ import rehypeStringify from 'rehype-stringify';
 import remarkParse from 'remark-parse';
 import remarkRehype from 'remark-rehype';
 import { unified } from 'unified';
-//import rehypeHighlight from 'rehype-highlight'
 import { computedAsync } from '@vueuse/core';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';

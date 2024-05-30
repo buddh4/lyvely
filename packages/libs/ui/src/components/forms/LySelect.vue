@@ -90,9 +90,9 @@ onMounted(() => {
     <select
       v-if="type === 'number'"
       :id="inputId"
-      :data-id="dataId"
       ref="input"
       v-model.number="inputValue"
+      :data-id="dataId"
       :aria-describedby="ariaDescribedby"
       :disabled="disabled"
       :class="[inputClass, 'pr-5']"
@@ -114,9 +114,9 @@ onMounted(() => {
     <select
       v-else
       :id="inputId"
-      :data-id="dataId"
       ref="input"
       v-model="inputValue"
+      :data-id="dataId"
       :aria-describedby="ariaDescribedby"
       :disabled="disabled"
       :class="[inputClass, 'pr-5']"

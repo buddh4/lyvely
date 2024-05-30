@@ -19,7 +19,7 @@ import {
 } from '@lyvely/api';
 import { JournalsService } from '../services';
 import { JournalsDao } from '../daos';
-import { ILyvelyTestingModule } from '@lyvely/testing';
+import { ILyvelyTestingModule } from '@lyvely/api';
 import { Journal, JournalSchema } from '../schemas';
 
 const Models = [
@@ -66,7 +66,7 @@ describe('JournalService', () => {
         interval: CalendarInterval.Daily,
         userStrategy: UserAssignmentStrategy.PerUser,
         ...obj,
-      }),
+      })
     );
 
     return { user, profile, context, journal };
@@ -147,7 +147,7 @@ describe('JournalService', () => {
         const e = <any>err;
         expect(e instanceof IntegrityException).toBeDefined();
         expect(e.message).toEqual(
-          "Could not initialize data point config with strategy 'number_radio'",
+          "Could not initialize data point config with strategy 'number_radio'"
         );
       }
     });
@@ -166,7 +166,7 @@ describe('JournalService', () => {
         const e = <any>err;
         expect(e instanceof IntegrityException).toBeDefined();
         expect(e.message).toEqual(
-          "Could not initialize data point config with strategy 'number_radio'",
+          "Could not initialize data point config with strategy 'number_radio'"
         );
       }
     });

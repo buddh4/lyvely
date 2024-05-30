@@ -29,7 +29,7 @@ export abstract class CalendarPlan {
   abstract getAccessibleTitle(
     date: Date,
     locale: string,
-    preferences?: ICalendarPreferences,
+    preferences?: ICalendarPreferences
   ): ITranslatable;
   abstract getLabelById(id: any): string;
   abstract increment(date: Date, amount?: number): Date;
@@ -73,7 +73,7 @@ export class UnscheduledPlan extends CalendarPlan {
   getAccessibleTitle(
     date: Date,
     locale: string,
-    preferences?: ICalendarPreferences,
+    preferences?: ICalendarPreferences
   ): ITranslatable {
     return this.getTitle(date, locale, preferences);
   }
@@ -110,7 +110,7 @@ export class YearlyPlan extends UnscheduledPlan {
   override getAccessibleTitle(
     date: Date,
     locale: string,
-    preferences?: ICalendarPreferences,
+    preferences?: ICalendarPreferences
   ): ITranslatable {
     return this.getTitle(date, locale, preferences);
   }
@@ -146,7 +146,7 @@ export class QuarterlyPlan extends YearlyPlan {
   override getAccessibleTitle(
     date: Date,
     locale: string,
-    preferences?: ICalendarPreferences,
+    preferences?: ICalendarPreferences
   ): ITranslatable {
     return this.getTitle(date, locale, preferences);
   }
@@ -184,7 +184,7 @@ export class MonthlyPlan extends QuarterlyPlan {
   override getAccessibleTitle(
     date: Date,
     locale: string,
-    preferences?: ICalendarPreferences,
+    preferences?: ICalendarPreferences
   ): ITranslatable {
     return this.getTitle(date, locale, preferences);
   }
@@ -224,7 +224,7 @@ export class WeeklyPlan extends MonthlyPlan {
   override getAccessibleTitle(
     date: Date,
     locale: string,
-    preferences?: ICalendarPreferences,
+    preferences?: ICalendarPreferences
   ): ITranslatable {
     return this.getTitle(date, locale, preferences);
   }
@@ -263,7 +263,7 @@ export class DailyPlan extends WeeklyPlan {
   override getAccessibleTitle(
     date: Date,
     locale: string,
-    preferences?: ICalendarPreferences,
+    preferences?: ICalendarPreferences
   ): ITranslatable {
     const format = isCurrentYear(date) ? 'dddd D MMMM ' : 'dddd D MMMM  · YYYY';
     return dateTime(date).format(format);
@@ -295,7 +295,7 @@ export function getTidWindow(
   interval: CalendarInterval,
   locale: string,
   windowSize?: number,
-  preferences?: ICalendarPreferences,
+  preferences?: ICalendarPreferences
 ) {
   const calendarPlan = CalendarPlan.getInstance(interval);
   windowSize ||= calendarPlan.getDefaultWindowSize();

@@ -46,7 +46,6 @@ import { DeepPartial } from '@lyvely/common';
 import defaultConfig from '@/config/lyvely.default.config';
 import { FilesModule } from '@/files/files.module';
 import { resolve } from 'node:path';
-import { logger } from 'nx/src/utils/logger';
 
 type TModule = Type | DynamicModule | Promise<DynamicModule> | ForwardReference;
 

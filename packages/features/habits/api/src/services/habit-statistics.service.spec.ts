@@ -2,7 +2,7 @@ import { HabitTestDataUtil, habitITestPlugin } from '../testing';
 import { HabitDataPointService } from './habit-data-point.service';
 import { HabitDataPointDao } from '../daos';
 import { buildProfileTest, ContentScoreDao, ContentScoreService } from '@lyvely/api';
-import { ILyvelyTestingModule } from '@lyvely/testing';
+import { ILyvelyTestingModule } from '@lyvely/api';
 import { HabitStatisticsService, StatisticAccumulation } from './habit-statistics.service';
 import { CalendarInterval } from '@lyvely/dates';
 

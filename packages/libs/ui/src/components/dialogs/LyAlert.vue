@@ -81,7 +81,7 @@ const iconName = computed(() => {
                 :class="iconTextClass" />
             </slot>
 
-            <div class="inline-block flex-grow" v-if="text">
+            <div v-if="text" class="inline-block flex-grow">
               {{ t(text) }}
             </div>
 
@@ -101,26 +101,26 @@ const iconName = computed(() => {
 }
 
 .alert.primary {
-  @apply bg-primary-light border-primary-dark border;
+  @apply border border-primary-dark bg-primary-light;
 }
 
 .alert.secondary {
-  @apply bg-secondary-light border-secondary-dark border;
+  @apply border border-secondary-dark bg-secondary-light;
 }
 
 .alert.info {
-  @apply bg-info-light border-info-dark border;
+  @apply border border-info-dark bg-info-light;
 }
 
 .alert.success {
-  @apply bg-success-light border-success-dark border;
+  @apply border border-success-dark bg-success-light;
 }
 
 .alert.warning {
-  @apply bg-warning-light border-warning-dark border;
+  @apply border border-warning-dark bg-warning-light;
 }
 
 .alert.danger {
-  @apply bg-danger-light border-danger-dark border;
+  @apply border border-danger-dark bg-danger-light;
 }
 </style>

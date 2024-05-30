@@ -51,10 +51,10 @@ onMounted(() => accessibilityFocus('.list-page-headline'));
               v-model="filter.query"
               type="text"
               :placeholder="t('tags.view.search')"
-              class="search border-divide bg-main w-full rounded-r-3xl p-1 pl-2 text-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" />
+              class="search w-full rounded-r-3xl border-divide bg-main p-1 pl-2 text-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" />
             <ly-icon
               name="search"
-              class="text-dimmed pointer-events-none absolute right-2.5 top-2" />
+              class="pointer-events-none absolute right-2.5 top-2 text-dimmed" />
           </div>
           <ly-button
             data-id="btn-toggle-archived"
@@ -71,10 +71,10 @@ onMounted(() => accessibilityFocus('.list-page-headline'));
         <div
           v-for="tag in tags"
           :key="tag.id"
-          class="bg-main border-divide flex items-center px-3 py-4">
+          class="flex items-center border-divide bg-main px-3 py-4">
           <div class="align-middle">
             <tag-badge :tag="tag" class="px-3 py-2 text-base" @click="setEditTag(tag)" />
-            <ly-badge v-if="tag.archived" class="bg-danger ml-2">
+            <ly-badge v-if="tag.archived" class="ml-2 bg-danger">
               {{ t('common.archived') }}
             </ly-badge>
           </div>

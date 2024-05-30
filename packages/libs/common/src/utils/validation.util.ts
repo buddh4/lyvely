@@ -7,7 +7,7 @@ export function applyValidationProperties<T>(
   model: T,
   data: { [key in keyof T]?: any },
   level = 0,
-  { maxDepth = 100 } = {},
+  { maxDepth = 100 } = {}
 ): T {
   if (level > maxDepth) return model;
 
@@ -39,7 +39,7 @@ export function getValidationFields<T>(model: T) {
     model.constructor,
     model.constructor.name,
     true,
-    false,
+    false
   );
   return new Set(validationMetas?.map((meta) => meta.propertyName) || []);
 }
@@ -68,6 +68,6 @@ export const escapeHTML = (str: string) => {
         '>': '&gt;',
         "'": '&#39;',
         '"': '&quot;',
-      }[tag] || ''),
+      })[tag] || ''
   );
 };

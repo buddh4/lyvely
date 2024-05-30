@@ -6,32 +6,52 @@ FROM node:20
 # Create app directory
 WORKDIR /usr/src/app
 
+#########
+# Setup #
+#########
+
 ENV LYVELY_SERVE_STATIC=true
 ENV CYPRESS_INSTALL_BINARY=0
 ENV MONGOMS_DISABLE_POSTINSTALL=1
 
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
+# Install app dependencies
+RUN npm install -g pnpm @microsoft/rush
+
+#########
+# BUILD #
+#########
+
 COPY .. .
 
 # Copy docker specific application config
-COPY docker/config/lyvely.ts ./packages/server/src/config/lyvely.production.ts
+COPY docker/config/lyvely.ts ./packages/server/src/config/lyvely.production.config.ts
 COPY docker/config/web.env ./package/applications/pwa/.env
-COPY docker/config/web.env ./package/core/web/.env
 
-# Install app dependencies
-RUN npm install -g pnpm
-RUN pnpm install --frozen-lockfile
+# Install dependencies
+RUN rush install
 
-# We set NODE_ENV here since we need devDependencies
+# We set NODE_ENV after install since we need devDependencies for the build
 ENV NODE_ENV=production
 
 # Build all packages
-RUN npx nx run-many -t build --exclude=@lyvely/docs
+RUN rush build
 
 # Remove dev dependencies after build
 RUN pnpm prune --production
 
-COPY packages/applications/pwa/dist ./packages/applications/server/static
+# Copy static frontend
+RUN mkdir -p ./packages/applications/server/static
+RUN cp packages/applications/pwa/dist ./packages/applications/server/static
+
+#########
+# PRUNE #
+#########
+
+# Clear the node_modules dir
+find . -name 'node_modules' -type d -prune -exec rm -rf '{}' +
+
+# Now install again with NODE_ENV=production
+RUN rush install
 
 EXPOSE 8080
 

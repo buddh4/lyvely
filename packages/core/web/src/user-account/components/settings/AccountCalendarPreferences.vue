@@ -45,7 +45,7 @@ const yearStartName = computed(() => {
 
 <template>
   <ly-list-page title="user-account.i18n.preferences" class="mb-2">
-    <table class="bg-main w-full border-collapse rounded text-sm">
+    <table class="w-full border-collapse rounded bg-main text-sm">
       <tr>
         <th class="w-3/4 p-3 text-left">
           {{ t('user-account.i18n.week-start') }}
@@ -85,7 +85,7 @@ const yearStartName = computed(() => {
       <div
         v-for="(n, i) in 6"
         :key="i"
-        class="hover:bg-highlight flex cursor-pointer rounded p-3"
+        class="flex cursor-pointer rounded p-3 hover:bg-highlight"
         @click="weekStart = i">
         <div class="flex-grow">
           {{ getLocalizedDayName(i, 'long', user!.locale) }}
@@ -104,7 +104,7 @@ const yearStartName = computed(() => {
       <div
         v-for="(n, i) in 6"
         :key="i"
-        class="hover:bg-highlight flex cursor-pointer rounded p-3"
+        class="flex cursor-pointer rounded p-3 hover:bg-highlight"
         @click="yearStart = i">
         <div class="flex-grow">
           {{ weekStrategy[i] }}

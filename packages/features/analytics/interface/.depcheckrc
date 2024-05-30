@@ -1,0 +1,7 @@
+ignores: [
+  "tslib",
+  "@types/jest",
+  "@types/node",
+  "@rollup/plugin-*",
+  "rollup-plugin-*",
+  ]

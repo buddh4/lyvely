@@ -1,0 +1,302 @@
+// DO NOT ADD COMMENTS IN THIS FILE.  They will be lost when the Rush tool resaves it.
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/rush/v5/approved-packages.schema.json",
+  "packages": [
+    {
+      "name": "@buddh4/mapped-types",
+      "allowedCategories": [ "core", "feature" ]
+    },
+    {
+      "name": "@ckpack/vue-color",
+      "allowedCategories": [ "core", "lib" ]
+    },
+    {
+      "name": "@ctrl/tinycolor",
+      "allowedCategories": [ "lib" ]
+    },
+    {
+      "name": "@intlify/core-base",
+      "allowedCategories": [ "core" ]
+    },
+    {
+      "name": "@intlify/unplugin-vue-i18n",
+      "allowedCategories": [ "core", "tool" ]
+    },
+    {
+      "name": "@lyvely/activities-web",
+      "allowedCategories": [ "application" ]
+    },
+    {
+      "name": "@lyvely/analytics-interface",
+      "allowedCategories": [ "feature" ]
+    },
+    {
+      "name": "@lyvely/analytics-web",
+      "allowedCategories": [ "application", "feature" ]
+    },
+    {
+      "name": "@lyvely/calendar-plan-interface",
+      "allowedCategories": [ "feature", "lib" ]
+    },
+    {
+      "name": "@lyvely/calendar-plan-web",
+      "allowedCategories": [ "application", "feature", "lib" ]
+    },
+    {
+      "name": "@lyvely/common",
+      "allowedCategories": [ "core", "feature", "lib" ]
+    },
+    {
+      "name": "@lyvely/dates",
+      "allowedCategories": [ "core", "feature", "lib" ]
+    },
+    {
+      "name": "@lyvely/habits-interface",
+      "allowedCategories": [ "feature" ]
+    },
+    {
+      "name": "@lyvely/habits-web",
+      "allowedCategories": [ "application", "feature" ]
+    },
+    {
+      "name": "@lyvely/interface",
+      "allowedCategories": [ "application", "core", "feature", "lib" ]
+    },
+    {
+      "name": "@lyvely/journals-interface",
+      "allowedCategories": [ "feature" ]
+    },
+    {
+      "name": "@lyvely/journals-web",
+      "allowedCategories": [ "application" ]
+    },
+    {
+      "name": "@lyvely/legal-interface",
+      "allowedCategories": [ "feature" ]
+    },
+    {
+      "name": "@lyvely/legal-web",
+      "allowedCategories": [ "application" ]
+    },
+    {
+      "name": "@lyvely/milestones-interface",
+      "allowedCategories": [ "feature" ]
+    },
+    {
+      "name": "@lyvely/milestones-web",
+      "allowedCategories": [ "application", "feature" ]
+    },
+    {
+      "name": "@lyvely/tasks-interface",
+      "allowedCategories": [ "feature" ]
+    },
+    {
+      "name": "@lyvely/tasks-web",
+      "allowedCategories": [ "application", "feature" ]
+    },
+    {
+      "name": "@lyvely/time-series-interface",
+      "allowedCategories": [ "feature", "lib" ]
+    },
+    {
+      "name": "@lyvely/time-series-web",
+      "allowedCategories": [ "application", "feature" ]
+    },
+    {
+      "name": "@lyvely/timers-interface",
+      "allowedCategories": [ "feature", "lib" ]
+    },
+    {
+      "name": "@lyvely/ui",
+      "allowedCategories": [ "application", "core", "feature", "lib" ]
+    },
+    {
+      "name": "@lyvely/web",
+      "allowedCategories": [ "application", "feature", "lib" ]
+    },
+    {
+      "name": "@vue/runtime-dom",
+      "allowedCategories": [ "application", "core", "feature", "lib" ]
+    },
+    {
+      "name": "@vueuse/core",
+      "allowedCategories": [ "core", "feature", "lib" ]
+    },
+    {
+      "name": "animate.css",
+      "allowedCategories": [ "core" ]
+    },
+    {
+      "name": "axios",
+      "allowedCategories": [ "core", "feature" ]
+    },
+    {
+      "name": "axios-auth-refresh",
+      "allowedCategories": [ "core" ]
+    },
+    {
+      "name": "class-transformer",
+      "allowedCategories": [ "core", "feature", "lib" ]
+    },
+    {
+      "name": "class-validator",
+      "allowedCategories": [ "core", "feature", "lib" ]
+    },
+    {
+      "name": "cropperjs",
+      "allowedCategories": [ "core" ]
+    },
+    {
+      "name": "dayjs",
+      "allowedCategories": [ "lib" ]
+    },
+    {
+      "name": "echarts",
+      "allowedCategories": [ "core", "feature", "lib" ]
+    },
+    {
+      "name": "he",
+      "allowedCategories": [ "lib" ]
+    },
+    {
+      "name": "intro.js",
+      "allowedCategories": [ "core" ]
+    },
+    {
+      "name": "js-cookie",
+      "allowedCategories": [ "core" ]
+    },
+    {
+      "name": "lodash",
+      "allowedCategories": [ "core", "feature", "lib" ]
+    },
+    {
+      "name": "mitt",
+      "allowedCategories": [ "core", "feature", "lib" ]
+    },
+    {
+      "name": "ms",
+      "allowedCategories": [ "core" ]
+    },
+    {
+      "name": "nprogress",
+      "allowedCategories": [ "core" ]
+    },
+    {
+      "name": "pinia",
+      "allowedCategories": [ "core", "feature", "lib" ]
+    },
+    {
+      "name": "randomcolor",
+      "allowedCategories": [ "core", "lib" ]
+    },
+    {
+      "name": "react",
+      "allowedCategories": [ "lib" ]
+    },
+    {
+      "name": "react-dom",
+      "allowedCategories": [ "lib" ]
+    },
+    {
+      "name": "reflect-metadata",
+      "allowedCategories": [ "application", "core", "feature", "lib" ]
+    },
+    {
+      "name": "rehype-external-links",
+      "allowedCategories": [ "lib" ]
+    },
+    {
+      "name": "rehype-raw",
+      "allowedCategories": [ "lib" ]
+    },
+    {
+      "name": "rehype-sanitize",
+      "allowedCategories": [ "lib" ]
+    },
+    {
+      "name": "rehype-stringify",
+      "allowedCategories": [ "lib" ]
+    },
+    {
+      "name": "remark-breaks",
+      "allowedCategories": [ "lib" ]
+    },
+    {
+      "name": "remark-gfm",
+      "allowedCategories": [ "lib" ]
+    },
+    {
+      "name": "remark-parse",
+      "allowedCategories": [ "lib" ]
+    },
+    {
+      "name": "remark-rehype",
+      "allowedCategories": [ "lib" ]
+    },
+    {
+      "name": "rxjs",
+      "allowedCategories": [ "core" ]
+    },
+    {
+      "name": "slugify",
+      "allowedCategories": [ "core", "lib", "tool" ]
+    },
+    {
+      "name": "tailwind-merge",
+      "allowedCategories": [ "lib" ]
+    },
+    {
+      "name": "tslib",
+      "allowedCategories": [ "application", "core", "feature", "lib" ]
+    },
+    {
+      "name": "unified",
+      "allowedCategories": [ "lib" ]
+    },
+    {
+      "name": "vue",
+      "allowedCategories": [ "application", "core", "feature", "lib", "tool" ]
+    },
+    {
+      "name": "vue-i18n",
+      "allowedCategories": [ "core" ]
+    },
+    {
+      "name": "vue-router",
+      "allowedCategories": [ "application", "core", "feature", "lib" ]
+    },
+    {
+      "name": "vue-virtual-scroller",
+      "allowedCategories": [ "core" ]
+    },
+    {
+      "name": "vuedraggable",
+      "allowedCategories": [ "feature" ]
+    },
+    {
+      "name": "workbox-build",
+      "allowedCategories": [ "application" ]
+    },
+    {
+      "name": "workbox-core",
+      "allowedCategories": [ "application" ]
+    },
+    {
+      "name": "workbox-precaching",
+      "allowedCategories": [ "application" ]
+    },
+    {
+      "name": "workbox-routing",
+      "allowedCategories": [ "application" ]
+    },
+    {
+      "name": "workbox-window",
+      "allowedCategories": [ "application" ]
+    },
+    {
+      "name": "zxcvbn",
+      "allowedCategories": [ "lib" ]
+    }
+  ]
+}

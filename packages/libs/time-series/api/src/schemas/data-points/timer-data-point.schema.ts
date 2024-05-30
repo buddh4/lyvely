@@ -48,7 +48,7 @@ export class TimerDataPoint
     profile: Profile,
     user: User,
     content: TimeSeriesContent,
-    data?: BaseDocumentData<TimerDataPoint>,
+    data?: BaseDocumentData<TimerDataPoint>
   ) {
     super(profile, user, content, data);
     BaseDocument.init(this, pick(data, 'value'));
@@ -78,5 +78,5 @@ export class TimerDataPoint
 
 export const TimerDataPointSchema = DataPointSchemaFactory.createForClass(
   DataPointValueType.Timer,
-  TimerDataPoint,
+  TimerDataPoint
 );

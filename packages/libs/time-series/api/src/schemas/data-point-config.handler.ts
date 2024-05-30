@@ -20,13 +20,13 @@ export class DataPointConfigHandler {
     ) {
       updatedConfig.strategy = DataPointConfigFactory.getStrategyName(
         updatedConfig.valueType,
-        updatedConfig.inputType,
+        updatedConfig.inputType
       );
     }
 
     if (!DataPointConfigFactory.validateStrategyByName(updatedConfig.strategy)) {
       throw new IntegrityException(
-        `Could not apply update due to use of invalid data point strategy ${updatedConfig.strategy}`,
+        `Could not apply update due to use of invalid data point strategy ${updatedConfig.strategy}`
       );
     }
 

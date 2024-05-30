@@ -51,7 +51,7 @@ function _initPropertyTypes<T>(model: T, level = 0, { maxDepth = 100 } = {}) {
         } else if (!primitivePrototypes.includes(propertyDefinition.type.prototype)) {
           model[propertyKey] = createBaseModel(
             propertyDefinition.type,
-            model[propertyKey] as BaseModelData<any>,
+            model[propertyKey] as BaseModelData<any>
           );
         } else {
           model[propertyKey] = primitiveDefaults.get(propertyDefinition.type);

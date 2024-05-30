@@ -40,7 +40,7 @@ export function buildDiscriminatorName(contentName: string, def: string) {
 export function getDataPointModelDefinition(
   contentName: string,
   definitions: Array<DiscriminatorOptions | string>,
-  collection?: string,
+  collection?: string
 ): ModelDefinition {
   const name = buildDataPointModelName(contentName);
   collection ??= name.toLowerCase() + 's';

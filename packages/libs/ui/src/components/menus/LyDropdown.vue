@@ -88,7 +88,7 @@ function toggle() {
         v-if="open"
         :aria-labelledby="id"
         :class="[
-          'dropdown-items bg-main dark:bg-shadow border-divide absolute z-20 rounded-md border py-2 shadow-lg',
+          'dropdown-items absolute z-20 rounded-md border border-divide bg-main py-2 shadow-lg dark:bg-shadow',
           position === 'left' ? 'right-0.5' : 'left-0.5',
         ]"
         @click="onClickContent">

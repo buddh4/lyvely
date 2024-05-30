@@ -88,7 +88,10 @@ export function useEmailVerificationStore(options: IEmailVerificationOptions) {
     try {
       softReset();
       otpInfo.value = await options.resend(
-        new ResendOtp({ emailOrUsername: model.value.emailOrUsername, remember: remember }),
+        new ResendOtp({
+          emailOrUsername: model.value.emailOrUsername,
+          remember: remember,
+        }),
       );
     } catch (e: any) {
       handleError(e);

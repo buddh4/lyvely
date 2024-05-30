@@ -30,10 +30,13 @@ export function getPropertyTypeDefinitions(type: Type): Record<string, IProperty
   // TODO: (performance) maybe cache the result
   return getPrototypeTree(type)
     .reverse()
-    .reduce((result, prototype: Type) => {
-      const definition = modelPropertyTypes.get(prototype);
-      return definition ? Object.assign(result, definition) : result;
-    }, {} as Record<string, IPropertyDefinition>);
+    .reduce(
+      (result, prototype: Type) => {
+        const definition = modelPropertyTypes.get(prototype);
+        return definition ? Object.assign(result, definition) : result;
+      },
+      {} as Record<string, IPropertyDefinition>
+    );
 }
 
 /**
@@ -74,14 +77,14 @@ export function PropertyType<
   TValue = TTarget[TProperty],
 >(
   type: Type<TValue> | Array<Type<TValue>> | null | undefined,
-  options: IPropertyDefinitionOptions<TValue> = {},
+  options: IPropertyDefinitionOptions<TValue> = {}
 ): PropertyDecorator {
   return function (target: Object, propertyKey: string | symbol) {
     const targetConstructor = target.constructor as Type;
     if (!modelPropertyTypes.has(targetConstructor)) modelPropertyTypes.set(targetConstructor, {});
     (modelPropertyTypes.get(targetConstructor) as any)[propertyKey] = Object.assign(
       { type },
-      options,
+      options
     );
 
     const RawType = Array.isArray(type) ? type[0] : type;

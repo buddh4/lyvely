@@ -91,7 +91,7 @@ onUnmounted(loginStore.reset);
         <div v-if="stage === 'password'">
           <div class="mb-5 flex items-center justify-center">
             <div
-              class="border-divide flex cursor-pointer items-center rounded-full border px-2 py-1 text-sm font-bold"
+              class="flex cursor-pointer items-center rounded-full border border-divide px-2 py-1 text-sm font-bold"
               @click="stage = 'usernameOrEmail'">
               <ly-icon name="user" class="mr-1" />
               <span>{{ loginModel.usernameOrEmail }}</span>
@@ -122,7 +122,7 @@ onUnmounted(loginStore.reset);
                 aria-describedby="remember-me-info" />
               <ly-icon
                 name="info"
-                class="text-primary ml-1 w-4 cursor-pointer"
+                class="ml-1 w-4 cursor-pointer text-primary"
                 aria-hidden="true"
                 @click="showRememberInfo = !showRememberInfo" />
             </div>
@@ -163,16 +163,18 @@ onUnmounted(loginStore.reset);
           </small>
         </div>
 
-        <div class="border-divide relative mt-5 flex flex-col gap-2 border-t pt-4">
+        <div class="relative mt-5 flex flex-col gap-2 border-t border-divide pt-4">
           <div class="absolute top-0 flex w-full justify-center" style="margin-top: -0.5em">
-            <div class="bg-main text-dimmed inline-block px-2 text-xs font-bold uppercase">or</div>
+            <div class="inline-block bg-main px-2 text-xs font-bold uppercase text-dimmed">or</div>
           </div>
           <ly-button
             v-if="isVisitorModeEnabled"
             class="secondary flex w-full items-center justify-center gap-2 text-white"
             @click="accessAsVisitor()">
             <ly-icon name="guest" />
-            <div class="inline-block min-w-[6rem]">{{ t('auth.login.visitor') }}</div>
+            <div class="inline-block min-w-[6rem]">
+              {{ t('auth.login.visitor') }}
+            </div>
           </ly-button>
           <ly-button class="flex w-full items-center justify-center gap-2 bg-red-500 text-white">
             <ly-icon name="google" />

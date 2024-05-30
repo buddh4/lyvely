@@ -14,8 +14,8 @@ withDefaults(defineProps<IProps>(), {
 </script>
 
 <template>
-  <div class="list-page-root border-divide divide-y overflow-hidden rounded border">
-    <div class="bg-main flex max-w-none items-center p-2 md:p-4">
+  <div class="list-page-root divide-y overflow-hidden rounded border border-divide">
+    <div class="flex max-w-none items-center bg-main p-2 md:p-4">
       <ly-icon v-if="icon" :name="icon" :auto-scale="false" class="mr-1.5" />
       <h1 tabindex="-1" :aria-label="t(ariaLabel || title)">
         {{ t(title) }}

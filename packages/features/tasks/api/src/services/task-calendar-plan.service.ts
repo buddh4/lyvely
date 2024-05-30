@@ -15,14 +15,14 @@ export class TaskCalendarPlanService extends SortableCalendarPlanService<Task> {
     return this.contentDao.findByProfileAndTimingIds(
       profile,
       user,
-      getTimingIds(filter.date, profile.locale, filter.level, profile.settings?.calendar),
+      getTimingIds(filter.date, profile.locale, filter.level, profile.settings?.calendar)
     );
   }
 
   protected async updateIntervalConfig(
     profile: Profile,
     model: Task,
-    interval: CalendarInterval,
+    interval: CalendarInterval
   ): Promise<void> {
     await this.contentDao.updateOneByProfileAndIdSet(profile, model, {
       'config.interval': interval,

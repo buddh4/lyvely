@@ -31,7 +31,7 @@ export class ProfileScoreAggregationService {
 
   async aggregateProfileScoreSeries(
     context: ProfileContext,
-    options?: ScoreAggregationOptions,
+    options?: ScoreAggregationOptions
   ): Promise<TimeSeriesChartData<string>[]> {
     const { profile } = context;
 

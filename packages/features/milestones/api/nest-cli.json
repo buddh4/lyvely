@@ -4,10 +4,10 @@
   "compilerOptions": {
     "deleteOutDir": true,
     "assets": [
-      {"include": "**/*.pug", "outDir": "./dist"},
-      {"include": "**/*.css", "outDir": "./dist"},
-      {"include": "**/*.ttf", "outDir": "./dist"},
-      {"include": "**/*.json", "outDir": "./dist"}
+      { "include": "**/*.pug", "outDir": "./dist" },
+      { "include": "**/*.css", "outDir": "./dist" },
+      { "include": "**/*.ttf", "outDir": "./dist" },
+      { "include": "**/*.json", "outDir": "./dist" }
     ]
   }
 }

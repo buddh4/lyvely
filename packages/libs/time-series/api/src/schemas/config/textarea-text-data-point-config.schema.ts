@@ -11,7 +11,7 @@ import { NestedSchema } from '@lyvely/api';
 
 const strategy = DataPointConfigFactory.getStrategyName(
   DataPointValueType.Text,
-  DataPointInputType.Textarea,
+  DataPointInputType.Textarea
 );
 
 @NestedSchema()
@@ -32,5 +32,5 @@ export class TextareaTextDataPointConfig extends TextDataPointConfig {
 
 export const TextareaTextDataPointConfigSchema = DataPointConfigSchemaFactory.createForClass(
   strategy,
-  TextareaTextDataPointConfig,
+  TextareaTextDataPointConfig
 );

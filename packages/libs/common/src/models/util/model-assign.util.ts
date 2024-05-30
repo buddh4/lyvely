@@ -17,7 +17,7 @@ export interface InitModelDataOptions {
 export function createBaseModelAndInit<T, C extends Type<T> = Type<T>>(
   type: C,
   data?: { [key in keyof T]?: any } & any,
-  options: InitModelDataOptions = {},
+  options: InitModelDataOptions = {}
 ) {
   return initBaseModelData(Object.create(type.prototype), data, options);
 }
@@ -25,7 +25,7 @@ export function createBaseModelAndInit<T, C extends Type<T> = Type<T>>(
 export function initBaseModelData<T extends Object>(
   model: T,
   data?: { [key in keyof T]?: any } & any,
-  options: InitModelDataOptions = {},
+  options: InitModelDataOptions = {}
 ) {
   return _initBaseModelData(model, data, 0, options);
 }
@@ -33,7 +33,7 @@ export function initBaseModelData<T extends Object>(
 export function assignRawDataTo<T extends Object>(
   model: T,
   data: { [key in keyof T]?: any } & any,
-  options?: InitModelDataOptions,
+  options?: InitModelDataOptions
 ): T {
   return _initBaseModelData(model, data, 0, {
     ...options,
@@ -47,7 +47,7 @@ function _initBaseModelData<T extends object>(
   model: T,
   data: { [key in keyof T]?: any } & any,
   level = 0,
-  options?: InitModelDataOptions,
+  options?: InitModelDataOptions
 ): T {
   options = {
     maxDepth: 100,
@@ -117,7 +117,7 @@ function _initBaseModelData<T extends object>(
           Object.assign(Object.create(propertyType.prototype), model[path]),
           data[path],
           level + 1,
-          options,
+          options
         );
       }
     } else if (typeof data[path] !== 'function') {
@@ -144,7 +144,7 @@ function _initBaseModelData<T extends object>(
 function _initModel<T extends object>(
   model: T,
   data: { [key in keyof T]?: any } & any,
-  options: Pick<InitModelDataOptions, 'skipInitProps' | 'skipAfterInit'> = {},
+  options: Pick<InitModelDataOptions, 'skipInitProps' | 'skipAfterInit'> = {}
 ) {
   if (isPlainObject(data) && '_id' in data && isObjectId(data._id)) {
     (<any>model).id = data._id.toString();

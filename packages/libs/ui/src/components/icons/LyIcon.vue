@@ -30,7 +30,7 @@ const iconBindings = computed(() => library.value?.getBindings(props));
 </script>
 
 <template>
-  <component v-if="iconComponent" :is="iconComponent" v-bind="iconBindings" />
+  <component :is="iconComponent" v-if="iconComponent" v-bind="iconBindings" />
 </template>
 
 <style>

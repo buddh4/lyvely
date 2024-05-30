@@ -1,4 +1,4 @@
-import { ILyvelyTestingModule } from '@lyvely/testing';
+import { ILyvelyTestingModule } from '@lyvely/api';
 import { CalendarInterval } from '@lyvely/dates';
 import { Habit } from '../schemas';
 import { HabitTestDataUtil, habitITestPlugin } from '../testing';

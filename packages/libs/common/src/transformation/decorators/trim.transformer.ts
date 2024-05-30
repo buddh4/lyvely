@@ -7,7 +7,7 @@ export interface TrimOptions {
 
 export function Trim(
   options?: TrimOptions,
-  transformOptions?: TransformOptions,
+  transformOptions?: TransformOptions
 ): (target: any, key: string) => void {
   return Transform(({ value }) => {
     if (typeof value !== 'string') return value;

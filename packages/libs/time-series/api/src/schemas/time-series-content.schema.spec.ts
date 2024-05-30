@@ -1,4 +1,4 @@
-import { ILyvelyTestingModule } from '@lyvely/testing';
+import { ILyvelyTestingModule } from '@lyvely/api';
 import { INestApplication } from '@nestjs/common';
 import { Content, ContentSchema, ProfileTestDataUtils, Model, buildContentTest } from '@lyvely/api';
 import { TestTimeSeriesContent, TestTimeSeriesContentSchema } from '../testing';
@@ -95,8 +95,8 @@ describe('TimeSeriesContentSchema', () => {
       expect(timeSeriesConfig.strategy).toEqual(
         DataPointConfigFactory.getStrategyName(
           DataPointValueType.Number,
-          DataPointInputType.Checkbox,
-        ),
+          DataPointInputType.Checkbox
+        )
       );
       expect(timeSeriesConfig.min).toEqual(0);
       expect(timeSeriesConfig.max).toEqual(5);
@@ -129,8 +129,8 @@ describe('TimeSeriesContentSchema', () => {
       expect(timeSeriesConfig.strategy).toEqual(
         DataPointConfigFactory.getStrategyName(
           DataPointValueType.Number,
-          DataPointInputType.Checkbox,
-        ),
+          DataPointInputType.Checkbox
+        )
       );
       expect(timeSeriesConfig.min).toEqual(0);
       expect(timeSeriesConfig.max).toEqual(5);
@@ -145,7 +145,7 @@ describe('TimeSeriesContentSchema', () => {
             interval: CalendarInterval.Daily,
             strategy: DataPointConfigFactory.getStrategyName(
               DataPointValueType.Number,
-              DataPointInputType.Range,
+              DataPointInputType.Range
             ),
             min: 0,
             max: 5,
@@ -157,7 +157,7 @@ describe('TimeSeriesContentSchema', () => {
       const timeSeriesConfig = <CheckboxNumberDataPointConfig>model.timeSeriesConfig;
       expect(timeSeriesConfig instanceof RangeNumberDataPointConfig).toEqual(true);
       expect(timeSeriesConfig.strategy).toEqual(
-        DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Range),
+        DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Range)
       );
       expect(timeSeriesConfig.min).toEqual(0);
       expect(timeSeriesConfig.max).toEqual(5);

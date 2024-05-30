@@ -35,7 +35,7 @@ const close = async () => {
 <template>
   <div
     v-if="needRefresh"
-    class="bg-main border-divide fixed bottom-0 right-0 m-2 rounded border p-1 text-left shadow md:m-4 md:p-5"
+    class="fixed bottom-0 right-0 m-2 rounded border border-divide bg-main p-1 text-left shadow md:m-4 md:p-5"
     style="z-index: 910"
     role="alert">
     <div class="mb-2 md:mb-3">

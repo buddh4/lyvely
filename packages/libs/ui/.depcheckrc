@@ -1,0 +1,16 @@
+ignores: [
+  "@tailwindcss/typography",
+  "@types/*",
+  "dependency-cruiser",
+  "glob",
+  "postcss",
+  "postcss-cli",
+  "postcss-import",
+  "tailwindcss",
+  "storybook-*",
+  "@storybook/*",
+  "react",
+  "react-dom",
+  "vue-docgen-api",
+  "prettier-plugin-*"
+  ]

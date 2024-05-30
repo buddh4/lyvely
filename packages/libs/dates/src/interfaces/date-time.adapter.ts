@@ -4,7 +4,7 @@ import { CalendarDate, CalendarDateTime, ICalendarPreferences } from './calendar
 export type DateTimeFactory = (
   date?: CalendarDate,
   locale?: string,
-  preferences?: ICalendarPreferences,
+  preferences?: ICalendarPreferences
 ) => IDateTime;
 
 let dateTimeFactory: DateTimeFactory;
@@ -16,7 +16,7 @@ export function setDateTimeFactory(factory: DateTimeFactory) {
 export function dateTime(
   date?: CalendarDateTime,
   locale?: string,
-  preferences?: ICalendarPreferences,
+  preferences?: ICalendarPreferences
 ): IDateTime {
   if (!dateTimeFactory) {
     throw new Error('No dateTimeFactory set');

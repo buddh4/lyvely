@@ -10,6 +10,6 @@ export interface IDataPointProcessorStrategy<
     user: OptionalUser,
     model: TModel,
     dataPoint: TDataPoint,
-    updateDate: CalendarDate,
+    updateDate: CalendarDate
   ): UpdateQuerySet<TDataPoint> | false;
 }

@@ -26,7 +26,7 @@ export class HabitsClient implements IHabitsEndpointClient {
     return {
       models: models.map((habit) => new HabitModel(habit)),
       dataPoints: dataPoints?.map((dataPoint) =>
-        useDataPointStrategyFacade().createDataPoint(dataPoint),
+        useDataPointStrategyFacade().createDataPoint(dataPoint)
       ),
     };
   }
@@ -34,14 +34,14 @@ export class HabitsClient implements IHabitsEndpointClient {
   sort(
     cid: string,
     sort: CalendarPlanSort,
-    options?: IProfileApiRequestOptions,
+    options?: IProfileApiRequestOptions
   ): Promise<SortResponse> {
     return unwrapAndTransformResponse(repository.sort(cid, sort, options), SortResponse);
   }
 
   async create(
     dto: CreateHabitModel,
-    options?: IProfileApiRequestOptions,
+    options?: IProfileApiRequestOptions
   ): Promise<UpdateHabitResponse> {
     return unwrapAndTransformResponse(repository.create(dto, options), UpdateHabitResponse);
   }
@@ -49,7 +49,7 @@ export class HabitsClient implements IHabitsEndpointClient {
   async update(
     cid: string,
     update: UpdateHabitModel,
-    options?: IProfileApiRequestOptions,
+    options?: IProfileApiRequestOptions
   ): Promise<UpdateHabitResponse> {
     return unwrapAndTransformResponse(repository.update(cid, update, options), UpdateHabitResponse);
   }
@@ -57,7 +57,7 @@ export class HabitsClient implements IHabitsEndpointClient {
   async updateDataPoint(
     cid: string,
     update: UpdateHabitDataPointModel,
-    options?: IProfileApiRequestOptions,
+    options?: IProfileApiRequestOptions
   ): Promise<UpdateHabitDataPointResponse> {
     const result = await unwrapResponse(repository.updateDataPoint(cid, update, options));
     result.dataPoint = useDataPointStrategyFacade().createDataPoint(result.dataPoint);
@@ -68,22 +68,22 @@ export class HabitsClient implements IHabitsEndpointClient {
   async startTimer(
     cid: string,
     dto: TimerUpdateModel,
-    options?: IProfileApiRequestOptions,
+    options?: IProfileApiRequestOptions
   ): Promise<TimerDataPointModel> {
     return unwrapAndTransformResponse(
       repository.startTimer(cid, dto, options),
-      TimerDataPointModel,
+      TimerDataPointModel
     );
   }
 
   async stopTimer(
     cid: string,
     dto: TimerUpdateModel,
-    options?: IProfileApiRequestOptions,
+    options?: IProfileApiRequestOptions
   ): Promise<UpdateHabitDataPointTimerResponse> {
     return unwrapAndTransformResponse(
       repository.stopTimer(cid, dto, options),
-      UpdateHabitDataPointTimerResponse,
+      UpdateHabitDataPointTimerResponse
     );
   }
 }

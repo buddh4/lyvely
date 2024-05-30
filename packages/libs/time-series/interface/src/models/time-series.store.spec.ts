@@ -77,7 +77,7 @@ describe('TimeSeriesStore', () => {
             },
           }),
         ],
-        [new NumberDataPointModel({ cid: '1', tid }), new NumberDataPointModel({ cid: '2', tid })],
+        [new NumberDataPointModel({ cid: '1', tid }), new NumberDataPointModel({ cid: '2', tid })]
       );
 
       expect(store.getModels().length).toEqual(2);

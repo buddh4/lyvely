@@ -35,7 +35,7 @@ describe('object mapping', () => {
         (user) =>
           new UserInfo({
             fullName: `${user.forename} ${user.lastname}`,
-          }),
+          })
       );
 
       const userInfo = mapType(User, UserInfo, { forename: 'Michael', lastname: 'Jackson' });
@@ -50,7 +50,7 @@ describe('object mapping', () => {
         (users) =>
           new UserInfos({
             userInfos: users.map(({ forename, lastname }) => ({ forename, lastname })),
-          }),
+          })
       );
 
       const userInfo = mapType([User], UserInfos, [
@@ -71,7 +71,7 @@ describe('object mapping', () => {
         (users) =>
           new UserInfos({
             userInfos: users.map(({ forename, lastname }) => ({ forename, lastname })),
-          }),
+          })
       );
 
       const userInfo = mapType([User], UserInfos, []);
@@ -82,7 +82,7 @@ describe('object mapping', () => {
 
     it('single to array object mapping', async () => {
       registerMapping(UserInfos, [User], (userInfo) =>
-        userInfo.userInfos.map((user) => new User(user)),
+        userInfo.userInfos.map((user) => new User(user))
       );
 
       const users = mapType(
@@ -93,7 +93,7 @@ describe('object mapping', () => {
             { forename: 'Michael', lastname: 'Jackson' },
             { forename: 'Jimmy', lastname: 'Hendrix' },
           ],
-        }),
+        })
       );
 
       expect(Array.isArray(users)).toEqual(true);
@@ -104,7 +104,7 @@ describe('object mapping', () => {
 
     it('single with empty array to array object mapping', async () => {
       registerMapping(UserInfos, [User], (userInfo) =>
-        userInfo.userInfos.map((user) => new User(user)),
+        userInfo.userInfos.map((user) => new User(user))
       );
 
       const users = mapType(UserInfos, [User], new UserInfos({ userInfos: [] }));

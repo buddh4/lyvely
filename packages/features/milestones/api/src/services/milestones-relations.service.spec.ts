@@ -10,7 +10,7 @@ import {
   Model,
   buildContentTest,
 } from '@lyvely/api';
-import { getObjectId, ILyvelyTestingModule } from '@lyvely/testing';
+import { getObjectId, ILyvelyTestingModule } from '@lyvely/api';
 import { MilestonesRelationsService } from './milestones-relations.service';
 import { Schema, SchemaFactory } from '@nestjs/mongoose';
 import { CalendarInterval, formatDate } from '@lyvely/dates';
@@ -56,7 +56,7 @@ class TestMilestoneRelationProvider {
           progress: 0.4,
           title: 'Test content',
         } as MilestoneRelationModel<TObjectId>;
-      }),
+      })
     );
   }
 
@@ -108,7 +108,7 @@ describe('MileStonesRelationService', () => {
     const doc = await new TestContentModel(
       new TestContent(context, {
         meta: new ContentMetadata(<ContentMetadata>{ mid }),
-      }),
+      })
     ).save();
 
     return {

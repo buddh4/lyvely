@@ -11,7 +11,7 @@ import { NestedSchema } from '@lyvely/api';
 
 const strategy = DataPointConfigFactory.getStrategyName(
   DataPointValueType.Selection,
-  DataPointInputType.Radio,
+  DataPointInputType.Radio
 );
 
 @NestedSchema()
@@ -32,5 +32,5 @@ export class RadioSelectionDataPointConfig extends SelectionDataPointConfig {
 
 export const RadioSelectionDataPointConfigSchema = DataPointConfigSchemaFactory.createForClass(
   strategy,
-  RadioSelectionDataPointConfig,
+  RadioSelectionDataPointConfig
 );

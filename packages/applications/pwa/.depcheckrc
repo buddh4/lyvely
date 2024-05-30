@@ -1,0 +1,7 @@
+ignores: [
+  "postcss",
+  "postcss-cli",
+  "vue-router",
+  "prettier-plugin-tailwindcss",
+  "virtual:pwa-register",
+  ]

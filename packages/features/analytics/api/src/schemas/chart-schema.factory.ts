@@ -13,7 +13,7 @@ export class ChartSchemaFactory {
   static createSeriesForClass(
     seriesId: string,
     Config: Schema<ChartConfig>,
-    type: Type<ChartSeriesConfig>,
+    type: Type<ChartSeriesConfig>
   ): Schema<ChartSeriesConfig> {
     const Schema = SchemaFactory.createForClass(type);
     Config.path<Subdocument>('series').discriminator(seriesId, Schema);

@@ -11,7 +11,7 @@ import { NestedSchema } from '@lyvely/api';
 
 const strategy = DataPointConfigFactory.getStrategyName(
   DataPointValueType.Number,
-  DataPointInputType.Range,
+  DataPointInputType.Range
 );
 
 @NestedSchema()
@@ -31,5 +31,5 @@ export class RangeNumberDataPointConfig extends NumberDataPointConfig {
 
 export const RangeNumberDataPointConfigSchema = DataPointConfigSchemaFactory.createForClass(
   strategy,
-  RangeNumberDataPointConfig,
+  RangeNumberDataPointConfig
 );

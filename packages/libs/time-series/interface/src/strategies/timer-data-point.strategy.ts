@@ -24,7 +24,7 @@ export class TimerDataPointStrategy extends DataPointStrategy<
 
   async validateValue(
     config: ITimerDataPointConfig,
-    value: TimerDataPointValueModel,
+    value: TimerDataPointValueModel
   ): Promise<boolean> {
     if (value.timer) {
       const errors = await validate(new TimerModel(value.timer));
@@ -37,7 +37,7 @@ export class TimerDataPointStrategy extends DataPointStrategy<
   prepareValue(
     config: ITimerDataPointConfig,
     value: TimerDataPointValueModel,
-    oldValue: TimerDataPointValueModel,
+    oldValue: TimerDataPointValueModel
   ) {
     if (isNumber(config.max) && isNumber(value.ms)) {
       value.ms = Math.min(value.ms, config.max);

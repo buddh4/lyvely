@@ -25,7 +25,7 @@ export class FetchSeriesDataEvent {
     chart: Chart,
     context: ProfileContext,
     config: ChartSeriesConfig,
-    query?: Record<string, string>,
+    query?: Record<string, string>
   ) {
     this.chart = chart;
     this.context = context;
@@ -35,7 +35,7 @@ export class FetchSeriesDataEvent {
 
   isSeriesType<T extends ChartSeriesConfig = ChartSeriesConfig>(
     config: ChartSeriesConfig,
-    type: string,
+    type: string
   ): config is T {
     return config.type === type;
   }

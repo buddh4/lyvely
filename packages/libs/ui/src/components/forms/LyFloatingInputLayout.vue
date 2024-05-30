@@ -46,8 +46,8 @@ const wrapperClasses = computed(() => {
     <slot name="label">
       <label
         v-if="label"
-        :for="inputId"
         :id="inputId + 'label'"
+        :for="inputId"
         class="pointer-events-none absolute inset-0 z-10 inline-block px-3 py-2 text-xs opacity-70"
         :aria-describedby="ariaDescribedBy">
         {{ t(label) }}
@@ -55,7 +55,7 @@ const wrapperClasses = computed(() => {
       <ly-icon
         v-if="!loading && hasHelpText"
         name="info"
-        class="text-info-dark absolute right-3 top-2 z-10 w-4 cursor-pointer"
+        class="absolute right-3 top-2 z-10 w-4 cursor-pointer text-info-dark"
         aria-hidden="true"
         @click="showHelpText = !showHelpText" />
 
@@ -75,7 +75,7 @@ const wrapperClasses = computed(() => {
 
     <slot name="error">
       <transition name="fade">
-        <div v-if="inputError" class="text-danger overflow-hidden pl-1 pt-1 text-sm">
+        <div v-if="inputError" class="overflow-hidden pl-1 pt-1 text-sm text-danger">
           {{ t(inputError) }}
         </div>
       </transition>

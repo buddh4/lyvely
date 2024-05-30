@@ -21,7 +21,7 @@
       "@/*": ["src/*"],
       "vite": ["node_modules/vite"]
     },
-    "types": ["vue", "@vue/runtime-dom", "reflect-metadata", "node"],
+    "types": ["vue", "@vue/runtime-dom"],
     "lib": ["esnext", "dom", "ESNext", "WebWorker", "DOM", "dom.iterable", "scripthost"]
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "vite.config.mts"],

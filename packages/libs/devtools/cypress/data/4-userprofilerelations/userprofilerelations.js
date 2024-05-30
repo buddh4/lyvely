@@ -38,9 +38,17 @@ module.exports = [
   createProfileRelationData('member', 'public-organization'),
   createProfileRelationData('member', 'archived-group'),
 
-  createProfileRelationData('moderator', 'private-group', { role: 'moderator' }),
+  createProfileRelationData('moderator', 'private-group', {
+    role: 'moderator',
+  }),
   createProfileRelationData('moderator', 'public-group', { role: 'moderator' }),
-  createProfileRelationData('moderator', 'protected-group', { role: 'moderator' }),
-  createProfileRelationData('moderator', 'public-organization', { role: 'moderator' }),
-  createProfileRelationData('moderator', 'archived-group', { role: 'moderator' }),
+  createProfileRelationData('moderator', 'protected-group', {
+    role: 'moderator',
+  }),
+  createProfileRelationData('moderator', 'public-organization', {
+    role: 'moderator',
+  }),
+  createProfileRelationData('moderator', 'archived-group', {
+    role: 'moderator',
+  }),
 ];

@@ -41,7 +41,7 @@ const onAvatarUpdate = (avatar: AvatarModel) => {
         <i18n-t
           keypath="profiles.settings.membership.your_role"
           tag="span"
-          class="text-dimmed text-center text-sm">
+          class="text-center text-sm text-dimmed">
           <template #role>
             <b v-if="membership">{{ t(`profiles.roles.${membership.role}`) }}</b>
           </template>
@@ -62,7 +62,7 @@ const onAvatarUpdate = (avatar: AvatarModel) => {
           </div>
           <button
             data-id="btn-change-avatar"
-            class="bg-highlight border-divide ml-3 flex w-20 cursor-pointer items-center justify-center rounded border"
+            class="ml-3 flex w-20 cursor-pointer items-center justify-center rounded border border-divide bg-highlight"
             @click="showUpdateAvatarModal = true">
             <user-relation-avatar data-id="user-relation-avatar" class="m-3" />
           </button>

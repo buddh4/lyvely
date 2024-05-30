@@ -22,7 +22,7 @@ const dataPointService = useDataPointStrategyFacade();
 export class JournalsClient implements IJournalsEndpointService {
   create(
     model: CreateJournalModel,
-    options?: IProfileApiRequestOptions,
+    options?: IProfileApiRequestOptions
   ): Promise<UpdateJournalResponse> {
     return unwrapAndTransformResponse(repository.create(model, options), UpdateJournalResponse);
   }
@@ -30,7 +30,7 @@ export class JournalsClient implements IJournalsEndpointService {
   update(
     id: string,
     model: UpdateJournalModel,
-    options?: IProfileApiRequestOptions,
+    options?: IProfileApiRequestOptions
   ): Promise<UpdateJournalResponse> {
     return unwrapAndTransformResponse(repository.update(id, model, options), UpdateJournalResponse);
   }
@@ -46,18 +46,18 @@ export class JournalsClient implements IJournalsEndpointService {
   async updateDataPoint(
     cid: string,
     update: UpdateDataPointModel,
-    options?: IProfileApiRequestOptions,
+    options?: IProfileApiRequestOptions
   ): Promise<UpdateJournalDataPointResponse> {
     return unwrapAndTransformResponse(
       repository.updateDataPoint(cid, update, options),
-      UpdateJournalDataPointResponse,
+      UpdateJournalDataPointResponse
     );
   }
 
   async sort(
     cid: string,
     sort: CalendarPlanSort,
-    options?: IProfileApiRequestOptions,
+    options?: IProfileApiRequestOptions
   ): Promise<SortResponse> {
     return unwrapAndTransformResponse(repository.sort(cid, sort, options), SortResponse);
   }

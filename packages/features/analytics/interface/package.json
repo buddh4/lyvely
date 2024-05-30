@@ -8,9 +8,10 @@
   "types": "dist/lib/index.d.ts",
   "scripts": {
     "lint": "eslint --fix",
-    "format": "prettier \"src/**/*.ts\" --write",
-    "prettier": "prettier . --check",
-    "build": "tsc -p tsconfig.build.json --outDir dist/lib --declarationDir dist/lib --declaration true && tscpaths -p tsconfig.build.json -s ./src -o dist/lib && rollup -c && rm -f tsconfig.tsbuildinfo",
+    "format": "prettier src --write",
+    "prettier": "prettier src --check",
+    "depcheck": "depcheck --quiet",
+    "build": "tsc -p tsconfig.build.json --outDir dist/lib --declarationDir dist/lib --declaration true && tscpaths -p tsconfig.build.json -s ./src -o dist/lib && rollup -c --silent && rm -f tsconfig.tsbuildinfo",
     "prepublish:npm": "pnpm build",
     "publish:npm": "npm publish --access public",
     "prepublish:next": "pnpm build",
@@ -24,19 +25,36 @@
   "author": "Julian Harrer",
   "license": "AGPL-3.0",
   "dependencies": {
-    "@lyvely/interface": "^0.1.0-alpha3",
+    "@lyvely/interface": "workspace:*",
     "@buddh4/mapped-types": "^1.1.0",
-    "@lyvely/common": "^0.1.0-alpha3",
-    "@lyvely/calendar-plan-interface": "^0.1.0-alpha3",
-    "@lyvely/dates": "^0.1.0-alpha3",
+    "@lyvely/common": "workspace:*",
+    "@lyvely/dates": "workspace:*",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
-    "reflect-metadata": "0.1.13"
+    "reflect-metadata": "^0.1"
   },
   "devDependencies": {
-    "@lyvely/devtools": "^0.1.0-alpha3",
+    "@lyvely/devtools": "workspace:*",
+    "jest": "^29.7.0",
+    "@types/jest": "^29.5.12",
+    "rollup": "^4.18",
     "tslib": "^2.6.2",
-    "axios": "^1.6.8"
+    "typescript": "^5.4",
+    "tscpaths": "^0.0.9",
+    "@rollup/plugin-typescript": "^11.1",
+    "@rollup/plugin-commonjs": "^25.0",
+    "@rollup/plugin-dynamic-import-vars": "^2.1.2",
+    "@rollup/plugin-node-resolve": "^15.0",
+    "rollup-plugin-node-externals": "^6.1",
+    "axios": "^1.6.8",
+    "eslint": "^8.24",
+    "@typescript-eslint/eslint-plugin": "^7.9",
+    "@typescript-eslint/parser": "^7.9",
+    "eslint-config-prettier": "^8.8",
+    "eslint-import-resolver-typescript": "^3.5",
+    "eslint-plugin-import": "^2.26",
+    "eslint-plugin-prettier": "^5.1",
+    "depcheck": "^1.4"
   },
   "watch": {
     "build": {

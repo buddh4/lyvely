@@ -38,8 +38,8 @@ const path = computed(() => {
 <template>
   <div
     data-id="profile-breadcrumb"
-    class="border-divide hidden rounded-2xl border p-2 px-3 text-xs sm:inline-flex sm:flex-nowrap">
-    <router-link v-if="isProfileRoute" to="/" class="text-main flex flex-nowrap gap-1">
+    class="hidden rounded-2xl border border-divide p-2 px-3 text-xs sm:inline-flex sm:flex-nowrap">
+    <router-link v-if="isProfileRoute" to="/" class="flex flex-nowrap gap-1 text-main">
       <span class="text-pop">@</span>
       <ly-truncate :text="profileName" max="10" class="whitespace-nowrap" />
     </router-link>
@@ -50,7 +50,7 @@ const path = computed(() => {
 
     <template v-for="sub in path" :key="sub.path">
       <span class="mx-0.5">/</span>
-      <router-link :to="sub.path" class="text-main whitespace-nowrap">
+      <router-link :to="sub.path" class="whitespace-nowrap text-main">
         <ly-truncate :text="sub.name" max="10" class="whitespace-nowrap" />
       </router-link>
     </template>

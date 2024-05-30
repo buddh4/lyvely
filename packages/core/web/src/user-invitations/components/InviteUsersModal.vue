@@ -35,7 +35,7 @@ watch(emailInput, (value) => {
       </div>
       <ly-alert type="danger" :text="statusError" />
       <div v-for="email in emails" :key="email" class="mb-2 flex">
-        <div class="bg-highlight border-divide clearfix attachment-r grow rounded-l border p-2">
+        <div class="clearfix attachment-r grow rounded-l border border-divide bg-highlight p-2">
           {{ email }}
         </div>
         <ly-button class="danger attachment-l float-right w-12" @click="removeEmail(email)">

@@ -34,7 +34,7 @@ export class NumberDataPointConfigRevision
 }
 
 export const NumberDataPointConfigRevisionSchema = SchemaFactory.createForClass(
-  NumberDataPointConfigRevision,
+  NumberDataPointConfigRevision
 );
 
 const SupportedNumberDataPointInputTypes = [

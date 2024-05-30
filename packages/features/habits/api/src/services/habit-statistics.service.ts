@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import {
-  assureObjectId,
   DocumentIdentity,
   IntegrityException,
   Model,
@@ -10,7 +9,7 @@ import {
 import { Habit } from '../schemas';
 import { CalendarInterval, getWeekOfYear } from '@lyvely/dates';
 import { DataPoint, DataPointValueType, InjectDataPointModel } from '@lyvely/time-series';
-import * as mongoose from 'mongoose';
+import type { PipelineStage } from 'mongoose';
 
 export enum StatisticAccumulation {
   Sum = 'sum',
@@ -34,14 +33,14 @@ export class HabitStatisticsService {
   async aggregateHabitValues(
     profile: Profile,
     habit: Habit,
-    options: IHabitValueAggregateOptions,
+    options: IHabitValueAggregateOptions
   ): Promise<Array<{ _id: number; value: number }>> {
     if (habit.timeSeriesConfig.valueType !== DataPointValueType.Number)
       throw new IntegrityException('Can not aggregate non number habit values.');
 
     if (options.interval && options.interval > habit.interval)
       throw new IntegrityException(
-        'Can not aggregate habit values due to invalid aggregation interval.',
+        'Can not aggregate habit values due to invalid aggregation interval.'
       );
 
     const { matchFilter, groupId } = this.getGroupIdAndMatchFilter(profile, habit, options);
@@ -66,7 +65,7 @@ export class HabitStatisticsService {
   private getGroupIdAndMatchFilter(
     profile: Profile,
     habit: Habit,
-    options: IHabitValueAggregateOptions,
+    options: IHabitValueAggregateOptions
   ) {
     const now = new Date();
     const year = options.year || now.getFullYear();
@@ -116,7 +115,7 @@ export class HabitStatisticsService {
   }
 
   private getAggregationGroup(groupId: string, accumulator: StatisticAccumulation) {
-    let group: mongoose.PipelineStage.Group['$group'];
+    let group: PipelineStage.Group['$group'];
 
     switch (accumulator) {
       case StatisticAccumulation.Sum:

@@ -3,7 +3,7 @@ export interface NumericDataPointInterface {
 }
 
 export function implementsINumericDataPoint(
-  dataPoint: any,
+  dataPoint: any
 ): dataPoint is NumericDataPointInterface {
   return 'numericValue' in dataPoint;
 }

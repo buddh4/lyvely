@@ -14,8 +14,8 @@ describe('TextDataPointStrategy', () => {
           <ITextDataPointConfig>{
             valueType: DataPointValueType.Text,
           },
-          'Test',
-        ),
+          'Test'
+        )
       ).toEqual(true);
     });
 
@@ -25,8 +25,8 @@ describe('TextDataPointStrategy', () => {
           <ITextDataPointConfig>{
             valueType: DataPointValueType.Text,
           },
-          '',
-        ),
+          ''
+        )
       ).toEqual(false);
     });
 
@@ -36,8 +36,8 @@ describe('TextDataPointStrategy', () => {
           <ITextDataPointConfig>{
             valueType: DataPointValueType.Text,
           },
-          ' ',
-        ),
+          ' '
+        )
       ).toEqual(false);
     });
 
@@ -47,8 +47,8 @@ describe('TextDataPointStrategy', () => {
           <ITextDataPointConfig>{
             valueType: DataPointValueType.Text,
           },
-          5,
-        ),
+          5
+        )
       ).toEqual(false);
     });
   });
@@ -60,8 +60,8 @@ describe('TextDataPointStrategy', () => {
           <ITextDataPointConfig>{
             valueType: DataPointValueType.Text,
           },
-          'Test',
-        ),
+          'Test'
+        )
       ).toEqual('Test');
     });
 
@@ -71,8 +71,8 @@ describe('TextDataPointStrategy', () => {
           <ITextDataPointConfig>{
             valueType: DataPointValueType.Text,
           },
-          ' Test ',
-        ),
+          ' Test '
+        )
       ).toEqual('Test');
     });
 
@@ -82,8 +82,8 @@ describe('TextDataPointStrategy', () => {
           <ITextDataPointConfig>{
             valueType: DataPointValueType.Text,
           },
-          5,
-        ),
+          5
+        )
       ).toEqual(5);
     });
   });

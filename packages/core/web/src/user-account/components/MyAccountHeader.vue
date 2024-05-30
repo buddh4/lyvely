@@ -37,7 +37,7 @@ function onAvatarUpdate(avatar: AvatarModel) {
       @click="showUpdateAvatarModal = true">
       <user-avatar data-id="my-account-avatar" class="border-main h-16 w-16 border text-xl" />
       <div
-        class="bg-shadow border-main absolute bottom-0 right-0 flex h-6 w-6 justify-center rounded-full border">
+        class="border-main absolute bottom-0 right-0 flex h-6 w-6 justify-center rounded-full border bg-shadow">
         <ly-icon name="camera" class="color-main p-0.5" />
       </div>
     </button>

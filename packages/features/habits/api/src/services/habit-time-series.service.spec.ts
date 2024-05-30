@@ -7,7 +7,7 @@ import { HabitDataPointService } from './habit-data-point.service';
 import { HabitsService } from './habits.service';
 import { Habit } from '../schemas';
 import { HabitTimeSeriesService } from './habit-time-series.service';
-import { ILyvelyTestingModule } from '@lyvely/testing';
+import { ILyvelyTestingModule } from '@lyvely/api';
 
 describe('HabitTimeSeriesService', () => {
   let habitsTimeSeriesService: HabitTimeSeriesService;
@@ -98,7 +98,7 @@ describe('HabitTimeSeriesService', () => {
           { title: 'h0', interval: CalendarInterval.Daily },
           (model) => {
             model.meta.sortOrder = 0;
-          },
+          }
         ),
         await testData.createHabit(
           user,
@@ -106,7 +106,7 @@ describe('HabitTimeSeriesService', () => {
           { title: 'h1', interval: CalendarInterval.Daily },
           (model) => {
             model.meta.sortOrder = 1;
-          },
+          }
         ),
         await testData.createHabit(
           user,
@@ -114,7 +114,7 @@ describe('HabitTimeSeriesService', () => {
           { title: 'h2', interval: CalendarInterval.Weekly },
           (model) => {
             model.meta.sortOrder = 0;
-          },
+          }
         ),
         await testData.createHabit(
           user,
@@ -122,7 +122,7 @@ describe('HabitTimeSeriesService', () => {
           { title: 'h3', interval: CalendarInterval.Weekly },
           (model) => {
             model.meta.sortOrder = 1;
-          },
+          }
         ),
         await testData.createHabit(
           user,
@@ -130,7 +130,7 @@ describe('HabitTimeSeriesService', () => {
           { title: 'h4', interval: CalendarInterval.Weekly },
           (model) => {
             model.meta.sortOrder = 2;
-          },
+          }
         ),
       ];
     };
@@ -144,7 +144,7 @@ describe('HabitTimeSeriesService', () => {
         context,
         habits[1],
         habits[1].timeSeriesConfig.interval,
-        habits[3],
+        habits[3]
       );
 
       const filter = new CalendarPlanFilter(HabitTestDataUtil.getDateTomorrow());
@@ -167,7 +167,7 @@ describe('HabitTimeSeriesService', () => {
         context,
         habits[0],
         habits[0].timeSeriesConfig.interval,
-        habits[1],
+        habits[1]
       );
 
       const filter = new CalendarPlanFilter(HabitTestDataUtil.getDateTomorrow());
@@ -207,7 +207,7 @@ describe('HabitTimeSeriesService', () => {
         context,
         habits[1],
         habits[1].timeSeriesConfig.interval,
-        habits[4],
+        habits[4]
       );
 
       const filter = new CalendarPlanFilter(HabitTestDataUtil.getDateTomorrow());
@@ -229,7 +229,7 @@ describe('HabitTimeSeriesService', () => {
         context,
         habits[2],
         habits[2].timeSeriesConfig.interval,
-        habits[2],
+        habits[2]
       );
 
       const filter = new CalendarPlanFilter(HabitTestDataUtil.getDateTomorrow());
@@ -251,7 +251,7 @@ describe('HabitTimeSeriesService', () => {
         context,
         habits[0],
         habits[2].timeSeriesConfig.interval,
-        habits[2],
+        habits[2]
       );
 
       expect(habits[0].timeSeriesConfig.interval).toEqual(CalendarInterval.Weekly);
@@ -261,7 +261,7 @@ describe('HabitTimeSeriesService', () => {
       const filter = new CalendarPlanFilter(HabitTestDataUtil.getDateTomorrow());
       let { models } = await habitsTimeSeriesService.findTimeSeries(context, filter);
       models = models.filter(
-        (model) => model.timeSeriesConfig.interval === CalendarInterval.Weekly,
+        (model) => model.timeSeriesConfig.interval === CalendarInterval.Weekly
       );
 
       sortHabits(models);
@@ -282,7 +282,7 @@ describe('HabitTimeSeriesService', () => {
       const filter = new CalendarPlanFilter(HabitTestDataUtil.getDateTomorrow());
       let { models } = await habitsTimeSeriesService.findTimeSeries(context, filter);
       models = models.filter(
-        (model) => model.timeSeriesConfig.interval === CalendarInterval.Weekly,
+        (model) => model.timeSeriesConfig.interval === CalendarInterval.Weekly
       );
 
       sortHabits(models);
@@ -302,13 +302,13 @@ describe('HabitTimeSeriesService', () => {
         context,
         habits[0],
         habits[4].timeSeriesConfig.interval,
-        habits[4],
+        habits[4]
       );
 
       const filter = new CalendarPlanFilter(HabitTestDataUtil.getDateTomorrow());
       let { models } = await habitsTimeSeriesService.findTimeSeries(context, filter);
       models = models.filter(
-        (model) => model.timeSeriesConfig.interval === CalendarInterval.Weekly,
+        (model) => model.timeSeriesConfig.interval === CalendarInterval.Weekly
       );
 
       sortHabits(models);

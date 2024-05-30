@@ -22,7 +22,7 @@ export class MilestonesDao
   findByProfileAndInterval(
     profile: Profile,
     plan: CalendarInterval,
-    options: IFetchQueryOptions<Milestone>,
+    options: IFetchQueryOptions<Milestone>
   ): Promise<Milestone[]> {
     return this.findAllByProfile(profile, { 'config.interval': plan }, options);
   }

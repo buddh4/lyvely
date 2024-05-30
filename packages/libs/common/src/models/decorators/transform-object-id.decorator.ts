@@ -15,7 +15,7 @@ import { isPlainObject } from '../../utils';
  * @constructor
  */
 export function TransformObjectId(
-  options: IPropertyDefinitionOptions<string> = {},
+  options: IPropertyDefinitionOptions<string> = {}
 ): PropertyDecorator {
   return function (target: any, propertyKey: string | symbol) {
     Transform(({ value }) => transformObjectId(value))(target, propertyKey);
@@ -33,12 +33,12 @@ export function TransformObjectId(
  * @constructor
  */
 export function TransformObjectIds(
-  options?: IPropertyDefinitionOptions<String>,
+  options?: IPropertyDefinitionOptions<String>
 ): PropertyDecorator {
   return function (target: any, propertyKey: string | symbol) {
     Transform(({ value }) => (Array.isArray(value) ? value.map(transformObjectId) : value))(
       target,
-      propertyKey,
+      propertyKey
     );
     PropertyType([String], options)(target, propertyKey);
   };

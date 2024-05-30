@@ -49,7 +49,7 @@ Cypress.Commands.add(
   'getId',
   (dataId: string, options?: Partial<Loggable & Timeoutable & Withinable & Shadow>) => {
     return cy.get(`[data-id="${dataId}"]`, options);
-  },
+  }
 );
 
 Cypress.Commands.add(
@@ -57,13 +57,13 @@ Cypress.Commands.add(
   (
     seed: string,
     prefix?: string,
-    options?: Partial<Loggable & Timeoutable & Withinable & Shadow>,
+    options?: Partial<Loggable & Timeoutable & Withinable & Shadow>
   ) => {
     cy.task<string>('db:getObjectId', seed).then((objectId: string) => {
       prefix = prefix ? prefix + '-' : '';
       cy.getId(prefix + objectId);
     });
-  },
+  }
 );
 
 Cypress.Commands.add('load', (path: string, options?: Partial<VisitOptions>) => {
@@ -76,7 +76,7 @@ Cypress.Commands.add(
   (handle: string, path?: string, options?: Partial<VisitOptions>) => {
     path = path && path.startsWith('/') ? path : '/' + (path || '');
     cy.visit(`http://127.0.0.1:3000/p/${handle}${path}`, options);
-  },
+  }
 );
 
 Cypress.Commands.add(
@@ -85,7 +85,7 @@ Cypress.Commands.add(
     options ||= {};
     options.method = 'POST';
     return cy.apiRequest(path, body, options);
-  },
+  }
 );
 
 Cypress.Commands.add(
@@ -94,7 +94,7 @@ Cypress.Commands.add(
     options ||= {};
     options.method = 'PATCH';
     return cy.apiRequest(path, body, options);
-  },
+  }
 );
 
 Cypress.Commands.add(
@@ -103,7 +103,7 @@ Cypress.Commands.add(
     options ||= {};
     options.method = 'PUT';
     return cy.apiRequest(path, body, options);
-  },
+  }
 );
 
 Cypress.Commands.add('apiGet', (path: string, options?: Partial<APIRequestOptions>) => {
@@ -124,7 +124,7 @@ Cypress.Commands.add(
     options ||= {};
     options.method = 'POST';
     return cy.profileApiRequest(handle, path, body, options);
-  },
+  }
 );
 
 Cypress.Commands.add(
@@ -133,7 +133,7 @@ Cypress.Commands.add(
     options ||= {};
     options.method = 'PATCH';
     return cy.profileApiRequest(handle, path, body, options);
-  },
+  }
 );
 
 Cypress.Commands.add(
@@ -142,7 +142,7 @@ Cypress.Commands.add(
     options ||= {};
     options.method = 'PUT';
     return cy.profileApiRequest(handle, path, body, options);
-  },
+  }
 );
 
 Cypress.Commands.add(
@@ -151,7 +151,7 @@ Cypress.Commands.add(
     options ||= {};
     options.method = 'GET';
     return cy.profileApiRequest(handle, path, undefined, options);
-  },
+  }
 );
 
 Cypress.Commands.add(
@@ -160,7 +160,7 @@ Cypress.Commands.add(
     options ||= {};
     options.method = 'DELETE';
     return cy.profileApiRequest(handle, path, undefined, options);
-  },
+  }
 );
 
 Cypress.Commands.add(
@@ -170,7 +170,7 @@ Cypress.Commands.add(
       path = path && path.startsWith('/') ? path : '/' + (path || '');
       return cy.apiRequest(`profiles/${objectId}${path}`, body, options);
     });
-  },
+  }
 );
 
 Cypress.Commands.add(
@@ -180,18 +180,21 @@ Cypress.Commands.add(
     options = { ...options };
     options.url = `http://127.0.0.1:8080/api${path}`;
     options.body = body;
-    options.headers ||= {} ;
-    (<any>options.headers)['x-api-version'] ??= '1';
     options.failOnStatusCode = false;
 
+    const headers: Record<string, string> = {...options.headers};
+    headers['x-api-version'] ??= '1';
+
     if (!options.as) {
-      (<any>options.headers)['x-visitor-access'] = '1';
+      headers!['x-visitor-access'] = '1';
     } else {
       cy.authenticatedAs(options.as);
     }
 
+    options.headers = headers;
+
     return cy.request(options);
-  },
+  }
 );
 
 Cypress.Commands.add('isForbidden', (path?: string, options?: Partial<VisitOptions>) => {

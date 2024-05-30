@@ -22,7 +22,7 @@ export class LegalService {
           label,
           version,
           url,
-        }),
+        })
       );
     }
 

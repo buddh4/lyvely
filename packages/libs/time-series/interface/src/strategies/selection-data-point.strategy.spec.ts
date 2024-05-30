@@ -19,8 +19,8 @@ describe('SelectionDataPointStrategy', () => {
             inputType: DataPointInputType.Checkbox,
             options: ['Option 1', 'Option 2'],
           } as ISelectionDataPointConfig,
-          {},
-        ),
+          {}
+        )
       ).toEqual(false);
     });
 
@@ -32,8 +32,8 @@ describe('SelectionDataPointStrategy', () => {
             inputType: DataPointInputType.Checkbox,
             options: ['Option 1', 'Option 2'],
           } as ISelectionDataPointConfig,
-          3,
-        ),
+          3
+        )
       ).toEqual(false);
     });
 
@@ -47,8 +47,8 @@ describe('SelectionDataPointStrategy', () => {
           } as ISelectionDataPointConfig,
           {
             selection: ['Option 1'],
-          } as ISelectionDataPointValue,
-        ),
+          } as ISelectionDataPointValue
+        )
       ).toEqual(true);
     });
 
@@ -62,8 +62,8 @@ describe('SelectionDataPointStrategy', () => {
           } as ISelectionDataPointConfig,
           {
             selection: ['Option 1', 'Option 2'],
-          } as ISelectionDataPointValue,
-        ),
+          } as ISelectionDataPointValue
+        )
       ).toEqual(true);
     });
 
@@ -77,8 +77,8 @@ describe('SelectionDataPointStrategy', () => {
           } as ISelectionDataPointConfig,
           {
             selection: [],
-          } as ISelectionDataPointValue,
-        ),
+          } as ISelectionDataPointValue
+        )
       ).toEqual(true);
     });
 
@@ -94,8 +94,8 @@ describe('SelectionDataPointStrategy', () => {
           {
             selection: [SELECTION_OTHER_OPTION_KEY],
             otherValue: 'Other Option',
-          } as ISelectionDataPointValue,
-        ),
+          } as ISelectionDataPointValue
+        )
       ).toEqual(true);
     });
 
@@ -111,8 +111,8 @@ describe('SelectionDataPointStrategy', () => {
           {
             selection: [SELECTION_OTHER_OPTION_KEY],
             otherValue: ' ',
-          } as ISelectionDataPointValue,
-        ),
+          } as ISelectionDataPointValue
+        )
       ).toEqual(false);
     });
 
@@ -128,8 +128,8 @@ describe('SelectionDataPointStrategy', () => {
           {
             selection: ['Option 1', SELECTION_OTHER_OPTION_KEY],
             otherValue: 'Other Option',
-          } as ISelectionDataPointValue,
-        ),
+          } as ISelectionDataPointValue
+        )
       ).toEqual(true);
     });
 
@@ -145,8 +145,8 @@ describe('SelectionDataPointStrategy', () => {
           {
             selection: [SELECTION_OTHER_OPTION_KEY],
             otherValue: 'Other Option',
-          } as ISelectionDataPointValue,
-        ),
+          } as ISelectionDataPointValue
+        )
       ).toEqual(false);
     });
 
@@ -162,8 +162,8 @@ describe('SelectionDataPointStrategy', () => {
           {
             selection: ['Option 1', SELECTION_OTHER_OPTION_KEY],
             otherValue: 'Other Option',
-          } as ISelectionDataPointValue,
-        ),
+          } as ISelectionDataPointValue
+        )
       ).toEqual(false);
     });
 
@@ -177,8 +177,8 @@ describe('SelectionDataPointStrategy', () => {
           } as ISelectionDataPointConfig,
           {
             selection: ['Does not exist'],
-          } as ISelectionDataPointValue,
-        ),
+          } as ISelectionDataPointValue
+        )
       ).toEqual(false);
     });
 
@@ -192,8 +192,8 @@ describe('SelectionDataPointStrategy', () => {
           } as ISelectionDataPointConfig,
           {
             selection: ['Option 1', 'Option 2'],
-          } as ISelectionDataPointValue,
-        ),
+          } as ISelectionDataPointValue
+        )
       ).toEqual(false);
     });
 
@@ -209,8 +209,8 @@ describe('SelectionDataPointStrategy', () => {
           {
             selection: [SELECTION_OTHER_OPTION_KEY],
             otherValue: 'Test',
-          } as ISelectionDataPointValue,
-        ),
+          } as ISelectionDataPointValue
+        )
       ).toEqual(true);
     });
 
@@ -224,8 +224,8 @@ describe('SelectionDataPointStrategy', () => {
           } as ISelectionDataPointConfig,
           {
             selection: ['Option 1', 'Option 2'],
-          } as ISelectionDataPointValue,
-        ),
+          } as ISelectionDataPointValue
+        )
       ).toEqual(false);
     });
 
@@ -241,8 +241,8 @@ describe('SelectionDataPointStrategy', () => {
           {
             selection: [SELECTION_OTHER_OPTION_KEY],
             otherValue: 'Test',
-          } as ISelectionDataPointValue,
-        ),
+          } as ISelectionDataPointValue
+        )
       ).toEqual(false);
     });
   });
@@ -258,8 +258,8 @@ describe('SelectionDataPointStrategy', () => {
           } as ISelectionDataPointConfig,
           {
             selection: ['Option 1', 'Does not exist'],
-          } as ISelectionDataPointValue,
-        ),
+          } as ISelectionDataPointValue
+        )
       ).toEqual({ selection: ['Option 1'] });
     });
 
@@ -274,8 +274,8 @@ describe('SelectionDataPointStrategy', () => {
           } as ISelectionDataPointConfig,
           {
             selection: ['Option 1', SELECTION_OTHER_OPTION_KEY],
-          } as ISelectionDataPointValue,
-        ),
+          } as ISelectionDataPointValue
+        )
       ).toEqual({ selection: ['Option 1', SELECTION_OTHER_OPTION_KEY] });
     });
 
@@ -290,8 +290,8 @@ describe('SelectionDataPointStrategy', () => {
           } as ISelectionDataPointConfig,
           {
             selection: ['Option 1', SELECTION_OTHER_OPTION_KEY],
-          } as ISelectionDataPointValue,
-        ),
+          } as ISelectionDataPointValue
+        )
       ).toEqual({ selection: ['Option 1'] });
     });
 
@@ -306,8 +306,8 @@ describe('SelectionDataPointStrategy', () => {
           } as ISelectionDataPointConfig,
           {
             selection: ['Option 1', 'Option 2'],
-          } as ISelectionDataPointValue,
-        ),
+          } as ISelectionDataPointValue
+        )
       ).toEqual({ selection: ['Option 1'] });
     });
 
@@ -322,8 +322,8 @@ describe('SelectionDataPointStrategy', () => {
           } as ISelectionDataPointConfig,
           {
             selection: ['Option 1', 'Option 2'],
-          } as ISelectionDataPointValue,
-        ),
+          } as ISelectionDataPointValue
+        )
       ).toEqual({ selection: ['Option 1'] });
     });
   });

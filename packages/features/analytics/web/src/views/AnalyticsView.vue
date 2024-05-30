@@ -78,10 +78,10 @@ onMounted(async () => {
         </template>
         <template #footer>
           <div
-            class="border-divide cursor-pointer rounded border p-5 drop-shadow-md"
+            class="cursor-pointer rounded border border-divide p-5 drop-shadow-md"
             @click="createEntry">
             <div
-              class="text-secondary dark:text-secondary-dark flex h-full w-full select-none items-center justify-center text-9xl">
+              class="flex h-full w-full select-none items-center justify-center text-9xl text-secondary dark:text-secondary-dark">
               +
             </div>
           </div>

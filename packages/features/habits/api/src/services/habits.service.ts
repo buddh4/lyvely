@@ -28,7 +28,7 @@ export class HabitsService extends ContentTypeService<Habit, CreateHabitModel> {
    */
   protected override async createInstance(
     context: ProtectedProfileContext,
-    model: CreateHabitModel,
+    model: CreateHabitModel
   ): Promise<Habit> {
     return Habit.create(context, model);
   }
@@ -47,7 +47,7 @@ export class HabitsService extends ContentTypeService<Habit, CreateHabitModel> {
   protected override async createUpdate(
     context: ProtectedProfileContext,
     content: Habit,
-    model: UpdateHabitModel,
+    model: UpdateHabitModel
   ): Promise<UpdateQuerySet<Habit>> {
     return content.applyUpdate(model);
   }

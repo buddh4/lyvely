@@ -21,9 +21,9 @@ const hasHistory = usePageStore().hasHistory;
 </script>
 
 <template>
-  <div class="bg-main border-divide w-full rounded-t p-2.5 md:px-4">
+  <div class="w-full rounded-t border-divide bg-main p-2.5 md:px-4">
     <div class="flex items-center">
-      <a class="text-main cursor-pointer pl-0 text-sm" @click="historyBack">
+      <a class="cursor-pointer pl-0 text-sm text-main" @click="historyBack">
         <ly-icon name="arrow-left" data-id="btn-back" class="mr-2 w-3" />
         <span>{{ t('common.back') }}</span>
       </a>
@@ -32,7 +32,7 @@ const hasHistory = usePageStore().hasHistory;
           v-if="content.meta.archived"
           name="archive"
           :title="t('common.archived')"
-          class="text-warning ml-auto w-4" />
+          class="ml-auto w-4 text-warning" />
       </div>
       <div v-if="!content.meta.archived" class="ml-auto">
         <!-- milestone-chooser :content="content" :editable="true" /-->

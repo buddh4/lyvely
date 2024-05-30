@@ -21,7 +21,7 @@ export class MilestonesClient implements IMilestonesClient {
 
   async create(
     dto: CreateMilestoneModel,
-    options?: IProfileApiRequestOptions,
+    options?: IProfileApiRequestOptions
   ): Promise<UpdateMilestoneResponse> {
     return unwrapAndTransformResponse(repository.create(dto, options), UpdateMilestoneResponse);
   }
@@ -29,11 +29,11 @@ export class MilestonesClient implements IMilestonesClient {
   async update(
     id: string,
     update: UpdateMilestoneModel,
-    options?: IProfileApiRequestOptions,
+    options?: IProfileApiRequestOptions
   ): Promise<UpdateMilestoneResponse> {
     return unwrapAndTransformResponse(
       repository.update(id, update, options),
-      UpdateMilestoneResponse,
+      UpdateMilestoneResponse
     );
   }
 }

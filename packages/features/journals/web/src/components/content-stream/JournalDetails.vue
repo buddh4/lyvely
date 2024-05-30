@@ -13,7 +13,7 @@ defineProps<IProps>();
 <template>
   <content-details :model="model">
     <template #image>
-      <div class="border-divide bg-main flex h-8 w-8 justify-center rounded-full border">
+      <div class="flex h-8 w-8 justify-center rounded-full border border-divide bg-main">
         <router-link :to="{ name: 'Journals' }">
           <ly-icon name="activity" class="text-main" />
         </router-link>

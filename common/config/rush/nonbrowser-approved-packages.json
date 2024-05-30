@@ -1,0 +1,458 @@
+// DO NOT ADD COMMENTS IN THIS FILE.  They will be lost when the Rush tool resaves it.
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/rush/v5/approved-packages.schema.json",
+  "packages": [
+    {
+      "name": "@lyvely/analytics",
+      "allowedCategories": [ "application", "feature" ]
+    },
+    {
+      "name": "@lyvely/api",
+      "allowedCategories": [ "application", "feature", "lib" ]
+    },
+    {
+      "name": "@lyvely/calendar-plan",
+      "allowedCategories": [ "feature", "lib" ]
+    },
+    {
+      "name": "@lyvely/devtools",
+      "allowedCategories": [ "application", "core", "feature", "lib" ]
+    },
+    {
+      "name": "@lyvely/habits",
+      "allowedCategories": [ "application" ]
+    },
+    {
+      "name": "@lyvely/journals",
+      "allowedCategories": [ "application" ]
+    },
+    {
+      "name": "@lyvely/legal",
+      "allowedCategories": [ "application" ]
+    },
+    {
+      "name": "@lyvely/milestones",
+      "allowedCategories": [ "application", "feature" ]
+    },
+    {
+      "name": "@lyvely/tasks",
+      "allowedCategories": [ "application" ]
+    },
+    {
+      "name": "@lyvely/time-series",
+      "allowedCategories": [ "feature" ]
+    },
+    {
+      "name": "@lyvely/timers",
+      "allowedCategories": [ "feature", "lib" ]
+    },
+    {
+      "name": "@nestjs-modules/mailer",
+      "allowedCategories": [ "core" ]
+    },
+    {
+      "name": "@nestjs/bullmq",
+      "allowedCategories": [ "core" ]
+    },
+    {
+      "name": "@nestjs/common",
+      "allowedCategories": [ "core", "feature", "lib" ]
+    },
+    {
+      "name": "@nestjs/config",
+      "allowedCategories": [ "core", "feature" ]
+    },
+    {
+      "name": "@nestjs/core",
+      "allowedCategories": [ "core" ]
+    },
+    {
+      "name": "@nestjs/event-emitter",
+      "allowedCategories": [ "core", "feature" ]
+    },
+    {
+      "name": "@nestjs/jwt",
+      "allowedCategories": [ "core" ]
+    },
+    {
+      "name": "@nestjs/mongoose",
+      "allowedCategories": [ "core", "feature", "lib" ]
+    },
+    {
+      "name": "@nestjs/passport",
+      "allowedCategories": [ "core" ]
+    },
+    {
+      "name": "@nestjs/platform-express",
+      "allowedCategories": [ "core" ]
+    },
+    {
+      "name": "@nestjs/serve-static",
+      "allowedCategories": [ "core" ]
+    },
+    {
+      "name": "@nestjs/testing",
+      "allowedCategories": [ "core" ]
+    },
+    {
+      "name": "@nestjs/throttler",
+      "allowedCategories": [ "core" ]
+    },
+    {
+      "name": "@rollup/plugin-commonjs",
+      "allowedCategories": [ "core", "feature", "lib", "tool" ]
+    },
+    {
+      "name": "@rollup/plugin-dynamic-import-vars",
+      "allowedCategories": [ "core", "feature", "lib" ]
+    },
+    {
+      "name": "@rollup/plugin-node-resolve",
+      "allowedCategories": [ "core", "feature", "lib", "tool" ]
+    },
+    {
+      "name": "@rollup/plugin-typescript",
+      "allowedCategories": [ "core", "feature", "lib", "tool" ]
+    },
+    {
+      "name": "@storybook/addon-controls",
+      "allowedCategories": [ "lib" ]
+    },
+    {
+      "name": "@storybook/addon-essentials",
+      "allowedCategories": [ "lib" ]
+    },
+    {
+      "name": "@storybook/addon-interactions",
+      "allowedCategories": [ "lib" ]
+    },
+    {
+      "name": "@storybook/addon-links",
+      "allowedCategories": [ "lib" ]
+    },
+    {
+      "name": "@storybook/addon-themes",
+      "allowedCategories": [ "lib" ]
+    },
+    {
+      "name": "@storybook/addons",
+      "allowedCategories": [ "lib" ]
+    },
+    {
+      "name": "@storybook/api",
+      "allowedCategories": [ "lib" ]
+    },
+    {
+      "name": "@storybook/blocks",
+      "allowedCategories": [ "lib" ]
+    },
+    {
+      "name": "@storybook/testing-library",
+      "allowedCategories": [ "lib" ]
+    },
+    {
+      "name": "@storybook/vue3",
+      "allowedCategories": [ "lib" ]
+    },
+    {
+      "name": "@storybook/vue3-vite",
+      "allowedCategories": [ "lib" ]
+    },
+    {
+      "name": "@tailwindcss/forms",
+      "allowedCategories": [ "tool" ]
+    },
+    {
+      "name": "@tailwindcss/typography",
+      "allowedCategories": [ "core", "lib", "tool" ]
+    },
+    {
+      "name": "@typescript-eslint/eslint-plugin",
+      "allowedCategories": [ "application", "core", "feature", "lib", "tool" ]
+    },
+    {
+      "name": "@typescript-eslint/parser",
+      "allowedCategories": [ "application", "core", "feature", "lib", "tool" ]
+    },
+    {
+      "name": "@vitejs/plugin-vue",
+      "allowedCategories": [ "core", "lib", "tool" ]
+    },
+    {
+      "name": "@vue/runtime-core",
+      "allowedCategories": [ "core" ]
+    },
+    {
+      "name": "@vue/test-utils",
+      "allowedCategories": [ "lib" ]
+    },
+    {
+      "name": "autoprefixer",
+      "allowedCategories": [ "core" ]
+    },
+    {
+      "name": "bcrypt",
+      "allowedCategories": [ "core" ]
+    },
+    {
+      "name": "bullmq",
+      "allowedCategories": [ "core" ]
+    },
+    {
+      "name": "canvas",
+      "allowedCategories": [ "core" ]
+    },
+    {
+      "name": "clean-css",
+      "allowedCategories": [ "tool" ]
+    },
+    {
+      "name": "compression",
+      "allowedCategories": [ "core" ]
+    },
+    {
+      "name": "cookie-parser",
+      "allowedCategories": [ "core" ]
+    },
+    {
+      "name": "cross-env",
+      "allowedCategories": [ "application", "core" ]
+    },
+    {
+      "name": "csurf",
+      "allowedCategories": [ "core" ]
+    },
+    {
+      "name": "cypress",
+      "allowedCategories": [ "core", "feature", "tool" ]
+    },
+    {
+      "name": "del",
+      "allowedCategories": [ "core" ]
+    },
+    {
+      "name": "depcheck",
+      "allowedCategories": [ "application", "core", "feature", "lib", "tool" ]
+    },
+    {
+      "name": "dependency-cruiser",
+      "allowedCategories": [ "lib" ]
+    },
+    {
+      "name": "dotenv",
+      "allowedCategories": [ "tool" ]
+    },
+    {
+      "name": "eslint",
+      "allowedCategories": [ "application", "core", "feature", "lib", "tool" ]
+    },
+    {
+      "name": "eslint-config-prettier",
+      "allowedCategories": [ "application", "core", "feature", "lib", "tool" ]
+    },
+    {
+      "name": "eslint-import-resolver-typescript",
+      "allowedCategories": [ "application", "core", "feature", "lib", "tool" ]
+    },
+    {
+      "name": "eslint-plugin-import",
+      "allowedCategories": [ "application", "core", "feature", "lib", "tool" ]
+    },
+    {
+      "name": "eslint-plugin-prettier",
+      "allowedCategories": [ "application", "core", "feature", "lib", "tool" ]
+    },
+    {
+      "name": "eslint-plugin-vue",
+      "allowedCategories": [ "application", "core", "feature", "lib", "tool" ]
+    },
+    {
+      "name": "eventemitter2",
+      "allowedCategories": [ "core" ]
+    },
+    {
+      "name": "express",
+      "allowedCategories": [ "core" ]
+    },
+    {
+      "name": "glob",
+      "allowedCategories": [ "lib", "tool" ]
+    },
+    {
+      "name": "gulp",
+      "allowedCategories": [ "core" ]
+    },
+    {
+      "name": "helmet",
+      "allowedCategories": [ "core" ]
+    },
+    {
+      "name": "ioredis",
+      "allowedCategories": [ "core" ]
+    },
+    {
+      "name": "jest",
+      "allowedCategories": [ "core", "feature", "lib" ]
+    },
+    {
+      "name": "jsdom",
+      "allowedCategories": [ "core", "lib" ]
+    },
+    {
+      "name": "jsonwebtoken",
+      "allowedCategories": [ "core", "tool" ]
+    },
+    {
+      "name": "mini-svg-data-uri",
+      "allowedCategories": [ "tool" ]
+    },
+    {
+      "name": "mongo-seeding",
+      "allowedCategories": [ "core", "tool" ]
+    },
+    {
+      "name": "mongodb",
+      "allowedCategories": [ "core", "tool" ]
+    },
+    {
+      "name": "mongodb-memory-server",
+      "allowedCategories": [ "core" ]
+    },
+    {
+      "name": "mongoose",
+      "allowedCategories": [ "core", "feature" ]
+    },
+    {
+      "name": "nestjs-i18n",
+      "allowedCategories": [ "core" ]
+    },
+    {
+      "name": "nodemailer",
+      "allowedCategories": [ "core" ]
+    },
+    {
+      "name": "npm-watch",
+      "allowedCategories": [ "lib" ]
+    },
+    {
+      "name": "passport",
+      "allowedCategories": [ "core" ]
+    },
+    {
+      "name": "passport-jwt",
+      "allowedCategories": [ "core" ]
+    },
+    {
+      "name": "passport-local",
+      "allowedCategories": [ "core" ]
+    },
+    {
+      "name": "postcss",
+      "allowedCategories": [ "application", "core", "feature", "lib", "tool" ]
+    },
+    {
+      "name": "postcss-cli",
+      "allowedCategories": [ "application", "core", "feature", "lib" ]
+    },
+    {
+      "name": "postcss-import",
+      "allowedCategories": [ "core", "lib", "tool" ]
+    },
+    {
+      "name": "prettier-plugin-tailwindcss",
+      "allowedCategories": [ "application", "core", "feature", "lib" ]
+    },
+    {
+      "name": "pug",
+      "allowedCategories": [ "core" ]
+    },
+    {
+      "name": "rimraf",
+      "allowedCategories": [ "application", "core", "lib" ]
+    },
+    {
+      "name": "rollup",
+      "allowedCategories": [ "core", "feature", "lib", "tool" ]
+    },
+    {
+      "name": "rollup-plugin-node-externals",
+      "allowedCategories": [ "core", "feature", "lib", "tool" ]
+    },
+    {
+      "name": "rollup-plugin-vue",
+      "allowedCategories": [ "tool" ]
+    },
+    {
+      "name": "sass",
+      "allowedCategories": [ "lib" ]
+    },
+    {
+      "name": "sharp",
+      "allowedCategories": [ "core" ]
+    },
+    {
+      "name": "storybook",
+      "allowedCategories": [ "lib" ]
+    },
+    {
+      "name": "storybook-tailwind-dark-mode",
+      "allowedCategories": [ "lib" ]
+    },
+    {
+      "name": "tailwindcss",
+      "allowedCategories": [ "core", "feature", "lib", "tool" ]
+    },
+    {
+      "name": "tsc-alias",
+      "allowedCategories": [ "application", "core" ]
+    },
+    {
+      "name": "tscpaths",
+      "allowedCategories": [ "core", "feature", "lib", "tool" ]
+    },
+    {
+      "name": "typescript",
+      "allowedCategories": [ "application", "core", "feature", "lib" ]
+    },
+    {
+      "name": "uuid",
+      "allowedCategories": [ "core", "tool" ]
+    },
+    {
+      "name": "vite",
+      "allowedCategories": [ "application", "core", "feature", "lib", "tool" ]
+    },
+    {
+      "name": "vite-plugin-dts",
+      "allowedCategories": [ "lib", "tool" ]
+    },
+    {
+      "name": "vite-plugin-externalize-deps",
+      "allowedCategories": [ "feature", "lib", "tool" ]
+    },
+    {
+      "name": "vite-plugin-pwa",
+      "allowedCategories": [ "application" ]
+    },
+    {
+      "name": "vite-tsconfig-paths",
+      "allowedCategories": [ "feature", "lib", "tool" ]
+    },
+    {
+      "name": "vitest",
+      "allowedCategories": [ "core", "feature", "lib" ]
+    },
+    {
+      "name": "vue-docgen-api",
+      "allowedCategories": [ "lib" ]
+    },
+    {
+      "name": "vue-eslint-parser",
+      "allowedCategories": [ "application", "core", "feature", "lib" ]
+    },
+    {
+      "name": "vue-tsc",
+      "allowedCategories": [ "application", "core", "feature", "lib", "tool" ]
+    }
+  ]
+}

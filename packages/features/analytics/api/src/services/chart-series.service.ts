@@ -40,7 +40,7 @@ export class ChartSeriesService {
   constructor(
     private readonly chartDao: ChartsDao,
     private readonly scoreAggregationService: ProfileScoreAggregationService,
-    private readonly emitter: EventEmitter2,
+    private readonly emitter: EventEmitter2
   ) {}
 
   @OnEvent(AnalyticsEvents.EVENT_FETCH_SERIES_DATA)
@@ -54,7 +54,7 @@ export class ChartSeriesService {
           color: config.color,
           tagIds: config.tagIds,
           interval: isTimeSeriesAggregationInterval(query?.interval) ? query?.interval : undefined,
-        }),
+        })
       );
     }
 
@@ -73,7 +73,7 @@ export class ChartSeriesService {
           uids,
           tagIds: config.tagIds,
           interval: isTimeSeriesAggregationInterval(query?.interval) ? query?.interval : undefined,
-        }),
+        })
       );
     }
   }
@@ -89,7 +89,7 @@ export class ChartSeriesService {
   async getSeriesData(
     context: ProfileContext,
     chart: Chart,
-    query?: Record<string, string>,
+    query?: Record<string, string>
   ): Promise<Record<string, ChartSeriesData[]>> {
     const result: Record<string, ChartSeriesData[]> = {};
     const fetchPromises: Promise<ChartSeriesData[]>[] = [];
@@ -110,7 +110,7 @@ export class ChartSeriesService {
     context: ProfileContext,
     chart: Chart,
     config: ChartSeriesConfig,
-    query?: Record<string, string>,
+    query?: Record<string, string>
   ): Promise<ChartSeriesData[]> {
     const event = new FetchSeriesDataEvent(chart, context, config, query);
     this.emitter.emit(AnalyticsEvents.EVENT_FETCH_SERIES_DATA, event);
@@ -143,7 +143,7 @@ export class ChartSeriesService {
   async addSeries(
     context: ProtectedProfileContext,
     chart: Chart,
-    rawSeriesConfig: IChartSeriesConfig,
+    rawSeriesConfig: IChartSeriesConfig
   ) {
     const seriesConfig = await this.createAndValidateSeriesConfig(chart, rawSeriesConfig);
 
@@ -164,7 +164,7 @@ export class ChartSeriesService {
    */
   async createAndValidateSeriesConfig(
     chart: Chart,
-    seriesConfig: IChartSeriesConfig,
+    seriesConfig: IChartSeriesConfig
   ): Promise<ChartSeriesConfig> {
     seriesConfig = this.createSeriesConfigModel(seriesConfig);
     const seriesDefinition = getChartSeriesDefinition(seriesConfig.type);
@@ -190,7 +190,7 @@ export class ChartSeriesService {
 
     if (!seriesDefinition)
       throw new IntegrityException(
-        `Can not create series config for unknown series type ${config.type}`,
+        `Can not create series config for unknown series type ${config.type}`
       );
 
     const ConfigType = seriesDefinition.configType || ChartSeriesConfigModel;
@@ -212,7 +212,7 @@ export class ChartSeriesService {
     context: ProtectedProfileContext,
     chart: Chart,
     sid: DocumentIdentity<ChartSeriesConfig>,
-    rawSeriesConfig: IChartSeriesConfig,
+    rawSeriesConfig: IChartSeriesConfig
   ) {
     const seriesConfig = await this.createAndValidateSeriesConfig(chart, rawSeriesConfig);
     return this.chartDao.updateSeries(chart, sid, seriesConfig);
@@ -230,7 +230,7 @@ export class ChartSeriesService {
   async deleteSeries(
     context: ProtectedProfileContext,
     chart: Chart,
-    sid: DocumentIdentity<ChartSeriesConfig>,
+    sid: DocumentIdentity<ChartSeriesConfig>
   ) {
     return this.chartDao.deleteSeries(chart, sid);
   }
@@ -247,7 +247,7 @@ export class ChartSeriesService {
   async sort(
     context: ProtectedProfileContext,
     model: Chart,
-    attachToId?: DocumentIdentity<Chart>,
+    attachToId?: DocumentIdentity<Chart>
   ): Promise<SortResult[]> {
     const { profile } = context;
 
@@ -267,7 +267,7 @@ export class ChartSeriesService {
 
     const allDocs = await this.chartDao.findAllByProfile(profile, {
       excludeIds: model._id,
-      sort: <QuerySort<Chart>>{ 'meta.sortOrder': 1 },
+      sort: { 'meta.sortOrder': 1 } as QuerySort<Chart>,
     });
 
     const newIndex = attachTo ? allDocs.findIndex((m) => m.id === attachTo.id) + 1 : 0;

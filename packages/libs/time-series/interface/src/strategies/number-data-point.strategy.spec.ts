@@ -17,8 +17,8 @@ describe('NumberDataPointStrategy', () => {
             min: 0,
             max: 5,
           },
-          3,
-        ),
+          3
+        )
       ).toEqual(true);
     });
 
@@ -30,8 +30,8 @@ describe('NumberDataPointStrategy', () => {
             min: 0,
             max: 5,
           },
-          8,
-        ),
+          8
+        )
       ).toEqual(false);
     });
 
@@ -43,8 +43,8 @@ describe('NumberDataPointStrategy', () => {
             min: 0,
             max: 5,
           },
-          '5',
-        ),
+          '5'
+        )
       ).toEqual(false);
     });
   });
@@ -58,8 +58,8 @@ describe('NumberDataPointStrategy', () => {
             min: 0,
             max: 5,
           },
-          3,
-        ),
+          3
+        )
       ).toEqual(3);
     });
 
@@ -71,8 +71,8 @@ describe('NumberDataPointStrategy', () => {
             min: 0,
             max: 5,
           },
-          8,
-        ),
+          8
+        )
       ).toEqual(5);
     });
 
@@ -84,8 +84,8 @@ describe('NumberDataPointStrategy', () => {
             min: 0,
             max: 5,
           },
-          '5',
-        ),
+          '5'
+        )
       ).toEqual('5');
     });
   });

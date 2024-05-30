@@ -26,12 +26,12 @@ const createMilestone = () =>
 </script>
 
 <template>
-  <ul v-if="statusError" class="divide-divide w-64 divide-y md:w-96">
+  <ul v-if="statusError" class="w-64 divide-y divide-divide md:w-96">
     <li class="px-4 py-3">
       <ly-alert type="danger" :text="statusError" />
     </li>
   </ul>
-  <ul v-else class="divide-divide w-80 divide-y md:w-96">
+  <ul v-else class="w-80 divide-y divide-divide md:w-96">
     <li class="px-4 py-3">
       <div class="flex items-center">
         <span class="text-sm font-bold">

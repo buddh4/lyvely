@@ -25,7 +25,7 @@ const padding = 'py-1 md:py-4';
 </script>
 
 <template>
-  <tr :class="'border-divide border-b last:border-0'">
+  <tr :class="'border-b border-divide last:border-0'">
     <th scope="row" class="w-auto">
       <div :class="['border-divide', padding]">
         <div class="flex items-center">

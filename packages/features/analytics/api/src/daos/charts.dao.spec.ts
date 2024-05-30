@@ -53,7 +53,7 @@ describe('ChartSeriesService', () => {
   async function createTimeSeriesChart(
     profile: Profile,
     user: User,
-    series: ChartSeriesConfig[],
+    series: ChartSeriesConfig[]
   ): Promise<Chart<TimeSeriesChartConfig>> {
     return chartsDao.save(
       new Chart<TimeSeriesChartConfig>(
@@ -61,8 +61,8 @@ describe('ChartSeriesService', () => {
         {
           content: new ContentDataType({ title: 'Test' }),
           config: new TimeSeriesChartConfig({ series }),
-        },
-      ),
+        }
+      )
     ) as Promise<Chart<TimeSeriesChartConfig>>;
   }
 
@@ -125,7 +125,7 @@ describe('ChartSeriesService', () => {
           tagIds: [tagId],
           currentUser: true,
           name: 'NewName',
-        }),
+        })
       );
 
       const existingConfig = chart.config.series[0] as UserScoreChartSeriesConfig;

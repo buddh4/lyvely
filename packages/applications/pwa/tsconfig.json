@@ -20,7 +20,7 @@
       "@/*": ["src/*"],
       "vite": ["node_modules/vite"]
     },
-    "types": ["vue", "@vue/runtime-dom", "reflect-metadata", "vite-plugin-pwa/client", "jest"],
+    "types": ["vue", "@vue/runtime-dom", "vite-plugin-pwa/client"],
     "lib": ["esnext", "dom", "WebWorker", "dom.iterable", "scripthost"]
   },
   "include": [

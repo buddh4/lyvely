@@ -20,7 +20,7 @@ export type TimeSeriesAggregationPipeline = [
 
 export async function runTimeSeriesAggregation(
   dao: AbstractDao<any>,
-  options: IntervalAggregationOptions,
+  options: IntervalAggregationOptions
 ): Promise<TimeSeriesChartData<string>[]> {
   const pipeline = createTimeSeriesAggregationPipeline(options);
   const aggregationResult = await execAggregate(dao, pipeline);
@@ -36,7 +36,7 @@ export async function runTimeSeriesAggregation(
  * @return {TimeSeriesAggregationPipeline} - The interval aggregation pipeline based on the given options.
  */
 export function createTimeSeriesAggregationPipeline(
-  options: IntervalAggregationOptions,
+  options: IntervalAggregationOptions
 ): TimeSeriesAggregationPipeline {
   switch (options.interval) {
     case '7D':
@@ -63,14 +63,14 @@ export function createTimeSeriesAggregationPipeline(
 
 async function execAggregate(
   dao: AbstractDao<any>,
-  pipeline: TimeSeriesAggregationPipeline,
+  pipeline: TimeSeriesAggregationPipeline
 ): Promise<TimeSeriesAggregationResult> {
   return dao.aggregate(pipeline);
 }
 
 function transformToKeyValueData(
   data: TimeSeriesAggregationResult,
-  options: IntervalAggregationOptions,
+  options: IntervalAggregationOptions
 ): TimeSeriesChartData<string>[] {
   if (options.filter?.uids?.length) {
     return groupByUid(data, options);
@@ -81,7 +81,7 @@ function transformToKeyValueData(
 
 function groupByUid(
   data: TimeSeriesAggregationResult,
-  options: IntervalAggregationOptions,
+  options: IntervalAggregationOptions
 ): TimeSeriesChartData<string>[] {
   const result: TimeSeriesChartData<string>[] = [];
   const uidMap = new Map<string, TimeSeriesAggregationResult>();
@@ -103,7 +103,7 @@ function groupByUid(
 function createTimeSeriesChartData(
   name: string,
   color: string | undefined,
-  data: TimeSeriesAggregationResult,
+  data: TimeSeriesAggregationResult
 ): TimeSeriesChartData<string> {
   return {
     type: ChartSeriesDataTypes.KEYVALUE,
@@ -114,7 +114,7 @@ function createTimeSeriesChartData(
 }
 
 function transformAggregationData(
-  data: TimeSeriesAggregationResult,
+  data: TimeSeriesAggregationResult
 ): TimeSeriesChartData<string>['data'] {
   return data.map(({ _id, value }) => ({
     key: _id.uid ? { ..._id, uid: _id.uid.toString() } : omit(_id, 'uid'),

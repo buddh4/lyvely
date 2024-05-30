@@ -48,7 +48,7 @@ const { model } = toRefs(props);
     <div :class="classNames">
       <button
         v-if="dragActive"
-        class="item-drag-button text-secondary my-auto mr-2 w-5 cursor-move"
+        class="item-drag-button my-auto mr-2 w-5 cursor-move text-secondary"
         @keyup.shift.up="$emit('moveUp', model, $el)"
         @keyup.shift.down="$emit('moveDown', model, $el)">
         <ly-icon name="drag" class="w-5 fill-current" />
@@ -63,7 +63,7 @@ const { model } = toRefs(props);
                 <span>
                   {{ model.content.title }}
                 </span>
-                <ly-badge v-if="model.meta.archived" class="bg-danger ml-2">
+                <ly-badge v-if="model.meta.archived" class="ml-2 bg-danger">
                   {{ translate('common.archived') }}
                 </ly-badge>
               </div>

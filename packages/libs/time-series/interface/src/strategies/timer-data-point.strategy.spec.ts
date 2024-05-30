@@ -14,8 +14,8 @@ describe('TimerDataPointStrategy', () => {
             min: 0,
             max: 5,
           },
-          { timer, ms: 0 },
-        ),
+          { timer, ms: 0 }
+        )
       ).toEqual(true);
     });
     it('valid started timer', async () => {
@@ -28,8 +28,8 @@ describe('TimerDataPointStrategy', () => {
             min: 0,
             max: 5,
           },
-          { timer, ms: timer.calculateTotalSpan() },
-        ),
+          { timer, ms: timer.calculateTotalSpan() }
+        )
       ).toEqual(true);
     });
     it('valid stopped timer', async () => {
@@ -43,8 +43,8 @@ describe('TimerDataPointStrategy', () => {
             min: 0,
             max: 5,
           },
-          { timer, ms: timer.calculateTotalSpan() },
-        ),
+          { timer, ms: timer.calculateTotalSpan() }
+        )
       ).toEqual(true);
     });
   });

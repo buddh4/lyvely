@@ -16,7 +16,7 @@ export class WeeklyIntervalAggregation extends IntervalAggregation {
     const startDate = this.options.startDate || subtractWeeks(endDate, range);
 
     const { week: endWeek } = parseTimingId(
-      toWeekTimingId(endDate, this.options.locale, this.options.preferences),
+      toWeekTimingId(endDate, this.options.locale, this.options.preferences)
     ) as { week: number };
 
     if (startDate.getFullYear() === endDate.getFullYear()) {
@@ -27,7 +27,7 @@ export class WeeklyIntervalAggregation extends IntervalAggregation {
     }
 
     const { week: startWeek } = parseTimingId(
-      toWeekTimingId(startDate, this.options.locale, this.options.preferences),
+      toWeekTimingId(startDate, this.options.locale, this.options.preferences)
     ) as { week: number };
 
     return {

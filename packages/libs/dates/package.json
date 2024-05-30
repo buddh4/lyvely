@@ -8,9 +8,10 @@
   "types": "dist/lib/index.d.ts",
   "scripts": {
     "lint": "eslint --fix",
-    "format": "prettier . --write",
-    "prettier": "prettier . --check",
-    "build": "tsc -p tsconfig.build.json --outDir dist/lib --declarationDir dist/lib --declaration true && tscpaths -p tsconfig.build.json -s ./src -o dist/lib && rollup -c && rm -f tsconfig.tsbuildinfo",
+    "format": "prettier src --write",
+    "prettier": "prettier src --check",
+    "depcheck": "depcheck --quiet",
+    "build": "rimraf ./dist && tsc -p tsconfig.build.json --outDir dist/lib --declarationDir dist/lib --declaration true && tscpaths -p tsconfig.build.json -s ./src -o dist/lib && rollup --silent -c && rm -f tsconfig.tsbuildinfo",
     "prepublish:npm": "pnpm run build",
     "publish:npm": "npm publish --access public",
     "prepublish:next": "pnpm run build",
@@ -23,12 +24,30 @@
   "author": "Julian Harrer",
   "license": "AGPL-3.0",
   "dependencies": {
-    "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
     "dayjs": "^1.11.10"
   },
   "devDependencies": {
-    "rimraf": "^5.0.0"
+    "@lyvely/devtools": "workspace:*",
+    "rimraf": "^5.0",
+    "typescript": "^5.4",
+    "tscpaths": "^0.0.9",
+    "rollup": "^4.18",
+    "@types/node": "^20.12",
+    "@rollup/plugin-typescript": "^11.1",
+    "@rollup/plugin-commonjs": "^25.0",
+    "@rollup/plugin-dynamic-import-vars": "^2.1.2",
+    "@rollup/plugin-node-resolve": "^15.0",
+    "rollup-plugin-node-externals": "^6.1",
+    "eslint": "^8.24",
+    "@typescript-eslint/eslint-plugin": "^7.9",
+    "@typescript-eslint/parser": "^7.9",
+    "eslint-config-prettier": "^8.8",
+    "eslint-import-resolver-typescript": "^3.5",
+    "eslint-plugin-import": "^2.26",
+    "eslint-plugin-prettier": "^5.1",
+    "depcheck": "^1.4",
+    "reflect-metadata": "^0.1"
   },
   "jest": {
     "rootDir": ".",

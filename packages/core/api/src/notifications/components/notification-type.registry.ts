@@ -7,20 +7,20 @@ import type { Listener } from 'eventemitter2';
 
 // This workaround is required since the notifications are registered before the registry is available
 const queuedTypeSchemas: [TNotificationType, Schema<NotificationType>][] = [];
-const globalListener = <Listener>globalEmitter.on(
+const globalListener = globalEmitter.on(
   EVENT_REGISTER_NOTIFICATION_TYPE,
   (type: TNotificationType, schema: Schema<NotificationType>) => {
     queuedTypeSchemas.push([type, schema]);
   },
-  { objectify: true },
-);
+  { objectify: true }
+) as Listener;
 
 @Injectable()
 export class NotificationTypeRegistry extends AbstractTypeRegistry<NotificationType> {
   protected logger = new Logger(NotificationTypeRegistry.name);
   constructor(
     @InjectModel(Notification.name)
-    private notificationModel: Model<Notification>,
+    private notificationModel: Model<Notification>
   ) {
     super();
     globalListener.off();
@@ -28,7 +28,7 @@ export class NotificationTypeRegistry extends AbstractTypeRegistry<NotificationT
       EVENT_REGISTER_NOTIFICATION_TYPE,
       (type: TNotificationType, schema: Schema<NotificationType>) => {
         this.addNotificationDataTypeDiscriminator(type, schema);
-      },
+      }
     );
     queuedTypeSchemas.forEach(([type, schema]) => {
       this.addNotificationDataTypeDiscriminator(type, schema);
@@ -37,7 +37,7 @@ export class NotificationTypeRegistry extends AbstractTypeRegistry<NotificationT
 
   private addNotificationDataTypeDiscriminator(
     type: TNotificationType,
-    schema: Schema<NotificationType>,
+    schema: Schema<NotificationType>
   ) {
     const notificationTypePath = this.notificationModel.schema.path<Subdocument>('data');
 

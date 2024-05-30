@@ -14,6 +14,8 @@ import {
 import { useProfileStore, useGlobalDialogStore } from '@lyvely/web';
 import { useCalendarPlanStore } from '@lyvely/calendar-plan-web';
 import { hasOwnNonNullableProperty } from '@lyvely/common';
+// TODO: https://github.com/microsoft/TypeScript/issues/47663
+import type {} from 'mitt';
 
 export const useHabitCalendarPlanStore = defineStore('habitCalendarPlan', () => {
   const calendarPlanStore = useCalendarPlanStore();

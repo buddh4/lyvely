@@ -20,7 +20,7 @@ export default {
   async update(
     habitId: string,
     model: Partial<UpdateJournalModel>,
-    options?: IProfileApiRequestOptions,
+    options?: IProfileApiRequestOptions
   ) {
     return api.put<'update'>(habitId, model, options);
   },
@@ -36,7 +36,7 @@ export default {
   async updateDataPoint(
     cid: string,
     dto: UpdateDataPointModel,
-    options?: IProfileApiRequestOptions,
+    options?: IProfileApiRequestOptions
   ) {
     return api.post<'updateDataPoint'>(JournalsEndpoints.UPDATE_DATA_POINT(cid), dto, options);
   },

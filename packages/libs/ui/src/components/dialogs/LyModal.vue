@@ -123,7 +123,7 @@ onUnmounted(() => {
     @keyup.esc.stop.prevent="onEscape"
     @keydown="onKeyDown">
     <ly-conditional-wrapper :if="form" tag="form" @submit.prevent="$emit('submit')">
-      <div class="h-screen-s max-h-screen-s flex flex-col md:h-auto md:min-h-0">
+      <div class="flex h-screen-s max-h-screen-s flex-col md:h-auto md:min-h-0">
         <slot name="preHeader"></slot>
         <div
           v-if="showHeader"

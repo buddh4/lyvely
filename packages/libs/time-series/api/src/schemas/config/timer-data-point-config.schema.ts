@@ -14,7 +14,7 @@ import { DataPointConfigSchemaFactory } from '../data-point-config-schema.factor
 
 const strategy = DataPointConfigFactory.getStrategyName(
   DataPointValueType.Timer,
-  DataPointInputType.Timer,
+  DataPointInputType.Timer
 );
 
 @NestedSchema()
@@ -42,7 +42,7 @@ export class TimerDataPointConfigRevision
 }
 
 export const TimerDataPointConfigRevisionSchema = SchemaFactory.createForClass(
-  TimerDataPointConfigRevision,
+  TimerDataPointConfigRevision
 );
 
 @NestedSchema({ discriminatorKey: 'strategy' })
@@ -94,5 +94,5 @@ export class TimerDataPointConfig
 
 export const TimerDataPointConfigSchema = DataPointConfigSchemaFactory.createForClass(
   strategy,
-  TimerDataPointConfig,
+  TimerDataPointConfig
 );

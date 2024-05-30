@@ -1,0 +1,4 @@
+#!/bin/sh
+# run commit lint to check the commit message against our conventions
+./common/autoinstallers/conventional-commits/node_modules/.bin/commitlint \
+--config ./common/autoinstallers/conventional-commits/.commitlintrc.json --edit $1
