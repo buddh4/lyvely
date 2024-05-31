@@ -76,7 +76,37 @@ function setInputType(inputType: DataPointInputType) {
       </ly-button>
     </div>
 
-    <div class="grid grid-flow-col grid-cols-2 grid-rows-2 gap-2">
+    <div class="grid grid-cols-2 grid-rows-2 gap-2">
+
+      <div>
+        <ly-time-number-input
+            v-if="modelValue.inputType === DataPointInputType.Timer"
+            property="min"
+            label="time-series.fields.min"
+            :max="modelValue.max" />
+        <ly-number-field
+            v-else
+            property="min"
+            label="time-series.fields.min"
+            :min="0"
+            :max="modelValue.max" />
+      </div>
+
+      <div>
+        <ly-time-number-input
+            v-if="modelValue.inputType === DataPointInputType.Timer"
+            property="optimal"
+            label="time-series.fields.optimal"
+            :min="modelValue.min"
+            :max="modelValue.max" />
+        <ly-number-field
+            v-else
+            property="optimal"
+            label="time-series.fields.optimal"
+            :min="modelValue.min"
+            :max="modelValue.max" />
+      </div>
+
       <div>
         <ly-number-field
           v-if="modelValue.inputType === DataPointInputType.Checkbox"
@@ -91,33 +121,6 @@ function setInputType(inputType: DataPointInputType) {
         <ly-number-field v-else property="max" label="time-series.fields.max" :min="1" />
       </div>
 
-      <div>
-        <ly-time-number-input
-          v-if="modelValue.inputType === DataPointInputType.Timer"
-          property="min"
-          label="time-series.fields.min"
-          :max="modelValue.max" />
-        <ly-number-field
-          v-else
-          property="min"
-          label="time-series.fields.min"
-          :min="0"
-          :max="modelValue.max" />
-      </div>
-      <div>
-        <ly-time-number-input
-          v-if="modelValue.inputType === DataPointInputType.Timer"
-          property="optimal"
-          label="time-series.fields.optimal"
-          :min="modelValue.min"
-          :max="modelValue.max" />
-        <ly-number-field
-          v-else
-          property="optimal"
-          label="time-series.fields.optimal"
-          :min="modelValue.min"
-          :max="modelValue.max" />
-      </div>
       <div v-if="score" class="flex flex-col">
         <ly-number-field
           property="score"
