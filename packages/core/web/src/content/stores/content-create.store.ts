@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { computed, ref, watch } from 'vue';
+import { computed, nextTick, ref, watch } from 'vue';
 import {
   getContentTypeOptions,
   getCreateContentModalComponent,
@@ -45,11 +45,13 @@ export const useContentCreateStore = defineStore('content-create', () => {
 
     if (!type) return Promise.resolve();
 
-    initOptions.value = options;
-    contentType.value = type;
-    latestContentType = type;
-    showContentTypeMenu.value = withContentTypeMenu;
-    showCreateModal.value = true;
+    nextTick(() => {
+      initOptions.value = options;
+      contentType.value = type;
+      latestContentType = type;
+      showContentTypeMenu.value = withContentTypeMenu;
+      showCreateModal.value = true;
+    });
 
     return new Promise((resolve) => {
       activeResolve = resolve;
@@ -98,6 +100,9 @@ export const useContentCreateStore = defineStore('content-create', () => {
   }
 
   const createModalComponent = computed(() => {
+    setTimeout(() => {
+      getCreateContentTypes().forEach((options) => {});
+    });
     return contentType.value ? getCreateContentModalComponent(contentType.value) : undefined;
   });
 

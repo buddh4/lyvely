@@ -5,7 +5,7 @@ import ContentToolbar from './ContentToolbar.vue';
 import ContentStreamEntry from './ContentStreamEntry.vue';
 import ContentStreamFilterNavigation from './ContentStreamFilterNavigation.vue';
 import ContentStreamFooter from './ContentStreamFooter.vue';
-import CreateOrEditContentModal from './CreateOrEditContentModal.vue';
+import UpsertContentModal from './UpsertContentModal.vue';
 import DefaultStreamEntry from './DefaultStreamEntry.vue';
 import ContentDropdown from './ContentDropdown.vue';
 
@@ -16,7 +16,7 @@ export {
   ContentStreamEntry,
   ContentStreamFilterNavigation,
   ContentStreamFooter,
-  CreateOrEditContentModal,
+  UpsertContentModal,
   DefaultStreamEntry,
   ContentDropdown,
   ContentToolbar,

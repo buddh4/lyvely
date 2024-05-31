@@ -26,11 +26,11 @@ export default () => {
           create: {
             mode: 'modal',
             modelClass: CreateMessageModel,
-            component: () => import('./components/EditMessageModal.vue'),
+            component: () => import('./components/UpsertMessageModal.vue'),
           },
           edit: {
             mode: 'modal',
-            component: () => import('./components/EditMessageModal.vue'),
+            component: () => import('./components/UpsertMessageModal.vue'),
           },
           stream: {
             entry: () => import('./components/MessageStreamEntry.vue'),

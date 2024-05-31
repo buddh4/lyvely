@@ -26,7 +26,7 @@ export default () => {
       registerComponentStackEntries(STACK_PROFILE_LAYOUT, [
         {
           id: 'CreateOrEditContentModal',
-          component: () => import('./components/CreateOrEditContentModal.vue'),
+          component: () => import('./components/UpsertContentModal.vue'),
         },
       ]);
       registerMenuEntry(MENU_PROFILE_DRAWER, {

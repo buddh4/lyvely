@@ -180,7 +180,7 @@
     },
     {
       "name": "@vue/runtime-core",
-      "allowedCategories": [ "core" ]
+      "allowedCategories": [ "core", "lib" ]
     },
     {
       "name": "@vue/test-utils",

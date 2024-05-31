@@ -19,6 +19,7 @@ export default defineConfig({
     alias: [{ find: /^@(?=\/)/, replacement: resolve(__dirname, './src') }],
   },
   build: {
+    minify: false,
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
       name: 'lyvelyUi',
