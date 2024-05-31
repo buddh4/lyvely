@@ -30,10 +30,6 @@ RUN npm install -g pnpm @microsoft/rush
 COPY . build
 RUN cd build
 
-#########
-# BUILD #
-#########
-
 # Add docker specific web configuration to the build
 COPY docker/config/web.env build/packages/applications/pwa/.env
 

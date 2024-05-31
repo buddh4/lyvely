@@ -28,13 +28,13 @@ COPY docker/config/lyvely.ts ./packages/server/src/config/lyvely.production.conf
 COPY docker/config/web.env ./package/applications/pwa/.env
 
 # Install dependencies
-RUN rush install
+RUN rush install --to tag:prod
 
 # We set NODE_ENV after install since we need devDependencies for the build
 ENV NODE_ENV=production
 
 # Build all packages
-RUN rush build
+RUN rush build --to tag:prod
 
 # Remove dev dependencies after build
 RUN pnpm prune --production
