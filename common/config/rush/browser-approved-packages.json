@@ -27,6 +27,14 @@
       "allowedCategories": [ "application" ]
     },
     {
+      "name": "@docusaurus/tsconfig",
+      "allowedCategories": [ "application" ]
+    },
+    {
+      "name": "@docusaurus/types",
+      "allowedCategories": [ "application" ]
+    },
+    {
       "name": "@intlify/core-base",
       "allowedCategories": [ "core" ]
     },

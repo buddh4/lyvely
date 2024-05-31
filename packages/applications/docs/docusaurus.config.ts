@@ -1,11 +1,14 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
+import type {Config} from '@docusaurus/types';
+import type * as Preset from '@docusaurus/preset-classic';
+import { themes } from 'prism-react-renderer';
 
-const lightCodeTheme = require('prism-react-renderer/themes/github');
-const darkCodeTheme = require('prism-react-renderer/themes/dracula');
+const lightTheme = themes.github;
+const darkTheme = themes.dracula;
 
 /** @type {import('@docusaurus/types').Config} */
-const config = {
+const config: Config = {
   title: 'Lyvely Documentation',
   tagline: 'What else...',
   url: 'https://docs.lyvely.app',
@@ -27,35 +30,43 @@ const config = {
     locales: ['en', 'de'],
   },
 
+  markdown: {
+    mdx1Compat: {
+      comments: true,
+      admonitions: true,
+      headingIds: true,
+    },
+  },
+
   presets: [
     [
       'classic',
       /** @type {import('@docusaurus/preset-classic').Options} */
-      ({
+      {
         docs: {
-          sidebarPath: require.resolve('./sidebars.js'),
+          sidebarPath: './sidebars.ts',
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+            'https://github.com/buddh4/lyvely/tree/main/packages/applications/docs',
         },
         blog: {
           showReadingTime: true,
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+            'https://github.com/buddh4/lyvely/tree/main/packages/applications/docs',
         },
         theme: {
-          customCss: require.resolve('./src/css/custom.css'),
+          customCss: './src/css/custom.css',
         },
-      }),
+      } satisfies Preset.Options
     ],
   ],
 
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
-    ({
+    {
       navbar: {
         title: 'Lyvely',
         logo: {
@@ -83,7 +94,7 @@ const config = {
           },
           { to: '/blog', label: 'Blog', position: 'left' },
           {
-            href: 'https://github.com/facebook/docusaurus',
+            href: 'https://github.com/buddh4/lyvely',
             label: 'GitHub',
             position: 'right',
           },
@@ -106,15 +117,15 @@ const config = {
             items: [
               {
                 label: 'Stack Overflow',
-                href: 'https://stackoverflow.com/questions/tagged/docusaurus',
+                href: 'https://stackoverflow.com/questions/tagged/lyvely',
               },
-              {
+              /*{
                 label: 'Discord',
                 href: 'https://discordapp.com/invite/docusaurus',
-              },
+              },*/
               {
-                label: 'Twitter',
-                href: 'https://twitter.com/docusaurus',
+                label: 'X',
+                href: 'https://x.com/lyvelyjs',
               },
             ],
           },
@@ -127,19 +138,22 @@ const config = {
               },
               {
                 label: 'GitHub',
-                href: 'https://github.com/facebook/docusaurus',
+                href: 'https://github.com/buddh4/lyvely',
               },
             ],
           },
         ],
         copyright: `Copyright © ${new Date().getFullYear()} Lyvely.`,
       },
-      prism: {
-        additionalLanguages: ['typescript'],
-        theme: lightCodeTheme,
-        darkTheme: darkCodeTheme,
+      themeConfig: {
+        prism: {
+          additionalLanguages: ['typescript'],
+          theme: lightTheme,
+          darkTheme: darkTheme,
+        }
+
       },
-    }),
+    } satisfies Preset.ThemeConfig,
 };
 
 module.exports = config;
