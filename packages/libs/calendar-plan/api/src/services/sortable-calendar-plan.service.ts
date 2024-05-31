@@ -10,6 +10,7 @@ import {
 import { CalendarInterval } from '@lyvely/dates';
 import { ICalendarPlanDao, CalendarPlanEntity } from '../interfaces';
 import { CalendarPlanService } from './calendar-plan.service';
+import { isNotNil } from '@lyvely/common';
 
 /**
  * An abstract class that provides sorting functionality for calendar plans.
@@ -54,7 +55,7 @@ export abstract class SortableCalendarPlanService<
   ): Promise<SortResult[]> {
     const { content, profile } = context;
 
-    interval = interval ?? content.interval;
+    interval ??= content.interval;
 
     const attachToObjectId = attachToId ? assureObjectId(attachToId) : undefined;
 
@@ -70,7 +71,7 @@ export abstract class SortableCalendarPlanService<
       throw new IntegrityException('Can not sort different content types');
     }
 
-    interval = attachTo ? attachTo.interval : interval ? interval : content.interval;
+    interval = attachTo ? attachTo.interval : isNotNil(interval) ? interval : content.interval;
 
     const isSameInterval = interval === content.interval;
 

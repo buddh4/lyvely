@@ -1,6 +1,8 @@
 import { Exclude, Expose } from 'class-transformer';
 import { CalendarInterval } from '@lyvely/dates';
 import { ICalendarPlanSort } from '../interfaces';
+import type { BaseModelData } from '@lyvely/common';
+import { BaseModel } from '@lyvely/common';
 
 @Exclude()
 export class CalendarPlanSort implements ICalendarPlanSort {
@@ -10,10 +12,7 @@ export class CalendarPlanSort implements ICalendarPlanSort {
   @Expose()
   interval: CalendarInterval;
 
-  constructor(obj?: Partial<CalendarPlanSort>) {
-    if (obj) {
-      this.attachToId = obj.attachToId;
-      this.interval = obj.interval || this.interval;
-    }
+  constructor(obj?: BaseModelData<CalendarPlanSort>) {
+    BaseModel.init(this, obj);
   }
 }
