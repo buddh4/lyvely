@@ -20,7 +20,8 @@
     "lint": "eslint \"src/**/*.{ts,vue}\" --fix",
     "format": "prettier src --write",
     "prettier": "prettier src --check",
-    "depcheck": "depcheck --quiet"
+    "depcheck": "depcheck --quiet",
+    "deps": "pnpm depcruise --include-only \\\"^src\\\" --config .dependency-cruiser.cjs src"
   },
   "author": "Julian Harrer",
   "dependencies": {

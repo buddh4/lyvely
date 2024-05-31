@@ -1,6 +1,5 @@
 ignores: [
   "tslib",
-  "rimraf",
   "@types/node",
   "@types/jest",
   "@rollup/plugin-*",

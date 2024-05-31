@@ -13,7 +13,7 @@
     "ncu": "ncu",
     "dev": "nest start",
     "dev:debug": "nest start --debug --watch",
-    "deps": "pnpm depcruise --config .dependency-cruiser.js src",
+    "deps": "pnpm depcruise --include-only \"^src\" --config .dependency-cruiser.js src",
     "build": "rm -rf ./dist/* && tsc -p tsconfig.build.json",
     "prepublish:npm": "pnpm build",
     "publish:npm": "npm publish --access public",

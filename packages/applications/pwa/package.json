@@ -10,7 +10,8 @@
     "format": "prettier src --write",
     "prettier": "prettier src --check",
     "depcheck": "depcheck --quiet",
-"ncu": "ncu",
+    "deps": "pnpm depcruise --include-only \"^src\" --config .dependency-cruiser.js src",
+    "ncu": "ncu",
     "build:staging": "vite build --mode staging && vue-tsc --emitDeclarationOnly",
     "build:dev": "vite build --mode development && vue-tsc --emitDeclarationOnly"
   },
