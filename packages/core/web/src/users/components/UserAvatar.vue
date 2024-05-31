@@ -21,7 +21,7 @@ const user = computed(() => useAuthStore().user);
     :name="user.username"
     :guid="user.guid"
     :border="border" />
-  <ly-icon name="guest" />
+  <ly-icon v-else name="guest" />
 </template>
 
 <style scoped></style>
