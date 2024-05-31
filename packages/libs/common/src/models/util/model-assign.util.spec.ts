@@ -245,7 +245,7 @@ describe('model assign util', () => {
         }
 
         const model = initBaseModelData<any>(new Main(), {
-          sub: [<any>{ _id: getObjectId('test') }],
+          sub: [{ _id: getObjectId('test') } as any],
         });
         expect(model.sub[0].id).toEqual(getObjectId('test').toString());
       });
@@ -304,7 +304,7 @@ describe('model assign util', () => {
 
     it('assign array value', () => {
       const obj = { arr: ['v1', 'v2'] };
-      const result = <any>initBaseModelData({}, { arr: ['v1', 'v2'] });
+      const result = initBaseModelData({}, { arr: ['v1', 'v2'] }) as any;
       expect(result.arr).toBeDefined();
       expect(Array.isArray(result.arr)).toEqual(true);
       expect(result.arr.length).toEqual(2);
@@ -315,7 +315,7 @@ describe('model assign util', () => {
 
     it('assign array value', () => {
       const obj = { arr: [new TestClass('testValue')] };
-      const result = <any>initBaseModelData({}, obj);
+      const result = initBaseModelData({}, obj) as any;
       expect(result?.arr[0].field).toEqual('testValue');
       expect(result.arr[0] instanceof TestClass).toEqual(true);
       expect(result.arr[0]).toEqual(obj.arr[0]);

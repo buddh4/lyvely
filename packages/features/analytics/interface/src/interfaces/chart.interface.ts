@@ -1,5 +1,4 @@
 import { Type } from '@lyvely/common';
-import { ChartSeriesConfigModel } from '../models';
 import type { IContent } from '@lyvely/interface';
 
 export enum TimeSeriesChartType {
@@ -56,7 +55,7 @@ export interface IChartCategoryDefinition {
  * @interface IChartSeriesDefinition
  */
 export interface IChartSeriesDefinition<
-  TConfigType extends ChartSeriesConfigModel = ChartSeriesConfigModel,
+  TConfigType extends IChartSeriesConfig = IChartSeriesConfig,
 > {
   /** A unique id for this chart series type. **/
   readonly id: string;

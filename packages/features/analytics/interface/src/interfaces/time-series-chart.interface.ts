@@ -1,15 +1,19 @@
 import {
+  ChartSeriesData,
   type ChartSeriesKeyValueData,
   type IChartConfig,
   IChartSeriesConfig,
 } from './chart.interface';
-import { ChartSeriesDataResponse } from '../models';
 
 export interface TimeSeriesCategoryKey<TID = string> {
   year: number;
   month?: number;
   day?: number;
   uid?: TID;
+}
+
+export interface IChartSeriesDataResponse<TData extends ChartSeriesData = ChartSeriesData> {
+  result: Record<string, Array<TData>>;
 }
 
 export type TimeSeriesAggregationInterval = '7D' | '1M' | '6M' | '1Y' | '3Y';
@@ -33,4 +37,4 @@ export type TimeSeriesChartData<TID = string> = ChartSeriesKeyValueData<
   number
 >;
 
-export type TimeSeriesChartDataResponse = ChartSeriesDataResponse<TimeSeriesChartData>;
+export type TimeSeriesChartDataResponse = IChartSeriesDataResponse<TimeSeriesChartData>;

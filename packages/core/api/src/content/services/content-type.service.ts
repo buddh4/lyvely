@@ -17,7 +17,7 @@ import {
 import { Inject, Logger } from '@nestjs/common';
 import { ContentEventPublisher } from '../components';
 import { IContentUpdateOptions } from '../interfaces';
-import { ContentPolicyService } from '@/content';
+import { ContentPolicyService } from './content-policy.service';
 
 /**
  * Base service class for content types, responsible for common fetch and update scenarios as well as providing a

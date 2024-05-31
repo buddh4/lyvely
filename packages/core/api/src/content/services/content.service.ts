@@ -11,7 +11,7 @@ import {
   TObjectId,
 } from '@/core';
 import { User } from '@/users';
-import { ContentPolicyService } from '@/content';
+import { ContentPolicyService } from './content-policy.service';
 
 @Injectable()
 export class ContentService {

@@ -5,7 +5,7 @@ import {
   ContentManagePolicy,
   ContentReadPolicy,
   ContentWritePolicy,
-} from '@/content';
+} from '../policies';
 import { InjectPolicy } from '@/policies';
 import { ProfileContext } from '@/profiles';
 

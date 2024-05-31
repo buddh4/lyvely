@@ -1,4 +1,4 @@
-import { CalendarUnitType } from './calendar.interface';
+import { CalendarUnitType } from './calendar-unit.type';
 
 /**
  * This interface needs to be implemented by an adapter usually by wrapping and delegating to an internal date-time instance.
