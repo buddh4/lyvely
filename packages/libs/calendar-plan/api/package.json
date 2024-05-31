@@ -11,7 +11,7 @@
     "depcheck": "depcheck --quiet",
     "deps": "pnpm depcruise --include-only \"^src\" --config .dependency-cruiser.js src",
     "ncu": "ncu",
-    "build": "rm -rf ./dist/* && tsc -p tsconfig.build.json",
+    "build": "rimraf dist && tsc -p tsconfig.build.json",
     "prepublish:npm": "pnpm run build",
     "publish:npm": "npm publish --access public",
     "prepublish:next": "pnpm run build",
@@ -42,7 +42,8 @@
     "eslint-import-resolver-typescript": "^3.5",
     "eslint-plugin-import": "^2.26",
     "eslint-plugin-prettier": "^5.1",
-    "depcheck": "^1.4"
+    "depcheck": "^1.4",
+    "rimraf": "^5.0"
   },
   "jest": {
     "rootDir": ".",

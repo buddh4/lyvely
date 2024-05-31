@@ -5,7 +5,7 @@
   "module": "dist/esm/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc -p tsconfig.build.json --outDir dist --declarationDir dist --declaration true && tscpaths -p tsconfig.build.json -s ./ -o dist && rollup -c --silent && rm -f tsconfig.tsbuildinfo",
+    "build": "tsc -p tsconfig.build.json --outDir dist --declarationDir dist --declaration true && tscpaths -p tsconfig.build.json -s ./ -o dist && rollup -c --silent && rimraf tsconfig.tsbuildinfo",
     "lint": "eslint --fix",
     "format": "prettier . --write",
     "prettier": "prettier . --check",
@@ -51,7 +51,8 @@
     "@types/node": "^20.12",
     "vite-plugin-externalize-deps": "^0.8",
     "postcss": "^8.4",
-    "depcheck": "^1.4"
+    "depcheck": "^1.4",
+    "rimraf": "^5.0"
   },
   "peerDependencies": {
     "vue-tsc": "^2.0",

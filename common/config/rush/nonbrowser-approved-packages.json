@@ -368,7 +368,7 @@
     },
     {
       "name": "rimraf",
-      "allowedCategories": [ "application", "core", "lib" ]
+      "allowedCategories": [ "application", "core", "feature", "lib", "tool" ]
     },
     {
       "name": "rollup",

@@ -56,6 +56,7 @@
     "libs",
     "core",
     "applications",
+    "prod",
     "features",
     "web",
     "interfaces",
@@ -316,7 +317,7 @@
       "reviewCategory": "application",
       "versionPolicyName": "lyvely-app",
       "shouldPublish": false,
-      "tags": ["applications"]
+      "tags": ["applications", "prod"]
     },
     {
       "packageName": "@lyvely/pwa",
@@ -324,7 +325,7 @@
       "reviewCategory": "application",
       "versionPolicyName": "lyvely-app",
       "shouldPublish": false,
-      "tags": ["applications"]
+      "tags": ["applications", "prod"]
     },
     {
       "packageName": "@lyvely/docs",

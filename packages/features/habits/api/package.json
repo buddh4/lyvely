@@ -15,7 +15,7 @@
     "dev:debug": "nest start --debug --watch",
     "dev:e2e": "cross-env NODE_ENV=e2e nest start",
     "dev:e2e:debug": "cross-env NODE_ENV=e2e nest start --debug --watch",
-    "build": "rm -rf ./dist/* && tsc -p tsconfig.build.json",
+    "build": "rimraf dist && tsc -p tsconfig.build.json",
     "prepublish:npm": "pnpm run build",
     "publish:npm": "npm publish --access public",
     "prepublish:next": "pnpm run build",
@@ -54,7 +54,8 @@
     "eslint-plugin-import": "^2.26",
     "eslint-plugin-prettier": "^5.1",
     "depcheck": "^1.4",
-    "mongoose": "~8.4.0"
+    "mongoose": "~8.4.0",
+    "rimraf": "^5.0"
   },
   "jest": {
     "rootDir": ".",
