@@ -4,6 +4,7 @@ import { computed } from 'vue';
 import { useProfileStore } from '@/profiles/stores/profile.store';
 import ProfileRelationsChooser from './ProfileRelationsChooser.vue';
 import { getScaledProgress } from '@lyvely/interface';
+import { LyDropdown } from '@lyvely/ui';
 import ProfileAvatar from '@/profiles/components/ProfileAvatar.vue';
 import { t } from '@/i18n';
 

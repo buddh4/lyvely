@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { computed, ref, watchEffect } from 'vue';
 import { useMilestonesStore } from '@/stores';
-import { MilestoneModel } from '@lyvely/milestones-interface';
-import { ContentModel, t } from '@lyvely/web';
+import { MilestoneModel, MilestonesFeature } from '@lyvely/milestones-interface';
+import { ContentModel, t, useProfileFeatures } from '@lyvely/web';
 import MilestoneChooser from './MilestoneChooser.vue';
 import { LyDropdown, LyLoader, LyIcon } from '@lyvely/ui';
 
@@ -18,10 +18,13 @@ const editable = true;
 const isLoaded = ref(!mid.value);
 const milestone = ref<MilestoneModel | null>(null);
 const isMilestone = computed(() => props.content.type === MilestoneModel.contentType);
+const { isEnabled } = useProfileFeatures(MilestonesFeature.id);
 
 const milestoneTitle = computed(() => {
   return milestone.value ? milestone.value.getTitle() : t('common.none');
 });
+
+const showDropDown = computed(() => !isMilestone.value && isEnabled.value);
 
 watchEffect(() => {
   if (!mid.value) return;
@@ -42,7 +45,7 @@ watchEffect(() => {
 </script>
 
 <template>
-  <ly-dropdown v-if="!isMilestone">
+  <ly-dropdown v-if="showDropDown">
     <template #trigger="{ toggle }">
       <div
         :class="[

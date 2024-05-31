@@ -61,6 +61,13 @@ const createMilestone = () =>
         </ly-list-item>
       </ly-divided-list>
     </li>
+    <li v-else>
+      <ly-divided-list>
+        <ly-list-item :disabled="true">
+          <ly-dimmed class="text-sm">No milestones found for this project.</ly-dimmed>
+        </ly-list-item>
+      </ly-divided-list>
+    </li>
   </ul>
 </template>
 

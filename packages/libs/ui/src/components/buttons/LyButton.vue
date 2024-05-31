@@ -123,7 +123,7 @@ function getAriaPressed($attrs: any) {
     :type="buttonType"
     :disabled="disabled || loading"
     :data-loading="loading"
-    @click.prevent="onClick">
+    @click.prevent="$emit('click')">
     <slot :active="active">{{ t(text) }}</slot>
   </button>
   <router-link v-if="route" v-slot="{ navigate, isActive }" :to="route" custom>

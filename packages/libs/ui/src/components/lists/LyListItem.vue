@@ -1,15 +1,27 @@
 <script lang="ts" setup>
+import { useTwMergeComposable } from '@/composables';
+
+defineOptions({
+  inheritAttrs: false,
+});
+
 export interface IProps {
-  active: boolean;
+  active?: boolean;
+  disabled?: boolean;
 }
 
-withDefaults(defineProps<IProps>(), {
+const props = withDefaults(defineProps<IProps>(), {
   active: false,
+  disabled: false,
+});
+
+const { attrs } = useTwMergeComposable({
+  'cursor-pointer hover:bg-highlight dark:hover:bg-main': !props.disabled,
 });
 </script>
 
 <template>
-  <li class="cursor-pointer hover:bg-highlight dark:hover:bg-main">
+  <li v-bind="attrs">
     <div :class="['border-l-4 p-4', active ? 'border-pop' : 'border-transparent']">
       <slot></slot>
     </div>
