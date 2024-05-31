@@ -228,7 +228,7 @@
     },
     {
       "name": "del",
-      "allowedCategories": [ "core" ]
+      "allowedCategories": [ "core", "lib" ]
     },
     {
       "name": "depcheck",
@@ -280,7 +280,7 @@
     },
     {
       "name": "gulp",
-      "allowedCategories": [ "core" ]
+      "allowedCategories": [ "core", "lib" ]
     },
     {
       "name": "helmet",

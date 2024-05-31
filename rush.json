@@ -325,6 +325,14 @@
       "versionPolicyName": "lyvely-app",
       "shouldPublish": false,
       "tags": ["applications"]
+    },
+    {
+      "packageName": "@lyvely/docs",
+      "projectFolder": "packages/applications/docs",
+      "reviewCategory": "application",
+      "versionPolicyName": "lyvely-app",
+      "shouldPublish": false,
+      "tags": ["applications"]
     }
   ]
 }

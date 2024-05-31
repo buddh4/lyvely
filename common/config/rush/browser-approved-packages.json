@@ -15,6 +15,18 @@
       "allowedCategories": [ "lib" ]
     },
     {
+      "name": "@docusaurus/core",
+      "allowedCategories": [ "application" ]
+    },
+    {
+      "name": "@docusaurus/module-type-aliases",
+      "allowedCategories": [ "application" ]
+    },
+    {
+      "name": "@docusaurus/preset-classic",
+      "allowedCategories": [ "application" ]
+    },
+    {
       "name": "@intlify/core-base",
       "allowedCategories": [ "core" ]
     },
@@ -115,6 +127,14 @@
       "allowedCategories": [ "application", "feature", "lib" ]
     },
     {
+      "name": "@mdx-js/react",
+      "allowedCategories": [ "application" ]
+    },
+    {
+      "name": "@tsconfig/docusaurus",
+      "allowedCategories": [ "application" ]
+    },
+    {
       "name": "@vue/runtime-dom",
       "allowedCategories": [ "application", "core", "feature", "lib" ]
     },
@@ -143,6 +163,10 @@
       "allowedCategories": [ "core", "feature", "lib" ]
     },
     {
+      "name": "clsx",
+      "allowedCategories": [ "application" ]
+    },
+    {
       "name": "cropperjs",
       "allowedCategories": [ "core" ]
     },
@@ -155,7 +179,15 @@
       "allowedCategories": [ "core", "feature", "lib" ]
     },
     {
+      "name": "gulp-header",
+      "allowedCategories": [ "lib" ]
+    },
+    {
       "name": "he",
+      "allowedCategories": [ "lib" ]
+    },
+    {
+      "name": "iconv-lite",
       "allowedCategories": [ "lib" ]
     },
     {
@@ -187,16 +219,20 @@
       "allowedCategories": [ "core", "feature", "lib" ]
     },
     {
+      "name": "prism-react-renderer",
+      "allowedCategories": [ "application" ]
+    },
+    {
       "name": "randomcolor",
       "allowedCategories": [ "core", "lib" ]
     },
     {
       "name": "react",
-      "allowedCategories": [ "lib" ]
+      "allowedCategories": [ "application", "lib" ]
     },
     {
       "name": "react-dom",
-      "allowedCategories": [ "lib" ]
+      "allowedCategories": [ "application", "lib" ]
     },
     {
       "name": "reflect-metadata",
@@ -244,6 +280,10 @@
     },
     {
       "name": "tailwind-merge",
+      "allowedCategories": [ "lib" ]
+    },
+    {
+      "name": "through2",
       "allowedCategories": [ "lib" ]
     },
     {
