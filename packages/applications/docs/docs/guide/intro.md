@@ -16,38 +16,41 @@ suits you best. Let's start with a short overview of the main features of the pl
 ## Profiles
 
 Lyvely allows you to manage multiple profiles for any aspect of your live, be it for private or professional application.
-There are three types of profiles:
+A profile serves as a hub for users and content, offering a self-contained space with its own permission, feature
+and visibility settings. There are three types of profiles:
 
 
 - `User`: These profiles consist of a single member. A private user profile is automatically created once you
 join the platform. Only the owner of the profile can create and manage content and other features within the profile. 
-You can also create user profiles visible to others.
-- `Group`: A group profile can be used to communicate and collaboratively use the available features with your
-friends, family or colleagues. Create group profiles for projects, departments, teams or any other form of user space.
+Users can create additional private or public user profiles for different aspects of their personal and professional lives.
+- `Group`: A group profile offers collaborative features for your friends, family or colleagues. Create group profiles 
+for projects, departments, teams or any other form of user space.
 - `Organization`: Organization profiles can contain sub profiles of any kind and have a special set of content visibility
-rules and permissions.
+rules and permissions offering an additional level of organizing users and content. Platform administrators can manage 
+who is allowed to create organization profiles.
 
 ## Users & Permissions
 
-As mentioned in the last section, some profiles support multiple members which can be managed by the profile owner
-or administrators. Each member is assigned with a specific **role** within the profile as well as optional **groups**. Both,
-the role and groups are used to manage the **permissions** within a profile. Some permissions can also be granted to non-member
-users. There are the following user roles available:
+As mentioned in the last section, some types of profile support multiple members which can be managed by the owner
+or administrators of a profile. Each member is assigned with a specific **role** within the profile as well as optional 
+**groups**. Both, the role and groups are used to manage **permissions** within a profile. Some permissions can also be 
+granted to non-member users. There are the following user roles available:
 
-- `Owners`: A owner of the profile, has special permissions as archiving the profile.
+- `Owners`: An owner of the profile, has special permissions as archiving the profile.
 - `Admins`: Administrators are usually granted with most permissions within a profile.
-- `Moderators`: Moderators roles can be assigned with extended permissions for managing users and content.
+- `Moderators`: A moderator role can be assigned with extended permissions for managing users and content.
 - `Members`: Normal members of the profile usually can create content and access most sections of a profile.
 - `Guests`: A profile guest is a special kind of member, which may is granted with fewer permissions as normal members.
-- `Organization`: A members of the same organization as a profile (but not the profile itself) may have more access as other users of the platform.
+- `Organization`: Members of the same organization as a profile (but not the profile itself) may be granted more access 
+than other users of the platform.
 - `Follower`: Non-member users following a profile.
 - `User`: Any other authenticated users without any relation to the profile.
 - `Visitor`: If your Lyvely platform allows access for unauthenticated users access, profiles can manage access permissions for visitors.
 
-Permissions granted for a role are automatically granted for higher roles. This means if we grant a certain permission to
-the `members` role this permission will be granted for `members`, `moderators`, `admins`, `owners`.
+Permissions granted to a role are automatically granted to higher roles. This means that if we grant a certain permission
+to the `members` role this permission will be granted for `members`, `moderators`, `admins`, `owners`.
 
-More fine granular permission management can be configured by facilitating custom user groups within a profile.
+More fine-grained permission management can be configured by creating custom user groups within a profile.
 
 :::note
 The `guest` and `follower` feature is not yet implemented.
@@ -58,15 +61,29 @@ The `guest` and `follower` feature is not yet implemented.
 The visibility setting of a profile manages who can find and access a profile. It is possible to set the visibility level
 of a profile to the following roles:
 
-- `Member`: Members (including guest members) will always be able to see and access a profile.
+- `Member`: Members (including guest members) will always be able to see and access a profile, unless they are disabled.
 - `Organization`: You may only want other organization members to see your profile.
 - `Followers`: If the visibility level is set to follower, your profile can be searched, but is only accessible by followers.
 - `User`: The profile is visible for any authenticated user.
-- `Visitor`: The profile is also visible for non-authenticated users (if this is allowed by the platform).
+- `Visitor`: The profile is also visible for non-authenticated users, in case this is allowed by the platform configuration.
 
 :::note
 The `follower` feature is not yet implemented.
 :::
+
+## Content
+
+Almost anything in Lyvely consist of content and the main platform provides different types of content from simple
+messages to collaborative content as tasks, habits and journals. Each content can be further discussed and offers a
+stream and detail view. Most content share common features as:
+
+- **Archive**: Archive content, so they do not appear in the stream and other views by default.
+- **Visibility**: Manage the visibility of a content entry, so its only visible for certain roles within your profile.
+- **Discussions**: Each content can be discussed in a sub discussion, unless locked.
+- **Milestone**: If the milestone feature is active (default), you can add any type of content to a milestone which
+  represent goals within your profile.
+- **Tags**: By tagging content you can easily search and filter certain groups of content. Some modules may implement
+  additional tag related features.
 
 ## Features
 
@@ -74,14 +91,14 @@ Within your profiles, you can enable, disable and configure a set of features to
 of features depends on the installed modules of the platform and its policies. Some platforms may only allow certain
 features for certain profiles. A module may offer multiple features for fine-granular customization of a profile.
 
-Here you have a list of the main features available on profile level:
-
 ### Stream
 
-The stream can be used to communicate with your members or for brainstorming and information management in single user
-profiles. The stream will contain any kind content in a chat-like view. Each content entry supports a multi-level sub 
-discussion stream. This means you can not only create comments to content entries, but add any kind of content to
-the discussion and therefore use this to further structure your discussions.
+The stream can be used to communicate with members or for brainstorming and information management. The stream will 
+contain various types of content in a chat-like view. Each content entry supports multi-level 
+sub-discussions consisting of streams themselves. This means you can not only create single-level, text-only comments
+as with many other platforms, but rather add any kind of content to a discussion and sub-discussions.
+
+Users can create any type of content directly in the stream view.
 
 ### Habits
 

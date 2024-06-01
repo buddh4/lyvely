@@ -1,6 +1,13 @@
 import React from 'react';
 import clsx from 'clsx';
 import styles from './styles.module.css';
+import svgForYou from '@site/static/img/undraw_mindfulness.svg'
+import svgForFamily from '@site/static/img/undraw_family.svg'
+import svgForFriends from '@site/static/img/undraw_social_friends.svg'
+import svgForBusiness from '@site/static/img/undraw_business_plan.svg'
+import svgForCustomers from '@site/static/img/undraw_customer_survey.svg'
+import svgForEducation from '@site/static/img/undraw_education.svg'
+import svgForCommunity from '@site/static/img/undraw_community.svg'
 
 type FeatureItem = {
   title: string;
@@ -11,35 +18,38 @@ type FeatureItem = {
 const FeatureList: FeatureItem[] = [
   {
     title: 'For you',
-    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
+    Svg: svgForYou,
     description: (
       <>
         Use Lyvely privately to achieve private goals and improve on various aspects of your live as well as establishing
-        a healthy work live balance.
+        a healthy work live balance. Users can manage multiple profiles with various visibility options.
       </>
     ),
   },
   {
-    title: 'For your family',
-    Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
+    title: 'For friends & family',
+    Svg: svgForFriends,
     description: (
       <>
-        Lyvely provides intuitive tools to plan and communicate family issues in a private and secure way.
+        Lyvely provides intuitive tools to plan and communicate between family and friends in a private and secure way.
+        By creating a group or organization profile for your family and friends you can intuitively plan and discuss
+        upcoming events, todos and other issues.
       </>
     ),
   },
   {
-    title: 'For your friends',
-    Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
+    title: 'For your community',
+    Svg: svgForCommunity,
     description: (
       <>
-        With Lyvely you have a private space to share information with your friends and chat.
+        Build a community and publicly share content as discussions and other types of content. Lyvely optionally supports
+        access for unauthenticated users and public profiles and sophisticated permission and content visibility policies.
       </>
     ),
   },
   {
     title: 'For your business',
-    Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
+    Svg: svgForBusiness,
     description: (
       <>
         Lyvely can help your organization grow by providing group and organization level profiles and tools used to plan
@@ -50,21 +60,23 @@ const FeatureList: FeatureItem[] = [
   },
   {
     title: 'For your customers',
-    Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
+    Svg: svgForCustomers,
     description: (
       <>
         Invite your customers to a Lyvely profile and collaboratively plan task and activities, communicate and share
-        further information. Since Lyvely profiles are private by default it supports multi tenancy out of the box.
+        further information. Since profiles and users are private by default, Lyvely can serve as a safe space
+        for you and your customers to discuss issues and provide customer support.
       </>
     ),
   },
   {
     title: 'For your education',
-    Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
+    Svg: svgForEducation,
     description: (
       <>
         Use Lyvely for school and keep track of your progression, take notes and create group profiles for school projects
-        to communicate with your friends.
+        to communicate with your friends. Many of the features such as tasks, habits and journals support shared or user-specific
+        modes, which can be useful if you want to delegate activities to multiple users..
       </>
     ),
   },

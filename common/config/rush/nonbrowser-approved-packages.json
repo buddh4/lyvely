@@ -188,7 +188,7 @@
     },
     {
       "name": "autoprefixer",
-      "allowedCategories": [ "core" ]
+      "allowedCategories": [ "application", "core" ]
     },
     {
       "name": "bcrypt",
@@ -236,7 +236,7 @@
     },
     {
       "name": "dependency-cruiser",
-      "allowedCategories": [ "lib" ]
+      "allowedCategories": [ "application", "core", "feature", "lib", "tool" ]
     },
     {
       "name": "dotenv",
@@ -356,7 +356,7 @@
     },
     {
       "name": "postcss-import",
-      "allowedCategories": [ "core", "lib", "tool" ]
+      "allowedCategories": [ "application", "core", "lib", "tool" ]
     },
     {
       "name": "prettier-plugin-tailwindcss",
@@ -400,7 +400,7 @@
     },
     {
       "name": "tailwindcss",
-      "allowedCategories": [ "core", "feature", "lib", "tool" ]
+      "allowedCategories": [ "application", "core", "feature", "lib", "tool" ]
     },
     {
       "name": "tsc-alias",

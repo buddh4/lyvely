@@ -49,6 +49,18 @@ importers:
       '@types/react':
         specifier: ^18.2
         version: 18.3.3
+      autoprefixer:
+        specifier: ^10.4
+        version: 10.4.19(postcss@8.4.38)
+      postcss:
+        specifier: ^8.4
+        version: 8.4.38
+      postcss-import:
+        specifier: ^16.1
+        version: 16.1.0(postcss@8.4.38)
+      tailwindcss:
+        specifier: ^3.4
+        version: 3.4.3
       typescript:
         specifier: ^5.4
         version: 5.4.5
@@ -125,6 +137,9 @@ importers:
       depcheck:
         specifier: ^1.4
         version: 1.4.7
+      dependency-cruiser:
+        specifier: ^14.1
+        version: 14.1.2
       eslint:
         specifier: ^8.24
         version: 8.57.0
@@ -179,9 +194,6 @@ importers:
       '@lyvely/habits':
         specifier: workspace:*
         version: link:../../features/habits/api
-      '@lyvely/interface':
-        specifier: workspace:*
-        version: link:../../core/interface
       '@lyvely/journals':
         specifier: workspace:*
         version: link:../../features/journals/api
@@ -210,6 +222,9 @@ importers:
       depcheck:
         specifier: ^1.4
         version: 1.4.7
+      dependency-cruiser:
+        specifier: ^14.1
+        version: 14.1.2
       eslint:
         specifier: ^8.24
         version: 8.57.0
@@ -418,6 +433,9 @@ importers:
       depcheck:
         specifier: ^1.4
         version: 1.4.7
+      dependency-cruiser:
+        specifier: ^14.1
+        version: 14.1.2
       eslint:
         specifier: ^8.24
         version: 8.57.0
@@ -521,6 +539,9 @@ importers:
       depcheck:
         specifier: ^1.4
         version: 1.4.7
+      dependency-cruiser:
+        specifier: ^14.1
+        version: 14.1.2
       eslint:
         specifier: ^8.24
         version: 8.57.0
@@ -678,6 +699,9 @@ importers:
       depcheck:
         specifier: ^1.4
         version: 1.4.7
+      dependency-cruiser:
+        specifier: ^14.1
+        version: 14.1.2
       eslint:
         specifier: ^8.24
         version: 8.57.0
@@ -781,6 +805,9 @@ importers:
       depcheck:
         specifier: ^1.4
         version: 1.4.7
+      dependency-cruiser:
+        specifier: ^14.1
+        version: 14.1.2
       eslint:
         specifier: ^8.24
         version: 8.57.0
@@ -893,6 +920,9 @@ importers:
       depcheck:
         specifier: ^1.4
         version: 1.4.7
+      dependency-cruiser:
+        specifier: ^14.1
+        version: 14.1.2
       eslint:
         specifier: ^8.24
         version: 8.57.0
@@ -975,6 +1005,9 @@ importers:
       depcheck:
         specifier: ^1.4
         version: 1.4.7
+      dependency-cruiser:
+        specifier: ^14.1
+        version: 14.1.2
       eslint:
         specifier: ^8.24
         version: 8.57.0
@@ -1063,6 +1096,9 @@ importers:
       depcheck:
         specifier: ^1.4
         version: 1.4.7
+      dependency-cruiser:
+        specifier: ^14.1
+        version: 14.1.2
       eslint:
         specifier: ^8.24
         version: 8.57.0
@@ -1178,6 +1214,9 @@ importers:
       depcheck:
         specifier: ^1.4
         version: 1.4.7
+      dependency-cruiser:
+        specifier: ^14.1
+        version: 14.1.2
       eslint:
         specifier: ^8.24
         version: 8.57.0
@@ -1272,6 +1311,9 @@ importers:
       depcheck:
         specifier: ^1.4
         version: 1.4.7
+      dependency-cruiser:
+        specifier: ^14.1
+        version: 14.1.2
       eslint:
         specifier: ^8.24
         version: 8.57.0
@@ -1366,6 +1408,9 @@ importers:
       depcheck:
         specifier: ^1.4
         version: 1.4.7
+      dependency-cruiser:
+        specifier: ^14.1
+        version: 14.1.2
       eslint:
         specifier: ^8.24
         version: 8.57.0
@@ -1478,6 +1523,9 @@ importers:
       depcheck:
         specifier: ^1.4
         version: 1.4.7
+      dependency-cruiser:
+        specifier: ^14.1
+        version: 14.1.2
       eslint:
         specifier: ^8.24
         version: 8.57.0
@@ -1566,6 +1614,9 @@ importers:
       depcheck:
         specifier: ^1.4
         version: 1.4.7
+      dependency-cruiser:
+        specifier: ^14.1
+        version: 14.1.2
       eslint:
         specifier: ^8.24
         version: 8.57.0
@@ -1651,6 +1702,9 @@ importers:
       depcheck:
         specifier: ^1.4
         version: 1.4.7
+      dependency-cruiser:
+        specifier: ^14.1
+        version: 14.1.2
       eslint:
         specifier: ^8.24
         version: 8.57.0
@@ -1748,6 +1802,9 @@ importers:
       depcheck:
         specifier: ^1.4
         version: 1.4.7
+      dependency-cruiser:
+        specifier: ^14.1
+        version: 14.1.2
       eslint:
         specifier: ^8.24
         version: 8.57.0
@@ -1821,6 +1878,9 @@ importers:
       depcheck:
         specifier: ^1.4
         version: 1.4.7
+      dependency-cruiser:
+        specifier: ^14.1
+        version: 14.1.2
       eslint:
         specifier: ^8.24
         version: 8.57.0
@@ -1888,6 +1948,9 @@ importers:
       depcheck:
         specifier: ^1.4
         version: 1.4.7
+      dependency-cruiser:
+        specifier: ^14.1
+        version: 14.1.2
       eslint:
         specifier: ^8.24
         version: 8.57.0
@@ -1994,6 +2057,9 @@ importers:
       depcheck:
         specifier: ^1.4
         version: 1.4.7
+      dependency-cruiser:
+        specifier: ^14.1
+        version: 14.1.2
       eslint:
         specifier: ^8.24
         version: 8.57.0
@@ -2079,6 +2145,9 @@ importers:
       depcheck:
         specifier: ^1.4
         version: 1.4.7
+      dependency-cruiser:
+        specifier: ^14.1
+        version: 14.1.2
       eslint:
         specifier: ^8.24
         version: 8.57.0
@@ -2161,6 +2230,9 @@ importers:
       depcheck:
         specifier: ^1.4
         version: 1.4.7
+      dependency-cruiser:
+        specifier: ^14.1
+        version: 14.1.2
       eslint:
         specifier: ^8.24
         version: 8.57.0
@@ -2273,6 +2345,9 @@ importers:
       depcheck:
         specifier: ^1.4
         version: 1.4.7
+      dependency-cruiser:
+        specifier: ^14.1
+        version: 14.1.2
       eslint:
         specifier: ^8.24
         version: 8.57.0
@@ -2361,6 +2436,9 @@ importers:
       depcheck:
         specifier: ^1.4
         version: 1.4.7
+      dependency-cruiser:
+        specifier: ^14.1
+        version: 14.1.2
       eslint:
         specifier: ^8.24
         version: 8.57.0
@@ -2443,6 +2521,9 @@ importers:
       depcheck:
         specifier: ^1.4
         version: 1.4.7
+      dependency-cruiser:
+        specifier: ^14.1
+        version: 14.1.2
       eslint:
         specifier: ^8.24
         version: 8.57.0
@@ -2540,6 +2621,9 @@ importers:
       depcheck:
         specifier: ^1.4
         version: 1.4.7
+      dependency-cruiser:
+        specifier: ^14.1
+        version: 14.1.2
       eslint:
         specifier: ^8.24
         version: 8.57.0
@@ -2616,6 +2700,9 @@ importers:
       depcheck:
         specifier: ^1.4
         version: 1.4.7
+      dependency-cruiser:
+        specifier: ^14.1
+        version: 14.1.2
       eslint:
         specifier: ^8.24
         version: 8.57.0
@@ -2695,6 +2782,9 @@ importers:
       depcheck:
         specifier: ^1.4
         version: 1.4.7
+      dependency-cruiser:
+        specifier: ^14.1
+        version: 14.1.2
       eslint:
         specifier: ^8.24
         version: 8.57.0
@@ -2804,6 +2894,9 @@ importers:
       depcheck:
         specifier: ^1.4
         version: 1.4.7
+      dependency-cruiser:
+        specifier: ^14.1
+        version: 14.1.2
       eslint:
         specifier: ^8.24
         version: 8.57.0
@@ -2886,6 +2979,9 @@ importers:
       depcheck:
         specifier: ^1.4
         version: 1.4.7
+      dependency-cruiser:
+        specifier: ^14.1
+        version: 14.1.2
       eslint:
         specifier: ^8.24
         version: 8.57.0
@@ -3016,6 +3112,9 @@ importers:
       depcheck:
         specifier: ^1.4
         version: 1.4.7
+      dependency-cruiser:
+        specifier: ^14.1
+        version: 14.1.2
       eslint:
         specifier: ^8.24
         version: 8.57.0
@@ -3080,6 +3179,9 @@ importers:
       depcheck:
         specifier: ^1.4
         version: 1.4.7
+      dependency-cruiser:
+        specifier: ^14.1
+        version: 14.1.2
       eslint:
         specifier: ^8.24
         version: 8.57.0
@@ -3168,6 +3270,9 @@ importers:
       depcheck:
         specifier: ^1.4
         version: 1.4.7
+      dependency-cruiser:
+        specifier: ^14.1
+        version: 14.1.2
       eslint:
         specifier: ^8.24
         version: 8.57.0
@@ -3259,6 +3364,9 @@ importers:
       depcheck:
         specifier: ^1.4
         version: 1.4.7
+      dependency-cruiser:
+        specifier: ^14.1
+        version: 14.1.2
       eslint:
         specifier: ^8.24
         version: 8.57.0
@@ -3344,6 +3452,9 @@ importers:
       depcheck:
         specifier: ^1.4
         version: 1.4.7
+      dependency-cruiser:
+        specifier: ^14.1
+        version: 14.1.2
       eslint:
         specifier: ^8.24
         version: 8.57.0
@@ -3414,6 +3525,9 @@ importers:
       depcheck:
         specifier: ^1.4
         version: 1.4.7
+      dependency-cruiser:
+        specifier: ^14.1
+        version: 14.1.2
       eslint:
         specifier: ^8.24
         version: 8.57.0
@@ -20549,7 +20663,7 @@ snapshots:
 
   acorn-loose@8.3.0:
     dependencies:
-      acorn: 8.10.0
+      acorn: 8.11.3
 
   acorn-walk@8.2.0: {}
 
@@ -28899,7 +29013,7 @@ snapshots:
   tsconfig-paths-webpack-plugin@4.1.0:
     dependencies:
       chalk: 4.1.2
-      enhanced-resolve: 5.15.0
+      enhanced-resolve: 5.16.1
       tsconfig-paths: 4.2.0
 
   tsconfig-paths@3.15.0:

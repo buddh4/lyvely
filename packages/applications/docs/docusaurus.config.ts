@@ -3,6 +3,7 @@
 import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 import { themes } from 'prism-react-renderer';
+import {tailwindPlugin} from "./plugins/tailwind-config";
 
 const lightTheme = themes.github;
 const darkTheme = themes.dracula;
@@ -29,6 +30,8 @@ const config: Config = {
     defaultLocale: 'en',
     locales: ['en', 'de'],
   },
+
+  plugins:[tailwindPlugin],
 
   markdown: {
     mdx1Compat: {

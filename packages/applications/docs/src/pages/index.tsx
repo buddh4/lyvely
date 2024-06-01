@@ -4,6 +4,7 @@ import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
+import useBaseUrl, {useBaseUrlUtils} from '@docusaurus/useBaseUrl';
 
 
 import styles from './index.module.css';
@@ -13,8 +14,18 @@ function HomepageHeader() {
   return (
     <header className={clsx('hero hero--primary', styles.heroBanner)}>
       <div className="container">
-        <h1 className="hero__title">
-          <b>Improve</b> and <b>collaborate</b> with modern tools.
+        <h1 className="hero__title flex items-center gap-4">
+          <img
+            alt="'Lyvely logo'"
+            className="w-40"
+            src={useBaseUrl('/img/logo.svg')}
+            width="200"
+            height="200"
+          />
+          <p class="text-6xl text-left">
+            Flexible, <b>self-improvement</b> and <b>collaboration</b> platform for anyone
+          </p>
+
         </h1>
         <div className={styles.buttons}>
           <Link
