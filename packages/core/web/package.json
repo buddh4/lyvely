@@ -96,6 +96,7 @@
     "prettier-plugin-tailwindcss": "^0.5",
     "vue-eslint-parser": "^9.4",
     "@intlify/core-base": "9.13",
-    "depcheck": "^1.4"
+    "depcheck": "^1.4",
+    "dependency-cruiser": "^14.1"
   }
 }

@@ -1,5 +1,7 @@
 ignores: [
   "tslib",
+  "rimraf",
+  "dependency-cruiser",
   "postcss",
   "postcss-cli",
   "tailwindcss",

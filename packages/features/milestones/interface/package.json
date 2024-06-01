@@ -57,6 +57,7 @@
     "eslint-plugin-import": "^2.26",
     "eslint-plugin-prettier": "^5.1",
     "depcheck": "^1.4",
+    "dependency-cruiser": "^14.1",
     "rimraf": "^5.0"
   },
   "jest": {

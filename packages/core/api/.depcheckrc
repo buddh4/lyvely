@@ -1,6 +1,8 @@
 ignores: [
   "tslib",
   "rimraf",
+  "dependency-cruiser",
+  "rimraf",
   "@types/multer",
   "@types/qs",
   "@types/express-serve-static-core",

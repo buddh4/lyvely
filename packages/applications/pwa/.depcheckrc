@@ -1,5 +1,7 @@
 ignores: [
+  "tslib",
   "postcss",
+  "dependency-cruiser",
   "postcss-cli",
   "vue-router",
   "prettier-plugin-tailwindcss",

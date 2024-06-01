@@ -35,6 +35,7 @@
     "typescript": "^5.4",
     "tslib": "^2.6.2",
     "depcheck": "^1.4",
+    "dependency-cruiser": "^14.1",
     "eslint": "^8.24",
     "@typescript-eslint/eslint-plugin": "^7.9",
     "@typescript-eslint/parser": "^7.9",

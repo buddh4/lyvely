@@ -1,5 +1,7 @@
 ignores: [
   "tslib",
+  "rimraf",
+  "dependency-cruiser",
   "@types/node",
   "@rollup/plugin-typescript",
   "@rollup/plugin-commonjs",

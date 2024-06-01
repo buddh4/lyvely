@@ -28,8 +28,7 @@
     "@lyvely/journals": "workspace:*",
     "@lyvely/analytics": "workspace:*",
     "@lyvely/milestones": "workspace:*",
-    "@lyvely/legal": "workspace:*",
-    "@lyvely/interface": "workspace:*"
+    "@lyvely/legal": "workspace:*"
   },
   "devDependencies": {
     "@lyvely/devtools": "workspace:*",
@@ -38,6 +37,7 @@
     "tsc-alias": "^1.8.10",
     "rimraf": "^5.0",
     "depcheck": "^1.4",
+    "dependency-cruiser": "^14.1",
     "eslint": "^8.24",
     "@typescript-eslint/eslint-plugin": "^7.9",
     "@typescript-eslint/parser": "^7.9",

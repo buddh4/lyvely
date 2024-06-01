@@ -1,6 +1,8 @@
 ignores: [
   "tslib",
   "rimraf",
+  "dependency-cruiser",
+  "rimraf",
   "@types/node",
   "@types/jest",
   "@rollup/plugin-*",

@@ -52,6 +52,7 @@
     "vite-plugin-externalize-deps": "^0.8",
     "postcss": "^8.4",
     "depcheck": "^1.4",
+    "dependency-cruiser": "^14.1",
     "rimraf": "^5.0"
   },
   "peerDependencies": {

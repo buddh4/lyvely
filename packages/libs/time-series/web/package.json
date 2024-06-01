@@ -61,6 +61,7 @@
     "eslint-plugin-vue": "^9.25",
     "prettier-plugin-tailwindcss": "^0.5",
     "vue-eslint-parser": "^9.4",
-    "depcheck": "^1.4"
+    "depcheck": "^1.4",
+    "dependency-cruiser": "^14.1"
   }
 }
