@@ -14,6 +14,10 @@ import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
 
 /** @type {import('@docusaurus/plugin-content-docs').SidebarsConfig} */
 const sidebars: SidebarsConfig = {
+    Guide: [
+        'guide/intro',
+        'guide/health',
+      ],
     Administration: [
         'admin/intro/installation',
         'admin/intro/server-configuration',

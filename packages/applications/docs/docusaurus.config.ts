@@ -95,7 +95,7 @@ const config: Config = {
             position: 'left',
             label: 'Development',
           },
-          { to: '/blog', label: 'Blog', position: 'left' },
+        //  { to: '/blog', label: 'Blog', position: 'left' },
           {
             href: 'https://github.com/buddh4/lyvely',
             label: 'GitHub',

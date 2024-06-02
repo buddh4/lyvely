@@ -1,97 +1,148 @@
 import React from 'react';
 import clsx from 'clsx';
 import styles from './styles.module.css';
-import svgForYou from '@site/static/img/undraw_mindfulness.svg'
-import svgForFamily from '@site/static/img/undraw_family.svg'
-import svgForFriends from '@site/static/img/undraw_social_friends.svg'
-import svgForBusiness from '@site/static/img/undraw_business_plan.svg'
-import svgForCustomers from '@site/static/img/undraw_customer_survey.svg'
-import svgForEducation from '@site/static/img/undraw_education.svg'
-import svgForCommunity from '@site/static/img/undraw_community.svg'
 
 type FeatureItem = {
   title: string;
-  Svg: React.ComponentType<React.ComponentProps<'svg'>>;
+  svgPaths: string[],
+  svgViewBox: string,
   description: JSX.Element;
 };
 
 const FeatureList: FeatureItem[] = [
   {
-    title: 'For you',
-    Svg: svgForYou,
+    title: 'Profiles',
+    svgViewBox: '0 0 20 20',
+    svgPaths: [
+      'M19 11c-0.142 2.503-1.491 4.664-3.47 5.922l-0.030 0.018-5.5 3.060-5.5-3.060c-2.009-1.276-3.358-3.437-3.499-5.92l-0.001-0.020v-8c3.38 0 6.5-1.12 9-3 2.5 1.89 5.62 3 9 3v8zM10 12.080l2.92 2.040-1.030-3.41 2.84-2.15-3.56-0.080-1.17-3.36-1.17 3.36-3.56 0.080 2.83 2.14-1.030 3.4 2.93-2.010z'
+    ],
     description: (
       <>
-        Use Lyvely privately to achieve private goals and improve on various aspects of your live as well as establishing
-        a healthy work live balance. Users can manage multiple profiles with various visibility options.
+        Create multiple profiles from private single user profiles to public group or organization profiles. Profiles are isolated areas within the platform with own users, permissions and set of feature.
       </>
     ),
   },
   {
-    title: 'For friends & family',
-    Svg: svgForFriends,
+    title: 'Permissions',
+    svgViewBox: '0 0 20 20',
+    svgPaths: [
+      'M19 11c-0.142 2.503-1.491 4.664-3.47 5.922l-0.030 0.018-5.5 3.060-5.5-3.060c-2.009-1.276-3.358-3.437-3.499-5.92l-0.001-0.020v-8c3.38 0 6.5-1.12 9-3 2.5 1.89 5.62 3 9 3v8zM10 12.080l2.92 2.040-1.030-3.41 2.84-2.15-3.56-0.080-1.17-3.36-1.17 3.36-3.56 0.080 2.83 2.14-1.030 3.4 2.93-2.010z'
+    ],
     description: (
       <>
-        Lyvely provides intuitive tools to plan and communicate between family and friends in a private and secure way.
-        By creating a group or organization profile for your family and friends you can intuitively plan and discuss
-        upcoming events, todos and other issues.
+        Create multiple profiles from private single user profiles to public group or organization profiles. Profiles are isolated areas within the platform with own users, permissions and set of feature.
       </>
     ),
   },
   {
-    title: 'For your community',
-    Svg: svgForCommunity,
+    title: 'Permissions',
+    svgViewBox: '0 0 20 20',
+    svgPaths: [
+      'M19 11c-0.142 2.503-1.491 4.664-3.47 5.922l-0.030 0.018-5.5 3.060-5.5-3.060c-2.009-1.276-3.358-3.437-3.499-5.92l-0.001-0.020v-8c3.38 0 6.5-1.12 9-3 2.5 1.89 5.62 3 9 3v8zM10 12.080l2.92 2.040-1.030-3.41 2.84-2.15-3.56-0.080-1.17-3.36-1.17 3.36-3.56 0.080 2.83 2.14-1.030 3.4 2.93-2.010z'
+    ],
     description: (
       <>
-        Build a community and publicly share content as discussions and other types of content. Lyvely optionally supports
-        access for unauthenticated users and public profiles and sophisticated permission and content visibility policies.
+        Create multiple profiles from private single user profiles to public group or organization profiles. Profiles are isolated areas within the platform with own users, permissions and set of feature.
       </>
     ),
   },
   {
-    title: 'For your business',
-    Svg: svgForBusiness,
+    title: 'Policies',
+    svgViewBox: '0 0 20 20',
+    svgPaths: [
+      'M19 11c-0.142 2.503-1.491 4.664-3.47 5.922l-0.030 0.018-5.5 3.060-5.5-3.060c-2.009-1.276-3.358-3.437-3.499-5.92l-0.001-0.020v-8c3.38 0 6.5-1.12 9-3 2.5 1.89 5.62 3 9 3v8zM10 12.080l2.92 2.040-1.030-3.41 2.84-2.15-3.56-0.080-1.17-3.36-1.17 3.36-3.56 0.080 2.83 2.14-1.030 3.4 2.93-2.010z'
+    ],
     description: (
       <>
-        Lyvely can help your organization grow by providing group and organization level profiles and tools used to plan
-        communicate and overview activities within your business, from keeping track of goals to graphical representation
-        of the data important for your business success.
+        Create multiple profiles from private single user profiles to public group or organization profiles. Profiles are isolated areas within the platform with own users, permissions and set of feature.
       </>
     ),
   },
   {
-    title: 'For your customers',
-    Svg: svgForCustomers,
+    title: 'Content',
+    svgViewBox: '0 0 20 20',
+    svgPaths: [
+      'M19 11c-0.142 2.503-1.491 4.664-3.47 5.922l-0.030 0.018-5.5 3.060-5.5-3.060c-2.009-1.276-3.358-3.437-3.499-5.92l-0.001-0.020v-8c3.38 0 6.5-1.12 9-3 2.5 1.89 5.62 3 9 3v8zM10 12.080l2.92 2.040-1.030-3.41 2.84-2.15-3.56-0.080-1.17-3.36-1.17 3.36-3.56 0.080 2.83 2.14-1.030 3.4 2.93-2.010z'
+    ],
     description: (
       <>
-        Invite your customers to a Lyvely profile and collaboratively plan task and activities, communicate and share
-        further information. Since profiles and users are private by default, Lyvely can serve as a safe space
-        for you and your customers to discuss issues and provide customer support.
+        Create multiple profiles from private single user profiles to public group or organization profiles. Profiles are isolated areas within the platform with own users, permissions and set of feature.
       </>
     ),
   },
   {
-    title: 'For your education',
-    Svg: svgForEducation,
+    title: 'Features',
+    svgViewBox: '0 0 20 20',
+    svgPaths: [
+      'M19 11c-0.142 2.503-1.491 4.664-3.47 5.922l-0.030 0.018-5.5 3.060-5.5-3.060c-2.009-1.276-3.358-3.437-3.499-5.92l-0.001-0.020v-8c3.38 0 6.5-1.12 9-3 2.5 1.89 5.62 3 9 3v8zM10 12.080l2.92 2.040-1.030-3.41 2.84-2.15-3.56-0.080-1.17-3.36-1.17 3.36-3.56 0.080 2.83 2.14-1.030 3.4 2.93-2.010z'
+    ],
     description: (
       <>
-        Use Lyvely for school and keep track of your progression, take notes and create group profiles for school projects
-        to communicate with your friends. Many of the features such as tasks, habits and journals support shared or user-specific
-        modes, which can be useful if you want to delegate activities to multiple users..
+        Create multiple profiles from private single user profiles to public group or organization profiles. Profiles are isolated areas within the platform with own users, permissions and set of feature.
       </>
     ),
   },
-
+  {
+    title: 'I18n',
+    svgViewBox: '0 0 20 20',
+    svgPaths: [
+      'M19 11c-0.142 2.503-1.491 4.664-3.47 5.922l-0.030 0.018-5.5 3.060-5.5-3.060c-2.009-1.276-3.358-3.437-3.499-5.92l-0.001-0.020v-8c3.38 0 6.5-1.12 9-3 2.5 1.89 5.62 3 9 3v8zM10 12.080l2.92 2.040-1.030-3.41 2.84-2.15-3.56-0.080-1.17-3.36-1.17 3.36-3.56 0.080 2.83 2.14-1.030 3.4 2.93-2.010z'
+    ],
+    description: (
+      <>
+        Create multiple profiles from private single user profiles to public group or organization profiles. Profiles are isolated areas within the platform with own users, permissions and set of feature.
+      </>
+    ),
+  },
+  {
+    title: 'Realtime',
+    svgViewBox: '0 0 20 20',
+    svgPaths: [
+      'M19 11c-0.142 2.503-1.491 4.664-3.47 5.922l-0.030 0.018-5.5 3.060-5.5-3.060c-2.009-1.276-3.358-3.437-3.499-5.92l-0.001-0.020v-8c3.38 0 6.5-1.12 9-3 2.5 1.89 5.62 3 9 3v8zM10 12.080l2.92 2.040-1.030-3.41 2.84-2.15-3.56-0.080-1.17-3.36-1.17 3.36-3.56 0.080 2.83 2.14-1.030 3.4 2.93-2.010z'
+    ],
+    description: (
+      <>
+        Create multiple profiles from private single user profiles to public group or organization profiles. Profiles are isolated areas within the platform with own users, permissions and set of feature.
+      </>
+    ),
+  },
+  {
+    title: 'Ui',
+    svgViewBox: '0 0 20 20',
+    svgPaths: [
+      'M19 11c-0.142 2.503-1.491 4.664-3.47 5.922l-0.030 0.018-5.5 3.060-5.5-3.060c-2.009-1.276-3.358-3.437-3.499-5.92l-0.001-0.020v-8c3.38 0 6.5-1.12 9-3 2.5 1.89 5.62 3 9 3v8zM10 12.080l2.92 2.040-1.030-3.41 2.84-2.15-3.56-0.080-1.17-3.36-1.17 3.36-3.56 0.080 2.83 2.14-1.030 3.4 2.93-2.010z'
+    ],
+    description: (
+      <>
+        Create multiple profiles from private single user profiles to public group or organization profiles. Profiles are isolated areas within the platform with own users, permissions and set of feature.
+      </>
+    ),
+  },
+  {
+    title: 'Type-Safe Api',
+    svgViewBox: '0 0 20 20',
+    svgPaths: [
+      'M19 11c-0.142 2.503-1.491 4.664-3.47 5.922l-0.030 0.018-5.5 3.060-5.5-3.060c-2.009-1.276-3.358-3.437-3.499-5.92l-0.001-0.020v-8c3.38 0 6.5-1.12 9-3 2.5 1.89 5.62 3 9 3v8zM10 12.080l2.92 2.040-1.030-3.41 2.84-2.15-3.56-0.080-1.17-3.36-1.17 3.36-3.56 0.080 2.83 2.14-1.030 3.4 2.93-2.010z'
+    ],
+    description: (
+      <>
+        Create multiple profiles from private single user profiles to public group or organization profiles. Profiles are isolated areas within the platform with own users, permissions and set of feature.
+      </>
+    ),
+  },
 ];
 
-function Feature({title, Svg, description}: FeatureItem) {
+function Feature({title, svgPaths, svgViewBox, description}: FeatureItem) {
   return (
-    <div className={clsx('col col--4')}>
-      <div className="text--center">
-        <Svg className={styles.featureSvg} role="img" />
-      </div>
-      <div className="text--center padding-horiz--md">
-        <h3>{title}</h3>
-        <p>{description}</p>
+    <div className={clsx('col col--4 relative')}>
+      <svg viewBox={svgViewBox} className="w-5 text-violet-700 absolute left-0 top-[5px]">
+        {svgPaths.map((path, idx) => (
+          <path fill="currentColor" d={path}></path>
+        ))}
+      </svg>
+      <div className="mx-8">
+        <h4 className="text-lg font-semibold text-gray-600">{title}</h4>
+        <p className="text-sm text-gray-500 mb-8">{description}</p>
       </div>
     </div>
   );
@@ -100,7 +151,13 @@ function Feature({title, Svg, description}: FeatureItem) {
 export default function HomepageFeatures(): JSX.Element {
   return (
     <section className={styles.features}>
-      <div className="container">
+      <div className="container text-center">
+        <h1 className="text-2xl text-violet-500">
+          Framework at a glance
+        </h1>
+        <h2 className="text-xl text-gray-400 mt-2">
+          All tools you need for creating a sophisticated platform.
+        </h2>
         <div className="row">
           {FeatureList.map((props, idx) => (
             <Feature key={idx} {...props} />

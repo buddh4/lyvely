@@ -3,7 +3,7 @@
 
 # User Guide
 
-Welcome to the Lyvely user guide! In this guide we will explore different features and discover common use-cases of
+Welcome to the Lyvely user guide! In this guide we will explore different features and discover common use cases of
 the platform.
 
 Lyvely is a versatile self-management and collaboration platform suitable for both individual and team usage and aims for
@@ -12,6 +12,11 @@ improving your ability to reach your goals and a healthy work-life balance.
 While the guidelines provided are helpful, remember that they're not mandatory. Lyvely is designed with 
 flexibility in mind, allowing you to adapt it to your preferences. Enjoy the freedom to use the platform in a way that 
 suits you best. Let's start with a short overview of the main features of the platform.
+
+:::note
+As the platform is still in development, some minor features described in this guide may not yet be implemented or may 
+only be experimental.
+:::
 
 ## Profiles
 
@@ -29,6 +34,10 @@ for projects, departments, teams or any other form of user space.
 rules and permissions offering an additional level of organizing users and content. Platform administrators can manage 
 who is allowed to create organization profiles.
 
+Across different profiles, a user can choose different avatars, usernames, and emails to allow further separation between the 
+use cases of their profiles. For example, for a profile used for university, you could choose your university email and 
+a casual username, while for a work-related profile, you might choose your work email and real name and a professional photo.
+
 ## Users & Permissions
 
 As mentioned in the last section, some types of profile support multiple members which can be managed by the owner
@@ -37,7 +46,7 @@ or administrators of a profile. Each member is assigned with a specific **role**
 granted to non-member users. There are the following user roles available:
 
 - `Owners`: An owner of the profile, has special permissions as archiving the profile.
-- `Admins`: Administrators are usually granted with most permissions within a profile.
+- `Admins`: Administrators are usually granted with most (but not all) permissions within a profile.
 - `Moderators`: A moderator role can be assigned with extended permissions for managing users and content.
 - `Members`: Normal members of the profile usually can create content and access most sections of a profile.
 - `Guests`: A profile guest is a special kind of member, which may is granted with fewer permissions as normal members.
@@ -45,7 +54,7 @@ granted to non-member users. There are the following user roles available:
 than other users of the platform.
 - `Follower`: Non-member users following a profile.
 - `User`: Any other authenticated users without any relation to the profile.
-- `Visitor`: If your Lyvely platform allows access for unauthenticated users access, profiles can manage access permissions for visitors.
+- `Visitor`: If your Lyvely platform allows access for unauthenticated users, profiles can manage access permissions for visitors.
 
 Permissions granted to a role are automatically granted to higher roles. This means that if we grant a certain permission
 to the `members` role this permission will be granted for `members`, `moderators`, `admins`, `owners`.
@@ -53,7 +62,7 @@ to the `members` role this permission will be granted for `members`, `moderators
 More fine-grained permission management can be configured by creating custom user groups within a profile.
 
 :::note
-The `guest` and `follower` feature is not yet implemented.
+The `guest` and `follower` as well as `group management` feature is not yet implemented.
 :::
 
 ## Profile Visibility
@@ -73,9 +82,11 @@ The `follower` feature is not yet implemented.
 
 ## Content
 
-Almost anything in Lyvely consist of content and the main platform provides different types of content from simple
-messages to collaborative content as tasks, habits and journals. Each content can be further discussed and offers a
-stream and detail view. Most content share common features as:
+Almost anything in Lyvely consist of content like messages and other types of content. The main platform provides 
+different types of content from simple messages to collaborative tasks, habits and journals. Each content can 
+be further discussed by submitting sub-content entries within a content detail view. 
+
+Most content share common features as:
 
 - **Archive**: Archive content, so they do not appear in the stream and other views by default.
 - **Visibility**: Manage the visibility of a content entry, so its only visible for certain roles within your profile.
@@ -85,9 +96,32 @@ stream and detail view. Most content share common features as:
 - **Tags**: By tagging content you can easily search and filter certain groups of content. Some modules may implement
   additional tag related features.
 
+## Tags
+
+Tags help you further categorize your content and are primarily used for filtering. Besides basic configurations such as
+`name` and `color`, a tag can be configured to display tagged content `only on filter`. This setting excludes tagged content 
+from some views (not the stream) unless a matching filter is active. For example, you can create categories in the tasks, 
+like a shopping list, without cluttering the main view. This setting is useful for content that is only 
+relevant infrequently.
+
+The right choice of tags is important for organizing your content and effectively analyzing your progression.
+Here are some examples of tags:
+
+- `Healt`: If your goal is a healthier lifestyle, you may create a general health tag for all activities or resources 
+related to improving your health.
+- `Family`: You can tag activities to distinguish how much effort you spend on different aspects of your life.
+- `P:1`: In a project context, you may define priority or cost estimation tags.
+- `Feat:Tasks`: In a project-related profile, you could create tags for different features.
+- `Shopping`: Maintain a wishlist or shopping list.
+- `Math`: Create tags by subject to easily filter all resources related to a school or university subject.
+
+:::tip
+The "Use cases" section contains further examples of the use of tags
+:::
+
 ## Features
 
-Within your profiles, you can enable, disable and configure a set of features to fit your use-case. The available set
+Within your profiles, you can enable, disable and configure a set of features to fit your use case. The available set
 of features depends on the installed modules of the platform and its policies. Some platforms may only allow certain
 features for certain profiles. A module may offer multiple features for fine-granular customization of a profile.
 
@@ -162,7 +196,6 @@ The actual strategy of choosing an interval for your tasks is up to you and your
 
 ### Journals
 
-
 While Tasks and Habits are used for tracking activities and todos within a profile, the Journals feature is meant to 
 track any kind of recurring data for reporting purposes in a calendar-plan view and supports additional input types:
 
@@ -173,12 +206,25 @@ track any kind of recurring data for reporting purposes in a calendar-plan view 
 - **Radio Select** A radio input selection of predefined values.
 - **Dropdown Select** A dropdown selection of predefined values.
 
+### Milestones
+
+The Milestones feature can be used to keep track and discuss the progression of different kinds of content by grouping 
+them together within a milestone. Similar to the previous described features, the Milestone feature offers a calendar-plan
+view for sorting and scheduling milestones by priority.
+
 ### Analytics
 
-The Analytics feature is a powerful tool used to evaluate and compare data as habit and journal data as well as profile 
-scores by creating custom charts. By default, the following chart series are available:
+The Analytics function is a powerful tool for evaluating data such as habit and journal data as well as profile scores by
+creating customized charts. This feature allows you to add and combine multiple chart series to
+analyze the correlations between your profile data. The following chart series are available by default:
 
 - **Profile Score**: Visualizes the progression of the profile score over time, allowing you to track and analyze 
 trends in performance or changes in score throughout a specified period optionally filtered by tags.
 - **User Score**: Visualizes scores grouped by users. You can choose specific users and/or include the currently active 
 user. Optionally you can filter for scores related to certain tags.
+
+### Legal
+
+The Legal module is used to manage legal links and translatable texts, as privacy notes terms of service which are 
+embedded in certain parts of your platform to comply with regulatory requirements and ensure legal compliance. At the
+moment the links and texts are managed by configuration file.
