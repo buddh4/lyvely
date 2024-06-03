@@ -81,7 +81,9 @@ const progress = computed(() => getScaledProgress(score.value || 0));
       <suspense>
         <profile-relations-chooser />
         <template #fallback>
-          <ly-loader />
+          <div class="h-40">
+            <ly-loader class="h-40 w-64 md:w-96" />
+          </div>
         </template>
       </suspense>
     </template>

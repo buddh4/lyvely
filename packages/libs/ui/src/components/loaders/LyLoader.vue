@@ -1,30 +1,31 @@
 <script lang="ts" setup>
 import { twMerge } from 'tailwind-merge';
 import { computed } from 'vue';
+import { useTwMerge } from '@/composables';
+
+defineOptions({
+  inheritAttrs: false,
+});
 
 interface IProps {
   size?: string;
   iconClass?: string;
-  wrapperClass?: string;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
   size: '30px',
   iconClass: '',
-  wrapperClass: '',
 });
+
+const { attrs } = useTwMerge('w-full h-full flex items-center justify-center align-center');
 
 const iconClassMerged = computed(() => {
   return twMerge('animate-spin spinner border-divide border-t-pop inline-block', props.iconClass);
 });
-
-const wrapperClassMerged = computed(() => {
-  return twMerge('w-full h-full flex items-center justify-center align-center', props.wrapperClass);
-});
 </script>
 
 <template>
-  <div :class="wrapperClassMerged">
+  <div v-bind="attrs">
     <span :class="iconClassMerged" :style="{ width: size, height: size }"></span>
   </div>
 </template>

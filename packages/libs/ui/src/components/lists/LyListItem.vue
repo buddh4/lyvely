@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useTwMergeComposable } from '@/composables';
+import { useTwMerge } from '@/composables';
 
 defineOptions({
   inheritAttrs: false,
@@ -15,7 +15,7 @@ const props = withDefaults(defineProps<IProps>(), {
   disabled: false,
 });
 
-const { attrs } = useTwMergeComposable({
+const { attrs } = useTwMerge({
   'cursor-pointer hover:bg-highlight dark:hover:bg-main': !props.disabled,
 });
 </script>

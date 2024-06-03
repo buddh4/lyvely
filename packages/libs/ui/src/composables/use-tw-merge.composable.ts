@@ -1,7 +1,7 @@
 import { twMerge } from 'tailwind-merge';
 import { computed, type ComputedRef, normalizeClass, useAttrs } from 'vue';
 
-export const useTwMergeComposable = (
+export const useTwMerge = (
   defaults: unknown
 ): {
   originalAttrs: ComputedRef<any>;
