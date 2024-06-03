@@ -16,7 +16,7 @@ type UseCaseItem = {
 
 const UseCaseList: UseCaseItem[] = [
   {
-    title: 'For you',
+    title: 'For You',
     Svg: svgForYou,
     description: (
       <>
@@ -26,7 +26,7 @@ const UseCaseList: UseCaseItem[] = [
     ),
   },
   {
-    title: 'For friends & family',
+    title: 'For Friends & Family',
     Svg: svgForFriends,
     description: (
       <>
@@ -37,7 +37,7 @@ const UseCaseList: UseCaseItem[] = [
     ),
   },
   {
-    title: 'For your community',
+    title: 'For your Community',
     Svg: svgForCommunity,
     description: (
       <>
@@ -47,7 +47,7 @@ const UseCaseList: UseCaseItem[] = [
     ),
   },
   {
-    title: 'For your business',
+    title: 'For your Business',
     Svg: svgForBusiness,
     description: (
       <>
@@ -58,7 +58,7 @@ const UseCaseList: UseCaseItem[] = [
     ),
   },
   {
-    title: 'For your customers',
+    title: 'For your Customers',
     Svg: svgForCustomers,
     description: (
       <>
@@ -69,7 +69,7 @@ const UseCaseList: UseCaseItem[] = [
     ),
   },
   {
-    title: 'For your education',
+    title: 'For your Education',
     Svg: svgForEducation,
     description: (
       <>
@@ -89,8 +89,8 @@ function Feature({title, Svg, description}: UseCaseItem) {
         <Svg className={styles.featureSvg} role="img" />
       </div>
       <div className="text--center padding-horiz--md">
-        <h3>{title}</h3>
-        <p>{description}</p>
+        <h3 class="text-gray-600 dark:text-gray-100">{title}</h3>
+        <p class="text-gray-500 dark:text-gray-300 ">{description}</p>
       </div>
     </div>
   );

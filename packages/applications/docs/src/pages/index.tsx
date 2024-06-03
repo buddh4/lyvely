@@ -6,7 +6,7 @@ import Layout from '@theme/Layout';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
 import HomepagePoweredBy from '@site/src/components/HomepagePoweredBy';
 import HomepageUseCases from '@site/src/components/HomepageUseCases';
-import useBaseUrl, {useBaseUrlUtils} from '@docusaurus/useBaseUrl';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 
 
 import styles from './index.module.css';
@@ -25,7 +25,7 @@ function HomepageHeader() {
             height="200"
           />
           <p class="text-6xl text-left">
-            Flexible, <b>self-improvement</b> and <b>collaboration</b> platform for anyone
+            Flexible <b>self-improvement</b> and <b>collaboration</b> platform for anyone
           </p>
 
         </h1>
