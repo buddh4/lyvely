@@ -50,6 +50,7 @@ import { ConfigurationPath } from '@/config';
 import { ProfilePermissionsService } from './profile-permissions.service';
 import { GlobalPermissionsService } from '@/permissions';
 import { pick } from 'lodash';
+import { UserStatus } from '@lyvely/interface/src';
 
 @Injectable()
 export class ProfilesService {
@@ -313,13 +314,12 @@ export class ProfilesService {
     const membership = await this.membershipDao.findOldestRelation(user);
 
     // TODO: check if profile is archived etc.
-    if (!membership) {
+    if (!membership || membership.relationStatus !== UserStatus.Disabled) {
       return this.createDefaultUserProfile(user);
     }
 
     const profileContext = await this.findProfileContext(user, membership.pid);
 
-    // TODO: handle integrity issue if !relation, at least do some logging here...
     return profileContext ? profileContext : this.createDefaultUserProfile(user);
   }
 

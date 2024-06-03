@@ -50,6 +50,7 @@ export interface ILyvelyMongoDBOptions extends MongooseModuleOptions {
 }
 
 export type I18NOptions = {
+  defaultLocale?: string;
   locales: string[];
 };
 

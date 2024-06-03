@@ -22,6 +22,7 @@ import { useAppConfigStore } from '@/app-config';
 import { useAuthStore } from '@/auth';
 import { loadingState, useGlobalDialogStore } from '@/core';
 import { findAndReplace } from '@lyvely/common';
+import type { IPermissionConfig } from '@lyvely/interface';
 
 export const useProfilePermissionsStore = defineStore('profile-permissions-store', () => {
   function getPermissionOptions(permission: IContentPermission | IProfilePermission) {
@@ -121,7 +122,7 @@ export const useProfilePermissionsStore = defineStore('profile-permissions-store
   }
 
   function getPermissionConfig() {
-    return useAppConfigStore().get('permissions', {
+    return useAppConfigStore().getModuleConfig<IPermissionConfig>('permissions', undefined, {
       visitorStrategy: { mode: VisitorMode.Disabled },
       defaults: [],
     });

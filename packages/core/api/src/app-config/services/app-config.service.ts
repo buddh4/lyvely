@@ -2,9 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ConfigurationPath } from '@/config';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { IAppConfig, VisitorMode } from '@lyvely/interface';
+import { IAppConfig } from '@lyvely/interface';
 import { EVENT_MODULE_APP_CONFIG_ASSEMBLY } from '../app-config.constants';
 import { ModuleAppConfigAssemblyEvent } from '../events';
+import { type OptionalUserRequest, User } from '@/users';
 
 @Injectable()
 export class AppConfigService {
@@ -16,22 +17,16 @@ export class AppConfigService {
   /**
    * Returns the app config including module app configurations.
    */
-  getAppConfig(): IAppConfig<any> {
+  getAppConfig(req: OptionalUserRequest): IAppConfig<any> {
     const config: IAppConfig<any> = {
       appName: this.configService.get('appName', 'lyvely'),
       docUrl: this.configService.get('docUrl') || 'https://docs.lyvely.app',
-      permissions: this.configService.get('permissions', {
-        visitorStrategy: {
-          mode: VisitorMode.Disabled,
-        },
-        defaults: [],
-      }),
       modules: {},
     };
 
     this.emitter.emit(
       EVENT_MODULE_APP_CONFIG_ASSEMBLY,
-      new ModuleAppConfigAssemblyEvent(config.modules)
+      new ModuleAppConfigAssemblyEvent(config.modules, req)
     );
 
     return config;

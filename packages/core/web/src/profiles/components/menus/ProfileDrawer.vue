@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed, Ref, ref } from 'vue';
-import { watchMaxSize, isMaxViewSize, LyMenuEntry, useGlobalScroll } from '@lyvely/ui';
+import { watchMaxSize, isMaxViewSize, LyMenuEntry } from '@lyvely/ui';
 import { usePageStore } from '@/ui';
 import { translate } from '@/i18n';
 import { useProfileStore } from '@/profiles/stores';
@@ -111,12 +111,6 @@ const { direction: overlayDirection } = useSwipe(appDrawerOverlay, {
           </li>
         </ul>
       </div>
-
-      <transition name="fade">
-        <div v-if="showSidebar" class="footer flex w-full shrink-0 justify-center px-2 py-4">
-          <!-- legal-links /-->
-        </div>
-      </transition>
     </div>
   </nav>
 </template>

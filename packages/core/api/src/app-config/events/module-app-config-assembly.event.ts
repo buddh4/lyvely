@@ -1,8 +1,12 @@
-export class ModuleAppConfigAssemblyEvent {
-  private readonly config: { [k: string]: object };
+import { type OptionalUserRequest, User } from '@/users';
 
-  constructor(config: { [k: string]: object }) {
+export class ModuleAppConfigAssemblyEvent {
+  public readonly req: OptionalUserRequest;
+  public readonly config: { [k: string]: object };
+
+  constructor(config: { [k: string]: object }, req: OptionalUserRequest) {
     this.config = config;
+    this.req = req;
   }
 
   setModuleConfig<T extends Record<string, unknown> = Record<string, unknown>>(

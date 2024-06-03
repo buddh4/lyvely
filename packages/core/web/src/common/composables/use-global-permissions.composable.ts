@@ -6,6 +6,7 @@ import {
   registerPermissions,
   useGlobalPermissionsManager,
   VisitorMode,
+  IPermissionConfig,
 } from '@lyvely/interface';
 import { isPlainObject } from '@lyvely/common';
 import { computed } from 'vue';
@@ -40,7 +41,7 @@ export const useGlobalPermissions = (...permissions: Array<string | IGlobalPermi
   });
 
   function getPermissionConfig() {
-    return useAppConfigStore().get('permissions', {
+    return useAppConfigStore().getModuleConfig<IPermissionConfig>('permissions', undefined, {
       visitorStrategy: { mode: VisitorMode.Disabled },
       defaults: [],
     });

@@ -4,15 +4,24 @@ import { EVENT_MODULE_APP_CONFIG_ASSEMBLY, ModuleAppConfigAssemblyEvent } from '
 import { LegalService } from './services';
 import { ILegalAppConfig } from '@lyvely/legal-interface';
 import { LEGAL_MODULE_ID } from './legal.constants';
+import { ConfigService } from '@nestjs/config';
+import type { ConfigurationPath } from '@lyvely/api';
 
 @Injectable()
 export class LegalEvents {
-  constructor(private readonly legalService: LegalService) {}
+  constructor(
+    private readonly legalService: LegalService,
+    private readonly configService: ConfigService<ConfigurationPath>
+  ) {}
 
-  @OnEvent(EVENT_MODULE_APP_CONFIG_ASSEMBLY, { async: true, promisify: true })
+  @OnEvent(EVENT_MODULE_APP_CONFIG_ASSEMBLY)
   async handleModuleConfigAssembly(event: ModuleAppConfigAssemblyEvent) {
     event.setModuleConfig<ILegalAppConfig>(LEGAL_MODULE_ID, {
-      sections: await this.legalService.getSections(),
+      sections: await this.legalService.getSections(
+        event.req.user?.locale ||
+          event.req.acceptsLanguages[0] ||
+          this.configService.get('i18n.defaultLocale', 'en-us')
+      ),
     });
   }
 }

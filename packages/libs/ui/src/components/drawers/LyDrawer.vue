@@ -78,7 +78,7 @@ const style = computed<any>(() => ({ 'z-index': zIndex.value }));
         class="drawer"
         :style="style"
         @keyup.esc="close">
-        <div class="left-0 top-0 flex max-h-full flex-col items-stretch">
+        <div class="left-0 top-0 flex h-full flex-col items-stretch">
           <div data-drawer-header class="flex items-center rounded-t-sm px-4 pb-3 pt-4">
             <slot name="header">
               <h1 v-if="title" class="font-bold">{{ t(title) }}</h1>
@@ -92,7 +92,7 @@ const style = computed<any>(() => ({ 'z-index': zIndex.value }));
           <div ref="body" data-drawer-body class="scrollbar-thin overflow-auto">
             <slot></slot>
           </div>
-          <div data-drawer-footer class="px-4 pb-4 pt-3">
+          <div data-drawer-footer class="grow px-4 pb-4 pt-3">
             <slot name="footer"></slot>
           </div>
         </div>

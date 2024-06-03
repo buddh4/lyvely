@@ -4,7 +4,10 @@ import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
 import { isMaxViewSize, LyMenuEntry, useMenu } from '@lyvely/ui';
 import { UserAvatar } from '@/users';
-import { MENU_ACCOUNT_DRAWER } from '@/user-account/user-account.constants';
+import {
+  MENU_ACCOUNT_DRAWER,
+  STACK_ACCOUNT_DRAWER_FOOTER,
+} from '@/user-account/user-account.constants';
 
 const accountStore = useUserAccountStore();
 
@@ -50,6 +53,11 @@ function onMenuItemClick() {
         </li>
       </ul>
     </nav>
+    <template #footer>
+      <div class="items-bottom flex h-full flex-col justify-end">
+        <ly-component-stack :id="STACK_ACCOUNT_DRAWER_FOOTER" />
+      </div>
+    </template>
   </ly-drawer>
 </template>
 

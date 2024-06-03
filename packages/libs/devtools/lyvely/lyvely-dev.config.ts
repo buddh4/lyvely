@@ -56,7 +56,7 @@ export const lyvelyDevConfig = {
   legal: {
     sections: {
       poweredBy: {
-        label: 'Powered by lyvely',
+        label: 'Powered by Lyvely',
         url: 'https://www.lyvely.app',
         version: '1.0',
       },

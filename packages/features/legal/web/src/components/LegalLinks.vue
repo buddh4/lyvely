@@ -38,13 +38,15 @@ function setActiveSection(section: LegalSection) {
 </script>
 
 <template>
-  <div class="flex flex-wrap items-center justify-center gap-1">
+  <div class="flex flex-wrap items-center justify-center gap-x-1">
     <template v-for="(section, index) in sections" :key="section.id">
       <span v-if="index > 0">&middot;</span>
-      <a v-if="!!section.url" class="text-xs" target="_blank" :href="section.url">{{
+      <a v-if="!!section.url" class="text-xs text-main" target="_blank" :href="section.url">{{
         section.label
       }}</a>
-      <a v-else class="text-xs" href="#" @click="setActiveSection(section)">{{ section.label }}</a>
+      <a v-else class="text-xs text-main" href="#" @click="setActiveSection(section)">{{
+        section.label
+      }}</a>
     </template>
   </div>
   <ly-modal

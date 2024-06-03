@@ -7,7 +7,7 @@ import { LegalSection, LegalSectionDetails } from '@lyvely/legal-interface';
 export class LegalService {
   constructor(private readonly configService: ConfigService<ConfigurationPath>) {}
 
-  async getSections(locale?: string): Promise<LegalSection[]> {
+  async getSections(locale: string): Promise<LegalSection[]> {
     const result = [] as LegalSection[];
     const legal = this.configService.get<ILegalOptions>('modules.legal');
     if (!legal?.sections) return this.attachPoweredBy(result);
@@ -56,8 +56,16 @@ export class LegalService {
   }
 
   private getLocalizedSection(sectionId: string, locale?: string) {
-    const legal = this.configService.get<ILegalOptions>('legal');
+    const legal = this.configService.get<ILegalOptions>('modules.legal');
     const section = legal?.sections[sectionId] || null;
-    return (locale && section?.locales?.[locale]) || section;
+
+    if (!locale || !section?.locales) return section;
+
+    while (true) {
+      if (section.locales[locale] || locale.indexOf('-') === -1) break;
+      locale = locale.slice(0, locale.lastIndexOf('-'));
+    }
+
+    return section.locales[locale] || section;
   }
 }

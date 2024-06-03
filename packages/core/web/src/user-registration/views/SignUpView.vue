@@ -14,6 +14,7 @@ import {
   UserRegistrationMode,
   FieldValidationException,
 } from '@lyvely/interface';
+import { STACK_CENTERED_LAYOUT_LINKS } from '@/ui';
 
 const userRegistrationStore = useUserRegistrationStore();
 const registrationMode = useAppConfigStore().getModuleConfig<
@@ -179,6 +180,10 @@ const hidePassword = ref(true);
           </router-link>
         </small>
       </div>
+    </template>
+
+    <template #links>
+      <ly-component-stack :id="STACK_CENTERED_LAYOUT_LINKS" />
     </template>
   </ly-centered-panel>
 </template>

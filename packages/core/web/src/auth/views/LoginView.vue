@@ -13,6 +13,7 @@ import {
 } from '@lyvely/interface';
 import { PATH_SIGN_UP } from '@/user-registration/user-registration.constants';
 import { profileRoot } from '@/profiles/routes/profile-route.helper';
+import { STACK_CENTERED_LAYOUT_LINKS } from '@/ui';
 
 const loginStore = useLoginStore();
 const router = useRouter();
@@ -200,6 +201,9 @@ onUnmounted(loginStore.reset);
         @click="submit">
         {{ t('auth.login.sign_in') }}
       </ly-button>
+    </template>
+    <template #links>
+      <ly-component-stack :id="STACK_CENTERED_LAYOUT_LINKS" />
     </template>
   </ly-centered-panel>
 </template>
