@@ -89,7 +89,7 @@ onMounted(() => {
     <div
       ref="stage"
       :class="{
-        'overflow-hidden': true,
+        'overflow-hidden prose-a:text-blue-600 prose-a:no-underline dark:prose-a:text-blue-500': true,
         'prose prose-sm dark:prose-invert': prose,
         'max-w-none': !maxWidth,
       }"
