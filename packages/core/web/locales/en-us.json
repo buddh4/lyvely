@@ -6,6 +6,10 @@
         "minutes": "Minutes input",
         "seconds": "Seconds input"
       }
+    },
+    "markdown-view": {
+      "showLess": "Show Less",
+      "showMore": "Show More"
     }
   },
   "avatar": {

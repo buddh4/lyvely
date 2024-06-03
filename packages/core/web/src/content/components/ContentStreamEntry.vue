@@ -4,7 +4,7 @@ import { ContentModel } from '@lyvely/interface';
 import { computed } from 'vue';
 import RelativeTime from '@/calendar/components/RelativeTime.vue';
 import { useRouter } from 'vue-router';
-import { isTextSelection } from '@lyvely/ui';
+import { isTextSelection, LyMarkdownView } from '@lyvely/ui';
 import { t } from '@/i18n';
 import TagList from '@/tags/components/TagList.vue';
 import { IStream } from '@/stream/stream.composable';
@@ -79,6 +79,7 @@ const router = useRouter();
 
 function onContentClick(evt: MouseEvent) {
   if (evt.target instanceof HTMLAnchorElement) return;
+  if (evt.target instanceof HTMLButtonElement) return;
   if (isTextSelection()) return;
   router.push(toContentDetails(props.model));
 }
@@ -90,8 +91,8 @@ const bodyWrapperClass = computed(
   () =>
     ({
       none: 'relative',
-      message: `relative message-bubble ${bgClass} inline-block transition duration-100 cursor-pointer hover:bg-highlight dark:hover:bg-highlight border border-divide px-4 py-1.5`,
-      block: `relative inline-flex flex-col border border-divide p-4 rounded-xl ${bgClass} inline-block`,
+      message: `relative message-bubble ${bgClass} max-w-full inline-block transition duration-100 cursor-pointer border border-divide dark:hover:border-gray-600 hover:border-gray-300 px-4 py-1.5`,
+      block: `relative inline-flex flex-col max-w-full border border-divide dark:hover:border-gray-600 hover:border-gray-300 p-4 rounded-xl ${bgClass} inline-block`,
     })[props.bodyStyle]
 );
 
@@ -129,7 +130,7 @@ const maxWidth = true;
         </div>
         <div :class="{ 'md:w-2/3': maxWidth && bodyStyle === 'message' }">
           <div :class="bodyWrapperClass" :data-id="'body-' + model.id" @click="onContentClick">
-            <div class="inline-block cursor-pointer">
+            <div class="inline-block max-w-full cursor-pointer">
               <div class="flex gap-1">
                 <tag-list
                   :class="['mb-2', { 'mt-2': bodyStyle === 'message' }]"
@@ -153,9 +154,7 @@ const maxWidth = true;
                     <div v-if="model.content.title?.length" class="flex items-center gap-1">
                       <span>{{ model.content.title }}</span>
                     </div>
-                    <p v-if="model.content.text?.length" class="text-sm text-dimmed">
-                      {{ model.content.text }}
-                    </p>
+                    <ly-markdown-view :md="model.content.text!" :max-height="true" />
                     <div
                       v-if="!model.content.text?.length && !model.content.title?.length"
                       class="flex items-center gap-1 text-sm text-dimmed">
@@ -175,6 +174,10 @@ const maxWidth = true;
 </template>
 
 <style>
+.content-stream-entry-body {
+  font-size: 0.5em;
+}
+
 .message-bubble {
   border-radius: 18px;
 }

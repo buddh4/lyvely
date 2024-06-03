@@ -55,3 +55,23 @@ export function findFirst(
   if (element.matches(selector)) return element;
   return element.querySelector(selector);
 }
+
+/**
+ * Tries to determine a background color from its ancestors.
+ * @param element
+ */
+export function getBackgroundColor(element: HTMLElement): string | null {
+  let parentElement = element.parentElement;
+  while (parentElement) {
+    const style = window.getComputedStyle(parentElement);
+    const bgColor = style.getPropertyValue('background-color');
+
+    if (bgColor !== 'rgba(0, 0, 0, 0)' && bgColor !== 'transparent') {
+      return bgColor; // Return the valid background color
+    }
+
+    parentElement = parentElement.parentElement; // Traverse to the next parent element
+  }
+
+  return null; // Return null if no valid background color was found
+}

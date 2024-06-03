@@ -21,9 +21,7 @@ const props = defineProps<IProps>();
     :message-width="true"
     :show-type="false">
     <div>
-      <span>
-        <ly-markdown-view :md="model.content.text!" class="text-sm" />
-      </span>
+      <ly-markdown-view :md="model.content.text!" class="text-sm" :max-height="true" />
     </div>
   </content-stream-entry>
 </template>

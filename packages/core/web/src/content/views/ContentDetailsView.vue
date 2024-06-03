@@ -84,7 +84,7 @@ function backToStream() {
       <div v-else class="m-4 rounded border border-divide bg-main p-2 md:p-4">
         <ly-loader />
       </div>
-      <div class="mb-2 flex w-full items-center justify-center gap-1">
+      <div class="flex w-full items-center justify-center gap-1 pb-2">
         <ly-button
           class="secondary py-1 text-xxs font-semibold uppercase text-secondary dark:text-secondary"
           @click="backToStream">

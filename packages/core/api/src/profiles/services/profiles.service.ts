@@ -16,6 +16,7 @@ import {
   CreateUserProfilePermission,
   CreateGroupProfilePermission,
   CreateOrganizationProfilePermission,
+  UserStatus,
 } from '@lyvely/interface';
 import { MembershipsDao, ProfileDao } from '../daos';
 import { ProfileContext, ProtectedProfileContext } from '../contexts';
@@ -50,7 +51,6 @@ import { ConfigurationPath } from '@/config';
 import { ProfilePermissionsService } from './profile-permissions.service';
 import { GlobalPermissionsService } from '@/permissions';
 import { pick } from 'lodash';
-import { UserStatus } from '@lyvely/interface/src';
 
 @Injectable()
 export class ProfilesService {
