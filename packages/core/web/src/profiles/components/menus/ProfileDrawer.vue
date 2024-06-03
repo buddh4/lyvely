@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed, Ref, ref } from 'vue';
-import { watchMaxSize, isMaxViewSize, LyMenuEntry } from '@lyvely/ui';
+import { watchMaxSize, isMaxViewSize, LyMenuEntry, useGlobalScroll } from '@lyvely/ui';
 import { usePageStore } from '@/ui';
 import { translate } from '@/i18n';
 import { useProfileStore } from '@/profiles/stores';
@@ -46,6 +46,7 @@ function onSwipeEnd(direction: UseSwipeDirection) {
 const appDrawerOverlay = ref<HTMLElement>() as Ref<HTMLElement>;
 const { direction } = useSwipe(appDrawer, {
   onSwipeEnd() {
+    debugger;
     onSwipeEnd(direction.value!);
   },
 });

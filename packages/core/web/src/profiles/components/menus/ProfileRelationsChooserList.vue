@@ -2,7 +2,7 @@
 import { isMultiUserProfile, ProfileRelationInfo } from '@lyvely/interface';
 import { storeToRefs } from 'pinia';
 import { useProfileStore } from '../../stores';
-import { profileIdRoute } from '../../routes';
+import { isProfileRoute, profileIdRoute } from '../../routes';
 import { isNavigationFailure, useRouter } from 'vue-router';
 import ProfileAvatar from '../ProfileAvatar.vue';
 
@@ -15,11 +15,12 @@ const router = useRouter();
 
 async function setProfile(pid: string) {
   const currentRoute = router.currentRoute.value;
-  const isProfileView = !!currentRoute.meta.isPublic;
+  const isProfileView = isProfileRoute(currentRoute);
 
   const viewName = isProfileView
     ? currentRoute.meta.baseName || <string>currentRoute.name
     : undefined;
+
   const result = await router.push(profileIdRoute(pid, { viewName }));
   if (isNavigationFailure(result)) console.error(result);
 }

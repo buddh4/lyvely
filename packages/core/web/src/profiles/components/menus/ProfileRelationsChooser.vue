@@ -104,7 +104,9 @@ const { isAllowed: canCreateOrganization } = useGlobalPermissions(
           @click="createOrganization" />
       </div>
     </li>
+
     <profile-relations-chooser-list :relations="organizations" />
+
     <li class="px-4 py-3">
       <div class="flex items-center">
         <span class="text-sm font-bold">

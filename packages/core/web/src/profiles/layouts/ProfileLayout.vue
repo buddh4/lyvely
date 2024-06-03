@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Size, LyComponentStack, isFormField } from '@lyvely/ui';
+import { Size, LyComponentStack, isFormField, useGlobalScroll } from '@lyvely/ui';
 import ProfileDrawer from '../components/menus/ProfileDrawer.vue';
 import MainProfileContainer from '../components/MainProfileContainer.vue';
 import MobileFooterMenu from '../components/menus/MobileFooterMenu.vue';
@@ -35,15 +35,7 @@ const props = withDefaults(defineProps<IProps>(), {
 
 const containerProps = computed(() => ({ width: props.containerWidth }));
 
-let isScrolling = false;
-
-window.addEventListener('scroll', () => {
-  isScrolling = true;
-});
-
-window.addEventListener('touchend', () => {
-  isScrolling = false;
-});
+const { isScrolling } = useGlobalScroll();
 
 const { direction } = useSwipe(root, {
   onSwipeEnd(e: TouchEvent) {
@@ -53,7 +45,7 @@ const { direction } = useSwipe(root, {
     if (
       noSwipeElement ||
       noSwipe.value ||
-      isScrolling ||
+      isScrolling.value ||
       showSidebar.value ||
       showAccountDrawer.value
     )

@@ -1,5 +1,6 @@
-import { RouteLocationRaw, LocationQueryRaw } from 'vue-router';
+import { RouteLocationRaw, LocationQueryRaw, RouteLocation } from 'vue-router';
 import { UrlRoute } from '@lyvely/interface';
+import { isNotNil } from '@lyvely/common';
 export function profileRoot() {
   return '/p';
 }
@@ -44,6 +45,10 @@ export function profilePath(subPath?: string, handle = ':handle'): string {
   }
 
   return profilePath + subPath;
+}
+
+export function isProfileRoute(route: RouteLocation): boolean {
+  return isNotNil(route.params.handle) || isNotNil(route.params.pid);
 }
 
 export function urlRoute(route: UrlRoute): RouteLocationRaw {
