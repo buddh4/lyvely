@@ -185,9 +185,4 @@ const maxWidth = true;
 .content-stream-entry-body {
   color: var(--text-main);
 }
-
-.content-stream-entry-body a[target^='_blank'] {
-  display: flex;
-  align-items: center;
-}
 </style>
