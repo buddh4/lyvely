@@ -24,5 +24,5 @@ export const ProfilesEndpoints = {
   ARCHIVE: ':pid/archive',
   RESTORE: ':pid/restore',
   UPDATE_AVATAR: ':pid/avatar',
-  SET_CALENDAR_PREFERENCES: 'set-calendar-preferences',
+  SET_CALENDAR_PREFERENCES: ':pid/set-calendar-preferences',
 };

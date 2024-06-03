@@ -161,7 +161,6 @@ export class ProfilesController implements ProfilesEndpoint {
 
   @ProfileEndpoint()
   @ProfileRole(ProfileRelationRole.Admin)
-  @ProfileEndpoint()
   @Post(ProfilesEndpoints.SET_CALENDAR_PREFERENCES)
   async setCalendarPreferences(
     @Body() model: CalendarPreferences,

@@ -27,8 +27,8 @@ export class CalendarPreferences implements ICalendarPreferences {
   @Max(6)
   yearStart?: number;
 
-  constructor(data: PropertiesOf<CalendarPreferences>) {
-    this.weekStart = data.weekStart;
-    this.yearStart = data.yearStart;
+  constructor(data?: PropertiesOf<CalendarPreferences>) {
+    this.weekStart = data?.weekStart;
+    this.yearStart = data?.yearStart;
   }
 }

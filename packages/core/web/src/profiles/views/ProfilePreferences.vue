@@ -12,12 +12,10 @@ import { useProfileCalendarPreferencesStore, useProfileStore } from '@/profiles/
 
 const profileStore = useProfileStore();
 const { profile } = storeToRefs(profileStore);
-const updateCalendarPreferencesStore = useProfileCalendarPreferencesStore();
+const store = useProfileCalendarPreferencesStore();
 
-const { setWeekStart, reset, setYearStart } = updateCalendarPreferencesStore;
-const { showWeekStartModal, weekStart, showYearStartModal, yearStart } = storeToRefs(
-  updateCalendarPreferencesStore
-);
+const { setWeekStart, reset, setYearStart, status } = store;
+const { showWeekStartModal, weekStart, showYearStartModal, yearStart } = storeToRefs(store);
 
 const weekStartName = computed(() => {
   let { weekStart } = getDefaultCalendarPreferences(profile.value!.locale || getFallbackLocale());
@@ -92,6 +90,7 @@ const padding = 'py-2 md:py-4';
   <ly-modal
     v-model="showWeekStartModal"
     title="profiles.i18n.week-start"
+    :is-loading="status.isStatusLoading()"
     @submit="setWeekStart"
     @cancel="reset">
     <div class="flex flex-col gap-2">
@@ -111,6 +110,7 @@ const padding = 'py-2 md:py-4';
   <ly-modal
     v-model="showYearStartModal"
     title="profiles.i18n.week-start"
+    :is-loading="status.isStatusLoading()"
     @submit="setYearStart"
     @cancel="reset">
     <div class="flex flex-col gap-2">

@@ -2,7 +2,7 @@ import { CalendarPreferences, SettingsUpdateResponse } from '@lyvely/interface';
 import { getDefaultCalendarPreferences, ICalendarPreferences } from '@lyvely/dates';
 import { ref, ComputedRef, Ref, watch } from 'vue';
 import { validate } from 'class-validator';
-import { useGlobalDialogStore } from '@/core';
+import { loadingStatus, useGlobalDialogStore, useStatus } from '@/core';
 import { getFallbackLocale } from '@/i18n';
 
 export interface ICalendarPreferenceClient {
@@ -29,6 +29,8 @@ export const useCalendarPreferences = (options: ICalendarPreferencesOptions) => 
   const weekStart = ref(getPreferences()?.weekStart ?? defaults.weekStart);
   const yearStart = ref(getPreferences()?.yearStart ?? defaults.yearStart);
 
+  const status = useStatus();
+
   function reset() {
     weekStart.value = getPreferences()?.weekStart ?? defaults.weekStart;
     yearStart.value = getPreferences()?.yearStart ?? defaults.yearStart;
@@ -53,7 +55,7 @@ export const useCalendarPreferences = (options: ICalendarPreferencesOptions) => 
     }
 
     try {
-      const response = await client.setCalendarPreferences(dto);
+      const response = await loadingStatus(() => client.setCalendarPreferences(dto), status);
       setSettings(response.settings);
     } catch (e) {
       showError();
@@ -72,6 +74,7 @@ export const useCalendarPreferences = (options: ICalendarPreferencesOptions) => 
     weekStart,
     yearStart,
     reset,
+    status,
     showWeekStartModal,
     showYearStartModal,
     setWeekStart,
