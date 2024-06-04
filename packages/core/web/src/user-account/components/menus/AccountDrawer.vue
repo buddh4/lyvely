@@ -33,6 +33,7 @@ function onMenuItemClick() {
 <template>
   <div class="flex items-center justify-end">
     <button
+      type="button"
       :class="accountDrawerButtonClass"
       data-id="btn-account-drawer"
       aria-controls="btn-account-drawer"

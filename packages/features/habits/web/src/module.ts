@@ -60,11 +60,11 @@ export default () => {
           create: {
             mode: 'modal',
             modelClass: CreateHabitModel,
-            component: () => import('./components/modals/EditHabitModal.vue'),
+            component: () => import('./components/modals/UpsertHabitModal.vue'),
           },
           edit: {
             mode: 'modal',
-            component: () => import('./components/modals/EditHabitModal.vue'),
+            component: () => import('./components/modals/UpsertHabitModal.vue'),
           },
           stream: {
             details: () => import('./components/content-stream/HabitDetails.vue'),

@@ -48,6 +48,7 @@ const { model } = toRefs(props);
     <div :class="classNames">
       <button
         v-if="dragActive"
+        type="button"
         class="item-drag-button my-auto mr-2 w-5 cursor-move text-secondary"
         @keyup.shift.up="$emit('moveUp', model, $el)"
         @keyup.shift.down="$emit('moveDown', model, $el)">

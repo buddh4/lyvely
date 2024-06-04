@@ -31,6 +31,7 @@ function onAvatarUpdate(avatar: AvatarModel) {
 <template>
   <div v-if="user" class="flex items-center justify-center">
     <button
+      type="button"
       data-id="btn-change-avatar"
       role="button"
       class="relative m-5 cursor-pointer"

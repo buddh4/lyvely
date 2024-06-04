@@ -76,6 +76,7 @@ function toggle() {
       <slot name="trigger" :toggle="toggle" :state="open">
         <button
           :id="id"
+          type="button"
           :class="buttonClassName"
           :aria-expanded="open ? 'true' : 'false'"
           @click="toggle">

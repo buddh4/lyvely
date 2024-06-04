@@ -54,6 +54,7 @@ function getSeriesTypeName(seriesId: string) {
         <ly-dimmed class="text-xs" :truncate="true" :text="getSeriesTypeName(series.type)" />
       </div>
       <button
+        type="button"
         class="flex w-full flex-col items-center justify-center rounded border border-divide p-4"
         role="button"
         @click="addSeries">

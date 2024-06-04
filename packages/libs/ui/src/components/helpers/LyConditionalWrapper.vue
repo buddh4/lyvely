@@ -1,10 +1,16 @@
 <script lang="ts" setup>
-import { computed, DefineComponent, resolveDynamicComponent } from 'vue';
+import { computed, DefineComponent, resolveDynamicComponent, useAttrs } from 'vue';
+
+defineOptions({
+  inheritAttrs: false,
+});
 
 interface IProps {
   if: boolean;
   tag?: string | DefineComponent;
 }
+
+const attrs = useAttrs();
 
 const props = withDefaults(defineProps<IProps>(), {
   tag: 'div',
@@ -20,7 +26,7 @@ const wrapper = computed(() => {
 </script>
 
 <template>
-  <component :is="wrapper" v-if="props.if">
+  <component :is="wrapper" v-bind="attrs" v-if="props.if">
     <slot />
   </component>
   <template v-else>

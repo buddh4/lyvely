@@ -75,6 +75,7 @@ const isEmptyUnscheduled = computed(
     @focusin="showCreateButton = true">
     <button
       v-if="showTodayIcon"
+      type="button"
       class="today-button absolute left-2.5"
       :title="t('calendar-plan.nav-today')"
       :aria-controls="itemsId"
@@ -94,6 +95,7 @@ const isEmptyUnscheduled = computed(
 
     <button
       class="text-body my-0 inline-block cursor-pointer select-none"
+      type="button"
       :aria-controls="itemsId"
       :aria-label="accessibleTitle"
       :aria-expanded="collapsed ? 'false' : 'true'"

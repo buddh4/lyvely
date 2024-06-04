@@ -90,7 +90,10 @@ onUnmounted(unwatchDate);
             {{ leftCaret }}
           </ly-button>
 
-          <button class="text-body select-none text-xs font-bold" :aria-label="accessibleTitle">
+          <button
+            type="button"
+            class="text-body select-none text-xs font-bold"
+            :aria-label="accessibleTitle">
             <span aria-hidden="true">
               {{ title }}
             </span>
@@ -122,7 +125,11 @@ onUnmounted(unwatchDate);
             @stop-timer="stopTimer" />
         </div>
         <div>
-          <button v-if="showTodayIcon" :title="t('calendar-plan.nav-today')" @click="switchToToday">
+          <button
+            v-if="showTodayIcon"
+            type="button"
+            :title="t('calendar-plan.nav-today')"
+            @click="switchToToday">
             <ly-icon role="button" name="today" />
           </button>
         </div>

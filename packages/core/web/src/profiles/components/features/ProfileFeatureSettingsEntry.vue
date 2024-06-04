@@ -49,7 +49,7 @@ const padding = 'py-2 md:py-4';
           <div :class="{ 'cursor-pointer': hasSubFeatures }">
             {{ t(feature.title) }}
           </div>
-          <button v-if="hasSubFeatures">
+          <button v-if="hasSubFeatures" type="button">
             <ly-icon :name="isSelected ? 'caret-down' : 'caret-right'" />
           </button>
         </div>

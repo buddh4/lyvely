@@ -159,8 +159,8 @@ onMounted(() => {
       @focusout="onFocusOut"
       @input="onInput" />
     <div v-if="slider && editable" class="number-slider">
-      <button :class="buttonClass" @click="increment">+</button>
-      <button :class="buttonClass" @click="decrement">-</button>
+      <button :class="buttonClass" type="button" @click="increment">+</button>
+      <button :class="buttonClass" type="button" @click="decrement">-</button>
     </div>
   </ly-floating-input-layout>
 </template>

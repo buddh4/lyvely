@@ -61,6 +61,7 @@ const onAvatarUpdate = (avatar: AvatarModel) => {
             <ly-text-field property="displayName" class="mb-0" />
           </div>
           <button
+            type="button"
             data-id="btn-change-avatar"
             class="ml-3 flex w-20 cursor-pointer items-center justify-center rounded border border-divide bg-highlight"
             @click="showUpdateAvatarModal = true">

@@ -1,18 +1,17 @@
-<script lang="ts">
-export default {
-  inheritAttrs: false,
-};
-</script>
-
 <script lang="ts" setup>
-import { ref, onMounted, Ref } from 'vue';
-import { includesUtilityClass } from '@/helpers';
+import { ref, onMounted, Ref, useAttrs } from 'vue';
 import { RouteLocationRaw } from 'vue-router';
 import { isDevelopmentEnvironment } from '@/config';
 import { t, Translatable } from '@/i18n';
+import { useTwMerge } from '@/composables';
+import { omit } from 'lodash';
+
+defineOptions({
+  inheritAttrs: false,
+});
 
 export interface IProps {
-  submit?: boolean;
+  type?: 'button' | 'reset' | 'submit' | undefined;
   text?: Translatable;
   active?: boolean;
   border?: boolean;
@@ -25,9 +24,9 @@ export interface IProps {
 }
 
 const props = withDefaults(defineProps<IProps>(), {
-  submit: false,
   active: false,
   border: true,
+  type: 'button',
   text: '',
   disabled: false,
   loading: false,
@@ -37,24 +36,22 @@ const props = withDefaults(defineProps<IProps>(), {
   outlined: false,
 });
 
-function getClassNames(attrClasses: any, isActive?: boolean, loading?: boolean) {
-  return {
-    'select-none': true,
-    outlined: props.outlined,
-    button: true,
-    loading: loading,
-    'no-underline': true,
-    'text-center': true,
-    rounded: props.rounded && !includesUtilityClass(attrClasses, 'rounded'),
-    'inline-block': true,
-    'border-0': !props.border,
-    active: props.active || isActive,
-    'py-1.5': !includesUtilityClass(attrClasses, 'py'),
-    'px-2.5': !includesUtilityClass(attrClasses, 'px'),
-  };
-}
+const attrs = useAttrs();
 
-const buttonType: 'submit' | 'button' = props.submit ? 'submit' : 'button';
+function getClassNames(isActive?: boolean) {
+  const { classResult } = useTwMerge([
+    'button select-none no-underline text-center inline-block py-1.5 px-2.5',
+    {
+      outlined: props.outlined,
+      loading: props.loading,
+      rounded: props.rounded,
+      'border-0': !props.border,
+      active: props.active || isActive,
+    },
+  ]);
+
+  return classResult.value;
+}
 
 const emit = defineEmits(['click']);
 
@@ -116,11 +113,11 @@ function getAriaPressed($attrs: any) {
   <button
     v-if="!route"
     ref="button"
-    :aria-pressed="getAriaPressed($attrs)"
-    :aria-selected="getAriaSelected($attrs)"
-    :class="getClassNames($attrs.class, false, loading)"
-    v-bind="$attrs"
-    :type="buttonType"
+    :aria-pressed="getAriaPressed(attrs)"
+    :aria-selected="getAriaSelected(attrs)"
+    :class="getClassNames()"
+    v-bind="omit(attrs, 'class')"
+    :type="type"
     :disabled="disabled || loading"
     :data-loading="loading"
     @click.prevent="$emit('click')">
@@ -129,10 +126,10 @@ function getAriaPressed($attrs: any) {
   <router-link v-if="route" v-slot="{ navigate, isActive }" :to="route" custom>
     <button
       ref="button"
-      :class="getClassNames($attrs.class, isActive)"
+      :class="getClassNames(isActive)"
       :aria-selected="isActive ? 'true' : 'false'"
-      v-bind="$attrs"
-      :type="buttonType"
+      v-bind="omit(attrs, 'class')"
+      :type="type"
       :disabled="disabled"
       @click="navigate">
       <slot :active="isActive">{{ t(text) }}</slot>

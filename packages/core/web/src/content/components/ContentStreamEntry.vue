@@ -91,7 +91,7 @@ const bodyWrapperClass = computed(
   () =>
     ({
       none: 'relative',
-      message: `relative message-bubble ${bgClass} max-w-full inline-block transition duration-100 cursor-pointer border border-divide dark:hover:border-gray-600 hover:border-gray-300 px-4 py-1.5`,
+      message: `relative message-bubble ${bgClass} max-w-full inline-block max-w-full transition duration-100 cursor-pointer border border-divide dark:hover:border-gray-600 hover:border-gray-300 px-4 py-1.5`,
       block: `relative inline-flex flex-col max-w-full border border-divide dark:hover:border-gray-600 hover:border-gray-300 p-4 rounded-xl ${bgClass} inline-block`,
     })[props.bodyStyle]
 );
