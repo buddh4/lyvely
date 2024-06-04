@@ -1,5 +1,8 @@
-export function hasOverflow(elem: HTMLElement) {
-  return elem.scrollHeight > elem.clientHeight || elem.scrollWidth > elem.clientWidth;
+export function hasOverflow(elem: HTMLElement, tolerance = 0) {
+  return (
+    elem.scrollHeight - tolerance > elem.clientHeight ||
+    elem.scrollWidth - tolerance > elem.clientWidth
+  );
 }
 
 export function scrollToTop(elem: HTMLElement) {

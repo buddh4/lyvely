@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { MilestoneModel } from '@lyvely/milestones-interface';
 import { ContentModel, IStream, ContentStreamEntry } from '@lyvely/web';
-import { LyIcon } from '@lyvely/ui';
+import { LyIcon, LyMarkdownView } from '@lyvely/ui';
 
 export interface IProps {
   model: MilestoneModel;
@@ -23,14 +23,8 @@ const props = defineProps<IProps>();
     </template>
 
     <template #default>
-      <div class="flex items-center gap-1">
-        <span>{{ model.content.title }}</span>
-      </div>
-      <div>
-        <p v-if="model.content.text?.length" class="mt-2 text-sm text-dimmed">
-          {{ model.content.text }}
-        </p>
-      </div>
+      <h1 v-if="model.content.title?.length">{{ model.content.title }}</h1>
+      <ly-markdown-view :md="model.content.text" />
     </template>
   </content-stream-entry>
 </template>

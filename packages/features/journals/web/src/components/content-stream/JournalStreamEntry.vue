@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { JournalModel } from '@lyvely/journals-interface';
 import { ContentModel, IStream, ContentStreamEntry } from '@lyvely/web';
-import { LyIcon } from '@lyvely/ui';
+import { LyIcon, LyMarkdownView } from '@lyvely/ui';
 
 export interface IProps {
   model: JournalModel;
@@ -24,10 +24,8 @@ const props = defineProps<IProps>();
 
     <template #default>
       <div>
-        <span>{{ model.content.title }}</span>
-        <p v-if="model.content.text?.length" class="text-sm text-dimmed">
-          {{ model.content.text }}
-        </p>
+        <h1 v-if="model.content.title?.length">{{ model.content.title }}</h1>
+        <ly-markdown-view :md="model.content.text" />
       </div>
     </template>
   </content-stream-entry>

@@ -70,7 +70,7 @@ const html = computedAsync(async () => {
       .process(props.md);
 
     setTimeout(() => {
-      isOverflow.value = hasOverflow(stage.value!);
+      isOverflow.value = hasOverflow(stage.value!, 20);
     }, 100);
 
     return processed;
@@ -101,8 +101,12 @@ onMounted(() => {
         ref="shadowEl"
         class="show-more-shadow"
         :style="{ background: shadowBackground }"></div>
-      <ly-button v-if="showAll" text="ui.markdown-view.showLess" @click="showAll = false" />
-      <ly-button v-else text="ui.markdown-view.showMore" @click="showAll = true" />
+      <ly-button
+        v-if="showAll"
+        class="text-xs"
+        text="ui.markdown-view.showLess"
+        @click="showAll = false" />
+      <ly-button v-else class="xs" text="ui.markdown-view.showMore" @click="showAll = true" />
     </div>
   </div>
 </template>

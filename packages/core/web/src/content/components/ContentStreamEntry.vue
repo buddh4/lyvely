@@ -91,7 +91,7 @@ const bodyWrapperClass = computed(
   () =>
     ({
       none: 'relative',
-      message: `relative message-bubble ${bgClass} max-w-full inline-block max-w-full transition duration-100 cursor-pointer border border-divide dark:hover:border-gray-600 hover:border-gray-300 px-4 py-1.5`,
+      message: `inline-flex justify-center relative message-bubble ${bgClass} max-w-full inline-block max-w-full transition duration-100 cursor-pointer border border-divide dark:hover:border-gray-600 hover:border-gray-300 px-4 py-1.5`,
       block: `relative inline-flex flex-col max-w-full border border-divide dark:hover:border-gray-600 hover:border-gray-300 p-4 rounded-xl ${bgClass} inline-block`,
     })[props.bodyStyle]
 );
@@ -105,7 +105,7 @@ const maxWidth = true;
     <div v-if="showTimeSeparator" class="flex items-center justify-center text-xs text-dimmed">
       {{ timeSeparator }}
     </div>
-    <div class="flex w-full items-stretch gap-1">
+    <div class="flex items-stretch gap-1">
       <div class="flex w-9 flex-shrink-0 justify-center pt-1">
         <slot v-if="!mergeWithPrev" name="image">
           <template v-if="userInfo">
@@ -117,7 +117,7 @@ const maxWidth = true;
           </template>
         </slot>
       </div>
-      <div class="mx-3 my-0.5 w-full">
+      <div class="mx-3 my-0.5 min-w-0 grow">
         <div v-if="!mergeWithPrev" class="mb-2 text-sm">
           <span class="mr-1 font-bold">
             <slot name="authorName">
@@ -151,9 +151,7 @@ const maxWidth = true;
               <div class="content-stream-entry-body text-sm">
                 <slot>
                   <div>
-                    <div v-if="model.content.title?.length" class="flex items-center gap-1">
-                      <span>{{ model.content.title }}</span>
-                    </div>
+                    <h1 v-if="model.content.title?.length">{{ model.content.title }}</h1>
                     <ly-markdown-view :md="model.content.text!" :max-height="true" />
                     <div
                       v-if="!model.content.text?.length && !model.content.title?.length"
@@ -174,10 +172,6 @@ const maxWidth = true;
 </template>
 
 <style>
-.content-stream-entry-body {
-  font-size: 0.5em;
-}
-
 .message-bubble {
   border-radius: 18px;
 }
