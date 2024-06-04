@@ -13,7 +13,7 @@ export const useTwMerge = (
   const originalAttrs = computed(() => ({ ...useAttrs() }));
   const classAttrs = computed(() => normalizeClass(originalAttrs.value.class));
   const classDefaults = computed(() => normalizeClass(defaults));
-  const classResult = computed(() => twMerge(classAttrs.value, classDefaults.value));
+  const classResult = computed(() => twMerge(classDefaults.value, classAttrs.value));
   const attrs = computed(() => ({ ...originalAttrs.value, class: classResult.value }));
 
   return {
