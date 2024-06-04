@@ -50,7 +50,16 @@ export function isValidEmail(email: string) {
 
 export type GUID = 'md5' | 'sha256';
 
-export function isGuid(guid: string, algo: GUID = 'md5') {
+/**
+ * Determines whether the given string is a valid GUID (Globally Unique Identifier).
+ * If an algorithm of 'md5' or 'sha256' is given this function also validates the guid length.
+ *
+ * @param {string} guid - The string to be checked for GUID format.
+ * @param {string} algo - Optional. The algorithm to use for validation. Valid options are 'md5', 'sha256' or undefined.
+ * @return {boolean} - Returns true if the string is a valid GUID, otherwise returns false.
+ */
+export function isGuid(guid: string, algo?: GUID) {
+  if (!algo) return /^[A-Fa-f0-9]{1,64}$/.test(guid);
   return algo === 'md5' ? /^[A-Fa-f0-9]{32}$/.test(guid) : /^[A-Fa-f0-9]{64}$/.test(guid);
 }
 
