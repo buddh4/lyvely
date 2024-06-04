@@ -9,7 +9,7 @@ Lyvely offers various tools aimed at nurturing and monitoring the important choi
 and analyze your development while ensuring you have fun in the process. In the following guides, you will find examples
 of how you can use the Lyvely platform to improve your health.
 
-The following recipes serve as inspiration and guideline for your own Lyvely journey.
+The following recipes serve as inspiration and guideline for your own Lyvely journey and are constantly being expanded.
 
 :::warning
 While the following recipes and tips can help you manage your health, they are not a substitute for professional medical

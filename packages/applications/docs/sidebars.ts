@@ -17,6 +17,7 @@ const sidebars: SidebarsConfig = {
     Guide: [
         'guide/intro',
         'guide/health',
+        'guide/team',
       ],
     Administration: [
         'admin/intro/installation',

@@ -22,21 +22,22 @@ const DevFeatureList: FeatureItem[] = [
     description: (
       <>
         Create your own custom modules and leverage Lyvely's extensive APIs tailored for implementing state of the art
-        self-improvement and collaboration platforms.
+        self-improvement and collaboration platforms. Utilize type-safe interfaces to ensure consistency and share
+        validation and domain logic between your frontend and backend.
       </>
     ),
   },
   {
-    title: 'Permissions & ACL',
+    title: 'Permissions',
     svgViewBox: '0 0 20 20',
     svgPaths: [
       'M4 8v-2c0-3.314 2.686-6 6-6s6 2.686 6 6v0 2h1c1.105 0 2 0.895 2 2v0 8c0 1.105-0.895 2-2 2v0h-14c-1.105 0-2-0.895-2-2v0-8c0-1.1 0.9-2 2-2h1zM9 14.73v2.27h2v-2.27c0.602-0.352 1-0.996 1-1.732 0-1.105-0.895-2-2-2s-2 0.895-2 2c0 0.736 0.398 1.38 0.991 1.727l0.009 0.005zM7 6v2h6v-2c0-1.657-1.343-3-3-3s-3 1.343-3 3v0z'
     ],
     description: (
       <>
-        Permissions are used to manage access to certain features of a platform. Lyvely's Permission API allows you to
-        create global, profile and content level permissions as well as visibility rules seamlessly integrated in the
-        frontend and backend Access Control Layer (ACL).
+        Permissions manage access to specific platform features. Lyvely's Permission API enables the creation of global,
+        profile, and content-level permissions, as well as visibility rules, seamlessly integrated into both the frontend
+        and backend Access Control Layer (ACL).
       </>
     ),
   },
@@ -48,8 +49,9 @@ const DevFeatureList: FeatureItem[] = [
     ],
     description: (
       <>
-        Use the Policy API to create more complex and configurable rules for the Lyvely platform. With policies you can
-        implement diverse strategies for certain features, which can be overwritten by configuration.
+        Use the Policy API to create complex and configurable rules for the Lyvely platform. With policies, you can
+        implement diverse strategies for various features, which can be overridden by configuration. The Policy API is
+        designed to enhance the platform's flexibility.
       </>
     ),
   },
@@ -61,9 +63,9 @@ const DevFeatureList: FeatureItem[] = [
     ],
     description: (
       <>
-        The Lyvely platform is powered by a sophisticated Content API used for a seamless integration of all kinds of
-        content. The core platform and default features already provide you with content types as Tasks, Habits, Journals,
-        Milestones and Messages.
+        The Lyvely platform is powered by a sophisticated Content API, enabling seamless integration of various types
+        of content. The flexible content schema includes configuration, state, metadata, and content data, along
+        with a comprehensive approach to visibility and read, write, and manage policies.
       </>
     ),
   },
@@ -76,7 +78,8 @@ const DevFeatureList: FeatureItem[] = [
     description: (
       <>
         The Feature API enables the creation of feature switches to activate or deactivate certain platform features and thus enables
-        the implementation of a highly flexible and extendable platform.
+        the implementation of a highly flexible platform. Feature switches are seamlessly integrated into the access layer of the
+        frontend and backend.
       </>
     ),
   },
@@ -88,9 +91,8 @@ const DevFeatureList: FeatureItem[] = [
     ],
     description: (
       <>
-        Lyvely offers multi-language support for your modules with translation capabilities in both the frontend and
-        backend,
-        allowing users the configuration of locales, calendar preferences and timezones.
+        Lyvely offers multi-language support for your modules, with translation capabilities in both the frontend and
+        backend. Users can configure locales, calendar preferences, and timezones to suit their needs.
       </>
     ),
   },
@@ -103,7 +105,8 @@ const DevFeatureList: FeatureItem[] = [
     description: (
       <>
         The Live API enables the implementation of real-time features and live updates for your module view, ensuring a
-        responsive and modern user experience.
+        responsive and modern user experience. Effortlessly implement type-safe real-time updates for your collaborative
+        tools and keep your users up to date.
       </>
     ),
   },
@@ -116,10 +119,8 @@ const DevFeatureList: FeatureItem[] = [
     description: (
       <>
         Lyvely features a custom UI component library that ensures a unique and cohesive look and feel across the
-        platform.
-        This library includes components highly adapted to the platform, ranging from simple buttons and forms to
-        complex
-        layouts and extendable utility components like stacks and menus.
+        platform. This library includes components highly adapted to the platform, ranging from simple buttons and forms to
+        complex layouts and extendable utility components like stacks and menus.
       </>
     ),
   },
@@ -132,10 +133,8 @@ const DevFeatureList: FeatureItem[] = [
     description: (
       <>
         As a full-stack TypeScript platform, Lyvely enables the implementation of type-safe and reusable interfaces and
-        features.
-        This is achieved by splitting features into three packages: one for the frontend, one for the backend, and one
-        for interfaces,
-        all managed within a monorepo.
+        features. This is achieved by splitting features into three packages: a frontend, a backend, and one
+        interface package, all managed within a monorepo.
       </>
     ),
   },
@@ -151,111 +150,115 @@ const UserFeatureList: FeatureItem[] = [
     description: (
       <>
         Create multiple profiles from private single user profiles to public group or organization profiles. Profiles
-        are isolated areas within the platform with own users, permissions and set of feature.
+        are isolated areas within the platform with an own set of members, permissions and set of feature.
       </>
     ),
   },
   {
     title: 'Habits',
-    svgViewBox: '0 0 20 20',
+    svgViewBox: '0 0 24 24',
     svgPaths: [
-      'M19 11c-0.142 2.503-1.491 4.664-3.47 5.922l-0.030 0.018-5.5 3.060-5.5-3.060c-2.009-1.276-3.358-3.437-3.499-5.92l-0.001-0.020v-8c3.38 0 6.5-1.12 9-3 2.5 1.89 5.62 3 9 3v8zM10 12.080l2.92 2.040-1.030-3.41 2.84-2.15-3.56-0.080-1.17-3.36-1.17 3.36-3.56 0.080 2.83 2.14-1.030 3.4 2.93-2.010z'
+      'M21.984 5.203l-11.391 11.391-4.266-4.219 1.453-1.406 2.813 2.813 9.984-9.984zM12 20.016q-1.641 0-3.094-0.633t-2.555-1.734-1.734-2.555-0.633-3.094 0.633-3.094 1.734-2.555 2.555-1.734 3.094-0.633q1.172 0 2.25 0.328t2.016 0.938l1.453-1.453q-1.219-0.844-2.672-1.313t-3.047-0.469q-2.063 0-3.867 0.773t-3.188 2.156-2.156 3.188-0.773 3.867 0.773 3.867 2.156 3.188 3.188 2.156 3.867 0.773q1.313 0 2.508-0.305t2.273-0.914l-1.5-1.5q-0.75 0.375-1.57 0.563t-1.711 0.188zM18.984 15h-3v2.016h3v3h2.016v-3h3v-2.016h-3v-3h-2.016v3z'
     ],
     description: (
       <>
-        Create multiple profiles from private single user profiles to public group or organization profiles. Profiles
-        are isolated areas within the platform with own users, permissions and set of feature.
+        Habits enable you to monitor recurring activities through a calendar-plan view. The Habits module supports both
+        'shared' and 'per-user' habits, allowing for collaborative tracking or individual monitoring by each profile member.
       </>
     ),
   },
   {
     title: 'Tasks',
-    svgViewBox: '0 0 20 20',
+    svgViewBox: '0 0 24 24',
     svgPaths: [
-      'M19 11c-0.142 2.503-1.491 4.664-3.47 5.922l-0.030 0.018-5.5 3.060-5.5-3.060c-2.009-1.276-3.358-3.437-3.499-5.92l-0.001-0.020v-8c3.38 0 6.5-1.12 9-3 2.5 1.89 5.62 3 9 3v8zM10 12.080l2.92 2.040-1.030-3.41 2.84-2.15-3.56-0.080-1.17-3.36-1.17 3.36-3.56 0.080 2.83 2.14-1.030 3.4 2.93-2.010z'
+      'M16 19h-8c-1.654 0-3-1.346-3-3v-8c0-1.654 1.346-3 3-3h5c0.553 0 1 0.448 1 1s-0.447 1-1 1h-5c-0.552 0-1 0.449-1 1v8c0 0.551 0.448 1 1 1h8c0.552 0 1-0.449 1-1v-3c0-0.552 0.447-1 1-1s1 0.448 1 1v3c0 1.654-1.346 3-3 3z',
+      'M13.166 14.833c-0.35 0-0.689-0.139-0.941-0.391l-2.668-2.667c-0.52-0.521-0.52-1.365 0-1.885s1.365-0.521 1.887 0l1.416 1.417 3.475-5.455c0.357-0.644 1.17-0.877 1.814-0.519s0.875 1.17 0.518 1.813l-4.334 7c-0.203 0.366-0.566 0.615-0.98 0.673-0.064 0.010-0.124 0.014-0.187 0.014z',
     ],
     description: (
       <>
-        Create multiple profiles from private single user profiles to public group or organization profiles. Profiles
-        are isolated areas within the platform with own users, permissions and set of feature.
-      </>
-    ),
-  },
-  {
-    title: 'Journals',
-    svgViewBox: '0 0 20 20',
-    svgPaths: [
-      'M19 11c-0.142 2.503-1.491 4.664-3.47 5.922l-0.030 0.018-5.5 3.060-5.5-3.060c-2.009-1.276-3.358-3.437-3.499-5.92l-0.001-0.020v-8c3.38 0 6.5-1.12 9-3 2.5 1.89 5.62 3 9 3v8zM10 12.080l2.92 2.040-1.030-3.41 2.84-2.15-3.56-0.080-1.17-3.36-1.17 3.36-3.56 0.080 2.83 2.14-1.030 3.4 2.93-2.010z'
-    ],
-    description: (
-      <>
-        Create multiple profiles from private single user profiles to public group or organization profiles. Profiles
-        are isolated areas within the platform with own users, permissions and set of feature.
-      </>
-    ),
-  },
-  {
-    title: 'Analytics',
-    svgViewBox: '0 0 20 20',
-    svgPaths: [
-      'M19 11c-0.142 2.503-1.491 4.664-3.47 5.922l-0.030 0.018-5.5 3.060-5.5-3.060c-2.009-1.276-3.358-3.437-3.499-5.92l-0.001-0.020v-8c3.38 0 6.5-1.12 9-3 2.5 1.89 5.62 3 9 3v8zM10 12.080l2.92 2.040-1.030-3.41 2.84-2.15-3.56-0.080-1.17-3.36-1.17 3.36-3.56 0.080 2.83 2.14-1.030 3.4 2.93-2.010z'
-    ],
-    description: (
-      <>
-        Create multiple profiles from private single user profiles to public group or organization profiles. Profiles
-        are isolated areas within the platform with own users, permissions and set of feature.
+        Manage 'shared' or 'per-user' tasks and discuss upcoming tasks with your team. Use the calendar-plan view to
+        filter, prioritize and schedule tasks in a profile.
       </>
     ),
   },
   {
     title: 'Milestones',
-    svgViewBox: '0 0 20 20',
+    svgViewBox: '0 0 24 24',
     svgPaths: [
-      'M19 11c-0.142 2.503-1.491 4.664-3.47 5.922l-0.030 0.018-5.5 3.060-5.5-3.060c-2.009-1.276-3.358-3.437-3.499-5.92l-0.001-0.020v-8c3.38 0 6.5-1.12 9-3 2.5 1.89 5.62 3 9 3v8zM10 12.080l2.92 2.040-1.030-3.41 2.84-2.15-3.56-0.080-1.17-3.36-1.17 3.36-3.56 0.080 2.83 2.14-1.030 3.4 2.93-2.010z'
+      'M23 12c0-3.037-1.232-5.789-3.222-7.778s-4.741-3.222-7.778-3.222-5.789 1.232-7.778 3.222-3.222 4.741-3.222 7.778 1.232 5.789 3.222 7.778 4.741 3.222 7.778 3.222 5.789-1.232 7.778-3.222 3.222-4.741 3.222-7.778zM21 12c0 2.486-1.006 4.734-2.636 6.364s-3.878 2.636-6.364 2.636-4.734-1.006-6.364-2.636-2.636-3.878-2.636-6.364 1.006-4.734 2.636-6.364 3.878-2.636 6.364-2.636 4.734 1.006 6.364 2.636 2.636 3.878 2.636 6.364zM19 12c0-1.933-0.785-3.684-2.050-4.95s-3.017-2.050-4.95-2.050-3.684 0.785-4.95 2.050-2.050 3.017-2.050 4.95 0.785 3.684 2.050 4.95 3.017 2.050 4.95 2.050 3.684-0.785 4.95-2.050 2.050-3.017 2.050-4.95zM17 12c0 1.381-0.559 2.63-1.464 3.536s-2.155 1.464-3.536 1.464-2.63-0.559-3.536-1.464-1.464-2.155-1.464-3.536 0.559-2.63 1.464-3.536 2.155-1.464 3.536-1.464 2.63 0.559 3.536 1.464 1.464 2.155 1.464 3.536zM15 12c0-0.828-0.337-1.58-0.879-2.121s-1.293-0.879-2.121-0.879-1.58 0.337-2.121 0.879-0.879 1.293-0.879 2.121 0.337 1.58 0.879 2.121 1.293 0.879 2.121 0.879 1.58-0.337 2.121-0.879 0.879-1.293 0.879-2.121zM13 12c0 0.276-0.111 0.525-0.293 0.707s-0.431 0.293-0.707 0.293-0.525-0.111-0.707-0.293-0.293-0.431-0.293-0.707 0.111-0.525 0.293-0.707 0.431-0.293 0.707-0.293 0.525 0.111 0.707 0.293 0.293 0.431 0.293 0.707z',
     ],
     description: (
       <>
-        Create multiple profiles from private single user profiles to public group or organization profiles. Profiles
-        are isolated areas within the platform with own users, permissions and set of feature.
+        The “Milestones” feature can be used to track and discuss the progression of different types of content by
+        summarizing them in a milestone which can be prioritized and scheduled through a calendar-plan view.
+      </>
+    ),
+  },
+  {
+    title: 'Journals',
+    svgViewBox: '0 0 24 24',
+    svgPaths: [
+      'M17.484 14.344q1.219 0 2.531 0.234v1.5q-0.938-0.234-2.531-0.234-2.813 0-4.5 0.984v-1.688q1.781-0.797 4.5-0.797zM12.984 12.469q1.969-0.797 4.5-0.797 1.219 0 2.531 0.234v1.5q-0.938-0.234-2.531-0.234-2.813 0-4.5 0.984v-1.688zM17.484 10.5q-2.813 0-4.5 0.984v-1.641q1.875-0.844 4.5-0.844 1.219 0 2.531 0.234v1.547q-1.125-0.281-2.531-0.281zM21 18.516v-11.531q-1.547-0.469-3.516-0.469-3.047 0-5.484 1.5v11.484q2.438-1.5 5.484-1.5 1.828 0 3.516 0.516zM17.484 4.5q3.563 0 5.531 1.5v14.578q0 0.188-0.164 0.352t-0.352 0.164q-0.141 0-0.234-0.047-1.922-1.031-4.781-1.031-3.047 0-5.484 1.5-2.016-1.5-5.484-1.5-2.531 0-4.781 1.078-0.047 0-0.117 0.023t-0.117 0.023q-0.188 0-0.352-0.141t-0.164-0.328v-14.672q2.016-1.5 5.531-1.5 3.469 0 5.484 1.5 2.016-1.5 5.484-1.5z',
+    ],
+    description: (
+      <>
+        The Journals feature is meant to track any kind of recurring data for reporting purposes in a calendar-plan view
+        and supports additional input types as 'text', 'number', 'time', 'dropdown' and 'radio' selections.
+      </>
+    ),
+  },
+  {
+    title: 'Analytics',
+    svgViewBox: '0 0 32 32',
+    svgPaths: [
+      'M0 26h32v4h-32zM4 18h4v6h-4zM10 10h4v14h-4zM16 16h4v8h-4zM22 4h4v20h-4z'
+    ],
+    description: (
+      <>
+        The Analytics feature is a powerful tool for evaluating data such as habit and journal data as well as profile
+        scores by creating customized charts. This feature allows you to add and combine multiple chart series to
+        analyze the correlations between your profile data
       </>
     ),
   },
   {
     title: 'Legal',
-    svgViewBox: '0 0 20 20',
+    svgViewBox: '0 0 24 24',
     svgPaths: [
-      'M19 11c-0.142 2.503-1.491 4.664-3.47 5.922l-0.030 0.018-5.5 3.060-5.5-3.060c-2.009-1.276-3.358-3.437-3.499-5.92l-0.001-0.020v-8c3.38 0 6.5-1.12 9-3 2.5 1.89 5.62 3 9 3v8zM10 12.080l2.92 2.040-1.030-3.41 2.84-2.15-3.56-0.080-1.17-3.36-1.17 3.36-3.56 0.080 2.83 2.14-1.030 3.4 2.93-2.010z'
+      'M12 0.984l-9 4.031v6q0 2.063 0.68 4.008t1.898 3.586 2.859 2.789 3.563 1.617q1.922-0.469 3.563-1.617t2.859-2.789 1.898-3.586 0.68-4.008v-6l-9-4.031zM11.016 6.984h1.969v2.016h-1.969v-2.016zM11.016 11.016h1.969v6h-1.969v-6z'
     ],
     description: (
       <>
-        Create multiple profiles from private single user profiles to public group or organization profiles. Profiles
-        are isolated areas within the platform with own users, permissions and set of feature.
+        The Legal module is used to manage legal links and translatable texts, as privacy notes terms of service which are
+        embedded in certain parts of your platform to comply with regulatory requirements and ensure legal compliance. At the
+        moment the links and texts are managed by configuration file
       </>
     ),
   },
   {
     title: 'Messages',
-    svgViewBox: '0 0 20 20',
+    svgViewBox: '0 0 24 24',
     svgPaths: [
-      'M19 11c-0.142 2.503-1.491 4.664-3.47 5.922l-0.030 0.018-5.5 3.060-5.5-3.060c-2.009-1.276-3.358-3.437-3.499-5.92l-0.001-0.020v-8c3.38 0 6.5-1.12 9-3 2.5 1.89 5.62 3 9 3v8zM10 12.080l2.92 2.040-1.030-3.41 2.84-2.15-3.56-0.080-1.17-3.36-1.17 3.36-3.56 0.080 2.83 2.14-1.030 3.4 2.93-2.010z'
+      'M18 8.016v-2.016h-12v2.016h12zM18 11.016v-2.016h-12v2.016h12zM18 14.016v-2.016h-12v2.016h12zM20.016 2.016q0.797 0 1.383 0.586t0.586 1.383v12q0 0.797-0.586 1.406t-1.383 0.609h-14.016l-3.984 3.984v-18q0-0.797 0.586-1.383t1.383-0.586h16.031z'
     ],
     description: (
       <>
-        Create multiple profiles from private single user profiles to public group or organization profiles. Profiles
-        are isolated areas within the platform with own users, permissions and set of feature.
+        Messages represent the simplest form of content and can be used to chat with other profile members. Both messages
+        and most other content types support Markdown syntax for text formatting.
       </>
     ),
   },
   {
     title: 'Stream',
-    svgViewBox: '0 0 20 20',
+    svgViewBox: '0 0 24 24',
     svgPaths: [
-      'M19 11c-0.142 2.503-1.491 4.664-3.47 5.922l-0.030 0.018-5.5 3.060-5.5-3.060c-2.009-1.276-3.358-3.437-3.499-5.92l-0.001-0.020v-8c3.38 0 6.5-1.12 9-3 2.5 1.89 5.62 3 9 3v8zM10 12.080l2.92 2.040-1.030-3.41 2.84-2.15-3.56-0.080-1.17-3.36-1.17 3.36-3.56 0.080 2.83 2.14-1.030 3.4 2.93-2.010z'
+      'M3 13h18c0.552 0 1-0.448 1-1s-0.448-1-1-1h-18c-0.552 0-1 0.448-1 1s0.448 1 1 1zM3 7h18c0.552 0 1-0.448 1-1s-0.448-1-1-1h-18c-0.552 0-1 0.448-1 1s0.448 1 1 1zM3 19h18c0.552 0 1-0.448 1-1s-0.448-1-1-1h-18c-0.552 0-1 0.448-1 1s0.448 1 1 1z'
     ],
     description: (
       <>
-        Create multiple profiles from private single user profiles to public group or organization profiles. Profiles
-        are isolated areas within the platform with own users, permissions and set of feature.
+        The Stream can be used to communicate with other profile members or for brainstorming and information management.
+        The stream contains various types of content in a chat-like view. Each content entry supports multi-level
+        sub-discussions consisting of streams themselves.
       </>
     ),
   },
@@ -305,7 +308,7 @@ export default function HomepageFeatures(): JSX.Element {
         <h1 className="text-2xl text-primary">
           Features at a glance
         </h1>
-        <div class="flex justify-center">
+        <div class="flex justify-center mb-8">
           <button
             class={clsx({"bg-gray-300 dark:bg-gray-700": category.id === "user"}, {"bg-gray-100 dark:bg-gray-900": category.id !== "user"}, "rounded-l-xl rounded-r-none px-2.5 py-2 border-0 cursor-pointer")}
             onClick={() => setCategory(categories.user)}>
@@ -317,7 +320,7 @@ export default function HomepageFeatures(): JSX.Element {
             Developers
           </button>
         </div>
-        <h2 className="text-xl text-gray-400 mt-4 mb-8">
+        <h2 className="text-xl text-gray-400 mt-4 mb-6">
           {category.sub}
         </h2>
         <div className="row">

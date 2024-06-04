@@ -208,13 +208,13 @@ track any kind of recurring data for reporting purposes in a calendar-plan view 
 
 ### Milestones
 
-The Milestones feature can be used to keep track and discuss the progression of different kinds of content by grouping 
-them together within a milestone. Similar to the previous described features, the Milestone feature offers a calendar-plan
+The “Milestones” feature can be used to track and discuss the progression of different types of content by summarizing 
+them in a milestone. Similar to the previous described features, the Milestone feature offers a calendar-plan
 view for sorting and scheduling milestones by priority.
 
 ### Analytics
 
-The Analytics function is a powerful tool for evaluating data such as habit and journal data as well as profile scores by
+The Analytics feature is a powerful tool for evaluating data such as habit and journal data as well as profile scores by
 creating customized charts. This feature allows you to add and combine multiple chart series to
 analyze the correlations between your profile data. The following chart series are available by default:
 
