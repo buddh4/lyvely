@@ -9,6 +9,8 @@ import { useContentStreamFilter, useContentCreateStore } from '../stores';
 import { focusIfNotTouchScreen } from '@lyvely/ui';
 import { useProfilePermissions } from '@/profiles';
 import { t } from '@/i18n';
+import { useSwipe } from '@vueuse/core';
+import { usePageStore } from '@/ui';
 
 export interface IProps {
   parent?: ContentModel;
@@ -16,10 +18,12 @@ export interface IProps {
 
 const props = defineProps<IProps>();
 
+const { showMobileDrawer } = storeToRefs(usePageStore());
 const { filter } = useContentStreamFilter();
 const emits = defineEmits(['contentCreated']);
 
 const messageInput = ref<HTMLTextAreaElement>();
+const root = ref<HTMLElement>();
 
 const createMessageStore = useCreateMessageStore();
 const { model } = storeToRefs(createMessageStore);
@@ -69,6 +73,15 @@ function autoAlignHeight() {
   });
 }
 
+const { direction } = useSwipe(root, {
+  onSwipeEnd(e: TouchEvent) {
+    if (!showMobileDrawer.value && direction.value === 'up') {
+      e.stopPropagation();
+      showMobileDrawer.value = true;
+    }
+  },
+});
+
 onMounted(() => {
   focusIfNotTouchScreen(messageInput.value);
   messageInput.value?.addEventListener('input', () => autoAlignHeight());
@@ -76,7 +89,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="bg-main p-2 md:p-4">
+  <div ref="root" class="bg-main p-2 md:p-4">
     <div>
       <content-stream-filter-navigation />
     </div>

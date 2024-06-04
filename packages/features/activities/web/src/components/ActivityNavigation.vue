@@ -19,7 +19,7 @@ let { enabledMenuEntries } = useProfileMenu(MENU_ACTIVITIES);
           <ly-icon v-if="typeof entry.icon === 'string'" :name="entry.icon" />
           <ly-icon v-else-if="isPlainObject(entry.iconBindings)" v-bind="entry.iconBindings" />
           <span :class="!active ? 'hidden md:inline' : ''">
-            {{ t(entry.text) }}
+            {{ t(entry.text || '') }}
           </span>
         </div>
       </template>

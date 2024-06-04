@@ -7,7 +7,7 @@ import {
   useProfileStore,
 } from '@lyvely/web';
 import { RouteRecordRaw } from 'vue-router';
-import { ActivityMilestonesFeature } from '@lyvely/milestones-interface';
+import { ActivityMilestonesFeature, MilestonesFeature } from '@lyvely/milestones-interface';
 
 export const milestoneRoutes = [
   {
@@ -23,6 +23,7 @@ export const milestoneRoutes = [
     ],
     meta: {
       i18n: { load: ['milestones', 'calendar-plan'] },
+      feature: MilestonesFeature.id,
       layout: LAYOUT_PROFILE,
       title: () => t('milestones.title'),
     },

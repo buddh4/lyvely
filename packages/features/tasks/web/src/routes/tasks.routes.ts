@@ -6,7 +6,7 @@ import {
   useProfileStore,
 } from '@lyvely/web';
 import { RouteRecordRaw } from 'vue-router';
-import { ActivityTasksFeature } from '@lyvely/tasks-interface';
+import { ActivityTasksFeature, TasksFeature } from '@lyvely/tasks-interface';
 
 export const tasksRoutes: RouteRecordRaw[] = [
   {
@@ -22,7 +22,9 @@ export const tasksRoutes: RouteRecordRaw[] = [
     ],
     component: () => import('../views/TasksView.vue'),
     meta: {
+      i18n: { load: ['calendar-plan'] },
       layout: LAYOUT_PROFILE,
+      feature: TasksFeature.id,
     },
   },
 ];

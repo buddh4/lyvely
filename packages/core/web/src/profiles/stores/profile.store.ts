@@ -21,6 +21,7 @@ import { LocationQueryRaw } from 'vue-router';
 import { useAuthStore } from '../../auth';
 
 const LATEST_PROFILE_HANDLE = 'latest_profile_handle';
+const LATEST_PROFILE_FEATURES = 'latest_profile_features';
 export const latestProfileHandle = localStorageManager.getStoredValue(LATEST_PROFILE_HANDLE);
 
 export const useProfileStore = defineStore('profile', () => {
@@ -86,6 +87,24 @@ export const useProfileStore = defineStore('profile', () => {
 
   function isCurrentProfileId(id?: string) {
     return id && profile.value?.id === id;
+  }
+
+  function setActiveFeature(featureId: string) {
+    if (!this.profile.value) return;
+    const storageValue = localStorageManager.getStoredValue(
+      LATEST_PROFILE_FEATURES + this.profile.value.id
+    );
+    const value = storageValue.getJson<string[]>([]).filter((feat) => feat !== featureId);
+    value.push(featureId);
+    storageValue.setJson(value.splice(0, 5));
+  }
+
+  function getLatestFeatures(): string[] {
+    if (!this.profile.value) return [];
+    const storageValue = localStorageManager.getStoredValue(
+      LATEST_PROFILE_FEATURES + this.profile.value.id
+    );
+    return storageValue.getJson<string[]>([]);
   }
 
   async function setActiveProfile(activeProfile: ProfileWithRelationsModel) {
@@ -246,6 +265,8 @@ export const useProfileStore = defineStore('profile', () => {
     isMultiUserProfile,
     onSwitchProfile,
     getUserRole,
+    setActiveFeature,
+    getLatestFeatures,
     setUserRelations,
     isMember,
     isOwner,

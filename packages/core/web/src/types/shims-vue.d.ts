@@ -52,6 +52,7 @@ declare module 'vue-router' {
     layout?: string;
     showMobileFooter?: boolean;
     baseName?: string;
+    feature?: string;
     visibility?: ProfileVisibilityLevel;
     role?: ProfileRelationRole;
     isPublic?: boolean;

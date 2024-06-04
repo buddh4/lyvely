@@ -15,10 +15,10 @@ export interface IBaseMenuEntry {
   icon?: string;
   iconBindings?: IconBindingsIf;
   moduleId: string;
-  text: Translatable;
+  text?: Translatable;
   condition?: boolean;
   to?: RouteLocationRaw;
-  features?: string[] | string;
+  feature?: string;
   sortOrder?: number;
   click?: { (): void };
 }

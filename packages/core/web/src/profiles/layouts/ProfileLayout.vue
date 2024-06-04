@@ -9,6 +9,7 @@ import { usePageStore } from '@/ui';
 import { useSwipe } from '@vueuse/core';
 import { useUserAccountStore } from '@/user-account';
 import { STACK_PROFILE_LAYOUT } from '@/profiles/profile.constants';
+import MobileDrawer from '@/profiles/components/menus/MobileDrawer.vue';
 
 const pageStore = usePageStore();
 const accountStore = useUserAccountStore();
@@ -66,7 +67,8 @@ const { direction } = useSwipe(root, {
           <router-view></router-view>
         </slot>
       </main-profile-container>
-      <mobile-footer-menu :state="showMobileFooter" />
+      <mobile-footer-menu />
+      <mobile-drawer />
     </div>
   </div>
 

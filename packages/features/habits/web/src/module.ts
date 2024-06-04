@@ -34,21 +34,23 @@ export default () => {
         moduleId: HABITS_MODULE_ID,
         text: 'habits.title',
         sortOrder: 1501,
-        features: HabitsFeature.id,
+        feature: HabitsFeature.id,
         icon: 'activity',
         condition: !useProfileFeatureStore().isFeatureEnabled(ActivityHabitsFeature.id),
         to: { name: 'Habits' },
       }));
-      registerMenuEntry(MENU_PROFILE_MOBILE_FOOTER, () => ({
-        id: 'profile-habits-footer',
-        moduleId: HABITS_MODULE_ID,
-        text: 'habits.title',
-        sortOrder: 1501,
-        features: HabitsFeature.id,
-        icon: 'activity',
-        condition: useProfileFeatureStore().isFeatureEnabled(ActivityHabitsFeature.id),
-        to: { name: 'Habits' },
-      }));
+      registerMenuEntry(MENU_PROFILE_MOBILE_FOOTER, () => {
+        return {
+          id: 'habits-footer',
+          moduleId: HABITS_MODULE_ID,
+          text: 'habits.title',
+          sortOrder: 1501,
+          feature: HabitsFeature.id,
+          icon: 'activity',
+          condition: !useProfileFeatureStore().isFeatureEnabled(ActivityHabitsFeature.id),
+          to: { name: 'Habits' },
+        };
+      });
       registerContentType({
         type: HabitModel.contentType,
         moduleId: HABITS_MODULE_ID,

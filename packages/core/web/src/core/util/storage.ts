@@ -1,4 +1,5 @@
 import { DelegateEmitter } from './emitter.utils';
+import { isNil } from '@lyvely/common';
 
 export enum Scope {
   Locale = 'localStorage',
@@ -25,7 +26,7 @@ export class StoredValue extends DelegateEmitter<StorageValueEvents> {
     });
   }
 
-  getValue() {
+  getValue(): string | null | undefined {
     if (!this.storage.isAvailable()) {
       return this.cache;
     }
@@ -51,6 +52,25 @@ export class StoredValue extends DelegateEmitter<StorageValueEvents> {
 
   toString() {
     return this.getValue();
+  }
+
+  setJson<T extends object | any[]>(defaultValue?: T) {
+    if (isNil(defaultValue)) this.removeFromStorage();
+    else this.setValue(JSON.stringify(defaultValue));
+  }
+
+  getJson<T extends object | any[]>(defaultValue: T): T;
+  getJson<T extends object | any[]>(defaultValue: undefined): T | null;
+  getJson<T extends object | any[]>(defaultValue?: T): T | null {
+    const value = this.getValue();
+    if (isNil(value)) return defaultValue || null;
+
+    try {
+      return JSON.parse(value);
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
   }
 }
 

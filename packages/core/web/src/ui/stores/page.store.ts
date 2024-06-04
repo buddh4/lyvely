@@ -10,6 +10,7 @@ export const usePageStore = defineStore('ui-page', () => {
   const showAppLoader = ref(true);
   const isOnline = useOnline();
   const showMobileFooter = ref(true);
+  const showMobileDrawer = ref(false);
   const noSwipe = ref(false);
   const hasHistory = false;
   const loaded = ref(false);
@@ -20,6 +21,10 @@ export const usePageStore = defineStore('ui-page', () => {
 
   function toggleSidebar() {
     showSidebar.value = !showSidebar.value;
+  }
+
+  function closeSidebar() {
+    showSidebar.value = false;
   }
 
   let loaderContexts = new Set<string>();
@@ -46,12 +51,14 @@ export const usePageStore = defineStore('ui-page', () => {
     showSidebar,
     noSwipe,
     toggleSidebar,
+    closeSidebar,
     toggleDark,
     setShowAppLoader,
     showAppLoader,
     setTitle,
     isOnline,
     showMobileFooter,
+    showMobileDrawer,
     hasHistory,
     loaded,
   };

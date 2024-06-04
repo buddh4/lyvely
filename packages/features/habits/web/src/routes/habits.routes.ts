@@ -7,7 +7,7 @@ import {
   useProfileStore,
 } from '@lyvely/web';
 import type { RouteRecordRaw } from 'vue-router';
-import { ActivityHabitsFeature } from '@lyvely/habits-interface';
+import { ActivityHabitsFeature, HabitsFeature } from '@lyvely/habits-interface';
 
 export const habitRoutes = [
   {
@@ -22,8 +22,9 @@ export const habitRoutes = [
       },
     ],
     meta: {
-      i18n: { load: ['habits'] },
+      i18n: { load: ['habits', 'calendar-plan'] },
       layout: LAYOUT_PROFILE,
+      feature: HabitsFeature.id,
       title: () => t('habits.title'),
     },
     component: () => import('../views/HabitsView.vue'),

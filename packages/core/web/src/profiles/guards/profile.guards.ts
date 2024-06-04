@@ -12,6 +12,7 @@ import {
 import { PATH_LOGOUT } from '@/auth';
 import { PATH_403, PATH_404, PATH_500 } from '@/ui';
 import { isNil } from '@lyvely/common';
+import { useProfileFeatures } from '@/profiles/composables';
 
 export const ifIsMultiUserProfile = async (
   to: RouteLocation,
@@ -60,12 +61,19 @@ export const loadProfileGuard = async (
     }
 
     const userRole = useProfileStore().profile!.role;
+
     if (!isNil(to.meta.visibility) && !verifyProfileVisibilityLevel(userRole, to.meta.visibility)) {
       next(PATH_403);
     }
 
     if (!isNil(to.meta.role) && !verifyProfileRoleLevel(userRole, to.meta.role)) {
       next(PATH_403);
+    }
+
+    // TODO: In some cases we may rather want to redirect to 403 or 404, but we currently need this for profile context changes
+    if (!isNil(to.meta.feature) && !useProfileFeatures(to.meta.feature).isEnabled.value) {
+      useProfileStore().setActiveFeature(to.meta.feature);
+      next(useProfileStore().getRoute());
     }
   } catch (e) {
     if (e instanceof UnauthorizedServiceException) next(PATH_LOGOUT);

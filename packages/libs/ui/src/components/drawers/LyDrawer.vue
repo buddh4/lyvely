@@ -1,12 +1,16 @@
 <script lang="ts" setup>
-import { computed, Ref, ref, toRefs, watch } from 'vue';
+import { computed, Ref, ref, toRefs, useAttrs, watch } from 'vue';
 import { uniqueId } from 'lodash';
-import { suggestFocusElement } from '@/helpers';
+import { isMaxViewSize, suggestFocusElement, watchMaxSize } from '@/helpers';
 import { useInfiniteScroll, useSwipe } from '@vueuse/core';
 import { useDrawerStore } from '@/components/drawers/drawer.store';
 import { t, Translatable } from '@/i18n';
 import LyButton from '@/components/buttons/LyButton.vue';
 import LyIcon from '@/components/icons/LyIcon.vue';
+
+defineOptions({
+  inheritAttrs: false,
+});
 
 export interface IProps {
   modelValue: boolean;
@@ -24,6 +28,7 @@ const props = withDefaults(defineProps<IProps>(), {
 const drawerId = uniqueId('drawer');
 const zIndex = ref(20);
 
+const attrs = useAttrs();
 const emit = defineEmits(['update:modelValue', 'infiniteScroll']);
 const root = ref<HTMLElement>() as Ref<HTMLElement>;
 const { modelValue } = toRefs(props);
@@ -36,6 +41,11 @@ watch(modelValue, (value) => {
     popDrawer(drawerId);
     zIndex.value = 900;
   }
+});
+
+const isSmallView = ref(isMaxViewSize('sm'));
+watchMaxSize('sm', (value) => {
+  isSmallView.value = value;
 });
 
 function close() {
@@ -70,6 +80,14 @@ const style = computed<any>(() => ({ 'z-index': zIndex.value }));
 
 <template>
   <teleport to="body">
+    <transition name="fade-fast">
+      <div
+        v-if="modelValue && isSmallView"
+        class="fixed inset-0 z-40 bg-black opacity-50 md:hidden"
+        @mousedown="close"
+        @touchstart="close"></div>
+    </transition>
+
     <transition name="slide-fade" @after-enter="autoFocus">
       <section
         v-if="modelValue"
@@ -77,11 +95,12 @@ const style = computed<any>(() => ({ 'z-index': zIndex.value }));
         ref="root"
         class="drawer"
         :style="style"
+        v-bind="attrs"
         @keyup.esc="close">
-        <div class="left-0 top-0 flex h-full flex-col items-stretch">
+        <div class="flex h-full flex-col items-stretch">
           <div data-drawer-header class="flex items-center rounded-t-sm px-4 pb-3 pt-4">
             <slot name="header">
-              <h1 v-if="title" class="font-bold">{{ t(title) }}</h1>
+              <h1 v-if="title" class="text-base font-bold">{{ t(title) }}</h1>
               <ly-button
                 class="float-right ml-auto border-none px-2 py-0.5 align-middle font-bold"
                 @click="close">
@@ -102,9 +121,6 @@ const style = computed<any>(() => ({ 'z-index': zIndex.value }));
 </template>
 
 <style scoped lang="postcss">
-h1 {
-  @apply text-base;
-}
 .drawer {
   @apply bg-highlight;
   position: fixed;
@@ -119,6 +135,13 @@ h1 {
   will-change: transform;
   contain: paint;
   margin-right: 0;
+}
+
+@media (max-width: 767px) {
+  .drawer {
+    top: 0;
+    height: 100svh;
+  }
 }
 
 /*

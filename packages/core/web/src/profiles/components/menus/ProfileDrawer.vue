@@ -18,7 +18,7 @@ const { profile } = storeToRefs(useProfileStore());
 
 const { enabledMenuEntries } = useProfileMenu(MENU_PROFILE_DRAWER);
 
-const { toggleSidebar } = pageStore;
+const { toggleSidebar, closeSidebar } = pageStore;
 const { showSidebar } = storeToRefs(pageStore);
 
 const isSmallView = ref(isMaxViewSize('sm'));
@@ -38,21 +38,10 @@ function onMenuItemClick() {
   if (isMaxViewSize('sm')) showSidebar.value = true;
 }
 
-function onSwipeEnd(direction: UseSwipeDirection) {
-  if (showSidebar.value && direction === 'left') toggleSidebar();
-  if (!showSidebar.value && direction === 'right') toggleSidebar();
-}
-
 const appDrawerOverlay = ref<HTMLElement>() as Ref<HTMLElement>;
 const { direction } = useSwipe(appDrawer, {
   onSwipeEnd() {
-    debugger;
-    onSwipeEnd(direction.value!);
-  },
-});
-const { direction: overlayDirection } = useSwipe(appDrawerOverlay, {
-  onSwipeEnd() {
-    onSwipeEnd(overlayDirection.value!);
+    if (showSidebar.value && direction.value === 'left') closeSidebar();
   },
 });
 </script>
@@ -64,7 +53,8 @@ const { direction: overlayDirection } = useSwipe(appDrawerOverlay, {
       id="app-drawer-overlay"
       ref="appDrawerOverlay"
       class="fixed inset-0 z-40 bg-black opacity-50 md:hidden"
-      @click="toggleSidebar"></div>
+      @mousedown="closeSidebar"
+      @touchstart="closeSidebar"></div>
   </transition>
   <nav
     id="app-drawer"
@@ -75,7 +65,7 @@ const { direction: overlayDirection } = useSwipe(appDrawerOverlay, {
       <div class="w-full px-3 py-2">
         <a
           class="flex h-10 cursor-pointer items-center gap-2 font-extrabold uppercase tracking-wider no-underline"
-          @click="toggleSidebar">
+          @click="closeSidebar">
           <ly-icon name="lyvely" class="w-5 fill-current text-lyvely" />
           <transition name="fade">
             <img v-if="showLabels" class="lyvely-logo-text" alt="Lyvely Logo" :src="imageUrl" />
@@ -89,7 +79,7 @@ const { direction: overlayDirection } = useSwipe(appDrawerOverlay, {
             <div class="mx-1 rounded bg-slate-800">
               <div
                 class="flex h-12 select-none items-center gap-2 px-3 text-sm"
-                @click="toggleSidebar">
+                @click="closeSidebar">
                 <profile-avatar :border="false" />
                 <transition name="fade">
                   <span v-if="showLabels" class="truncate no-underline">{{ profile!.name }}</span>

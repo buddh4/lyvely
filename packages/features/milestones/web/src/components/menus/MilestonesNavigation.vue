@@ -5,11 +5,11 @@ import { t } from '@lyvely/web';
 
 <template>
   <ly-tab-menu>
-    <ly-tab-menu-entry aria-controls="calendar-plan" :to="{ name: 'Journals' }">
+    <ly-tab-menu-entry aria-controls="calendar-plan" :to="{ name: 'Milestones' }">
       <div class="flex items-center justify-center gap-2">
-        <ly-icon name="journal" />
+        <ly-icon name="target" />
         <span>
-          {{ t('journals.title') }}
+          {{ t('milestones.title') }}
         </span>
       </div>
     </ly-tab-menu-entry>

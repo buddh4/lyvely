@@ -1,18 +1,21 @@
 {
   "journals": {
-    "labels": {
-      "main_nav": "Journals"
+    "profile_drawer": {
+      "title": "Journals"
     },
-    "title": "Activities",
-    "name": "Activity",
+    "calendar-plan": {
+      "empty": "Create Your First Journal!"
+    },
+    "title": "Journals",
+    "name": "Journal",
     "stream_entry": {
       "text": "New journal item"
     },
     "create": {
-      "title": "Create journal item"
+      "title": "Create Journal Item"
     },
     "edit": {
-      "title": "Edit journal item"
+      "title": "Edit Journal Item"
     },
     "feature": {
       "title": "Journals"
