@@ -1,5 +1,9 @@
 <script lang="ts" setup>
-import { MovingAverageCalculator, ITimeSeriesSummary } from '@lyvely/time-series-interface';
+import {
+  MovingAverageCalculator,
+  ITimeSeriesSummary,
+  DataPointValueType,
+} from '@lyvely/time-series-interface';
 import { CalendarInterval } from '@lyvely/dates';
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import * as echarts from 'echarts/core';
@@ -9,6 +13,7 @@ import { useProfileStore, t, usePageStore } from '@lyvely/web';
 export interface IProps {
   summary: ITimeSeriesSummary;
   interval: CalendarInterval;
+  valueType: string;
   showTrend?: boolean;
   width?: string | number;
   height?: string | number;
@@ -77,6 +82,22 @@ function renderSummaryChart(summary: ITimeSeriesSummary) {
     },
     yAxis: {
       type: 'value',
+      axisLabel: {
+        formatter: (value: number) => {
+          if (props.valueType !== DataPointValueType.Timer) return value;
+          const hours = Math.floor(value / 3600000);
+          const minutes = Math.floor((value - hours * 3600000) / 60000);
+          const seconds = ((value % 60000) / 1000).toFixed(0);
+
+          return (
+            hours.toString().padStart(2, '0') +
+            ':' +
+            minutes.toString().padStart(2, '0') +
+            ':' +
+            seconds.toString().padStart(2, '0')
+          );
+        },
+      },
     },
     series: [
       {
