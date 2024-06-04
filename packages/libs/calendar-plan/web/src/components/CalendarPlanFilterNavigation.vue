@@ -97,7 +97,7 @@ onBeforeRouteLeave(stopWatch);
 
       <ly-button
         class="primary float-right text-xs"
-        label="common.filter.clear"
+        text="common.filter.clear"
         @click="filter.reset()" />
     </div>
   </ly-drawer>
