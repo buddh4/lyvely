@@ -112,12 +112,6 @@ function onKeyDown(evt: KeyboardEvent) {
 onUnmounted(() => {
   if (modelValue.value) close();
 });
-
-const test = (evt: any) => {
-  console.log(evt);
-  debugger;
-  emit('submit');
-};
 </script>
 
 <template>
@@ -128,7 +122,7 @@ const test = (evt: any) => {
     :class="dialogClass"
     @keyup.esc.stop.prevent="onEscape"
     @keydown="onKeyDown">
-    <ly-conditional-wrapper :if="form" tag="form" @submit.prevent="test">
+    <ly-conditional-wrapper :if="form" tag="form" @submit.prevent="$emit('submit')">
       <div class="flex h-screen-s max-h-screen-s flex-col md:h-auto md:min-h-0">
         <slot name="preHeader"></slot>
         <div

@@ -44,27 +44,13 @@ const calendarPlanOptions = computed(() => getCalendarPlanOptions());
 const modalTitle = computed(() => {
   return isCreate.value ? `habits.create.title` : `habits.edit.title`;
 });
-
-watch(showModal, () => {
-  debugger;
-});
-
-const debug = () => {
-  debugger;
-};
-
-onUnmounted(() => {
-  debugger;
-});
 </script>
 
 <template>
-  <div class="absolute left-0 top-0 z-50 w-full bg-amber-700">{{ showModal }}</div>
   <ly-modal
     v-model="showModal"
     :title="modalTitle"
     @submit="adjustAndSubmit"
-    @close="debug"
     @cancel="$emit('cancel')">
     <template #preHeader><slot name="navigation"></slot></template>
     <ly-form-model
