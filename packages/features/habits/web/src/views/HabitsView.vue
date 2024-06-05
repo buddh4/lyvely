@@ -6,7 +6,7 @@ import HabitsNavigation from '@/components/menu/HabitsNavigation.vue';
 
 <template>
   <ly-content-root>
-    <habits-navigation />
+    <habits-navigation class="md:hidden" />
     <habit-calendar-plan />
   </ly-content-root>
 </template>

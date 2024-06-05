@@ -6,7 +6,7 @@ import TasksNavigation from '@/components/menu/TasksNavigation.vue';
 
 <template>
   <ly-content-root>
-    <tasks-navigation />
+    <tasks-navigation class="md:hidden" />
     <task-calendar-plan />
   </ly-content-root>
 </template>

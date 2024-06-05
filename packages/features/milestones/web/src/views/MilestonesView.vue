@@ -6,7 +6,7 @@ import MilestonesNavigation from '@/components/menus/MilestonesNavigation.vue';
 
 <template>
   <ly-content-root>
-    <milestones-navigation />
+    <milestones-navigation class="md:hidden" />
     <milestones-calendar-plan />
   </ly-content-root>
 </template>
