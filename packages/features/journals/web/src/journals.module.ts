@@ -15,12 +15,14 @@ import {
 import { journalRoutes } from './routes';
 import { calendarPlanModule } from '@lyvely/calendar-plan-web';
 import { timeSeriesModule } from '@lyvely/time-series-web';
+import { ROUTE_JOURNALS_HOME } from '@/journals.constants';
 
 export const journalsModule = () => {
   return {
     id: JOURNALS_MODULE_ID,
     features: [JournalsFeature],
     routes: journalRoutes,
+    icon: 'journal',
     dependencies: [calendarPlanModule(), timeSeriesModule()],
     i18n: {
       base: (locale: string) => import(`./locales/base.${locale}.json`),
@@ -51,22 +53,16 @@ export const journalsModule = () => {
         type: JournalModel.contentType,
         modelClass: JournalModel,
         moduleId: JOURNALS_MODULE_ID,
+        route: ROUTE_JOURNALS_HOME,
         name: translation('journals.name'),
-        icon: 'journal',
         feature: 'journals',
         interfaces: {
-          create: {
-            mode: 'modal',
-            modelClass: CreateJournalModel,
-            component: () => import('./components/modals/EditJournalModal.vue'),
-          },
-          edit: {
-            mode: 'modal',
-            component: () => import('./components/modals/EditJournalModal.vue'),
+          upsert: {
+            createModel: CreateJournalModel,
+            component: () => import('./components/modals/UpsertJournalModal.vue'),
           },
           stream: {
             details: () => import('./components/content-stream/JournalDetails.vue'),
-            entry: () => import('./components/content-stream/JournalStreamEntry.vue'),
           },
         },
       });

@@ -1,0 +1,2 @@
+export const ROUTE_MILESTONES_HOME_NAME = 'Milestones';
+export const ROUTE_MILESTONES_HOME = { name: ROUTE_MILESTONES_HOME_NAME };

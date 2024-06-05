@@ -56,7 +56,8 @@ const { direction } = useSwipe(mobileNavDrawer, {
             v-for="entry in enabledMenuEntries"
             :key="entry.id"
             :entry="entry"
-            class="no-wrap menu-item flex h-12 cursor-pointer items-center gap-2 px-3 py-3 text-main no-underline" />
+            class="no-wrap menu-item flex h-12 cursor-pointer items-center gap-2 px-3 py-3 text-main no-underline"
+            @click="showMobileDrawer = false" />
         </ly-divided-list>
       </div>
     </nav>

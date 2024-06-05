@@ -6,7 +6,7 @@ import {
   useMessageClient,
 } from '@lyvely/interface';
 import { computed } from 'vue';
-import { ContentEditModalEmits, useContentEditModal, ICreateContentInitOptions } from '@/content';
+import { ContentEditModalEmits, useContentUpsertModal, ICreateContentInitOptions } from '@/content';
 import { TagPicker } from '@/tags';
 import { isTouchScreen, LyModal, LyFormModel } from '@lyvely/ui';
 
@@ -20,7 +20,7 @@ export interface IProps {
 const props = defineProps<IProps>();
 const emit = defineEmits(ContentEditModalEmits);
 
-const { isCreate, showModal, model, validator, submit, status } = useContentEditModal<
+const { isCreate, showModal, model, validator, submit, status } = useContentUpsertModal<
   MessageModel,
   CreateMessageModel,
   UpdateMessageModel

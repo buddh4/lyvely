@@ -21,6 +21,7 @@ import {
 } from '@lyvely/web';
 import { analyticsRoutes } from '@/routes/analytics.routes';
 import { registerCharts, registerChartCategories } from '@/registries';
+import { ROUTE_ANALYTICS_HOME } from '@/analytics.constants';
 
 export default () => {
   return {
@@ -84,16 +85,12 @@ export default () => {
         moduleId: ANALYTICS_MODULE_ID,
         name: translation('analytics.charts.name'),
         icon: 'statistics',
+        route: ROUTE_ANALYTICS_HOME,
         feature: AnalyticsFeature.id,
         modelClass: ChartModel<any>,
         interfaces: {
-          create: {
-            mode: 'modal',
-            modelClass: CreateChartModel,
-            component: () => import('./components/modals/UpsertChartModal.vue'),
-          },
-          edit: {
-            mode: 'modal',
+          upsert: {
+            createModel: CreateChartModel,
             component: () => import('./components/modals/UpsertChartModal.vue'),
           },
           stream: {

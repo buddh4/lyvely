@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { SystemMessageModel, ContentModel } from '@lyvely/interface';
-import { ContentStreamEntry } from '@/content';
+import { ContentStreamEntry, StreamEntryLayout } from '@/content';
 import { t } from '@/i18n';
 import { IStream } from '@/stream/stream.composable';
 import { useAppConfigStore } from '@/app-config/app-config.store';
@@ -20,16 +20,9 @@ const appName = useAppConfigStore().get('appName');
 <template>
   <content-stream-entry
     v-bind="props"
-    body-style="message"
-    :merge="true"
-    :message-width="true"
-    :show-type="false">
-    <template #image>
-      <div class="flex h-8 w-8 justify-center rounded-full border border-divide bg-main">
-        <ly-icon name="lyvely" class="text-pop" />
-      </div>
-    </template>
-
+    :layout="StreamEntryLayout.Message"
+    icon="lyvely"
+    icon-class="text-pop">
     <template #authorName>
       {{ appName }}
     </template>

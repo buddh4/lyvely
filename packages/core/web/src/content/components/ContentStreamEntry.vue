@@ -1,37 +1,54 @@
 <script lang="ts" setup>
-import { formatDate, isToday, formatDateWithTime } from '@lyvely/dates';
+import { formatDate, formatDateWithTime, isToday } from '@lyvely/dates';
 import { ContentModel } from '@lyvely/interface';
 import { computed } from 'vue';
 import RelativeTime from '@/calendar/components/RelativeTime.vue';
 import { useRouter } from 'vue-router';
-import { isTextSelection, LyMarkdownView } from '@lyvely/ui';
+import { isTextSelection, LyIcon, LyMarkdownView } from '@lyvely/ui';
 import { t } from '@/i18n';
 import TagList from '@/tags/components/TagList.vue';
 import { IStream } from '@/stream/stream.composable';
-import { getContentTypeOptions } from '../registries';
+import { getContentTypeIcon, getContentTypeOptions } from '../registries';
 import { useUserInfo } from '@/profiles/composables';
 import { toContentDetails } from '@/content/routes/content-route.helper';
 import ContentToolbar from './ContentToolbar.vue';
+import { type IDefaultStreamEntryOptions, StreamEntryLayout } from '@/content/interfaces';
 
 export interface IProps {
   model: ContentModel;
   stream?: IStream<ContentModel>;
-  showType?: boolean;
   index?: number;
-  bodyStyle?: 'none' | 'message' | 'block';
+  layout?: StreamEntryLayout;
+  icon?: string;
+  iconClass: string;
   omitTags?: boolean;
   merge?: boolean;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
   stream: undefined,
-  showType: true,
-  bodyStyle: 'block',
-  omitTags: false,
+  omitTags: undefined,
+  layout: undefined,
+  icon: undefined,
+  iconClass: undefined,
+  merge: undefined,
   index: 0,
 });
 
 defineEmits(['selectTag']);
+
+const contentTypeOptions = getContentTypeOptions(props.model);
+const streamEntryOptions = (<IDefaultStreamEntryOptions>contentTypeOptions?.interfaces?.stream)
+  ?.entryOptions;
+const merge = computed(() => props.merge ?? streamEntryOptions?.merge ?? true);
+const layout = computed(
+  () => props.layout ?? (streamEntryOptions?.layout || StreamEntryLayout.Block)
+);
+const isMessageLayout = layout.value === StreamEntryLayout.Message;
+const icon = computed(() => props.icon ?? getContentTypeIcon(props.model));
+const iconClass = computed(() => props.iconClass ?? (streamEntryOptions?.iconClass || 'text-main'));
+const omitTags = computed(() => props.omitTags ?? streamEntryOptions?.omitTags ?? false);
+const contentTypeRoute = contentTypeOptions?.route;
 
 const userInfo = useUserInfo(props.model.meta.createdBy);
 
@@ -56,7 +73,7 @@ const timeSeparator = computed(() => {
 const mergeWithPrev = computed(
   () =>
     prevEntry.value &&
-    props.merge &&
+    merge.value &&
     !showTimeSeparator.value &&
     prevEntry.value.type === props.model.type &&
     prevEntry.value.meta.createdAs?.authorId === props.model.meta.createdAs?.authorId
@@ -65,13 +82,13 @@ const mergeWithPrev = computed(
 const mergeWithNext = computed(
   () =>
     nextEntry.value &&
-    props.merge &&
+    merge.value &&
     !showNextTimeSep.value &&
     nextEntry.value.type === props.model.type &&
     nextEntry.value.meta.createdAs?.authorId === props.model.meta.createdAs?.authorId
 );
 
-const cssClass = computed(() => {
+const paddingBottom = computed(() => {
   return mergeWithNext.value ? '' : 'pb-2';
 });
 
@@ -84,16 +101,21 @@ function onContentClick(evt: MouseEvent) {
   router.push(toContentDetails(props.model));
 }
 
-const contentTypeName = computed(() => t(getContentTypeOptions(props.model.type)?.name || ''));
+const contentTypeName = t(contentTypeOptions?.name || '');
 
-const bgClass = 'bg-main';
+const showUserAvatar = computed(
+  () => !props.icon && userInfo.value && (isMessageLayout || !icon.value)
+);
+
+const borderClass = 'border border-divide dark:hover:border-gray-600 hover:border-gray-400';
+const baseLayoutClass = `relative inline-flex flex-col max-w-full cursor-pointer bg-main ${borderClass}`;
 const bodyWrapperClass = computed(
   () =>
     ({
       none: 'relative',
-      message: `inline-flex justify-center relative message-bubble ${bgClass} max-w-full inline-block max-w-full transition duration-100 cursor-pointer border border-divide dark:hover:border-gray-600 hover:border-gray-300 px-4 py-1.5`,
-      block: `relative inline-flex flex-col max-w-full border border-divide dark:hover:border-gray-600 hover:border-gray-300 p-4 rounded-xl ${bgClass} inline-block`,
-    })[props.bodyStyle]
+      message: `message-bubble ${baseLayoutClass} px-4 py-1.5`,
+      block: `${baseLayoutClass} p-4 rounded-xl`,
+    })[layout.value]
 );
 
 // Just experimental
@@ -101,24 +123,32 @@ const maxWidth = true;
 </script>
 
 <template>
-  <div data-stream-entry :class="cssClass" :data-id="model.id">
-    <div v-if="showTimeSeparator" class="flex items-center justify-center text-xs text-dimmed">
+  <div data-stream-entry :class="['text-sm', paddingBottom]" :data-id="model.id" @dragstart.prevent>
+    <div
+      v-if="showTimeSeparator"
+      class="flex select-none items-center justify-center text-xs text-dimmed">
       {{ timeSeparator }}
     </div>
     <div class="flex items-stretch gap-1">
       <div class="flex w-9 flex-shrink-0 justify-center pt-1">
         <slot v-if="!mergeWithPrev" name="image">
-          <template v-if="userInfo">
-            <ly-avatar
-              v-if="userInfo"
-              class="h-8 w-8"
-              :name="userInfo.displayName"
-              :guid="userInfo.guid" />
-          </template>
+          <ly-avatar
+            v-if="showUserAvatar"
+            class="h-8 w-8"
+            :name="userInfo!.displayName"
+            :guid="userInfo!.guid" />
+          <div
+            v-else-if="contentTypeRoute"
+            :class="['flex h-8 w-8 justify-center rounded-full bg-main', borderClass]">
+            <router-link :to="contentTypeRoute" class="flex justify-center">
+              <ly-icon v-if="icon" :name="icon" :class="iconClass" />
+            </router-link>
+          </div>
+          <ly-icon v-else-if="icon" :name="icon" :class="iconClass" />
         </slot>
       </div>
       <div class="mx-3 my-0.5 min-w-0 grow">
-        <div v-if="!mergeWithPrev" class="mb-2 text-sm">
+        <div v-if="!mergeWithPrev" class="mb-2 select-none text-sm">
           <span class="mr-1 font-bold">
             <slot name="authorName">
               <template v-if="userInfo">
@@ -126,17 +156,17 @@ const maxWidth = true;
               </template>
             </slot>
           </span>
-          <relative-time :ts="model.meta.streamSort"></relative-time>
+          <relative-time class="select-none" :ts="model.meta.streamSort"></relative-time>
         </div>
-        <div :class="{ 'md:w-2/3': maxWidth && bodyStyle === 'message' }">
+        <div :class="{ 'md:w-2/3': maxWidth && isMessageLayout }">
           <div :class="bodyWrapperClass" :data-id="'body-' + model.id" @click="onContentClick">
             <div class="inline-block max-w-full cursor-pointer">
               <div class="flex gap-1">
                 <tag-list
-                  :class="['mb-2', { 'mt-2': bodyStyle === 'message' }]"
+                  :class="['mb-2', { 'mt-2': isMessageLayout }]"
                   :tag-ids="omitTags ? [] : model.tagIds"
                   @select="(tagId) => $emit('selectTag', tagId)">
-                  <template v-if="showType && contentTypeName" #pre>
+                  <template v-if="!isMessageLayout && contentTypeName" #pre>
                     <ly-badge class="bg-secondary-dark">{{ contentTypeName }}</ly-badge>
                   </template>
                   <template v-if="model.meta.archived" #post>
@@ -148,7 +178,7 @@ const maxWidth = true;
                   </template>
                 </tag-list>
               </div>
-              <div class="content-stream-entry-body text-sm">
+              <div class="text-sm">
                 <slot>
                   <div>
                     <h1 v-if="model.content.title?.length">{{ model.content.title }}</h1>
@@ -174,9 +204,5 @@ const maxWidth = true;
 <style>
 .message-bubble {
   border-radius: 18px;
-}
-
-.content-stream-entry-body {
-  color: var(--text-main);
 }
 </style>

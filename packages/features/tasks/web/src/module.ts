@@ -15,12 +15,14 @@ import {
 } from '@lyvely/tasks-interface';
 import { calendarPlanModule } from '@lyvely/calendar-plan-web';
 import { tasksRoutes } from '@/routes';
+import { ROUTE_TASKS_HOME_NAME } from '@/tasks.constants';
 
 export default () => {
   return {
     id: TASKS_MODULE_ID,
     dependencies: [calendarPlanModule()],
     routes: tasksRoutes,
+    icon: 'task',
     features: [TasksFeature, ActivityTasksFeature],
     i18n: {
       base: (locale: string) => import(`./locales/base.${locale}.json`),
@@ -54,22 +56,16 @@ export default () => {
         type: TaskModel.contentType,
         moduleId: TASKS_MODULE_ID,
         name: 'tasks.title',
-        icon: 'task',
+        route: ROUTE_TASKS_HOME_NAME,
         feature: TasksFeature.id,
         modelClass: TaskModel,
         interfaces: {
-          create: {
-            mode: 'modal',
-            modelClass: CreateTaskModel,
-            component: () => import('./components/modals/UpsertTaskModal.vue'),
-          },
-          edit: {
-            mode: 'modal',
+          upsert: {
+            createModel: CreateTaskModel,
             component: () => import('./components/modals/UpsertTaskModal.vue'),
           },
           stream: {
             details: () => import('./components/content-stream/TaskDetails.vue'),
-            entry: () => import('./components/content-stream/TaskStreamEntry.vue'),
           },
         },
       });

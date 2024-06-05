@@ -59,7 +59,7 @@ export const activitiesRoutes = [
         meta: {
           layout: LAYOUT_ACTIVITIES,
           i18n: { load: ['activities', 'tasks'] },
-          title: () => t('habits.title'),
+          title: () => t('tasks.title'),
         },
         component: async () => {
           const { ActivityTasksView } = await import('@lyvely/tasks-web');
@@ -67,13 +67,13 @@ export const activitiesRoutes = [
         },
         beforeEnter: [
           () => {
-            useActivityStore().setActiveView('ActivityHabits');
+            useActivityStore().setActiveView('ActivityTasks');
           },
         ],
       },
       {
         name: 'ActivityMilestones',
-        path: 'tasks',
+        path: 'milestones',
         meta: {
           layout: LAYOUT_ACTIVITIES,
           i18n: { load: ['activities', 'milestones'] },
@@ -85,7 +85,7 @@ export const activitiesRoutes = [
         },
         beforeEnter: [
           () => {
-            useActivityStore().setActiveView('ActivityHabits');
+            useActivityStore().setActiveView('ActivityMilestones');
           },
         ],
       },

@@ -1,11 +1,11 @@
-import { registerContentType } from '@/content';
+import { registerContentType, StreamEntryLayout } from '@/content';
 import { translation } from '@/i18n';
 import { IModule } from '@/core';
 import {
-  MessageModel,
   CreateMessageModel,
-  MESSAGES_MODULE_ID,
   CreateMessagePermission,
+  MessageModel,
+  MESSAGES_MODULE_ID,
 } from '@lyvely/interface';
 
 export default () => {
@@ -23,17 +23,14 @@ export default () => {
         icon: 'stream',
         modelClass: MessageModel,
         interfaces: {
-          create: {
-            mode: 'modal',
-            modelClass: CreateMessageModel,
-            component: () => import('./components/UpsertMessageModal.vue'),
-          },
-          edit: {
-            mode: 'modal',
+          upsert: {
+            createModel: CreateMessageModel,
             component: () => import('./components/UpsertMessageModal.vue'),
           },
           stream: {
-            entry: () => import('./components/MessageStreamEntry.vue'),
+            entryOptions: {
+              layout: StreamEntryLayout.Message,
+            },
             details: () => import('./components/MessageDetails.vue'),
           },
         },

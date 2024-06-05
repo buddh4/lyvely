@@ -3,7 +3,7 @@ import { computed } from 'vue';
 import {
   TagPicker,
   ContentEditModalEmits,
-  useContentEditModal,
+  useContentUpsertModal,
   ICreateContentInitOptions,
 } from '@lyvely/web';
 import { isTouchScreen, LyModal, LyFormModel, LyTextField, LyTextarea, LySelect } from '@lyvely/ui';
@@ -24,7 +24,7 @@ export interface IProps {
 
 const props = defineProps<IProps>();
 const emit = defineEmits(ContentEditModalEmits);
-const store = useContentEditModal<MilestoneModel, CreateMilestoneModel, UpdateMilestoneModel>(
+const store = useContentUpsertModal<MilestoneModel, CreateMilestoneModel, UpdateMilestoneModel>(
   props,
   emit,
   {

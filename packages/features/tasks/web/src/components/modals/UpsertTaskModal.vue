@@ -3,7 +3,7 @@ import { computed } from 'vue';
 import {
   TagPicker,
   ContentEditModalEmits,
-  useContentEditModal,
+  useContentUpsertModal,
   ICreateContentInitOptions,
 } from '@lyvely/web';
 import {
@@ -32,7 +32,7 @@ export interface IProps {
 
 const props = defineProps<IProps>();
 const emit = defineEmits(ContentEditModalEmits);
-const store = useContentEditModal<TaskModel, CreateTaskModel, UpdateTaskModel>(props, emit, {
+const store = useContentUpsertModal<TaskModel, CreateTaskModel, UpdateTaskModel>(props, emit, {
   client: useTasksClient(),
 });
 

@@ -8,8 +8,7 @@ import {
 import { IEditOrCreateModalProps } from '@/content/interfaces/edit-content-modal-props.interface';
 import { IUpdateModelStoreOptions, useUpdateModelStore } from '@/common';
 import { useProfileStore } from '@/profiles/stores/profile.store';
-import { getContentTypeOptions } from '../registries';
-import { ModalCreate } from '../interfaces';
+import { getContentCreateModel } from '../registries';
 import { StoreStatusPlugin } from '@/core';
 import { useContentStore } from '../stores';
 import { I18nModelValidator } from '@/i18n';
@@ -17,7 +16,7 @@ import { I18nModelValidator } from '@/i18n';
 export const ContentEditModalEmits = ['update:modelValue', 'success', 'cancel'];
 type TContentEditModalEmits = 'update:modelValue' | 'success';
 
-export function useContentEditModal<
+export function useContentUpsertModal<
   TModel extends ContentModel & IEditableModel<TUpdateModel>,
   TCreateModel extends CreateContentModel,
   TUpdateModel extends Partial<TCreateModel> = Partial<TCreateModel>,
@@ -27,11 +26,11 @@ export function useContentEditModal<
   emit: (emit: TContentEditModalEmits, val?: any) => void,
   options: IUpdateModelStoreOptions<TModel, TCreateModel, TUpdateModel, TResponse>
 ) {
-  const { content, type } = props;
+  const { content, initOptions, modelValue, type } = props;
   const contentStore = useContentStore();
 
   const showModal = computed({
-    get: () => props.modelValue,
+    get: () => modelValue,
     set: (val: boolean) => {
       emit('update:modelValue', val);
       if (!val) updateStore.reset();
@@ -61,13 +60,13 @@ export function useContentEditModal<
     editModel.tagNames = useProfileStore().tagIdsToNames(content.tagIds);
     updateStore.setUpdateModel(content.id, editModel);
   } else {
-    const CreateType = (<ModalCreate>getContentTypeOptions(type)?.interfaces?.create)?.modelClass;
+    const CreateType = getContentCreateModel(type);
 
     if (!CreateType) {
       throw new Error(`Content type ${type} is missing a create model class definition`);
     }
 
-    const createModel = new CreateType(props.initOptions) as TCreateModel;
+    const createModel = new CreateType(initOptions) as TCreateModel;
     updateStore.setCreateModel(createModel);
   }
 

@@ -7,11 +7,12 @@ import {
 } from '@lyvely/web';
 import { RouteRecordRaw } from 'vue-router';
 import { ActivityTasksFeature, TasksFeature } from '@lyvely/tasks-interface';
+import { ROUTE_TASKS_HOME_NAME } from '@/tasks.constants';
 
 export const tasksRoutes: RouteRecordRaw[] = [
   {
     path: profilePath('/tasks'),
-    name: 'Tasks',
+    name: ROUTE_TASKS_HOME_NAME,
     beforeEnter: [
       (to, from, next) => {
         if (useProfileFeatureStore().isFeatureEnabled(ActivityTasksFeature.id)) {

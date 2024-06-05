@@ -843,9 +843,10 @@ import { IModule, registerContentType } from '@lyvely/web';
 import {
   PollModel,
   CreatePollModel,
-  POLLS_MODULE_ID, 
+  POLLS_MODULE_ID,
   PollsFeature
 } from 'lyvely-polls-interface';
+import { taskITestPlugin } from "./task-test.plugin";
 
 export default () => {
   return {
@@ -859,14 +860,9 @@ export default () => {
         feature: PollsFeature.id,
         modelClass: PollsModel,
         interfaces: {
-          create: {
-            mode: 'modal',
-            modelClass: CreatePollModel,
-            component: () => import('./components/modals/EditPollModal.vue'),
-          },
-          edit: {
-            mode: 'modal',
-            component: () => import('./components/modals/EditPollModal.vue'),
+          upsert: {
+            createModel: CreatePollModel,
+            component: () => import('./components/modals/EditPollModal.vue')
           },
           stream: {
             details: () => import('./components/content-stream/PollDetails.vue'),
@@ -878,6 +874,60 @@ export default () => {
   } as IModule;
 };
 ```
+
+### ContentStreamEntry
+
+#### Default ContentStreamEntry
+
+In the previous example we registered our own stream entry component. This is only necessary if you need to render
+content specific content. If no `interface.stream.entry` option is set a default StreamEntry will be used, which can
+be further configured by defining `interface.stream.entryOptions`, which supports the following options:
+
+| Property    | Description                                                                             |
+|-------------|-----------------------------------------------------------------------------------------|
+| `layout`   | Affects the stream entry layout when using the default the stream entry. (default: block) |
+| `icon`    | Sets an icon used if the layout does not equal message layout. (default: module icon)   |
+| `iconClass`     | Overwrites the class of the icon.                                                       |
+| `omitTags`      | Whether to omit tags in the layout.                                                     |
+| `merge`      | Whether this content type supports merging of stream entries. (default: true)*.         |
+
+#### Custom ContentStreamEntry
+
+By defining a `interface.stream.entry` content type option, you will overwrite the default stream entry component.
+The following example shows a common way of overwriting the default `ContentStreamEntry`:
+
+```vue
+<script lang="ts" setup>
+import { SystemMessageModel, ContentModel } from '@lyvely/interface';
+import { ContentStreamEntry, StreamEntryLayout } from '@/content';
+import { IStream } from '@/stream/stream.composable';
+
+export interface IProps {
+  model: SystemMessageModel;
+  stream: IStream<ContentModel>;
+  index: number;
+}
+
+const props = defineProps<IProps>();
+</script>
+
+<template>
+  <content-stream-entry v-bind="props">
+    <template #default>
+      <!-- Your custom stream entry content. -->
+    </template>
+  </content-stream-entry>
+</template>
+```
+
+The `ContentStreamEntry` supports the same properties as discussed in the previous section and the following slots:
+
+| Property     | Description                                                                         |
+|--------------|-------------------------------------------------------------------------------------|
+| `image`      | Can be used to overwrite the default image or icon at the left of the stream entry. |
+| `authorName` | Can be used to overwrite the authorName section of the stream entry.                |
+| `default`    | Can be used to overwrite the content section of the stream entry.                   |
+
 ## Content Policies
 
 Content policies are designed to regulate user access to various content features on the platform.

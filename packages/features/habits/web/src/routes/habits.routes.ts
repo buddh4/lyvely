@@ -8,10 +8,11 @@ import {
 } from '@lyvely/web';
 import type { RouteRecordRaw } from 'vue-router';
 import { ActivityHabitsFeature, HabitsFeature } from '@lyvely/habits-interface';
+import { ROUTES_HABITS_HOME_NAME } from '@/habits.constants';
 
 export const habitRoutes = [
   {
-    name: 'Habits',
+    name: ROUTES_HABITS_HOME_NAME,
     path: profilePath('/habits'),
     beforeEnter: [
       (to, from, next) => {

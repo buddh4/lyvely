@@ -10,7 +10,7 @@ import { computed, onUnmounted, watch } from 'vue';
 import {
   TagPicker,
   ContentEditModalEmits,
-  useContentEditModal,
+  useContentUpsertModal,
   ICreateContentInitOptions,
 } from '@lyvely/web';
 import { getCalendarPlanOptions } from '@lyvely/calendar-plan-web';
@@ -26,7 +26,7 @@ export interface IProps {
 const props = defineProps<IProps>();
 const emit = defineEmits(ContentEditModalEmits);
 
-const { isCreate, showModal, model, validator, submit, status } = useContentEditModal<
+const { isCreate, showModal, model, validator, submit, status } = useContentUpsertModal<
   HabitModel,
   CreateHabitModel,
   UpdateHabitModel

@@ -9,6 +9,7 @@ export interface IModule {
   features?: IFeature[] | (() => IFeature[]);
   routes?: RouteRecordRaw[] | (() => RouteRecordRaw[]);
   init?: () => void;
+  icon?: string;
   install?: (app: App) => void;
   dependencies?: Array<IModule>;
   i18n?: {

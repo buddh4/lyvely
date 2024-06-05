@@ -18,10 +18,12 @@ import {
 } from '@lyvely/milestones-interface';
 import { milestoneRoutes } from '@/routes';
 import { calendarPlanModule } from '@lyvely/calendar-plan-web';
+import { ROUTE_MILESTONES_HOME } from '@/milestones.constants';
 
 export default () => {
   return {
     id: 'milestones',
+    icon: 'target',
     features: [MilestonesFeature, ActivityMilestonesFeature],
     routes: milestoneRoutes,
     dependencies: [calendarPlanModule()],
@@ -55,23 +57,17 @@ export default () => {
       registerContentType({
         type: MilestoneModel.contentType,
         name: translation('milestones.name'),
-        icon: 'target',
         moduleId: MILESTONES_MODULE_ID,
         feature: MilestonesFeature.id,
         modelClass: MilestoneModel,
+        route: ROUTE_MILESTONES_HOME,
         interfaces: {
-          create: {
-            mode: 'modal',
-            modelClass: CreateMilestoneModel,
-            component: () => import('./components/modals/EditMilestoneModal.vue'),
-          },
-          edit: {
-            mode: 'modal',
+          upsert: {
+            createModel: CreateMilestoneModel,
             component: () => import('./components/modals/EditMilestoneModal.vue'),
           },
           stream: {
             details: () => import('./components/content-stream/MilestoneDetails.vue'),
-            entry: () => import('./components/content-stream/MilestoneStreamEntry.vue'),
           },
         },
       });

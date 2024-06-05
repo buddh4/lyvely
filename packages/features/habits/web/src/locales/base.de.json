@@ -7,7 +7,7 @@
       "description": "If disabled, the Habits view and content type will be unavailable.",
       "activities": {
         "title": "Activity Habits",
-        "description": "If disabled, adds a dedicated tasks menu entry."
+        "description": "If disabled, adds a dedicated habits menu entry."
       }
     },
     "calendar-plan": {

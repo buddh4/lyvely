@@ -17,7 +17,7 @@ import {
   TagPicker,
   ContentEditModalEmits,
   ICreateContentInitOptions,
-  useContentEditModal,
+  useContentUpsertModal,
   t,
 } from '@lyvely/web';
 import {
@@ -41,7 +41,7 @@ export interface IProps {
 const props = defineProps<IProps>();
 const emit = defineEmits(ContentEditModalEmits);
 
-const { isCreate, showModal, model, validator, submit, status } = useContentEditModal<
+const { isCreate, showModal, model, validator, submit, status } = useContentUpsertModal<
   JournalModel,
   CreateJournalModel,
   UpdateJournalModel
@@ -93,21 +93,21 @@ const modalTitle = computed(() => {
               class="secondary outlined w-full text-xs"
               :active="model.valueType === DataPointValueType.Number"
               @click="setValueType(DataPointValueType.Number)">
-              {{ t('calendar-plan.value_types.number') }}
+              {{ t('time-series.value_types.number') }}
             </ly-button>
 
             <ly-button
               class="secondary outlined w-full text-xs"
               :active="model.valueType === DataPointValueType.Text"
               @click="setValueType(DataPointValueType.Text)">
-              {{ t('calendar-plan.value_types.text') }}
+              {{ t('time-series.value_types.text') }}
             </ly-button>
 
             <ly-button
               class="secondary outlined w-full text-xs"
               :active="model.valueType === DataPointValueType.Selection"
               @click="setValueType(DataPointValueType.Selection)">
-              {{ t('calendar-plan.value_types.selection') }}
+              {{ t('time-series.value_types.selection') }}
             </ly-button>
           </div>
 

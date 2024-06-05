@@ -17,6 +17,7 @@ import {
 import { habitRoutes } from '@/routes';
 import { calendarPlanModule } from '@lyvely/calendar-plan-web';
 import { timeSeriesModule } from '@lyvely/time-series-web';
+import { ROUTES_HABITS_HOME } from '@/habits.constants';
 
 export default () => {
   return {
@@ -25,6 +26,7 @@ export default () => {
       base: (locale: string) => import(`./locales/base.${locale}.json`),
       locale: (locale: string) => import(`./locales/${locale}.json`),
     },
+    icon: 'habit',
     dependencies: [calendarPlanModule(), timeSeriesModule()],
     features: [HabitsFeature, ActivityHabitsFeature],
     routes: habitRoutes,
@@ -55,22 +57,16 @@ export default () => {
         type: HabitModel.contentType,
         moduleId: HABITS_MODULE_ID,
         name: translation('habits.name'),
-        icon: 'habit',
+        route: ROUTES_HABITS_HOME,
         feature: HabitsFeature.id,
         modelClass: HabitModel,
         interfaces: {
-          create: {
-            mode: 'modal',
-            modelClass: CreateHabitModel,
-            component: () => import('./components/modals/UpsertHabitModal.vue'),
-          },
-          edit: {
-            mode: 'modal',
+          upsert: {
+            createModel: CreateHabitModel,
             component: () => import('./components/modals/UpsertHabitModal.vue'),
           },
           stream: {
             details: () => import('./components/content-stream/HabitDetails.vue'),
-            entry: () => import('./components/content-stream/HabitStreamEntry.vue'),
           },
         },
       });

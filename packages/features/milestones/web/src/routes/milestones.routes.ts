@@ -8,10 +8,11 @@ import {
 } from '@lyvely/web';
 import { RouteRecordRaw } from 'vue-router';
 import { ActivityMilestonesFeature, MilestonesFeature } from '@lyvely/milestones-interface';
+import { ROUTE_MILESTONES_HOME_NAME } from '@/milestones.constants';
 
 export const milestoneRoutes = [
   {
-    name: 'Milestones',
+    name: ROUTE_MILESTONES_HOME_NAME,
     path: profilePath('/milestones'),
     beforeEnter: [
       (to, from, next) => {
