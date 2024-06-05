@@ -37,7 +37,7 @@ onUnmounted(() => {
   <ly-content-panel v-else-if="loaded">
     <ly-alert class="cursor-pointer justify-center bg-main" @click="createEntry">
       <div class="flex flex-col items-center justify-center">
-        <ly-icon name="activity" class="w-20 cursor-pointer text-gray-300 dark:text-gray-500" />
+        <ly-icon name="habit" class="w-20 cursor-pointer text-gray-300 dark:text-gray-500" />
         <ly-button class="font-semibold">
           {{ t('habits.calendar-plan.empty') }}
         </ly-button>

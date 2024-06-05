@@ -35,7 +35,7 @@ export default () => {
         text: 'habits.title',
         sortOrder: 1501,
         feature: HabitsFeature.id,
-        icon: 'activity',
+        icon: 'habit',
         condition: !useProfileFeatureStore().isFeatureEnabled(ActivityHabitsFeature.id),
         to: { name: 'Habits' },
       }));
@@ -46,7 +46,7 @@ export default () => {
           text: 'habits.title',
           sortOrder: 1501,
           feature: HabitsFeature.id,
-          icon: 'activity',
+          icon: 'habit',
           condition: !useProfileFeatureStore().isFeatureEnabled(ActivityHabitsFeature.id),
           to: { name: 'Habits' },
         };
@@ -55,7 +55,7 @@ export default () => {
         type: HabitModel.contentType,
         moduleId: HABITS_MODULE_ID,
         name: translation('habits.name'),
-        icon: 'activity',
+        icon: 'habit',
         feature: HabitsFeature.id,
         modelClass: HabitModel,
         interfaces: {

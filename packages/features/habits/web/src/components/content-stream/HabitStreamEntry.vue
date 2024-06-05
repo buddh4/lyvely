@@ -17,7 +17,7 @@ const props = defineProps<IProps>();
     <template #image>
       <div class="flex h-8 w-8 justify-center rounded-full border border-divide bg-main">
         <router-link :to="{ name: 'Habits' }">
-          <ly-icon name="activity" class="text-main" />
+          <ly-icon name="habit" class="text-main" />
         </router-link>
       </div>
     </template>
