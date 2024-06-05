@@ -189,7 +189,7 @@ const UserFeatureList: FeatureItem[] = [
     ],
     description: (
       <>
-        The “Milestones” feature can be used to track and discuss the progression of different types of content by
+        The Milestones feature can be used to track and discuss the progression of different types of content by
         summarizing them in a milestone which can be prioritized and scheduled through a calendar-plan view.
       </>
     ),
