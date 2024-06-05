@@ -171,6 +171,7 @@
   },
   "validation": {
     "isNotEmpty": "{property} can not be empty",
+    "isEnum": "Invalid selection",
     "maxLength": "{property} must be at least {c1} characters of fewer",
     "isLength": "{property} must be between {c1} and {c2} characters",
     "isCaptcha": "Please enter 5 alphanumeric characters",

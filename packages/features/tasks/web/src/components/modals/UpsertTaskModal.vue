@@ -64,6 +64,7 @@ const modalTitle = computed(() => {
         <div class="grid grid-flow-row grid-cols-2 gap-2">
           <ly-select
             property="interval"
+            type="number"
             label="common.fields.interval_plural"
             :required="true"
             :options="getCalendarPlanOptions('plural')" />

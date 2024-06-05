@@ -146,6 +146,7 @@
   "validation": {
     "isString": "{property} is required",
     "sameAs": "{property} must equal {c1}",
+    "isEnum": "Invalid selection",
     "isNotEmpty": "{property} is required",
     "maxLength": "{property} must can not be longer than {c1} characters",
     "isLength": "{property} must be between {c1} and {c2} characters",
