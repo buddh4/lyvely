@@ -34,6 +34,7 @@ const updateTimer = async (value: number) => taskStore.updateTimer(props.model, 
 <template>
   <calendar-plan-item
     :model="model"
+    :draggable="!props.model.state.done"
     @move-up="moveUp"
     @move-down="moveDown"
     @select-tag="selectTag">

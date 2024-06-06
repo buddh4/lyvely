@@ -15,9 +15,10 @@ const taskPlanStore = useTaskCalendarPlanStore();
 const { sort } = taskPlanStore;
 const showAll = ref(false);
 
-const tasks = computed(() => {
-  return taskPlanStore.getTasks(props.interval, showAll.value);
-});
+const allTasks = computed(() => taskPlanStore.getTasks(props.interval, showAll.value));
+
+const todoTasks = computed(() => allTasks.value.filter((t) => !t.state.done));
+const doneTasks = computed(() => allTasks.value.filter((t) => t.state.done));
 
 const createItem = () => taskPlanStore.createItem(props.interval);
 
@@ -28,12 +29,13 @@ const showMore = (value: boolean) => (showAll.value = value);
 <template>
   <calendar-plan-section
     :interval="interval"
-    :count="tasks.length"
+    :count="todoTasks.length"
     create-button-title="tasks.create.title"
     @create="createItem">
     <draggable
-      :list="tasks"
+      :list="todoTasks"
       tag="div"
+      drag-class="bg-main broder border-divide"
       class="divide-y divide-divide"
       :data-calendar-interval="interval"
       group="tasks"
@@ -46,6 +48,10 @@ const showMore = (value: boolean) => (showAll.value = value);
         </div>
       </template>
     </draggable>
+    <div class="divide-y divide-divide border-t border-divide">
+      <task-calendar-plan-item v-for="doneTask in doneTasks" :key="doneTask.id" :model="doneTask" />
+    </div>
+
     <div
       v-if="hasMore && !showAll"
       class="flex cursor-pointer items-center justify-center divide-y divide-divide border-x border-t border-divide bg-main p-2"

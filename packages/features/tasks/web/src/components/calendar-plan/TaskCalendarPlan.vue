@@ -11,7 +11,6 @@ const calendarPlanStore = useTaskCalendarPlanStore();
 const { filter, loadModels, startWatch, reset } = calendarPlanStore;
 
 const createItem = () => {
-  debugger;
   calendarPlanStore.createItem();
 };
 
