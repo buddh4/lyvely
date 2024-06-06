@@ -1,6 +1,0 @@
-ignores: [
-  "tslib",
-  "rimraf",
-  "dependency-cruiser",
-  "@types/jest"
-]

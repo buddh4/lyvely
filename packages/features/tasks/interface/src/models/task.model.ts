@@ -1,8 +1,7 @@
 import { Exclude, Expose } from 'class-transformer';
-import { IEditableModel, ContentModel, ContentDataTypeModel } from '@lyvely/interface';
+import { IEditableModel, ContentModel, TimerModel } from '@lyvely/interface';
 import { BaseModel, type BaseModelData, PropertyType } from '@lyvely/common';
 import { CalendarInterval } from '@lyvely/dates';
-import { TimerModel } from '@lyvely/timers-interface';
 import { UpdateTaskModel } from './update-task.model';
 import { type ITaskConfig } from '../interfaces';
 import { ICalendarPlanEntry } from '@lyvely/calendar-plan-interface';

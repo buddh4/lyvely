@@ -3,11 +3,12 @@ import {
   clearPermissions,
   IPermission,
   IPermissionConfig,
+  VisitorMode,
   registerPermissions,
 } from '../../permissions';
 import { UserRelationRole } from '../interfaces';
 import { IntegrityException } from '../../exceptions';
-import { UserModel, UserStatus, VisitorMode } from '../../users';
+import { UserModel, UserStatus  } from '../../users';
 import { useUserRelationPermissionsManager } from './user-permissions.manager';
 import { ProfileRelationRole } from '../../profiles';
 

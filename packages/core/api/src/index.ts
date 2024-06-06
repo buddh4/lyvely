@@ -21,6 +21,7 @@ export * from './policies';
 export * from './profiles';
 export * from './settings';
 export * from './streams';
+export * from './calendar';
 export * from './system-messages';
 export * from './users';
 export * from './user-registration';

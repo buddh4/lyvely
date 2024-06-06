@@ -11,9 +11,12 @@ import { DataPoint, TimerDataPoint, TimeSeriesContent } from '../schemas';
 /**
  * A service responsible for updating data point values supporting a timer.
  */
-export abstract class TimerDataPointService<T extends TimeSeriesContent = TimeSeriesContent> {
+export abstract class TimerDataPointService<
+  T extends TimeSeriesContent = TimeSeriesContent,
+  TDataPointModel extends DataPoint = DataPoint,
+> {
   /** The data point service, responsible for updating the data point value. **/
-  abstract dataPointService: DataPointService<T>;
+  abstract dataPointService: DataPointService<T, TDataPointModel>;
 
   /**
    * Starts a timer for the given time series content and date, which will either update or create a new data point.
@@ -51,6 +54,9 @@ export abstract class TimerDataPointService<T extends TimeSeriesContent = TimeSe
       date,
       dataPoint.value
     );
+
+    if (!this.isTimerDataPoint(updatedDataPoint))
+      throw new IntegrityException('Could not start timer of non timer data point.');
 
     return updatedDataPoint as TimerDataPoint;
   }
@@ -91,6 +97,9 @@ export abstract class TimerDataPointService<T extends TimeSeriesContent = TimeSe
       date,
       dataPoint.value
     );
+
+    if (!this.isTimerDataPoint(updatedDataPoint))
+      throw new IntegrityException('Could not start timer of non timer data point.');
 
     return updatedDataPoint as TimerDataPoint;
   }

@@ -10,6 +10,9 @@ import {
   ContentType,
   TObjectId,
   ProtectedProfileContext,
+  Timer,
+  TimerModel,
+  TimerSchema,
 } from '@lyvely/api';
 import {
   PropertiesOf,
@@ -19,7 +22,6 @@ import {
   PartialPropertiesOf,
 } from '@lyvely/common';
 import { CalendarInterval } from '@lyvely/dates';
-import { Timer, TimerModel, TimerSchema } from '@lyvely/timers';
 import {
   TaskModel,
   CreateTaskModel,

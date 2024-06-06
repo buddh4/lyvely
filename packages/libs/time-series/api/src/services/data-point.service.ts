@@ -21,7 +21,7 @@ import { IDataPointUpdateResult } from '../interfaces';
 export abstract class DataPointService<
   TModel extends TimeSeriesContent,
   TDataPointModel extends DataPoint = DataPoint,
-  TValue = any,
+  TValue = TDataPointModel['value'],
 > {
   /** The data point dao, responsible for updating and fetching data points. **/
   protected abstract dataPointDao: DataPointStrategyDao<TDataPointModel>;

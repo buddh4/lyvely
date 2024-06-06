@@ -3,13 +3,13 @@ import {
   IPermission,
   IPermissionConfig,
   IPermissionSubject,
+  VisitorMode,
 } from '@/permissions';
 import {
   IProfilePermissionObject,
   ProfileRelationRole,
   ProfileVisibilityLevel,
 } from '../interfaces';
-import { VisitorMode } from '@/users';
 
 /**
  * A service for managing profile user permissions.

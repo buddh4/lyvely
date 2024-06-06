@@ -1,14 +1,8 @@
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
-import { TimerModel, TimeSpanModel } from '@lyvely/timers-interface';
+import { TimerModel, TimeSpanModel } from '@lyvely/interface';
 import { PropertyType } from '@lyvely/common';
-import {
-  User,
-  assureObjectId,
-  DocumentIdentity,
-  NestedSchema,
-  ObjectIdProp,
-  TObjectId,
-} from '@lyvely/api';
+import { User } from '@/users';
+import { assureObjectId, DocumentIdentity, NestedSchema, ObjectIdProp, TObjectId } from '@/core';
 
 @NestedSchema()
 export class TimeSpan extends TimeSpanModel<TObjectId> {

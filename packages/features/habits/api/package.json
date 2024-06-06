@@ -33,7 +33,6 @@
     "@lyvely/analytics": "workspace:*",
     "@lyvely/common": "workspace:*",
     "@lyvely/calendar-plan": "workspace:*",
-    "@lyvely/timers": "workspace:*",
     "@lyvely/time-series": "workspace:*",
     "@lyvely/habits-interface": "workspace:*",
     "class-transformer": "^0.5.1",

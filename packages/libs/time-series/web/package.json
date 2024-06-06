@@ -35,7 +35,6 @@
     "@lyvely/web": "workspace:*",
     "@lyvely/calendar-plan-web": "workspace:*",
     "@lyvely/dates": "workspace:*",
-    "@lyvely/timers-interface": "workspace:*",
     "echarts": "^5.5",
     "class-validator": "^0.14.0"
   },

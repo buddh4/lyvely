@@ -3,11 +3,12 @@ import {
   clearPermissions,
   IPermission,
   IPermissionConfig,
+  VisitorMode,
   registerPermissions,
 } from '../../../permissions';
 import { ContentUserRole } from '../interfaces';
 import { IntegrityException } from '../../../exceptions';
-import { UserStatus, VisitorMode } from '../../../users';
+import { UserStatus, } from '../../../users';
 import { useContentPermissionsManager } from './content-permissions.manager';
 import { ProfileModel } from '../../../profiles';
 

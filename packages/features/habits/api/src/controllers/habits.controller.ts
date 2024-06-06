@@ -13,13 +13,8 @@ import {
   HabitsEndpoints,
   ENDPOINT_HABITS,
 } from '@lyvely/habits-interface';
-import { TimerUpdateModel } from '@lyvely/timers';
 import {
-  TimerDataPointModel,
-  NumberDataPointModel,
-  DataPointModelConverter,
-} from '@lyvely/time-series';
-import {
+  TimerUpdateModel,
   SortResponse,
   Policies,
   ContentTypeController,
@@ -29,6 +24,11 @@ import {
   UseClassSerializer,
   ProfileRequest,
 } from '@lyvely/api';
+import {
+  TimerDataPointModel,
+  NumberDataPointModel,
+  DataPointModelConverter,
+} from '@lyvely/time-series';
 import { CalendarPlanSort, CalendarPlanFilter } from '@lyvely/calendar-plan';
 import { HabitsService, HabitTimeSeriesService, HabitDataPointTimerService } from '../services';
 
@@ -64,7 +64,7 @@ export class HabitsController
     return new HabitSearchResponse({
       models: models.map<HabitModel<any>>((c) => c.toModel()),
       dataPoints: dataPoints.map((value) =>
-        DataPointModelConverter.toModel<NumberDataPointModel>(value)
+        DataPointModelConverter.toModel<NumberDataPointModel | TimerDataPointModel>(value)
       ),
     });
   }

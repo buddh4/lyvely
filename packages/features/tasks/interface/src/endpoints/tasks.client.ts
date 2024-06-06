@@ -13,8 +13,9 @@ import {
   IProfileApiRequestOptions,
   unwrapAndTransformResponse,
   unwrapResponse,
+  TimerModel,
+  TimerValueUpdateModel,
 } from '@lyvely/interface';
-import { TimerModel, TimerValueUpdateModel } from '@lyvely/timers-interface';
 import { formatDate, CalendarDate } from '@lyvely/dates';
 import {
   CalendarPlanFilter,

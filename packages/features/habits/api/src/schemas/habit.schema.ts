@@ -22,6 +22,8 @@ import {
   TimeSeriesConfigSchemaFactory,
   TimeSeriesContent,
   TimerDataPointConfig,
+  NumberDataPoint,
+  TimerDataPoint,
 } from '@lyvely/time-series';
 
 type HabitDataPointConfig =
@@ -29,6 +31,8 @@ type HabitDataPointConfig =
   | SpinnerNumberDataPointConfig
   | TimerDataPointConfig
   | RangeNumberDataPointConfig;
+
+export type HabitDataPoint = NumberDataPoint | TimerDataPoint;
 
 @NestedSchema()
 export class HabitConfig implements ITimeSeriesContentConfig<HabitDataPointConfig> {

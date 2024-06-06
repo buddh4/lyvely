@@ -1,7 +1,7 @@
 import { DataPointValueType, ITimerDataPointConfig, useDataPointStrategyFacade } from '../index';
 import { CalendarInterval, isToday, toTimingId } from '@lyvely/dates';
 import { TimerDataPointModel } from '../models';
-import { TimerModel } from '@lyvely/timers-interface';
+import { TimerModel } from '@lyvely/interface';
 
 describe('TimerDataPointStrategy', () => {
   describe('validateValue', () => {

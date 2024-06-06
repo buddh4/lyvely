@@ -8,14 +8,14 @@ import {
   UpdateHabitDataPointTimerResponse,
 } from '../models';
 import { IHabitsEndpointClient } from './habits.endpoint';
-import { TimerUpdateModel } from '@lyvely/timers-interface';
-import { useSingleton } from '@lyvely/common';
 import {
+  TimerUpdateModel,
   SortResponse,
   unwrapAndTransformResponse,
   unwrapResponse,
   IProfileApiRequestOptions,
 } from '@lyvely/interface';
+import { useSingleton } from '@lyvely/common';
 import { CalendarPlanSort, CalendarPlanFilter } from '@lyvely/calendar-plan-interface';
 import { useDataPointStrategyFacade, TimerDataPointModel } from '@lyvely/time-series-interface';
 import repository from './habits.repository';

@@ -2,8 +2,9 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { DataPoint } from './data-point.schema';
 import { BaseModel, PropertiesOf, PropertyType } from '@lyvely/common';
 import { DataPointValueType, TimerDataPointModel } from '@lyvely/time-series-interface';
-import { Timer, TimerSchema } from '@lyvely/timers';
 import {
+  Timer,
+  TimerSchema,
   User,
   DocumentIdentity,
   NestedSchema,

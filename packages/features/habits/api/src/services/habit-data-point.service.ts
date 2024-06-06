@@ -1,18 +1,13 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Habit, HabitScore } from '../schemas';
-import {
-  DataPointService,
-  IDataPointUpdateResult,
-  NumberDataPoint,
-  DataPointValueType,
-} from '@lyvely/time-series';
+import { Habit, type HabitDataPoint, HabitScore } from '../schemas';
+import { DataPointService, IDataPointUpdateResult, TimerDataPointValue } from '@lyvely/time-series';
 import { HabitDataPointDao } from '../daos';
 import { ContentScoreService, ProtectedProfileContext } from '@lyvely/api';
 import { isDefined } from 'class-validator';
 import { CalendarDate, getFullDayTZDate } from '@lyvely/dates';
 
 @Injectable()
-export class HabitDataPointService extends DataPointService<Habit> {
+export class HabitDataPointService extends DataPointService<Habit, HabitDataPoint> {
   @Inject()
   protected dataPointDao: HabitDataPointDao;
 
@@ -22,7 +17,7 @@ export class HabitDataPointService extends DataPointService<Habit> {
   protected override async postProcess(
     context: ProtectedProfileContext,
     habit: Habit,
-    updateResult: IDataPointUpdateResult<NumberDataPoint>,
+    updateResult: IDataPointUpdateResult<HabitDataPoint>,
     updateDate: CalendarDate
   ) {
     const { profile } = context;
@@ -50,37 +45,33 @@ export class HabitDataPointService extends DataPointService<Habit> {
     ]);
   }
 
-  private static calculateDataPointScore(habit: Habit, units: number): number {
-    let result = 0;
-
-    if (habit.timeSeriesConfig.valueType === DataPointValueType.Timer) {
-      if (habit.timeSeriesConfig.min && units >= habit.timeSeriesConfig.min) {
-        result += habit.config.score;
-      }
-
-      if (
-        habit.timeSeriesConfig.optimal &&
-        habit.timeSeriesConfig.optimal !== habit.timeSeriesConfig.min &&
-        units >= habit.timeSeriesConfig.optimal
-      ) {
-        result += habit.config.score;
-      }
-
-      if (
-        habit.timeSeriesConfig.max &&
-        habit.timeSeriesConfig.max !== habit.timeSeriesConfig.min &&
-        habit.timeSeriesConfig.max !== habit.timeSeriesConfig.optimal &&
-        units >= habit.timeSeriesConfig.max
-      ) {
-        result += habit.config.score;
-      }
-    } else {
+  private static calculateDataPointScore(habit: Habit, value: HabitDataPoint['value']): number {
+    if (typeof value === 'number') {
       const newValue = isDefined(habit.timeSeriesConfig.max)
-        ? Math.min(units, habit.timeSeriesConfig.max!)
-        : units;
-      result = newValue * habit.config.score;
+        ? Math.min(value, habit.timeSeriesConfig.max!)
+        : value;
+      return newValue * habit.config.score;
     }
 
-    return result;
+    return this.calculateTimerDataPointScore(habit, value);
+  }
+
+  private static calculateTimerDataPointScore(habit: Habit, timer: TimerDataPointValue): number {
+    const score = habit.config.score;
+    const ms = timer.ms;
+    let { min, max, optimal } = habit.timeSeriesConfig;
+
+    min ??= 0;
+    optimal ??= min;
+    max ??= optimal;
+
+    if (ms < min) return Math.floor(score * (ms / min));
+    if (ms === min) return score;
+    if (ms < optimal) return Math.floor(score * 2 * (ms / optimal));
+    if (ms === optimal) return score * 2;
+    if (ms < max) return Math.floor(score * 3 * (ms / max));
+    if (ms >= max) return score * 3;
+
+    return 0;
   }
 }

@@ -87,13 +87,6 @@
     "nextBump": "patch"
   },
   {
-    "policyName": "lyvely-timers",
-    "definitionName": "lockStepVersion",
-    "mainProject": "@lyvely/timers",
-    "version": "0.1.0",
-    "nextBump": "patch"
-  },
-  {
     "policyName": "lyvely-lib",
     "definitionName": "individualVersion"
   },

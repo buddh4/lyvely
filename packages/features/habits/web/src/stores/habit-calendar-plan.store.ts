@@ -5,13 +5,12 @@ import {
   useHabitsClient,
   UpdateHabitDataPointResponse,
 } from '@lyvely/habits-interface';
-import { TimerUpdateModel } from '@lyvely/timers-interface';
+import { TimerUpdateModel, useProfileStore, useGlobalDialogStore } from '@lyvely/web';
 import {
   IUpdateDataPointResponse,
   TimeSeriesStore,
   useTimeSeriesCalendarPlan,
 } from '@lyvely/time-series-web';
-import { useProfileStore, useGlobalDialogStore } from '@lyvely/web';
 import { useCalendarPlanStore } from '@lyvely/calendar-plan-web';
 import { hasOwnNonNullableProperty } from '@lyvely/common';
 // TODO: https://github.com/microsoft/TypeScript/issues/47663

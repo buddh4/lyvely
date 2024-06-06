@@ -8,7 +8,7 @@ import { PropertiesOf } from '@lyvely/common';
 import { isNumber, validate } from 'class-validator';
 import { DataPointStrategy } from './data-point.strategy';
 import { TimerDataPointModel, TimerDataPointValueModel } from '../models';
-import { TimerModel } from '@lyvely/timers-interface';
+import { TimerModel } from '@lyvely/interface';
 
 const TIMER_MAX_VALUE = 1000;
 

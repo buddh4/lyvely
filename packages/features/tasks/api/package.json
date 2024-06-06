@@ -31,7 +31,6 @@
     "@lyvely/common": "workspace:*",
     "@lyvely/dates": "workspace:*",
     "@lyvely/calendar-plan": "workspace:*",
-    "@lyvely/timers": "workspace:*",
     "@lyvely/milestones": "workspace:*",
     "@lyvely/tasks-interface": "workspace:*",
     "reflect-metadata": "^0.1.12 || ^0.2.0"

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { TimerDataPointValueModel, ITimerDataPointSettings } from '@lyvely/time-series-interface';
-import { TimerModel } from '@lyvely/timers-interface';
+import { TimerModel } from '@lyvely/interface';
 import { TimerState } from '@lyvely/web';
 
 interface IProps {

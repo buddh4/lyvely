@@ -1,6 +1,5 @@
-import { Endpoint, IContentTypeClient, profileApiPrefix } from '@lyvely/interface';
+import { Endpoint, IContentTypeClient, profileApiPrefix, TimerModel } from '@lyvely/interface';
 import { CalendarDate } from '@lyvely/dates';
-import { TimerModel } from '@lyvely/timers-interface';
 import {
   UpdateTaskResponse,
   TaskModel,

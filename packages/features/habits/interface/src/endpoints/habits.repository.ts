@@ -1,8 +1,7 @@
 import { UpdateHabitModel, UpdateHabitDataPointModel, CreateHabitModel } from '../models';
 import { ENDPOINT_HABITS, HabitsEndpoints, IHabitsEndpointClient } from './habits.endpoint';
-import { TimerUpdateModel } from '@lyvely/timers-interface';
+import { TimerUpdateModel, useApi, IProfileApiRequestOptions } from '@lyvely/interface';
 import { CalendarPlanSort, CalendarPlanFilter } from '@lyvely/calendar-plan-interface';
-import { useApi, IProfileApiRequestOptions } from '@lyvely/interface';
 // TODO: https://github.com/microsoft/TypeScript/issues/47663
 import type {} from 'axios';
 

@@ -61,7 +61,6 @@
     "web",
     "interfaces",
     "apis",
-    "timers",
     "time-series",
     "calendar-plan",
     "habits",
@@ -121,20 +120,6 @@
       "reviewCategory": "core",
       "versionPolicyName": "lyvely-core",
       "tags": ["core", "web"]
-    },
-    {
-      "packageName": "@lyvely/timers-interface",
-      "projectFolder": "packages/libs/timers/interface",
-      "reviewCategory": "lib",
-      "versionPolicyName": "lyvely-timers",
-      "tags": ["libs", "interfaces", "timers"]
-    },
-    {
-      "packageName": "@lyvely/timers",
-      "projectFolder": "packages/libs/timers/api",
-      "reviewCategory": "lib",
-      "versionPolicyName": "lyvely-timers",
-      "tags": ["libs", "apis", "timers"]
     },
     {
       "packageName": "@lyvely/calendar-plan-interface",

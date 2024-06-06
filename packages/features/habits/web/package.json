@@ -34,7 +34,6 @@
     "@lyvely/ui": "workspace:*",
     "@lyvely/common": "workspace:*",
     "@lyvely/habits-interface": "workspace:*",
-    "@lyvely/timers-interface": "workspace:*",
     "@lyvely/calendar-plan-web": "workspace:*",
     "@lyvely/time-series-web": "workspace:*",
     "@lyvely/dates": "workspace:*",

@@ -3,6 +3,7 @@ ignores: [
   "rimraf",
   "dependency-cruiser",
   "@types/node",
+  "@types/jest",
   "@rollup/plugin-typescript",
   "@rollup/plugin-commonjs",
   "@rollup/plugin-dynamic-import-vars",

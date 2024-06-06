@@ -7,7 +7,7 @@ type InterValFilter = { interval: CalendarInterval; tid?: string | { $regex: Reg
 export abstract class DataPointStrategyDao<T extends DataPoint = DataPoint> extends AbstractDao<T> {
   protected abstract contentName: string;
 
-  async updateDataPointValue(uid: DocumentIdentity<User>, dataPoint: DataPoint, value: T['value']) {
+  async updateDataPointValue(uid: DocumentIdentity<User>, dataPoint: T, value: T['value']) {
     return await this.updateOneSetById(
       dataPoint as DocumentIdentity<T>,
       {

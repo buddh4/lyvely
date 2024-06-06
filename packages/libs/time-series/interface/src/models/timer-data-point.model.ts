@@ -2,12 +2,13 @@ import { Expose } from 'class-transformer';
 import { DataPointModel } from './data-point.model';
 import {
   DataPointValueType,
+  type IDataPoint,
   IDataPointConfig,
   ITimerDataPointConfig,
   NumericDataPointInterface,
 } from '../interfaces';
 import { BaseModel, type BaseModelData, type PropertiesOf, PropertyType } from '@lyvely/common';
-import { TimerModel } from '@lyvely/timers-interface';
+import { TimerModel } from '@lyvely/interface';
 import { IsNumber, Min, ValidateNested } from 'class-validator';
 
 export class TimerDataPointValueModel<TID = string> {

@@ -28,7 +28,6 @@
   "dependencies": {
     "@lyvely/common": "workspace:*",
     "@lyvely/dates": "workspace:*",
-    "@lyvely/timers-interface": "workspace:*",
     "@lyvely/calendar-plan-interface": "workspace:*",
     "@lyvely/interface": "workspace:*",
     "@buddh4/mapped-types": "^1.1.0",

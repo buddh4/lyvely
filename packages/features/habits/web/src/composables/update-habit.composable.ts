@@ -18,6 +18,9 @@ export const useUpdateHabit = (model: HabitModel) => {
     },
   });
 
+  const timer = computed(() => selection.value.timer);
+  const isTimerStartable = computed(() => useCalendarPlanStore().isPresentInterval(model.interval));
+
   async function startTimer() {
     if (!timer.value) return;
     if (!timer.value.isStarted()) {
@@ -31,10 +34,6 @@ export const useUpdateHabit = (model: HabitModel) => {
       await useHabitCalendarPlanStore().stopTimer(model);
     }
   }
-
-  const timer = computed(() => dataPoint.value!.value.timer);
-
-  const isTimerStartable = computed(() => useCalendarPlanStore().isPresentInterval(model.interval));
 
   return {
     selection,

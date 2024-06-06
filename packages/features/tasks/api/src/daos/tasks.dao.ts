@@ -9,9 +9,9 @@ import {
   Profile,
   ProfileType,
   UserAssignmentStrategy,
+  Timer,
 } from '@lyvely/api';
 import { InjectModel } from '@nestjs/mongoose';
-import { Timer } from '@lyvely/timers';
 import { ICalendarPlanDao, CalendarPlanDao } from '@lyvely/calendar-plan';
 import { findAndReplace } from '@lyvely/common';
 import type { ICalendarPlanTidSearchFilter } from '@lyvely/calendar-plan';

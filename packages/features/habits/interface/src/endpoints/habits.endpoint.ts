@@ -1,5 +1,10 @@
 import { ITimeSeriesCalendarPlanClient, TimerDataPointModel } from '@lyvely/time-series-interface';
-import { IContentTypeClient, profileApiPrefix, Endpoint } from '@lyvely/interface';
+import {
+  IContentTypeClient,
+  profileApiPrefix,
+  Endpoint,
+  TimerUpdateModel,
+} from '@lyvely/interface';
 import {
   HabitModel,
   UpdateHabitModel,
@@ -8,7 +13,6 @@ import {
   UpdateHabitDataPointResponse,
   UpdateHabitDataPointTimerResponse,
 } from '../models';
-import { TimerUpdateModel } from '@lyvely/timers-interface';
 
 export interface IHabitsEndpointClient
   extends IContentTypeClient<HabitModel, CreateHabitModel, UpdateHabitModel>,

@@ -24,4 +24,5 @@ export * from './user-account';
 export * from './user-invitations';
 export * from './user-registration';
 export * from './users';
+export * from './calendar';
 export * from './validation';
