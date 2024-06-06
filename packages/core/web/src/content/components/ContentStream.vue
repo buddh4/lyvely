@@ -59,7 +59,7 @@ const stream = useStream<ContentModel, ContentRequestFilter>(
     batchSize: props.batchSize,
     direction: StreamDirection.BBT,
     scrollToHeadOnInit: props.scrollToHead,
-    infiniteScroll: props.infiniteScroll ? { distance: 100 } : false,
+    infiniteScroll: props.infiniteScroll ? { distance: 250 } : false,
     scrollToHead: doScrollToHead,
   },
   useContentStreamClient()
@@ -155,7 +155,7 @@ onUnmounted(() => {
     v-mobile-scrollbar
     data-id="content-stream-root"
     class="scrollbar-thin flex-grow overflow-y-auto overflow-x-hidden bg-body pt-2 md:p-1 md:pt-4">
-    <div v-if="isInitialized" class="h-full">
+    <div v-if="!error" class="h-full">
       <slot name="before" :stream="stream"></slot>
       <div class="relative">
         <slot name="stream-begin" :stream="stream"></slot>
@@ -172,7 +172,7 @@ onUnmounted(() => {
         <slot v-else-if="!isLoading" name="stream-empty" :stream="stream"></slot>
       </div>
     </div>
-    <div v-else-if="error" class="absolute z-50 h-full w-full bg-body p-5">
+    <div v-else class="absolute z-50 h-full w-full bg-body p-5">
       <ly-alert type="danger" class="justify-center">
         <div class="flex flex-col items-center justify-center gap-2">
           <div>{{ t(error) }}</div>

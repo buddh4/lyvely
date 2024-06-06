@@ -211,6 +211,10 @@
       "allowedCategories": [ "core", "feature", "lib" ]
     },
     {
+      "name": "markdown-it",
+      "allowedCategories": [ "lib" ]
+    },
+    {
       "name": "mitt",
       "allowedCategories": [ "core", "feature", "lib" ]
     },

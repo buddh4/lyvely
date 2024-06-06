@@ -6,7 +6,7 @@ import {
   ContentUpdateResponse,
 } from '@lyvely/interface';
 import { IEditOrCreateModalProps } from '@/content/interfaces/edit-content-modal-props.interface';
-import { IUpdateModelStoreOptions, useUpdateModelStore } from '@/common';
+import { IUpdateModelStoreOptions, useUpsertModelStore } from '@/common';
 import { useProfileStore } from '@/profiles/stores/profile.store';
 import { getContentCreateModel } from '../registries';
 import { StoreStatusPlugin } from '@/core';
@@ -53,7 +53,7 @@ export function useContentUpsertModal<
     if (originalOnSubmitSuccess) originalOnSubmitSuccess(response);
   };
 
-  const updateStore = useUpdateModelStore<TResponse, TCreateModel, TUpdateModel>(options);
+  const updateStore = useUpsertModelStore<TResponse, TCreateModel, TUpdateModel>(options);
 
   if (content) {
     const editModel = content.toEditModel();

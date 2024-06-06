@@ -29,7 +29,7 @@ async function openCreateContentModal() {
 </script>
 
 <template>
-  <content-stream :batch-size="40">
+  <content-stream :batch-size="30">
     <template #stream-empty>
       <div class="flex h-full w-full items-center justify-center">
         <div

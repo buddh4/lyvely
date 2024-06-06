@@ -177,14 +177,12 @@ export function useStream<
 
     return new Promise((resolve) => {
       setTimeout(() => {
-        nextTick(() => {
-          if (options.direction === StreamDirection.BBT) {
-            scrollToBottom(options.root!.value!);
-          } else {
-            scrollToTop(options.root!.value!);
-          }
-          resolve(true);
-        });
+        if (options.direction === StreamDirection.BBT) {
+          scrollToBottom(options.root!.value!);
+        } else {
+          scrollToTop(options.root!.value!);
+        }
+        resolve(true);
       });
     });
   }

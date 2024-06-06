@@ -1,22 +1,18 @@
 <script setup lang="ts">
-import rehypeSanitize from 'rehype-sanitize';
-import rehypeStringify from 'rehype-stringify';
-import remarkParse from 'remark-parse';
-import remarkRehype from 'remark-rehype';
-import { unified } from 'unified';
 import { computedAsync, useDark } from '@vueuse/core';
-import remarkGfm from 'remark-gfm';
-import rehypeRaw from 'rehype-raw';
-import remarkBreaks from 'remark-breaks';
-import rehypeExternalLinks from 'rehype-external-links';
 import { computed, nextTick, onMounted, ref, watch } from 'vue';
 import { getBackgroundColor, hasOverflow } from '@/helpers';
+import {
+  MARKDOWN_PRESET_DEFAULT,
+  renderMarkdown,
+} from '@/components/markdown/use-markdown.composable';
 
 // TODO: Accessibility https://www.w3.org/WAI/WCAG21/Techniques/general/G201
 
 interface IProps {
   md: string | undefined;
   prose?: boolean;
+  preset?: string;
   maxWidth?: boolean;
   shadow?: boolean;
   maxHeight?: boolean | string;
@@ -24,6 +20,7 @@ interface IProps {
 
 const props = withDefaults(defineProps<IProps>(), {
   md: '',
+  preset: MARKDOWN_PRESET_DEFAULT,
   prose: true,
   maxWidth: false,
   shadow: true,
@@ -56,18 +53,7 @@ function getShadowBackground() {
 
 const html = computedAsync(async () => {
   try {
-    const processed = await unified()
-      // .use(remarkParse, { fragment: true })
-      .use(remarkParse)
-      .use(remarkBreaks)
-      .use(remarkGfm)
-      .use(remarkRehype, { allowDangerousHtml: true })
-      .use(rehypeRaw) // *Parse* the raw HTML strings embedded in the tree
-      // .use(rehypeHighlight)
-      .use(rehypeSanitize)
-      .use(rehypeExternalLinks, { rel: ['nofollow', 'noopener', 'noreferrer'], target: '_blank' })
-      .use(rehypeStringify)
-      .process(props.md);
+    const processed = renderMarkdown(props.md, props.preset);
 
     setTimeout(() => {
       isOverflow.value = hasOverflow(stage.value!, 20);

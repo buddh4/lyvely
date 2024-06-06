@@ -47,17 +47,9 @@
     "@vueuse/core": "^10.9",
     "lodash": "^4.17",
     "randomcolor": "^0.6",
-    "rehype-external-links": "^3.0",
-    "rehype-raw": "^7.0",
-    "rehype-sanitize": "^6.0",
-    "rehype-stringify": "^10.0",
-    "remark-breaks": "^4.0",
-    "remark-gfm": "^4.0",
-    "remark-parse": "^11.0",
-    "remark-rehype": "^11.0",
     "slugify": "^1.6",
     "tailwind-merge": "^2.3.0",
-    "unified": "^11.0"
+    "markdown-it": "^14.1.0"
   },
   "devDependencies": {
     "@lyvely/devtools": "workspace:*",
@@ -66,6 +58,7 @@
     "@types/zxcvbn": "^4.4",
     "@vitejs/plugin-vue": "^5.0",
     "@vue/test-utils": "^2.4",
+    "@types/markdown-it": "^14.1.1",
     "glob": "^10.3",
     "jsdom": "^23.0",
     "postcss": "^8.4",

@@ -1,1 +1,1 @@
-export * from './edit-model.store';
+export * from './upsert-model.store';
