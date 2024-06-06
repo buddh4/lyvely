@@ -66,6 +66,7 @@ onMounted(async () => {
       <draggable
         :list="charts"
         tag="div"
+        drag-class="bg-main"
         class="grid grid-cols-1 gap-1 sm:grid-cols-2 md:grid-cols-3 md:gap-4"
         group="charts"
         handle=".icon-drag"

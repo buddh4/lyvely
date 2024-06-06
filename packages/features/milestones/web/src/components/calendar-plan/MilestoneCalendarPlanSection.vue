@@ -30,6 +30,7 @@ const addEntry = () => milestonePlanStore.createItem(props.interval);
     <draggable
       :list="milestones"
       tag="div"
+      drag-class="bg-main"
       class="divide-y divide-divide"
       :data-calendar-interval="interval"
       group="milestones"

@@ -30,6 +30,7 @@ const createEntry = () => journalsStore.createItem(props.interval);
     <draggable
       :list="journals"
       tag="div"
+      drag-class="bg-main"
       class="divide-y divide-divide"
       :data-calendar-interval="interval"
       group="journals"

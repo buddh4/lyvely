@@ -35,7 +35,7 @@ const showMore = (value: boolean) => (showAll.value = value);
     <draggable
       :list="todoTasks"
       tag="div"
-      drag-class="bg-main broder border-divide"
+      drag-class="bg-main"
       class="divide-y divide-divide"
       :data-calendar-interval="interval"
       group="tasks"

@@ -30,6 +30,7 @@ const createItem = () => habitPlanStore.createItem(props.interval);
     <draggable
       :list="habits"
       tag="div"
+      drag-class="bg-main"
       class="divide-y divide-divide"
       :data-calendar-interval="interval"
       group="habits"
