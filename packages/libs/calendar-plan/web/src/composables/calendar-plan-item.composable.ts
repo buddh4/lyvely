@@ -16,10 +16,9 @@ export function useCalendarPlanItem<TModel extends ICalendarPlanEntry>(model: TM
     getElement()?.scrollIntoView({ block: 'center', inline: 'nearest', behavior: 'smooth' });
   }
 
-  function highlight(duration = 2000) {
+  function highlight(duration = 1700) {
     return new Promise((resolve, reject) => {
       nextTick(() => {
-        debugger;
         const element = getElement();
         if (!element) {
           reject();
@@ -27,9 +26,9 @@ export function useCalendarPlanItem<TModel extends ICalendarPlanEntry>(model: TM
         }
 
         element.scrollIntoView({ block: 'center', inline: 'nearest', behavior: 'smooth' });
-        element.classList.add('simmer');
+        element.classList.add('ui-bg-shimmer');
         setTimeout(() => {
-          element.classList.remove('simmer');
+          element.classList.remove('ui-bg-shimmer');
           resolve(element);
         }, duration);
       });

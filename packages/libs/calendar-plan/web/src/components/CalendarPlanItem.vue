@@ -41,7 +41,7 @@ const { model } = toRefs(props);
 
 <template>
   <div
-    class="px-3 py-2"
+    class="calendar-plan-item px-3 py-2"
     role="listitem"
     :data-cid="model.id"
     :data-sort-order="model.meta.sortOrder">

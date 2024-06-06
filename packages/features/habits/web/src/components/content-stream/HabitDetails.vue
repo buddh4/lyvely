@@ -28,7 +28,9 @@ const habitStore = useHabitCalendarPlanStore();
 const initialized = ref(false);
 const { getDataPoint, loadModel } = habitStore;
 const { isDisabled } = useCalendarPlanItem(props.model, habitStore);
-const { selection, startTimer, stopTimer, timer, isTimerStartable } = useUpdateHabit(props.model);
+const { selection, dataPoint, startTimer, stopTimer, timer, isTimerStartable } = useUpdateHabit(
+  props.model
+);
 const {
   title,
   accessibleTitle,

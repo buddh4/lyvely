@@ -83,7 +83,11 @@ const modalTitle = computed(() => {
           :required="true"
           :autofocus="isCreate || !isTouchScreen()"
           :auto-validation="false" />
-        <ly-select property="interval" :required="true" :options="calendarPlanOptions" />
+        <ly-select
+          property="interval"
+          type="number"
+          :required="true"
+          :options="calendarPlanOptions" />
       </fieldset>
 
       <fieldset>

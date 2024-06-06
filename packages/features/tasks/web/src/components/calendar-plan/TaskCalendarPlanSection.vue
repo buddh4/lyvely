@@ -4,8 +4,6 @@ import { CalendarPlanSection } from '@lyvely/calendar-plan-web';
 import { useTaskCalendarPlanStore } from '@/stores';
 import { computed, ref } from 'vue';
 import Draggable from 'vuedraggable';
-import { useContentCreateStore } from '@lyvely/web';
-import { TaskModel } from '@lyvely/tasks-interface';
 
 export interface IProps {
   interval: number;
@@ -21,8 +19,7 @@ const tasks = computed(() => {
   return taskPlanStore.getTasks(props.interval, showAll.value);
 });
 
-const addEntry = () =>
-  useContentCreateStore().createContentType(TaskModel.contentType, { interval: props.interval });
+const createItem = () => taskPlanStore.createItem(props.interval);
 
 const hasMore = computed(() => taskPlanStore.isHasMore(props.interval));
 const showMore = (value: boolean) => (showAll.value = value);
@@ -33,7 +30,7 @@ const showMore = (value: boolean) => (showAll.value = value);
     :interval="interval"
     :count="tasks.length"
     create-button-title="tasks.create.title"
-    @create="addEntry">
+    @create="createItem">
     <draggable
       :list="tasks"
       tag="div"

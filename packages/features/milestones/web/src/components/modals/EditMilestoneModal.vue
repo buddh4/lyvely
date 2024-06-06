@@ -46,7 +46,7 @@ const modalTitle = computed(() => {
       v-model="model"
       :validator="validator"
       :status="status"
-      label-key="activities.fields">
+      label-key="common.fields">
       <fieldset>
         <ly-text-field
           property="title"
@@ -55,6 +55,7 @@ const modalTitle = computed(() => {
           :auto-validation="false" />
         <ly-select
           property="interval"
+          type="number"
           label="common.fields.interval_plural"
           :required="true"
           :options="getCalendarPlanOptions('plural')" />

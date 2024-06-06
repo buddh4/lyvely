@@ -4,8 +4,6 @@ import { CalendarPlanSection } from '@lyvely/calendar-plan-web';
 import { useHabitCalendarPlanStore } from '@/stores';
 import { computed } from 'vue';
 import Draggable from 'vuedraggable';
-import { useContentCreateStore } from '@lyvely/web';
-import { HabitModel } from '@lyvely/habits-interface';
 
 export interface IProps {
   interval: number;
@@ -20,8 +18,7 @@ const habits = computed(() => {
   return habitPlanStore.getModels(props.interval);
 });
 
-const addEntry = () =>
-  useContentCreateStore().createContentType(HabitModel.contentType, { interval: props.interval });
+const createItem = () => habitPlanStore.createItem(props.interval);
 </script>
 
 <template>
@@ -29,7 +26,7 @@ const addEntry = () =>
     :interval="interval"
     :count="habits.length"
     create-button-title="habits.create.title"
-    @create="addEntry">
+    @create="createItem">
     <draggable
       :list="habits"
       tag="div"

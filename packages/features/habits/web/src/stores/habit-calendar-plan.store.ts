@@ -11,7 +11,7 @@ import {
   TimeSeriesStore,
   useTimeSeriesCalendarPlan,
 } from '@lyvely/time-series-web';
-import { useCalendarPlanStore } from '@lyvely/calendar-plan-web';
+import { useCalendarPlanStore, useCreateCalendarPlanItem } from '@lyvely/calendar-plan-web';
 import { hasOwnNonNullableProperty } from '@lyvely/common';
 // TODO: https://github.com/microsoft/TypeScript/issues/47663
 import type {} from 'mitt';
@@ -21,6 +21,8 @@ export const useHabitCalendarPlanStore = defineStore('habitCalendarPlan', () => 
   const profileStore = useProfileStore();
   const habitsClient = useHabitsClient();
   const dialog = useGlobalDialogStore();
+
+  const { createItem } = useCreateCalendarPlanItem(HabitModel.contentType);
 
   const habitPlan = useTimeSeriesCalendarPlan<HabitModel, HabitFilter>({
     filter: new HabitFilter(),
@@ -65,5 +67,6 @@ export const useHabitCalendarPlanStore = defineStore('habitCalendarPlan', () => 
     ...habitPlan,
     startTimer,
     stopTimer,
+    createItem,
   };
 });

@@ -4,8 +4,6 @@ import { CalendarPlanSection } from '@lyvely/calendar-plan-web';
 import { useMilestoneCalendarPlanStore } from '@/stores';
 import { computed } from 'vue';
 import Draggable from 'vuedraggable';
-import { useContentCreateStore } from '@lyvely/web';
-import { MilestoneModel } from '@lyvely/milestones-interface';
 
 export interface IProps {
   interval: number;
@@ -20,10 +18,7 @@ const milestones = computed(() => {
   return milestonePlanStore.getModels(props.interval);
 });
 
-const addEntry = () =>
-  useContentCreateStore().createContentType(MilestoneModel.contentType, {
-    interval: props.interval,
-  });
+const addEntry = () => milestonePlanStore.createItem(props.interval);
 </script>
 
 <template>

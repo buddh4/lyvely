@@ -1,0 +1,20 @@
+@keyframes bgShimmer {
+    0% {
+        background-position: -468px 0;
+    }
+    100% {
+        background-position: 468px 0;
+    }
+}
+
+.ui-bg-shimmer {
+    animation-duration: 1.8s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    animation-name: bgShimmer;
+    animation-timing-function: linear;
+    background: #f6f7f8;
+    background: linear-gradient(to right, transparent 20%, #ffffff10 50%, transparent 60%);
+    background-size: 1000px 640px;
+    position: relative;
+}

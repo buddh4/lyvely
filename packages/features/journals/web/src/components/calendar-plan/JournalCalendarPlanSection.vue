@@ -18,8 +18,7 @@ const { sort } = journalsStore;
 
 const journals = computed(() => journalsStore.getModels(props.interval));
 
-const createEntry = () =>
-  useContentCreateStore().createContentType(JournalModel.contentType, { interval: props.interval });
+const createEntry = () => journalsStore.createItem(props.interval);
 </script>
 
 <template>

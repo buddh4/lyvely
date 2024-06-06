@@ -1,7 +1,6 @@
 <script lang="ts" setup>
-import { usePageStore, translate, useContentCreateStore, t } from '@lyvely/web';
+import { usePageStore, translate, t } from '@lyvely/web';
 import { CalendarPlanner, CalendarPlanFilterNavigation } from '@lyvely/calendar-plan-web';
-import { MilestoneModel } from '@lyvely/milestones-interface';
 import { getCalendarIntervalArray } from '@lyvely/dates';
 import { useMilestoneCalendarPlanStore } from '@/stores';
 import { onBeforeMount, onUnmounted, ref } from 'vue';
@@ -9,8 +8,7 @@ import { LyAlert, LyButton, LyContentPanel, LyFloatingAddButton, LyIcon } from '
 import MilestoneCalendarPlanSection from './MilestoneCalendarPlanSection.vue';
 
 const calendarPlanStore = useMilestoneCalendarPlanStore();
-const { filter, loadModels, startWatch, reset } = calendarPlanStore;
-const createEntry = () => useContentCreateStore().createContentType(MilestoneModel.contentType);
+const { filter, loadModels, startWatch, reset, createItem } = calendarPlanStore;
 
 const { isEmpty } = calendarPlanStore;
 
@@ -35,7 +33,7 @@ onUnmounted(() => {
       :interval="interval" />
   </calendar-planner>
   <ly-content-panel v-else-if="loaded">
-    <ly-alert class="cursor-pointer justify-center bg-main" @click="createEntry">
+    <ly-alert class="cursor-pointer justify-center bg-main" @click="createItem">
       <div class="flex flex-col items-center justify-center">
         <ly-icon name="target" class="w-20 cursor-pointer text-gray-300 dark:text-gray-500" />
         <ly-button class="font-semibold">
@@ -45,5 +43,5 @@ onUnmounted(() => {
     </ly-alert>
   </ly-content-panel>
 
-  <ly-floating-add-button @click="createEntry" />
+  <ly-floating-add-button @click="createItem" />
 </template>

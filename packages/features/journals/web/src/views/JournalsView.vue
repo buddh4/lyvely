@@ -1,8 +1,7 @@
 <script lang="ts" setup>
 import { onBeforeMount, onUnmounted, ref } from 'vue';
 import { CalendarPlanner, CalendarPlanFilterNavigation } from '@lyvely/calendar-plan-web';
-import { t, useContentCreateStore } from '@lyvely/web';
-import { JournalModel } from '@lyvely/journals-interface';
+import { t } from '@lyvely/web';
 import { useJournalPlanStore } from '@/stores';
 import JournalCalendarPlanSection from '@/components/calendar-plan/JournalCalendarPlanSection.vue';
 import JournalsNavigation from '@/components/menus/JournalsNavigation.vue';
@@ -16,7 +15,7 @@ import {
 } from '@lyvely/ui';
 
 const journalStore = useJournalPlanStore();
-const { intervals, filter } = journalStore;
+const { intervals, filter, createItem } = journalStore;
 
 const { isEmpty } = journalStore;
 
@@ -24,7 +23,6 @@ const loaded = ref(false);
 
 onBeforeMount(() => journalStore.loadModels().then(() => (loaded.value = true)));
 
-const createEntry = () => useContentCreateStore().createContentType(JournalModel.contentType);
 const unwatch = journalStore.startWatch();
 onUnmounted(unwatch);
 </script>
@@ -40,7 +38,7 @@ onUnmounted(unwatch);
         :interval="interval" />
     </calendar-planner>
     <ly-content-panel v-else-if="loaded">
-      <ly-alert class="cursor-pointer justify-center bg-main" @click="createEntry">
+      <ly-alert class="cursor-pointer justify-center bg-main" @click="createItem">
         <div class="flex flex-col items-center justify-center">
           <ly-icon name="journal" class="w-20 cursor-pointer text-gray-300 dark:text-gray-500" />
           <ly-button class="font-semibold">
@@ -50,7 +48,7 @@ onUnmounted(unwatch);
       </ly-alert>
     </ly-content-panel>
 
-    <ly-floating-add-button @click="createEntry" />
+    <ly-floating-add-button @click="createItem" />
   </ly-content-root>
 </template>
 

@@ -3,7 +3,7 @@ import { toTimingId } from '@lyvely/dates';
 import { MilestoneModel } from '@lyvely/milestones-interface';
 import {
   CalendarPlanItem,
-  useCalendarPlanItem,
+  useCalendarPlanItemSort,
   useCalendarPlanStore,
 } from '@lyvely/calendar-plan-web';
 import { useMilestoneCalendarPlanStore } from '@/stores';
@@ -25,7 +25,7 @@ const { selectTag } = milestoneStore;
 const { locale } = storeToRefs(profileStore);
 const router = useRouter();
 
-const { moveUp, moveDown } = useCalendarPlanItem(props.model, milestoneStore);
+const { moveUp, moveDown } = useCalendarPlanItemSort(props.model, milestoneStore);
 
 const progress = computed(() => {
   const tid = toTimingId(

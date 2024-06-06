@@ -12,7 +12,11 @@ import { useDebounceFn } from '@vueuse/core';
 import { ContentDropdown, t } from '@lyvely/web';
 import { LyEditableText } from '@lyvely/ui';
 import { useJournalPlanStore } from '@/stores';
-import { useCalendarPlanItem, CalendarPlanItem } from '@lyvely/calendar-plan-web';
+import {
+  useCalendarPlanItem,
+  CalendarPlanItem,
+  useCalendarPlanItemSort,
+} from '@lyvely/calendar-plan-web';
 
 export interface IProps {
   model: JournalModel;
@@ -22,7 +26,8 @@ const props = defineProps<IProps>();
 const initialized = ref(false);
 const journalStore = useJournalPlanStore();
 
-const { isDisabled, moveUp, moveDown } = useCalendarPlanItem(props.model, journalStore);
+const { isDisabled } = useCalendarPlanItem(props.model);
+const { moveUp, moveDown } = useCalendarPlanItemSort(props.model, journalStore);
 const { selectTag } = journalStore;
 
 const dataPoint = computed(() => journalStore.getDataPoint(props.model));

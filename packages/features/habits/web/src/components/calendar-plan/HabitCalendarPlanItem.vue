@@ -7,7 +7,11 @@ import {
   TimeSeriesTimerInput,
 } from '@lyvely/time-series-web';
 import { onMounted, ref } from 'vue';
-import { CalendarPlanItem, useCalendarPlanItem } from '@lyvely/calendar-plan-web';
+import {
+  CalendarPlanItem,
+  useCalendarPlanItem,
+  useCalendarPlanItemSort,
+} from '@lyvely/calendar-plan-web';
 import { useHabitCalendarPlanStore } from '@/stores';
 import { ContentDropdown } from '@lyvely/web';
 import { useUpdateHabit } from '@/composables';
@@ -20,7 +24,8 @@ const props = defineProps<IProps>();
 const initialized = ref(false);
 const habitStore = useHabitCalendarPlanStore();
 const { selectTag, getDataPoint } = habitStore;
-const { isDisabled, moveUp, moveDown } = useCalendarPlanItem(props.model, habitStore);
+const { isDisabled } = useCalendarPlanItem(props.model);
+const { moveUp, moveDown } = useCalendarPlanItemSort(props.model, habitStore);
 const { selection, startTimer, stopTimer, timer, isTimerStartable } = useUpdateHabit(props.model);
 
 const timerSelection = <any>selection;

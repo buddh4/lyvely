@@ -1,16 +1,14 @@
 <script lang="ts" setup>
 import { CalendarPlanner, CalendarPlanFilterNavigation } from '@lyvely/calendar-plan-web';
-import { HabitModel } from '@lyvely/habits-interface';
 import { getCalendarIntervalArray } from '@lyvely/dates';
 import { useHabitCalendarPlanStore } from '@/stores';
 import HabitCalendarPlanSection from './HabitCalendarPlanSection.vue';
 import { onBeforeMount, onUnmounted, ref } from 'vue';
-import { usePageStore, t, useContentCreateStore } from '@lyvely/web';
+import { usePageStore, t } from '@lyvely/web';
 import { LyFloatingAddButton, LyContentPanel, LyAlert, LyButton, LyIcon } from '@lyvely/ui';
 
 const calendarPlanStore = useHabitCalendarPlanStore();
-const { filter, loadModels, startWatch, reset } = calendarPlanStore;
-const createEntry = () => useContentCreateStore().createContentType(HabitModel.contentType);
+const { filter, loadModels, startWatch, reset, createItem } = calendarPlanStore;
 
 const { isEmpty } = calendarPlanStore;
 
@@ -35,7 +33,7 @@ onUnmounted(() => {
       :interval="interval" />
   </calendar-planner>
   <ly-content-panel v-else-if="loaded">
-    <ly-alert class="cursor-pointer justify-center bg-main" @click="createEntry">
+    <ly-alert class="cursor-pointer justify-center bg-main" @click="createItem">
       <div class="flex flex-col items-center justify-center">
         <ly-icon name="habit" class="w-20 cursor-pointer text-gray-300 dark:text-gray-500" />
         <ly-button class="font-semibold">
@@ -45,5 +43,5 @@ onUnmounted(() => {
     </ly-alert>
   </ly-content-panel>
 
-  <ly-floating-add-button @click="createEntry" />
+  <ly-floating-add-button @click="createItem" />
 </template>

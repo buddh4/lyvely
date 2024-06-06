@@ -1,4 +1,4 @@
-import './styles/forms.css';
+import './styles/index.css';
 import LyCenteredPanel from './components/layouts/LyCenteredPanel.vue';
 import LyContentRoot from './components/layouts/LyContentRoot.vue';
 import LyListPage from './components/layouts/LyListPage.vue';
