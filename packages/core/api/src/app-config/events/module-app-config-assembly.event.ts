@@ -9,10 +9,7 @@ export class ModuleAppConfigAssemblyEvent {
     this.req = req;
   }
 
-  setModuleConfig<T extends Record<string, unknown> = Record<string, unknown>>(
-    moduleId: string,
-    config: T
-  ) {
+  setModuleConfig<T extends object = object>(moduleId: string, config: T) {
     this.config[moduleId] = config;
   }
 }

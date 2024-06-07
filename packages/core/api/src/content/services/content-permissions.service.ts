@@ -1,5 +1,5 @@
 import { ConfigService } from '@nestjs/config';
-import { ServerConfiguration } from '@/config';
+import { type ConfigurationPath } from '@/config';
 import { Injectable } from '@nestjs/common';
 import { ProfileContentContext } from '../schemas';
 import {
@@ -11,7 +11,7 @@ import {
   isProfilePermission,
   IntegrityException,
 } from '@lyvely/interface';
-import { GlobalPermissionsService } from '@/permissions';
+import { CONFIG_PATH_PERMISSIONS, GlobalPermissionsService } from '@/permissions';
 import { ProfilePermissionsService } from '@/profiles';
 
 /**
@@ -33,7 +33,7 @@ export class ContentPermissionsService {
    * @param profilePermissionsService
    */
   constructor(
-    private readonly configService: ConfigService<ServerConfiguration>,
+    private readonly configService: ConfigService<ConfigurationPath>,
     private readonly globalPermissionsService: GlobalPermissionsService,
     private readonly profilePermissionsService: ProfilePermissionsService
   ) {}
@@ -81,7 +81,7 @@ export class ContentPermissionsService {
    * determines if the profile context meets the required permission based on various context properties like role, user status, profile settings, and relation status.
    *
    * @param context - The profile context being checked.
-   * @param permissionId - The ID of the permission to verify.
+   * @param permissionOrId
    * @returns `true` if the profile context meets the specified permission, otherwise `false`.
    */
   verifyPermission(context: ProfileContentContext, permissionOrId: string | IPermission): boolean {
@@ -102,7 +102,7 @@ export class ContentPermissionsService {
     const { user } = context;
     const role = context.getContentRole();
     const membership = context.getMembership();
-    const config = this.configService.get('permissions', {
+    const permissionsConfig = this.configService.get(CONFIG_PATH_PERMISSIONS, {
       visitorStrategy: { mode: VisitorMode.Disabled },
     });
 
@@ -114,7 +114,10 @@ export class ContentPermissionsService {
         relationStatus: membership?.relationStatus,
       },
       context,
-      config
+      {
+        ...permissionsConfig,
+        featureConfig: this.configService.get('features', {}),
+      }
     );
   }
 }

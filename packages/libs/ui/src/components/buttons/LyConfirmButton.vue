@@ -1,26 +1,22 @@
-<script lang="ts">
-export default {
-  inheritAttrs: false,
-};
-</script>
-
 <script lang="ts" setup>
 import { RouteLocationRaw } from 'vue-router';
 import { IConfirmOptions } from '../dialogs/confirm-options.interface';
 import { Translatable } from '@/i18n';
-import { ref } from 'vue';
+import { ref, useAttrs } from 'vue';
 import LyConfirmModal from '@/components/dialogs/LyConfirmModal.vue';
+import { omit } from 'lodash';
+
+defineOptions({
+  inheritAttrs: false,
+});
 
 export interface IProps {
   submit?: boolean;
   text?: Translatable;
   active?: boolean;
-  border?: boolean;
   disabled?: boolean;
   loading?: boolean;
-  rounded?: boolean;
   isToggle?: boolean;
-  outlined?: boolean;
   route?: RouteLocationRaw;
   options?: IConfirmOptions;
 }
@@ -28,15 +24,17 @@ export interface IProps {
 withDefaults(defineProps<IProps>(), {
   submit: false,
   active: false,
-  border: true,
   text: '',
   disabled: false,
   loading: false,
-  rounded: true,
   route: undefined,
   isToggle: false,
-  outlined: false,
+  options: undefined,
 });
+
+const attrs = useAttrs();
+
+defineEmits(['click']);
 
 const showConfirm = ref(false);
 
@@ -46,7 +44,9 @@ function onClick() {
 </script>
 
 <template>
-  <ly-button v-bind="$props" @click="onClick" />
+  <ly-button v-bind="omit(attrs, 'options')" @click="onClick">
+    <slot />
+  </ly-button>
   <ly-confirm-modal v-model="showConfirm" :options="options" @submit="$emit('click')">
     <slot name="confirmBody"></slot>
   </ly-confirm-modal>

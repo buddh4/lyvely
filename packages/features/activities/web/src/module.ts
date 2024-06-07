@@ -36,7 +36,7 @@ export default () => {
           id: 'activities',
           text: 'activities.profile-drawer.title',
           icon: 'activity',
-          sortOrder: 1500,
+          sortOrder: 1510,
           moduleId: ACTIVITIES_MODULE_ID,
           condition:
             isFeatureEnabled(ActivityMilestonesFeature.id) ||
@@ -52,7 +52,7 @@ export default () => {
           id: 'activities-footer',
           text: 'activities.profile-drawer.title',
           icon: 'activity',
-          sortOrder: 1500,
+          sortOrder: 1510,
           moduleId: ACTIVITIES_MODULE_ID,
           condition:
             isFeatureEnabled(ActivityMilestonesFeature.id) ||

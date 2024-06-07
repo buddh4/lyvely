@@ -16,6 +16,8 @@ export async function loadDateTimeLocale(locale: string): Promise<void> {
     throw new Error('No locale manager set');
   }
 
+  if (localeManager.isLoaded(locale)) return;
+
   return localeManager.loadLocale(locale);
 }
 

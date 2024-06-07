@@ -25,7 +25,7 @@ const lyvelyTestConfig: ServerConfiguration = {
     },
   },
   permissions: {
-    visitorStrategy: { mode: VisitorMode.Enabled, handles: [''] },
+    visitorStrategy: { mode: VisitorMode.Enabled, handles: ['welcome'] },
   },
   auth: {
     jwt: {

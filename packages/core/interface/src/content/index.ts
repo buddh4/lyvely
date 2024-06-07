@@ -3,6 +3,7 @@ export * from './permissions';
 export * from './models';
 export * from './endpoints';
 export * from './registries';
+export * from './helpers';
 export * from './live';
 export * from './content.constants';
 export * from './content.features';

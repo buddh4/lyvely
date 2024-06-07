@@ -8,7 +8,6 @@ import {
 } from '@lyvely/calendar-plan-web';
 import { useTaskCalendarPlanStore } from '@/stores';
 import { TimerState, ContentDropdown } from '@lyvely/web';
-import { LyCheckboxRange } from '@lyvely/ui';
 
 export interface IProps {
   model: TaskModel;
@@ -22,8 +21,8 @@ const { isDisabled } = useCalendarPlanItem(props.model);
 const { moveUp, moveDown } = useCalendarPlanItemSort(props.model, taskStore);
 
 const selection = computed({
-  get: () => +!!props.model.state.done,
-  set: (selection: number) => taskStore.setTaskSelection(props.model, !!selection),
+  get: () => !!props.model.state.done,
+  set: (val: boolean) => taskStore.setTaskSelection(props.model, val),
 });
 
 const startTimer = async () => taskStore.startTimer(props.model);
@@ -43,18 +42,14 @@ const updateTimer = async (value: number) => taskStore.updateTimer(props.model, 
     </template>
     <template #pre-title>
       <div>
-        <ly-checkbox-range
-          v-model:selection="selection"
-          :max="1"
-          :is-task="true"
-          :disabled="isDisabled" />
+        <ly-checkbox v-model="selection" class="mr-2" :disabled="isDisabled" />
       </div>
     </template>
 
     <template #rating>
       <timer-state
         :key="model.state.timer.calculateTotalSpan()"
-        :startable="!model.state.done"
+        :startable="!isDisabled"
         :model="model.state.timer"
         :show-time-on-init="!!model.state.done"
         @start="startTimer"

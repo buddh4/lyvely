@@ -14,12 +14,18 @@ import { Task, TaskSchema, TaskScore, TaskScoreSchema } from './schemas';
 import { TasksController } from './controllers';
 import { TasksDao } from './daos';
 import { TaskCalendarPlanService, TaskMilestoneRelationsService, TasksService } from './services';
-import { TASKS_MODULE_ID, TasksFeature, ActivityTasksFeature } from '@lyvely/tasks-interface';
+import {
+  TASKS_MODULE_ID,
+  TasksFeature,
+  ActivityTasksFeature,
+  TaskPermissions,
+} from '@lyvely/tasks-interface';
 
 @LyvelyModule({
   id: TASKS_MODULE_ID,
   name: 'Tasks',
   path: __dirname,
+  permissions: TaskPermissions,
   features: [TasksFeature, ActivityTasksFeature],
   imports: [
     CoreModule,

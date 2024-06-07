@@ -17,10 +17,12 @@ Access for visitors can be configured with the following configuration snippet:
 ```typescript
 {
   //...
-  permissions: {
-    visitorStrategy: {
-      mode: VisitorMode.ENABLED,
-        handles: ['welcome']
+  modules: {
+    permissions: {
+      visitorStrategy: {
+        mode: VisitorMode.ENABLED,
+          handles: ['welcome']
+      }
     }
   }
   //...  

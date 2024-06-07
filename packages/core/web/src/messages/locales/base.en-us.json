@@ -13,9 +13,23 @@
       "title": "Edit Message"
     },
     "permissions": {
-      "create": {
-        "name": "Create Message",
-        "description": "Who is allowed to create messages?"
+      "message": {
+        "create": {
+          "name": "Create a Message",
+          "description": "Allows users to create new chat messages."
+        },
+        "manage": {
+          "name": "Mange Messages",
+          "description": "Allows users to create, delete, edit any chat message."
+        },
+        "delete": {
+          "name": "Delete Messages",
+          "description": "Allows users to delete any chat message."
+        },
+        "write": {
+          "name": "Edit Messages",
+          "description": "Allows users to edit any chat message."
+        }
       }
     }
   }

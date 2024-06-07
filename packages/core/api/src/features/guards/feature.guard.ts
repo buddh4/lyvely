@@ -5,7 +5,7 @@ import { Reflector } from '@nestjs/core';
 import { ProfileRequest } from '@/profiles';
 import { ConfigService } from '@nestjs/config';
 import { ServerConfiguration } from '@/config';
-import { isEnabledProfileOrGlobalFeature } from '@lyvely/interface';
+import { isEnabledFeature } from '@lyvely/interface';
 
 @Injectable()
 export class FeatureGuard implements CanActivate {
@@ -25,7 +25,7 @@ export class FeatureGuard implements CanActivate {
 
     const featureConfig = this.configService.get('features', {});
     return features.reduce((result, featureId) => {
-      return result && isEnabledProfileOrGlobalFeature(featureId, profile, featureConfig);
+      return result && isEnabledFeature(featureId, profile, featureConfig);
     }, true);
   }
 }

@@ -50,7 +50,7 @@ export abstract class AbstractStreamService<
 
     if (!streamEntry) throw new DocumentNotFoundException();
 
-    this.prepareModel(streamEntry, context);
+    await this.prepareModels(context, [streamEntry]);
 
     return streamEntry;
   }
@@ -80,7 +80,7 @@ export abstract class AbstractStreamService<
       limit: batchSize,
     } as IFetchQueryOptions<TModel>);
 
-    streamEntries.forEach((entry) => this.prepareModel(entry, context));
+    await this.prepareModels(context, streamEntries);
 
     const response = new StreamResponse<TModel>({
       models: streamEntries,
@@ -112,19 +112,12 @@ export abstract class AbstractStreamService<
   /**
    * This function can be used by subclasses to do further populate or manipulate a model instance.
    *
-   * @param {TModel} model - The model to populate.
    * @param context
+   * @param models
    * @protected
    * @return {void}
    */
-  protected prepareModel(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    model: TModel,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    context: TContext
-  ) {
-    // Nothing todo.
-  }
+  protected abstract prepareModels(context: TContext, models: TModel[]): Promise<TModel[]>;
 
   protected getSortValue(model: TModel): SortValue {
     return findByPath<SortValue>(model, this.getSortField());
@@ -156,7 +149,7 @@ export abstract class AbstractStreamService<
       } as IFetchQueryOptions<TModel>)
     ).reverse();
 
-    streamEntries.forEach((entry) => this.prepareModel(entry, context));
+    streamEntries.forEach((entry) => this.prepareModels(context, [entry]));
 
     const response = new StreamResponse<TModel>({
       models: streamEntries,

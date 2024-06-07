@@ -24,6 +24,8 @@ export abstract class BaseContentDeletePolicy extends BaseContentPolicy {
   async verify(context: ProfileContentContext): Promise<boolean> {
     const { content } = context;
 
+    if (content.getTypeMeta().deletable === false) return false;
+
     const permission = getPermission(
       getContentDeletePermissionId(content.type),
       BasePermissionType.Content

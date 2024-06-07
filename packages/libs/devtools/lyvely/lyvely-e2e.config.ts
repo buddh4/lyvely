@@ -12,10 +12,12 @@ export const lyvelyE2EConfig = {
       ttl: Number.MAX_VALUE,
     },
   },
-  permissions: {
-    visitorStrategy: {
-      mode: 1,
-      handles: ['public-group'],
+  modules: {
+    permissions: {
+      visitorStrategy: {
+        mode: 1,
+        handles: ['public-group'],
+      },
     },
   },
   mongodb: {

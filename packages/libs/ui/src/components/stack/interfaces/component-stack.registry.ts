@@ -5,19 +5,21 @@ import { isVueComponent, sortBySortOrder } from '@/helpers';
 const stackMap = new Map<string, Ref<IComponentStackEntry[]>>();
 
 export const registerComponentStackEntries = <
+  TContext = any,
   TSpec extends IComponentStackEntrySpec = IComponentStackEntrySpec,
 >(
   id: string,
-  entries: IComponentStackEntry<TSpec>[]
+  entries: IComponentStackEntry<TContext, TSpec>[]
 ) => {
   entries.forEach((e) => registerComponentStackEntry(id, e));
 };
 
 export const registerComponentStackEntry = <
+  TContext = any,
   TSpec extends IComponentStackEntrySpec = IComponentStackEntrySpec,
 >(
   id: string,
-  entry: IComponentStackEntry<TSpec>
+  entry: IComponentStackEntry<TContext, TSpec>
 ) => {
   entry = { ...entry };
   if (isVueComponent(entry.component)) {

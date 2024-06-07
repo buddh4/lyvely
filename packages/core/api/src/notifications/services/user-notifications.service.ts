@@ -42,6 +42,13 @@ export class UserNotificationsService extends AbstractStreamService<
     super();
   }
 
+  protected override async prepareModels(
+    context: IUserContext,
+    models: UserNotification[]
+  ): Promise<UserNotification[]> {
+    return models;
+  }
+
   async findOneByNotification(
     userIdentity: DocumentIdentity<User>,
     notificationIdentity: DocumentIdentity<Notification>

@@ -14,38 +14,29 @@ export interface IProps {
   type?: 'button' | 'reset' | 'submit' | undefined;
   text?: Translatable;
   active?: boolean;
-  border?: boolean;
   disabled?: boolean;
   loading?: boolean;
-  rounded?: boolean;
   isToggle?: boolean;
-  outlined?: boolean;
   route?: RouteLocationRaw;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
   active: false,
-  border: true,
   type: 'button',
   text: '',
   disabled: false,
   loading: false,
-  rounded: true,
   route: undefined,
   isToggle: false,
-  outlined: false,
 });
 
 const attrs = useAttrs();
 
 function getClassNames(isActive?: boolean) {
   const { classResult } = useTwMerge([
-    'button select-none no-underline text-center inline-block py-1.5 px-2.5',
+    'button select-none no-underline text-center inline-block rounded py-1.5 px-2.5',
     {
-      outlined: props.outlined,
       loading: props.loading,
-      rounded: props.rounded,
-      'border-0': !props.border,
       active: props.active || isActive,
     },
   ]);

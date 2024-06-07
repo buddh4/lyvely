@@ -1,13 +1,17 @@
 import { ifNotAuthenticated } from '@/auth';
 import { translation } from '@/i18n';
-import { PATH_SIGN_UP, PATH_VERIFY_EMAIL } from '../user-registration.constants';
+import {
+  PATH_SIGN_UP,
+  PATH_VERIFY_EMAIL,
+  ROUTE_USER_REGISTRATION_NAME,
+} from '../user-registration.constants';
 import { LAYOUT_INTRO } from '@/ui';
 import { ProfileVisibilityLevel } from '@lyvely/interface';
 
 export const userRegistrationRoutes = [
   {
     path: PATH_SIGN_UP,
-    name: 'Register',
+    name: ROUTE_USER_REGISTRATION_NAME,
     meta: {
       isPublic: true,
       layout: LAYOUT_INTRO,

@@ -5,6 +5,7 @@ import { registerComponentStackEntries, registerMenuEntries } from '@lyvely/ui';
 import { MENU_ACCOUNT_DRAWER, MENU_ACCOUNT_SETTINGS } from '@/user-account/user-account.constants';
 import { STACK_PROFILE_TOP_RIGHT_NAVIGATION } from '@/profiles';
 import AccountDrawer from './components/menus/AccountDrawer.vue';
+import { useAuthStore } from '@/auth';
 
 export default () => {
   return {
@@ -24,24 +25,26 @@ export default () => {
         },
       ]);
       registerMenuEntries(MENU_ACCOUNT_DRAWER, [
-        {
+        () => ({
           id: 'my-account',
           sortOrder: 1000,
           moduleId: USER_ACCOUNT_MODULE_ID,
           icon: 'account',
+          condition: useAuthStore().isAuthenticated,
           text: 'user-account.drawer.my-account',
           to: { name: 'MyAccountInfo' },
-        },
+        }),
       ]);
       registerMenuEntries(MENU_ACCOUNT_DRAWER, [
-        {
+        () => ({
           id: 'account-settings',
           sortOrder: 1500,
           moduleId: USER_ACCOUNT_MODULE_ID,
           icon: 'settings',
+          condition: useAuthStore().isAuthenticated,
           text: 'user-account.drawer.settings',
           to: { name: 'AccountSettings' },
-        },
+        }),
       ]);
 
       registerMenuEntries(MENU_ACCOUNT_SETTINGS, [

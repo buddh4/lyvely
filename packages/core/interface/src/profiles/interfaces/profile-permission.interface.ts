@@ -7,6 +7,7 @@ import {
 } from '@/permissions';
 import { ProfileRelationRole } from './profile-relation-role.interface';
 import type { ProfileType, ProfileVisibilityLevel } from './profile.interface';
+import type { IProfileFeatureInfo } from './profile-feature-info.interface';
 
 /**
  * Interface used to define profile level permissions.
@@ -21,11 +22,11 @@ export interface IProfilePermission
  */
 export interface IProfilePermissionSubject extends IPermissionSubject<ProfileRelationRole> {}
 
-export type IProfilePermissionData = {
+export interface IProfilePermissionData extends IProfileFeatureInfo {
   type: ProfileType;
   hasOrg: boolean;
   visibility: ProfileVisibilityLevel;
-};
+}
 
 /**
  * This interface defines the data of a profile permission object which represents the profile itself in a profile

@@ -3,15 +3,15 @@ import { translation } from '@/i18n';
 import { IModule } from '@/core';
 import {
   CreateMessageModel,
-  CreateMessagePermission,
   MessageModel,
   MESSAGES_MODULE_ID,
+  MessagePermissions,
 } from '@lyvely/interface';
 
 export default () => {
   return {
     id: MESSAGES_MODULE_ID,
-    permissions: [CreateMessagePermission],
+    permissions: MessagePermissions,
     i18n: {
       base: (locale: string) => import(`./locales/base.${locale}.json`),
     },

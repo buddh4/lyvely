@@ -154,6 +154,13 @@ export class ContentModel<
     return <any>{
       config: this.getDefaultConfig(),
       state: this.getDefaultState(),
+      policies: {
+        canWrite: false,
+        canDelete: false,
+        canManage: false,
+        canRead: false,
+        populated: false,
+      } satisfies IContentPolicies,
     };
   }
 

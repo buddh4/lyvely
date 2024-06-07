@@ -4,7 +4,8 @@
       "title": "Journals"
     },
     "calendar-plan": {
-      "empty": "Create Your First Journal!"
+      "empty-create": "Create Your First Journal!",
+      "empty": "No Journals Found!"
     },
     "title": "Journals",
     "name": "Journal",
@@ -17,8 +18,11 @@
     "edit": {
       "title": "Edit Journal Item"
     },
-    "feature": {
-      "title": "Journals"
+    "features": {
+      "journals": {
+        "name": "Journals",
+        "description": "If disabled, the Journals view and content type will be unavailable."
+      }
     },
     "fields": {
       "title": "Title",

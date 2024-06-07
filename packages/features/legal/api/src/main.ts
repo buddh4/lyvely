@@ -3,6 +3,7 @@ import { LegalModule } from './legal.module';
 import { lyvelyDevConfig } from '@lyvely/devtools';
 
 lyvelyDevConfig.modules = {
+  ...lyvelyDevConfig.modules,
   legal: {
     poweredBy: true,
     sections: {

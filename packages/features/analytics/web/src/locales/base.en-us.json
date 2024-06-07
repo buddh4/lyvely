@@ -2,9 +2,16 @@
   "analytics": {
     "name": "Analytics",
     "title": "Analytics",
-    "feature": {
-      "title": "Analytics",
-      "description": "If disabled, the Analytics view and content type will be unavailable."
+    "features": {
+      "analytics": {
+        "name": "Analytics",
+        "description": "If disabled, the Analytics view and content type will be unavailable."
+      }
+    },
+    "messages": {
+      "empty": "No Charts Found!",
+      "empty-series": "No Chart Series Found!",
+      "empty-series-create": "Add Chart Series"
     },
     "series": {
       "none": "None",

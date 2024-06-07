@@ -28,13 +28,6 @@ const hasHistory = usePageStore().hasHistory;
         <ly-icon name="arrow-left" data-id="btn-back" class="mr-2 w-3" />
         <span>{{ t('common.back') }}</span>
       </a>
-      <div class="ml-auto inline px-2 md:px-4">
-        <ly-icon
-          v-if="content.meta.archived"
-          name="archive"
-          :title="t('common.archived')"
-          class="ml-auto w-4 text-warning" />
-      </div>
       <div class="ml-auto">
         <ly-component-stack :id="STACK_CONTENT_DETAILS_HEAD_ADDITION" :props="{ content }" />
       </div>

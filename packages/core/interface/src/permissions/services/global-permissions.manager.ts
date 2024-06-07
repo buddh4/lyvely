@@ -6,9 +6,11 @@ import {
   IGlobalPermission,
   IGlobalPermissionObject,
   IGlobalPermissionSubject,
+  type IPermissionManagerConfig,
 } from '../interfaces';
 import { useSingleton } from '@lyvely/common';
 import { getPermission } from '../registries';
+import { isEnabledGlobalFeature } from '@/features';
 
 /**
  * Represents the GlobalPermissionsService class which is responsible for managing global user permissions.
@@ -40,6 +42,22 @@ class GlobalPermissionsManager extends AbstractPermissionsManager<
    */
   override getRoleHierarchy(): GlobalPermissionRole[] {
     return globalPermissionRoleHierarchy;
+  }
+
+  /**
+   * Verifies if a given  permission related global feature is enabled.
+   *
+   * @param {IGlobalPermission} permission - The permission to verify.
+   * @param config
+   * @protected
+   * @returns {boolean} - True if the user has the permission for the object, otherwise false.
+   */
+  protected override verifyPermissionFeature(
+    permission: IGlobalPermission,
+    config: IPermissionManagerConfig
+  ): boolean {
+    if (!permission.feature) return true;
+    return isEnabledGlobalFeature(permission.feature, config.featureConfig);
   }
 }
 

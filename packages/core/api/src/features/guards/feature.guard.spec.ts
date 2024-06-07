@@ -3,6 +3,7 @@ import { ExecutionContext } from '@nestjs/common';
 import { Feature, FeatureGuard, FeaturesModule } from '../';
 import { clearFeatures, registerFeatures } from '@lyvely/interface';
 import { ProfileTestDataUtils } from '@/profiles';
+import { FeatureType } from "@lyvely/interface";
 
 describe('ProfileGuard', () => {
   let testingModule: ILyvelyTestingModule;
@@ -28,7 +29,7 @@ describe('ProfileGuard', () => {
   describe('canActivate()', () => {
     it('enabled class level global feature', async () => {
       registerFeatures([
-        { id: 'test', moduleId: 'test', title: 'Test', enabledByDefault: true, global: true },
+        { id: 'test', moduleId: 'test', title: 'Test', enabledByDefault: true, type: FeatureType.Global },
       ]);
 
       @Feature('test')
@@ -41,7 +42,7 @@ describe('ProfileGuard', () => {
 
     it('disabled class level global feature', async () => {
       registerFeatures([
-        { id: 'test', moduleId: 'test', title: 'Test', enabledByDefault: false, global: true },
+        { id: 'test', moduleId: 'test', title: 'Test', enabledByDefault: false, type: FeatureType.Global },
       ]);
 
       @Feature('test')
@@ -58,7 +59,7 @@ describe('ProfileGuard', () => {
         { enabledFeatures: ['test'] }
       );
 
-      registerFeatures([{ id: 'test', moduleId: 'test', title: 'Test', installable: true }]);
+      registerFeatures([{ id: 'test', moduleId: 'test', title: 'Test', installable: true, type: FeatureType.Profile  }]);
 
       @Feature('test')
       class TestController {}
@@ -75,7 +76,7 @@ describe('ProfileGuard', () => {
       );
 
       registerFeatures([
-        { id: 'test', moduleId: 'test', title: 'Test', enabledByDefault: true, installable: true },
+        { id: 'test', moduleId: 'test', title: 'Test', enabledByDefault: true, installable: true, type: FeatureType.Profile  },
       ]);
 
       @Feature('test')
@@ -90,8 +91,8 @@ describe('ProfileGuard', () => {
       const { profile } = ProfileTestDataUtils.createDummyUserAndProfile();
 
       registerFeatures([
-        { id: 't1', moduleId: 'test', title: 'Test', enabledByDefault: true },
-        { id: 't2', moduleId: 'test', title: 'Test2', enabledByDefault: true },
+        { id: 't1', moduleId: 'test', title: 'Test', enabledByDefault: true, type: FeatureType.Profile },
+        { id: 't2', moduleId: 'test', title: 'Test2', enabledByDefault: true, type: FeatureType.Profile },
       ]);
 
       @Feature('t1', 't2')
@@ -106,8 +107,8 @@ describe('ProfileGuard', () => {
       const { profile } = ProfileTestDataUtils.createDummyUserAndProfile();
 
       registerFeatures([
-        { id: 't1', moduleId: 'test', title: 'Test', enabledByDefault: true },
-        { id: 't2', moduleId: 'test', title: 'Test2', enabledByDefault: false },
+        { id: 't1', moduleId: 'test', title: 'Test', enabledByDefault: true, type: FeatureType.Profile },
+        { id: 't2', moduleId: 'test', title: 'Test2', enabledByDefault: false, type: FeatureType.Profile },
       ]);
 
       @Feature('t1', 't2')
@@ -122,8 +123,8 @@ describe('ProfileGuard', () => {
       const { profile } = ProfileTestDataUtils.createDummyUserAndProfile();
 
       registerFeatures([
-        { id: 't1', moduleId: 'test', title: 'Test', enabledByDefault: true },
-        { id: 't2', moduleId: 'test', title: 'Test2', enabledByDefault: true, global: true },
+        { id: 't1', moduleId: 'test', title: 'Test', enabledByDefault: true, type: FeatureType.Profile },
+        { id: 't2', moduleId: 'test', title: 'Test2', enabledByDefault: true, type: FeatureType.Global },
       ]);
 
       @Feature('t1', 't2')
@@ -135,7 +136,7 @@ describe('ProfileGuard', () => {
     });
 
     it('profile feature without profile context fails', async () => {
-      registerFeatures([{ id: 't1', moduleId: 'test', title: 'Test', enabledByDefault: true }]);
+      registerFeatures([{ id: 't1', moduleId: 'test', title: 'Test', enabledByDefault: true, type: FeatureType.Profile }]);
 
       @Feature('t1')
       class TestController {}
@@ -148,8 +149,8 @@ describe('ProfileGuard', () => {
     it('enabled class level feature with disabled function level feature', async () => {
       const { profile } = ProfileTestDataUtils.createDummyUserAndProfile();
       registerFeatures([
-        { id: 't1', moduleId: 'test', title: 'Test', enabledByDefault: true },
-        { id: 't2', moduleId: 'test', title: 'Test2', enabledByDefault: false },
+        { id: 't1', moduleId: 'test', title: 'Test', enabledByDefault: true, type: FeatureType.Profile },
+        { id: 't2', moduleId: 'test', title: 'Test2', enabledByDefault: false, type: FeatureType.Profile },
       ]);
 
       @Feature('t1')
@@ -170,8 +171,8 @@ describe('ProfileGuard', () => {
     it('enabled class level feature with enabled function level feature', async () => {
       const { profile } = ProfileTestDataUtils.createDummyUserAndProfile();
       registerFeatures([
-        { id: 't1', moduleId: 'test', title: 'Test', enabledByDefault: true },
-        { id: 't2', moduleId: 'test', title: 'Test2', enabledByDefault: true },
+        { id: 't1', moduleId: 'test', title: 'Test', enabledByDefault: true, type: FeatureType.Profile },
+        { id: 't2', moduleId: 'test', title: 'Test2', enabledByDefault: true, type: FeatureType.Profile },
       ]);
 
       @Feature('t1')

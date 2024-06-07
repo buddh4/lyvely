@@ -7,8 +7,6 @@ import {
   getProfileRoleLevel,
   UserStatus,
   ProfileMembershipRole,
-} from '@lyvely/interface';
-import type {
   BaseUserProfileRelationType,
   IProfilePermissionObject,
   IPermissionSetting,

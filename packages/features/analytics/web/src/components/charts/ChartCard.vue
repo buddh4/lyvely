@@ -15,17 +15,20 @@ const ChartComponent = category?.component
 
 <template>
   <div class="chart-card rounded border border-divide bg-main p-5 drop-shadow-md">
-    <div class="relative flex justify-center text-sm font-bold">
-      <div class="mr-auto">
-        <button type="button" class="item-drag-button my-auto mr-2 w-5 cursor-move text-secondary">
-          <ly-icon name="drag" class="w-5 md:hidden" />
+    <div class="relative flex h-5 justify-center text-sm font-bold">
+      <div class="mr-auto w-5">
+        <button
+          v-if="model.policies.canWrite"
+          type="button"
+          class="my-auto mr-2 w-5 cursor-move text-secondary">
+          <ly-icon name="drag" class="show-on-hover w-5 md:hidden" />
         </button>
       </div>
       <router-link :to="toContentDetails(model)" class="text-main">
         {{ model.getTitle() }}
       </router-link>
-      <div class="ml-auto">
-        <content-dropdown :content="model" />
+      <div class="ml-auto w-5">
+        <content-dropdown :content="model" class="show-on-hover md:hidden" />
       </div>
     </div>
     <Component :is="ChartComponent" v-if="ChartComponent" :model="model" />
@@ -35,7 +38,7 @@ const ChartComponent = category?.component
 </template>
 
 <style scoped>
-.chart-card:hover .item-drag-button .icon {
+.chart-card:hover .show-on-hover {
   display: inline-block;
 }
 </style>

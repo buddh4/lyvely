@@ -31,6 +31,7 @@ import {
   ProfilePermissionSettingSchema,
 } from './profile-role-permissions.schema';
 import { ProfileMemberGroup, ProfileMemberGroupSchema } from './profile-member-group.schema';
+import type { IProfileFeatureInfo } from '@lyvely/interface';
 
 @Schema({ _id: false })
 class ProfileMetadata {

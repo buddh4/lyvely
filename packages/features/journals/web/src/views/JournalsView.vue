@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import { onBeforeMount, onUnmounted, ref } from 'vue';
 import { CalendarPlanner, CalendarPlanFilterNavigation } from '@lyvely/calendar-plan-web';
-import { t } from '@lyvely/web';
+import { t, useProfilePermissions } from '@lyvely/web';
 import { useJournalPlanStore } from '@/stores';
+import { useJournalPermissions } from '@lyvely/journals-interface';
 import JournalCalendarPlanSection from '@/components/calendar-plan/JournalCalendarPlanSection.vue';
 import JournalsNavigation from '@/components/menus/JournalsNavigation.vue';
 import {
@@ -21,8 +22,14 @@ const { isEmpty } = journalStore;
 
 const loaded = ref(false);
 
-onBeforeMount(() => journalStore.loadModels().then(() => (loaded.value = true)));
+const { isAllowed: canCreateJournal } = useProfilePermissions(useJournalPermissions().Create);
 
+const createJournal = () => {
+  if (!canCreateJournal.value) return;
+  createItem();
+};
+
+onBeforeMount(() => journalStore.loadModels().then(() => (loaded.value = true)));
 const unwatch = journalStore.startWatch();
 onUnmounted(unwatch);
 </script>
@@ -38,17 +45,21 @@ onUnmounted(unwatch);
         :interval="interval" />
     </calendar-planner>
     <ly-content-panel v-else-if="loaded">
-      <ly-alert class="cursor-pointer justify-center bg-main" @click="createItem">
+      <ly-alert
+        :class="[{ 'cursor-pointer': canCreateJournal }, 'justify-center bg-main']"
+        :role="canCreateJournal ? 'button' : ''"
+        @click="createJournal">
         <div class="flex flex-col items-center justify-center">
-          <ly-icon name="journal" class="w-20 cursor-pointer text-gray-300 dark:text-gray-500" />
-          <ly-button class="font-semibold">
-            {{ t('journals.calendar-plan.empty') }}
-          </ly-button>
+          <ly-icon name="journal" class="w-20 text-gray-300 dark:text-gray-500" />
+          <span v-if="canCreateJournal" class="font-semibold">{{
+            t('journals.calendar-plan.empty-create')
+          }}</span>
+          <span v-else class="font-semibold">{{ t('journals.calendar-plan.empty') }}</span>
         </div>
       </ly-alert>
     </ly-content-panel>
 
-    <ly-floating-add-button @click="createItem" />
+    <ly-floating-add-button v-if="canCreateJournal" @click="createItem" />
   </ly-content-root>
 </template>
 

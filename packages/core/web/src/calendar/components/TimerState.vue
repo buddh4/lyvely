@@ -84,7 +84,7 @@ syncTimerState(isStarted.value);
 </script>
 
 <template>
-  <div class="flex items-center gap-2">
+  <div class="flex h-5 items-center gap-2">
     <a
       v-if="showTimeOnInit || timerValue > 0"
       role="link"

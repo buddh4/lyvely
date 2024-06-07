@@ -5,6 +5,7 @@ import { ContentDao } from '../daos';
 import { Content } from '../schemas';
 import { ProfileContext } from '@/profiles';
 import { FilterQuery, assureObjectId } from '@/core';
+import { ContentPolicyService } from './content-policy.service';
 
 @Injectable()
 export class ContentStreamService extends AbstractStreamService<
@@ -15,6 +16,9 @@ export class ContentStreamService extends AbstractStreamService<
   @Inject()
   protected streamEntryDao: ContentDao;
 
+  @Inject()
+  protected contentPolicyService: ContentPolicyService;
+
   protected logger = new Logger(ContentStreamService.name);
 
   createQueryFilter(context: ProfileContext, filter?: ContentRequestFilter): FilterQuery<Content> {
@@ -22,8 +26,11 @@ export class ContentStreamService extends AbstractStreamService<
     return this.applyFilter(query, filter);
   }
 
-  protected override prepareModel() {
-    // Nothing to do.
+  protected override async prepareModels(
+    context: ProfileContext,
+    models: Content[]
+  ): Promise<Content[]> {
+    return await this.contentPolicyService.populateContentPolicies(context, models);
   }
 
   protected override createLoadEntryQueryFilter(

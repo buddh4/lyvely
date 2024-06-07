@@ -12,6 +12,7 @@ import {
   TaskModel,
   TASKS_MODULE_ID,
   TasksFeature,
+  TaskPermissions,
 } from '@lyvely/tasks-interface';
 import { calendarPlanModule } from '@lyvely/calendar-plan-web';
 import { tasksRoutes } from '@/routes';
@@ -22,6 +23,7 @@ export default () => {
     id: TASKS_MODULE_ID,
     dependencies: [calendarPlanModule()],
     routes: tasksRoutes,
+    permissions: TaskPermissions,
     icon: 'task',
     features: [TasksFeature, ActivityTasksFeature],
     i18n: {
@@ -33,7 +35,7 @@ export default () => {
         moduleId: TASKS_MODULE_ID,
         text: 'tasks.title',
         feature: TasksFeature.id,
-        sortOrder: 1502,
+        sortOrder: 1520,
         icon: 'task',
         iconBindings: { class: 'w-6' },
         condition: !useProfileFeatureStore().isFeatureEnabled(ActivityTasksFeature.id),
@@ -45,7 +47,7 @@ export default () => {
         moduleId: TASKS_MODULE_ID,
         text: 'tasks.title',
         feature: TasksFeature.id,
-        sortOrder: 1502,
+        sortOrder: 1520,
         icon: 'task',
         iconBindings: { class: 'w-6' },
         condition: !useProfileFeatureStore().isFeatureEnabled(ActivityTasksFeature.id),

@@ -14,17 +14,20 @@ export default {
   },
   http: {
     host: '127.0.0.1',
+    port: 8080,
     appUrl: 'http://127.0.0.1:3000',
-    // Maybe we should use a mock instead
+    baseUrl: 'http://127.0.0.1:8080/api',
     rateLimit: {
       limit: Number.MAX_VALUE,
       ttl: Number.MAX_VALUE,
     },
   },
-  permissions: {
-    visitorStrategy: {
-      mode: VisitorMode.Enabled,
-      handles: ['public-group'],
+  modules: {
+    permissions: {
+      visitorStrategy: {
+        mode: VisitorMode.Enabled,
+        handles: ['public-group'],
+      },
     },
   },
   mongodb: {
@@ -47,12 +50,19 @@ export default {
     jwt: {
       'secure-cookies': false,
       access: {
+        expiresIn: '20min',
+        sameSite: 'lax',
         secret: 'e5d2ece45d3b7919fc7b6a8f19abc0cb7916c71bef385ca11f27a0a3b324e3d2',
       },
       refresh: {
+        expiresIn: '20min',
+        sameSite: 'lax',
+        expiresInRemember: '20min',
         secret: 'e5d2ece45d3b7919fc7b7a8f19abc0cb7916c71bef385ca11f27a0a3b324e3d2',
       },
       verify: {
+        expiresIn: '20min',
+        sameSite: 'lax',
         secret: 'd660cef7e949e6935a0fc86c073a41363b539542883b18f2e74874ef09dc4482',
       },
     },

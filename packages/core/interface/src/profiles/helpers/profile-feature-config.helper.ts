@@ -1,17 +1,6 @@
-import { ProfileType } from '../interfaces';
+import { type IProfileFeatureInfo, ProfileType } from '../interfaces';
 import { IFeatureConfig, IFeatureConfigDefinition } from '@/features/interfaces';
 import { isEmpty } from 'lodash';
-
-export interface IProfileFeatureInfo {
-  subscription?: string;
-  usage?: string[];
-  disabledFeatures?: string[];
-  enabledFeatures?: string[];
-  type: string;
-  oid: any;
-  id: any;
-  hasOrg?: boolean;
-}
 
 type IFindDefinition = (
   c: IFeatureConfig,

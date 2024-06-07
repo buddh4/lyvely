@@ -6,12 +6,12 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ContentModule, getContentModelDefinition } from '@/content';
 import { Message, MessageSchema } from './schemas';
 import { LyvelyModule } from '@/core';
-import { CreateMessagePermission, MESSAGES_MODULE_ID } from '@lyvely/interface';
+import { MESSAGES_MODULE_ID, MessagePermissions } from '@lyvely/interface';
 
 @LyvelyModule({
   id: MESSAGES_MODULE_ID,
   path: __dirname,
-  permissions: [CreateMessagePermission],
+  permissions: MessagePermissions,
   imports: [
     ProfilesModule,
     ContentModule.registerContentType(Message),

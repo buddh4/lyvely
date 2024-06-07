@@ -8,6 +8,7 @@ import {
   DocumentNotFoundException,
   ForbiddenServiceException,
 } from '@lyvely/interface';
+import { FeatureType } from "@lyvely/interface";
 
 describe('ProfileFeaturesService', () => {
   let testingModule: ILyvelyTestingModule;
@@ -43,6 +44,7 @@ describe('ProfileFeaturesService', () => {
           moduleId: 'test',
           title: 'test.title',
           installable: true,
+          type: FeatureType.Profile
         },
       ]);
 
@@ -64,6 +66,7 @@ describe('ProfileFeaturesService', () => {
           moduleId: 'test',
           title: 'test.title',
           installable: true,
+          type: FeatureType.Profile
         },
       ]);
 
@@ -87,6 +90,7 @@ describe('ProfileFeaturesService', () => {
           moduleId: 'test',
           title: 'test.title',
           installable: false,
+          type: FeatureType.Profile
         },
       ]);
 
@@ -110,6 +114,7 @@ describe('ProfileFeaturesService', () => {
           moduleId: 'test',
           title: 'test.title',
           installable: true,
+          type: FeatureType.Profile
         },
         {
           id: 'test.sub',
@@ -117,6 +122,7 @@ describe('ProfileFeaturesService', () => {
           title: 'test.sub.title',
           dependencies: ['test'],
           installable: true,
+          type: FeatureType.Profile
         },
       ]);
 
@@ -138,6 +144,7 @@ describe('ProfileFeaturesService', () => {
           moduleId: 'test',
           title: 'test.title',
           installable: true,
+          type: FeatureType.Profile
         },
       ]);
 
@@ -159,6 +166,7 @@ describe('ProfileFeaturesService', () => {
           moduleId: 'test',
           title: 'test.title',
           installable: true,
+          type: FeatureType.Profile
         },
       ]);
 
@@ -182,6 +190,7 @@ describe('ProfileFeaturesService', () => {
           moduleId: 'test',
           title: 'test.title',
           installable: true,
+          type: FeatureType.Profile
         },
         {
           id: 'test.sub',
@@ -189,6 +198,7 @@ describe('ProfileFeaturesService', () => {
           title: 'test.sub.title',
           installable: true,
           dependencies: ['test'],
+          type: FeatureType.Profile
         },
       ]);
 
@@ -215,6 +225,7 @@ describe('ProfileFeaturesService', () => {
           moduleId: 'test',
           title: 'test.title',
           installable: true,
+          type: FeatureType.Profile
         },
         {
           id: 'test.sub',
@@ -223,6 +234,7 @@ describe('ProfileFeaturesService', () => {
           installable: true,
           enabledByDefault: true,
           dependencies: ['test'],
+          type: FeatureType.Profile
         },
         {
           id: 'test.sub2',
@@ -231,6 +243,7 @@ describe('ProfileFeaturesService', () => {
           installable: true,
           enabledByDefault: false,
           dependencies: ['test'],
+          type: FeatureType.Profile
         },
       ]);
 
@@ -257,7 +270,7 @@ describe('ProfileFeaturesService', () => {
           moduleId: 'test',
           title: 'test.title',
           installable: true,
-          global: true,
+          type: FeatureType.Global
         },
       ]);
 

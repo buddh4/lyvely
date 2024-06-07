@@ -49,7 +49,7 @@ import { ProfileSettingsService } from './profile-settings.service';
 import { ConfigService } from '@nestjs/config';
 import { ConfigurationPath } from '@/config';
 import { ProfilePermissionsService } from './profile-permissions.service';
-import { GlobalPermissionsService } from '@/permissions';
+import { CONFIG_PATH_PERMISSION_VISITOR_STRATEGY, GlobalPermissionsService } from '@/permissions';
 import { pick } from 'lodash';
 
 @Injectable()
@@ -324,7 +324,7 @@ export class ProfilesService {
   }
 
   async findDefaultVisitorProfile(): Promise<ProfileContext> {
-    const visitorStrategy = this.configService.get('permissions.visitorStrategy');
+    const visitorStrategy = this.configService.get(CONFIG_PATH_PERMISSION_VISITOR_STRATEGY);
     if (!visitorStrategy?.handles?.length) {
       throw new MisconfigurationException('No visitor profile set.');
     }

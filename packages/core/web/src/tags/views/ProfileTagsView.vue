@@ -3,10 +3,17 @@ import { useProfileStore } from '@/profiles/stores/profile.store';
 import { computed, ref, onMounted } from 'vue';
 import EditTagModal from '@/tags/components/EditTagModal.vue';
 import { useEditTagStore } from '@/tags/stores/edit-tag.store';
-import { TagModel, UpdateTagModel, CreateTagModel, TagFilter } from '@lyvely/interface';
+import {
+  TagModel,
+  UpdateTagModel,
+  CreateTagModel,
+  TagFilter,
+  useTagPermissions,
+} from '@lyvely/interface';
 import { accessibilityFocus } from '@/accessibility';
 import TagBadge from '../components/TagBadge.vue';
 import { t } from '@/i18n';
+import { useProfilePermissions } from '@/profiles';
 
 const filter = ref(new TagFilter({ archived: false }));
 
@@ -36,6 +43,8 @@ function confirmArchive(tag: TagModel) {
     ? { text: 'tags.restore.confirm.text' }
     : { text: 'tags.archive.confirm.text' };
 }
+
+const { isAllowed: canManageTags } = useProfilePermissions(useTagPermissions().Manage);
 
 onMounted(() => accessibilityFocus('.list-page-headline'));
 </script>
@@ -79,8 +88,8 @@ onMounted(() => accessibilityFocus('.list-page-headline'));
             </ly-badge>
           </div>
           <div class="mr-auto"></div>
-          <div class="flex gap-2 align-middle">
-            <ly-button
+          <div v-if="canManageTags" class="flex gap-2 align-middle">
+            <ly-confirm-button
               v-if="tag.archived"
               :data-id="`btn-restore-${tag.id}`"
               class="secondary outlined"
@@ -88,16 +97,16 @@ onMounted(() => accessibilityFocus('.list-page-headline'));
               :title="t('common.restore')"
               @click="restore(tag)">
               <ly-icon name="restore" />
-            </ly-button>
-            <ly-button
+            </ly-confirm-button>
+            <ly-confirm-button
               v-else
               :data-id="`btn-archive-${tag.id}`"
               class="secondary outlined"
-              :confirm="confirmArchive(tag)"
+              :options="confirmArchive(tag)"
               :title="t('common.archive')"
               @click="archive(tag)">
               <ly-icon name="archive" />
-            </ly-button>
+            </ly-confirm-button>
             <ly-button
               class="secondary outlined mr-1"
               :data-id="`btn-edit-${tag.id}`"
@@ -114,7 +123,7 @@ onMounted(() => accessibilityFocus('.list-page-headline'));
       </ly-list-page-section>
     </ly-list-page>
     <edit-tag-modal />
-    <ly-floating-add-button data-id="btn-floating-add" @click="setCreateTag" />
+    <ly-floating-add-button v-if="canManageTags" data-id="btn-floating-add" @click="setCreateTag" />
   </ly-content-root>
 </template>
 

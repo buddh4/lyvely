@@ -1,13 +1,15 @@
 import { OptionalUser } from '@/users';
 import { ConfigService } from '@nestjs/config';
-import { ServerConfiguration } from '@/config';
+import { type ConfigurationPath } from '@/config';
 import {
   GlobalPermissionRole,
   IGlobalPermission,
   useGlobalPermissionsManager,
+  VisitorMode,
 } from '@lyvely/interface';
 import { IGlobalPermissionsService } from '../interfaces';
 import { Injectable } from '@nestjs/common';
+import { CONFIG_PATH_PERMISSIONS } from '@/permissions/permissions.constants';
 
 /**
  * Service for handling global permissions within the application.
@@ -23,7 +25,7 @@ export class GlobalPermissionsService implements IGlobalPermissionsService {
    *
    * @param configService - The service used to fetch configuration related to permissions and user roles.
    */
-  constructor(private readonly configService: ConfigService<ServerConfiguration>) {}
+  constructor(private readonly configService: ConfigService<ConfigurationPath>) {}
 
   /**
    * Verifies if a user has all the specified permissions.
@@ -73,7 +75,9 @@ export class GlobalPermissionsService implements IGlobalPermissionsService {
    */
   verifyPermission(user: OptionalUser, permissionOrId: string | IGlobalPermission): boolean {
     const role = this.getGlobalUserRole(user);
-    const config = this.configService.get('permissions', {});
+    const permissionsConfig = this.configService.get(CONFIG_PATH_PERMISSIONS, {
+      visitorStrategy: { mode: VisitorMode.Disabled },
+    });
     return useGlobalPermissionsManager().verifyPermission(
       permissionOrId,
       { role, userStatus: user?.status },
@@ -81,7 +85,10 @@ export class GlobalPermissionsService implements IGlobalPermissionsService {
         getPermissionSettings: () => [],
         getPermissionGroups: () => [],
       },
-      config
+      {
+        ...permissionsConfig,
+        featureConfig: this.configService.get('features', {}),
+      }
     );
   }
 

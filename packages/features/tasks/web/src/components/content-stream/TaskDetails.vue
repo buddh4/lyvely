@@ -4,6 +4,7 @@ import { computed } from 'vue';
 import { useTaskCalendarPlanStore } from '@/stores';
 import { TimerState, ContentDetails, t } from '@lyvely/web';
 import { LyIcon, LyButton, LyMarkdownView } from '@lyvely/ui';
+import { useCalendarPlanItem } from '@lyvely/calendar-plan-web';
 
 export interface IProps {
   model: TaskModel;
@@ -14,6 +15,8 @@ const props = defineProps<IProps>();
 const isDone = computed(() => props.model.state.done);
 
 const taskStore = useTaskCalendarPlanStore();
+
+const { isDisabled } = useCalendarPlanItem(props.model);
 
 const closeTask = () => taskStore.setTaskSelection(props.model, true);
 const openTask = () => taskStore.setTaskSelection(props.model, false);
@@ -43,7 +46,7 @@ const updateTimer = async (value: number) => taskStore.updateTimer(props.model, 
       <div class="flex justify-end">
         <timer-state
           :key="model.state.timer.calculateTotalSpan()"
-          :startable="!model.state.done"
+          :startable="!isDisabled"
           :model="model.state.timer"
           :show-time-on-init="!!model.state.done"
           @start="startTimer"
@@ -53,17 +56,30 @@ const updateTimer = async (value: number) => taskStore.updateTimer(props.model, 
     </template>
     <template #footer>
       <div class="flex justify-end">
-        <ly-button v-if="isDone" class="secondary outlined text-xs" @click="openTask">
+        <ly-button
+          v-if="isDone && model.policies.canWrite"
+          class="secondary outlined text-xs"
+          @click="openTask">
           <ly-icon name="loop" class="text-main-light h-3.5 w-3.5" />
           {{ t('tasks.buttons.open') }}
         </ly-button>
         <ly-button
-          v-else
+          v-else-if="model.policies.canWrite"
           class="secondary outlined inline-flex items-center gap-1 text-xs"
           @click="closeTask">
           <ly-icon name="check" class="text-main-light h-3.5 w-3.5" />
           {{ t('tasks.buttons.close') }}
         </ly-button>
+        <div
+          v-else-if="model.state.done"
+          class="rounded border border-success px-2.5 py-1.5 text-sm text-success">
+          <ly-icon name="check" class="text-main-light h-3.5 w-3.5" />
+          {{ t('tasks.state.done') }}
+        </div>
+        <div v-else class="rounded border border-warning px-2.5 py-1.5 text-sm text-warning">
+          <ly-icon name="loop" class="text-main-light h-3.5 w-3.5" />
+          {{ t('tasks.state.undone') }}
+        </div>
       </div>
     </template>
   </content-details>

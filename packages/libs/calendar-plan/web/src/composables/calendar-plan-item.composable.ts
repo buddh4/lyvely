@@ -6,7 +6,9 @@ import { storeToRefs } from 'pinia';
 export function useCalendarPlanItem<TModel extends ICalendarPlanEntry>(model: TModel) {
   const { isInFuture } = storeToRefs(useCalendarPlanStore());
 
-  const isDisabled = computed(() => model.meta.archived || isInFuture.value);
+  const isDisabled = computed(
+    () => !model.policies.canWrite || model.meta.archived || isInFuture.value
+  );
 
   function getElement(): HTMLElement | null {
     return document.querySelector(`.calendar-plan-item[data-cid="${model.id}"]`);

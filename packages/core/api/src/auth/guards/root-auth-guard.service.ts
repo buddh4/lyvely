@@ -18,6 +18,7 @@ import {
 } from '@lyvely/interface';
 import { Request } from 'express';
 import { ConfigurationPath } from '@/config';
+import { CONFIG_PATH_PERMISSION_VISITOR_STRATEGY } from '@/permissions';
 
 @Injectable()
 export class RootAuthGuard extends AuthGuard(JWT_ACCESS_TOKEN) {
@@ -79,7 +80,9 @@ export class RootAuthGuard extends AuthGuard(JWT_ACCESS_TOKEN) {
   }
 
   async handleGuestAccess() {
-    const visitorStrategy = this.configService.get<VisitorStrategy>('permissions.visitorStrategy');
+    const visitorStrategy = this.configService.get<VisitorStrategy>(
+      CONFIG_PATH_PERMISSION_VISITOR_STRATEGY
+    );
     if (visitorStrategy?.mode !== VisitorMode.Enabled) throw new UnauthorizedException();
     return true;
   }

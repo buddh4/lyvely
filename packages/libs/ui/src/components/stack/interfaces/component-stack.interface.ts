@@ -22,6 +22,7 @@ export interface IComponentStackEntrySpec<
  * @template TOn - The type of the component events.
  */
 export interface IComponentStackEntry<
+  TContext = any,
   TSpec extends IComponentStackEntrySpec = IComponentStackEntrySpec,
 > {
   /** The id of the stack entry, needs to be unique amongst all stack entries. **/
@@ -29,7 +30,11 @@ export interface IComponentStackEntry<
   /** A component or lazy component **/
   component: ComponentRegistration<TSpec['props']>;
   /** Only renders the stack entry if it meets a certain condition **/
-  condition?: Ref<boolean> | ComputedRef<boolean>;
+  condition?:
+    | boolean
+    | Ref<boolean>
+    | ComputedRef<boolean>
+    | ((context: TContext) => Ref<boolean> | ComputedRef<boolean> | boolean);
   /** Used to sort stack entries **/
   sortOrder?: number;
   /** Attach component props **/

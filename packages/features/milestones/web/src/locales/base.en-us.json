@@ -6,11 +6,13 @@
       "relation": "Relation",
       "progress": "Progress"
     },
-    "feature": {
-      "title": "Milestones",
-      "description": "If disabled, the Milestones view and content type will be unavailable.",
-      "activities": {
-        "title": "Activity Milestones",
+    "features": {
+      "milestones": {
+        "name": "Milestones",
+        "description": "If disabled, the Milestones view and content type will be unavailable."
+      },
+      "milestone-activities": {
+        "name": "Activity Milestones",
         "description": "If disabled, adds a dedicated tasks menu entry."
       }
     },
@@ -18,7 +20,8 @@
       "empty": "No milestones found for this project."
     },
     "calendar-plan": {
-      "empty": "Create Your First Milestone!"
+      "empty-create": "Create Your First Milestone!",
+      "empty": "No Milestones Found!"
     },
     "create": {
       "title": "Create Milestone"

@@ -34,6 +34,9 @@ export interface IPermission<TRole = any, TType extends string = string> {
   /** Can be used to allow other user statuses beside UserStatus.Active which is the default. **/
   userStatuses?: UserStatus[];
 
+  /** A related feature id, which affects if this permission is enabled. **/
+  feature?: string;
+
   /** Defines a type of permission, e.g. profile, user, global. **/
   type: TType;
 }

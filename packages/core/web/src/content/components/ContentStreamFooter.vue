@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import ContentStreamFilterNavigation from './ContentStreamFilterNavigation.vue';
-import { ProfileType, ContentModel, CreateMessagePermission } from '@lyvely/interface';
+import { ProfileType, ContentModel, useMessagePermissions } from '@lyvely/interface';
 import { useCreateMessageStore } from '@/messages/stores/message.store';
 import { storeToRefs } from 'pinia';
 import { useProfileStore } from '@/profiles/stores/profile.store';
@@ -28,7 +28,7 @@ const root = ref<HTMLElement>();
 const createMessageStore = useCreateMessageStore();
 const { model } = storeToRefs(createMessageStore);
 
-const { isAllowed: canCreateMessage } = useProfilePermissions(CreateMessagePermission);
+const { isAllowed: canCreateMessage } = useProfilePermissions(useMessagePermissions().Create);
 
 async function submitMessage(evt: KeyboardEvent) {
   if (!evt?.shiftKey) {

@@ -94,7 +94,7 @@ const hidePassword = ref(true);
 </script>
 
 <template>
-  <ly-centered-panel title="user-registration.sign_up">
+  <ly-centered-panel title="user-registration.sign-up">
     <template #body>
       <ly-form-model
         id="user-registration"

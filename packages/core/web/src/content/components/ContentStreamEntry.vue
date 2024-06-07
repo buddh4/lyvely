@@ -20,7 +20,7 @@ export interface IProps {
   index?: number;
   layout?: StreamEntryLayout;
   icon?: string;
-  iconClass: string;
+  iconClass?: string;
   omitTags?: boolean;
   merge?: boolean;
 }
@@ -187,7 +187,7 @@ const maxWidth = true;
                       v-if="!model.content.text?.length && !model.content.title?.length"
                       class="flex items-center gap-1 text-sm text-dimmed">
                       <ly-icon name="warning" class="text-warning" />
-                      {{ t('content.stream.empty') }}
+                      {{ t('content.stream.no-content') }}
                     </div>
                   </div>
                 </slot>

@@ -47,6 +47,7 @@ export interface IContentPolicies {
   canDelete: boolean;
   canManage: boolean;
   canRead: boolean;
+  populated?: boolean;
 }
 
 export const getDefaultTypeMeta = (): IContentTypeMeta => ({

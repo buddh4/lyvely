@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { resolveComponentRegistration } from '@/helpers';
 import { getComponentStackEntries } from './interfaces';
-import { computed, ComputedRef, Ref } from 'vue';
+import { computed, ComputedRef, unref } from 'vue';
+import { isNil } from 'lodash';
 
 interface IProps {
   id: string;
   props?: Record<string, unknown>;
+  context?: any;
 }
 
 const props = defineProps<IProps>();
@@ -17,7 +19,7 @@ const componentDefinitions = computed<
     component: any;
     props: any;
     on?: Record<string, (...args: any[]) => void>;
-    condition?: Ref<boolean> | ComputedRef<boolean> | boolean;
+    condition: ComputedRef<boolean>;
   }[]
 >(() => {
   const definitions = getComponentStackEntries(props.id);
@@ -29,7 +31,14 @@ const componentDefinitions = computed<
       component: resolveComponentRegistration(definition.component),
       props: { ...definition.props, ...props.props },
       on: definition.on || {},
-      condition: typeof definition.condition === 'undefined' ? true : definition.condition,
+      condition: computed(() => {
+        const condition =
+          typeof definition.condition === 'function'
+            ? definition.condition(props.context)
+            : definition.condition;
+        if (isNil(condition)) return true;
+        return unref(condition);
+      }),
     });
   }
   return result;
@@ -41,7 +50,7 @@ const componentDefinitions = computed<
     <template v-for="definition in componentDefinitions" :key="definition.id">
       <Component
         :is="definition.component"
-        v-if="definition.condition"
+        v-if="definition.condition.value"
         v-bind="definition.props"
         v-on="definition.on"
         @update:model-value="

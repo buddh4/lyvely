@@ -1,7 +1,14 @@
 <script lang="ts" setup>
 import { findFirst, LyContentRoot, LyFloatingAddButton, LyLoader } from '@lyvely/ui';
-import { IDragEvent, SortResult, useContentCreateStore, useGlobalDialogStore } from '@lyvely/web';
-import { ChartModel, useChartsClient } from '@lyvely/analytics-interface';
+import {
+  IDragEvent,
+  SortResult,
+  useContentCreateStore,
+  useGlobalDialogStore,
+  useProfilePermissions,
+  t,
+} from '@lyvely/web';
+import { ChartModel, useChartsClient, useChartsPermissions } from '@lyvely/analytics-interface';
 import { useChartsStore } from '@/store/charts.store';
 import { onMounted } from 'vue';
 import { storeToRefs } from 'pinia';
@@ -11,6 +18,8 @@ import Draggable from 'vuedraggable';
 const chartsStore = useChartsStore();
 const status = chartsStore.status;
 const { charts } = storeToRefs(chartsStore);
+
+const { isAllowed: canCreateCharts } = useProfilePermissions(useChartsPermissions().Create);
 
 const createEntry = () =>
   useContentCreateStore()
@@ -79,11 +88,17 @@ onMounted(async () => {
         </template>
         <template #footer>
           <div
+            v-if="!charts.length || canCreateCharts"
             class="cursor-pointer rounded border border-divide p-5 drop-shadow-md"
             @click="createEntry">
             <div
+              v-if="canCreateCharts"
               class="flex h-full w-full select-none items-center justify-center text-9xl text-secondary dark:text-secondary-dark">
               +
+            </div>
+            <div v-else class="flex h-full flex-col items-center justify-center">
+              <ly-icon name="statistics" class="w-20 text-gray-300 dark:text-gray-500" />
+              <span class="font-semibold">{{ t('analytics.messages.empty') }}</span>
             </div>
           </div>
         </template>

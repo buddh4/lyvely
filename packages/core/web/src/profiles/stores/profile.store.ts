@@ -19,6 +19,7 @@ import { useLiveStore } from '@/live';
 import { profileRoute } from '@/profiles/routes/profile-route.helper';
 import { LocationQueryRaw } from 'vue-router';
 import { useAuthStore } from '../../auth';
+import { loadDateTimeLocale } from '@lyvely/dates';
 
 const LATEST_PROFILE_HANDLE = 'latest_profile_handle';
 const LATEST_PROFILE_FEATURES = 'latest_profile_features';
@@ -108,6 +109,8 @@ export const useProfileStore = defineStore('profile', () => {
   }
 
   async function setActiveProfile(activeProfile: ProfileWithRelationsModel) {
+    await loadDateTimeLocale(activeProfile.locale);
+
     profile.value = activeProfile;
     latestProfileHandle.setValue(activeProfile.handle);
     if (!profile.value.getMembership()) {
@@ -115,6 +118,7 @@ export const useProfileStore = defineStore('profile', () => {
     } else {
       useLiveStore().closeGuestConnection();
     }
+
     status.setStatus(Status.SUCCESS);
   }
 

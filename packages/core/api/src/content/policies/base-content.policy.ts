@@ -26,7 +26,9 @@ export abstract class BaseContentPolicy implements IContentPolicy {
      *  cases policies are provided without the related module being active.
      */
     if (!this.contentPermissionsService) {
-      this.contentPermissionsService = this.moduleRef.get(ContentPermissionsService);
+      this.contentPermissionsService = this.moduleRef.get(ContentPermissionsService, {
+        strict: false,
+      });
     }
     return this.contentPermissionsService;
   }

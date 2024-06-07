@@ -3,7 +3,7 @@ import ContentStreamFooter from '../components/ContentStreamFooter.vue';
 import ContentStream from '../components/ContentStream.vue';
 import {
   ContentRequestFilter,
-  CreateMessagePermission,
+  useMessagePermissions,
   MessageModel,
   ProfileType,
 } from '@lyvely/interface';
@@ -12,7 +12,7 @@ import { useContentCreateStore, useContentStreamFilter } from '../stores';
 import emptyImageUrl from '@/assets/empty.png';
 import { t } from '@/i18n';
 import { useProfileStore, useProfilePermissions } from '@/profiles';
-import { noop } from '@vueuse/core';
+import { noop } from '@lyvely/common';
 
 const { filter } = useContentStreamFilter();
 filter.value = new ContentRequestFilter();
@@ -23,7 +23,7 @@ const addButtonText =
     ? 'stream.editor.placeholder_single_user'
     : 'stream.editor.placeholder_multi_user';
 
-const { isAllowed: canCreateMessage } = useProfilePermissions(CreateMessagePermission);
+const { isAllowed: canCreateMessage } = useProfilePermissions(useMessagePermissions().Create);
 
 async function openCreateContentModal() {
   return useContentCreateStore().createContentType(MessageModel.contentType);
@@ -37,7 +37,7 @@ async function openCreateContentModal() {
         <div
           data-id="empty-stream"
           :class="[
-            { 'cursor-pointer': filter.isEmpty() },
+            { 'cursor-pointer': canCreateMessage && filter.isEmpty() },
             'main flex flex-col items-center justify-center gap-3 rounded border-divide bg-main p-5 md:border md:shadow-lg',
           ]"
           @click="filter.isEmpty() ? openCreateContentModal : noop">

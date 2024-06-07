@@ -33,6 +33,12 @@
     "edit": {
       "title": "Edit Tag"
     },
+    "permissions": {
+      "manage": {
+        "name": "Manage Tags",
+        "description": "Allows users to create, update and archive tags"
+      }
+    },
     "fields": {
       "name": "Name",
       "description": "Description",

@@ -1,5 +1,5 @@
 import { ConfigService } from '@nestjs/config';
-import { ServerConfiguration } from '@/config';
+import { type ConfigurationPath } from '@/config';
 import { Injectable } from '@nestjs/common';
 import { ProfileContext } from '../contexts';
 import {
@@ -11,7 +11,7 @@ import {
   isGlobalPermission,
   IntegrityException,
 } from '@lyvely/interface';
-import { GlobalPermissionsService } from '@/permissions';
+import { CONFIG_PATH_PERMISSIONS, GlobalPermissionsService } from '@/permissions';
 
 /**
  * Service for handling profile level permissions within the application.
@@ -30,7 +30,7 @@ export class ProfilePermissionsService {
    * @param globalPermissionsService
    */
   constructor(
-    private readonly configService: ConfigService<ServerConfiguration>,
+    private readonly configService: ConfigService<ConfigurationPath>,
     private readonly globalPermissionsService: GlobalPermissionsService
   ) {}
 
@@ -97,9 +97,10 @@ export class ProfilePermissionsService {
     const { profile, user } = context;
     const role = context.getRole();
     const membership = context.getMembership();
-    const config = this.configService.get('permissions', {
+    const permissionConfig = this.configService.get(CONFIG_PATH_PERMISSIONS, {
       visitorStrategy: { mode: VisitorMode.Disabled },
     });
+
     return useProfilePermissionsManager().verifyPermission(
       permission,
       {
@@ -108,7 +109,10 @@ export class ProfilePermissionsService {
         relationStatus: membership?.relationStatus,
       },
       profile,
-      config
+      {
+        ...permissionConfig,
+        featureConfig: this.configService.get('features', {}),
+      }
     );
   }
 }

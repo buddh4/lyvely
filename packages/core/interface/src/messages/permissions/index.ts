@@ -1,1 +1,1 @@
-export * from './create-message.permission';
+export * from './message.permissions';

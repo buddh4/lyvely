@@ -33,9 +33,15 @@ export class ContentPolicyService {
    *
    * @return {Promise<void>} - A promise that resolves when the content policies have been populated.
    */
-  async populateContentPolicies(context: ProfileContext, content: Content | Content[]) {
+  async populateContentPolicies(context: ProfileContext, content: Content): Promise<Content>;
+  async populateContentPolicies(context: ProfileContext, content: Content[]): Promise<Content[]>;
+  async populateContentPolicies(
+    context: ProfileContext,
+    content: Content | Content[]
+  ): Promise<Content | Content[]> {
     content = Array.isArray(content) ? content : [content];
     await Promise.all(content.map((c) => this._populateContentPolicies(context, c)));
+    return content;
   }
 
   /**

@@ -1,10 +1,10 @@
 import { IMenuEntry } from '../interfaces';
 import { ref, Ref } from 'vue';
 
-const menusMap = new Map<string, Ref<MenuEntryRegistration<any>[]>>();
+const menusMap = new Map<string, Ref<MenuEntryRegistration[]>>();
 
 export type MenuEntryRegistration<TContext = any> =
-  | IMenuEntry
+  | IMenuEntry<TContext>
   | ((context: TContext) => IMenuEntry);
 
 export const registerMenuEntries = <TContext = any>(
@@ -26,7 +26,7 @@ export const registerMenuEntry = <TContext = any>(
 export const getMenuEntries = <TContext = any>(
   menuId: string,
   context?: TContext
-): IMenuEntry[] => {
+): IMenuEntry<TContext>[] => {
   if (!menusMap.has(menuId)) menusMap.set(menuId, ref([]));
   return menusMap
     .get(menuId)!

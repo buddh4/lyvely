@@ -47,7 +47,7 @@ const padding = 'py-2 md:py-4';
         :style="{ 'border-left-width': !isMainFeature ? '20px' : '0px' }">
         <div class="flex items-center">
           <div :class="{ 'cursor-pointer': hasSubFeatures }">
-            {{ t(feature.title) }}
+            {{ t(feature.name) }}
           </div>
           <button v-if="hasSubFeatures" type="button">
             <ly-icon :name="isSelected ? 'caret-down' : 'caret-right'" />

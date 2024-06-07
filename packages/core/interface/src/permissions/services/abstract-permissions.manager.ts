@@ -1,7 +1,7 @@
 import {
   BasePermissionRole,
   IPermission,
-  IPermissionConfig,
+  type IPermissionManagerConfig,
   IPermissionObject,
   IPermissionsService,
   IPermissionSubject,
@@ -30,7 +30,7 @@ export abstract class AbstractPermissionsManager<
   TPermission extends IPermission<any, any>,
   TSubject extends IPermissionSubject<TPermission['min']>,
   TObject extends IPermissionObject<TPermission['min']>,
-  TConfig extends IPermissionConfig = IPermissionConfig,
+  TConfig extends IPermissionManagerConfig = IPermissionManagerConfig,
   TRole = TPermission['min'],
 > implements IPermissionsService<TPermission, TSubject, TObject, TConfig>
 {
@@ -168,6 +168,9 @@ export abstract class AbstractPermissionsManager<
     const permission = this.getPermission(permissionOrId);
     if (!permission) throw new IntegrityException(`Permission not registered`);
 
+    if (permission.feature && !this.verifyPermissionFeature(permission, config, object))
+      return false;
+
     this.checkCircularDependency(permissionOrId, checkedPermissions);
 
     if (!this.verifyUserStatus(permission, subject)) return false;
@@ -180,6 +183,19 @@ export abstract class AbstractPermissionsManager<
 
     return this.verifyPermissionLevel(permission, subject, object, config);
   }
+
+  /**
+   * Verifies if the configured feature is enabled in the permission context.
+   * @param permission
+   * @param config
+   * @param object
+   * @protected
+   */
+  protected abstract verifyPermissionFeature(
+    permission: TPermission,
+    config: TConfig,
+    object: TObject
+  ): boolean;
 
   /**
    * Checks for circular dependency in permissions.

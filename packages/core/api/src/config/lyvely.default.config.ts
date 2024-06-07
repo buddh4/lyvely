@@ -33,9 +33,11 @@ export default {
   operationMode: 'standalone',
   docUrl: 'https://docs.lyvely.app',
   contactMail: 'help@lyvely.app',
-  permissions: {
-    visitorStrategy: {
-      mode: VisitorMode.Disabled,
+  modules: {
+    permissions: {
+      visitorStrategy: {
+        mode: VisitorMode.Disabled,
+      },
     },
   },
   redis: {

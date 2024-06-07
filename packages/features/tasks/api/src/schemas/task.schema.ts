@@ -115,10 +115,8 @@ export class Task
 
   toModel(user?: User): TaskModel<any> {
     const model = new TaskModel<TObjectId>({ ...this, state: new SingleUserTaskStateModel(false) });
-    if (user) {
-      model.state.done = this.getDoneBy(user)?.tid;
-      model.state.timer = this.getTimer(user) as TimerModel;
-    }
+    model.state.done = this.getDoneBy(user)?.tid;
+    model.state.timer = this.getTimer(user) as TimerModel;
     return model;
   }
 
@@ -134,18 +132,22 @@ export class Task
     return this.isDoneByUser(uid);
   }
 
-  getTimer(uid: DocumentIdentity<User>): Timer | undefined {
+  getTimer(uid?: DocumentIdentity<User>): Timer | undefined {
     if (this.config.userStrategy === UserAssignmentStrategy.Shared) {
       return this.state.timers.length ? this.state.timers[0] : undefined;
     }
 
+    if (!uid) return;
+
     return this.state.timers?.find((t) => t.uid?.equals(assureObjectId(uid))) || undefined;
   }
 
-  getDoneBy(uid: DocumentIdentity<User>): UserDone | undefined {
+  getDoneBy(uid?: DocumentIdentity<User>): UserDone | undefined {
     if (this.config.userStrategy === UserAssignmentStrategy.Shared) {
       return this.state.doneBy?.[0] || undefined;
     }
+
+    if (!uid) return;
 
     return this.state.doneBy?.find((d) => d.uid.equals(assureObjectId(uid))) || undefined;
   }

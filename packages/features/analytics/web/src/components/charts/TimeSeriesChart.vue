@@ -19,7 +19,14 @@ import {
 import { computed, onMounted, onUnmounted, type Ref, ref, watch } from 'vue';
 import * as echarts from 'echarts/core';
 import { LyButton, LyIcon, LyLoader } from '@lyvely/ui';
-import { loadingStatus, useI18nStore, usePageStore, useProfileStore, useStatus } from '@lyvely/web';
+import {
+  loadingStatus,
+  useI18nStore,
+  usePageStore,
+  useProfileStore,
+  useStatus,
+  t,
+} from '@lyvely/web';
 import { useUpsertChartSeriesStore } from '@/store';
 import EditTimeSeriesChartModal from '../modals/UpsertChartTimeSeries.vue';
 import ManageChartTimeSeries from '@/components/modals/ManageChartTimeSeries.vue';
@@ -147,6 +154,8 @@ function addSeries() {
   useUpsertChartSeriesStore().addSeries(props.model);
 }
 
+const canWrite = computed(() => props.model.policies.canWrite);
+
 async function loadSeriesData() {
   chartData.value = await loadingStatus(
     useChartsClient().getSeriesData(props.model.id, {
@@ -171,9 +180,18 @@ onUnmounted(() => {
 <template>
   <div class="h-full w-full">
     <div v-if="!hasSeries" class="relative flex h-full w-full items-center justify-center">
-      <ly-button @click="addSeries()">
-        <ly-icon name="add-chart" class="w-10" />
-      </ly-button>
+      <div
+        :class="[{ 'cursor-pointer': canWrite }, 'justify-center bg-main']"
+        :role="canWrite ? 'button' : ''"
+        @click="addSeries">
+        <div class="flex flex-col items-center justify-center">
+          <ly-icon name="task" class="w-20 text-gray-300 dark:text-gray-500" />
+          <span v-if="canWrite" class="font-semibold">{{
+            t('analytics.messages.empty-series-create')
+          }}</span>
+          <span v-else class="font-semibold">{{ t('analytics.messages.empty-series') }}</span>
+        </div>
+      </div>
     </div>
     <div v-else-if="status.isStatusSuccess()">
       <div class="my-2 flex gap-1.5 text-xs">
@@ -185,6 +203,7 @@ onUnmounted(() => {
           :active="intervalFilter === filter"
           @click="intervalFilter = filter" />
         <ly-button
+          v-if="canWrite"
           class="secondary outlined ml-auto inline-flex items-center px-1 py-0.5 text-xs"
           @click="showManageSeries = true">
           <ly-icon name="settings" class="w-3" />
@@ -196,8 +215,8 @@ onUnmounted(() => {
       <ly-loader />
     </div>
 
-    <edit-time-series-chart-modal />
-    <manage-chart-time-series v-model="showManageSeries" :chart="model" />
+    <edit-time-series-chart-modal v-if="canWrite" />
+    <manage-chart-time-series v-if="canWrite" v-model="showManageSeries" :chart="model" />
   </div>
 </template>
 

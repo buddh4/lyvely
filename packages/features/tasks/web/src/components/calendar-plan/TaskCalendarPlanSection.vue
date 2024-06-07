@@ -48,7 +48,9 @@ const showMore = (value: boolean) => (showAll.value = value);
         </div>
       </template>
     </draggable>
-    <div class="divide-y divide-divide border-t border-divide">
+    <div
+      v-if="doneTasks.length"
+      :class="['divide-y divide-divide', { 'border-t border-divide': todoTasks.length }]">
       <task-calendar-plan-item v-for="doneTask in doneTasks" :key="doneTask.id" :model="doneTask" />
     </div>
 

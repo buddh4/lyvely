@@ -62,4 +62,12 @@ export const lyvelyDevConfig = {
       },
     },
   },
+  modules: {
+    permissions: {
+      visitorStrategy: {
+        mode: 1,
+        handles: ["welcome"],
+      },
+    },
+  },
 } as any;

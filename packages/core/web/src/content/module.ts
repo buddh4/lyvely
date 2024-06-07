@@ -13,6 +13,7 @@ import { useContentEditStore } from '@/content/stores';
 import { getContentTypeOptions } from '@/content/registries';
 import { useContentArchive } from '@/content/composables';
 import { useConfirm } from '@/ui';
+import { isNotNil } from '@lyvely/common/src';
 
 export default () => {
   return {
@@ -43,9 +44,7 @@ export default () => {
         moduleId: CONTENT_MODULE_ID,
         click: () => useContentEditStore().editContent(content),
         condition:
-          content.getTypeMeta()?.deletable &&
-          getContentTypeOptions(content.type)?.interfaces?.edit !== false &&
-          !content.meta.archived,
+          content.policies.canWrite && !!getContentTypeOptions(content.type)?.interfaces?.upsert,
         sortOrder: 1000,
         icon: 'edit',
         text: 'common.edit',
@@ -59,7 +58,7 @@ export default () => {
               ? 'content.actions.confirm.restore'
               : 'content.actions.confirm.archive',
           }),
-        condition: content.getTypeMeta()?.deletable,
+        condition: content.policies.canDelete,
         sortOrder: 1000,
         icon: content.meta.archived ? 'restore' : 'archive',
         text: content.meta.archived ? 'content.actions.restore' : 'content.actions.archive',

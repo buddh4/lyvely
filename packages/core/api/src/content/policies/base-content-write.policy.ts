@@ -24,6 +24,8 @@ export abstract class BaseContentWritePolicy extends BaseContentPolicy {
   async verify(context: ProfileContentContext): Promise<boolean> {
     const { content } = context;
 
+    if (content.getTypeMeta().editable === false) return false;
+
     const permission = getPermission(
       getContentWritePermissionId(content.type),
       BasePermissionType.Content

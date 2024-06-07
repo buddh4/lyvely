@@ -1,13 +1,20 @@
-import { IFeature, IFeatureConfig } from './interfaces';
-import { getAllFeatures, getFeature } from './feature.registry';
+import { IFeature, IFeatureConfig, type IGlobalFeature } from './interfaces';
+import { getAllFeatures, getFeature, isGlobalFeature } from './feature.registry';
 
+/**
+ * Checks whether a given global feature is enabled.
+ *
+ * @param {string | IGlobalFeature} featureOrId - The feature or feature ID to check.
+ * @param {IFeatureConfig} config - The configuration object.
+ * @returns {boolean} - Returns true if the global feature is enabled, false otherwise.
+ */
 export const isEnabledGlobalFeature = (
-  featureOrId: string | IFeature,
+  featureOrId: string | IGlobalFeature,
   config: IFeatureConfig = {}
 ) => {
   const feature = getFeature(featureOrId);
 
-  if (!feature?.global) return false;
+  if (!isGlobalFeature(feature)) return false;
 
   const featureId = feature.id;
 

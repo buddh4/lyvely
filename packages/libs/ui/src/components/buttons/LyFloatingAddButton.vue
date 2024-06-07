@@ -10,5 +10,5 @@ const cssClass =
 </script>
 
 <template>
-  <ly-button :class="cssClass" :title="t('common.create-new')" :rounded="false"> + </ly-button>
+  <ly-button :class="cssClass" :title="t('common.create-new')"> + </ly-button>
 </template>

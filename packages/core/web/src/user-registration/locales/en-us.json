@@ -1,7 +1,7 @@
 {
   "user-registration": {
     "title": "Sign up",
-    "sign_up": "Sign up",
+    "sign-up": "Sign up",
     "to_sign_in": "Sign in",
     "create_account": "Create an account",
     "is_member": "Already have an account?",

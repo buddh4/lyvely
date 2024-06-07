@@ -6,3 +6,4 @@ export * from './profile-relation.interface';
 export * from './profile-membership.interface';
 export * from './profile-relation-role.interface';
 export * from './profile-membership-role.enum';
+export * from './profile-feature-info.interface';

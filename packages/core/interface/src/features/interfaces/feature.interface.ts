@@ -1,12 +1,25 @@
 export interface IFeature {
   id: string;
-  title: string; //translatable
+  name: string; //translatable
+  description?: string; // translatable
   moduleId: string;
   categories?: string[]; //translatable category id
-  description?: string; // translatable
   installable?: boolean; // default false
   enabledByDefault?: boolean;
   configurable?: boolean;
-  global?: boolean; // default false which means it is a profile feature
+  type: FeatureType;
   dependencies?: string[];
+}
+
+export enum FeatureType {
+  Global = 'global',
+  Profile = 'profile',
+}
+
+export interface IGlobalFeature extends IFeature {
+  type: FeatureType.Global;
+}
+
+export interface IProfileFeature extends IFeature {
+  type: FeatureType.Profile;
 }

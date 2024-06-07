@@ -16,10 +16,12 @@ export default {
     baseUrl: 'http://127.0.0.1:8080/api',
     appUrl: 'http://127.0.0.1:3000',
   },
-  permissions: {
-    visitorStrategy: {
-      mode: VisitorMode.Enabled,
-      handles: ['welcome'],
+  modules: {
+    permissions: {
+      visitorStrategy: {
+        mode: VisitorMode.Enabled,
+        handles: ['welcome'],
+      },
     },
   },
   mongodb: {

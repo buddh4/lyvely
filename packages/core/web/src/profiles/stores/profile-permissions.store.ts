@@ -16,13 +16,16 @@ import {
   ContentUserRole,
   getAllPermissions,
   BasePermissionType,
+  IPermissionManagerConfig,
+  FEATURE_MODULE_ID,
+  type IFeatureConfig,
+  IPermissionConfig,
 } from '@lyvely/interface';
 import { useProfileStore } from './profile.store';
-import { useAppConfigStore } from '@/app-config';
 import { useAuthStore } from '@/auth';
 import { loadingState, useGlobalDialogStore } from '@/core';
 import { findAndReplace } from '@lyvely/common';
-import type { IPermissionConfig } from '@lyvely/interface';
+import { useAppConfigStore } from '@/app-config';
 
 export const useProfilePermissionsStore = defineStore('profile-permissions-store', () => {
   function getPermissionOptions(permission: IContentPermission | IProfilePermission) {
@@ -121,11 +124,20 @@ export const useProfilePermissionsStore = defineStore('profile-permissions-store
     );
   }
 
-  function getPermissionConfig() {
-    return useAppConfigStore().getModuleConfig<IPermissionConfig>('permissions', undefined, {
-      visitorStrategy: { mode: VisitorMode.Disabled },
-      defaults: [],
-    });
+  function getPermissionConfig(): IPermissionManagerConfig {
+    const permissionConfig = useAppConfigStore().getModuleConfig<IPermissionConfig>(
+      'permissions',
+      undefined,
+      {
+        visitorStrategy: { mode: VisitorMode.Disabled },
+        defaults: [],
+      }
+    );
+
+    return {
+      ...permissionConfig,
+      featureConfig: useAppConfigStore().getModuleConfig<IFeatureConfig>(FEATURE_MODULE_ID),
+    };
   }
 
   function _getPermissionManager(

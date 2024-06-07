@@ -66,7 +66,7 @@ export default () => {
         id: 'analytics',
         moduleId: ANALYTICS_MODULE_ID,
         text: 'analytics.title',
-        sortOrder: 1501,
+        sortOrder: 1550,
         feature: AnalyticsFeature.id,
         icon: 'statistics',
         to: { name: 'Analytics' },

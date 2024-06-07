@@ -1,11 +1,8 @@
-import { IFeature } from '@/features';
+import { type IProfileFeature } from '@/features';
 import { CONTENT_MODULE_ID } from '@/content/content.constants';
+import { createProfileFeature } from '@/profiles';
 
-export const ContentStreamFeature: IFeature = {
-  id: 'content.stream',
-  moduleId: CONTENT_MODULE_ID,
-  title: 'content.stream.feature.title',
-  description: 'content.stream.feature.description',
-  enabledByDefault: true,
-  installable: true,
-};
+export const ContentStreamFeature: IProfileFeature = createProfileFeature(
+  'content-stream',
+  CONTENT_MODULE_ID
+);

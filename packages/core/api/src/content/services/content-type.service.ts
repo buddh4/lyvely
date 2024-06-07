@@ -182,6 +182,8 @@ export abstract class ContentTypeService<
       });
     }
 
+    await this.contentPolicyService.populateContentPolicies(context, result);
+
     this.contentEvents.emitContentCreated(result);
     return result;
   }

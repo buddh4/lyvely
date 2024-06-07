@@ -17,6 +17,7 @@
 [type='radio']:disabled {
   opacity: 0.3 !important;
   cursor: not-allowed;
+  @apply bg-gray-400;
 }
 
 [type='checkbox']:disabled + .label,
@@ -129,23 +130,23 @@ input[type='range'].danger::-webkit-slider-thumb {
   background-color: var(--color-danger);
 }
 
-input[type='range']:active::-webkit-slider-thumb {
+input[type='range']:active:not(:disabled)::-webkit-slider-thumb {
   background-color: var(--color-primary-light);
 }
 
-input[type='range'].success:active::-webkit-slider-thumb {
+input[type='range'].success:active:not(:disabled)::-webkit-slider-thumb {
   background-color: var(--color-success-light);
 }
 
-input[type='range'].warning:active::-webkit-slider-thumb {
+input[type='range'].warning:active:not(:disabled)::-webkit-slider-thumb {
   background-color: var(--color-warning-light);
 }
 
-input[type='range'].info:active::-webkit-slider-thumb {
+input[type='range'].info:active:not(:disabled)::-webkit-slider-thumb {
   background-color: var(--color-info-light);
 }
 
-input[type='range'].danger:active::-webkit-slider-thumb {
+input[type='range'].danger:active:not(:disabled)::-webkit-slider-thumb {
   background-color: var(--color-danger-light);
 }
 
