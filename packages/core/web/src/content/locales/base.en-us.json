@@ -1,7 +1,9 @@
 {
   "content": {
     "stream": {
-      "empty": "No Content",
+      "no-content": "No Content",
+      "empty": "No content has been added yet.",
+      "empty-filter": "No content found matching this filter.",
       "feature": {
         "title": "Stream",
         "description": "If disabled, the main profile stream will be hidden."

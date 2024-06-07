@@ -10,7 +10,9 @@ import {
 import { useRouter } from 'vue-router';
 import { useContentCreateStore, useContentStreamFilter } from '../stores';
 import emptyImageUrl from '@/assets/empty.png';
+import { t } from '@/i18n';
 import { useProfileStore, useProfilePermissions } from '@/profiles';
+import { noop } from '@vueuse/core';
 
 const { filter } = useContentStreamFilter();
 filter.value = new ContentRequestFilter();
@@ -30,15 +32,28 @@ async function openCreateContentModal() {
 
 <template>
   <content-stream :batch-size="30">
-    <template #stream-empty>
+    <template #stream-empty="{ filter }">
       <div class="flex h-full w-full items-center justify-center">
         <div
           data-id="empty-stream"
-          class="main flex cursor-pointer flex-col items-center justify-center gap-3 rounded border-divide bg-main p-5 md:border md:shadow-lg"
-          @click="openCreateContentModal">
+          :class="[
+            { 'cursor-pointer': filter.isEmpty() },
+            'main flex flex-col items-center justify-center gap-3 rounded border-divide bg-main p-5 md:border md:shadow-lg',
+          ]"
+          @click="filter.isEmpty() ? openCreateContentModal : noop">
           <img :src="emptyImageUrl" :alt="addButtonText" class="h-72 md:rounded" />
-          <h1 class="text-sm font-bold">No content has been added yet</h1>
-          <ly-button v-if="canCreateMessage" class="primary text-sm" :text="addButtonText" />
+          <h1 class="text-sm font-bold">
+            {{ t(filter.isEmpty() ? 'content.stream.empty' : 'content.stream.empty-filter') }}
+          </h1>
+          <ly-button
+            v-if="canCreateMessage && filter.isEmpty()"
+            class="primary text-sm"
+            :text="addButtonText" />
+          <ly-button
+            v-if="!filter.isEmpty()"
+            class="primary float-right text-xs"
+            text="common.filter.clear"
+            @click="filter.reset()" />
         </div>
       </div>
     </template>

@@ -65,7 +65,7 @@ const stream = useStream<ContentModel, ContentRequestFilter>(
   useContentStreamClient()
 );
 
-const { models, isReady, isInitialized, isLoading } = stream;
+const { models, isReady, isLoading } = stream;
 
 const error = ref<string>();
 
@@ -169,7 +169,7 @@ onUnmounted(() => {
               @select-tag="selectTag" />
           </template>
         </div>
-        <slot v-else-if="!isLoading" name="stream-empty" :stream="stream"></slot>
+        <slot v-else-if="!isLoading" name="stream-empty" :stream="stream" :filter="filter"></slot>
       </div>
     </div>
     <div v-else class="absolute z-50 h-full w-full bg-body p-5">
