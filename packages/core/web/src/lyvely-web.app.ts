@@ -21,10 +21,11 @@ export class LyvelyWebApp implements ILyvelyWebApp {
   options: Required<ILyvelyWebAppOptions>;
 
   constructor(options: ILyvelyWebAppOptions = {}) {
+    // Note the defaults are set at build time of @lyvely/web and not the runtime
     this.options = {
-      env: 'production',
-      baseUrl: import.meta.env.VITE_APP_ENV || 'http://127.0.0.1:3000',
-      apiUrl: import.meta.env.VITE_APP_API_URL || 'http://127.0.0.1:8080/api',
+      env: import.meta.env.VITE_APP_ENV || 'production',
+      baseUrl: import.meta.env.VITE_APP_BASEURL || window.location.origin,
+      apiUrl: import.meta.env.VITE_APP_API_URL || `${window.location.origin}/api`,
       fallbackLocale: DEFAULT_FALLBACK_LOCALE,
       modules: [],
       ...options,
@@ -47,6 +48,8 @@ export class LyvelyWebApp implements ILyvelyWebApp {
     }
 
     this.events.emit('app.init.post', this);
+
+    if (this.options.env === 'development') console.log(this.options);
 
     return this;
   }
