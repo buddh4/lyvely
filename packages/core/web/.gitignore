@@ -41,5 +41,8 @@ lerna-debug.log*
 
 # custom
 .env
+.env.*
+!.env.development.dist
+!.env.e2e
 /screenshots
 .rollup-cache

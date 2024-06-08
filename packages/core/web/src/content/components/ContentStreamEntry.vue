@@ -137,14 +137,12 @@ const maxWidth = true;
             class="h-8 w-8"
             :name="userInfo!.displayName"
             :guid="userInfo!.guid" />
-          <div
-            v-else-if="contentTypeRoute"
-            :class="['flex h-8 w-8 justify-center rounded-full bg-main', borderClass]">
-            <router-link :to="contentTypeRoute" class="flex justify-center">
+          <div v-else :class="['flex h-8 w-8 justify-center rounded-full bg-main', borderClass]">
+            <router-link v-if="contentTypeRoute" :to="contentTypeRoute" class="flex justify-center">
               <ly-icon v-if="icon" :name="icon" :class="iconClass" />
             </router-link>
+            <ly-icon v-else-if="icon" :name="icon" :class="iconClass" />
           </div>
-          <ly-icon v-else-if="icon" :name="icon" :class="iconClass" />
         </slot>
       </div>
       <div class="mx-3 my-0.5 min-w-0 grow">

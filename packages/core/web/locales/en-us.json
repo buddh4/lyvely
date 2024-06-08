@@ -144,6 +144,7 @@
     "label": "Please enter the code below"
   },
   "validation": {
+    "invalid": "Invalid value",
     "isString": "{property} is required",
     "sameAs": "{property} must equal {c1}",
     "isEnum": "Invalid selection",

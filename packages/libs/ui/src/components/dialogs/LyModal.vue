@@ -59,6 +59,7 @@ watch(
   (value) => {
     if (value) {
       nextTick(() => {
+        if (!document.body.contains(rootEl.value!)) return;
         rootEl.value?.scrollIntoView();
         rootEl.value?.showModal();
       });

@@ -88,10 +88,10 @@ const onAvatarUpdate = (avatar: AvatarModel) => {
 
     <ly-list-page-section class="bg-red-200 dark:bg-red-950">
       <div class="flex">
-        <ly-button
+        <ly-confirm-button
           data-id="btn-revoke"
           class="danger ml-auto text-xs"
-          :confirm="{ text: 'profiles.settings.membership.revoke.confirm' }"
+          :options="{ text: 'profiles.settings.membership.revoke.confirm' }"
           text="profiles.settings.membership.revoke.title"
           @click="membershipSettingsStore.revoke" />
       </div>

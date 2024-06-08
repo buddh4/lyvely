@@ -1,5 +1,5 @@
 import { ModelValidator, IValidatorOptions, getPropertyConstraints } from '@lyvely/common';
-import { translate } from './i18n';
+import { translate, tryToTranslate } from './i18n';
 
 export class I18nModelValidator<
   T extends object = object,
@@ -32,13 +32,22 @@ export class I18nModelValidator<
         return result;
       }, {});
 
+      translationVars['property'] = translateProperty(error.property);
+
       // Now we try to find the right translation. If a label was set for this property we use it
       // otherwise we use the labelKey or fallback to the property name itself which is not translated.
 
-      const translationKey = `validation.${error.rule}`;
+      const result: string | null = error.message
+        ? tryToTranslate(error.message, translationVars)
+        : null;
 
-      translationVars['property'] = translateProperty(error.property);
-      return translate(error.message || translationKey, translationVars);
+      if (result) return result;
+
+      return (
+        tryToTranslate(error.rule, translationVars) ||
+        tryToTranslate(`validation.${error.rule}`, translationVars) ||
+        translate('validation.invalid')
+      );
     };
   }
 }

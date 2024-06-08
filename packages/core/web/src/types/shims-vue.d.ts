@@ -36,6 +36,7 @@ export declare global {
       DEV: boolean;
       PROD: boolean;
       BASE_URL: string;
+      MODE: string;
       SSR: false;
       VITE_APP_API_URL: string;
       VITE_FALLBACK_LOCALE: string;

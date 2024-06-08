@@ -33,6 +33,11 @@ export function translationAdapter(t: Translatable) {
   return '';
 }
 
+export function tryToTranslate(key: string, params?: Record<string, string>): string | null {
+  const result = translate(key, params);
+  return result !== key ? result : null;
+}
+
 export function translate(key: ITranslatable, params?: Record<string, string>): string {
   if (typeof key === 'function') return key(params);
   if (!(<any>getI18n()?.global)) {

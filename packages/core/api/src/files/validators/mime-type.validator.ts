@@ -26,6 +26,9 @@ export class MimeTypeValidator extends FileValidator<MimeTypeValidatorOptions> {
     const fileType = file.buffer
       ? await ft.fileTypeFromBuffer(file.buffer)
       : await ft.fileTypeFromFile(file.path);
+
+    if (!fileType) return false;
+
     return Array.isArray(this.validationOptions.type)
       ? this.validationOptions.type.includes(fileType.mime)
       : this.validationOptions.type === fileType.mime;

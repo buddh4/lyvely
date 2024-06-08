@@ -31,7 +31,7 @@ describe('Test Forgot Password', function () {
     cy.contains('Check your email for a link to reset your password.');
     cy.task(
       'mails:extract',
-      '\\[(http:\\/\\/127\\.0\\.0\\.1:3000\\/reset-password\\/\\?t=[^\\]].*)]',
+      '\\[(http:\\/\\/127\\.0\\.0\\.1:3002\\/reset-password\\/\\?t=[^\\]].*)]'
     ).then((result: string[]) => cy.visit(result[0]));
 
     // Reset password screen
@@ -40,7 +40,7 @@ describe('Test Forgot Password', function () {
     cy.get('[data-id="btn-submit"]').click();
 
     // Login screen
-    cy.url().should('eq', 'http://127.0.0.1:3000/login');
+    cy.url().should('eq', 'http://127.0.0.1:3002/login');
     cy.get('[data-id="login-usernameoremail"]').type('owner');
     cy.get('[data-id="btn-to-password"]').click();
     cy.wait(100);
@@ -65,7 +65,7 @@ describe('Test Forgot Password', function () {
     cy.contains('Check your email for a link to reset your password.');
     cy.task(
       'mails:extract',
-      '\\[(http:\\/\\/127\\.0\\.0\\.1:3000\\/reset-password\\/\\?t=[^\\]].*)]',
+      '\\[(http:\\/\\/127\\.0\\.0\\.1:3002\\/reset-password\\/\\?t=[^\\]].*)]'
     ).then((result: string[]) => cy.visit(result[0]));
 
     // Reset password screen
@@ -74,7 +74,7 @@ describe('Test Forgot Password', function () {
     cy.get('[data-id="btn-submit"]').click();
 
     // Login screen
-    cy.url().should('eq', 'http://127.0.0.1:3000/login');
+    cy.url().should('eq', 'http://127.0.0.1:3002/login');
     cy.get('[data-id="login-usernameoremail"]').type('owner');
     cy.get('[data-id="btn-to-password"]').click();
     cy.wait(100);

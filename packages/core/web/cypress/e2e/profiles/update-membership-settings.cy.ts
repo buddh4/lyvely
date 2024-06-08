@@ -14,7 +14,7 @@ describe('Membership Settings', function () {
     cy.loadProfile('public-group/membership');
     cy.url().should('include', '/403');
 
-    cy.profileApiPost('public-group', '/membership', {
+    cy.profileApiPut('public-group', '/membership', {
       displayName: 'ImNoMember',
       description: 'I tried...',
     }).then((response) => {
@@ -30,7 +30,7 @@ describe('Membership Settings', function () {
     cy.loadProfile('public-group/membership');
     cy.url().should('include', '/403');
 
-    cy.profileApiPost('public-group', '/membership', {
+    cy.profileApiPut('public-group', '/membership', {
       displayName: 'ImNoMember',
       description: 'I tried...',
     }).then((response) => {

@@ -14,12 +14,11 @@ export default {
   },
   http: {
     host: '127.0.0.1',
-    port: 8080,
-    appUrl: 'http://127.0.0.1:3000',
-    baseUrl: 'http://127.0.0.1:8080/api',
+    port: 8081,
+    appUrl: 'http://127.0.0.1:3002',
+    baseUrl: 'http://127.0.0.1:8081/api',
     rateLimit: {
-      limit: Number.MAX_VALUE,
-      ttl: Number.MAX_VALUE,
+      skipIf: () => true,
     },
   },
   modules: {

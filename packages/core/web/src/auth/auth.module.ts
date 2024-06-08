@@ -28,10 +28,7 @@ export const authModule = () => {
           icon: 'logout',
           iconBindings: { autoScale: true },
           condition: useAuthStore().isAuthenticated,
-          click: () =>
-            useAuthStore()
-              .logout()
-              .then(() => location.reload()),
+          click: () => useAuthStore().logout(),
           text: 'auth.account.logout',
         }),
         () => ({

@@ -12,7 +12,7 @@ describe('Update Membership Avatar', function () {
     cy.getId('profileSettings').click();
     cy.getId('profileMembership').click();
     cy.getId('btn-change-avatar').click();
-    cy.getId('avatar-input').selectFile('cypress/e2e/user-account/avatar.jpeg', { force: true });
+    cy.getId('avatar-input').selectFile('cypress/files/avatar.jpeg', { force: true });
     cy.getId('btn-modal-submit').click();
     cy.get('img[data-id="user-relation-avatar"]').should('exist');
   });

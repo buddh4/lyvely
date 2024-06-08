@@ -22,7 +22,7 @@
     "@rollup/plugin-typescript": "^11.1",
     "@vitejs/plugin-vue": "^5.0",
     "clean-css": "^5.3",
-    "cypress": "^13.6",
+    "cypress": "^13.11",
     "dotenv": "^16.0",
     "glob": "^10.3",
     "jsonwebtoken": "^9.0",

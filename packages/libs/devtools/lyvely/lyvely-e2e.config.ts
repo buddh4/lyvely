@@ -5,11 +5,12 @@ export const lyvelyE2EConfig = {
   operationMode: 'standalone',
   http: {
     host: '127.0.0.1',
-    appUrl: 'http://127.0.0.1:3000',
+    port: 8081,
+    baseUrl: 'http://127.0.0.1:8081/api',
+    appUrl: 'http://127.0.0.1:3002',
     // Maybe we should use a mock instead
     rateLimit: {
-      limit: Number.MAX_VALUE,
-      ttl: Number.MAX_VALUE,
+      skipIf: () => true
     },
   },
   modules: {

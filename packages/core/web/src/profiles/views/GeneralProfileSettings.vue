@@ -4,7 +4,7 @@ import { ProfileAvatar } from '../components';
 import { t } from '@/i18n';
 import { useUpdateProfileStore } from '../stores';
 import { storeToRefs } from 'pinia';
-import { ISelectOptions, LyListPageSection } from '@lyvely/ui';
+import { ISelectOptions, LyListPageSection, LyConfirmButton } from '@lyvely/ui';
 import { getProfileVisibilityOptions } from '../helpers';
 import { UpdateAvatarModal } from '@/avatars';
 import { computed, ref } from 'vue';
@@ -75,22 +75,22 @@ const visibilityOptions: ISelectOptions = getProfileVisibilityOptions();
 
     <ly-list-page-section v-if="canArchive" class="bg-red-200 dark:bg-red-950">
       <div class="flex">
-        <ly-button
+        <ly-confirm-button
           v-if="canArchive && !profile!.archived"
           data-id="archive-profile"
           class="danger ml-auto text-xs"
-          :confirm="{ text: 'profiles.settings.general.archive.confirm' }"
+          :options="{ text: 'profiles.settings.general.archive.confirm' }"
           @click="updateStore.archive">
           {{ t('common.archive') }}
-        </ly-button>
-        <ly-button
+        </ly-confirm-button>
+        <ly-confirm-button
           v-if="canArchive && profile!.archived"
           data-id="restore-profile"
           class="warning ml-auto text-xs"
-          :confirm="{ text: 'profiles.settings.general.restore.confirm' }"
+          :options="{ text: 'profiles.settings.general.restore.confirm' }"
           @click="updateStore.restore">
           {{ t('common.restore') }}
-        </ly-button>
+        </ly-confirm-button>
       </div>
     </ly-list-page-section>
   </ly-list-page>

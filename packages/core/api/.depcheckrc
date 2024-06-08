@@ -1,6 +1,7 @@
 ignores: [
   "tslib",
   "rimraf",
+  "file-type",
   "dependency-cruiser",
   "rimraf",
   "@types/multer",

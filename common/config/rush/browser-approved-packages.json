@@ -187,6 +187,10 @@
       "allowedCategories": [ "core", "feature", "lib" ]
     },
     {
+      "name": "file-type",
+      "allowedCategories": [ "core" ]
+    },
+    {
       "name": "gulp-header",
       "allowedCategories": [ "lib" ]
     },

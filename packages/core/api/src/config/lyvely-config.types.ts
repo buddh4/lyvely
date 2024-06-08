@@ -37,8 +37,9 @@ export type LyvelyHttpOptions = {
   tls?: ServerOptions;
   trustProxy?: boolean | string | number | ((ip: string) => boolean);
   rateLimit?: {
-    ttl: number;
-    limit: number;
+    skipIf?: () => boolean;
+    ttl?: number;
+    limit?: number;
   };
 };
 

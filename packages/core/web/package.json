@@ -33,7 +33,7 @@
     "depcheck": "depcheck --quiet",
     "ncu": "ncu",
     "dev": "vite",
-    "dev:e2e": "cross-env NODE_ENV=e2e pnpm run dev",
+    "dev:e2e": "cross-env NODE_ENV=e2e vite --mode=e2e",
     "deps": "pnpm depcruise --include-only \"^src\" --config .dependency-cruiser.js src"
   },
   "dependencies": {
@@ -82,7 +82,7 @@
     "postcss-cli": "^11.0",
     "autoprefixer": "^10.4",
     "postcss-import": "^16.1",
-    "cypress": "^13.6",
+    "cypress": "^13.11",
     "jsdom": "^23.0",
     "@types/lodash": "^4.17",
     "eslint": "^8.24",
@@ -97,6 +97,7 @@
     "vue-eslint-parser": "^9.4",
     "@intlify/core-base": "9.13",
     "depcheck": "^1.4",
+    "cross-env": "^7.0",
     "dependency-cruiser": "^14.1"
   }
 }

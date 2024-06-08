@@ -61,7 +61,7 @@ export const useAuthStore = defineStore('user-auth', () => {
 
     if (redirect) {
       // We use document.location instead of router here in order to force all stores to be cleared
-      document.location = PATH_LOGIN;
+      document.location = '/';
     }
   }
 

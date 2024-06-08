@@ -59,7 +59,7 @@ export const useViteWebLibConfig = (options?: IOptions) => {
     plugins,
     server: {
       host: '127.0.0.1',
-      port: 3000,
+      port: process.env.NODE_ENV === 'e2e' ? 3002 : 3000,
       //  hmr: process.env.NODE_ENV !== 'e2e'
     },
     test: {

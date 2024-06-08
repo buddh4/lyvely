@@ -68,14 +68,14 @@ Cypress.Commands.add(
 
 Cypress.Commands.add('load', (path: string, options?: Partial<VisitOptions>) => {
   path = path.startsWith('/') ? path : '/' + path;
-  cy.visit(`http://127.0.0.1:3000${path}`, options);
+  cy.visit(`http://127.0.0.1:3002${path}`, options);
 });
 
 Cypress.Commands.add(
   'loadProfile',
   (handle: string, path?: string, options?: Partial<VisitOptions>) => {
     path = path && path.startsWith('/') ? path : '/' + (path || '');
-    cy.visit(`http://127.0.0.1:3000/p/${handle}${path}`, options);
+    cy.visit(`http://127.0.0.1:3002/p/${handle}${path}`, options);
   }
 );
 
@@ -178,7 +178,7 @@ Cypress.Commands.add(
   (path: string, body?: RequestBody, options?: Partial<APIRequestOptions>) => {
     path = path && path.startsWith('/') ? path : '/' + (path || '');
     options = { ...options };
-    options.url = `http://127.0.0.1:8080/api${path}`;
+    options.url = `http://127.0.0.1:8081/api${path}`;
     options.body = body;
     options.failOnStatusCode = false;
 
@@ -202,5 +202,5 @@ Cypress.Commands.add('isForbidden', (path?: string, options?: Partial<VisitOptio
     cy.load(path, options);
   }
   cy.getId('layout-profile').should('not.exist');
-  return cy.url().should('eq', 'http://127.0.0.1:3000/403');
+  return cy.url().should('eq', 'http://127.0.0.1:3002/403');
 });
