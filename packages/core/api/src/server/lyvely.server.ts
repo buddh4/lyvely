@@ -9,6 +9,7 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { Headers } from '@lyvely/interface';
 import { AuthModule, RootAuthGuard } from '../auth';
+import { BaseUserGuard } from '../users';
 import { ServiceExceptionsFilter } from '@/core';
 import { ConfigurationPath, ILyvelyCsrfOptions } from '@/config';
 import { FeatureGuard, FeaturesModule } from '../features';
@@ -178,7 +179,8 @@ export class LyvelyServer {
   private initGuards() {
     const authGuard = this.nestApp.select(AuthModule).get(RootAuthGuard);
     const featureGuard = this.nestApp.select(FeaturesModule).get(FeatureGuard);
-    this.nestApp.useGlobalGuards(authGuard, featureGuard);
+    const userGuard = this.nestApp.select(FeaturesModule).get(BaseUserGuard);
+    this.nestApp.useGlobalGuards(authGuard, userGuard, featureGuard);
   }
 
   private initCors() {

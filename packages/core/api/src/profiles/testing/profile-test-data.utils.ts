@@ -1,6 +1,6 @@
 import { User, UserEmail, UserTestDataUtils } from '@/users';
 import {
-  GlobalPermissionRole,
+  UserRole,
   ProfileMembershipRole,
   ProfileType,
   ProfileVisibilityLevel,
@@ -57,7 +57,7 @@ export class ProfileTestDataUtils extends UserTestDataUtils {
     owner?: User,
     member?: User
   ) {
-    owner ??= await this.createUser('owner', { role: GlobalPermissionRole.Admin });
+    owner ??= await this.createUser('owner', { role: UserRole.Admin });
     member ??= await this.createUser('member');
 
     const organization = await this.createProfile(

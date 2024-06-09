@@ -2,12 +2,11 @@ import { OptionalUser } from '@/users';
 import { ConfigService } from '@nestjs/config';
 import { type ConfigurationPath } from '@/config';
 import {
-  GlobalPermissionRole,
   IGlobalPermission,
   useGlobalPermissionsManager,
   VisitorMode,
+  getUserRole,
 } from '@lyvely/interface';
-import { IGlobalPermissionsService } from '../interfaces';
 import { Injectable } from '@nestjs/common';
 import { CONFIG_PATH_PERMISSIONS } from '@/permissions/permissions.constants';
 
@@ -19,7 +18,7 @@ import { CONFIG_PATH_PERMISSIONS } from '@/permissions/permissions.constants';
  * - BasePermissionType.Profile
  */
 @Injectable()
-export class GlobalPermissionsService implements IGlobalPermissionsService {
+export class GlobalPermissionsService {
   /**
    * Initializes a new instance of the `GlobalPermissionsService` class.
    *
@@ -74,13 +73,12 @@ export class GlobalPermissionsService implements IGlobalPermissionsService {
    * @returns `true` if the user has the specified permission, otherwise `false`.
    */
   verifyPermission(user: OptionalUser, permissionOrId: string | IGlobalPermission): boolean {
-    const role = this.getGlobalUserRole(user);
     const permissionsConfig = this.configService.get(CONFIG_PATH_PERMISSIONS, {
       visitorStrategy: { mode: VisitorMode.Disabled },
     });
     return useGlobalPermissionsManager().verifyPermission(
       permissionOrId,
-      { role, userStatus: user?.status },
+      { role: getUserRole(user), userStatus: user?.status },
       {
         getPermissionSettings: () => [],
         getPermissionGroups: () => [],
@@ -90,18 +88,5 @@ export class GlobalPermissionsService implements IGlobalPermissionsService {
         featureConfig: this.configService.get('features', {}),
       }
     );
-  }
-
-  /**
-   * Fetches the global user role for the given user.
-   *
-   * If the user is not provided we assume a visitor role, if no role is configured the default User role is returned.
-   *
-   * @param user - The user whose global role is being determined.
-   * @returns The global role of the user or a default role if not specified.
-   */
-  getGlobalUserRole(user: OptionalUser) {
-    if (!user) return GlobalPermissionRole.Visitor;
-    return user.role || GlobalPermissionRole.User;
   }
 }

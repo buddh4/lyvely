@@ -1,6 +1,6 @@
 import {
   BasePermissionType,
-  GlobalPermissionRole,
+  UserRole,
   type IGlobalPermission,
   PERMISSIONS_MODULE_ID,
 } from '@/permissions';
@@ -11,7 +11,7 @@ export const CreateUserProfilePermission: IGlobalPermission = {
   name: 'profiles.permissions.create-private-profile.name',
   description: 'profiles.permissions.create-private-profile.description',
   type: BasePermissionType.Global,
-  min: GlobalPermissionRole.Admin,
-  max: GlobalPermissionRole.User,
-  default: GlobalPermissionRole.User,
+  min: UserRole.Admin,
+  max: UserRole.User,
+  default: UserRole.User,
 };

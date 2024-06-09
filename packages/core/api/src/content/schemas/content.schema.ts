@@ -6,6 +6,7 @@ import {
   ContentUserRole,
   getDefaultTypeMeta,
   IContentTypeMeta,
+  ProfileMembershipRole,
 } from '@lyvely/interface';
 import {
   assureObjectId,
@@ -18,7 +19,14 @@ import { ContentLog, ContentLogSchema } from './content-log.schema';
 import { ContentMetadata, ContentMetadataSchema } from './content-metadata.schema';
 import { CreatedAs, Author } from './content-author.schema';
 import { OptionalUser, User } from '@/users';
-import { Profile, ProfileShard, Tag, ProfileContext, type ProfileContextData } from '@/profiles';
+import {
+  Profile,
+  ProfileShard,
+  Tag,
+  ProfileContext,
+  type ProfileContextData,
+  Membership,
+} from '@/profiles';
 import { ContentDataType, ContentDataTypeSchema } from './content-data-type.schema';
 import { IPolicy } from '@/policies';
 import type { IContentPolicies } from '@lyvely/interface';
@@ -63,6 +71,14 @@ export class ProtectedProfileContentContext<
     super(false);
     BaseModel.init(this, data);
   }
+}
+
+export interface MembershipProfileContentContext<
+  TContent extends Content = Content,
+  TProfile extends Profile = Profile,
+> extends ProtectedProfileContentContext<TContent, TProfile> {
+  getMembership(): Membership;
+  getMembership(...roles: ProfileMembershipRole[]): Membership | undefined;
 }
 
 type IGetModelConstructor = {

@@ -10,10 +10,11 @@ import {
   API_USER_INVITATIONS,
   InvitationRequest,
   UserInvitationsEndpoints,
+  UserRole,
 } from '@lyvely/interface';
 import { Public, UseClassSerializer } from '@/core';
 import { GlobalController } from '@/common';
-import { UserRequest } from '@/users';
+import { UserRequest, UserRoleAccess } from '@/users';
 
 @GlobalController(API_USER_INVITATIONS)
 @UseClassSerializer()
@@ -26,6 +27,7 @@ export class InvitationsController implements UserInvitationsEndpoint {
   ) {}
 
   @Post()
+  @UserRoleAccess(UserRole.User)
   @HttpCode(HttpStatus.NO_CONTENT)
   async sendInvitations(@Body() invites: InvitationRequest, @Req() req: UserRequest) {
     await this.sendInviteService.sendInvitations(req.user, invites);
@@ -37,18 +39,21 @@ export class InvitationsController implements UserInvitationsEndpoint {
     return await this.mailInviteService.getInvitationInfo(token);
   }
 
+  @UserRoleAccess(UserRole.User)
   @Get(UserInvitationsEndpoints.USER(':pid'))
   async getUserInvitationInfo(@Param('pid') profile: string, @Req() req: UserRequest) {
     const { user } = req;
     return await this.userInviteService.getInvitationInfo({ user, profile });
   }
 
+  @UserRoleAccess(UserRole.User)
   @Post(UserInvitationsEndpoints.ACCEPT(':pid'))
   @HttpCode(HttpStatus.NO_CONTENT)
   async accept(@Param('pid') pid: string, @Req() req: UserRequest) {
     await this.invitationsService.acceptUserInvitation(req.user, pid);
   }
 
+  @UserRoleAccess(UserRole.User)
   @Post(UserInvitationsEndpoints.DECLINE(':pid'))
   @HttpCode(HttpStatus.NO_CONTENT)
   async decline(@Param('pid') pid: string, @Req() req: UserRequest) {

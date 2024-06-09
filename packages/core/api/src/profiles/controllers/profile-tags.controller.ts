@@ -18,11 +18,13 @@ import {
   CreateTagModel,
   API_PROFILE_TAGS,
   ProfileTagsEndpoint,
+  ManageTagsPermission,
 } from '@lyvely/interface';
 import { Tag } from '../schemas';
+import { Permissions } from '@/permissions';
 
-// TODO feature check
 @ProfileController(API_PROFILE_TAGS)
+@Permissions(ManageTagsPermission.id)
 @UseClassSerializer()
 export class ProfileTagsController implements ProfileTagsEndpoint {
   @Inject()

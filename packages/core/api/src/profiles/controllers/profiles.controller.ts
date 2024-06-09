@@ -30,15 +30,21 @@ import {
   ProfileWithRelationsModel,
   SettingsUpdateResponse,
   UpdateProfileModel,
+  UserRole,
 } from '@lyvely/interface';
 import { ProfileAvatarService, ProfileRelationsService, ProfilesService } from '../services';
 import { ProfileContext, ProtectedProfileContext } from '../contexts';
-import { OptionalUserRequest, UserRequest, UserThrottle, UserThrottlerGuard } from '@/users';
+import {
+  OptionalUserRequest,
+  UserRequest,
+  UserRoleAccess,
+  UserThrottle,
+  UserThrottlerGuard,
+} from '@/users';
 import { ProfileVisibilityPolicy } from '../policies';
 import { InjectPolicy } from '@/policies';
 import { ProfileMembershipRequest, ProfileRequest } from '../types';
-import { ProfileEndpoint, ProfileRole } from '../decorators';
-import { ProfileGuard } from '../guards';
+import { ProfileEndpoint, ProfileRoleAccess } from '../decorators';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AvatarUploadPipe } from '@/avatars';
 import type { IFileInfo } from '@/files';
@@ -64,15 +70,14 @@ export class ProfilesController implements ProfilesEndpoint {
   ) {}
 
   @Post()
+  @UserRoleAccess(UserRole.User)
   async create(
     @Body() model: CreateProfileModel,
     @Request() req: UserRequest
   ): Promise<ProfileWithRelationsModel> {
+    // Note, further permissions are checked in the service.
     const { user } = req;
 
-    if (!user) throw new ForbiddenException();
-
-    // TODO: (ACL) check if user is allowed to create profiles
     let context: ProtectedProfileContext;
 
     switch (model.type) {
@@ -101,7 +106,7 @@ export class ProfilesController implements ProfilesEndpoint {
   }
 
   @Get(ProfilesEndpoints.BY_HANDLE(':handle'))
-  @UseGuards(ProfileGuard)
+  @ProfileEndpoint()
   async getProfileByHandle(
     @Param('handle') handle: string,
     @Request() req: ProfileRequest
@@ -119,7 +124,7 @@ export class ProfilesController implements ProfilesEndpoint {
 
   @Put(':pid')
   @ProfileEndpoint()
-  @ProfileRole(ProfileRelationRole.Admin)
+  @ProfileRoleAccess(ProfileRelationRole.Admin)
   async update(
     @Body() model: UpdateProfileModel,
     @Request() req: ProfileMembershipRequest
@@ -131,23 +136,23 @@ export class ProfilesController implements ProfilesEndpoint {
 
   @Put(ProfilesEndpoints.ARCHIVE)
   @ProfileEndpoint()
+  @ProfileRoleAccess(ProfileRelationRole.Owner)
   @HttpCode(HttpStatus.NO_CONTENT)
-  @ProfileRole(ProfileRelationRole.Owner)
   async archive(@Request() req: ProfileMembershipRequest): Promise<void> {
     await this.profilesService.archive(req.profile);
   }
 
   @Put(ProfilesEndpoints.RESTORE)
   @ProfileEndpoint()
+  @ProfileRoleAccess(ProfileRelationRole.Owner)
   @HttpCode(HttpStatus.NO_CONTENT)
-  @ProfileRole(ProfileRelationRole.Owner)
   async restore(@Request() req: ProfileMembershipRequest): Promise<void> {
     await this.profilesService.restore(req.profile);
   }
 
   @Put(ProfilesEndpoints.UPDATE_AVATAR)
   @ProfileEndpoint()
-  @ProfileRole(ProfileRelationRole.Admin)
+  @ProfileRoleAccess(ProfileRelationRole.Admin)
   @UseGuards(UserThrottlerGuard)
   @UserThrottle(20, 60_000)
   @UseInterceptors(FileInterceptor('file'))
@@ -160,7 +165,7 @@ export class ProfilesController implements ProfilesEndpoint {
   }
 
   @ProfileEndpoint()
-  @ProfileRole(ProfileRelationRole.Admin)
+  @ProfileRoleAccess(ProfileRelationRole.Admin)
   @Post(ProfilesEndpoints.SET_CALENDAR_PREFERENCES)
   async setCalendarPreferences(
     @Body() model: CalendarPreferences,

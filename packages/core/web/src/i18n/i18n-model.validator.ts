@@ -1,5 +1,6 @@
 import { ModelValidator, IValidatorOptions, getPropertyConstraints } from '@lyvely/common';
 import { translate, tryToTranslate } from './i18n';
+import { isDevelopEnvironment } from '@/core';
 
 export class I18nModelValidator<
   T extends object = object,
@@ -46,7 +47,7 @@ export class I18nModelValidator<
       return (
         tryToTranslate(error.rule, translationVars) ||
         tryToTranslate(`validation.${error.rule}`, translationVars) ||
-        translate('validation.invalid')
+        (isDevelopEnvironment() ? error.rule : translate('validation.invalid'))
       );
     };
   }

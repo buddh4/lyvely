@@ -1,6 +1,6 @@
 import {
   getPermission,
-  GlobalPermissionRole,
+  UserRole,
   type IGlobalPermission,
   IPermission,
   registerPermissions,
@@ -28,7 +28,7 @@ export const useGlobalPermissions = (...permissions: Array<string | IGlobalPermi
   // TODO: Support global user permissions
   const isAllowed = computed(() => {
     const user = useAuthStore().user;
-    const role = useAuthStore().user?.role || GlobalPermissionRole.Visitor;
+    const role = useAuthStore().user?.role ?? UserRole.Visitor;
     return useGlobalPermissionsManager().verifyAny(
       permissions,
       { role, userStatus: user?.status },
@@ -49,7 +49,7 @@ export const useGlobalPermissions = (...permissions: Array<string | IGlobalPermi
 
   const isAllowedStrict = computed(() => {
     const user = useAuthStore().user;
-    const role = useAuthStore().user?.role || GlobalPermissionRole.Visitor;
+    const role = useAuthStore().user?.role ?? UserRole.Visitor;
     return useGlobalPermissionsManager().verifyEach(
       permissions,
       { role, userStatus: user?.status },

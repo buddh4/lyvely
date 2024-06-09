@@ -2,6 +2,7 @@ import {
   ExecutionContext,
   ForbiddenException,
   Injectable,
+  Logger,
   UnauthorizedException,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
@@ -19,9 +20,12 @@ import {
 import { Request } from 'express';
 import { ConfigurationPath } from '@/config';
 import { CONFIG_PATH_PERMISSION_VISITOR_STRATEGY } from '@/permissions';
+import { type OptionalUserRequest } from '@/users';
 
 @Injectable()
 export class RootAuthGuard extends AuthGuard(JWT_ACCESS_TOKEN) {
+  private readonly logger = new Logger(RootAuthGuard.name);
+
   constructor(
     private reflector: Reflector,
     private configService: ConfigService<ConfigurationPath>
@@ -35,9 +39,12 @@ export class RootAuthGuard extends AuthGuard(JWT_ACCESS_TOKEN) {
       context.getClass(),
     ]);
 
-    if (isPublic) return true;
+    const request = context.switchToHttp().getRequest<OptionalUserRequest>();
 
-    const request = context.switchToHttp().getRequest<Request>();
+    // Public access, but we try to verify the user anyway
+    if (isPublic) {
+      return this.handlePublicAccess(request, context);
+    }
 
     // If we have an auth cookie, we know it is a request attempt from an actual user.
     if (extractAuthCookie(request, this.configService)) {
@@ -49,6 +56,18 @@ export class RootAuthGuard extends AuthGuard(JWT_ACCESS_TOKEN) {
     }
 
     throw new UnauthorizedException();
+  }
+
+  async handlePublicAccess(request: Request, context: ExecutionContext) {
+    try {
+      if (extractAuthCookie(request, this.configService)) {
+        await this.verifyAuthCookie(context);
+      }
+    } catch (e) {
+      this.logger.warn('Public access with jwt verification error.', e);
+    }
+
+    return true;
   }
 
   async verifyAuthCookie(context: ExecutionContext): Promise<boolean> {

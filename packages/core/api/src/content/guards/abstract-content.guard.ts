@@ -10,6 +10,7 @@ import {
   META_CONTENT_TYPE,
   META_CONTENT_ID_PARAM,
   META_CONTENT_DEFAULT_ID_PARAM,
+  PROFILE_CONTEXT_META_CONTENT_TYPE,
 } from '../content.constants';
 import { BaseProfileGuard, META_PERMISSIONS_SOME, META_PERMISSIONS_STRICT } from '@/profiles';
 import { ContentPermissionsService } from '@/content/services/content-permissions.service';
@@ -49,6 +50,9 @@ export abstract class AbstractContentGuard<C extends Content = Content>
     const request = context.switchToHttp().getRequest<ProfileContentRequest<C>>();
     const contentId = this.getContentIdFromRequest(request, context);
     const { context: profileContentContext } = request;
+
+    request.context.meta[PROFILE_CONTEXT_META_CONTENT_TYPE] =
+      this.getContentTypeFromContext(context);
 
     if (!request.content && !contentId && this.isContentRequired()) {
       throw new DocumentNotFoundException();

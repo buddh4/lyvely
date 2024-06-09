@@ -25,7 +25,7 @@ import {
   VALID_DISPLAY_NAME_REGEX,
   IPermissionObject,
   UserRelationRole,
-  GlobalPermissionRole,
+  UserRole,
   IUserRelationPermissionSetting,
 } from '@lyvely/interface';
 import { Avatar, AvatarSchema } from '@/avatars/schemas';
@@ -99,7 +99,8 @@ export class User
   settings: Record<string, any>;
 
   /** Known refresh tokens of this user. **/
-  @Prop({ type: [RefreshTokenSchema], default: () => [] })
+  @Prop({ type: [RefreshTokenSchema] })
+  @PropertyType([RefreshToken])
   refreshTokens: RefreshToken[];
 
   /** The status of this user. **/
@@ -110,11 +111,11 @@ export class User
   /** Represents the global permission role. **/
   @Prop({
     required: true,
-    enum: getStringEnumValues(GlobalPermissionRole),
-    default: GlobalPermissionRole.User,
+    enum: getStringEnumValues(UserRole),
+    default: UserRole.User,
   })
-  @PropertyType(String, { default: GlobalPermissionRole.User })
-  role: GlobalPermissionRole;
+  @PropertyType(String, { default: UserRole.User })
+  role: UserRole;
 
   /** Keeps track of profile membership counts by profile type. **/
   @PropertyType(ProfilesCount, { default: () => new ProfilesCount() })

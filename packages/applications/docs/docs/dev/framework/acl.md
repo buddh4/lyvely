@@ -49,6 +49,33 @@ to visitors.
 
 Endpoints with stricter ACL requirements must be equipped with the corresponding decorators.
 
+### `@GlobalController`
+
+This decorator should be used for non profile related controllers and adds support for global permission check using
+the `@Permissions` decorator.
+
+### `@ProfileController`
+
+This decorator should be used for all profile related controllers. Using this decorator will ensure that the request is
+a valid profile request and adds support for various profile access checks and adds a `ProfileContext` to the controller 
+request. You can use the following request types for your controller, depending
+on the defined access rules of your endpoint:
+
+- `ProfileRequest`: A profile request with an optional `user` and `ProfileContext` in case of visitor access.
+- `ProtectedProfileRequest`: A profile request with a `user` and `ProtectedProfileRequest` (no visitor access).
+- `ProfileMembershipRequest`: A profile request of a valid member `user` and `ProfileMembershipRequest`.
+
+### `@ContentTypeController`
+
+This decorator should be used for all profile content related controllers. Using this decorator will ensure that the 
+request is a valid profile content request and adds support for various content related access checks as content type 
+and content. You can use the following request types for your controller, depending on the defined access rules of 
+your endpoint:
+
+- `ProfileContentRequest`: A profile request with an optional `user` and `ProfileContext` in case of visitor access.
+- `ProtectedProfileRequest`: A profile request with a `user` and `ProtectedProfileRequest` (no visitor access).
+- `MemberProfileContentRequest`: A profile request of a valid member `user` and `MembershipProfileContentContext`.
+
 ### `@Public` Endpoints
 
 Public endpoints are endpoints that never require any kind of authentication, even if the visitor mode is disabled
@@ -59,23 +86,62 @@ Controller or Controller Function level.
 Endpoints decorated with `@Public` will skip the visitor mode configuration check.
 :::
 
-### The `@ProfileRoleLevel` Decorator
+:::tip
+You may want to use the `@Public` decorator in some cases when using custom [JWT guards](#jwt) and you need to skip
+the default jwt authentication.
+:::
 
-The `@ProfileRoleLevel` decorator can be used to restrict the access to an endpoint by defining one of the following 
-profile roles:
+### `@ProfileEndpoint` Decorator
+
+The `@ProfileEndpoint` can be used to add profile guard support on `@GlobalController` controller functions. This may be used
+if you need to mix global and profile controller logic within a single controller. Note mixing global and profile context
+is usually not recommended since it increases the complexity of your controller and therefore is prone to errors.
+
+### `@UserRoleAccess` Decorator
+
+The `@UserRoleAccess` decorator can be used to restrict the access to an endpoint by defining one of the following
+user roles levels, which will grant access for the given role and all roles above:
+
+| Level     | Description                                                     |
+|-----------|-----------------------------------------------------------------|
+| Admin     | Restricts the access global admin users.                        |
+| Moderator | Adds access for user with global moderator role.                |
+| User      | Adds access for any active user.                                |
+| Visitor   | Grants access for all users and platform visitors (if enabled). |
+
+### `@UserStatusAccess` Decorator
+
+The `@UserStatusAccess` decorator can be used to restrict the access to an endpoint by defining one of the following
+user statuses. If no such decorator is defined we only allow access of authenticated users with an `active` status and skip
+this check for visitor users. In order to skip this check and allow any user status use `@UserStatusAccess(true)`.
+
+| Status            | Description                       |
+|-------------------|-----------------------------------|
+| Disabled          | A disabled user.                  |
+| Active            | An active user (default).         |
+| EmailVerification | User awaiting email verification. |
+| Locked            | A temporarily locked user.        |
+
+### The `@ProfileRoleAccess` Decorator
+
+The `@ProfileRoleAccess` decorator can be used to restrict the access to an endpoint by defining one of the following 
+profile roles levels, which will grant access for the given role and all roles above.
+
+:::note
+This decorator is only valid on controllers marked with a `@ProfileController` instead.
+:::
 
 | Level        | Description                                                     |
 |--------------|-----------------------------------------------------------------|
-| owner        | Restricts the access to the profile owner only.                 |
-| admin        | Adds access for user with admin role.                           |
-| moderator    | Adds access for user with moderator role.                       |
-| member       | Adds access for any profile member.                             |
-| guest        | Adds access for profile guest user.                             |
-| organization | Adds access for any member of the related organization.         |
-| follower     | Adds access for users following the profile.                    |
-| user         | Adds access for any active user of the platform.                |
-| visitor      | Grants access for all users and platform visitors (if enabled). |
-
+| Owner        | Restricts the access to the profile owner only.                 |
+| Admin        | Adds access for user with admin role.                           |
+| Moderator    | Adds access for user with moderator role.                       |
+| Member       | Adds access for any profile member.                             |
+| Guest        | Adds access for profile guest user.                             |
+| Organization | Adds access for any member of the related organization.         |
+| Follower     | Adds access for users following the profile.                    |
+| User         | Adds access for any active user of the platform.                |
+| Visitor      | Grants access for all users and platform visitors (if enabled). |
 
 ### `@Permissions` Decorator
 

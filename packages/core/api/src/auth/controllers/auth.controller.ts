@@ -1,4 +1,4 @@
-import { Req, Post, UseGuards, Get, UnauthorizedException, Body } from '@nestjs/common';
+import { Req, Post, UseGuards, Get, UnauthorizedException, Body, Logger } from '@nestjs/common';
 import {
   LocalAuthGuard,
   JwtRefreshGuard,
@@ -8,7 +8,13 @@ import {
 } from '../guards';
 import { AbstractJwtAuthController } from './abstract-jwt-auth.controller';
 import { JwtAuthService } from '../services';
-import { UserRequest, UserThrottle, UserThrottlerGuard } from '@/users';
+import {
+  UserRequest,
+  UserThrottle,
+  UserThrottlerGuard,
+  UserRoleAccess,
+  UserStatusAccess,
+} from '@/users';
 import {
   UserStatus,
   UserModel,
@@ -17,6 +23,7 @@ import {
   LoginModel,
   AuthEndpoints,
   Headers,
+  UserRole,
 } from '@lyvely/interface';
 import { ConfigService } from '@nestjs/config';
 import ms from 'ms';
@@ -27,6 +34,7 @@ import { GlobalController } from '@/common';
 @GlobalController(API_AUTH)
 @UseClassSerializer()
 export class AuthController extends AbstractJwtAuthController implements AuthEndpoint {
+  private readonly logger = new Logger(AuthController.name);
   constructor(
     private authService: JwtAuthService,
     protected override configService: ConfigService<ConfigurationPath>
@@ -45,6 +53,7 @@ export class AuthController extends AbstractJwtAuthController implements AuthEnd
       loginModel.remember
     );
 
+    // We do not use @UserStatusAccess here, since our local auth guard will be executed after the base user guard.
     if (user.status === UserStatus.EmailVerification) {
       throw new UnauthorizedException({ userStatus: UserStatus.EmailVerification });
     }
@@ -89,13 +98,20 @@ export class AuthController extends AbstractJwtAuthController implements AuthEnd
   }
 
   @Public()
+  @UserStatusAccess(true)
   @Post(AuthEndpoints.LOGOUT)
   async logout(@Req() req: UserRequest) {
     const { user, res } = req;
     const vid = this.getVisitorIdHeader(req);
-    if (user && vid) {
-      await this.authService.destroyRefreshToken(user, vid);
+
+    try {
+      if (user && vid) {
+        await this.authService.destroyRefreshToken(user, vid);
+      }
+    } catch (e) {
+      this.logger.error(e);
     }
+
     clearAccessCookies(res!);
     clearRefreshCookies(res!);
     req.user = undefined as any;
@@ -108,6 +124,7 @@ export class AuthController extends AbstractJwtAuthController implements AuthEnd
   }
 
   @Get(AuthEndpoints.USER)
+  @UserRoleAccess(UserRole.User)
   @UseGuards(UserThrottlerGuard)
   @UserThrottle(30, 60_000)
   async loadUser(@Req() req: UserRequest) {

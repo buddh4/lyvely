@@ -1,4 +1,4 @@
-export * from './root-auth-guard.service';
+export * from './root-auth.guard';
 export * from './jwt-refresh.guard';
 export * from './jwt-reset-password.guard';
 export * from './login-throttler.guard';

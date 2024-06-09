@@ -1,7 +1,6 @@
 import { ExtractJwt } from 'passport-jwt';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtStrategy, JwtTokenPayloadIF, getIssuedAt } from '@/jwt';
-import { UserStatus } from '@lyvely/interface';
 import { ConfigService } from '@nestjs/config';
 import { ConfigurationPath } from '@/config';
 
@@ -22,8 +21,6 @@ export class JwtResetPasswordStrategy extends JwtStrategy<JwtTokenPayloadIF>({
   }
 
   override async validateUser(user, req, payload) {
-    if (user.status !== UserStatus.Active) throw new UnauthorizedException();
-
     if (user.passwordResetAt && user.passwordResetAt > getIssuedAt(payload)) {
       throw new UnauthorizedException();
     }

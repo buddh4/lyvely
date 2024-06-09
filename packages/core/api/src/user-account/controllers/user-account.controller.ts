@@ -11,8 +11,9 @@ import {
   SettingsUpdateResponse,
   UserAccountEndpoint,
   UserAccountEndpoints,
+  UserRole,
 } from '@lyvely/interface';
-import { UserRequest, UserThrottle, UserThrottlerGuard } from '@/users';
+import { UserRequest, UserRoleAccess, UserThrottle, UserThrottlerGuard } from '@/users';
 import { UseClassSerializer } from '@/core';
 import { GlobalController } from '@/common';
 import { UserAccountService, AccountAvatarService } from '../services';
@@ -21,6 +22,7 @@ import { AvatarUploadPipe } from '@/avatars';
 import type { IFileInfo } from '@/files';
 
 @GlobalController(API_USER_ACCOUNT)
+@UserRoleAccess(UserRole.User)
 @UseClassSerializer()
 export class UserAccountController implements UserAccountEndpoint {
   constructor(

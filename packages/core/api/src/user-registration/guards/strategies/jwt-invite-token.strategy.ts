@@ -3,7 +3,6 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtStrategy, JwtTokenPayloadIF, getIssuedAt } from '@/jwt';
 import { ConfigService } from '@nestjs/config';
 import { ConfigurationPath } from '@/config';
-import { UserStatus } from '@lyvely/interface';
 
 export const JWT_REGISTRATION_INVITE_TOKEN = 'user-registration-invitation';
 
@@ -22,8 +21,6 @@ export class JwtInviteTokenStrategy extends JwtStrategy<JwtTokenPayloadIF>({
   }
 
   override async validateUser(user, req, payload) {
-    if (user.status !== UserStatus.Active) throw new UnauthorizedException();
-
     if (user.passwordResetAt && user.passwordResetAt > getIssuedAt(payload)) {
       throw new UnauthorizedException();
     }

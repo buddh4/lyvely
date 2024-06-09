@@ -2,7 +2,7 @@ import { ProfilesService } from './index';
 import {
   BaseUserProfileRelationType,
   ForbiddenServiceException,
-  GlobalPermissionRole,
+  UserRole,
   ProfileMembershipRole,
   ProfileType,
   ProfileVisibilityLevel,
@@ -145,7 +145,7 @@ describe('ProfileService', () => {
 
     describe('createOrganization()', () => {
       it('create organization', async () => {
-        const user = await testData.createUser('User1', { role: GlobalPermissionRole.Admin });
+        const user = await testData.createUser('User1', { role: UserRole.Admin });
         const { profile, relations } = await profileService.createOrganization(user, {
           name: 'SomeOrganization',
         });
@@ -163,7 +163,7 @@ describe('ProfileService', () => {
       });
 
       it('moderator can not create organization', async () => {
-        const user = await testData.createUser('User1', { role: GlobalPermissionRole.Moderator });
+        const user = await testData.createUser('User1', { role: UserRole.Moderator });
 
         const { profile } = await profileService.createOrganization(user, {
           name: 'SomeOrganization',
@@ -173,7 +173,7 @@ describe('ProfileService', () => {
 
       it('normal user can not create organization', async () => {
         expect.assertions(1);
-        const user = await testData.createUser('User1', { role: GlobalPermissionRole.User });
+        const user = await testData.createUser('User1', { role: UserRole.User });
 
         try {
           await profileService.createOrganization(user, { name: 'ShouldFail' });
@@ -184,7 +184,7 @@ describe('ProfileService', () => {
 
       it('normal user can not create organization', async () => {
         expect.assertions(1);
-        const user = await testData.createUser('User1', { role: GlobalPermissionRole.User });
+        const user = await testData.createUser('User1', { role: UserRole.User });
 
         try {
           await profileService.createOrganization(user, { name: 'ShouldFail' });
@@ -212,10 +212,10 @@ describe('ProfileService', () => {
       });
 
       it('organization name is globally unique', async () => {
-        const user = await testData.createUser('User1', { role: GlobalPermissionRole.Moderator });
+        const user = await testData.createUser('User1', { role: UserRole.Moderator });
         await profileService.createOrganization(user, { name: 'SomeOrganization' });
 
-        const user2 = await testData.createUser('User2', { role: GlobalPermissionRole.Moderator });
+        const user2 = await testData.createUser('User2', { role: UserRole.Moderator });
         expect.assertions(2);
         return profileService.createOrganization(user2, { name: 'SomeOrganization' }).catch((e) => {
           expect(e instanceof UniqueConstraintException).toEqual(true);
@@ -224,7 +224,7 @@ describe('ProfileService', () => {
       });
 
       it('organization name is unique per owner', async () => {
-        const user = await testData.createUser('User1', { role: GlobalPermissionRole.Moderator });
+        const user = await testData.createUser('User1', { role: UserRole.Moderator });
         await profileService.createUserProfile(user, { name: 'SomeOrganization' });
 
         expect.assertions(2);

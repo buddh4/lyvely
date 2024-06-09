@@ -6,7 +6,7 @@ import { Request, Response } from 'express';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 import { ServerOptions } from 'https';
 import { MongooseModuleOptions } from '@nestjs/mongoose/dist/interfaces/mongoose-options.interface';
-import { IFeatureConfig, GlobalPermissionRole, IPermissionConfig } from '@lyvely/interface';
+import { IFeatureConfig, UserRole, IPermissionConfig } from '@lyvely/interface';
 import type { IStorageProviderDefinition, ILocalStorageProviderOptions } from '@/files/interfaces';
 import type { RedisOptions } from 'ioredis/built/redis/RedisOptions';
 
@@ -103,7 +103,7 @@ export type LyvelyFileOptions = {
   };
 };
 
-export type GlobalUserPermissionRoleConfiguration = Record<string, GlobalPermissionRole>;
+export type GlobalUserPermissionRoleConfiguration = Record<string, UserRole>;
 
 export interface ILyvelyCsrfOptions {
   enabled?: boolean;

@@ -12,9 +12,9 @@ export class AvatarsController {
 
   constructor(private storageService: StorageService) {}
 
+  @Public()
   @Get(':guid')
   @Header('Cross-Origin-Resource-Policy', 'cross-origin')
-  @Public()
   public async loadAvatar(@Param('guid') guid, @Res() res: Response) {
     const fileStream = await this.storageService.download({
       guid,

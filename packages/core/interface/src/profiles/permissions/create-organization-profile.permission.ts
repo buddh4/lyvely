@@ -1,6 +1,6 @@
 import {
   BasePermissionType,
-  GlobalPermissionRole,
+  UserRole,
   type IGlobalPermission,
   PERMISSIONS_MODULE_ID,
 } from '@/permissions';
@@ -11,7 +11,7 @@ export const CreateOrganizationProfilePermission: IGlobalPermission = {
   name: 'profiles.permissions.create-organization-profile.name',
   description: 'profiles.permissions.create-organization-profile.description',
   type: BasePermissionType.Global,
-  min: GlobalPermissionRole.Admin,
-  max: GlobalPermissionRole.User,
-  default: GlobalPermissionRole.Moderator,
+  min: UserRole.Admin,
+  max: UserRole.User,
+  default: UserRole.Moderator,
 };

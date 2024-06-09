@@ -4,9 +4,10 @@ import {
   NotificationsEndpoint,
   IWebNotification,
   NotificationEndpoints,
+  UserRole,
 } from '@lyvely/interface';
 import { UserNotificationsService, NotificationService } from '../services';
-import { IUserContext, UserInfo, UserRequest } from '@/users';
+import { IUserContext, UserInfo, UserRequest, UserRoleAccess } from '@/users';
 import { UserNotification } from '../schemas';
 import { TestNotification } from '../notifications';
 import { SingleUserSubscription } from '@/user-subscriptions';
@@ -14,6 +15,7 @@ import { AbstractStreamController } from '@/streams';
 import { GlobalController } from '@/common';
 
 @GlobalController(API_NOTIFICATIONS)
+@UserRoleAccess(UserRole.User)
 export class NotificationsController
   extends AbstractStreamController<UserNotification, IWebNotification, any, IUserContext>
   implements NotificationsEndpoint
@@ -33,6 +35,7 @@ export class NotificationsController
     await this.streamEntryService.markAsSeen(req.user, nid);
   }
 
+  @UserRoleAccess(UserRole.Admin)
   @Post(NotificationEndpoints.TEST)
   async test(@Req() req: UserRequest): Promise<boolean> {
     await this.notificationsService.sendNotification(

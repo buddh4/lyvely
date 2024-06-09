@@ -45,7 +45,8 @@ export class JwtAccessStrategy extends JwtStrategy<JwtTokenPayloadIF>({
     super(configService);
   }
 
-  override async validateUser(user: User) {
-    if (user.status !== UserStatus.Active) throw new UnauthorizedException();
+  override async validateUser() {
+    // By default, all users are valid, user status etc. should be validated in another guard.
+    return true;
   }
 }

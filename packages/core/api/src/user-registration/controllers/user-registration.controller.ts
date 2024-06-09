@@ -21,6 +21,7 @@ import { ConfigService } from '@nestjs/config';
 import { Request } from 'express';
 import ms from 'ms';
 
+@Public()
 @GlobalController(API_USER_REGISTRATION)
 @UseClassSerializer()
 export class UserRegistrationController
@@ -35,7 +36,6 @@ export class UserRegistrationController
     super(configService);
   }
 
-  @Public()
   @Post()
   async register(@Body() registerDto: UserRegistration): Promise<OtpInfo> {
     try {
@@ -50,25 +50,21 @@ export class UserRegistrationController
     }
   }
 
-  @Public()
   @Post(UserRegistrationEndpoints.CHECK_USERNAME)
   async checkUsername(@Body() userData: StringFieldValidityRequest): Promise<void> {
     await this.registerService.validateUserName(userData.value || '');
   }
 
-  @Public()
   @Post(UserRegistrationEndpoints.CHECK_USER_EMAIL)
   async checkUserEmail(@Body() userData: StringFieldValidityRequest): Promise<void> {
     await this.registerService.validateEmail(userData.value || '');
   }
 
-  @Public()
   @Post(UserRegistrationEndpoints.RESENT_VERIFY_EMAIL)
   async resendVerifyEmail(@Body() dto: ResendOtp): Promise<OtpInfo> {
     return await this.registerService.resendOtp(dto.emailOrUsername);
   }
 
-  @Public()
   @Post(UserRegistrationEndpoints.VERIFY_EMAIL)
   async verifyEmail(@Body() verifyEmail: VerifyEmailDto, @Req() req: Request) {
     const { user, remember } = await this.registerService.verifyEmail(verifyEmail);

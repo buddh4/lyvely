@@ -7,3 +7,4 @@ export * from './services';
 export * from './users.module';
 export * from './decorators';
 export * from './testing';
+export * from './users.constants';

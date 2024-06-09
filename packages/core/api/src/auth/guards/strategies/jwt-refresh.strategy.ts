@@ -61,8 +61,6 @@ export class JwtRefreshStrategy extends JwtStrategy<JwtRefreshTokenPayloadIF>({
   }
 
   override async validateUser(user: User, req: Request) {
-    if (user.status !== UserStatus.Active) throw new UnauthorizedException();
-
     const tokenString = extractRefreshCookie(req, this.configService);
     const vid = req.header(Headers.X_VISITOR_ID);
 

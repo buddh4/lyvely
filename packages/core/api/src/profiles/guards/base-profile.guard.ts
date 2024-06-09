@@ -15,7 +15,7 @@ import { META_PROFILE_ROLE_LEVEL } from '../profiles.constants';
  * This guard will try to extract a profile id from the request usually by :pid parameter and then will add the
  * ProfileContext to the request object.
  *
- * This guard also includes a check for the @ProfileRole decorator as well as a profile visibility check.
+ * This guard also includes a check for the @ProfileRoleAccess decorator as well as a profile visibility check.
  */
 @Injectable()
 export class BaseProfileGuard implements CanActivate {

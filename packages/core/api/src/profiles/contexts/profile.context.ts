@@ -37,6 +37,11 @@ export class ProfileContext<TProfile extends Profile = Profile>
   user?: User;
 
   /**
+   * Can be used to add additional metadata.
+   */
+  meta: Record<string, unknown>;
+
+  /**
    * The profile of this context.
    */
   profile: TProfile;
@@ -54,6 +59,7 @@ export class ProfileContext<TProfile extends Profile = Profile>
 
   constructor(data: ProfileContextData<ProfileContext<TProfile>>) {
     BaseModel.init(this, data);
+    this.meta ??= {};
     if (!this.organizationContext && this.profile instanceof Organization) {
       this.organizationContext = this as ProfileContext<Organization>;
     }

@@ -1,8 +1,6 @@
 import { AbstractPermissionsManager } from './abstract-permissions.manager';
 import {
   BasePermissionType,
-  GlobalPermissionRole,
-  globalPermissionRoleHierarchy,
   IGlobalPermission,
   IGlobalPermissionObject,
   IGlobalPermissionSubject,
@@ -11,6 +9,7 @@ import {
 import { useSingleton } from '@lyvely/common';
 import { getPermission } from '../registries';
 import { isEnabledGlobalFeature } from '@/features';
+import { UserRole, userRoleHierarchy } from '../interfaces';
 
 /**
  * Represents the GlobalPermissionsService class which is responsible for managing global user permissions.
@@ -38,10 +37,10 @@ class GlobalPermissionsManager extends AbstractPermissionsManager<
    * Retrieves the role hierarchy, which is an array of roles in which the index defines the role level and lower
    * roles inherit the permissions of higher levels.
    *
-   * @returns {GlobalPermissionRole[]} An array containing the role hierarchy for the current user.
+   * @returns {UserRole[]} An array containing the role hierarchy for the current user.
    */
-  override getRoleHierarchy(): GlobalPermissionRole[] {
-    return globalPermissionRoleHierarchy;
+  override getRoleHierarchy(): UserRole[] {
+    return userRoleHierarchy;
   }
 
   /**

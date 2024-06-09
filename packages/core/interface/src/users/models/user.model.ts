@@ -9,11 +9,7 @@ import { AvatarModel } from '@/avatars';
 import { Exclude, Expose } from 'class-transformer';
 import { UserNotificationStateModel } from './user-notification-state.model';
 import { UserRelationRole, UserStatus } from '../interfaces';
-import {
-  GlobalPermissionRole,
-  IPermissionObject,
-  IPermissionSetting,
-} from '@/permissions/interfaces';
+import { IPermissionObject, UserRole, IPermissionSetting } from '@/permissions/interfaces';
 
 @Exclude()
 export class UserEmailModel {
@@ -87,7 +83,7 @@ export class UserModel<TID = string> implements IPermissionObject<UserRelationRo
   status: UserStatus;
 
   @Expose()
-  role: GlobalPermissionRole;
+  role: UserRole;
 
   @Expose()
   username: string;

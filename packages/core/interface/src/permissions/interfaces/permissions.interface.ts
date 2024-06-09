@@ -92,7 +92,7 @@ export interface IPermissionSetting<TID = string, TRole = any> {
  * @example
  *
  * {
- *   defaults: [{ id: 'some-permission', role: GlobalPermissionRole.Admin }]
+ *   defaults: [{ id: 'some-permission', role: UserRole.Admin }]
  * }
  */
 export interface IPermissionConfig {
