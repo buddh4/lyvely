@@ -6,7 +6,6 @@ import { GlobalController } from '@/common';
 import { STORAGE_BUCKET_AVATARS } from '../avatar.constants';
 
 @GlobalController('avatars')
-@UseClassSerializer()
 export class AvatarsController {
   private logger = new Logger(AvatarsController.name);
 

@@ -4,14 +4,13 @@ import {
   Request,
   Param,
   Post,
-  Body,
   Inject,
   ForbiddenException,
   NotFoundException,
   Put,
 } from '@nestjs/common';
 import { ProfileRequest } from '../types';
-import { assureObjectId, DocumentIdentity, UseClassSerializer } from '@/core';
+import { assureObjectId, DocumentIdentity, UseClassSerializer, ValidBody } from '@/core';
 import {
   UpdateTagModel,
   TagModel,
@@ -25,13 +24,12 @@ import { Permissions } from '@/permissions';
 
 @ProfileController(API_PROFILE_TAGS)
 @Permissions(ManageTagsPermission.id)
-@UseClassSerializer()
 export class ProfileTagsController implements ProfileTagsEndpoint {
   @Inject()
   private tagService: ProfileTagsService;
 
   @Post()
-  async create(@Body() dto: CreateTagModel, @Request() req: ProfileRequest) {
+  async create(@ValidBody() dto: CreateTagModel, @Request() req: ProfileRequest) {
     const profile = this._getMemberProfile(req);
     await this.tagService.addTag(profile, dto);
     return new TagModel(profile.getTagByName(dto.name)!);
@@ -40,7 +38,7 @@ export class ProfileTagsController implements ProfileTagsEndpoint {
   @Put(':id')
   async update(
     @Param('id') id: string,
-    @Body() dto: UpdateTagModel,
+    @ValidBody() dto: UpdateTagModel,
     @Request() req: ProfileRequest
   ) {
     const profile = this._getMemberProfile(req);

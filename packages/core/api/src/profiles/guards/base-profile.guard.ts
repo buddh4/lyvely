@@ -56,7 +56,7 @@ export class BaseProfileGuard implements CanActivate {
 
     return (
       this.verifyProfileRoleLevel(request.context, context) &&
-      this.profileVisibilityPolicy.verify(request.context)
+      (await this.profileVisibilityPolicy.verify(request.context))
     );
   }
 

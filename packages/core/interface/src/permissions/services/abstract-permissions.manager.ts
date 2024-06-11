@@ -166,7 +166,11 @@ export abstract class AbstractPermissionsManager<
 
     // The permission needs to be registered.
     const permission = this.getPermission(permissionOrId);
-    if (!permission) throw new IntegrityException(`Permission not registered`);
+
+    if (!permission) {
+      const permissionId = typeof permissionOrId === 'string' ? permissionOrId : permissionOrId.id;
+      throw new IntegrityException(`Permission ${permissionId} not registered`);
+    }
 
     if (permission.feature && !this.verifyPermissionFeature(permission, config, object))
       return false;

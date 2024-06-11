@@ -73,7 +73,7 @@ export class ProtectedProfileContentContext<
   }
 }
 
-export interface MembershipProfileContentContext<
+export interface ProfileMembershipContentContext<
   TContent extends Content = Content,
   TProfile extends Profile = Profile,
 > extends ProtectedProfileContentContext<TContent, TProfile> {

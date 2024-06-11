@@ -1,4 +1,4 @@
-import { Body, Post, Req, UploadedFile, UseInterceptors, UseGuards } from '@nestjs/common';
+import { Post, Req, UploadedFile, UseInterceptors, UseGuards } from '@nestjs/common';
 import {
   AddEmailDto,
   API_USER_ACCOUNT,
@@ -14,7 +14,7 @@ import {
   UserRole,
 } from '@lyvely/interface';
 import { UserRequest, UserRoleAccess, UserThrottle, UserThrottlerGuard } from '@/users';
-import { UseClassSerializer } from '@/core';
+import { UseClassSerializer, ValidBody } from '@/core';
 import { GlobalController } from '@/common';
 import { UserAccountService, AccountAvatarService } from '../services';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -23,7 +23,6 @@ import type { IFileInfo } from '@/files';
 
 @GlobalController(API_USER_ACCOUNT)
 @UserRoleAccess(UserRole.User)
-@UseClassSerializer()
 export class UserAccountController implements UserAccountEndpoint {
   constructor(
     private userAccountService: UserAccountService,
@@ -31,23 +30,23 @@ export class UserAccountController implements UserAccountEndpoint {
   ) {}
 
   @Post(UserAccountEndpoints.ADD_EMAIL)
-  async addEmail(@Body() dto: AddEmailDto, @Req() req: UserRequest) {
+  async addEmail(@ValidBody() dto: AddEmailDto, @Req() req: UserRequest) {
     return this.userAccountService.addEmail(req.user, dto.email);
   }
 
   @Post(UserAccountEndpoints.SET_LANGUAGE)
-  async setLanguage(@Body() dto: SetLanguageDto, @Req() req: UserRequest) {
+  async setLanguage(@ValidBody() dto: SetLanguageDto, @Req() req: UserRequest) {
     return this.userAccountService.setLanguage(req.user, dto.locale);
   }
 
   @Post(UserAccountEndpoints.SET_TIMEZONE)
-  async setTimezone(@Body() dto: SetTimezoneDto, @Req() req: UserRequest) {
+  async setTimezone(@ValidBody() dto: SetTimezoneDto, @Req() req: UserRequest) {
     return this.userAccountService.setTimezone(req.user, dto.timezone);
   }
 
   @Post(UserAccountEndpoints.SET_CALENDAR_PREFERENCES)
   async setCalendarPreferences(
-    @Body() model: CalendarPreferences,
+    @ValidBody() model: CalendarPreferences,
     @Req() req: UserRequest
   ): Promise<SettingsUpdateResponse> {
     const settings = await this.userAccountService.setCalendarPreferences(req.user, model);
@@ -55,12 +54,12 @@ export class UserAccountController implements UserAccountEndpoint {
   }
 
   @Post(UserAccountEndpoints.VERIFY_EMAIL)
-  async verifyEmail(@Body() dto: VerifyEmailDto, @Req() req: UserRequest) {
+  async verifyEmail(@ValidBody() dto: VerifyEmailDto, @Req() req: UserRequest) {
     await this.userAccountService.verifyEmail(req.user, dto);
   }
 
   @Post(UserAccountEndpoints.RESEND_OTP)
-  async resendOtp(@Body() dto: ResendOtp, @Req() req: UserRequest) {
+  async resendOtp(@ValidBody() dto: ResendOtp, @Req() req: UserRequest) {
     return this.userAccountService.resendOtp(req.user, dto.emailOrUsername);
   }
 

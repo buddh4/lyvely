@@ -1,7 +1,7 @@
-import { Get, Header, Query, Post, HttpCode, Body, StreamableFile } from '@nestjs/common';
+import { Get, Header, Query, Post, HttpCode, StreamableFile } from '@nestjs/common';
 import { CaptchaService } from '../services';
 import { Readable } from 'stream';
-import { Public } from '@/core';
+import { Public, ValidBody } from '@/core';
 import {
   API_CAPTCHA,
   CaptchaChallenge,
@@ -23,7 +23,7 @@ export class CaptchaController implements CaptchaEndpoint {
   @Public()
   @Post(CaptchaEndpoints.REFRESH)
   @HttpCode(204)
-  async refresh(@Body('identity') identity: string) {
+  async refresh(@ValidBody('identity') identity: string) {
     return this.captchaService.refresh(identity);
   }
 

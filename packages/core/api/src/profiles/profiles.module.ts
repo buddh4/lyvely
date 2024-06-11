@@ -47,6 +47,7 @@ import {
   CreateOrganizationProfilePermission,
   CreateGroupProfilePermission,
   CreateUserProfilePermission,
+  ManageTagsPermission,
 } from '@lyvely/interface';
 import { useProfileMappings } from './mappings';
 import { ProfilesEvents } from './profiles.events';
@@ -93,6 +94,7 @@ useProfileMappings();
     CreateOrganizationProfilePermission,
     CreateGroupProfilePermission,
     CreateUserProfilePermission,
+    ManageTagsPermission,
   ],
   imports: [
     CoreModule,

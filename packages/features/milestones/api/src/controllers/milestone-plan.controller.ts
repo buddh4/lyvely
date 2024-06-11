@@ -5,6 +5,7 @@ import {
   ProfileRequest,
   Policies,
   SortResponse,
+  ValidBody,
 } from '@lyvely/api';
 import { Milestone } from '../schemas';
 import {
@@ -16,7 +17,7 @@ import {
 } from '@lyvely/milestones-interface';
 import { CalendarPlanSort, CalendarPlanFilter } from '@lyvely/calendar-plan';
 import { MilestonesService, MilestonesCalendarPlanService } from '../services';
-import { Body, Get, Inject, Post, Query, Request, ValidationPipe } from '@nestjs/common';
+import { Get, Inject, Post, Query, Request, ValidationPipe } from '@nestjs/common';
 
 @ContentTypeController(ENDPOINT_MILESTONE_PLAN, MilestoneModel.contentType)
 export class MilestonePlanController implements MilestonePlanEndpoint {
@@ -47,7 +48,7 @@ export class MilestonePlanController implements MilestonePlanEndpoint {
   @Post(':cid/sort')
   @Policies(ContentWritePolicy)
   async sort(
-    @Body() dto: CalendarPlanSort,
+    @ValidBody() dto: CalendarPlanSort,
     @Request() req: ProtectedProfileContentRequest<Milestone>
   ) {
     const { context } = req;

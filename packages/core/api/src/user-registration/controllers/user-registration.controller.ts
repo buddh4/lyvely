@@ -1,6 +1,6 @@
-import { Post, Body, Req, UnauthorizedException } from '@nestjs/common';
+import { Post, Req, UnauthorizedException } from '@nestjs/common';
 import { UserRegistrationService } from '../services';
-import { Public, UseClassSerializer } from '@/core';
+import { Public, UseClassSerializer, ValidBody } from '@/core';
 import { GlobalController } from '@/common';
 import { ConfigurationPath } from '@/config';
 import {
@@ -23,7 +23,6 @@ import ms from 'ms';
 
 @Public()
 @GlobalController(API_USER_REGISTRATION)
-@UseClassSerializer()
 export class UserRegistrationController
   extends AbstractJwtAuthController
   implements UserRegistrationEndpoint
@@ -37,7 +36,7 @@ export class UserRegistrationController
   }
 
   @Post()
-  async register(@Body() registerDto: UserRegistration): Promise<OtpInfo> {
+  async register(@ValidBody() registerDto: UserRegistration): Promise<OtpInfo> {
     try {
       return await this.registerService.register(registerDto);
     } catch (err: any) {
@@ -51,22 +50,22 @@ export class UserRegistrationController
   }
 
   @Post(UserRegistrationEndpoints.CHECK_USERNAME)
-  async checkUsername(@Body() userData: StringFieldValidityRequest): Promise<void> {
+  async checkUsername(@ValidBody() userData: StringFieldValidityRequest): Promise<void> {
     await this.registerService.validateUserName(userData.value || '');
   }
 
   @Post(UserRegistrationEndpoints.CHECK_USER_EMAIL)
-  async checkUserEmail(@Body() userData: StringFieldValidityRequest): Promise<void> {
+  async checkUserEmail(@ValidBody() userData: StringFieldValidityRequest): Promise<void> {
     await this.registerService.validateEmail(userData.value || '');
   }
 
   @Post(UserRegistrationEndpoints.RESENT_VERIFY_EMAIL)
-  async resendVerifyEmail(@Body() dto: ResendOtp): Promise<OtpInfo> {
+  async resendVerifyEmail(@ValidBody() dto: ResendOtp): Promise<OtpInfo> {
     return await this.registerService.resendOtp(dto.emailOrUsername);
   }
 
   @Post(UserRegistrationEndpoints.VERIFY_EMAIL)
-  async verifyEmail(@Body() verifyEmail: VerifyEmailDto, @Req() req: Request) {
+  async verifyEmail(@ValidBody() verifyEmail: VerifyEmailDto, @Req() req: Request) {
     const { user, remember } = await this.registerService.verifyEmail(verifyEmail);
     if (!user) throw new UnauthorizedException();
     const { accessToken, refreshToken, vid } = await this.authService.login(user, !!remember);

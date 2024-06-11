@@ -1,6 +1,5 @@
 import {
   Post,
-  Body,
   Request,
   UseInterceptors,
   ClassSerializerInterceptor,
@@ -31,6 +30,7 @@ import {
   ProtectedProfileContentRequest,
   Policies,
   ProfileRequest,
+  ValidBody,
 } from '@lyvely/api';
 import { CalendarPlanFilter, CalendarPlanSort } from '@lyvely/calendar-plan';
 import { TasksService, TaskCalendarPlanService } from '../services';
@@ -65,7 +65,10 @@ export class TasksController
 
   @Post(TasksEndpoints.SORT(':cid'))
   @Policies(ContentWritePolicy)
-  async sort(@Body() dto: CalendarPlanSort, @Request() req: ProtectedProfileContentRequest<Task>) {
+  async sort(
+    @ValidBody() dto: CalendarPlanSort,
+    @Request() req: ProtectedProfileContentRequest<Task>
+  ) {
     const { context } = req;
     const sort = await this.calendarPlanService.sort(context, dto.interval, dto.attachToId);
     return new SortResponse({ sort });
@@ -74,7 +77,7 @@ export class TasksController
   @Post(TasksEndpoints.SET_DONE(':cid'))
   @Policies(ContentWritePolicy)
   async setDone(
-    @Body() dto: UpdateTaskStateModel,
+    @ValidBody() dto: UpdateTaskStateModel,
     @Request() req: ProtectedProfileContentRequest<Task>
   ) {
     const { context, profile, user, content } = req;
@@ -89,7 +92,7 @@ export class TasksController
   @Post(TasksEndpoints.SET_UNDONE(':cid'))
   @Policies(ContentWritePolicy)
   async setUndone(
-    @Body() dto: UpdateTaskStateModel,
+    @ValidBody() dto: UpdateTaskStateModel,
     @Request() req: ProtectedProfileContentRequest<Task>
   ) {
     const { context, profile, content } = req;
@@ -119,7 +122,7 @@ export class TasksController
   @Post(TasksEndpoints.UPDATE_TIMER(':cid'))
   @Policies(ContentWritePolicy)
   async updateTimer(
-    @Body() dto: TimerValueUpdateModel,
+    @ValidBody() dto: TimerValueUpdateModel,
     @Request() req: ProtectedProfileContentRequest<Task>
   ) {
     const { context, content } = req;

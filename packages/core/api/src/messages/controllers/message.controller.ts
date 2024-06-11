@@ -12,7 +12,6 @@ import {
 } from '@lyvely/interface';
 
 @ContentTypeController(API_MESSAGE, Message)
-@UseClassSerializer()
 export class MessageController
   extends AbstractContentTypeController<Message, CreateMessageModel>
   implements MessageEndpoint

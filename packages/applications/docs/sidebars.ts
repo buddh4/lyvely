@@ -33,6 +33,7 @@ const sidebars: SidebarsConfig = {
                 'dev/framework/modules',
                 'dev/framework/models',
                 'dev/framework/endpoints',
+                'dev/framework/controllers',
                 'dev/framework/acl',
                 'dev/framework/permissions',
                 'dev/framework/policies',

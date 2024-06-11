@@ -1,7 +1,7 @@
 import { ProfileRequest, ProtectedProfileRequest } from '@/profiles';
 import {
   Content,
-  type MembershipProfileContentContext,
+  type ProfileMembershipContentContext,
   ProfileContentContext,
   ProtectedProfileContentContext,
 } from '../schemas';
@@ -18,8 +18,8 @@ export type ProtectedProfileContentRequest<C extends Content = Content> = Protec
   ProtectedProfileContentContext<C>
 > & { content: C };
 
-export type MemberProfileContentRequest<C extends Content = Content> = ProtectedProfileRequest<
-  MembershipProfileContentContext<C>
+export type ProfileMemberContentRequest<C extends Content = Content> = ProtectedProfileRequest<
+  ProfileMembershipContentContext<C>
 > & {
   content: C;
 };

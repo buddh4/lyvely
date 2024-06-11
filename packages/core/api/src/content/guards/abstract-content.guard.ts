@@ -59,12 +59,14 @@ export abstract class AbstractContentGuard<C extends Content = Content>
     } else if (!request.content && !contentId) {
       return true;
     } else if (!request.content && !isValidObjectId(contentId)) {
-      return false;
+      throw new DocumentNotFoundException();
     }
 
     const content =
       request.content ||
-      (await this.contentService.findByContextAndId(profileContentContext, contentId));
+      (await this.contentService.findByContextAndId(profileContentContext, contentId, {
+        roleLevel: profileContentContext.getRoleLevel(),
+      }));
 
     if (!content) throw new DocumentNotFoundException();
 

@@ -61,9 +61,7 @@ a valid profile request and adds support for various profile access checks and a
 request. You can use the following request types for your controller, depending
 on the defined access rules of your endpoint:
 
-- `ProfileRequest`: A profile request with an optional `user` and `ProfileContext` in case of visitor access.
-- `ProtectedProfileRequest`: A profile request with a `user` and `ProtectedProfileRequest` (no visitor access).
-- `ProfileMembershipRequest`: A profile request of a valid member `user` and `ProfileMembershipRequest`.
+
 
 ### `@ContentTypeController`
 
@@ -72,9 +70,9 @@ request is a valid profile content request and adds support for various content 
 and content. You can use the following request types for your controller, depending on the defined access rules of 
 your endpoint:
 
-- `ProfileContentRequest`: A profile request with an optional `user` and `ProfileContext` in case of visitor access.
-- `ProtectedProfileRequest`: A profile request with a `user` and `ProtectedProfileRequest` (no visitor access).
-- `MemberProfileContentRequest`: A profile request of a valid member `user` and `MembershipProfileContentContext`.
+- `ProfileContentRequest`: A profile request with an optional `user` and `ProfileContentContext` in case of visitor access.
+- `ProtectedProfileContentRequest`: A profile request with a `user` and `ProtectedProfileContentContext` (no visitor access).
+- `ProfileMemberContentRequest`: A profile request of a valid member `user` and `ProfileMembershipContentContext`.
 
 ### `@Public` Endpoints
 

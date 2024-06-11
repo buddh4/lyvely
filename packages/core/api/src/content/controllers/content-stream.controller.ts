@@ -7,7 +7,6 @@ import { ContentStreamService } from '../services';
 import { ProfileController, ProfileContext } from '@/profiles';
 
 @ProfileController(API_CONTENT_STREAM)
-@UseClassSerializer()
 export class ContentStreamController extends AbstractStreamController<
   Content,
   ContentModel<any>,

@@ -2,18 +2,25 @@ import { Controller, UseGuards } from '@nestjs/common';
 import { ProfileGuard } from '../guards';
 import { CanActivate } from '@nestjs/common/interfaces';
 import { PolicyGuard } from '@/policies/guards';
+import type { IControllerOptions } from '@/common';
+import { UseClassSerializer } from '@/core';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const ProfileController = (
   prefix: string | string[],
-  ...guards: (CanActivate | Function)[]
+  options?: IControllerOptions
 ): ClassDecorator => {
   const controller = Controller(prefix);
+  const useClassSerializer = UseClassSerializer();
+  const guards = options?.guards || [];
   const profileGuard = ProfileEndpoint(...guards);
 
   return function (target: any) {
     controller(target);
     profileGuard(target);
+    if (options?.serialize !== false) {
+      useClassSerializer(target);
+    }
   };
 };
 

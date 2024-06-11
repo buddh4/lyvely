@@ -175,7 +175,7 @@
     "maxLength": "{property} must be at least {c1} characters of fewer",
     "isLength": "{property} must be between {c1} and {c2} characters",
     "isCaptcha": "Please enter 5 alphanumeric characters",
-    "isEmail": "{property} must be an email",
+    "isEmail": "{property} must be a valid email",
     "matches": "{property} does not match the expected format",
     "match": "{property} does not match {c1}"
   },

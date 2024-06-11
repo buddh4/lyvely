@@ -12,7 +12,11 @@ import { DataPointValueType, getDataPointModelDefinition } from '@lyvely/time-se
 import { JournalDataPointDao, JournalsDao } from './daos';
 import { JournalTimeSeriesService, JournalDataPointService, JournalsService } from './services/';
 import { JournalsController } from './controllers';
-import { JOURNALS_MODULE_ID, JournalsFeature } from '@lyvely/journals-interface';
+import {
+  JOURNALS_MODULE_ID,
+  JournalsFeature,
+  JournalPermissions,
+} from '@lyvely/journals-interface';
 
 @LyvelyModule({
   id: JOURNALS_MODULE_ID,
@@ -20,6 +24,7 @@ import { JOURNALS_MODULE_ID, JournalsFeature } from '@lyvely/journals-interface'
   path: __dirname,
   features: [JournalsFeature],
   controllers: [JournalsController],
+  permissions: JournalPermissions,
   imports: [
     UsersModule,
     ProfilesModule,

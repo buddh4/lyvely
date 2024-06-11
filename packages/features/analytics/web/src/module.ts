@@ -8,6 +8,7 @@ import {
   TIME_SERIES_CHART,
   TimeSeriesConfigModel,
   TimeSeriesChartType,
+  ChartPermissions,
 } from '@lyvely/analytics-interface';
 import { registerMenuEntry, registerSvgIcon } from '@lyvely/ui';
 import {
@@ -32,6 +33,7 @@ export default () => {
     },
     features: [AnalyticsFeature],
     routes: analyticsRoutes,
+    permissions: ChartPermissions,
     init: () => {
       registerChartCategories([
         {

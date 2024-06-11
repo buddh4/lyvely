@@ -15,6 +15,7 @@ import {
   MILESTONES_MODULE_ID,
   ActivityMilestonesFeature,
   MilestonesFeature,
+  MilestonePermissions,
 } from '@lyvely/milestones-interface';
 import { milestoneRoutes } from '@/routes';
 import { calendarPlanModule } from '@lyvely/calendar-plan-web';
@@ -26,6 +27,7 @@ export default () => {
     icon: 'target',
     features: [MilestonesFeature, ActivityMilestonesFeature],
     routes: milestoneRoutes,
+    permissions: MilestonePermissions,
     dependencies: [calendarPlanModule()],
     i18n: {
       base: (locale: string) => import(`./locales/base.${locale}.json`),

@@ -13,6 +13,7 @@ import {
   HABITS_MODULE_ID,
   HabitsFeature,
   ActivityHabitsFeature,
+  HabitPermissions,
 } from '@lyvely/habits-interface';
 import { habitRoutes } from '@/routes';
 import { calendarPlanModule } from '@lyvely/calendar-plan-web';
@@ -30,6 +31,7 @@ export default () => {
     dependencies: [calendarPlanModule(), timeSeriesModule()],
     features: [HabitsFeature, ActivityHabitsFeature],
     routes: habitRoutes,
+    permissions: HabitPermissions,
     init: () => {
       registerMenuEntry(MENU_PROFILE_DRAWER, () => ({
         id: 'profile-habits',

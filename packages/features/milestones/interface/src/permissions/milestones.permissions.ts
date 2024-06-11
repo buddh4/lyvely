@@ -11,7 +11,7 @@ const Permissions = createContentPermissions(
 
 export const useMilestonePermissions = () => Permissions;
 
-export const MilestonesPermissions = [
+export const MilestonePermissions = [
   Permissions.Create,
   Permissions.Manage,
   Permissions.Write,

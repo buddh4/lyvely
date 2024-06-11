@@ -1,5 +1,4 @@
 import {
-  Body,
   ForbiddenException,
   Get,
   HttpCode,
@@ -13,7 +12,7 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { UseClassSerializer } from '@/core';
+import { UseClassSerializer, ValidBody } from '@/core';
 import { GlobalController } from '@/common';
 import { assignRawDataTo, mapType } from '@lyvely/common';
 import {
@@ -59,7 +58,6 @@ import type { IFileInfo } from '@/files';
  * @param {ProfileVisibilityPolicy} profileVisibilityPolicy - The profile visibility policy.
  */
 @GlobalController(API_PROFILES)
-@UseClassSerializer()
 export class ProfilesController implements ProfilesEndpoint {
   constructor(
     private readonly profilesService: ProfilesService,
@@ -72,7 +70,7 @@ export class ProfilesController implements ProfilesEndpoint {
   @Post()
   @UserRoleAccess(UserRole.User)
   async create(
-    @Body() model: CreateProfileModel,
+    @ValidBody() model: CreateProfileModel,
     @Request() req: UserRequest
   ): Promise<ProfileWithRelationsModel> {
     // Note, further permissions are checked in the service.
@@ -126,7 +124,7 @@ export class ProfilesController implements ProfilesEndpoint {
   @ProfileEndpoint()
   @ProfileRoleAccess(ProfileRelationRole.Admin)
   async update(
-    @Body() model: UpdateProfileModel,
+    @ValidBody() model: UpdateProfileModel,
     @Request() req: ProfileMembershipRequest
   ): Promise<ProfileWithRelationsModel> {
     const { profile, context } = req;
@@ -168,7 +166,7 @@ export class ProfilesController implements ProfilesEndpoint {
   @ProfileRoleAccess(ProfileRelationRole.Admin)
   @Post(ProfilesEndpoints.SET_CALENDAR_PREFERENCES)
   async setCalendarPreferences(
-    @Body() model: CalendarPreferences,
+    @ValidBody() model: CalendarPreferences,
     @Req() req: ProfileMembershipRequest
   ): Promise<SettingsUpdateResponse> {
     const { profile, context } = req;

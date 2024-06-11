@@ -26,8 +26,8 @@ export function assureObjectId<T extends BaseDocument<any> = BaseDocument<any>>(
 export function assureObjectId<T extends BaseDocument<any> = BaseDocument<any>>(
   identity: DocumentIdentity<T> | undefined | null,
   optional?: boolean
-): TObjectId {
-  if (!identity && optional) return undefined as any;
+): TObjectId | undefined {
+  if (!identity && optional) return undefined;
 
   if (typeof identity === 'string') {
     if (isValidObjectId(identity)) {

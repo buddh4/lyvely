@@ -1,4 +1,4 @@
-import { HttpCode, HttpStatus, Post, Body, Req, Get, Param } from '@nestjs/common';
+import { HttpCode, HttpStatus, Post, Req, Get, Param } from '@nestjs/common';
 import {
   SendInvitationsService,
   MailInvitationService,
@@ -12,12 +12,11 @@ import {
   UserInvitationsEndpoints,
   UserRole,
 } from '@lyvely/interface';
-import { Public, UseClassSerializer } from '@/core';
+import { Public, UseClassSerializer, ValidBody } from '@/core';
 import { GlobalController } from '@/common';
 import { UserRequest, UserRoleAccess } from '@/users';
 
 @GlobalController(API_USER_INVITATIONS)
-@UseClassSerializer()
 export class InvitationsController implements UserInvitationsEndpoint {
   constructor(
     private invitationsService: InvitationsService,
@@ -29,7 +28,7 @@ export class InvitationsController implements UserInvitationsEndpoint {
   @Post()
   @UserRoleAccess(UserRole.User)
   @HttpCode(HttpStatus.NO_CONTENT)
-  async sendInvitations(@Body() invites: InvitationRequest, @Req() req: UserRequest) {
+  async sendInvitations(@ValidBody() invites: InvitationRequest, @Req() req: UserRequest) {
     await this.sendInviteService.sendInvitations(req.user, invites);
   }
 

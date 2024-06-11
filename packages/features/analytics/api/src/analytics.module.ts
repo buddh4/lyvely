@@ -4,7 +4,11 @@ import {
   LyvelyModule,
   ProfilesModule,
 } from '@lyvely/api';
-import { ANALYTICS_MODULE_ID, AnalyticsFeature } from '@lyvely/analytics-interface';
+import {
+  ANALYTICS_MODULE_ID,
+  AnalyticsFeature,
+  ChartPermissions,
+} from '@lyvely/analytics-interface';
 import { ChartSeriesService, ChartsService, ProfileScoreAggregationService } from './services';
 import { ChartsController } from './controllers';
 import { Chart, ChartSchema } from './schemas';
@@ -16,6 +20,7 @@ import { AnalyticsEvents } from './analytics.events';
   id: ANALYTICS_MODULE_ID,
   path: __dirname,
   features: [AnalyticsFeature],
+  permissions: ChartPermissions,
   imports: [
     ProfilesModule,
     ContentModule.registerContentType(Chart),

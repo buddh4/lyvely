@@ -1,4 +1,4 @@
-import { Req, Post, UseGuards, Get, UnauthorizedException, Body, Logger } from '@nestjs/common';
+import { Req, Post, UseGuards, Get, UnauthorizedException, Logger } from '@nestjs/common';
 import {
   LocalAuthGuard,
   JwtRefreshGuard,
@@ -27,12 +27,11 @@ import {
 } from '@lyvely/interface';
 import { ConfigService } from '@nestjs/config';
 import ms from 'ms';
-import { Public, UseClassSerializer } from '@/core';
+import { Public, UseClassSerializer, ValidBody } from '@/core';
 import { ConfigurationPath } from '@/config';
 import { GlobalController } from '@/common';
 
 @GlobalController(API_AUTH)
-@UseClassSerializer()
 export class AuthController extends AbstractJwtAuthController implements AuthEndpoint {
   private readonly logger = new Logger(AuthController.name);
   constructor(
@@ -45,7 +44,7 @@ export class AuthController extends AbstractJwtAuthController implements AuthEnd
   @Public()
   @UseGuards(LoginThrottlerGuard, LocalAuthGuard)
   @Post(AuthEndpoints.LOGIN)
-  async login(@Body() loginModel: LoginModel, @Req() req: UserRequest) {
+  async login(@ValidBody() loginModel: LoginModel, @Req() req: UserRequest) {
     const { user } = req;
     loginModel.remember ??= false;
     const { accessToken, refreshToken, vid } = await this.authService.login(

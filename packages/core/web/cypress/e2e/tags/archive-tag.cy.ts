@@ -1,4 +1,4 @@
-describe('User can create tags', function () {
+describe('User can archive tags', function () {
   beforeEach(() => {
     cy.task('db:seed');
     cy.authenticatedAs('owner');

@@ -5,13 +5,12 @@ import {
   ProfileRelationRole,
   ProfilePermissionSettingModel,
 } from '@lyvely/interface';
-import { UseClassSerializer } from '@/core';
-import { Put, Body, Req } from '@nestjs/common';
+import { UseClassSerializer, ValidBody } from '@/core';
+import { Put, Req } from '@nestjs/common';
 import { ProtectedProfileRequest } from '@/profiles/types';
 import { ProfilePermissionSettingsService } from '@/profiles/services/profile-permission-settings.service';
 
 @ProfileController(API_PROFILE_PERMISSIONS)
-@UseClassSerializer()
 @ProfileRoleAccess(ProfileRelationRole.Admin)
 export class ProfilePermissionsController implements ProfilePermissionsEndpoint {
   constructor(
@@ -20,7 +19,7 @@ export class ProfilePermissionsController implements ProfilePermissionsEndpoint 
 
   @Put()
   async updateProfilePermission(
-    @Body() update: ProfilePermissionSettingModel,
+    @ValidBody() update: ProfilePermissionSettingModel,
     @Req() request: ProtectedProfileRequest
   ): Promise<ProfilePermissionSettingModel> {
     const { profile } = request;

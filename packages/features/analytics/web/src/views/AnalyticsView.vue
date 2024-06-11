@@ -8,7 +8,7 @@ import {
   useProfilePermissions,
   t,
 } from '@lyvely/web';
-import { ChartModel, useChartsClient, useChartsPermissions } from '@lyvely/analytics-interface';
+import { ChartModel, useChartsClient, useChartPermissions } from '@lyvely/analytics-interface';
 import { useChartsStore } from '@/store/charts.store';
 import { onMounted } from 'vue';
 import { storeToRefs } from 'pinia';
@@ -19,7 +19,7 @@ const chartsStore = useChartsStore();
 const status = chartsStore.status;
 const { charts } = storeToRefs(chartsStore);
 
-const { isAllowed: canCreateCharts } = useProfilePermissions(useChartsPermissions().Create);
+const { isAllowed: canCreateCharts } = useProfilePermissions(useChartPermissions().Create);
 
 const createEntry = () =>
   useContentCreateStore()

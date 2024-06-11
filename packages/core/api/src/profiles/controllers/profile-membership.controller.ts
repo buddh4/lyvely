@@ -1,6 +1,6 @@
-import { Body, Delete, Put, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Delete, Put, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ProfileController, ProfileRoleAccess } from '../decorators';
-import { UseClassSerializer } from '@/core';
+import { UseClassSerializer, ValidBody } from '@/core';
 import {
   API_PROFILE_MEMBERSHIP,
   AvatarModel,
@@ -21,7 +21,6 @@ import type { IFileInfo } from '@/files';
 
 @ProfileController(API_PROFILE_MEMBERSHIP)
 @ProfileRoleAccess(ProfileRelationRole.Member)
-@UseClassSerializer()
 export class ProfileMembershipController implements ProfileMembershipEndpoint {
   constructor(
     private readonly membershipService: ProfileMembershipService,
@@ -30,7 +29,7 @@ export class ProfileMembershipController implements ProfileMembershipEndpoint {
 
   @Put()
   async update(
-    @Body() update: UpdateProfileMembershipSettings,
+    @ValidBody() update: UpdateProfileMembershipSettings,
     @Req() req: ProfileMembershipRequest
   ): Promise<MembershipModel> {
     const membership = req.context.getMembership();

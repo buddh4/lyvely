@@ -270,10 +270,9 @@ specified type or use a type specific default value:
 
 ## Transformation & Validation
 
-By default, the Lyvely controller layer validates incoming models using a global 
-[ValidationPipe](https://docs.nestjs.com/techniques/validation#using-the-built-in-validationpipe). Models can be 
-annotated with [class-validator](https://github.com/typestack/class-validator) validation rules, which are 
-utilized both in the frontend and backend.
+Validation and transformation of body data in NestJS is usually handled by validation pipelines. For validation and
+transformation of the http body, Lyvely offers the `@ValidBody` helper decorator. This decorator serves as wrapper for
+the NestJS `@Body` decorator and by default adds a validation pipeline.
 
 In your controller, you can manually define a `ClassSerializerInterceptor` interceptor to enable automatic serialization
 and deserialization. To simplify this process, Lyvely offers the `@UseClassSerializer` utility decorator,

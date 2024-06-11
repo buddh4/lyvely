@@ -11,7 +11,7 @@ const Permissions = createContentPermissions(
 
 export const useHabitPermissions = () => Permissions;
 
-export const HabitsPermissions = [
+export const HabitPermissions = [
   Permissions.Create,
   Permissions.Manage,
   Permissions.Write,

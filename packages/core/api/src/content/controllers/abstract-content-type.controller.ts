@@ -16,6 +16,7 @@ import { ProtectedProfileContext, ProtectedProfileRequest } from '@/profiles';
 import { validate } from 'class-validator';
 import { Policies } from '@/policies';
 import { plainToInstance } from 'class-transformer';
+import { ValidBody } from '@/core';
 
 export abstract class AbstractContentTypeController<
   TContent extends Content,
@@ -33,7 +34,7 @@ export abstract class AbstractContentTypeController<
   @Post()
   @Policies(ContentCreatePolicy)
   async create(
-    @Body() body: PropertiesOf<TCreateModel>,
+    @ValidBody() body: PropertiesOf<TCreateModel>,
     @Request() req: ProtectedProfileRequest
   ): Promise<ContentUpdateResponse<TModel>> {
     // TODO: check content specific write permission
@@ -53,7 +54,7 @@ export abstract class AbstractContentTypeController<
   @Policies(ContentWritePolicy)
   async update(
     @Param('cid') cid: string,
-    @Body() body: PropertiesOf<TUpdateModel>,
+    @ValidBody() body: PropertiesOf<TUpdateModel>,
     @Request() req: ProtectedProfileContentRequest<TContent>
   ): Promise<ContentUpdateResponse<TModel>> {
     const { context, content } = req;

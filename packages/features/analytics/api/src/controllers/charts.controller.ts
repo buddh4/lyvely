@@ -1,7 +1,6 @@
-import { Delete, Get, Put, Inject, Post, Request, Body, Param, Query } from '@nestjs/common';
+import { Delete, Get, Put, Inject, Post, Request, Param, Query } from '@nestjs/common';
 import {
   AbstractContentTypeController,
-  assureObjectId,
   ContentTypeController,
   ContentWritePolicy,
   type ISortRequest,
@@ -12,6 +11,7 @@ import {
   sortBySortOrder,
   SortResponse,
   UseClassSerializer,
+  ValidBody,
 } from '@lyvely/api';
 import { ChartsService, ChartSeriesService } from '../services';
 import {
@@ -29,7 +29,6 @@ import {
 import { Chart } from '../schemas';
 
 @ContentTypeController(API_ANALYTICS_CHARTS, Chart)
-@UseClassSerializer()
 export class ChartsController
   extends AbstractContentTypeController<Chart, CreateChartModel, UpdateChartModel>
   implements ChartEndpoint
@@ -48,7 +47,7 @@ export class ChartsController
 
   @Get()
   async getCharts(@Request() req: ProfileRequest): Promise<ChartListModel> {
-    const { context, profile, user } = req;
+    const { context, user } = req;
     const charts = (await this.contentService.findAllByContext(context, { archived: false }))
       .map((document) => document.toModel(user))
       .sort(sortBySortOrder);
@@ -56,9 +55,10 @@ export class ChartsController
     return new ChartListModel({ charts });
   }
 
+  @Policies(ContentWritePolicy)
   @Post(ChartsEndpointPaths.ADD_SERIES(':cid'))
   async addSeries(
-    @Body() model: UpdateChartSeriesModel,
+    @ValidBody() model: UpdateChartSeriesModel,
     @Request() request: ProtectedProfileContentRequest<Chart>
   ): Promise<ChartModel> {
     const { content, context } = request;
@@ -68,10 +68,11 @@ export class ChartsController
     return content.toModel();
   }
 
+  @Policies(ContentWritePolicy)
   @Put(ChartsEndpointPaths.UPDATE_SERIES(':cid', ':sid'))
   async updateSeries(
     @Param('sid') sid,
-    @Body() model: UpdateChartSeriesModel,
+    @ValidBody() model: UpdateChartSeriesModel,
     @Request() request: ProtectedProfileContentRequest<Chart>
   ): Promise<ChartModel> {
     const { context, content } = request;
@@ -81,6 +82,7 @@ export class ChartsController
     return content.toModel();
   }
 
+  @Policies(ContentWritePolicy)
   @Delete(ChartsEndpointPaths.DELETE_SERIES(':cid', ':sid'))
   async deleteSeries(
     @Param('sid') sid,
@@ -105,7 +107,10 @@ export class ChartsController
 
   @Post(ChartsEndpointPaths.SORT(':cid'))
   @Policies(ContentWritePolicy)
-  async sort(@Body() dto: ISortRequest, @Request() req: ProtectedProfileContentRequest<Chart>) {
+  async sort(
+    @ValidBody() dto: ISortRequest,
+    @Request() req: ProtectedProfileContentRequest<Chart>
+  ) {
     const { context, content } = req;
     const sort = await this.chartSeriesService.sort(context, content, dto.attachToId);
     return new SortResponse({ sort });

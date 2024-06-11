@@ -1,1 +1,1 @@
-export * from './controller.decorator';
+export * from './global-controller.decorator';

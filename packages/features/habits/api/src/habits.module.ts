@@ -24,6 +24,7 @@ import { ActivityHabitsFeature, HABITS_MODULE_ID, HabitsFeature } from '@lyvely/
   name: 'Habits',
   path: __dirname,
   features: [HabitsFeature, ActivityHabitsFeature],
+  permissions: HabitPermissions,
   imports: [
     UsersModule,
     ProfilesModule,

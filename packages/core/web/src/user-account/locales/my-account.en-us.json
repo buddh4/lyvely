@@ -18,6 +18,9 @@
         "title": "Add email address",
         "fields": {
           "email": "New email address"
+        },
+        "errors": {
+          "email": "Email address"
         }
       },
       "verify_email": {

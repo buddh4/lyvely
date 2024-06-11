@@ -7,6 +7,7 @@ import {
   UseClassSerializer,
   Policies,
   SortResponse,
+  ValidBody,
 } from '@lyvely/api';
 import { CalendarPlanFilter, CalendarPlanSort } from '@lyvely/calendar-plan';
 import {
@@ -24,11 +25,10 @@ import {
   DataPointModelConverter,
 } from '@lyvely/time-series';
 import { JournalTimeSeriesService, JournalDataPointService, JournalsService } from '../services';
-import { Body, Get, Inject, Post, Query, Request, ValidationPipe } from '@nestjs/common';
+import { Get, Inject, Post, Query, Request, ValidationPipe } from '@nestjs/common';
 import { Journal } from '../schemas';
 
 @ContentTypeController(ENDPOINT_JOURNALS, Journal)
-@UseClassSerializer()
 export class JournalsController
   extends AbstractContentTypeController<Journal, CreateJournalModel, UpdateJournalModel>
   implements JournalsEndpoint
@@ -62,7 +62,7 @@ export class JournalsController
   @Post(JournalsEndpoints.SORT(':cid'))
   @Policies(ContentWritePolicy)
   async sort(
-    @Body() dto: CalendarPlanSort,
+    @ValidBody() dto: CalendarPlanSort,
     @Request() req: ProtectedProfileContentRequest<Journal>
   ): Promise<SortResponse> {
     const { context } = req;
@@ -73,7 +73,7 @@ export class JournalsController
   @Post(JournalsEndpoints.UPDATE_DATA_POINT(':cid'))
   @Policies(ContentWritePolicy)
   async updateDataPoint(
-    @Body() dto: UpdateDataPointModel,
+    @ValidBody() dto: UpdateDataPointModel,
     @Request() req: ProtectedProfileContentRequest<Journal>
   ): Promise<UpdateDataPointResponse> {
     const { context, content } = req;

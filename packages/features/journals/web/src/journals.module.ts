@@ -11,6 +11,7 @@ import {
   CreateJournalModel,
   JournalsFeature,
   JOURNALS_MODULE_ID,
+  JournalPermissions,
 } from '@lyvely/journals-interface';
 import { journalRoutes } from './routes';
 import { calendarPlanModule } from '@lyvely/calendar-plan-web';
@@ -23,6 +24,7 @@ export const journalsModule = () => {
     features: [JournalsFeature],
     routes: journalRoutes,
     icon: 'journal',
+    permissions: JournalPermissions,
     dependencies: [calendarPlanModule(), timeSeriesModule()],
     i18n: {
       base: (locale: string) => import(`./locales/base.${locale}.json`),

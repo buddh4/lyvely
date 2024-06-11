@@ -89,7 +89,10 @@ export class ContentPermissionsService {
 
     const permission = getPermission(permissionOrId);
 
-    if (!permission) throw new IntegrityException(`Permission not registered`);
+    if (!permission) {
+      const permissionId = typeof permissionOrId === 'string' ? permissionOrId : permissionOrId.id;
+      throw new IntegrityException(`Content permission ${permissionId} not registered`);
+    }
 
     if (isGlobalPermission(permission)) {
       return this.globalPermissionsService.verifyPermission(context.user, permission);

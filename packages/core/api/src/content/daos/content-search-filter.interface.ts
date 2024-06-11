@@ -1,5 +1,6 @@
 import { type DocumentIdentity, FilterQuery } from '@/core';
 import { Content } from '@/content/schemas';
+import { ProfileRoleLevel } from '@lyvely/interface';
 
 /**
  * Interface representing a content search filter.
@@ -16,7 +17,7 @@ export interface IContentSearchFilter {
   archived?: boolean;
 
   /** Set the maximum profile relation role level. **/
-  roleLevel?: number;
+  roleLevel?: ProfileRoleLevel;
 
   /** Can be used to add additional query filter conditions. **/
   conditions?: FilterQuery<Content>[];

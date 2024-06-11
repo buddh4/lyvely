@@ -58,7 +58,6 @@ export class LyvelyServer {
     this.initCookieParser();
     this.initCsrf();
     this.initCompression();
-    this.initGlobalPipes();
     this.initGlobalFilters();
     await this.initServer();
   }
@@ -150,10 +149,6 @@ export class LyvelyServer {
 
   private initCookieParser() {
     this.nestApp.use(cookieParser());
-  }
-
-  private initGlobalPipes() {
-    this.nestApp.useGlobalPipes(new ValidationPipe());
   }
 
   private initGlobalFilters() {

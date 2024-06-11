@@ -9,9 +9,9 @@ const Permissions = createContentPermissions(
   AnalyticsFeature.id
 );
 
-export const useChartsPermissions = () => Permissions;
+export const useChartPermissions = () => Permissions;
 
-export const ChartsPermissions = [
+export const ChartPermissions = [
   Permissions.Create,
   Permissions.Manage,
   Permissions.Write,

@@ -1,4 +1,4 @@
-import { Post, Body, Request, Inject, Get, Query, ValidationPipe } from '@nestjs/common';
+import { Post, Request, Inject, Get, Query, ValidationPipe } from '@nestjs/common';
 import { Habit } from '../schemas';
 import {
   UpdateHabitDataPointModel,
@@ -23,6 +23,7 @@ import {
   ProtectedProfileContentRequest,
   UseClassSerializer,
   ProfileRequest,
+  ValidBody,
 } from '@lyvely/api';
 import {
   TimerDataPointModel,
@@ -33,8 +34,6 @@ import { CalendarPlanSort, CalendarPlanFilter } from '@lyvely/calendar-plan';
 import { HabitsService, HabitTimeSeriesService, HabitDataPointTimerService } from '../services';
 
 @ContentTypeController(ENDPOINT_HABITS, Habit)
-// TODO: implement feature registration @Feature('habits')
-@UseClassSerializer()
 export class HabitsController
   extends AbstractContentTypeController<Habit, CreateHabitModel, UpdateHabitModel>
   implements HabitsEndpoint
@@ -71,7 +70,10 @@ export class HabitsController
 
   @Post(HabitsEndpoints.SORT(':cid'))
   @Policies(ContentWritePolicy)
-  async sort(@Body() dto: CalendarPlanSort, @Request() req: ProtectedProfileContentRequest<Habit>) {
+  async sort(
+    @ValidBody() dto: CalendarPlanSort,
+    @Request() req: ProtectedProfileContentRequest<Habit>
+  ) {
     const { context } = req;
     const sort = await this.timeSeriesService.sort(context, dto.interval, dto.attachToId);
     return new SortResponse({ sort });
@@ -80,7 +82,7 @@ export class HabitsController
   @Post(HabitsEndpoints.UPDATE_DATA_POINT(':cid'))
   @Policies(ContentWritePolicy)
   async updateDataPoint(
-    @Body() dto: UpdateHabitDataPointModel,
+    @ValidBody() dto: UpdateHabitDataPointModel,
     @Request() req: ProtectedProfileContentRequest<Habit>
   ) {
     const { context, profile, content } = req;
@@ -102,7 +104,7 @@ export class HabitsController
   @Post(HabitsEndpoints.START_TIMER(':cid'))
   @Policies(ContentWritePolicy)
   async startTimer(
-    @Body() dto: TimerUpdateModel,
+    @ValidBody() dto: TimerUpdateModel,
     @Request() req: ProtectedProfileContentRequest<Habit>
   ): Promise<TimerDataPointModel> {
     const { context, content } = req;
@@ -113,7 +115,7 @@ export class HabitsController
   @Post(HabitsEndpoints.STOP_TIMER(':cid'))
   @Policies(ContentWritePolicy)
   async stopTimer(
-    @Body() dto: TimerUpdateModel,
+    @ValidBody() dto: TimerUpdateModel,
     @Request() req: ProtectedProfileContentRequest<Habit>
   ): Promise<UpdateHabitDataPointTimerResponse> {
     const { context, content } = req;

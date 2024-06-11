@@ -20,12 +20,14 @@ import {
   ActivityMilestonesFeature,
   MILESTONES_MODULE_ID,
   MilestonesFeature,
+  MilestonePermissions,
 } from '@lyvely/milestones-interface';
 
 @LyvelyModule({
   id: MILESTONES_MODULE_ID,
   name: 'Milestones',
   path: __dirname,
+  permissions: MilestonePermissions,
   features: [MilestonesFeature, ActivityMilestonesFeature],
   imports: [
     CoreModule,
