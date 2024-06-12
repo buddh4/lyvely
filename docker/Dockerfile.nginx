@@ -5,6 +5,9 @@ FROM nginx:1.26.0-alpine
 # Setup #
 #########
 
+# Install necessary packages
+RUN apk update && apk add --no-cache nodejs npm
+
 # Define default env, those will have priority over the .env file
 ENV MONGOMS_DISABLE_POSTINSTALL=1
 ENV CYPRESS_INSTALL_BINARY=0
