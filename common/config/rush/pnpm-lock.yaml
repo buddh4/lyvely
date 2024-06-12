@@ -206,6 +206,9 @@ importers:
       '@lyvely/tasks':
         specifier: workspace:*
         version: link:../../features/tasks/api
+      tslib:
+        specifier: ^2.6.2
+        version: 2.6.2
     devDependencies:
       '@lyvely/devtools':
         specifier: workspace:*
@@ -246,9 +249,6 @@ importers:
       tsc-alias:
         specifier: ^1.8.10
         version: 1.8.10
-      tslib:
-        specifier: ^2.6.2
-        version: 2.6.2
       typescript:
         specifier: ^5.4
         version: 5.4.5
@@ -2905,6 +2905,9 @@ importers:
       reflect-metadata:
         specifier: ^0.1.12 || ^0.2.0
         version: 0.1.14
+      tslib:
+        specifier: ^2.6.2
+        version: 2.6.2
     devDependencies:
       '@lyvely/devtools':
         specifier: workspace:*
@@ -2984,9 +2987,6 @@ importers:
       tscpaths:
         specifier: ^0.0.9
         version: 0.0.9
-      tslib:
-        specifier: ^2.6.2
-        version: 2.6.2
       typescript:
         specifier: ^5.4
         version: 5.4.5

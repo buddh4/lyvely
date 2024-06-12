@@ -22,6 +22,7 @@
     "start:debug": "nest start --debug --watch"
   },
   "dependencies": {
+    "tslib": "^2.6.2",
     "@lyvely/api": "workspace:*",
     "@lyvely/habits": "workspace:*",
     "@lyvely/tasks": "workspace:*",
@@ -33,7 +34,6 @@
   "devDependencies": {
     "@lyvely/devtools": "workspace:*",
     "typescript": "^5.4",
-    "tslib": "^2.6.2",
     "tsc-alias": "^1.8.10",
     "rimraf": "^5.0",
     "depcheck": "^1.4",

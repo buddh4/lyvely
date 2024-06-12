@@ -33,6 +33,7 @@
   },
   "homepage": "https://github.com/buddh4/lively-common#readme",
   "dependencies": {
+    "tslib": "^2.6.2",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
     "he": "^1.2.0",
@@ -45,7 +46,6 @@
     "@types/he": "^1.2.2",
     "npm-watch": "^0.11.0",
     "rimraf": "^5.0",
-    "tslib": "^2.6.2",
     "@types/lodash": "^4.17",
     "typescript": "^5.4",
     "tscpaths": "^0.0.9",

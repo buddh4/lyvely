@@ -3,10 +3,11 @@
 !package.json
 !pnpm-lock.yaml
 !pnpm-workspace.yaml
-!docker
 !rush.json
 !packages
 !common
+
+!docker/config
 
 common/temp
 
