@@ -30,7 +30,8 @@
     "@lyvely/calendar-plan": "workspace:*",
     "@lyvely/time-series-interface": "workspace:*",
     "reflect-metadata": "^0.1.12 || ^0.2.0",
-    "lodash": "^4.17"
+    "lodash": "^4.17",
+    "tslib": "^2.6.2"
   },
   "devDependencies": {
     "@lyvely/devtools": "workspace:*",
@@ -39,7 +40,6 @@
     "ts-jest": "^29.1.4",
     "@types/lodash": "^4.17",
     "typescript": "^5.4",
-    "tslib": "^2.6.2",
     "eslint": "^8.24",
     "@typescript-eslint/eslint-plugin": "^7.9",
     "@typescript-eslint/parser": "^7.9",

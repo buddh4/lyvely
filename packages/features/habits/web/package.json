@@ -27,6 +27,7 @@
   },
   "author": "Julian Harrer",
   "dependencies": {
+    "tslib": "^2.6.2",
     "vue": "^3.4",
     "pinia": "^2.0",
     "@lyvely/web": "workspace:*",
@@ -49,7 +50,6 @@
     "vitest": "^1.5",
     "tailwindcss": "^3.4",
     "typescript": "^5.4",
-    "tslib": "^2.6.2",
     "postcss": "^8.4",
     "postcss-cli": "^11.0",
     "vue-router": "^4.3",

@@ -26,6 +26,7 @@
   "author": "Julian Harrer",
   "license": "AGPL-3.0",
   "dependencies": {
+    "tslib": "^2.6.2",
     "@buddh4/mapped-types": "^1.1.0",
     "@lyvely/common": "workspace:*",
     "@lyvely/dates": "workspace:*",
@@ -40,7 +41,6 @@
   "devDependencies": {
     "@lyvely/devtools": "workspace:*",
     "@types/randomcolor": "^0.5",
-    "tslib": "^2.6.2",
     "@types/lodash": "^4.17",
     "jest": "^29.7.0",
     "ts-jest": "^29.1.4",

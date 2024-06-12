@@ -36,7 +36,8 @@
     "@lyvely/calendar-plan-web": "workspace:*",
     "@lyvely/dates": "workspace:*",
     "echarts": "^5.5",
-    "class-validator": "^0.14.0"
+    "class-validator": "^0.14.0",
+    "tslib": "^2.6.2"
   },
   "devDependencies": {
     "@lyvely/devtools": "workspace:*",
@@ -47,7 +48,6 @@
     "@vue/runtime-dom": "^3.4",
     "vitest": "^1.5",
     "typescript": "^5.4",
-    "tslib": "^2.6.2",
     "postcss": "^8.4",
     "postcss-cli": "^11.0",
     "eslint": "^8.24",

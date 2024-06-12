@@ -26,6 +26,7 @@
   "author": "Julian Harrer",
   "license": "AGPL-3.0",
   "dependencies": {
+    "tslib": "^2.6.2",
     "@nestjs/common": "^10.3.8",
     "@nestjs/mongoose": "^10.0.6",
     "@lyvely/api": "workspace:*",
@@ -45,7 +46,6 @@
     "@types/jest": "^29.5.12",
     "ts-jest": "^29.1.4",
     "typescript": "^5.4",
-    "tslib": "^2.6.2",
     "eslint": "^8.24",
     "@typescript-eslint/eslint-plugin": "^7.9",
     "@typescript-eslint/parser": "^7.9",
