@@ -6,7 +6,7 @@ FROM nginx:1.26.0-alpine
 #########
 
 # Install necessary packages
-RUN apk update && apk add --no-cache nodejs npm
+RUN apk update && apk add --no-cache nodejs npm python make gcc g++
 
 # Define default env, those will have priority over the .env file
 ENV MONGOMS_DISABLE_POSTINSTALL=1
