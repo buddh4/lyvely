@@ -46,4 +46,4 @@ run find . -name 'node_modules' -type d -prune -exec rm -rf '{}' +
 RUN rush install
 
 # Start the server using the production build
-CMD  ["npm", "run", "server:prod"]
+CMD  ["rush", "server:prod"]

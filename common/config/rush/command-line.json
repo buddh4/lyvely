@@ -114,6 +114,14 @@
       "safeForSimultaneousRushProcesses": true
     },
     {
+      "name": "server:prod",
+      "commandKind": "global",
+      "summary": "Starts the lyvely production server with all features",
+      "description": "Starts the lyvely server application in production mode, including all feature modules. This requires a full build and configuration of the @lyvely/pwa (\"packages/applications/server/src/config/lyvely.development.config.ts\") workspace. The dev frontend can be started with \"rush pwa:dev\".",
+      "shellCommand": "pnpm --filter @lyvely/server run start:prod",
+      "safeForSimultaneousRushProcesses": true
+    },
+    {
       "name": "server:debug",
       "commandKind": "global",
       "summary": "Starts the lyvely server with all features in debug mode",

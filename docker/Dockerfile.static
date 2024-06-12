@@ -56,4 +56,4 @@ RUN rush install
 EXPOSE 8080
 
 # Start the server using the production build
-CMD  ["npm", "run", "server:prod"]
+CMD  ["rush", "server:prod"]
