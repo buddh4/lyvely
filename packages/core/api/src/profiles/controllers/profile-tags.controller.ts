@@ -10,7 +10,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { ProfileRequest } from '../types';
-import { assureObjectId, DocumentIdentity, UseClassSerializer, ValidBody } from '@/core';
+import { assureObjectId, DocumentIdentity, ValidBody } from '@/core';
 import {
   UpdateTagModel,
   TagModel,

@@ -21,7 +21,6 @@ import {
   ContentWritePolicy,
   AbstractContentTypeController,
   ProtectedProfileContentRequest,
-  UseClassSerializer,
   ProfileRequest,
   ValidBody,
 } from '@lyvely/api';

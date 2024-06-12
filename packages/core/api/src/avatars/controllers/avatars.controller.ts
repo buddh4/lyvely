@@ -1,5 +1,5 @@
 import { Get, Res, Param, NotFoundException, Header, Logger } from '@nestjs/common';
-import { Public, UseClassSerializer } from '@/core';
+import { Public } from '@/core';
 import { StorageService } from '@/files';
 import { Response } from 'express';
 import { GlobalController } from '@/common';

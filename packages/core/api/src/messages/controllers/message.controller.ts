@@ -2,7 +2,6 @@ import { Inject } from '@nestjs/common';
 import { AbstractContentTypeController, ContentTypeController } from '@/content';
 import { Message } from '../schemas';
 import { MessageService } from '../services';
-import { UseClassSerializer } from '@/core';
 import {
   MessageEndpoint,
   API_MESSAGE,

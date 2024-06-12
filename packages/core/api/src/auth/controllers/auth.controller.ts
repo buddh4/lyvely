@@ -27,7 +27,7 @@ import {
 } from '@lyvely/interface';
 import { ConfigService } from '@nestjs/config';
 import ms from 'ms';
-import { Public, UseClassSerializer, ValidBody } from '@/core';
+import { Public, ValidBody } from '@/core';
 import { ConfigurationPath } from '@/config';
 import { GlobalController } from '@/common';
 

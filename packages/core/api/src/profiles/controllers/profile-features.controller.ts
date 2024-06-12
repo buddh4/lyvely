@@ -1,7 +1,7 @@
 import { ProfileController, ProfileRoleAccess } from '../decorators';
 import { Request, Post, Inject } from '@nestjs/common';
 import { ProfileRequest } from '../types';
-import { UseClassSerializer, ValidBody } from '@/core';
+import { ValidBody } from '@/core';
 import {
   UpdateFeatureModel,
   UpdateFeatureResponseModel,

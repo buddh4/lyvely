@@ -1,6 +1,5 @@
 import { ContentModel, ContentRequestFilter, API_CONTENT_STREAM } from '@lyvely/interface';
 import { Inject } from '@nestjs/common';
-import { UseClassSerializer } from '@/core';
 import { AbstractStreamController } from '@/streams';
 import { Content } from '../schemas';
 import { ContentStreamService } from '../services';

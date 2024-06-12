@@ -4,7 +4,6 @@ import {
   ContentTypeController,
   ContentWritePolicy,
   ProtectedProfileContentRequest,
-  UseClassSerializer,
   Policies,
   SortResponse,
   ValidBody,

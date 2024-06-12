@@ -6,7 +6,7 @@ import {
   ResetPassword,
   ResetPasswordEndpoints,
 } from '@lyvely/interface';
-import { Public, UseClassSerializer, ValidBody } from '@/core';
+import { Public, ValidBody } from '@/core';
 import { ResetPasswordService } from '../services';
 import { JwtResetPasswordGuard, LoginThrottlerGuard } from '../guards';
 import { CaptchaGuard } from '@/captcha';

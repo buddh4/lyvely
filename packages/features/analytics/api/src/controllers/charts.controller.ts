@@ -10,7 +10,6 @@ import {
   ProtectedProfileContentRequest,
   sortBySortOrder,
   SortResponse,
-  UseClassSerializer,
   ValidBody,
 } from '@lyvely/api';
 import { ChartsService, ChartSeriesService } from '../services';

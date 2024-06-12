@@ -12,7 +12,7 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { UseClassSerializer, ValidBody } from '@/core';
+import { ValidBody } from '@/core';
 import { GlobalController } from '@/common';
 import { assignRawDataTo, mapType } from '@lyvely/common';
 import {

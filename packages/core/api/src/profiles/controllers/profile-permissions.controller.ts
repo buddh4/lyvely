@@ -5,7 +5,7 @@ import {
   ProfileRelationRole,
   ProfilePermissionSettingModel,
 } from '@lyvely/interface';
-import { UseClassSerializer, ValidBody } from '@/core';
+import { ValidBody } from '@/core';
 import { Put, Req } from '@nestjs/common';
 import { ProtectedProfileRequest } from '@/profiles/types';
 import { ProfilePermissionSettingsService } from '@/profiles/services/profile-permission-settings.service';

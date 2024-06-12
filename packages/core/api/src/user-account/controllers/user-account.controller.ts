@@ -14,7 +14,7 @@ import {
   UserRole,
 } from '@lyvely/interface';
 import { UserRequest, UserRoleAccess, UserThrottle, UserThrottlerGuard } from '@/users';
-import { UseClassSerializer, ValidBody } from '@/core';
+import { ValidBody } from '@/core';
 import { GlobalController } from '@/common';
 import { UserAccountService, AccountAvatarService } from '../services';
 import { FileInterceptor } from '@nestjs/platform-express';

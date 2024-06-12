@@ -12,7 +12,7 @@ import {
   UserInvitationsEndpoints,
   UserRole,
 } from '@lyvely/interface';
-import { Public, UseClassSerializer, ValidBody } from '@/core';
+import { Public, ValidBody } from '@/core';
 import { GlobalController } from '@/common';
 import { UserRequest, UserRoleAccess } from '@/users';
 

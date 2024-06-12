@@ -1,6 +1,6 @@
 import { Post, Req, UnauthorizedException } from '@nestjs/common';
 import { UserRegistrationService } from '../services';
-import { Public, UseClassSerializer, ValidBody } from '@/core';
+import { Public, ValidBody } from '@/core';
 import { GlobalController } from '@/common';
 import { ConfigurationPath } from '@/config';
 import {

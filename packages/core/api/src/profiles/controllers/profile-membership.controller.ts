@@ -1,6 +1,6 @@
 import { Delete, Put, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ProfileController, ProfileRoleAccess } from '../decorators';
-import { UseClassSerializer, ValidBody } from '@/core';
+import { ValidBody } from '@/core';
 import {
   API_PROFILE_MEMBERSHIP,
   AvatarModel,
