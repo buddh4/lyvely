@@ -26,9 +26,6 @@ ENV NODE_ENV=production
 # BUILD #
 #########
 
-# Install app dependencies
-RUN npm install -g pnpm @microsoft/rush
-
 # Copy the whole project to a build dir
 COPY . build
 RUN cd build
