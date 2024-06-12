@@ -42,24 +42,4 @@ export class MilestonesCalendarPlanService extends SortableCalendarPlanService<M
     );
     return { models, relations };
   }
-
-  /**
-   * Updates the interval configuration for a given profile and milestone.
-   *
-   * @param {Profile} profile - The profile object representing the user.
-   * @param {Milestone} model - The milestone object to be updated.
-   * @param {CalendarInterval} interval - The new interval to be set.
-   * @protected
-   * @returns {Promise<void>} - A Promise that resolves after the update is completed.
-   */
-  protected override async updateIntervalConfig(
-    profile: Profile,
-    model: Milestone,
-    interval: CalendarInterval
-  ): Promise<void> {
-    await this.contentDao.updateOneByProfileAndIdSet(profile, model, {
-      'config.interval': interval,
-    });
-    model.config.interval = interval;
-  }
 }

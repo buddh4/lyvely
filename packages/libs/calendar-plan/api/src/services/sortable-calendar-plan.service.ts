@@ -24,22 +24,6 @@ export abstract class SortableCalendarPlanService<
   protected abstract override contentDao: ICalendarPlanDao<TModel>;
 
   /**
-   * Updates the calendar interval for a given profile and model.
-   * This is used when moving a model from one interval to another, e.g. from Weekly to Daily.
-   *
-   * @param {Profile} profile - The profile to update the interval configuration for.
-   * @param {TModel} model - The model to update the interval configuration for.
-   * @param {CalendarInterval} interval - The new interval configuration.
-   * @protected
-   * @return {Promise<void>} A Promise that resolves when the interval configuration update is complete.
-   */
-  protected abstract updateIntervalConfig(
-    profile: Profile,
-    model: TModel,
-    interval: CalendarInterval
-  ): Promise<void>;
-
-  /**
    * Re-sorts the given time series content entries by means of the new index and updates the sortOrder of other activities with the same
    * calendar plan accordingly.
    *

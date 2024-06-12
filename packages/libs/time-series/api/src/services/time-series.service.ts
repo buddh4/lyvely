@@ -160,26 +160,4 @@ export abstract class TimeSeriesService<
       timeSeriesSummary: model.timeSeriesSummary,
     });
   }
-
-  /**
-   * Updates the interval configuration of a model's time series.
-   *
-   * @param profile
-   * @param {TModel} model - The model for which the interval configuration is being updated.
-   * @param {CalendarInterval} interval - The new interval value to be set for the time series.
-   * @protected
-   * @return {Promise<void>} - A Promise that resolves when the interval configuration is successfully updated.
-   */
-  protected override async updateIntervalConfig(
-    profile: Profile,
-    model: TModel,
-    interval: CalendarInterval
-  ) {
-    const update = { 'config.timeSeries.interval': interval };
-    useDataPointConfigHandler().applyUpdate(model, { interval });
-    update['config.timeSeries.history'] = model.timeSeriesConfig.history;
-
-    await this.contentDao.updateOneByProfileAndIdSet(profile, model, update);
-    model.timeSeriesConfig.interval = interval;
-  }
 }
