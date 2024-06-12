@@ -1,12 +1,16 @@
 # This dockerfile is used in combination with our docker-compose.yml
-FROM nginx:1.26.0-alpine
+FROM nginx:1.27.0
 
 #########
 # Setup #
 #########
 
-# Install necessary packages
-RUN apk update && apk add --no-cache nodejs npm python make gcc g++
+# Install node
+RUN apt update
+RUN apt install -y curl
+
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+RUN apt install -y nodejs
 
 # Define default env, those will have priority over the .env file
 ENV MONGOMS_DISABLE_POSTINSTALL=1
@@ -30,6 +34,9 @@ COPY . build
 COPY docker/config/web.env build/packages/applications/pwa/.env
 
 WORKDIR build
+
+# We remove the canvas dependency to prevent the install script execution
+RUN sed -i '/"canvas":/,+1d' ./packages/core/api/package.json
 
 # Use install for CI environments
 RUN rush install --to @lyvely/pwa
