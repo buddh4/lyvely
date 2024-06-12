@@ -55,7 +55,7 @@ describe('ProfilePermissionsManager', function () {
         groups: options?.groups || [],
       },
       profile,
-      options?.config || { visitorStrategy: { mode: VisitorMode.Disabled } }
+      options?.config ? { ...options.config, featureConfig: {} } : { visitorStrategy: { mode: VisitorMode.Disabled }, featureConfig: {} }
     );
   };
 

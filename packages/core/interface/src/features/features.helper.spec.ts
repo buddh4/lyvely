@@ -10,7 +10,7 @@ describe('isEnabledProfileFeature', function () {
       {
         id: 'test',
         moduleId: 'test',
-        title: 'test.feature',
+        name: 'test.feature',
         enabledByDefault: true,
         type: FeatureType.Global
       },
@@ -24,7 +24,7 @@ describe('isEnabledProfileFeature', function () {
       {
         id: 'test',
         moduleId: 'test',
-        title: 'test.feature',
+        name: 'test.feature',
         enabledByDefault: true,
        type: FeatureType.Profile
       },
@@ -38,7 +38,7 @@ describe('isEnabledProfileFeature', function () {
       {
         id: 'test',
         moduleId: 'test',
-        title: 'test.feature',
+        name: 'test.feature',
         enabledByDefault: false,
         type: FeatureType.Global
       },
@@ -52,7 +52,7 @@ describe('isEnabledProfileFeature', function () {
       {
         id: 'test',
         moduleId: 'test',
-        title: 'test.feature',
+        name: 'test.feature',
         enabledByDefault: true,
         type: FeatureType.Global
       },
@@ -66,14 +66,14 @@ describe('isEnabledProfileFeature', function () {
       {
         id: 'test',
         moduleId: 'test',
-        title: 'test.feature',
+        name: 'test.feature',
         enabledByDefault: true,
         type: FeatureType.Global
       },
       {
         id: 'test.sub',
         moduleId: 'test',
-        title: 'test.feature',
+        name: 'test.feature',
         enabledByDefault: true,
         dependencies: ['test'],
         type: FeatureType.Global
@@ -92,14 +92,14 @@ describe('isEnabledProfileFeature', function () {
       {
         id: 'test',
         moduleId: 'test',
-        title: 'test.feature',
+        name: 'test.feature',
         enabledByDefault: true,
         type: FeatureType.Global
       },
       {
         id: 'test.sub',
         moduleId: 'test',
-        title: 'test.feature',
+        name: 'test.feature',
         enabledByDefault: true,
         dependencies: ['test'],
         type: FeatureType.Global

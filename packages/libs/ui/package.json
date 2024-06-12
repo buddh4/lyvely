@@ -29,7 +29,7 @@
     "prettier": "prettier src --check",
     "depcheck": "depcheck --quiet",
     "ncu": "ncu",
-    "test": "vitest",
+    "test": "vitest run --silent",
     "dev": "vite",
     "build": "lyvely-dev build:web && node bin/generate-types.js",
     "build:types": "node bin/generate-types.js",

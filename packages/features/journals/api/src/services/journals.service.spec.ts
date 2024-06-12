@@ -21,14 +21,7 @@ import { JournalsService } from '../services';
 import { JournalsDao } from '../daos';
 import { ILyvelyTestingModule } from '@lyvely/api';
 import { Journal, JournalSchema } from '../schemas';
-
-const Models = [
-  {
-    name: Journal.name,
-    collection: Content.collectionName(),
-    schema: JournalSchema,
-  },
-];
+import { getContentModelDefinition } from "@lyvely/api";
 
 describe('JournalService', () => {
   let journalsService: JournalsService;
@@ -40,7 +33,7 @@ describe('JournalService', () => {
   beforeEach(async () => {
     testingModule = await buildContentTest(TEST_KEY)
       .providers([JournalsDao, JournalsService])
-      .models(Models)
+      .models([getContentModelDefinition([{ name: Journal.name, schema: JournalSchema }])])
       .compile();
     journalsService = testingModule.get(JournalsService);
     testData = testingModule.get(ProfileTestDataUtils);

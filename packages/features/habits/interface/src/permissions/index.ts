@@ -1,1 +1,1 @@
-export * from './habits.permissions';
+export * from './habit.permissions';

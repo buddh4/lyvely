@@ -123,7 +123,7 @@ describe('MileStonesRelationService', () => {
   describe('getRelationsByMilestones()', () => {
     it('test event data', async () => {
       const { context, content, mid } = await createTestContent();
-      await service.getRelationsByMilestones(context, [mid as DocumentIdentity<Milestone>]);
+      await service.getRelationsByMilestones(context, [mid]);
       expect(testProvider?.event?.data).toBeDefined();
       expect(testProvider?.event?.data.contents.length).toEqual(1);
       expect(testProvider?.event?.data.contents[0]._id).toEqual(content._id);

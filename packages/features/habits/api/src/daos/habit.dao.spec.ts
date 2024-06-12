@@ -48,7 +48,7 @@ describe('Habits DAO', () => {
     it('find habit', async () => {
       const { user, profile, context } = await testData.createUserAndProfile();
       const habit = await testData.createHabit(user, profile);
-      const search = await habitsDao.findByProfileAndTimingIds(context, []);
+      const search = await habitsDao.findByTimingIds(context, { tIds: [] });
       expect(search.length).toEqual(1);
       expect(search.find((c) => c.content.title === habit.content.title)).toBeDefined();
     });
@@ -56,7 +56,7 @@ describe('Habits DAO', () => {
 
   describe('findByProfileAndPlan', () => {
     it('assure we do find multiple of the same type', async () => {
-      const { user, profile } = await testData.createUserAndProfile();
+      const { user, profile, context } = await testData.createUserAndProfile();
       const habit = await testData.createHabit(user, profile, {
         interval: CalendarInterval.Daily,
       });
@@ -64,7 +64,7 @@ describe('Habits DAO', () => {
         interval: CalendarInterval.Daily,
       });
 
-      const result = await habitsDao.findByProfileAndInterval(profile, CalendarInterval.Daily);
+      const result = await habitsDao.findByInterval(context, { interval: CalendarInterval.Daily });
       expect(result).toBeDefined();
       expect(result.length).toEqual(2);
       expect(result.find((c) => c.content.title === habit.content.title)).toBeDefined();
@@ -72,13 +72,13 @@ describe('Habits DAO', () => {
     });
 
     it('assure we do not include an entry of another plan', async () => {
-      const { user, profile } = await testData.createUserAndProfile();
+      const { user, profile,context } = await testData.createUserAndProfile();
       const habit = await testData.createHabit(user, profile, {
         interval: CalendarInterval.Daily,
       });
       await testData.createHabit(user, profile, { interval: CalendarInterval.Weekly });
 
-      const result = await habitsDao.findByProfileAndInterval(profile, CalendarInterval.Daily);
+      const result = await habitsDao.findByInterval(context, { interval: CalendarInterval.Daily });
       expect(result).toBeDefined();
       expect(result.length).toEqual(1);
       expect(result.find((c) => c.content.title === habit.content.title)).toBeDefined();

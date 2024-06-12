@@ -54,7 +54,7 @@ describe('ContentPermissionsManager', function () {
         groups: options?.groups || [],
       },
       profile || new ProfileModel({}),
-      options?.config || { visitorStrategy: { mode: VisitorMode.Disabled } }
+      options?.config ? { ...options.config, featureConfig: {} } : { visitorStrategy: { mode: VisitorMode.Disabled }, featureConfig: {} }
     );
   };
 

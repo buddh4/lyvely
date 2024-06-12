@@ -42,7 +42,7 @@ describe('ProfileFeaturesService', () => {
         {
           id: 'test',
           moduleId: 'test',
-          title: 'test.title',
+          name: 'test.title',
           installable: true,
           type: FeatureType.Profile
         },
@@ -64,7 +64,7 @@ describe('ProfileFeaturesService', () => {
         {
           id: 'test',
           moduleId: 'test',
-          title: 'test.title',
+          name: 'test.title',
           installable: true,
           type: FeatureType.Profile
         },
@@ -88,7 +88,7 @@ describe('ProfileFeaturesService', () => {
         {
           id: 'test',
           moduleId: 'test',
-          title: 'test.title',
+          name: 'test.title',
           installable: false,
           type: FeatureType.Profile
         },
@@ -112,14 +112,14 @@ describe('ProfileFeaturesService', () => {
         {
           id: 'test',
           moduleId: 'test',
-          title: 'test.title',
+          name: 'test.title',
           installable: true,
           type: FeatureType.Profile
         },
         {
           id: 'test.sub',
           moduleId: 'test',
-          title: 'test.sub.title',
+          name: 'test.sub.title',
           dependencies: ['test'],
           installable: true,
           type: FeatureType.Profile
@@ -142,7 +142,7 @@ describe('ProfileFeaturesService', () => {
         {
           id: 'test',
           moduleId: 'test',
-          title: 'test.title',
+          name: 'test.title',
           installable: true,
           type: FeatureType.Profile
         },
@@ -164,7 +164,7 @@ describe('ProfileFeaturesService', () => {
         {
           id: 'test',
           moduleId: 'test',
-          title: 'test.title',
+          name: 'test.title',
           installable: true,
           type: FeatureType.Profile
         },
@@ -188,14 +188,14 @@ describe('ProfileFeaturesService', () => {
         {
           id: 'test',
           moduleId: 'test',
-          title: 'test.title',
+          name: 'test.title',
           installable: true,
           type: FeatureType.Profile
         },
         {
           id: 'test.sub',
           moduleId: 'test',
-          title: 'test.sub.title',
+          name: 'test.sub.title',
           installable: true,
           dependencies: ['test'],
           type: FeatureType.Profile
@@ -223,14 +223,14 @@ describe('ProfileFeaturesService', () => {
         {
           id: 'test',
           moduleId: 'test',
-          title: 'test.title',
+          name: 'test.title',
           installable: true,
           type: FeatureType.Profile
         },
         {
           id: 'test.sub',
           moduleId: 'test',
-          title: 'test.sub.title',
+          name: 'test.sub.title',
           installable: true,
           enabledByDefault: true,
           dependencies: ['test'],
@@ -239,7 +239,7 @@ describe('ProfileFeaturesService', () => {
         {
           id: 'test.sub2',
           moduleId: 'test',
-          title: 'test.sub2.title',
+          name: 'test.sub2.title',
           installable: true,
           enabledByDefault: false,
           dependencies: ['test'],
@@ -268,7 +268,7 @@ describe('ProfileFeaturesService', () => {
         {
           id: 'test',
           moduleId: 'test',
-          title: 'test.title',
+          name: 'test.title',
           installable: true,
           type: FeatureType.Global
         },

@@ -472,6 +472,9 @@ importers:
       rimraf:
         specifier: ^5.0
         version: 5.0.7
+      ts-jest:
+        specifier: ^29.1.4
+        version: 29.1.4(@babel/core@7.24.6)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.24.6))(jest@29.7.0(@types/node@20.12.13))(typescript@5.4.5)
       tsc-alias:
         specifier: ^1.8.10
         version: 1.8.10
@@ -563,6 +566,9 @@ importers:
       eslint-plugin-prettier:
         specifier: ^5.1
         version: 5.1.3(@types/eslint@8.56.10)(eslint-config-prettier@8.10.0(eslint@8.57.0))(eslint@8.57.0)(prettier@3.2.5)
+      jest:
+        specifier: ^29.7.0
+        version: 29.7.0(@types/node@20.12.13)
       rimraf:
         specifier: ^5.0
         version: 5.0.7
@@ -572,6 +578,9 @@ importers:
       rollup-plugin-node-externals:
         specifier: ^6.1
         version: 6.1.2(rollup@4.18.0)
+      ts-jest:
+        specifier: ^29.1.4
+        version: 29.1.4(@babel/core@7.24.6)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.24.6))(jest@29.7.0(@types/node@20.12.13))(typescript@5.4.5)
       tscpaths:
         specifier: ^0.0.9
         version: 0.0.9
@@ -953,6 +962,9 @@ importers:
       rimraf:
         specifier: ^5.0
         version: 5.0.7
+      ts-jest:
+        specifier: ^29.1.4
+        version: 29.1.4(@babel/core@7.24.6)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.24.6))(jest@29.7.0(@types/node@20.12.13))(typescript@5.4.5)
       tslib:
         specifier: ^2.6.2
         version: 2.6.2
@@ -1044,6 +1056,9 @@ importers:
       rollup-plugin-node-externals:
         specifier: ^6.1
         version: 6.1.2(rollup@4.18.0)
+      ts-jest:
+        specifier: ^29.1.4
+        version: 29.1.4(@babel/core@7.24.6)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.24.6))(jest@29.7.0(@types/node@20.12.13))(typescript@5.4.5)
       tscpaths:
         specifier: ^0.0.9
         version: 0.0.9
@@ -1247,6 +1262,9 @@ importers:
       rimraf:
         specifier: ^5.0
         version: 5.0.7
+      ts-jest:
+        specifier: ^29.1.4
+        version: 29.1.4(@babel/core@7.24.6)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.24.6))(jest@29.7.0(@types/node@20.12.13))(typescript@5.4.5)
       tslib:
         specifier: ^2.6.2
         version: 2.6.2
@@ -1344,6 +1362,9 @@ importers:
       rollup-plugin-node-externals:
         specifier: ^6.1
         version: 6.1.2(rollup@4.18.0)
+      ts-jest:
+        specifier: ^29.1.4
+        version: 29.1.4(@babel/core@7.24.6)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.24.6))(jest@29.7.0(@types/node@20.12.13))(typescript@5.4.5)
       tscpaths:
         specifier: ^0.0.9
         version: 0.0.9
@@ -1486,6 +1507,9 @@ importers:
       '@lyvely/common':
         specifier: workspace:*
         version: link:../../../libs/common
+      '@lyvely/dates':
+        specifier: workspace:*
+        version: link:../../../libs/dates
       '@lyvely/journals-interface':
         specifier: workspace:*
         version: link:../interface
@@ -1547,6 +1571,9 @@ importers:
       rimraf:
         specifier: ^5.0
         version: 5.0.7
+      ts-jest:
+        specifier: ^29.1.4
+        version: 29.1.4(@babel/core@7.24.6)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.24.6))(jest@29.7.0(@types/node@20.12.13))(typescript@5.4.5)
       tslib:
         specifier: ^2.6.2
         version: 2.6.2
@@ -1644,6 +1671,9 @@ importers:
       rollup-plugin-node-externals:
         specifier: ^6.1
         version: 6.1.2(rollup@4.18.0)
+      ts-jest:
+        specifier: ^29.1.4
+        version: 29.1.4(@babel/core@7.24.6)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.24.6))(jest@29.7.0(@types/node@20.12.13))(typescript@5.4.5)
       tscpaths:
         specifier: ^0.0.9
         version: 0.0.9
@@ -1826,6 +1856,9 @@ importers:
       rimraf:
         specifier: ^5.0
         version: 5.0.7
+      ts-jest:
+        specifier: ^29.1.4
+        version: 29.1.4(@babel/core@7.24.6)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.24.6))(jest@29.7.0(@types/node@20.12.13))(typescript@5.4.5)
       tslib:
         specifier: ^2.6.2
         version: 2.6.2
@@ -1908,6 +1941,9 @@ importers:
       rollup-plugin-node-externals:
         specifier: ^6.1
         version: 6.1.2(rollup@4.18.0)
+      ts-jest:
+        specifier: ^29.1.4
+        version: 29.1.4(@babel/core@7.24.6)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.24.6))(jest@29.7.0(@types/node@20.12.13))(typescript@5.4.5)
       tscpaths:
         specifier: ^0.0.9
         version: 0.0.9
@@ -2081,6 +2117,9 @@ importers:
       rimraf:
         specifier: ^5.0
         version: 5.0.7
+      ts-jest:
+        specifier: ^29.1.4
+        version: 29.1.4(@babel/core@7.24.6)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.24.6))(jest@29.7.0(@types/node@20.12.13))(typescript@5.4.5)
       tslib:
         specifier: ^2.6.2
         version: 2.6.2
@@ -2175,6 +2214,9 @@ importers:
       rollup-plugin-node-externals:
         specifier: ^6.1
         version: 6.1.2(rollup@4.18.0)
+      ts-jest:
+        specifier: ^29.1.4
+        version: 29.1.4(@babel/core@7.24.6)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.24.6))(jest@29.7.0(@types/node@20.12.13))(typescript@5.4.5)
       tscpaths:
         specifier: ^0.0.9
         version: 0.0.9
@@ -2366,6 +2408,9 @@ importers:
       rimraf:
         specifier: ^5.0
         version: 5.0.7
+      ts-jest:
+        specifier: ^29.1.4
+        version: 29.1.4(@babel/core@7.24.6)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.24.6))(jest@29.7.0(@types/node@20.12.13))(typescript@5.4.5)
       tslib:
         specifier: ^2.6.2
         version: 2.6.2
@@ -2460,6 +2505,9 @@ importers:
       rollup-plugin-node-externals:
         specifier: ^6.1
         version: 6.1.2(rollup@4.18.0)
+      ts-jest:
+        specifier: ^29.1.4
+        version: 29.1.4(@babel/core@7.24.6)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.24.6))(jest@29.7.0(@types/node@20.12.13))(typescript@5.4.5)
       tscpaths:
         specifier: ^0.0.9
         version: 0.0.9
@@ -2639,6 +2687,9 @@ importers:
       rimraf:
         specifier: ^5.0
         version: 5.0.7
+      ts-jest:
+        specifier: ^29.1.4
+        version: 29.1.4(@babel/core@7.24.6)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.24.6))(jest@29.7.0(@types/node@20.12.13))(typescript@5.4.5)
       tslib:
         specifier: ^2.6.2
         version: 2.6.2
@@ -2724,6 +2775,9 @@ importers:
       rollup-plugin-node-externals:
         specifier: ^6.1
         version: 6.1.2(rollup@4.18.0)
+      ts-jest:
+        specifier: ^29.1.4
+        version: 29.1.4(@babel/core@7.24.6)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.24.6))(jest@29.7.0(@types/node@20.12.13))(typescript@5.4.5)
       tscpaths:
         specifier: ^0.0.9
         version: 0.0.9
@@ -2924,6 +2978,9 @@ importers:
       rollup-plugin-node-externals:
         specifier: ^6.1
         version: 6.1.2(rollup@4.18.0)
+      ts-jest:
+        specifier: ^29.1.4
+        version: 29.1.4(@babel/core@7.24.6)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.24.6))(jest@29.7.0(@types/node@20.12.13))(typescript@5.4.5)
       tscpaths:
         specifier: ^0.0.9
         version: 0.0.9
@@ -2958,6 +3015,9 @@ importers:
       '@rollup/plugin-typescript':
         specifier: ^11.1
         version: 11.1.6(rollup@4.18.0)(tslib@2.6.2)(typescript@5.4.5)
+      '@types/jest':
+        specifier: ^29.5.12
+        version: 29.5.12
       '@types/node':
         specifier: ^20.12
         version: 20.12.13
@@ -2994,6 +3054,9 @@ importers:
       gulp:
         specifier: ^5.0.0
         version: 5.0.0
+      jest:
+        specifier: ^29.7.0
+        version: 29.7.0(@types/node@20.12.13)
       reflect-metadata:
         specifier: ^0.1.12 || ^0.2.0
         version: 0.1.14
@@ -3006,6 +3069,9 @@ importers:
       rollup-plugin-node-externals:
         specifier: ^6.1
         version: 6.1.2(rollup@4.18.0)
+      ts-jest:
+        specifier: ^29.1.4
+        version: 29.1.4(@babel/core@7.24.6)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.24.6))(jest@29.7.0(@types/node@20.12.13))(typescript@5.4.5)
       tscpaths:
         specifier: ^0.0.9
         version: 0.0.9
@@ -3197,6 +3263,9 @@ importers:
       rimraf:
         specifier: ^5.0
         version: 5.0.7
+      ts-jest:
+        specifier: ^29.1.4
+        version: 29.1.4(@babel/core@7.24.6)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.24.6))(jest@29.7.0(@types/node@20.12.13))(typescript@5.4.5)
       tslib:
         specifier: ^2.6.2
         version: 2.6.2
@@ -3291,6 +3360,9 @@ importers:
       rollup-plugin-node-externals:
         specifier: ^6.1
         version: 6.1.2(rollup@4.18.0)
+      ts-jest:
+        specifier: ^29.1.4
+        version: 29.1.4(@babel/core@7.24.6)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.24.6))(jest@29.7.0(@types/node@20.12.13))(typescript@5.4.5)
       tscpaths:
         specifier: ^0.0.9
         version: 0.0.9
@@ -7760,6 +7832,10 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
 
+  bs-logger@0.2.6:
+    resolution: {integrity: sha512-pd8DCoxmbgc7hyPKOvxtqNcjYoOsABPQdcCUjGp3d42VR2CX1ORhk2A87oqqu5R1kk+76nsxZupkmyd+MVtCog==}
+    engines: {node: '>= 6'}
+
   bser@2.1.1:
     resolution: {integrity: sha512-gQxTNE/GAfIIrmHLUE3oJyp5FO6HRBfhjnw4/wMmA63ZGDJnWBmgY/lyQBpnDUkGmAhbSe39tx2d/iTOAfglwQ==}
 
@@ -10982,6 +11058,9 @@ packages:
     resolution: {integrity: sha512-hXdUTZYIVOt1Ex//jAQi+wTZZpUpwBj/0QsOzqegb3rGMMeJiSEu5xLHnYfBrRV4RH2+OCSOO95Is/7x1WJ4bw==}
     engines: {node: '>=10'}
 
+  make-error@1.3.6:
+    resolution: {integrity: sha512-s8UhlNe7vPKomQhC1qFelMokr/Sc3AgNbso3n74mVPA5LTZwkB9NlXf4XPamLxJE8h0gh73rM94xvwRT2CVInw==}
+
   makeerror@1.0.12:
     resolution: {integrity: sha512-JmqCvUhmt43madlpFzG4BQzG2Z3m6tvQDNKdClZnO3VbIudJYmxsT0FNJMeiB2+JTSlTQTSbU8QdesVmwJcmLg==}
 
@@ -13981,6 +14060,30 @@ packages:
   ts-interface-checker@0.1.13:
     resolution: {integrity: sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==}
 
+  ts-jest@29.1.4:
+    resolution: {integrity: sha512-YiHwDhSvCiItoAgsKtoLFCuakDzDsJ1DLDnSouTaTmdOcOwIkSzbLXduaQ6M5DRVhuZC/NYaaZ/mtHbWMv/S6Q==}
+    engines: {node: ^14.15.0 || ^16.10.0 || ^18.0.0 || >=20.0.0}
+    hasBin: true
+    peerDependencies:
+      '@babel/core': '>=7.0.0-beta.0 <8'
+      '@jest/transform': ^29.0.0
+      '@jest/types': ^29.0.0
+      babel-jest: ^29.0.0
+      esbuild: '*'
+      jest: ^29.0.0
+      typescript: '>=4.3 <6'
+    peerDependenciesMeta:
+      '@babel/core':
+        optional: true
+      '@jest/transform':
+        optional: true
+      '@jest/types':
+        optional: true
+      babel-jest:
+        optional: true
+      esbuild:
+        optional: true
+
   ts-map@1.0.3:
     resolution: {integrity: sha512-vDWbsl26LIcPGmDpoVzjEP6+hvHZkBkLW7JpvwbCv/5IYPJlsbzCVXY3wsCeAxAUeTclNOUZxnLdGh3VBD/J6w==}
 
@@ -14500,8 +14603,8 @@ packages:
   vue-component-type-helpers@2.0.19:
     resolution: {integrity: sha512-cN3f1aTxxKo4lzNeQAkVopswuImUrb5Iurll9Gaw5cqpnbTAxtEMM1mgi6ou4X79OCyqYv1U1mzBHJkzmiK82w==}
 
-  vue-component-type-helpers@2.0.20:
-    resolution: {integrity: sha512-Weol01CnbTkPrKHT4Gi5q+llB170X/q/oJ0AYrC1zRBm+OhEun1+j4mKr2Y1kXG1hgGnjvuBPshy+bRefGczTA==}
+  vue-component-type-helpers@2.0.21:
+    resolution: {integrity: sha512-3NaicyZ7N4B6cft4bfb7dOnPbE9CjLcx+6wZWAg5zwszfO4qXRh+U52dN5r5ZZfc6iMaxKCEcoH9CmxxoFZHLg==}
 
   vue-demi@0.14.7:
     resolution: {integrity: sha512-EOG8KXDQNwkJILkx/gPcoL/7vH+hORoBaKgGe+6W7VFMvCYJfmF2dGbvgDroVnI8LU7/kTu8mbjRZGBU1z9NTA==}
@@ -19644,7 +19747,7 @@ snapshots:
       ts-dedent: 2.2.0
       type-fest: 2.19.0
       vue: 3.4.27(typescript@5.4.5)
-      vue-component-type-helpers: 2.0.20
+      vue-component-type-helpers: 2.0.21
     transitivePeerDependencies:
       - encoding
       - prettier
@@ -21085,6 +21188,10 @@ snapshots:
       electron-to-chromium: 1.4.783
       node-releases: 2.0.14
       update-browserslist-db: 1.0.16(browserslist@4.23.0)
+
+  bs-logger@0.2.6:
+    dependencies:
+      fast-json-stable-stringify: 2.1.0
 
   bser@2.1.1:
     dependencies:
@@ -25065,6 +25172,8 @@ snapshots:
     dependencies:
       semver: 7.6.2
 
+  make-error@1.3.6: {}
+
   makeerror@1.0.12:
     dependencies:
       tmpl: 1.0.5
@@ -28817,6 +28926,24 @@ snapshots:
 
   ts-interface-checker@0.1.13: {}
 
+  ts-jest@29.1.4(@babel/core@7.24.6)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.24.6))(jest@29.7.0(@types/node@20.12.13))(typescript@5.4.5):
+    dependencies:
+      bs-logger: 0.2.6
+      fast-json-stable-stringify: 2.1.0
+      jest: 29.7.0(@types/node@20.12.13)
+      jest-util: 29.7.0
+      json5: 2.2.3
+      lodash.memoize: 4.1.2
+      make-error: 1.3.6
+      semver: 7.6.2
+      typescript: 5.4.5
+      yargs-parser: 21.1.1
+    optionalDependencies:
+      '@babel/core': 7.24.6
+      '@jest/transform': 29.7.0
+      '@jest/types': 29.6.3
+      babel-jest: 29.7.0(@babel/core@7.24.6)
+
   ts-map@1.0.3: {}
 
   tsc-alias@1.8.10:
@@ -29375,7 +29502,7 @@ snapshots:
 
   vue-component-type-helpers@2.0.19: {}
 
-  vue-component-type-helpers@2.0.20: {}
+  vue-component-type-helpers@2.0.21: {}
 
   vue-demi@0.14.7(vue@3.4.27(typescript@5.4.5)):
     dependencies:

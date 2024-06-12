@@ -303,6 +303,10 @@
       "allowedCategories": [ "lib" ]
     },
     {
+      "name": "ts-jest",
+      "allowedCategories": [ "core", "feature", "lib" ]
+    },
+    {
       "name": "tslib",
       "allowedCategories": [ "application", "core", "feature", "lib" ]
     },

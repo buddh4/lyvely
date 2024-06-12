@@ -3,7 +3,7 @@ import {
   clearPermissions,
   IGlobalPermissionObject,
   IPermission,
-  IPermissionConfig, type IPermissionManagerConfig,
+  IPermissionConfig,
   registerPermissions,
   VisitorMode,
   useGlobalPermissionsManager,
@@ -38,7 +38,7 @@ describe('GlobalPermissionsManager', function () {
     role: UserRole,
     settings?: IGlobalPermissionObject | null,
     options?: {
-      config?: IPermissionManagerConfig;
+      config?: IPermissionConfig;
       userStatus?: UserStatus;
       relationStatus?: UserStatus;
       groups?: string[];
@@ -57,7 +57,7 @@ describe('GlobalPermissionsManager', function () {
         groups: options?.groups || [],
       },
       settings,
-      options?.config || { visitorStrategy: { mode: VisitorMode.Disabled, featureConfig: {} } }
+      options?.config ? { ...options.config, featureConfig: {} } : { visitorStrategy: { mode: VisitorMode.Disabled }, featureConfig: {} }
     );
   };
 

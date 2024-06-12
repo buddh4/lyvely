@@ -1,7 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Milestone } from '../schemas';
-import { Profile, ProfileContext } from '@lyvely/api';
-import { CalendarInterval } from '@lyvely/dates';
+import { ProfileContext } from '@lyvely/api';
 import { CalendarPlanFilter, SortableCalendarPlanService } from '@lyvely/calendar-plan';
 import { MilestonesDao } from '../daos';
 import { MilestonesRelationsService } from './milestones-relations.service';

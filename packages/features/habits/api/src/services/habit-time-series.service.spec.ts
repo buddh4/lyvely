@@ -8,6 +8,7 @@ import { HabitsService } from './habits.service';
 import { Habit } from '../schemas';
 import { HabitTimeSeriesService } from './habit-time-series.service';
 import { ILyvelyTestingModule } from '@lyvely/api';
+import { ProtectedProfileContentContext } from "@lyvely/api";
 
 describe('HabitTimeSeriesService', () => {
   let habitsTimeSeriesService: HabitTimeSeriesService;
@@ -141,8 +142,7 @@ describe('HabitTimeSeriesService', () => {
       const habits = await createHabits(user, profile);
 
       await habitsTimeSeriesService.sort(
-        context,
-        habits[1],
+        new ProtectedProfileContentContext( { ...context, content: habits[1]}),
         habits[1].timeSeriesConfig.interval,
         habits[3]
       );
@@ -164,8 +164,7 @@ describe('HabitTimeSeriesService', () => {
       const habits = await createHabits(user, profile);
 
       await habitsTimeSeriesService.sort(
-        context,
-        habits[0],
+        new ProtectedProfileContentContext( { ...context, content: habits[0]}),
         habits[0].timeSeriesConfig.interval,
         habits[1]
       );
@@ -186,7 +185,7 @@ describe('HabitTimeSeriesService', () => {
 
       const habits = await createHabits(user, profile);
 
-      await habitsTimeSeriesService.sort(context, habits[3], habits[3].timeSeriesConfig.interval);
+      await habitsTimeSeriesService.sort(new ProtectedProfileContentContext( { ...context, content: habits[3]}), habits[3].timeSeriesConfig.interval);
 
       const filter = new CalendarPlanFilter(HabitTestDataUtil.getDateTomorrow());
       const { models } = await habitsTimeSeriesService.findTimeSeries(context, filter);
@@ -204,8 +203,7 @@ describe('HabitTimeSeriesService', () => {
       const habits = await createHabits(user, profile);
 
       await habitsTimeSeriesService.sort(
-        context,
-        habits[1],
+        new ProtectedProfileContentContext( { ...context, content: habits[1]}),
         habits[1].timeSeriesConfig.interval,
         habits[4]
       );
@@ -226,8 +224,7 @@ describe('HabitTimeSeriesService', () => {
       const habits = await createHabits(user, profile);
 
       await habitsTimeSeriesService.sort(
-        context,
-        habits[2],
+        new ProtectedProfileContentContext( { ...context, content: habits[2]}),
         habits[2].timeSeriesConfig.interval,
         habits[2]
       );
@@ -248,8 +245,7 @@ describe('HabitTimeSeriesService', () => {
       const habits = await createMultiIntervalHabits(user, profile);
 
       await habitsTimeSeriesService.sort(
-        context,
-        habits[0],
+        new ProtectedProfileContentContext( { ...context, content: habits[0]}),
         habits[2].timeSeriesConfig.interval,
         habits[2]
       );
@@ -277,7 +273,7 @@ describe('HabitTimeSeriesService', () => {
       const { user, profile, context } = await testData.createUserAndProfile();
       const habits = await createMultiIntervalHabits(user, profile);
 
-      await habitsTimeSeriesService.sort(context, habits[0], habits[2].timeSeriesConfig.interval);
+      await habitsTimeSeriesService.sort(new ProtectedProfileContentContext( { ...context, content: habits[0]}), habits[2].timeSeriesConfig.interval);
 
       const filter = new CalendarPlanFilter(HabitTestDataUtil.getDateTomorrow());
       let { models } = await habitsTimeSeriesService.findTimeSeries(context, filter);
@@ -299,8 +295,7 @@ describe('HabitTimeSeriesService', () => {
       const habits = await createMultiIntervalHabits(user, profile);
 
       await habitsTimeSeriesService.sort(
-        context,
-        habits[0],
+        new ProtectedProfileContentContext( { ...context, content: habits[0]}),
         habits[4].timeSeriesConfig.interval,
         habits[4]
       );

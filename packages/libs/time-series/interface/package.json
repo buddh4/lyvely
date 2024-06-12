@@ -19,7 +19,7 @@
     "prepublish:next": "pnpm run build",
     "publish:next": "npm publish --access public --tag next",
     "prerelease": "pnpm run build",
-    "test": "jest --passWithNoTests",
+    "test": "jest --silent",
     "clear": "rm -rf ./dist && rimraf ./tsconfig.tsbuildinfo",
     "test:cov": "jest --coverage --no-cache"
   },
@@ -39,6 +39,7 @@
     "@lyvely/devtools": "workspace:*",
     "jest": "^29.7.0",
     "@types/jest": "^29.5.12",
+    "ts-jest": "^29.1.4",
     "rollup": "^4.18",
     "tslib": "^2.6.2",
     "typescript": "^5.4",

@@ -17,7 +17,12 @@ import {
 import { HabitDataPointDao, HabitsDao } from './daos';
 import { getDataPointModelDefinition, DataPointValueType } from '@lyvely/time-series';
 import { Habit, HabitSchema, HabitScore, HabitScoreSchema } from './schemas';
-import { ActivityHabitsFeature, HABITS_MODULE_ID, HabitsFeature } from '@lyvely/habits-interface';
+import {
+  ActivityHabitsFeature,
+  HABITS_MODULE_ID,
+  HabitsFeature,
+  HabitPermissions,
+} from '@lyvely/habits-interface';
 
 @LyvelyModule({
   id: HABITS_MODULE_ID,

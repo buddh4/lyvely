@@ -88,8 +88,8 @@ export class TasksDao extends CalendarPlanDao<Task> implements ICalendarPlanDao<
         {
           'config.userStrategy': UserAssignmentStrategy.PerUser,
           $or: [
-            { 'state.doneBy': { $elemMatch: { uid: uid, tid: { $in: tids } } } },
-            { 'state.doneBy': { $not: { $elemMatch: { uid: uid } } } },
+            { 'state.doneBy': { $elemMatch: { uid, tid: { $in: tids } } } },
+            { 'state.doneBy': { $not: { $elemMatch: { uid } } } },
           ],
         },
       ],

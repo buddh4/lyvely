@@ -11,7 +11,7 @@ import {
 import { ILyvelyTestingModule } from '@/testing';
 import { GroupProfile, Organization, UserProfile, UserProfileRelation } from '../schemas';
 import { ProfileTestDataUtils } from '../testing';
-import { ProtectedProfileContext } from '../models';
+import { ProtectedProfileContext } from '../contexts';
 import { buildProfileTest } from '@/profiles';
 
 describe('ProfileService', () => {

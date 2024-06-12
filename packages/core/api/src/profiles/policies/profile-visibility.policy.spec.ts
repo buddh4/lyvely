@@ -4,7 +4,7 @@ import { buildProfileTest, ProfileTestDataUtils } from '../testing';
 import { LyvelyModule } from '@/core';
 import { ProfileVisibilityPolicy } from './profile-visibility.policy';
 import { ProfilesService } from '../services';
-import { ProfileContext } from '../models';
+import { ProfileContext } from '../contexts';
 import { getPolicyToken } from '../../policies';
 
 describe('ProfileVisibilityPolicy', () => {
