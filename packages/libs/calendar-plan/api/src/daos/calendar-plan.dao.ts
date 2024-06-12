@@ -5,7 +5,12 @@ import {
   type ICalendarPlanSearchFilter,
   type ICalendarPlanTidSearchFilter,
 } from '../interfaces';
-import { ContentTypeDao, ProfileContext, ProtectedProfileContentContext } from '@lyvely/api';
+import {
+  ContentTypeDao,
+  ProfileContext,
+  ProtectedProfileContentContext,
+  cloneQuery,
+} from '@lyvely/api';
 import type { FilterQuery, IFetchQueryOptions } from '@lyvely/api';
 import { isNotNil } from '@lyvely/common';
 import { CalendarInterval } from '@lyvely/dates';
@@ -98,7 +103,7 @@ export abstract class CalendarPlanDao<
   protected override buildFilterQuery(filter?: TFilter): FilterQuery<TModel> | undefined {
     if (!filter) return;
 
-    filter = structuredClone(filter);
+    filter = cloneQuery(filter);
     filter.conditions ??= [];
 
     if (isNotNil(filter.interval)) {
