@@ -4,8 +4,11 @@
 !pnpm-lock.yaml
 !pnpm-workspace.yaml
 !docker
-!nx.json
+!rush.json
 !packages
+!common
+
+common/temp
 
 # Ignore all node_modules directories within packages
 packages/**/node_modules
