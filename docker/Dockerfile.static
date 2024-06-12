@@ -48,7 +48,7 @@ RUN cp packages/applications/pwa/dist ./packages/applications/server/static
 #########
 
 # Clear the node_modules dir
-find . -name 'node_modules' -type d -prune -exec rm -rf '{}' +
+run find . -name 'node_modules' -type d -prune -exec rm -rf '{}' +
 
 # Now install again with NODE_ENV=production
 RUN rush install

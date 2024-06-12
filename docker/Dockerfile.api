@@ -40,7 +40,7 @@ RUN rush build --to @lyvely/server
 #########
 
 # Clear the node_modules dir
-find . -name 'node_modules' -type d -prune -exec rm -rf '{}' +
+run find . -name 'node_modules' -type d -prune -exec rm -rf '{}' +
 
 # Now install again with NODE_ENV=production
 RUN rush install
