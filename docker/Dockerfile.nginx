@@ -25,10 +25,11 @@ RUN npm install -g pnpm @microsoft/rush
 
 # Copy the whole project to a build dir
 COPY . build
-RUN cd build
 
 # Add docker specific web configuration to the build
 COPY docker/config/web.env build/packages/applications/pwa/.env
+
+WORKDIR build
 
 # Use install for CI environments
 RUN rush install --to @lyvely/pwa
@@ -39,12 +40,14 @@ ENV NODE_ENV=production
 # Build all packages
 RUN rush build --to @lyvely/pwa
 
+WORKDIR /
+
 ##########
 # DEPLOY #
 #########
 
 # Deploy dist to nginx
-RUN cp build/packages/applications/pwa/dist /usr/share/nginx/html/
+RUN cp packages/applications/pwa/dist /usr/share/nginx/html/
 
 # Cleanup
 RUN rm -rf ./build
