@@ -47,7 +47,7 @@ WORKDIR /
 #########
 
 # Deploy dist to nginx
-RUN cp packages/applications/pwa/dist /usr/share/nginx/html/
+RUN cp build/packages/applications/pwa/dist /usr/share/nginx/html/
 
 # Cleanup
 RUN rm -rf ./build
