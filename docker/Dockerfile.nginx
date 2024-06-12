@@ -19,9 +19,6 @@ ENV LYVELY_APP_ENV=production
 # Install app dependencies
 RUN npm install -g pnpm @microsoft/rush
 
-# We set NODE_ENV after npm install here since we need devDependencies for the build
-ENV NODE_ENV=production
-
 #########
 # BUILD #
 #########
