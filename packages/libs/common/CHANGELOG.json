@@ -1,0 +1,17 @@
+{
+  "name": "@lyvely/common",
+  "entries": [
+    {
+      "version": "0.1.0",
+      "tag": "@lyvely/common_v0.1.0",
+      "date": "Wed, 12 Jun 2024 14:43:14 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Initial versioning"
+          }
+        ]
+      }
+    }
+  ]
+}

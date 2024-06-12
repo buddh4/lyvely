@@ -1,6 +1,6 @@
 {
   "name": "@lyvely/time-series-web",
-  "version": "0.1.0-alpha3",
+  "version": "0.1.1",
   "description": "time-series-web package",
   "module": "dist/index.js",
   "types": "./dist/index.d.ts",

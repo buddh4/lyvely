@@ -13,77 +13,77 @@
     "policyName": "lyvely-app",
     "definitionName": "lockStepVersion",
     "mainProject": "@lyvely/pwa",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "nextBump": "patch"
   },
   {
     "policyName": "lyvely-core",
     "definitionName": "lockStepVersion",
     "mainProject": "@lyvely/api",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "nextBump": "patch"
   },
   {
     "policyName": "lyvely-habits",
     "definitionName": "lockStepVersion",
     "mainProject": "@lyvely/habits",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "nextBump": "patch"
   },
   {
     "policyName": "lyvely-tasks",
     "definitionName": "lockStepVersion",
     "mainProject": "@lyvely/tasks",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "nextBump": "patch"
   },
   {
     "policyName": "lyvely-milestones",
     "definitionName": "lockStepVersion",
     "mainProject": "@lyvely/milestones",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "nextBump": "patch"
   },
   {
     "policyName": "lyvely-legal",
     "definitionName": "lockStepVersion",
     "mainProject": "@lyvely/legal",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "nextBump": "patch"
   },
   {
     "policyName": "lyvely-activities",
     "definitionName": "lockStepVersion",
     "mainProject": "@lyvely/activities-web",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "nextBump": "patch"
   },
   {
     "policyName": "lyvely-journals",
     "definitionName": "lockStepVersion",
     "mainProject": "@lyvely/journals",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "nextBump": "patch"
   },
   {
     "policyName": "lyvely-analytics",
     "definitionName": "lockStepVersion",
     "mainProject": "@lyvely/analytics",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "nextBump": "patch"
   },
   {
     "policyName": "lyvely-calendar-plan",
     "definitionName": "lockStepVersion",
     "mainProject": "@lyvely/calendar-plan",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "nextBump": "patch"
   },
   {
     "policyName": "lyvely-time-series",
     "definitionName": "lockStepVersion",
     "mainProject": "@lyvely/time-series",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "nextBump": "patch"
   },
   {

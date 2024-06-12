@@ -69,7 +69,8 @@
     "legal",
     "milestones",
     "activities",
-    "journals"
+    "journals",
+    "ci"
   ],
   "projects": [
     {
@@ -77,224 +78,256 @@
       "projectFolder": "packages/libs/devtools",
       "reviewCategory": "tool",
       "versionPolicyName": "lyvely-lib",
-      "tags": ["libs"]
+      "shouldPublish": true,
+      "tags": ["ci", "libs"]
     },
     {
       "packageName": "@lyvely/dates",
       "projectFolder": "packages/libs/dates",
       "reviewCategory": "lib",
       "versionPolicyName": "lyvely-lib",
-      "tags": ["libs"]
+      "shouldPublish": true,
+      "tags": ["ci", "libs"]
     },
     {
       "packageName": "@lyvely/common",
       "projectFolder": "packages/libs/common",
       "reviewCategory": "lib",
       "versionPolicyName": "lyvely-lib",
-      "tags": ["libs"]
+      "shouldPublish": true,
+      "tags": ["ci", "libs"]
     },
     {
       "packageName": "@lyvely/ui",
       "projectFolder": "packages/libs/ui",
       "reviewCategory": "lib",
       "versionPolicyName": "lyvely-lib",
-      "tags": ["libs", "web"]
+      "shouldPublish": true,
+      "tags": ["ci", "libs", "web"]
     },
     {
       "packageName": "@lyvely/interface",
       "projectFolder": "packages/core/interface",
       "reviewCategory": "core",
       "versionPolicyName": "lyvely-core",
-      "tags": ["core", "interfaces"]
+      "shouldPublish": true,
+      "tags": ["ci", "core", "interfaces"]
     },
     {
       "packageName": "@lyvely/api",
       "projectFolder": "packages/core/api",
       "reviewCategory": "core",
       "versionPolicyName": "lyvely-core",
-      "tags": ["core", "apis"]
+      "shouldPublish": true,
+      "tags": ["ci", "core", "apis"]
     },
     {
       "packageName": "@lyvely/web",
       "projectFolder": "packages/core/web",
       "reviewCategory": "core",
       "versionPolicyName": "lyvely-core",
-      "tags": ["core", "web"]
+      "shouldPublish": true,
+      "tags": ["ci", "core", "web"]
     },
     {
       "packageName": "@lyvely/calendar-plan-interface",
       "projectFolder": "packages/libs/calendar-plan/interface",
       "reviewCategory": "lib",
       "versionPolicyName": "lyvely-calendar-plan",
-      "tags": ["libs", "interfaces", "calendar-plan"]
+      "shouldPublish": true,
+      "tags": ["ci", "libs", "interfaces", "calendar-plan"]
     },
     {
       "packageName": "@lyvely/calendar-plan",
       "projectFolder": "packages/libs/calendar-plan/api",
       "reviewCategory": "lib",
       "versionPolicyName": "lyvely-calendar-plan",
-      "tags": ["libs", "apis", "calendar-plan"]
+      "shouldPublish": true,
+      "tags": ["ci", "libs", "apis", "calendar-plan"]
     },
     {
       "packageName": "@lyvely/calendar-plan-web",
       "projectFolder": "packages/libs/calendar-plan/web",
       "reviewCategory": "lib",
       "versionPolicyName": "lyvely-calendar-plan",
-      "tags": ["libs", "web", "calendar-plan"]
+      "shouldPublish": true,
+      "tags": ["ci", "libs", "web", "calendar-plan"]
     },
     {
       "packageName": "@lyvely/time-series-interface",
       "projectFolder": "packages/libs/time-series/interface",
       "reviewCategory": "lib",
       "versionPolicyName": "lyvely-time-series",
-      "tags": ["libs", "interfaces", "time-series"]
+      "shouldPublish": true,
+      "tags": ["ci", "libs", "interfaces", "time-series"]
     },
     {
       "packageName": "@lyvely/time-series",
       "projectFolder": "packages/libs/time-series/api",
       "reviewCategory": "lib",
       "versionPolicyName": "lyvely-time-series",
-      "tags": ["libs", "apis", "time-series"]
+      "shouldPublish": true,
+      "tags": ["ci", "libs", "apis", "time-series"]
     },
     {
       "packageName": "@lyvely/time-series-web",
       "projectFolder": "packages/libs/time-series/web",
       "reviewCategory": "lib",
       "versionPolicyName": "lyvely-time-series",
-      "tags": ["libs", "web", "time-series"]
+      "shouldPublish": true,
+      "tags": ["ci", "libs", "web", "time-series"]
     },
     {
       "packageName": "@lyvely/milestones-interface",
       "projectFolder": "packages/features/milestones/interface",
       "reviewCategory": "feature",
       "versionPolicyName": "lyvely-milestones",
-      "tags": ["features", "interfaces", "milestones"]
+      "shouldPublish": true,
+      "tags": ["ci", "features", "interfaces", "milestones"]
     },
     {
       "packageName": "@lyvely/milestones",
       "projectFolder": "packages/features/milestones/api",
       "reviewCategory": "feature",
       "versionPolicyName": "lyvely-milestones",
-      "tags": ["features", "apis", "milestones"]
+      "shouldPublish": true,
+      "tags": ["ci", "features", "apis", "milestones"]
     },
     {
       "packageName": "@lyvely/milestones-web",
       "projectFolder": "packages/features/milestones/web",
       "reviewCategory": "feature",
       "versionPolicyName": "lyvely-milestones",
-      "tags": ["features", "web", "milestones"]
+      "shouldPublish": true,
+      "tags": ["ci", "features", "web", "milestones"]
     },
     {
       "packageName": "@lyvely/tasks-interface",
       "projectFolder": "packages/features/tasks/interface",
       "reviewCategory": "feature",
       "versionPolicyName": "lyvely-tasks",
-      "tags": ["features", "interfaces", "tasks"]
+      "shouldPublish": true,
+      "tags": ["ci", "features", "interfaces", "tasks"]
     },
     {
       "packageName": "@lyvely/tasks",
       "projectFolder": "packages/features/tasks/api",
       "reviewCategory": "feature",
       "versionPolicyName": "lyvely-tasks",
-      "tags": ["features", "apis", "tasks"]
+      "shouldPublish": true,
+      "tags": ["ci", "features", "apis", "tasks"]
     },
     {
       "packageName": "@lyvely/tasks-web",
       "projectFolder": "packages/features/tasks/web",
       "reviewCategory": "feature",
       "versionPolicyName": "lyvely-tasks",
-      "tags": ["features", "web", "tasks"]
+      "shouldPublish": true,
+      "tags": ["ci", "features", "web", "tasks"]
     },
     {
       "packageName": "@lyvely/legal-interface",
       "projectFolder": "packages/features/legal/interface",
       "reviewCategory": "feature",
       "versionPolicyName": "lyvely-legal",
-      "tags": ["features", "interfaces", "legal"]
+      "shouldPublish": true,
+      "tags": ["ci", "features", "interfaces", "legal"]
     },
     {
       "packageName": "@lyvely/legal",
       "projectFolder": "packages/features/legal/api",
       "reviewCategory": "feature",
       "versionPolicyName": "lyvely-legal",
-      "tags": ["features", "apis", "legal"]
+      "shouldPublish": true,
+      "tags": ["ci", "features", "apis", "legal"]
     },
     {
       "packageName": "@lyvely/legal-web",
       "projectFolder": "packages/features/legal/web",
       "reviewCategory": "feature",
       "versionPolicyName": "lyvely-legal",
-      "tags": ["features", "web", "legal"]
+      "shouldPublish": true,
+      "tags": ["ci", "features", "web", "legal"]
     },
     {
       "packageName": "@lyvely/journals-interface",
       "projectFolder": "packages/features/journals/interface",
       "reviewCategory": "feature",
       "versionPolicyName": "lyvely-journals",
-      "tags": ["features", "interfaces", "journals"]
+      "shouldPublish": true,
+      "tags": ["ci", "features", "interfaces", "journals"]
     },
     {
       "packageName": "@lyvely/journals",
       "projectFolder": "packages/features/journals/api",
       "reviewCategory": "feature",
       "versionPolicyName": "lyvely-journals",
-      "tags": ["features", "apis", "journals"]
+      "shouldPublish": true,
+      "tags": ["ci", "features", "apis", "journals"]
     },
     {
       "packageName": "@lyvely/journals-web",
       "projectFolder": "packages/features/journals/web",
       "reviewCategory": "feature",
       "versionPolicyName": "lyvely-journals",
-      "tags": ["features", "web", "journals"]
+      "shouldPublish": true,
+      "tags": ["ci", "features", "web", "journals"]
     },
     {
       "packageName": "@lyvely/analytics-interface",
       "projectFolder": "packages/features/analytics/interface",
       "reviewCategory": "feature",
       "versionPolicyName": "lyvely-analytics",
-      "tags": ["features", "interfaces", "analytics"]
+      "shouldPublish": true,
+      "tags": ["ci", "features", "interfaces", "analytics"]
     },
     {
       "packageName": "@lyvely/analytics",
       "projectFolder": "packages/features/analytics/api",
       "reviewCategory": "feature",
       "versionPolicyName": "lyvely-analytics",
-      "tags": ["features", "apis", "analytics"]
+      "shouldPublish": true,
+      "tags": ["ci", "features", "apis", "analytics"]
     },
     {
       "packageName": "@lyvely/analytics-web",
       "projectFolder": "packages/features/analytics/web",
       "reviewCategory": "feature",
       "versionPolicyName": "lyvely-analytics",
-      "tags": ["features", "web", "analytics"]
+      "shouldPublish": true,
+      "tags": ["ci", "features", "web", "analytics"]
     },
     {
       "packageName": "@lyvely/habits-interface",
       "projectFolder": "packages/features/habits/interface",
       "reviewCategory": "feature",
       "versionPolicyName": "lyvely-habits",
-      "tags": ["features", "interfaces", "habits"]
+      "shouldPublish": true,
+      "tags": ["ci", "features", "interfaces", "habits"]
     },
     {
       "packageName": "@lyvely/habits",
       "projectFolder": "packages/features/habits/api",
       "reviewCategory": "feature",
       "versionPolicyName": "lyvely-habits",
-      "tags": ["features", "apis", "habits"]
+      "shouldPublish": true,
+      "tags": ["ci", "features", "apis", "habits"]
     },
     {
       "packageName": "@lyvely/habits-web",
       "projectFolder": "packages/features/habits/web",
       "reviewCategory": "feature",
       "versionPolicyName": "lyvely-habits",
-      "tags": ["features", "web", "habits"]
+      "shouldPublish": true,
+      "tags": ["ci", "features", "web", "habits"]
     },
     {
       "packageName": "@lyvely/activities-web",
       "projectFolder": "packages/features/activities/web",
       "reviewCategory": "feature",
       "versionPolicyName": "lyvely-activities",
-      "tags": ["features", "web", "activities"]
+      "shouldPublish": true,
+      "tags": ["ci", "features", "web", "activities"]
     },
     {
       "packageName": "@lyvely/server",
@@ -302,7 +335,7 @@
       "reviewCategory": "application",
       "versionPolicyName": "lyvely-app",
       "shouldPublish": false,
-      "tags": ["applications", "prod"]
+      "tags": ["ci", "applications", "prod"]
     },
     {
       "packageName": "@lyvely/pwa",
@@ -310,7 +343,7 @@
       "reviewCategory": "application",
       "versionPolicyName": "lyvely-app",
       "shouldPublish": false,
-      "tags": ["applications", "prod"]
+      "tags": ["ci", "applications", "prod"]
     },
     {
       "packageName": "@lyvely/docs",

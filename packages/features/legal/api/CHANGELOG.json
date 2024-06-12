@@ -1,0 +1,17 @@
+{
+  "name": "@lyvely/legal",
+  "entries": [
+    {
+      "version": "0.1.1",
+      "tag": "@lyvely/legal_v0.1.1",
+      "date": "Wed, 12 Jun 2024 14:43:14 GMT",
+      "comments": {
+        "none": [
+          {
+            "comment": "Initial versioning"
+          }
+        ]
+      }
+    }
+  ]
+}

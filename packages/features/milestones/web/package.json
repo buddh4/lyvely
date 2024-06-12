@@ -1,6 +1,6 @@
 {
   "name": "@lyvely/milestones-web",
-  "version": "0.1.0-alpha3",
+  "version": "0.1.1",
   "description": "Lyvely Milestones web package",
   "module": "dist/index.js",
   "types": "./dist/index.d.ts",

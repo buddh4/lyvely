@@ -1,6 +1,6 @@
 {
   "name": "@lyvely/common",
-  "version": "0.1.0-alpha3",
+  "version": "0.1.0",
   "description": "Common base library",
   "author": "Julian Harrer",
   "main": "dist/cjs/index.cjs",

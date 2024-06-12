@@ -1,6 +1,6 @@
 {
   "name": "@lyvely/api",
-  "version": "0.1.0-alpha3",
+  "version": "0.1.1",
   "description": "Lyvely server core",
   "type": "commonjs",
   "main": "dist/index.js",

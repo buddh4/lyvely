@@ -1,0 +1,23 @@
+{
+  "name": "@lyvely/activities-web",
+  "entries": [
+    {
+      "version": "0.1.1",
+      "tag": "@lyvely/activities-web_v0.1.1",
+      "date": "Wed, 12 Jun 2024 14:43:14 GMT",
+      "comments": {
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@lyvely/common\" to `0.1.0`"
+          },
+          {
+            "comment": "Updating dependency \"@lyvely/ui\" to `0.1.0`"
+          },
+          {
+            "comment": "Updating dependency \"@lyvely/dates\" to `0.1.0`"
+          }
+        ]
+      }
+    }
+  ]
+}

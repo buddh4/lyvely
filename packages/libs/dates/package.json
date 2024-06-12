@@ -1,6 +1,6 @@
 {
   "name": "@lyvely/dates",
-  "version": "0.1.0-alpha3",
+  "version": "0.1.0",
   "description": "Lyvely calendar core module",
   "type": "commonjs",
   "main": "dist/cjs/index.js",

@@ -1,0 +1,25 @@
+{
+  "name": "@lyvely/ui",
+  "entries": [
+    {
+      "version": "0.1.0",
+      "tag": "@lyvely/ui_v0.1.0",
+      "date": "Wed, 12 Jun 2024 14:43:14 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Initial versioning"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@lyvely/common\" to `0.1.0`"
+          },
+          {
+            "comment": "Updating dependency \"@lyvely/dates\" to `0.1.0`"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "name": "@lyvely/analytics-interface",
-  "version": "0.1.0-alpha3",
+  "version": "0.1.1",
   "description": "Lyvely analytics interface",
   "type": "commonjs",
   "main": "dist/cjs/index.cjs",

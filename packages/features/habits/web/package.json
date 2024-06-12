@@ -1,6 +1,6 @@
 {
   "name": "@lyvely/habits-web",
-  "version": "0.1.0-alpha3",
+  "version": "0.1.1",
   "description": "core-web package",
   "module": "dist/index.js",
   "types": "./dist/index.d.ts",

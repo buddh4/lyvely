@@ -1,6 +1,6 @@
 {
   "name": "@lyvely/time-series-interface",
-  "version": "0.1.0-alpha3",
+  "version": "0.1.1",
   "description": "Lyvely time-series interface",
   "type": "commonjs",
   "main": "dist/cjs/index.cjs",
