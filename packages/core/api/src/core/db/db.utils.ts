@@ -9,6 +9,8 @@ import {
   hasOwnNonNullableProperty,
 } from '@lyvely/common';
 import { IntegrityException } from '@lyvely/interface';
+import mongoose from 'mongoose';
+import { cloneDeepWith } from 'lodash';
 
 export type DocumentIdentity<T extends BaseDocument<any>> = T | TObjectId | string;
 
@@ -163,4 +165,13 @@ export function assureStringId(obj: any | undefined, optional?: boolean): string
 
 export function createBaseDocumentInstance<T>(constructor: Type<T>, data: DeepPartial<T>) {
   return BaseDocument.init(Object.create(constructor.prototype), data);
+}
+
+export function cloneQuery<T>(query: T): T {
+  return cloneDeepWith(query, function (val: unknown) {
+    if (val instanceof mongoose.Types.ObjectId) {
+      return new mongoose.Types.ObjectId(val.toString());
+    }
+    return val;
+  });
 }
