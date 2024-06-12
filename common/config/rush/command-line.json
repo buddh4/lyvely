@@ -12,6 +12,20 @@
    */
   "commands": [
     {
+      "name": "build",
+      "summary": "Runs build of all projects",
+      "commandKind": "bulk",
+      "enableParallelism": true,
+      "allowWarningsInSuccessfulBuild": true
+    },
+    {
+      "name": "rebuild",
+      "summary": "Rebuilds all projects",
+      "commandKind": "bulk",
+      "enableParallelism": true,
+      "allowWarningsInSuccessfulBuild": true
+    },
+    {
       "name": "test",
       "commandKind": "bulk",
       "summary": "Runs unit tests of all projects",

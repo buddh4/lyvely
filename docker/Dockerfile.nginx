@@ -9,8 +9,8 @@ FROM nginx:1.27.0
 RUN apt update
 RUN apt install -y curl
 
-RUN curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-RUN apt install -y nodejs
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+RUN apt install -y nodejs build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
 
 # Define default env, those will have priority over the .env file
 ENV MONGOMS_DISABLE_POSTINSTALL=1
@@ -34,9 +34,6 @@ COPY . build
 COPY docker/config/web.env build/packages/applications/pwa/.env
 
 WORKDIR build
-
-# We remove the canvas dependency to prevent the install script execution
-RUN sed -i '/"canvas":/,+1d' ./packages/core/api/package.json
 
 # Use install for CI environments
 RUN rush install --to @lyvely/pwa
