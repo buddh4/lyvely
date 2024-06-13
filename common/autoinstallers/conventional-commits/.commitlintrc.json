@@ -15,6 +15,7 @@
         "docs",
         "ci",
         "feat",
+        "perf",
         "fix",
         "refactor",
         "revert",
