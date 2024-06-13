@@ -10,10 +10,15 @@ ENV MONGOMS_DISABLE_POSTINSTALL=1 \
 # Install common app dependencies
 RUN npm install -g @microsoft/rush
 
-COPY . /usr/src/app
+# We copy the directories manually so we can skip the build when changing config
+COPY ./packages /usr/src/app
+COPY ./common /usr/src/app
+COPY ./package.json /usr/src/app
+COPY ./pnpm-lock.yaml /usr/src/app
+COPY ./rush.json /usr/src/app
+
 WORKDIR /usr/src/app
-RUN --mount=type=cache,id=pnpm,target=/common/temp/pnpm/store pnpm install --frozen-lockfile
-RUN rush install
+RUN --mount=type=cache,id=pnpm,target=/common/temp/pnpm/store rush install
 
 ENV NODE_ENV=production
 
@@ -32,15 +37,15 @@ RUN rush deploy --project @lyvely/pwa --target-folder ./prod/pwa --overwrite
 # Now the nginx base comes into play
 FROM nginx:1.27.0 AS pwa
 ENV LYVELY_APP_ENV=production
-COPY --from=lyvely_build /prod/pwa/packages/applications/pwa/dist/. /usr/share/nginx/html/
+COPY --from=lyvely_build /usr/src/app/prod/pwa/packages/applications/pwa/dist/. /usr/share/nginx/html/
 RUN rm /etc/nginx/conf.d/default.conf
-COPY docker/config/nginx.conf /etc/nginx/conf.d/
+COPY docker/config/lyvely.pwa.conf /etc/nginx/conf.d/
 
 ####
 # API
 ####
 
 FROM lyvely_build AS api
-WORKDIR /usr/src/app/prod/server
+WORKDIR /usr/src/app/prod/server/packages/applications/server
 # start the server
 CMD  ["rushx", "start:prod"]
