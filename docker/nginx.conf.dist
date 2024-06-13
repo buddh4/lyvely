@@ -5,9 +5,17 @@ events {
 }
 
 http {
+
     include    /etc/nginx/mime.types;
     client_max_body_size ${MAX_BODY_SIZE};
     index    index.html;
+
+    gzip on;
+    gzip_vary on;
+    gzip_min_length 10240;
+    gzip_proxied expired no-cache no-store private auth;
+    gzip_types text/plain text/html text/css text/xml text/javascript application/javascript application/x-javascript application/xml;
+    gzip_disable "MSIE [1-6]\.";
 
     default_type application/octet-stream;
     log_format   main '$remote_addr - $remote_user [$time_local]  $status '
