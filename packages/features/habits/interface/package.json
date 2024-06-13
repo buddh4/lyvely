@@ -30,6 +30,7 @@
   ],
   "dependencies": {
     "tslib": "^2.6.2",
+    "@lyvely/dates": "workspace:*",
     "@lyvely/common": "workspace:*",
     "@lyvely/interface": "workspace:*",
     "@lyvely/time-series-interface": "workspace:*",
@@ -40,7 +41,6 @@
     "reflect-metadata": "^0.1.12 || ^0.2.0"
   },
   "devDependencies": {
-    "@lyvely/dates": "workspace:*",
     "@lyvely/devtools": "workspace:*",
     "jest": "^29.7.0",
     "@types/jest": "^29.5.12",
