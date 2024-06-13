@@ -2,7 +2,7 @@
   "name": "@lyvely/tasks-web",
   "version": "0.1.1",
   "author": "Julian Harrer",
-  "license": "AGPL-3.0",
+  "license": "AGPL-3.0-or-later",
   "description": "Lyvely Tasks Web Package",
   "module": "dist/index.js",
   "types": "./dist/index.d.ts",

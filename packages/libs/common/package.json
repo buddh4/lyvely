@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Common base library",
   "author": "Julian Harrer",
-  "license": "AGPL-3.0",
+  "license": "AGPL-3.0-or-later",
   "main": "dist/cjs/index.cjs",
   "module": "dist/esm/index.js",
   "types": "dist/lib/index.d.ts",

@@ -2,7 +2,7 @@
   "name": "@lyvely/devtools",
   "version": "0.1.0-alpha3",
   "author": "Julian Harrer",
-  "license": "AGPL-3.0",
+  "license": "AGPL-3.0-or-later",
   "main": "dist/cjs/index.cjs",
   "module": "dist/esm/index.js",
   "types": "dist/index.d.ts",

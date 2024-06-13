@@ -2,7 +2,7 @@
   "name": "@lyvely/analytics",
   "version": "0.1.1",
   "author": "Julian Harrer",
-  "license": "AGPL-3.0",
+  "license": "AGPL-3.0-or-later",
   "description": "Lyvely policy module",
   "type": "commonjs",
   "main": "dist/index.js",

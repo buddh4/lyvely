@@ -2,7 +2,7 @@
   "name": "@lyvely/dates",
   "version": "0.1.0",
   "author": "Julian Harrer",
-  "license": "AGPL-3.0",
+  "license": "AGPL-3.0-or-later",
   "description": "Lyvely calendar core module",
   "type": "commonjs",
   "main": "dist/cjs/index.js",

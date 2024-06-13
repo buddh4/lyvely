@@ -2,7 +2,7 @@
   "name": "@lyvely/journals-interface",
   "version": "0.1.1",
   "author": "Julian Harrer",
-  "license": "AGPL-3.0",
+  "license": "AGPL-3.0-or-later",
   "description": "Lyvely journals interface",
   "type": "commonjs",
   "main": "dist/cjs/index.cjs",

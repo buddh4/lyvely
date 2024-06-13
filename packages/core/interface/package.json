@@ -1,7 +1,7 @@
 {
   "name": "@lyvely/interface",
   "author": "Julian Harrer",
-  "license": "AGPL-3.0",
+  "license": "AGPL-3.0-or-later",
   "version": "0.1.1",
   "description": "Lyvely core interface",
   "type": "commonjs",

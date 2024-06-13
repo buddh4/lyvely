@@ -2,6 +2,7 @@
   "name": "lyvely",
   "version": "0.1.0-alpha3",
   "author": "Julian Harrer",
+  "license": "AGPL-3.0-or-later",
   "private": true,
   "scripts": {
     "dev": "echo \"Hello...\""
