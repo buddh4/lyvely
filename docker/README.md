@@ -41,9 +41,12 @@ sh docker/docker-compose-setup.sh -f
 ```
 
 Running this command will create the following files
+- `docker/docker-compose.yml`: Docker compose file including a full build (see below)
 - `docker/config/lyvely.ts`: Api configuration file
-- `docker/config/web.env`: Frontend environment configuration (not used in `docker-compose` setup)
-- `docker/config/ncinx.conf`: Nginx configuration, used for `Dockerfile.nginx` container
+- `docker/config/web.env`: Frontend environment configuration
+- `docker/config/nginx.conf` Used by the nginx container (when running docker compose)
+- `docker/config/pwa.conf` The nginx config of the pwa application (when running docker compose)
+- `docker/config/docs.conf` The nginx config of the (optional) docs application (when running docker compose)
 
 #### 3. Review
 
@@ -109,6 +112,7 @@ This command will:
    - **redis**
    - **nginx**
  - Create the configuration files:
+     - `docker/docker-compose.yml`: The docker compose file we'll use for our build
      - `docker/config/lyvely.ts` which is your backend configuration
      - `docker/config/nginx.conf` which will be used by the nginx container
      - `docker/config/pwa.conf` defines the nginx config of the pwa application

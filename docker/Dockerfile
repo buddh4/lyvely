@@ -43,7 +43,8 @@ COPY --from=lyvely_build /usr/src/app/prod/docs/packages/applications/docs/build
 RUN rm /etc/nginx/conf.d/default.conf
 
 # Copy nginx config
-COPY docker/config/nginx.conf /etc/nginx/conf.d/
+RUN mkdir /etc/nginx/sites-enabled/
+COPY docker/config/nginx.conf /etc/nginx/nginx.conf
 COPY docker/config/pwa.conf /etc/nginx/sites-available/
 COPY docker/config/docs.conf /etc/nginx/sites-available/
 
