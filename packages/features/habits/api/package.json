@@ -1,6 +1,8 @@
 {
   "name": "@lyvely/habits",
   "version": "0.1.1",
+  "author": "Julian Harrer",
+  "license": "AGPL-3.0",
   "description": "Lyvely policy module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -23,8 +25,9 @@
     "prerelease": "pnpm run build",
     "test": "jest --passWithNoTests"
   },
-  "author": "Julian Harrer",
-  "license": "AGPL-3.0",
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "tslib": "^2.6.2",
     "@nestjs/common": "^10.3.8",

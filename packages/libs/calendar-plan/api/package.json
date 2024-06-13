@@ -1,6 +1,8 @@
 {
   "name": "@lyvely/calendar-plan",
   "version": "0.1.1",
+  "author": "Julian Harrer",
+  "license": "AGPL-3.0",
   "description": "Lyvely policy module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -19,8 +21,9 @@
     "prerelease": "pnpm run build",
     "test": "jest --passWithNoTests"
   },
-  "author": "Julian Harrer",
-  "license": "AGPL-3.0",
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "@lyvely/api": "workspace:*",
     "@lyvely/dates": "workspace:*",

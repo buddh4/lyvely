@@ -1,6 +1,8 @@
 {
   "name": "@lyvely/calendar-plan-web",
   "version": "0.1.1",
+  "author": "Julian Harrer",
+  "license": "AGPL-3.0",
   "description": "calendar-plan-web package",
   "module": "dist/index.js",
   "types": "./dist/index.d.ts",
@@ -27,7 +29,9 @@
     "depcheck": "depcheck --quiet",
     "deps": "pnpm depcruise --include-only \"^src\" --config .dependency-cruiser.js src"
   },
-  "author": "Julian Harrer",
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "vue": "^3.4",
     "@vueuse/core": "^10.9",

@@ -1,6 +1,8 @@
 {
   "name": "@lyvely/calendar-plan-interface",
   "version": "0.1.1",
+  "author": "Julian Harrer",
+  "license": "AGPL-3.0",
   "description": "Lyvely calendar-plan interface",
   "type": "commonjs",
   "main": "dist/cjs/index.cjs",
@@ -23,8 +25,9 @@
     "clear": "rm -rf ./dist && rimraf ./tsconfig.tsbuildinfo",
     "test:cov": "jest --coverage --no-cache"
   },
-  "author": "Julian Harrer",
-  "license": "AGPL-3.0",
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "@lyvely/common": "workspace:*",
     "@lyvely/interface": "workspace:*",

@@ -1,6 +1,8 @@
 {
   "name": "@lyvely/dates",
   "version": "0.1.0",
+  "author": "Julian Harrer",
+  "license": "AGPL-3.0",
   "description": "Lyvely calendar core module",
   "type": "commonjs",
   "main": "dist/cjs/index.js",
@@ -23,8 +25,9 @@
     "clear": "rimraf dist && rimraf ./tsconfig.tsbuildinfo",
     "test:cov": "jest --coverage --no-cache"
   },
-  "author": "Julian Harrer",
-  "license": "AGPL-3.0",
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "class-validator": "^0.14.0",
     "dayjs": "^1.11.10"

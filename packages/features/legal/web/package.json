@@ -1,6 +1,7 @@
 {
   "name": "@lyvely/legal-web",
   "version": "0.1.1",
+  "license": "AGPL-3.0",
   "description": "Lyvely legal web package",
   "module": "dist/index.js",
   "types": "./dist/index.d.ts",
@@ -13,6 +14,9 @@
       "require": "./dist/tailwind.txt"
     }
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "lyvely-dev build:web",

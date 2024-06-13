@@ -1,113 +1,21 @@
-## Development environment
+## Lyvely Server
 
-## Modules
+This server application includes all core and extended features of the platform and can serve as template for own
+server installations.
 
-### Create new module
+## License
 
-```
-nest generate module <name>
-```
+Copyright (C) 2022-2024 Julian Harrer
 
-## Migration
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-### Install
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
 
-```
-npm install -g migrate-mongo
-```
-
-### Add migration
-
-```
-pnpm migrate:create name-of-my-script
-```
-
-### Show status
-
-```
-pnpm migrate:status
-```
-
-### Run migrations
-
-```
-pnpm migrate:up
-```
-
-## Testing
-
-### Run unit tests:
-
-```
-npn run test
-```
-
-### Run e2e tests:
-
-1. Create and configure `.e2e.env` e.g:
-
-```
-MONGODB_URI=mongodb://localhost/lyvely-e2e
-```
-
-2. Start e2e env backend
-
-```
-pnpm start:e2e
-```
-
-3. Open cypress
-
-```
-npx cypress open
-```
-
-## Use depcruise to create dependency graph
-
-
-### Install depcruise
-
-```
-npm i -g dependency-cruiser
-npm i -g typescript
-npm i -g vue-template-compiler
-```
-
-> Note: Typescript and vue compiler needs to be installed alongside dependency cruise
-
-### Create dependency graph
-
-```
-depcruise --include-only "^src" --output-type dot src | dot -T svg > dependencygraph.svg
-```
-
-### Run depcruise checks
-
-## Security
-
-Set a `jwt-access-token-secret` in your environment. The secret must be at least 64 characters long.
-You can generate a random secret with:
-
-```
-node -e "console.log(require('crypto').randomBytes(32).toString('hex'));"
-```
-
-## Debugging
-
-```
-pnpm start:debug
-```
-**PhpStorm run config:**
-
-![](docs/img/4f6a6bd9.png)
-
-
-### Test with Docker
-
-```
-docker pull mongo
-docker run --name test-mongodb --restart=always -d -p 27017:27017 -v /path/on/host:/data/db mongo
-
-docker pull redis
-docker run --name test-redis --restart=always -d -p 6379:6379 -v /path/on/host:/data redis
-```
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.

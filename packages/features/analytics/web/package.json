@@ -1,6 +1,8 @@
 {
   "name": "@lyvely/analytics-web",
   "version": "0.1.1",
+  "author": "Julian Harrer",
+  "license": "AGPL-3.0",
   "description": "core-web package",
   "type": "module",
   "module": "dist/index.js",
@@ -23,7 +25,9 @@
     "depcheck": "depcheck --quiet",
     "deps": "pnpm depcruise --include-only \\\"^src\\\" --config .dependency-cruiser.cjs src"
   },
-  "author": "Julian Harrer",
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "tslib": "^2.6.2",
     "vue": "^3.4",

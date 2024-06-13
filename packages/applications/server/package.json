@@ -2,8 +2,9 @@
   "name": "@lyvely/server",
   "type": "commonjs",
   "version": "0.1.1",
-  "description": "",
-  "author": "",
+  "author": "Julian Harrer",
+  "license": "AGPL-3.0",
+  "description": "A Lyvely server application including all core and main platform features.",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "private": true,
@@ -21,6 +22,9 @@
     "start:prod": "node dist/main",
     "start:debug": "nest start --debug --watch"
   },
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "tslib": "^2.6.2",
     "@lyvely/api": "workspace:*",

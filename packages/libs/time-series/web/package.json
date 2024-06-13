@@ -1,6 +1,8 @@
 {
   "name": "@lyvely/time-series-web",
   "version": "0.1.1",
+  "author": "Julian Harrer",
+  "license": "AGPL-3.0",
   "description": "time-series-web package",
   "module": "dist/index.js",
   "types": "./dist/index.d.ts",
@@ -24,7 +26,9 @@
     "ncu": "ncu",
     "format": "prettier .  --write"
   },
-  "author": "Julian Harrer",
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "vue": "^3.4",
     "@vueuse/core": "^10.9",

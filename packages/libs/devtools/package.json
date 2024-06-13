@@ -1,6 +1,8 @@
 {
   "name": "@lyvely/devtools",
   "version": "0.1.0-alpha3",
+  "author": "Julian Harrer",
+  "license": "AGPL-3.0",
   "main": "dist/cjs/index.cjs",
   "module": "dist/esm/index.js",
   "types": "dist/index.d.ts",
@@ -15,6 +17,19 @@
   "bin": {
     "lyvely-dev": "bin/lyvely-dev.cli.js"
   },
+  "files": [
+    "dist",
+    "bin",
+    "cypress",
+    "dependency-cruiser",
+    "eslint",
+    "lyvely",
+    "prettier",
+    "rollup",
+    "tailwind",
+    "typescript",
+    "vite-helper"
+  ],
   "dependencies": {
     "@intlify/unplugin-vue-i18n": "^0.10",
     "@rollup/plugin-commonjs": "^25.0",

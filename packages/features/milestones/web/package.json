@@ -1,6 +1,8 @@
 {
   "name": "@lyvely/milestones-web",
   "version": "0.1.1",
+  "author": "Julian Harrer",
+  "license": "AGPL-3.0",
   "description": "Lyvely Milestones web package",
   "module": "dist/index.js",
   "types": "./dist/index.d.ts",
@@ -13,6 +15,9 @@
       "require": "./dist/tailwind.txt"
     }
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "lyvely-dev build:web",
@@ -24,7 +29,6 @@
     "depcheck": "depcheck --quiet",
     "deps": "pnpm depcruise --include-only \"^src\" --config .dependency-cruiser.js src"
   },
-  "author": "Julian Harrer",
   "dependencies": {
     "vue": "^3.4",
     "pinia": "^2.0",

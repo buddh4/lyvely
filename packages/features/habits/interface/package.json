@@ -1,6 +1,8 @@
 {
   "name": "@lyvely/habits-interface",
   "version": "0.1.1",
+  "author": "Julian Harrer",
+  "license": "AGPL-3.0",
   "description": "Lyvely habits interface",
   "type": "commonjs",
   "main": "dist/cjs/index.cjs",
@@ -23,8 +25,9 @@
     "clear": "rimraf dist && rimraf./tsconfig.tsbuildinfo",
     "test:cov": "jest --coverage --no-cache"
   },
-  "author": "Julian Harrer",
-  "license": "AGPL-3.0",
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "tslib": "^2.6.2",
     "@lyvely/common": "workspace:*",

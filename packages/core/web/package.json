@@ -1,11 +1,9 @@
 {
   "name": "@lyvely/web",
-  "author": "Julian Harrer",
   "version": "0.1.1",
+  "author": "Julian Harrer",
+  "license": "AGPL-3.0",
   "description": "core-web package",
-  "files": [
-    "dist"
-  ],
   "module": "dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
@@ -22,6 +20,9 @@
       "require": "./dist/tailwind.txt"
     }
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "test": "vitest --run",
     "cypress:open": "cross-env NODE_ENV=e2e cypress open",

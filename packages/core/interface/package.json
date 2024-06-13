@@ -1,5 +1,7 @@
 {
   "name": "@lyvely/interface",
+  "author": "Julian Harrer",
+  "license": "AGPL-3.0",
   "version": "0.1.1",
   "description": "Lyvely core interface",
   "type": "commonjs",
@@ -23,8 +25,9 @@
     "clear": "rimraf dist && rimraf ./tsconfig.tsbuildinfo",
     "test:cov": "jest --coverage --no-cache"
   },
-  "author": "Julian Harrer",
-  "license": "AGPL-3.0",
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "tslib": "^2.6.2",
     "@buddh4/mapped-types": "^1.1.0",

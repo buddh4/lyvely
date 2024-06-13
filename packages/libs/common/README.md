@@ -1,30 +1,20 @@
-# lively-common
+## Lyvely Common
 
-## Install
+This library provides common utilities usable in frontend, interface and api packages. 
 
-```
-npm install lyvely-common
-```
+## License
 
-### Jest
+Copyright (C) 2022-2024 Julian Harrer
 
-Add the following to your jest config:
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-```
-"transformIgnorePatterns": [
-   "/node_modules/(?!lyvely-common/.*)"
-]
-```
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
 
-This is required in order to prevent typescript transform conflicts since typescript does not respect `exports` in
-`package.json`
-
-## Link
-
-`npm ls -g --depth=0 --link=true`
-
-`npm rm --global lively-common`
-
-## Troubleshooting
-
-If build fails, delete `tsconfig.tsbuildinfo` and try again...
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.

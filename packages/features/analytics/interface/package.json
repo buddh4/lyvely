@@ -1,6 +1,8 @@
 {
   "name": "@lyvely/analytics-interface",
   "version": "0.1.1",
+  "author": "Julian Harrer",
+  "license": "AGPL-3.0",
   "description": "Lyvely analytics interface",
   "type": "commonjs",
   "main": "dist/cjs/index.cjs",
@@ -24,8 +26,9 @@
     "test:cov": "jest --coverage --no-cache",
     "watch": "npm-watch"
   },
-  "author": "Julian Harrer",
-  "license": "AGPL-3.0",
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "tslib": "^2.6.2",
     "@lyvely/interface": "workspace:*",
