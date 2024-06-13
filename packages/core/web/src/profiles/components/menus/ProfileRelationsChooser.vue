@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useProfileRelationInfosStore } from '@/profiles/stores/profile-relation-infos.store';
 import { storeToRefs } from 'pinia';
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useCreateProfileStore } from '@/profiles/stores/create-profile.store';
 import {
   CreateGroupProfilePermission,
@@ -13,6 +13,7 @@ import {
 import { t } from '@/i18n';
 import { useGlobalPermissions } from '@/common/composables';
 import ProfileRelationsChooserList from './ProfileRelationsChooserList.vue';
+import { useAuthStore } from '@/auth';
 
 const profileRelationInfosStore = useProfileRelationInfosStore();
 

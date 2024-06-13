@@ -1,20 +1,32 @@
-import { defineStore } from 'pinia';
+import { defineStore, storeToRefs } from 'pinia';
 import {
   ProfileRelationInfo,
   ProfileRelationInfos,
   useProfileRelationInfosClient,
 } from '@lyvely/interface';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { loadingStatus, useStatus } from '@/core';
+import { useAuthStore } from '@/auth';
 
 export const useProfileRelationInfosStore = defineStore('profile-relation-infos', () => {
-  const relations = ref<ProfileRelationInfos>({ profiles: [] });
   const profilesRelationInfosClient = useProfileRelationInfosClient();
+  const relations = ref<ProfileRelationInfos>({ profiles: [] });
   const status = useStatus();
+
+  const reset = () => {
+    relations.value = { profiles: [] };
+    status.resetStatus();
+  };
 
   async function getRelations(force = false): Promise<ProfileRelationInfos> {
     return !force && status.isStatusSuccess() ? Promise.resolve(relations.value) : loadRelations();
   }
+
+  const { user } = storeToRefs(useAuthStore());
+
+  watch(user, async (oldUser, newUser) => {
+    if (oldUser?.id !== newUser?.id) reset();
+  });
 
   async function loadRelations() {
     return loadingStatus(
