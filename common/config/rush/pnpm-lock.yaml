@@ -1283,6 +1283,9 @@ importers:
       '@lyvely/common':
         specifier: workspace:*
         version: link:../../../libs/common
+      '@lyvely/dates':
+        specifier: workspace:*
+        version: link:../../../libs/dates
       '@lyvely/interface':
         specifier: workspace:*
         version: link:../../../core/interface
@@ -1302,9 +1305,6 @@ importers:
         specifier: ^2.6.2
         version: 2.6.2
     devDependencies:
-      '@lyvely/dates':
-        specifier: workspace:*
-        version: link:../../../libs/dates
       '@lyvely/devtools':
         specifier: workspace:*
         version: link:../../../libs/devtools
