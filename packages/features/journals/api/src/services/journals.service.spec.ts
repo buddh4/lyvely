@@ -14,7 +14,6 @@ import {
   IntegrityException,
   UserAssignmentStrategy,
   ProfileTestDataUtils,
-  Content,
   buildContentTest,
 } from '@lyvely/api';
 import { JournalsService } from '../services';
@@ -137,7 +136,7 @@ describe('JournalService', () => {
           inputType: DataPointInputType.Radio,
         });
       } catch (err) {
-        const e = <any>err;
+        const e = err as any;
         expect(e instanceof IntegrityException).toBeDefined();
         expect(e.message).toEqual(
           "Could not initialize data point config with strategy 'number_radio'"
@@ -156,7 +155,7 @@ describe('JournalService', () => {
           inputType: DataPointInputType.Radio,
         });
       } catch (err) {
-        const e = <any>err;
+        const e = err as any;
         expect(e instanceof IntegrityException).toBeDefined();
         expect(e.message).toEqual(
           "Could not initialize data point config with strategy 'number_radio'"

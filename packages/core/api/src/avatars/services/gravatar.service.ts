@@ -18,12 +18,17 @@ export class GravatarService extends BaseAvatarService {
     const avatar = new Avatar(guid);
 
     return new Promise((resolve, reject) => {
-      client.get(this.buildGravatarUrl(email), (res) => {
-        const stream = createWriteStream(this.storageService.getFileUploadPath(avatar.guid));
-        res.pipe(stream);
-        stream.on('error', reject);
-        stream.on('finish', async () => resolve(avatar));
-      });
+      try {
+        const path = this.storageService.getFileUploadPath(avatar.guid);
+        client.get(this.buildGravatarUrl(email), (res) => {
+          const stream = createWriteStream(path);
+          res.pipe(stream);
+          stream.on('error', reject);
+          stream.on('finish', async () => resolve(avatar));
+        });
+      } catch (error) {
+        reject(error);
+      }
     });
   }
 
