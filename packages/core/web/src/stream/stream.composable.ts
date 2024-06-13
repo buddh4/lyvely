@@ -121,9 +121,7 @@ export function useStream<
     isInitialized.value = true;
 
     return new Promise((resolve) => {
-      setTimeout(() => {
-        _initialScroll().then(() => resolve((isReady.value = true)));
-      });
+      _initialScroll().then(() => resolve((isReady.value = true)));
     });
   }
 
@@ -135,6 +133,7 @@ export function useStream<
     models.value = history.models;
     filter.value = history.filter;
     state.value = history.state;
+
     _initInfiniteScroll();
 
     isInitialized.value = true;
@@ -211,16 +210,10 @@ export function useStream<
       ? options.infiniteScroll
       : {};
 
-    useInfiniteScroll(
-      options.root,
-      () => {
-        loadTail().catch((e) => console.error(e));
-      },
-      {
-        distance: infiniteScrollOptions.distance || 50,
-        direction: options.direction === StreamDirection.BBT ? 'top' : 'bottom',
-      }
-    );
+    return useInfiniteScroll(options.root, () => loadTail().catch((e) => console.error(e)), {
+      distance: infiniteScrollOptions.distance || 50,
+      direction: options.direction === StreamDirection.BBT ? 'top' : 'bottom',
+    });
   }
 
   async function addTail(newModels: TModel[]) {
