@@ -1,5 +1,6 @@
 # compiled output
 /dist
+/prod
 /dev-dist
 /node_modules
 
