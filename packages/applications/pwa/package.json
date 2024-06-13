@@ -17,6 +17,9 @@
     "build:staging": "vite build --mode staging && vue-tsc --emitDeclarationOnly",
     "build:dev": "vite build --mode development && vue-tsc --emitDeclarationOnly"
   },
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "@lyvely/web": "workspace:*",
     "@lyvely/ui": "workspace:*",
