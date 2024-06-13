@@ -15,7 +15,7 @@
     "prettier": "prettier src --check",
     "depcheck": "depcheck --quiet",
     "ncu": "ncu",
-    "deps": "pnpm depcruise --include-only \"^src\" --config .dependency-cruiser.js src",
+    "deps": "rush-pnpm --rush-skip-checks depcruise --include-only \"^src\" --config .dependency-cruiser.js src",
     "prepublish:npm": "pnpm run build",
     "publish:npm": "npm publish --access public",
     "prepublish:next": "pnpm run build",

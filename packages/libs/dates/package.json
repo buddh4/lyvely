@@ -13,7 +13,7 @@
     "format": "prettier src --write",
     "prettier": "prettier src --check",
     "depcheck": "depcheck --quiet",
-    "deps": "pnpm depcruise --include-only \"^src\" --config .dependency-cruiser.js src",
+    "deps": "rush-pnpm --rush-skip-checks depcruise --include-only \"^src\" --config .dependency-cruiser.js src",
     "ncu": "ncu",
     "build": "gulp clean && gulp copyLocales && tsc -p tsconfig.build.json --outDir dist/lib --declarationDir dist/lib --declaration true && tscpaths -p tsconfig.build.json -s ./src -o dist/lib && rollup --silent -c && rimraf tsconfig.tsbuildinfo",
     "prepublish:npm": "pnpm run build",
