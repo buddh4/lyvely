@@ -51,7 +51,7 @@ jobs:
         run: node common/scripts/install-run-rush.js depcheck --from git:HEAD~1 --verbose
 
       - name: Run Check
-        run: node common/scripts/install-run-rush.js check --from git:HEAD~1 --verbose
+        run: node common/scripts/install-run-rush.js check --verbose
   unit_tests:
     runs-on: ubuntu-latest
     steps:
