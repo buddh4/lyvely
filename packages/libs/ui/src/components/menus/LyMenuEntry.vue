@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { IconBindingsIf, IMenuEntry } from './interfaces';
+import { IconBindingsIF, IMenuEntry } from './interfaces';
 import { t } from '@/i18n';
 import { computed } from 'vue';
 import { isPlainObject } from '@lyvely/common';
@@ -24,7 +24,7 @@ function onMenuItemClick() {
 
 const iconBindings = computed(() => {
   if (isPlainObject(props.entry.iconBindings)) {
-    const iconBindings = { ...props.entry.iconBindings } as IconBindingsIf;
+    const iconBindings = { ...props.entry.iconBindings } as IconBindingsIF;
     iconBindings.class ??= '';
     iconBindings.class = twMerge(iconBindings.class, props.iconClass);
     return iconBindings;

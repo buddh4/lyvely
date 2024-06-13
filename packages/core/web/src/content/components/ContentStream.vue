@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { getContentStreamEntryComponent } from '../registries';
 import { t } from '@/i18n';
-import { computed, nextTick, onMounted, onUnmounted, ref, Ref, watch, WatchStopHandle } from 'vue';
+import { computed, onMounted, onUnmounted, ref, Ref, watch, WatchStopHandle } from 'vue';
 import {
   ContentModel,
   ContentRequestFilter,

@@ -77,34 +77,33 @@ function setInputType(inputType: DataPointInputType) {
     </div>
 
     <div class="grid grid-cols-2 grid-rows-2 gap-2">
-
       <div>
         <ly-time-number-input
-            v-if="modelValue.inputType === DataPointInputType.Timer"
-            property="min"
-            label="time-series.fields.min"
-            :max="modelValue.max" />
+          v-if="modelValue.inputType === DataPointInputType.Timer"
+          property="min"
+          label="time-series.fields.min"
+          :max="modelValue.max" />
         <ly-number-field
-            v-else
-            property="min"
-            label="time-series.fields.min"
-            :min="0"
-            :max="modelValue.max" />
+          v-else
+          property="min"
+          label="time-series.fields.min"
+          :min="0"
+          :max="modelValue.max" />
       </div>
 
       <div>
         <ly-time-number-input
-            v-if="modelValue.inputType === DataPointInputType.Timer"
-            property="optimal"
-            label="time-series.fields.optimal"
-            :min="modelValue.min"
-            :max="modelValue.max" />
+          v-if="modelValue.inputType === DataPointInputType.Timer"
+          property="optimal"
+          label="time-series.fields.optimal"
+          :min="modelValue.min"
+          :max="modelValue.max" />
         <ly-number-field
-            v-else
-            property="optimal"
-            label="time-series.fields.optimal"
-            :min="modelValue.min"
-            :max="modelValue.max" />
+          v-else
+          property="optimal"
+          label="time-series.fields.optimal"
+          :min="modelValue.min"
+          :max="modelValue.max" />
       </div>
 
       <div>

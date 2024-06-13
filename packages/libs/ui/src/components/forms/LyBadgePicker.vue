@@ -8,14 +8,14 @@ import LyTextField from '@/components/forms/LyTextField.vue';
 import LyBadge from '@/components/badges/LyBadge.vue';
 import LyButton from '@/components/buttons/LyButton.vue';
 import { getOwnNonNullableProperty } from '@lyvely/common';
-import { AvatarData } from '@/interfaces';
+import { IAvatarData } from '@/interfaces';
 
 type IPickerConfig = {
   key: string;
   value?: any;
   label?: string;
   color?: string;
-  avatar?: AvatarData;
+  avatar?: IAvatarData;
 };
 export type IPickerOptions = IPickerConfig | string;
 

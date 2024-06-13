@@ -1,6 +1,6 @@
 import { Translatable } from '@/i18n';
 
-export interface AvatarData {
+export interface IAvatarData {
   guid: string;
   timestamp?: number;
 }

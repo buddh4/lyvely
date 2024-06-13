@@ -1,6 +1,6 @@
 import { errorToServiceException } from '@/exceptions';
 import { AxiosResponse } from 'axios';
-import { createBaseModelAndInit, initBaseModelData, Type } from '@lyvely/common';
+import { createBaseModelAndInit, Type } from '@lyvely/common';
 
 type UnwrappedResponse<T extends Promise<AxiosResponse>> = T extends null | undefined | void
   ? T // special case for `null | undefined` when not in `--strictNullChecks` mode

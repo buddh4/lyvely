@@ -3,7 +3,7 @@ import { IconOptionsIF } from '@/components/icons';
 import { RouteLocationRaw } from 'vue-router';
 import { ComputedRef, Ref } from 'vue';
 
-export interface IconBindingsIf {
+export interface IconBindingsIF {
   title?: Translatable;
   options?: IconOptionsIF;
   scaleTo?: number;
@@ -14,7 +14,7 @@ export interface IconBindingsIf {
 export interface IBaseMenuEntry<TContext = any> {
   id: string;
   icon?: string;
-  iconBindings?: IconBindingsIf;
+  iconBindings?: IconBindingsIF;
   moduleId: string;
   text?: Translatable;
   condition?:

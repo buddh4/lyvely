@@ -19,6 +19,7 @@ const props = withDefaults(defineProps<IProps>(), {
   optimal: 0,
   min: 0,
   max: 1,
+  inputStyle: undefined,
   disabled: false,
   single: false,
 });

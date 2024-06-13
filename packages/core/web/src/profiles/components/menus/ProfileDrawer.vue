@@ -5,12 +5,11 @@ import { usePageStore } from '@/ui';
 import { translate } from '@/i18n';
 import { useProfileStore } from '@/profiles/stores';
 import imageUrl from '@/assets/logo_white_bold.svg';
-import { UseSwipeDirection, useSwipe } from '@vueuse/core';
+import { useSwipe } from '@vueuse/core';
 import { useProfileMenu } from '@/profiles/composables';
 import { MENU_PROFILE_DRAWER } from '@/profiles/profile.constants';
 import ProfileAvatar from '../ProfileAvatar.vue';
 import { storeToRefs } from 'pinia';
-//import LegalLinks from '@/legal/components/LegalLinks.vue';
 
 const pageStore = usePageStore();
 const appDrawer = ref<HTMLElement>() as Ref<HTMLElement>;
@@ -18,7 +17,7 @@ const { profile } = storeToRefs(useProfileStore());
 
 const { enabledMenuEntries } = useProfileMenu(MENU_PROFILE_DRAWER);
 
-const { toggleSidebar, closeSidebar } = pageStore;
+const { closeSidebar } = pageStore;
 const { showSidebar } = storeToRefs(pageStore);
 
 const isSmallView = ref(isMaxViewSize('sm'));

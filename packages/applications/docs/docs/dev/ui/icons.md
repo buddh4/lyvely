@@ -117,7 +117,7 @@ import { registerIconLibrary } from "@lyvely/ui";
 registerIconLibrary({
   id: 'my-module',
   component: MyModuleIcon,
-  getBindings(props: IconProps) {
+  getBindings(props: IconPropsIF) {
     // map props if requried or just return given props
   }
 })

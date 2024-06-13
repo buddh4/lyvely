@@ -1,5 +1,5 @@
 import { setTranslationProvider, TranslationAdapter } from '@/i18n';
-import { AvatarData } from '@/interfaces';
+import { IAvatarData } from '@/interfaces';
 import { isPlainObject } from '@lyvely/common';
 
 export type ENV = 'development' | 'production';
@@ -25,10 +25,10 @@ export function getAvatarUrl(guid: string, ts?: number) {
   return `/avatars/${encodeURIComponent(guid)}` + ts ? `?v=${encodeURIComponent(ts!)}` : '';
 }
 
-export function createAvatarUrl(avatar: AvatarData): string;
+export function createAvatarUrl(avatar: IAvatarData): string;
 export function createAvatarUrl(guid: string, timestamp?: number): string;
-export function createAvatarUrl(guid: string | AvatarData, timestamp?: number): string {
-  if (isPlainObject<AvatarData>(guid)) {
+export function createAvatarUrl(guid: string | IAvatarData, timestamp?: number): string {
+  if (isPlainObject<IAvatarData>(guid)) {
     timestamp = guid.timestamp;
     guid = guid.guid;
   }

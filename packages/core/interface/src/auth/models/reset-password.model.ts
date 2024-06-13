@@ -1,4 +1,4 @@
-import { BaseModel, PropertyType, SameAs } from '@lyvely/common';
+import { BaseModel, SameAs } from '@lyvely/common';
 import { IsBoolean, IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
 
 export class SendResetPasswordMail {

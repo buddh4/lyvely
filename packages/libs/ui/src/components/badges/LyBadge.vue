@@ -5,12 +5,12 @@ import { t, Translatable } from '@/i18n';
 import { twMerge } from 'tailwind-merge';
 import LyIcon from '@/components/icons/LyIcon.vue';
 import LyButton from '@/components/buttons/LyButton.vue';
-import { AvatarData } from '@/interfaces';
+import { IAvatarData } from '@/interfaces';
 
 export interface IProps {
   modelValue?: boolean;
   text?: Translatable;
-  avatar?: AvatarData;
+  avatar?: IAvatarData;
   color?: string;
   textColor?: string;
   clickable?: boolean;
@@ -22,6 +22,7 @@ export interface IProps {
 const props = withDefaults(defineProps<IProps>(), {
   modelValue: true,
   text: '',
+  avatar: undefined,
   color: undefined,
   clickable: true,
   enterActiveClass: 'animate__animated animate__faster animate__fadeIn',

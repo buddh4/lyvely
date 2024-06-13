@@ -13,7 +13,6 @@ import { useContentEditStore } from '@/content/stores';
 import { getContentTypeOptions } from '@/content/registries';
 import { useContentArchive } from '@/content/composables';
 import { useConfirm } from '@/ui';
-import { isNotNil } from '@lyvely/common/src';
 
 export default () => {
   return {

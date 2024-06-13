@@ -214,7 +214,6 @@ export function useBaseInputSetup<T extends AllowedInputValueTypes = any>(
         validator!.validateField(props.property!).then(() => {
           emit('change', evt);
         });
-      } else {
       }
     },
     onFocusOut: () => {

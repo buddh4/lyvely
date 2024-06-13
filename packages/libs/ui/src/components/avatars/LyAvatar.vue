@@ -2,11 +2,11 @@
 import { computed, ref, watch } from 'vue';
 import { getContrast, includesUtilityClass } from '@/helpers';
 import randomColor from 'randomcolor';
-import { AvatarData } from '@/interfaces';
+import { IAvatarData } from '@/interfaces';
 import { createAvatarUrl } from '@/config';
 
 export interface IProps {
-  avatar?: AvatarData;
+  avatar?: IAvatarData;
   name: string;
   guid?: string;
   url?: string;
@@ -15,7 +15,11 @@ export interface IProps {
 }
 
 const props = withDefaults(defineProps<IProps>(), {
+  avatar: undefined,
+  guid: undefined,
+  url: undefined,
   border: true,
+  timestamp: undefined,
 });
 
 const imgGuid = computed(() => props.avatar?.guid || props.guid);

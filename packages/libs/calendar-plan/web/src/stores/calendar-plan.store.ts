@@ -4,7 +4,6 @@ import {
   isToday as isTodayUtil,
   everyFullMinute,
   CalendarInterval,
-  ICalendarPreferences,
 } from '@lyvely/dates';
 import { CalendarPlan } from '@lyvely/calendar-plan-interface';
 import { ref, computed } from 'vue';
