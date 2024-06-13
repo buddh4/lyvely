@@ -2,4 +2,5 @@ config
 data
 lyvely.ts
 web.env
+docker-compose.yml
 

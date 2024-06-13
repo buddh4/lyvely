@@ -70,6 +70,11 @@ then
 	envsubst < "$SCRIPT_DIR/lyvely.ts.dist" > "$SCRIPT_DIR/config/lyvely.ts"
 fi
 
+if [ ! -f "$SCRIPT_DIR/docker-compose.yml" ] || [ "$FILES" = 1 ]
+then
+	envsubst < "$SCRIPT_DIR/docker-compose.yml.dist" > "$SCRIPT_DIR/docker-compose.yml"
+fi
+
 # Copy nginx configuration
 if [ ! -f "$SCRIPT_DIR/config/nginx.conf" ] || [ "$FILES" = 1 ]
 then
