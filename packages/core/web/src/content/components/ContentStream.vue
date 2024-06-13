@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { getContentStreamEntryComponent } from '../registries';
 import { t } from '@/i18n';
-import { nextTick, onMounted, onUnmounted, ref, Ref, watch, WatchStopHandle } from 'vue';
+import { computed, nextTick, onMounted, onUnmounted, ref, Ref, watch, WatchStopHandle } from 'vue';
 import {
   ContentModel,
   ContentRequestFilter,
@@ -15,7 +15,6 @@ import { storeToRefs } from 'pinia';
 import { useContentStreamHistoryStore, useContentStreamFilter, useContentStore } from '../stores';
 import { onBeforeRouteLeave } from 'vue-router';
 import { useStream } from '@/stream/stream.composable';
-import { scrollToBottom } from '@lyvely/ui';
 import DefaultStreamEntry from './DefaultStreamEntry.vue';
 
 export interface IProps {
@@ -35,22 +34,6 @@ const streamRoot = ref<HTMLElement>() as Ref<HTMLElement>;
 const { profile } = storeToRefs(useProfileStore());
 const live = useLiveStore();
 
-async function doScrollToHead(attempt = 0): Promise<void> {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      nextTick(() => {
-        if (!streamRoot.value) return;
-        scrollToBottom(streamRoot.value);
-        if (attempt < 3 && streamRoot.value.scrollTop !== streamRoot.value.scrollHeight) {
-          doScrollToHead(++attempt).then(resolve);
-        } else {
-          resolve();
-        }
-      });
-    }, 100);
-  });
-}
-
 const { getHistoryState, removeHistoryState, resetHistory } = useContentStreamHistoryStore();
 const stream = useStream<ContentModel, ContentRequestFilter>(
   {
@@ -60,7 +43,6 @@ const stream = useStream<ContentModel, ContentRequestFilter>(
     direction: StreamDirection.BBT,
     scrollToHeadOnInit: props.scrollToHead,
     infiniteScroll: props.infiniteScroll ? { distance: 250 } : false,
-    scrollToHead: doScrollToHead,
   },
   useContentStreamClient()
 );
@@ -128,7 +110,46 @@ const onContentCreated = (content: ContentModel) => {
 
 let unWatchFilter: WatchStopHandle;
 
+const scrolled = ref(false);
+
+const showStream = computed(() => {
+  if (getHistoryState(filter.value.parentId)) return isReady.value;
+  return scrolled.value;
+});
+
 onMounted(() => {
+  // TODO: This is a mess unfortunately, we should replace the internal scrollToHead with the observer strategy.
+  const history = getHistoryState(filter.value.parentId);
+  if (!history && props.scrollToHead) {
+    let observer = new MutationObserver((mutationsList) => {
+      // If something changes in your div, this function will run.
+      for (let mutation of mutationsList) {
+        if (mutation.type === 'childList' || mutation.type === 'attributes') {
+          setTimeout(() => {
+            streamRoot.value.scrollTop = streamRoot.value.scrollHeight;
+          });
+        }
+      }
+    });
+
+    observer.observe(streamRoot.value, { attributes: true, childList: true, subtree: true });
+
+    watch(isReady, () => {
+      setTimeout(() => {
+        observer.disconnect();
+        scrolled.value = true;
+      }, 100);
+    });
+
+    // Make sure we disconnect
+    setTimeout(() => {
+      observer.disconnect();
+      scrolled.value = true;
+    }, 1000);
+  } else {
+    scrolled.value = true;
+  }
+
   initOrRestore().then(() => {
     live.on('content', ContentUpdateStateLiveEvent.eventName, onContentUpdate);
     unWatchFilter = watch(filter, () => stream.reload(), { deep: true });
@@ -144,7 +165,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div v-if="!isReady" class="absolute z-50 h-full w-full bg-body">
+  <div v-if="!showStream" class="absolute z-50 h-full w-full bg-body bg-opacity-25">
     <div class="flex h-full w-full items-center justify-center">
       <ly-loader />
     </div>

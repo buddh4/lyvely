@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computedAsync, useDark } from '@vueuse/core';
+import { useDark } from '@vueuse/core';
 import { computed, nextTick, onMounted, ref, watch } from 'vue';
 import { getBackgroundColor, hasOverflow } from '@/helpers';
 import {
@@ -27,6 +27,12 @@ const props = withDefaults(defineProps<IProps>(), {
   maxHeight: false,
 });
 
+const cssClass = {
+  'overflow-hidden prose-a:text-blue-600 prose-a:no-underline dark:prose-a:text-blue-500': true,
+  'prose prose-sm dark:prose-invert': props.prose,
+  'max-w-none': !props.maxWidth,
+};
+
 const isOverflow = ref(false);
 const showAll = ref(!props.maxHeight);
 const maxHeightState = computed(() => {
@@ -51,36 +57,35 @@ function getShadowBackground() {
   return bgColor ? `linear-gradient(0deg, ${bgColor} 20%, transparent 100%)` : 'transparent';
 }
 
-const html = computedAsync(async () => {
-  try {
-    const processed = renderMarkdown(props.md, props.preset);
+const html = ref('');
 
-    setTimeout(() => {
-      isOverflow.value = hasOverflow(stage.value!, 20);
-    }, 100);
-
-    return processed;
-  } catch (e) {
-    return 'Error';
-  }
-});
+const render = () => {
+  setTimeout(() => {
+    try {
+      html.value = renderMarkdown(props.md, props.preset);
+      if (!html.value.length) return;
+      setTimeout(() => (isOverflow.value = hasOverflow(stage.value!, 20)));
+    } catch (e) {
+      return 'Error';
+    }
+  });
+};
 
 onMounted(() => {
   shadowBackground.value = getShadowBackground();
+  watch(() => props.md, render, { immediate: true });
 });
 </script>
 
 <template>
   <div>
     <div
+      v-if="html.length"
       ref="stage"
-      :class="{
-        'overflow-hidden prose-a:text-blue-600 prose-a:no-underline dark:prose-a:text-blue-500': true,
-        'prose prose-sm dark:prose-invert': prose,
-        'max-w-none': !maxWidth,
-      }"
+      :class="cssClass"
       :style="{ 'max-height': maxHeightState }"
       v-html="html" />
+    <div v-else :style="{ 'max-height': maxHeightState }" :class="cssClass">{{ md }}</div>
     <div v-if="isOverflow && maxHeight !== false" class="relative flex w-full justify-end">
       <div
         v-if="!showAll"
