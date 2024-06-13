@@ -73,7 +73,17 @@ fi
 # Copy nginx configuration
 if [ ! -f "$SCRIPT_DIR/config/nginx.conf" ] || [ "$FILES" = 1 ]
 then
-	envsubst < "$SCRIPT_DIR/nginx.conf.dist" > "$SCRIPT_DIR/config/nginx.conf"
+	envsubst < "$SCRIPT_DIR/nginx.conf.dist" > "$SCRIPT_DIR/config/nxginx.conf"
+fi
+
+if [ ! -f "$SCRIPT_DIR/config/pwa.conf" ] || [ "$FILES" = 1 ]
+then
+	envsubst < "$SCRIPT_DIR/pwa.conf.dist" > "$SCRIPT_DIR/config/pwa.conf"
+fi
+
+if [ ! -f "$SCRIPT_DIR/config/docs.conf" ] || [ "$FILES" = 1 ]
+then
+	envsubst < "$SCRIPT_DIR/docs.conf.dist" > "$SCRIPT_DIR/config/docs.conf"
 fi
 
 # Copy web environment

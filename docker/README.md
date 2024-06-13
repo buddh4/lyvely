@@ -111,6 +111,8 @@ This command will:
  - Create the configuration files:
      - `docker/config/lyvely.ts` which is your backend configuration
      - `docker/config/nginx.conf` which will be used by the nginx container
+     - `docker/config/pwa.conf` defines the nginx config of the pwa application
+     - `docker/config/docs.conf` defines the nginx config of the (optional) docs application
 
 :::tip
 The `docker-util` script also supports a `-b` flag which will also install and build the project, which is only required
@@ -133,6 +135,8 @@ Review your configuration files:
 
   - `docker/config/lyvely.ts`
   - `docker/config/nginx.conf`
+  - `docker/config/pwa.conf`
+  - `docker/config/docs.conf` (only required when enabling docs)
 
 For a local test installation, you probably want to align the configuration files to allow http only access.
 You may want to use the following mail configuration for a local test environment:
@@ -158,12 +162,21 @@ Copy your ssh certificate and key file into `docker/certs`:
  - `docker/certs/lyvely.app.crt` 
  - `docker/certs/lyvely.app.key` 
 
+If docs are enabled:
+
+- `docker/certs/lyvely.docs.crt`
+- `docker/certs/lyvely.docs.key`
+
 #### 4. Run docker compose
+
+If you just want to build the pwa without the docs, set `ENABLE_DOCS: 'false'` within the `docker-compose.yml`.
+
 
 ```
 cd docker
 sudo docker compose up --build -d
 ```
+
 
 :::warning
 You may need to manually configure the replicaset as follows:

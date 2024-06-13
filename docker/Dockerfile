@@ -11,11 +11,11 @@ ENV MONGOMS_DISABLE_POSTINSTALL=1 \
 RUN npm install -g @microsoft/rush
 
 # We copy the directories manually so we can skip the build when changing config
-COPY ./packages /usr/src/app
-COPY ./common /usr/src/app
-COPY ./package.json /usr/src/app
-COPY ./pnpm-lock.yaml /usr/src/app
-COPY ./rush.json /usr/src/app
+COPY ./packages /usr/src/app/packages
+COPY ./common /usr/src/app/common
+COPY ./package.json /usr/src/app/package.json
+COPY ./pnpm-lock.yaml /usr/src/app/pnpm-lock.yaml
+COPY ./rush.json /usr/src/app/rush.json
 
 WORKDIR /usr/src/app
 RUN --mount=type=cache,id=pnpm,target=/common/temp/pnpm/store rush install
@@ -27,19 +27,32 @@ COPY docker/config/lyvely.ts ./packages/applications/server/src/config/lyvely.pr
 COPY docker/config/web.env ./packages/applications/pwa/.env
 
 # Build
-RUN rush build --to @lyvely/pwa --to @lyvely/server
+RUN rush build --to @lyvely/pwa --to @lyvely/server --to @lyvely/docs
 
 # Deploy
 RUN rush deploy --project @lyvely/server --target-folder ./prod/server --overwrite
 RUN rush deploy --project @lyvely/pwa --target-folder ./prod/pwa --overwrite
+RUN rush deploy --project @lyvely/docs --target-folder ./prod/docs --overwrite
 
 
 # Now the nginx base comes into play
 FROM nginx:1.27.0 AS pwa
 ENV LYVELY_APP_ENV=production
-COPY --from=lyvely_build /usr/src/app/prod/pwa/packages/applications/pwa/dist/. /usr/share/nginx/html/
+COPY --from=lyvely_build /usr/src/app/prod/pwa/packages/applications/pwa/dist/. /usr/share/nginx/html/pwa
+COPY --from=lyvely_build /usr/src/app/prod/docs/packages/applications/docs/build/. /usr/share/nginx/html/docs
 RUN rm /etc/nginx/conf.d/default.conf
-COPY docker/config/lyvely.pwa.conf /etc/nginx/conf.d/
+
+# Copy nginx config
+COPY docker/config/nginx.conf /etc/nginx/conf.d/
+COPY docker/config/pwa.conf /etc/nginx/sites-available/
+COPY docker/config/docs.conf /etc/nginx/sites-available/
+
+# Define the arg for optional docs config
+ARG ENABLE_DOCS
+
+# Create simlinks for pwa.conf and docs.conf in sites-enabled
+RUN ln -s /etc/nginx/sites-available/pwa.conf /etc/nginx/sites-enabled/
+RUN if [ "$ENABLE_DOCS" = "true" ] ; then ln -s /etc/nginx/sites-available/docs.conf /etc/nginx/sites-enabled/ ; fi
 
 ####
 # API
