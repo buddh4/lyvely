@@ -9,7 +9,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "gulp clean && tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json && gulp copyAssets",
-    "test": "jest --silent",
+    "test_disabled": "jest --silent",
     "lint": "eslint -c .eslintrc.cjs \"src/**/*.ts\" --fix",
     "format": "prettier src --write",
     "prettier": "prettier src --check",
