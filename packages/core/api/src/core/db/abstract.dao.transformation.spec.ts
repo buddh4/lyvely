@@ -5,7 +5,6 @@ import {
   createCoreTestingModule,
   EventTester,
   afterEachTest,
-  afterAllTests,
 } from '../testing/core-test.util';
 import { ModelDefinition } from '@nestjs/mongoose/dist/interfaces';
 import { Injectable } from '@nestjs/common';
@@ -121,10 +120,6 @@ describe('AbstractDao Transformations', () => {
 
   afterEach(async () => {
     await afterEachTest(TEST_KEY, testingModule);
-  });
-
-  afterAll(async () => {
-    await afterAllTests();
   });
 
   describe('transform', () => {

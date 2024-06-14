@@ -25,10 +25,6 @@ describe('ProfilePermissionsService', () => {
     return testingModule.afterEach();
   });
 
-  afterAll(async () => {
-    return testingModule.afterAll();
-  });
-
   describe('verifyEveryPermission', () => {
     it('returns true if all permissions succeed', async () => {
       const { context } = await testDataUtils.createUserAndProfile();

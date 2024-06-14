@@ -475,12 +475,12 @@ importers:
       tsc-alias:
         specifier: ^1.8.10
         version: 1.8.10
+      tsconfig-paths:
+        specifier: ^4.2.0
+        version: 4.2.0
       typescript:
         specifier: ^5.4
         version: 5.4.5
-      why-is-node-running:
-        specifier: ^2.2.2
-        version: 2.2.2
 
   ../../packages/core/interface:
     dependencies:

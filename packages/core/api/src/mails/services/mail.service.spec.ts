@@ -18,10 +18,6 @@ describe('MailService', () => {
     return testingModule.afterEach();
   });
 
-  afterAll(async () => {
-    return testingModule.afterAll();
-  });
-
   it('is defined', () => {
     expect(mailService).toBeDefined();
   });

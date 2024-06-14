@@ -81,10 +81,6 @@ describe('SettingsService', () => {
     return testingModule.afterEach();
   });
 
-  afterAll(async () => {
-    return testingModule.afterAll();
-  });
-
   describe('updateSettings', () => {
     it('update valid setting', async () => {
       settingRegistry.registerSettings([{ key: 'test.key', type: String }]);

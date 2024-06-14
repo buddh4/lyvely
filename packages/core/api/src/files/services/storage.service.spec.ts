@@ -28,10 +28,6 @@ describe('StorageService', () => {
     return testingModule.afterEach();
   });
 
-  afterAll(async () => {
-    return testingModule.afterAll();
-  });
-
   class TestProvider extends StorageProvider<any> {
     async upload(upload: FileUpload): Promise<void> {
       /** Nothing to do **/

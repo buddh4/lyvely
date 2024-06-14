@@ -1,5 +1,5 @@
 import { ModuleRegistry } from './components';
-import { afterAllTests, afterEachTest, createCoreTestingModule } from './testing';
+import { afterEachTest, createCoreTestingModule } from './testing';
 import { TestingModule } from '@nestjs/testing';
 
 describe('CoreModule', () => {
@@ -15,10 +15,6 @@ describe('CoreModule', () => {
 
   afterEach(async () => {
     await afterEachTest(TEST_KEY, testingModule);
-  });
-
-  afterAll(async () => {
-    await afterAllTests();
   });
 
   it('registry is defined', () => {

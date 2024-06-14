@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { assureObjectId, DocumentIdentity } from '@/core';
-import { User, UsersService } from '@/users';
+import { type OptionalUser, User, UsersService } from '@/users';
 import { DocumentNotFoundException } from '@lyvely/interface';
 import { Profile, UserProfileRelation, IUserWithProfileRelation } from '../schemas';
 import { ProfileDao, UserProfileRelationsDao } from '../daos';
@@ -27,7 +27,8 @@ export class ProfileRelationsService {
    * Returns all profile relations of a given user.
    * @param user
    */
-  async findAllProfileRelationsByUser(user: User): Promise<UserProfileRelation[]> {
+  async findAllProfileRelationsByUser(user: OptionalUser): Promise<UserProfileRelation[]> {
+    if (!user) return [];
     return this.profileRelationsDao.findAllByUser(user);
   }
 

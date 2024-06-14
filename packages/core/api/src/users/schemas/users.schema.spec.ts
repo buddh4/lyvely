@@ -22,10 +22,6 @@ describe('Users schema', () => {
     return testingModule.afterEach();
   });
 
-  afterAll(async () => {
-    return testingModule.afterAll();
-  });
-
   describe('create', () => {
     it('initial user data', async () => {
       const user = await UserModel.create(

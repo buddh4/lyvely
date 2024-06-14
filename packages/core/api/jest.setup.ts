@@ -1,15 +1,5 @@
-import log from 'why-is-node-running';
+import 'tsconfig-paths/register';
 import 'reflect-metadata';
-import { useDayJsDateTimeAdapter } from '@lyvely/dates';
+import { setupTests } from '@/testing';
 
-useDayJsDateTimeAdapter();
-
-afterAll(async () => {
-  //normal cleanup things
-  await new Promise((resolve) => {
-    setTimeout(() => {
-      log();
-      resolve('');
-    }, 500);
-  });
-});
+export default () => setupTests();

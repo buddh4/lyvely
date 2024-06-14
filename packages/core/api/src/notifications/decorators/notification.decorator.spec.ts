@@ -22,10 +22,6 @@ describe('Notification decorator', () => {
     return testingModule.afterEach();
   });
 
-  afterAll(async () => {
-    return testingModule.afterAll();
-  });
-
   it('type is automatically set and registered', () => {
     @Notification()
     class MyNotificationType extends NotificationType {

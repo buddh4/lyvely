@@ -21,6 +21,10 @@ describe('Content Model', () => {
     profile = userAndProfile.profile;
   });
 
+  afterEach(async () => {
+    await testingModule.afterEach();
+  });
+
   describe('constructor', () => {
     it('content meta', async () => {
       const content = new Content({ profile, user });

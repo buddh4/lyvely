@@ -11,6 +11,10 @@
       "allowedCategories": [ "core", "lib" ]
     },
     {
+      "name": "@css-inline/css-inline-linux-x64-gnu",
+      "allowedCategories": [ "core" ]
+    },
+    {
       "name": "@ctrl/tinycolor",
       "allowedCategories": [ "lib" ]
     },
@@ -313,6 +317,10 @@
     {
       "name": "ts-jest",
       "allowedCategories": [ "core", "feature", "lib" ]
+    },
+    {
+      "name": "tsconfig-paths",
+      "allowedCategories": [ "core" ]
     },
     {
       "name": "tslib",

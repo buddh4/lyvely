@@ -3,7 +3,7 @@ import { promises as fsPromises } from 'fs';
 import { join, dirname, isAbsolute } from 'path';
 import { merge } from '@lyvely/common';
 import { Logger } from '@nestjs/common';
-import { MongoClient } from 'mongodb';
+//import { MongoClient } from 'mongodb';
 import { COLLECTION_CONFIG } from './config.constants';
 
 const logger = new Logger('loadConfigs');
@@ -39,7 +39,7 @@ export const loadConfigs = (
 
     const { uri, dbName } = mergedConfig.mongodb;
     logger.log(`Load db config from uri: ${uri} dbName: ${dbName}`);
-    const client = new MongoClient(uri);
+    /* const client = new MongoClient(uri);
 
     try {
       await client.connect();
@@ -50,7 +50,8 @@ export const loadConfigs = (
       return dbConfig || {};
     } finally {
       await client.close();
-    }
+    }*/
+    return {};
   };
 
   return () => {
