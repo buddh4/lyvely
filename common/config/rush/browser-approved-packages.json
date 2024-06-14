@@ -343,6 +343,10 @@
       "allowedCategories": [ "feature" ]
     },
     {
+      "name": "why-is-node-running",
+      "allowedCategories": [ "core" ]
+    },
+    {
       "name": "workbox-build",
       "allowedCategories": [ "application" ]
     },

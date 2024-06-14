@@ -478,6 +478,9 @@ importers:
       typescript:
         specifier: ^5.4
         version: 5.4.5
+      why-is-node-running:
+        specifier: ^2.2.2
+        version: 2.2.2
 
   ../../packages/core/interface:
     dependencies:
