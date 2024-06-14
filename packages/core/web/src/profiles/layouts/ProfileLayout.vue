@@ -17,7 +17,7 @@ const accountStore = useUserAccountStore();
 const { toggleSidebar } = pageStore;
 const { showAccountDrawer } = storeToRefs(accountStore);
 
-const { showMobileFooter, showSidebar, noSwipe } = storeToRefs(pageStore);
+const { showSidebar, noSwipe } = storeToRefs(pageStore);
 const root = ref<HTMLElement>() as Ref<HTMLElement>;
 
 export interface IProps {

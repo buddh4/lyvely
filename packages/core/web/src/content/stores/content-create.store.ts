@@ -101,7 +101,7 @@ export const useContentCreateStore = defineStore('content-create', () => {
 
   const createModalComponent = computed(() => {
     setTimeout(() => {
-      getCreateContentTypes().forEach((options) => {});
+      getCreateContentTypes().forEach(() => {});
     });
     return contentType.value ? getCreateContentModalComponent(contentType.value) : undefined;
   });

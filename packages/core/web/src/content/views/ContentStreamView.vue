@@ -32,28 +32,28 @@ async function openCreateContentModal() {
 
 <template>
   <content-stream :batch-size="30">
-    <template #stream-empty="{ filter }">
+    <template #stream-empty="{ filter: streamFilter }">
       <div class="flex h-full w-full items-center justify-center">
         <div
           data-id="empty-stream"
           :class="[
-            { 'cursor-pointer': canCreateMessage && filter.isEmpty() },
+            { 'cursor-pointer': canCreateMessage && streamFilter.isEmpty() },
             'main flex flex-col items-center justify-center gap-3 rounded border-divide bg-main p-5 md:border md:shadow-lg',
           ]"
-          @click="filter.isEmpty() ? openCreateContentModal : noop">
+          @click="streamFilter.isEmpty() ? openCreateContentModal : noop">
           <img :src="emptyImageUrl" :alt="addButtonText" class="h-72 md:rounded" />
           <h1 class="text-sm font-bold">
-            {{ t(filter.isEmpty() ? 'content.stream.empty' : 'content.stream.empty-filter') }}
+            {{ t(streamFilter.isEmpty() ? 'content.stream.empty' : 'content.stream.empty-filter') }}
           </h1>
           <ly-button
-            v-if="canCreateMessage && filter.isEmpty()"
+            v-if="canCreateMessage && streamFilter.isEmpty()"
             class="primary text-sm"
             :text="addButtonText" />
           <ly-button
-            v-if="!filter.isEmpty()"
+            v-if="!streamFilter.isEmpty()"
             class="primary float-right text-xs"
             text="common.filter.clear"
-            @click="filter.reset()" />
+            @click="streamFilter.reset()" />
         </div>
       </div>
     </template>

@@ -55,7 +55,15 @@ const emit = defineEmits(['change', 'update:modelValue']);
 const input = ref<HTMLInputElement>();
 
 const baseInput = useBaseInputSetup<number>(props, emit);
-const { editable, hasFocus, label, inputClass, showHelpText, onChange, onFocusOut } = baseInput;
+const {
+  editable,
+  hasFocus,
+  label: inputLabel,
+  inputClass: baseInputClass,
+  showHelpText,
+  onChange,
+  onFocusOut,
+} = baseInput;
 
 const baseInputValue = baseInput.inputValue;
 
@@ -99,7 +107,7 @@ const { inputId, dataId } = useBaseInputSetup(props, emit);
 
 <template>
   <section class="text-main" :class="wrapperClass">
-    <label v-if="label" :for="inputId" class="form-label">{{ t(label) }}</label>
+    <label v-if="inputLabel" :for="inputId" class="form-label">{{ t(label) }}</label>
     <input
       :id="inputId"
       ref="input"
@@ -109,7 +117,7 @@ const { inputId, dataId } = useBaseInputSetup(props, emit);
       :aria-describedby="ariaDescribedby"
       :step="step"
       :readonly="readonly"
-      :class="inputClass"
+      :class="baseInputClass"
       :style="inputStyle"
       :min="min"
       :max="max"

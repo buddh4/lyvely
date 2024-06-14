@@ -8,6 +8,7 @@ import { LyvelyWebApp } from '@lyvely/web';
 import { journalsModule } from './journals.module';
 
 new LyvelyWebApp({
+  apiUrl: 'http://127.0.0.1:8080/api',
   modules: [journalsModule()],
 })
   .init('#app')

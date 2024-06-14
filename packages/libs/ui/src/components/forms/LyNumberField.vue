@@ -68,8 +68,16 @@ const emit = defineEmits([
   'input',
 ]);
 let baseInput = useFloatingInputSetup<number>(props, emit);
-const { editable, inputId, dataId, inputError, label, inputClass, onChange, onFocusOut } =
-  baseInput;
+const {
+  editable,
+  inputId,
+  dataId,
+  inputError,
+  label: inputLabel,
+  inputClass: floatingInputClass,
+  onChange,
+  onFocusOut,
+} = baseInput;
 
 const baseInputValue = baseInput.inputValue;
 const input = ref<HTMLInputElement>();
@@ -136,7 +144,7 @@ onMounted(() => {
   <ly-floating-input-layout
     :wrapper-class="wrapperClass"
     :input-id="inputId"
-    :label="label"
+    :label="inputLabel"
     :required="required"
     :help-text="helpText"
     :loading="loading"
@@ -150,7 +158,7 @@ onMounted(() => {
       :aria-describedby="ariaDescribedby"
       :disabled="disabled"
       :readonly="readonly"
-      :class="inputClass"
+      :class="floatingInputClass"
       :style="inputStyle"
       type="text"
       inputmode="numeric"

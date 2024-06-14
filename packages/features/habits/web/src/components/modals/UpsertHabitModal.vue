@@ -6,7 +6,7 @@ import {
   useHabitsClient,
 } from '@lyvely/habits-interface';
 import { NumberDataPointConfigForm, useDataPointStrategyFacade } from '@lyvely/time-series-web';
-import { computed, onUnmounted, watch } from 'vue';
+import { computed } from 'vue';
 import {
   TagPicker,
   ContentEditModalEmits,

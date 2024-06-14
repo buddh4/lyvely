@@ -1,11 +1,6 @@
 import csurf from 'csurf';
 import { NestFactory } from '@nestjs/core';
-import {
-  Logger as NestLogger,
-  ValidationPipe,
-  VersioningType,
-  VERSION_NEUTRAL,
-} from '@nestjs/common';
+import { Logger as NestLogger, VersioningType, VERSION_NEUTRAL } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Headers } from '@lyvely/interface';
 import { AuthModule, RootAuthGuard } from '../auth';

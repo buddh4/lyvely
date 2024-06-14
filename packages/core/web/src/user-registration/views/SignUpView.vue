@@ -62,7 +62,7 @@ const validateUserDebounced = useDebounceFn(() => {
       if (err instanceof FieldValidationException) {
         validator.value.setError(
           'username',
-          err.getFirstError('user-registration.username.invalid')
+          err.getFirstError() || 'user-registration.username.invalid'
         );
       } else {
         validator.value.setError('username', 'user-registration.username.invalid');
@@ -82,7 +82,7 @@ const validateEmailDebounced = useDebounceFn(() => {
     .validateEmail()
     .catch((err) => {
       if (err instanceof FieldValidationException) {
-        validator.value.setError('email', err.getFirstError('user-registration.email.invalid'));
+        validator.value.setError('email', err.getFirstError() || 'user-registration.email.invalid');
       } else {
         validator.value.setError('email', 'user-registration.email.invalid');
       }

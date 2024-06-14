@@ -9,7 +9,8 @@ import { COLLECTION_CONFIG } from './config.constants';
 const logger = new Logger('loadConfigs');
 
 export const loadConfigs = (
-  files: Array<string | Partial<ServerConfiguration>>
+  files: Array<string | Partial<ServerConfiguration>>,
+  withDbConfig?: boolean
 ): (() => Promise<ServerConfiguration>) => {
   const resolvePath = (file: string) => {
     if (isAbsolute(file)) {
@@ -37,7 +38,7 @@ export const loadConfigs = (
     }
 
     const { uri, dbName } = mergedConfig.mongodb;
-    logger.log(`Load db config from ${uri}.${dbName}`);
+    logger.log(`Load db config from uri: ${uri} dbName: ${dbName}`);
     const client = new MongoClient(uri);
 
     try {
@@ -60,7 +61,9 @@ export const loadConfigs = (
     return Promise.all(configPromises)
       .then((configs) => configs.reduce((acc, config) => _.merge(acc, config), {}))
       .then((mergedConfig) =>
-        loadDbConfig(mergedConfig).then((dbConfig) => ({ dbConfig, mergedConfig }))
+        withDbConfig
+          ? loadDbConfig(mergedConfig).then((dbConfig) => ({ dbConfig, mergedConfig }))
+          : { dbConfig: {}, mergedConfig }
       )
       .then(({ dbConfig, mergedConfig }) => _.merge({}, mergedConfig, dbConfig))
       .catch((error) => {

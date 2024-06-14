@@ -63,7 +63,7 @@
       "ignoreMissingScript": true,
       "ignoreDependencyOrder": true,
       "enableParallelism": true,
-      "allowWarningsInSuccessfulBuild": false,
+      "allowWarningsInSuccessfulBuild": true,
       "incremental": false
     },
     {

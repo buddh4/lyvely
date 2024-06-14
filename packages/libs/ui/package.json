@@ -34,7 +34,7 @@
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "deps": "pnpm depcruise --config .dependency-cruiser.cjs src"
+    "deps": "rush-pnpm --rush-skip-checks depcruise --config .dependency-cruiser.cjs src"
   },
   "files": [
     "dist"

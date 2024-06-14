@@ -20,7 +20,7 @@
     "watch": "npm-watch",
     "_prepare": "pnpm run build",
     "tsc": "tsc --outDir dist/lib --declarationDir dist/lib --declaration true",
-    "deps": "pnpm depcruise --config .dependency-cruiser.cjs src"
+    "deps": "rush-pnpm --rush-skip-checks depcruise --config .dependency-cruiser.cjs src"
   },
   "files": [
     "dist"

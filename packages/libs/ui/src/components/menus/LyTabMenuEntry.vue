@@ -12,6 +12,8 @@ export interface IProps {
 
 const props = withDefaults(defineProps<IProps>(), {
   text: undefined,
+  to: undefined,
+  entry: undefined,
 });
 
 const toRoute = computed(() => {

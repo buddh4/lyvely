@@ -53,6 +53,7 @@ export interface IAppModuleBuilderOptions {
   useRecommended?: boolean;
   configFiles?: Array<string> | false;
   loadDefaultConfig?: boolean;
+  loadDBConfig?: boolean;
   config?: DeepPartial<ServerConfiguration> | null;
   serveStatic?: boolean;
   manual?: boolean;
@@ -63,6 +64,7 @@ const defaultOptions: Required<IAppModuleBuilderOptions> = {
   useRecommended: true,
   configFiles: false,
   loadDefaultConfig: true,
+  loadDBConfig: true,
   config: null,
   serveStatic: false,
   manual: false,

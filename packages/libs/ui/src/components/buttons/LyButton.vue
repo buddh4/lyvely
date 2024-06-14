@@ -44,7 +44,7 @@ function getClassNames(isActive?: boolean) {
   return classResult.value;
 }
 
-const emit = defineEmits(['click']);
+defineEmits(['click']);
 
 const button = ref<HTMLElement>() as Ref<HTMLElement>;
 

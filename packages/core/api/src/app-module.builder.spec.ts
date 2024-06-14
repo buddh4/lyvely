@@ -9,6 +9,7 @@ describe('AppModuleBuilder', () => {
         imports: [
           await new AppModuleBuilder({
             configFiles: ['testing/test.config.one.js'],
+            loadDBConfig: false,
             manual: true,
           }).build(),
         ],
@@ -24,6 +25,7 @@ describe('AppModuleBuilder', () => {
         imports: [
           await new AppModuleBuilder({
             configFiles: [],
+            loadDBConfig: false,
             manual: true,
           }).build(),
         ],
@@ -39,6 +41,7 @@ describe('AppModuleBuilder', () => {
         imports: [
           await new AppModuleBuilder({
             configFiles: [],
+            loadDBConfig: false,
             config: {
               auth: {
                 jwt: {

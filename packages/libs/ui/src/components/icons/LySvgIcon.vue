@@ -41,20 +41,20 @@ function getClassNames(attrClasses: any) {
 }
 
 const transform = computed<string | undefined>(() => {
-  if (!props.scaleTo && !props.autoScale) return;
+  if (!props.scaleTo && !props.autoScale) return undefined;
 
   const scaleTo = props.scaleTo || 24;
 
   try {
     const size = parseInt(definition.value?.viewBox.split(' ').at(-1) as string);
-    if (size === scaleTo) return;
+    if (size === scaleTo) return undefined;
     const ratio = scaleTo / size;
     return `scale(${ratio})`;
   } catch (e) {
     console.log(e);
   }
 
-  return;
+  return undefined;
 });
 </script>
 

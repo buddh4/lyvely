@@ -52,8 +52,7 @@ export class FieldValidationException extends ServiceException<{
     return this.data?.fields || [];
   }
 
-  public getFirstError(defaultMessage: string): string;
-  public getFirstError(defaultMessage?: string): string | undefined {
+  public getFirstError(): string | undefined {
     return this.data?.fields[0]?.errors?.[0];
   }
 }

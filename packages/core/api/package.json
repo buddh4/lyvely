@@ -15,7 +15,7 @@
     "prettier": "prettier src --check",
     "depcheck": "depcheck --quiet",
     "ncu": "ncu",
-    "deps": "pnpm depcruise --include-only \"^src\" --config .dependency-cruiser.js src",
+    "deps": "rush-pnpm --rush-skip-checks depcruise --include-only \"^src\" --config .dependency-cruiser.js src",
     "dev": "cross-env NODE_ENV=development nest start",
     "dev:debug": "cross-env NODE_ENV=development  nest start --debug --watch",
     "dev:e2e": "cross-env NODE_ENV=e2e nest start",

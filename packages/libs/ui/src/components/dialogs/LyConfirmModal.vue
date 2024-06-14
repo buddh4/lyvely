@@ -33,12 +33,12 @@ const confirmCancel = computed(() => props.options?.cancel || props.cancel);
 const confirmConfirm = computed(() => props.options?.confirm || props.confirm);
 const confirmText = computed(() => props.options?.text || props.text);
 
-function confirm() {
+function doConfirm() {
   showModal.value = false;
   emit('confirm');
 }
 
-function cancel() {
+function doCancel() {
   showModal.value = false;
   emit('cancel');
 }
@@ -50,8 +50,8 @@ function cancel() {
     :title="confirmTitle"
     :cancel-button-text="confirmCancel"
     :submit-button-text="confirmConfirm"
-    @submit="confirm"
-    @cancel="cancel">
+    @submit="doConfirm"
+    @cancel="doCancel">
     <slot>{{ t(confirmText) }}</slot>
   </ly-modal>
 </template>

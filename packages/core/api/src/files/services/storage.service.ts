@@ -204,7 +204,7 @@ export class StorageService implements IStorageService {
    * @throws {IntegrityException} If the provided GUID is invalid.
    */
   getFileUploadPath(guid: string) {
-    if (isGuid(guid)) throw new IntegrityException(`Invalid file guid: '${guid}'`);
+    if (!isGuid(guid)) throw new IntegrityException(`Invalid file guid: '${guid}'`);
     return join(this.getLocalStorageProvider().getUploadRoot(), guid);
   }
 

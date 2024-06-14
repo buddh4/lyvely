@@ -11,7 +11,7 @@
     "format": "prettier src --write",
     "prettier": "prettier src --check",
     "depcheck": "depcheck --quiet",
-    "deps": "pnpm depcruise --include-only \"^src\" --config .dependency-cruiser.js src",
+    "deps": "rush-pnpm --rush-skip-checks depcruise --include-only \"^src\" --config .dependency-cruiser.js src",
     "ncu": "ncu",
     "dev": "nest start",
     "dev:debug": "nest start --debug --watch",
