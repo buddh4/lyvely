@@ -26,5 +26,4 @@ export const closeInMongodConnections = async () => {
     await value.stop();
   }
   await disconnect();
-  debugger;
 };
