@@ -3,7 +3,7 @@ import { Inject, Logger, OnModuleDestroy } from '@nestjs/common';
 import { Observable, from, mergeMap, scan, firstValueFrom, mergeAll } from 'rxjs';
 import { resolve } from 'path';
 import { existsSync } from 'fs';
-import { merge } from 'lodash';
+import { merge } from '@lyvely/common';
 import { OnEvent } from '@nestjs/event-emitter';
 import { EVENT_MODULE_REGISTRATION, IModuleMetadata, ModuleRegistry } from '@/core';
 import { ConfigService } from '@nestjs/config';

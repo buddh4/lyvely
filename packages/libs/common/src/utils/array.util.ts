@@ -1,4 +1,4 @@
-import { isEqual } from 'lodash';
+import { isEqual } from './object.util';
 
 export function chunkArray(array: Array<any>, size: number) {
   if (!array.length) return [];

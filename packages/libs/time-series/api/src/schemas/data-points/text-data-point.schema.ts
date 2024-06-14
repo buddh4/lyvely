@@ -1,11 +1,10 @@
 import { Prop, Schema } from '@nestjs/mongoose';
 import { DataPoint } from './data-point.schema';
-import { PropertiesOf } from '@lyvely/common';
+import { PropertiesOf, pick } from '@lyvely/common';
 import { BaseDocument, BaseDocumentData, Profile, TObjectId, User } from '@lyvely/api';
 import { DataPointValueType, TextDataPointModel } from '@lyvely/time-series-interface';
 import { DataPointSchemaFactory } from './data-point-schema.factory';
 import { TimeSeriesContent } from '../time-series-content.schema';
-import { pick } from 'lodash';
 
 @Schema()
 export class TextDataPoint

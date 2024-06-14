@@ -1,21 +1,21 @@
-import he from 'he';
+import { encode, decode, escape, unescape } from 'he';
 
 export function encodeHtml(str: string) {
-  return he.encode(str);
+  return encode(str);
 }
 
 export function decodeHtml(str: string) {
-  return he.decode(str);
+  return decode(str);
 }
 
 export function escapeHtml(str: string) {
-  return he.escape(str);
+  return escape(str);
 }
 
 export function escapeHtmlIf(str: string, condition: boolean) {
-  return condition ? he.escape(str) : str;
+  return condition ? escape(str) : str;
 }
 
 export function unEscapeHtml(str: string) {
-  return he.unescape(str);
+  return unescape(str);
 }

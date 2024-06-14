@@ -2,7 +2,7 @@
 import CaptchaCode from '@/captcha/components/CaptchaCode.vue';
 import { t } from '@/i18n';
 import { storeToRefs } from 'pinia';
-import { uniqueId } from 'lodash';
+import { uniqueId } from '@lyvely/common';
 import { computed } from 'vue';
 import { useCaptchaStore } from '@/captcha/captcha.store';
 

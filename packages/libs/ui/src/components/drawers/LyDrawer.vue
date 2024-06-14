@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed, Ref, ref, toRefs, useAttrs, watch } from 'vue';
-import { uniqueId } from 'lodash';
+import { uniqueId } from '@lyvely/common';
 import { isMaxViewSize, suggestFocusElement, watchMaxSize } from '@/helpers';
 import { useInfiniteScroll, useSwipe } from '@vueuse/core';
 import { useDrawerStore } from '@/components/drawers/drawer.store';

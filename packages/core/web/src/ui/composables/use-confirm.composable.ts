@@ -4,7 +4,7 @@ import {
   registerComponentStackEntry,
   removeComponentStackEntry,
 } from '@lyvely/ui';
-import { uniqueId } from 'lodash';
+import { uniqueId } from '@lyvely/common';
 import { STACK_MAIN } from '@/ui/ui.constants';
 import { ref } from 'vue';
 

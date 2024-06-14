@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
-import { uniqueId } from 'lodash';
+import { uniqueId } from '@lyvely/common';
 import { onClickOutside } from '@vueuse/core';
 import { t, Translatable } from '@/i18n';
 import { findParent } from '@/helpers';

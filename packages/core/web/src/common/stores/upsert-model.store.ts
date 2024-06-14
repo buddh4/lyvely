@@ -1,6 +1,6 @@
 import { reactive, Ref, ref, toValue } from 'vue';
 import { IEditModelClient, FieldValidationException } from '@lyvely/interface';
-import { cloneDeep, isEqual } from 'lodash';
+import { cloneDeep, isEqual } from '@lyvely/common';
 import { loadingStatus, useStatus, useEventBus } from '@/core';
 import { useProfileStore } from '@/profiles/stores/profile.store';
 import { watchDebounced } from '@vueuse/core';

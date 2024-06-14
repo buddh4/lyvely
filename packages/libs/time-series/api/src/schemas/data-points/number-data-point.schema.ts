@@ -1,7 +1,7 @@
 import { Prop, Schema } from '@nestjs/mongoose';
 import { DataPoint } from './data-point.schema';
 import { DataPointValueType, NumberDataPointModel } from '@lyvely/time-series-interface';
-import { PropertiesOf, PropertyType } from '@lyvely/common';
+import { PropertiesOf, PropertyType, pick } from '@lyvely/common';
 import {
   Timer,
   TimerSchema,
@@ -13,7 +13,6 @@ import {
 } from '@lyvely/api';
 import { DataPointSchemaFactory } from './data-point-schema.factory';
 import { TimeSeriesContent } from '../time-series-content.schema';
-import { pick } from 'lodash';
 
 @Schema()
 export class NumberDataPoint

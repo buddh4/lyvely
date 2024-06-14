@@ -1,17 +1,25 @@
 import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 import { useViteWebAppConfig } from "@lyvely/devtools";
+import { visualizer } from "rollup-plugin-visualizer";
 
 export default defineConfig(
   {
     ...useViteWebAppConfig({
       plugins: [
+        visualizer({
+         // template: 'network'
+        }),
         VitePWA({
           includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'safari-pinned-tab.svg'],
           strategies: 'injectManifest',
           srcDir: 'src',
           filename: 'sw.ts',
           registerType: 'prompt',
+          injectManifest: {
+            // Note this value should be aligned with build.chunkSizeWarningLimit
+            maximumFileSizeToCacheInBytes: 700 * 1024 // 700KB
+          },
           workbox: {
             globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
             cleanupOutdatedCaches: true,

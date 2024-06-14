@@ -1,4 +1,4 @@
-import cloneDeep from 'lodash';
+import { cloneDeep } from '@lyvely/common';
 import { PiniaPluginContext } from 'pinia';
 
 export function resetStore({ store }: PiniaPluginContext) {

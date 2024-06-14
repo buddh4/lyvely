@@ -9,7 +9,6 @@ export * from './app-config';
 export * from './auth';
 export * from './calendar';
 export * from './captcha';
-export * from './charts';
 export * from './common';
 export * from './content';
 export * from './core';

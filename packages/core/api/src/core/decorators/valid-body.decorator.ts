@@ -5,7 +5,7 @@ import {
   ValidationPipe,
   ValidationPipeOptions,
 } from '@nestjs/common';
-import { omit } from 'lodash';
+import { omit } from '@lyvely/common';
 
 export interface IValidBodyOptions extends ValidationPipeOptions {
   pipes?: (Type<PipeTransform> | PipeTransform)[];

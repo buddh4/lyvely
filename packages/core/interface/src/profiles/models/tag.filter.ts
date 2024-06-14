@@ -1,4 +1,4 @@
-import { escapeRegExp } from 'lodash';
+import { escapeRegExp } from '@lyvely/common';
 import { TagModel } from './tag.model';
 
 export interface ITagFilterOptions {

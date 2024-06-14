@@ -54,7 +54,7 @@ import { ProfilesEvents } from './profiles.events';
 import { ProfileMembershipPolicy } from '@/profiles/policies/profile-membership-policy';
 import { Inject, Injectable, OnModuleInit, Scope, Type } from '@nestjs/common';
 import { DynamicModule } from '@nestjs/common/interfaces/modules/dynamic-module.interface';
-import { uniqueId } from 'lodash';
+import { uniqueId } from '@lyvely/common';
 import { ProfileScoreTypeRegistry } from '@/profiles/registires';
 import { AvatarsModule } from '../avatars';
 import { MulterModule } from '@nestjs/platform-express';

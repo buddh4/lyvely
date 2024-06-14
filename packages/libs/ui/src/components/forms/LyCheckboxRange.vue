@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { HTMLAttributes, computed } from 'vue';
-import { parseInt } from 'lodash';
 import LyCheckbox from './LyCheckbox.vue';
 import { useBaseInputSetup } from '@/components/forms/BaseInput';
 

@@ -1,14 +1,14 @@
 import { NavigationGuardNext, RouteLocation } from 'vue-router';
 import { usePageStore } from '../stores';
 import { isMaxViewSize, resolveLayoutComponent } from '@lyvely/ui';
-import nprogress from 'nprogress';
+import { start as startProgress, done as stopProgress } from 'nprogress';
 
 export const showLoaderProgress = (
   to: RouteLocation,
   from: RouteLocation,
   next: NavigationGuardNext
 ) => {
-  if (to.name) nprogress.start();
+  if (to.name) startProgress();
 
   usePageStore().loaded = false;
 
@@ -27,7 +27,7 @@ export const resolveLayoutGuard = async (
 };
 
 export const hideLoaderProgress = (): void => {
-  nprogress.done();
+  stopProgress();
   usePageStore().loaded = true;
 };
 

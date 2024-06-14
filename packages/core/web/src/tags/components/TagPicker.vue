@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
-import { uniqueId } from 'lodash';
+import { uniqueId } from '@lyvely/common';
 import { translation } from '@/i18n';
 import { useProfileStore } from '@/profiles/stores/profile.store';
 import { TagModel } from '@lyvely/interface';

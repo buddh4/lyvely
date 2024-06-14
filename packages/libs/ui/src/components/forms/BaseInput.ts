@@ -1,6 +1,5 @@
 import { ComponentOptions, computed, ref, inject } from 'vue';
-import { merge, uniqueId } from 'lodash';
-import { ModelValidator } from '@lyvely/common';
+import { merge, uniqueId, ModelValidator } from '@lyvely/common';
 import slugify from 'slugify';
 import { t, Translatable } from '@/i18n';
 

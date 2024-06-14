@@ -1,4 +1,4 @@
-import { findByPath, hasOwnNonNullableProperty, isPlainObject } from './object.util';
+import { findByPath, hasOwnNonNullableProperty, isPlainObject, omit, pick } from './object.util';
 
 describe('object util', () => {
   describe('isPlainObject', function () {
@@ -162,6 +162,66 @@ describe('object util', () => {
       findByPath(model, 'sub.1.whatever', { create: true });
       expect(model.sub).toBeDefined();
       expect(model.sub['1']).toBeUndefined();
+    });
+  });
+
+  describe('omit', () => {
+    test('omit from null object returns {}', () => {
+      const result = omit(null, 'b');
+      expect(result).toEqual({});
+    });
+
+    test('omit from undefined object returns {}', () => {
+      const result = omit(null, 'b');
+      expect(result).toEqual({});
+    });
+
+    test('removes specified keys from the object', () => {
+      const obj = { a: 1, b: 2, c: 3 };
+      const result = omit(obj, 'b', 'c');
+      expect(result).toEqual({ a: 1 });
+    });
+
+    test('leaves the object unchanged when keys array is empty', () => {
+      const obj = { a: 1, b: 2, c: 3 };
+      const result = omit(obj);
+      expect(result).toEqual(obj);
+    });
+
+    test('leaves the object unchanged when keys do not exist in the object', () => {
+      const obj = { a: 1, b: 2, c: 3 };
+      const result = omit(obj, 'd', 'e', 'f');
+      expect(result).toEqual(obj);
+    });
+  });
+
+  describe('pick', () => {
+    test('pick from null object returns {}', () => {
+      const result = pick(null, 'b' as any);
+      expect(result).toEqual({});
+    });
+
+    test('pick from undefined object returns {}', () => {
+      const result = pick(null, 'b' as any);
+      expect(result).toEqual({});
+    });
+
+    test('returns an object with only the picked keys', () => {
+      const obj = { a: 1, b: 2, c: 3 };
+      const result = pick(obj, 'a', 'c');
+      expect(result).toEqual({ a: 1, c: 3 });
+    });
+
+    test('returns an empty object when keys array is empty', () => {
+      const obj = { a: 1, b: 2, c: 3 };
+      const result = pick(obj);
+      expect(result).toEqual({});
+    });
+
+    test('returns an object with only the keys that exist in the object', () => {
+      const obj = { a: 1, b: 2, c: 3 };
+      const result = pick(obj, 'a', 'c', 'd' as any, 'e' as any);
+      expect(result).toEqual({ a: 1, c: 3 });
     });
   });
 });

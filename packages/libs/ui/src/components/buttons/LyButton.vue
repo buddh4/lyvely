@@ -4,7 +4,7 @@ import { RouteLocationRaw } from 'vue-router';
 import { isDevelopmentEnvironment } from '@/config';
 import { t, Translatable } from '@/i18n';
 import { useTwMerge } from '@/composables';
-import { omit } from 'lodash';
+import { omit } from '@lyvely/common';
 
 defineOptions({
   inheritAttrs: false,

@@ -6,7 +6,7 @@ import { PipelineStage } from 'mongoose';
 import { type TimeSeriesChartData, type TimeSeriesCategoryKey } from '@lyvely/analytics-interface';
 import { ChartSeriesDataTypes } from '@lyvely/analytics-interface';
 import { AbstractDao, assureStringId, type TObjectId } from '@lyvely/api';
-import { omit } from 'lodash';
+import { omit } from '@lyvely/common';
 
 export type TimeSeriesAggregationResult = Array<{
   _id: TimeSeriesCategoryKey<TObjectId>;

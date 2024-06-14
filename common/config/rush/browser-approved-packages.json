@@ -215,6 +215,10 @@
       "allowedCategories": [ "core", "feature", "lib" ]
     },
     {
+      "name": "lodash-es",
+      "allowedCategories": [ "core", "feature", "lib" ]
+    },
+    {
       "name": "markdown-it",
       "allowedCategories": [ "lib" ]
     },
@@ -285,6 +289,10 @@
     {
       "name": "remark-rehype",
       "allowedCategories": [ "lib" ]
+    },
+    {
+      "name": "rollup-plugin-visualizer",
+      "allowedCategories": [ "application" ]
     },
     {
       "name": "rxjs",

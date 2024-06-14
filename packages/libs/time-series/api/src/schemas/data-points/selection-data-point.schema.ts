@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { DataPoint } from './data-point.schema';
-import { BaseModel, PropertiesOf, PropertyType } from '@lyvely/common';
+import { BaseModel, PropertiesOf, PropertyType, pick } from '@lyvely/common';
 import {
   DataPointValueType,
   ISelectionDataPointValue,
@@ -16,7 +16,6 @@ import {
 } from '@lyvely/api';
 import { DataPointSchemaFactory } from './data-point-schema.factory';
 import { TimeSeriesContent } from '../time-series-content.schema';
-import { pick } from 'lodash';
 
 @NestedSchema()
 export class SelectionDataPointValue implements ISelectionDataPointValue {

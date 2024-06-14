@@ -7,10 +7,9 @@ import {
   ISelectionDataPointSettings,
   DataPointSelectionInputType,
 } from '@lyvely/time-series-interface';
-import { getStringEnumValues, PropertyType } from '@lyvely/common';
+import { getStringEnumValues, PropertyType, pick } from '@lyvely/common';
 import { DataPointConfig, DataPointConfigRevision } from './data-point-config.schema';
 import { NestedSchema } from '@lyvely/api';
-import { pick } from 'lodash';
 
 @NestedSchema()
 export class SelectionDataPointConfigRevision
@@ -66,11 +65,11 @@ export class SelectionDataPointConfig
   }
 
   getSettings(): ISelectionDataPointSettings {
-    return pick(this, ['options', 'allowOther', 'interval', 'userStrategy']);
+    return pick(this, 'options', 'allowOther', 'interval', 'userStrategy');
   }
 
   setSettings(settings: ISelectionDataPointSettings) {
-    Object.assign(this, pick(settings, ['interval', 'userStrategy', 'options', 'allowOther']));
+    Object.assign(this, pick(settings, 'interval', 'userStrategy', 'options', 'allowOther'));
   }
 }
 

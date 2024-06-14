@@ -4,7 +4,7 @@ import { IConfirmOptions } from '../dialogs/confirm-options.interface';
 import { Translatable } from '@/i18n';
 import { ref, useAttrs } from 'vue';
 import LyConfirmModal from '@/components/dialogs/LyConfirmModal.vue';
-import { omit } from 'lodash';
+import { omit } from '@lyvely/common';
 
 defineOptions({
   inheritAttrs: false,

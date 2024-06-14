@@ -1,4 +1,4 @@
-import { escapeRegExp } from 'lodash';
+import { escapeRegExp } from '@lyvely/common';
 
 export const SELECTOR_FORM_FIELD = 'input,textarea,select';
 export const SELECTOR_FOCUSABLE = SELECTOR_FORM_FIELD + ',button,object,[href],[tabindex]';

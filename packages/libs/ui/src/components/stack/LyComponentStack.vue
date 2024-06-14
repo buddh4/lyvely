@@ -2,7 +2,7 @@
 import { resolveComponentRegistration } from '@/helpers';
 import { getComponentStackEntries } from './interfaces';
 import { computed, ComputedRef, unref } from 'vue';
-import { isNil } from 'lodash';
+import { isNil } from '@lyvely/common';
 
 interface IProps {
   id: string;

@@ -4,9 +4,9 @@ import { ref, computed } from 'vue';
 import { useNotificationStore } from '../stores/notifications.store';
 import { useRouter } from 'vue-router';
 import NotificationDrawerEntry from '@/notifications/components/NotificationDrawerEntry.vue';
-import { DynamicScroller, DynamicScrollerItem } from 'vue-virtual-scroller';
 import { IWebNotification } from '@lyvely/interface';
 import { urlRoute } from '@/profiles';
+import { isDevelopEnvironment } from '@/core';
 
 const notificationStore = useNotificationStore();
 const { showNotificationDrawer, hasUpdates } = storeToRefs(notificationStore);
@@ -34,9 +34,9 @@ const notificationDrawerButtonClass = computed(() => {
   ];
 });
 
-/*function test() {
+function test() {
   notificationStore.test();
-}*/
+}
 </script>
 
 <template>
@@ -53,25 +53,17 @@ const notificationDrawerButtonClass = computed(() => {
       v-model="showNotificationDrawer"
       title="notifications.drawer.title"
       @infinite-scroll="loadTail">
-      <dynamic-scroller :items="stream.models" :min-item-size="80" class="h-full" page-mode>
-        <template
-          #default="{
-            item,
-            index,
-            active,
-          }: {
-            item: IWebNotification;
-            index: number;
-            active: boolean;
-          }">
-          <dynamic-scroller-item :item="item" :active="active" :data-index="index">
-            <notification-drawer-entry :notification="item" @click="notificationClick(item)" />
-          </dynamic-scroller-item>
-        </template>
-      </dynamic-scroller>
-      <!-- template #footer>
-      <ly-button class="primary" @click="test">Test</ly-button>
-    </template -->
+      <div class="h-full">
+        <notification-drawer-entry
+          v-for="item in stream.models"
+          :key="item.id"
+          :notification="item"
+          @click="notificationClick(item)" />
+      </div>
+
+      <template v-if="isDevelopEnvironment()" #footer>
+        <ly-button class="primary" @click="test">Test</ly-button>
+      </template>
     </ly-drawer>
   </div>
 </template>

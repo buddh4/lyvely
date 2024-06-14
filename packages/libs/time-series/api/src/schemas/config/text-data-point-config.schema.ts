@@ -6,10 +6,9 @@ import {
   ITextDataPointConfigRevision,
   ITextDataPointSettings,
 } from '@lyvely/time-series-interface';
-import { PropertyType } from '@lyvely/common';
+import { PropertyType, pick } from '@lyvely/common';
 import { DataPointConfig, DataPointConfigRevision } from './data-point-config.schema';
 import { NestedSchema } from '@lyvely/api';
-import { pick } from 'lodash';
 
 const SupportedTextDataPointInputTypes = [DataPointInputType.Textarea];
 
@@ -61,11 +60,11 @@ export class TextDataPointConfig
   }
 
   getSettings(): ITextDataPointSettings {
-    return pick(this, ['interval', 'userStrategy', 'required']);
+    return pick(this, 'interval', 'userStrategy', 'required');
   }
 
   setSettings(settings: ITextDataPointSettings) {
-    Object.assign(this, pick(settings, ['interval', 'userStrategy', 'required']));
+    Object.assign(this, pick(settings, 'interval', 'userStrategy', 'required'));
   }
 }
 

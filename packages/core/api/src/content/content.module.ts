@@ -21,7 +21,7 @@ import {
 import { ContentEventPublisher, ContentTypeRegistry } from './components';
 import { DynamicModule } from '@nestjs/common/interfaces/modules/dynamic-module.interface';
 import { LiveModule } from '@/live';
-import { uniqueId } from 'lodash';
+import { uniqueId } from '@lyvely/common';
 import { ContentController, ContentStreamController } from './controllers';
 import { LyvelyModule } from '@/core';
 import { CONTENT_MODULE_ID, ContentStreamFeature } from '@lyvely/interface';

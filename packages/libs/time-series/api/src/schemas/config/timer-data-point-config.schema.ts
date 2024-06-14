@@ -7,7 +7,7 @@ import {
   ITimerDataPointConfigRevision,
 } from '@lyvely/time-series-interface';
 import { DataPointConfig, DataPointConfigRevision } from './data-point-config.schema';
-import { pick } from 'lodash';
+import { pick } from '@lyvely/common';
 import { NestedSchema } from '@lyvely/api';
 import { DataPointConfigFactory } from '../data-point-config.factory';
 import { DataPointConfigSchemaFactory } from '../data-point-config-schema.factory';
@@ -83,7 +83,7 @@ export class TimerDataPointConfig
   }
 
   setSettings(settings?: ITimerDataPointSettings) {
-    Object.assign(this, pick(settings, ['min', 'max', 'optimal', 'interval', 'userStrategy']));
+    Object.assign(this, pick(settings, 'min', 'max', 'optimal', 'interval', 'userStrategy'));
   }
 
   getSettings() {

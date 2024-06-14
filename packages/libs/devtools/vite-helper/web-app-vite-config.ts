@@ -46,6 +46,9 @@ export const useViteWebAppConfig = (options: IOptions) => {
 
   /// <reference types="vitest" />
   return {
+    define: {
+      //'__VUE_OPTIONS_API__': false
+    },
     plugins,
     server: {
       host: '127.0.0.1',
@@ -61,12 +64,15 @@ export const useViteWebAppConfig = (options: IOptions) => {
       alias: [{ find: /^@(?=\/)/, replacement: resolve(__dirname, './src') }],
     },
     build: {
-      /* rollupOptions: {
-        input: {
-          main: resolve(__dirname, 'index.html'),
-          ...input,
-        },
-      },*/
-    },
+      // Note this value should be aligned with the PWAs maximumFileSizeToCacheInBytes
+      chunkSizeWarningLimit: 700,
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            '@lyvely/ui': ['@lyvely/ui']
+          }
+        }
+      }
+    }
   };
 };

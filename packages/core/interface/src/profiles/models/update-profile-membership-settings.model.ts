@@ -2,7 +2,7 @@ import { Exclude, Expose } from 'class-transformer';
 import { IsOptional, IsString, MaxLength, Matches } from 'class-validator';
 import { BaseModel, type PropertiesOf } from '@lyvely/common';
 import { VALID_DISPLAY_NAME_REGEX } from '@/validation';
-import { pick } from 'lodash';
+import { pick } from '@lyvely/common';
 
 @Exclude()
 export class UpdateProfileMembershipSettings {
@@ -18,6 +18,6 @@ export class UpdateProfileMembershipSettings {
   description?: string;
 
   constructor(data: PropertiesOf<UpdateProfileMembershipSettings>) {
-    BaseModel.init(this, pick(data, ['displayName', 'description']));
+    BaseModel.init(this, pick(data, 'displayName', 'description'));
   }
 }

@@ -1,13 +1,12 @@
 <script lang="ts" setup>
 import { computed, nextTick, ref, watch } from 'vue';
 import LyFloatingInputLayout from './LyFloatingInputLayout.vue';
-import { escapeRegExp, isArray, uniqueId } from 'lodash';
+import { escapeRegExp, uniqueId, getOwnNonNullableProperty } from '@lyvely/common';
 import { t, Translatable } from '@/i18n';
 import LyModal from '@/components/dialogs/LyModal.vue';
 import LyTextField from '@/components/forms/LyTextField.vue';
 import LyBadge from '@/components/badges/LyBadge.vue';
 import LyButton from '@/components/buttons/LyButton.vue';
-import { getOwnNonNullableProperty } from '@lyvely/common';
 import { IAvatarData } from '@/interfaces';
 
 type IPickerConfig = {
@@ -84,7 +83,7 @@ function filterOption(option?: IPickerOptions) {
 function getOption(key: string): IPickerOptions | undefined {
   return props.options.find((option: any) => getOptionKey(option) === key) || key;
 }
-const model = computed(() => (isArray(props.modelValue) ? props.modelValue : []));
+const model = computed(() => (Array.isArray(props.modelValue) ? props.modelValue : []));
 const selection = computed(() => model.value.map(getOption));
 
 const selectedOptions = computed(

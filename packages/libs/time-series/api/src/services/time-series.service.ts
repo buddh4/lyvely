@@ -1,27 +1,16 @@
-import {
-  Profile,
-  ProfileContext,
-  ProtectedProfileContext,
-  ContentPolicyService,
-} from '@lyvely/api';
-import { CalendarDate, CalendarInterval, getTimingIds, isInFuture } from '@lyvely/dates';
+import { ProfileContext, ProtectedProfileContext } from '@lyvely/api';
+import { CalendarDate, CalendarInterval, isInFuture } from '@lyvely/dates';
 import {
   CalendarPlanFilter,
   getTidWindow,
   SortableCalendarPlanService,
 } from '@lyvely/calendar-plan';
 import { implementsINumericDataPoint } from '@lyvely/time-series-interface';
-import {
-  DataPoint,
-  TimeSeriesContent,
-  TimeSeriesSummaryWindowEntry,
-  useDataPointConfigHandler,
-} from '../schemas';
+import { DataPoint, TimeSeriesContent, TimeSeriesSummaryWindowEntry } from '../schemas';
 import { IDataPointUpdateResult, ITimeSeriesContentSearchResult } from '../interfaces';
 import { DataPointService } from './data-point.service';
 import { TimeSeriesContentDao } from '../daos';
-import { isEqual } from 'lodash';
-import { Inject } from '@nestjs/common';
+import { isEqual } from '@lyvely/common';
 
 /**
  * Represents the base service class for TimeSeries features.

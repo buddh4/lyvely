@@ -1,7 +1,6 @@
 import { DataPointConfigFactory } from './data-point-config.factory';
-import { cloneDeep, pick } from 'lodash';
+import { cloneDeep, pick, useSingleton } from '@lyvely/common';
 import { IntegrityException } from '@lyvely/api';
-import { useSingleton } from '@lyvely/common';
 import { useDataPointStrategyFacade } from '@lyvely/time-series-interface';
 import { isSameDay } from '@lyvely/dates';
 import { TimeSeriesContent } from './time-series-content.schema';
@@ -61,7 +60,7 @@ export class DataPointConfigHandler {
 
   private pickValueTypeSettings(obj: any, valueType: string) {
     const settingKeys = dataPointFacade.getSettingKeys(valueType);
-    return pick(obj, ['inputType', 'valueType', 'userStrategy', 'interval', ...settingKeys]);
+    return pick(obj, 'inputType', 'valueType', 'userStrategy', 'interval', ...settingKeys);
   }
 
   prepareConfig(model: TimeSeriesContent, config?: DataPointConfig) {

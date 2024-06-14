@@ -6,9 +6,34 @@ import {
 } from '@lyvely/time-series-interface';
 import { CalendarInterval } from '@lyvely/dates';
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
-import * as echarts from 'echarts/core';
+import { init, type EChartsType, use } from 'echarts/core';
 import { storeToRefs } from 'pinia';
 import { useProfileStore, t, usePageStore } from '@lyvely/web';
+import { BarChart, LineChart } from 'echarts/charts';
+import {
+  DatasetComponent,
+  GridComponent,
+  LegendComponent,
+  TitleComponent,
+  TooltipComponent,
+  TransformComponent,
+} from 'echarts/components';
+import { LabelLayout, UniversalTransition } from 'echarts/features';
+import { CanvasRenderer } from 'echarts/renderers';
+
+use([
+  BarChart,
+  LineChart,
+  LegendComponent,
+  TitleComponent,
+  TooltipComponent,
+  GridComponent,
+  DatasetComponent,
+  TransformComponent,
+  LabelLayout,
+  UniversalTransition,
+  CanvasRenderer,
+]);
 
 export interface IProps {
   summary: ITimeSeriesSummary;
@@ -28,7 +53,7 @@ const props = withDefaults(defineProps<IProps>(), {
 const { locale } = storeToRefs(useProfileStore());
 
 const chartRoot = ref<HTMLElement>();
-let chart: echarts.EChartsType;
+let chart: EChartsType;
 
 watch(
   () => props.summary,
@@ -54,7 +79,7 @@ function renderSummaryChart(summary: ITimeSeriesSummary) {
     locale.value!
   );
 
-  chart = echarts.init(chartRoot.value!);
+  chart = init(chartRoot.value!);
 
   chart!.setOption({
     tooltip: {

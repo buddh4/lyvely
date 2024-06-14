@@ -7,7 +7,7 @@ import {
   DocumentNotFoundException,
   SortValue,
 } from '@lyvely/interface';
-import { findByPath } from '@lyvely/common';
+import { findByPath, cloneDeep } from '@lyvely/common';
 import {
   FilterQuery,
   AbstractDao,
@@ -16,7 +16,6 @@ import {
   DocumentIdentity,
   IFetchQueryOptions,
 } from '@/core';
-import { cloneDeep } from 'lodash';
 import { DEFAULT_BATCH_SIZE } from '../stream.constants';
 
 @Injectable()

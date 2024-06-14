@@ -17,7 +17,7 @@ import {
   ChartSeriesDataTypes,
 } from '@lyvely/analytics-interface';
 import { computed, onMounted, onUnmounted, type Ref, ref, watch } from 'vue';
-import * as echarts from 'echarts/core';
+import { init, use, type EChartsType } from 'echarts/core';
 import { LyButton, LyIcon, LyLoader } from '@lyvely/ui';
 import {
   loadingStatus,
@@ -31,11 +31,36 @@ import { useUpsertChartSeriesStore } from '@/store';
 import EditTimeSeriesChartModal from '../modals/UpsertChartTimeSeries.vue';
 import ManageChartTimeSeries from '@/components/modals/ManageChartTimeSeries.vue';
 import { storeToRefs } from 'pinia';
+import { BarChart, LineChart } from 'echarts/charts';
+import {
+  DatasetComponent,
+  GridComponent,
+  LegendComponent,
+  TitleComponent,
+  TooltipComponent,
+  TransformComponent,
+} from 'echarts/components';
+import { LabelLayout, UniversalTransition } from 'echarts/features';
+import { CanvasRenderer } from 'echarts/renderers';
+
+use([
+  BarChart,
+  LineChart,
+  LegendComponent,
+  TitleComponent,
+  TooltipComponent,
+  GridComponent,
+  DatasetComponent,
+  TransformComponent,
+  LabelLayout,
+  UniversalTransition,
+  CanvasRenderer,
+]);
 
 const props = defineProps<{ model: ChartModel<string, ITimeSeriesChartConfig> }>();
 
 const chartRoot = ref<HTMLElement>();
-let echart: echarts.EChartsType;
+let echart: EChartsType;
 const showManageSeries = ref(false);
 
 const locale = useI18nStore().locale;
@@ -130,7 +155,7 @@ async function renderChart() {
 
   const series = await transformResponseToChartData(chartData.value);
 
-  echart = echarts.init(chartRoot.value!);
+  echart = init(chartRoot.value!);
   echart.setOption(
     {
       tooltip: {},

@@ -1,7 +1,7 @@
 import { ServerConfiguration } from './lyvely-config.types';
 import { promises as fsPromises } from 'fs';
 import { join, dirname, isAbsolute } from 'path';
-import _ from 'lodash';
+import { merge } from '@lyvely/common';
 import { Logger } from '@nestjs/common';
 import { MongoClient } from 'mongodb';
 import { COLLECTION_CONFIG } from './config.constants';
@@ -59,13 +59,13 @@ export const loadConfigs = (
     );
 
     return Promise.all(configPromises)
-      .then((configs) => configs.reduce((acc, config) => _.merge(acc, config), {}))
+      .then((configs) => configs.reduce((acc, config) => merge(acc, config), {}))
       .then((mergedConfig) =>
         withDbConfig
           ? loadDbConfig(mergedConfig).then((dbConfig) => ({ dbConfig, mergedConfig }))
           : { dbConfig: {}, mergedConfig }
       )
-      .then(({ dbConfig, mergedConfig }) => _.merge({}, mergedConfig, dbConfig))
+      .then(({ dbConfig, mergedConfig }) => merge({}, mergedConfig, dbConfig))
       .catch((error) => {
         throw new Error(`An error occurred while loading configurations: ${error.message}`);
       });

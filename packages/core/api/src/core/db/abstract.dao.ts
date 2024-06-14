@@ -28,8 +28,7 @@ import {
 import { Inject, Logger } from '@nestjs/common';
 import { ModelSaveEvent } from './dao.events';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { PropertiesOf, Type } from '@lyvely/common';
-import { cloneDeep } from 'lodash';
+import { PropertiesOf, Type, cloneDeep } from '@lyvely/common';
 import type { IDocumentTransformation } from './document.transformation';
 import type { LeanDoc } from './lean-doc.interface';
 import type { IDocumentTransformer } from './document.transformer';

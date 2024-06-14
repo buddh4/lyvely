@@ -50,7 +50,7 @@ import { ConfigService } from '@nestjs/config';
 import { ConfigurationPath } from '@/config';
 import { ProfilePermissionsService } from './profile-permissions.service';
 import { CONFIG_PATH_PERMISSION_VISITOR_STRATEGY, GlobalPermissionsService } from '@/permissions';
-import { pick } from 'lodash';
+import { pick } from '@lyvely/common';
 
 @Injectable()
 export class ProfilesService {
@@ -394,7 +394,7 @@ export class ProfilesService {
    * @returns A Promise resolving to a boolean value indicating whether the update was successful.
    */
   async updateProfile(profile: Profile, update: UpdateProfileModel): Promise<boolean> {
-    return this.profileDao.updateOneSetById(profile, pick(update, ['name', 'description']));
+    return this.profileDao.updateOneSetById(profile, pick(update, 'name', 'description'));
   }
 
   /**

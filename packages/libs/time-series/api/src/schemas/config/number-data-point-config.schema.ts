@@ -7,7 +7,7 @@ import {
   INumberDataPointConfigRevision,
 } from '@lyvely/time-series-interface';
 import { DataPointConfig, DataPointConfigRevision } from './data-point-config.schema';
-import { pick } from 'lodash';
+import { pick } from '@lyvely/common';
 import { NestedSchema } from '@lyvely/api';
 
 @NestedSchema()
@@ -79,7 +79,7 @@ export class NumberDataPointConfig
   }
 
   setSettings(settings?: INumberDataPointSettings) {
-    Object.assign(this, pick(settings, ['min', 'max', 'optimal', 'interval', 'userStrategy']));
+    Object.assign(this, pick(settings, 'min', 'max', 'optimal', 'interval', 'userStrategy'));
   }
 
   getSettings() {

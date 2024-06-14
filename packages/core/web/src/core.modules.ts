@@ -7,7 +7,6 @@ import contentModule from './content/module';
 import tagsModule from './tags/module';
 import messagesModule from './messages/module';
 import { uiModule } from './ui/module';
-import chartsModule from './charts/module';
 import helpModule from './help/module';
 import otpModule from './otp/module';
 import notificationsModule from './notifications/module';
@@ -34,7 +33,6 @@ export const registerCoreModules = () => {
     notificationsModule(),
     userInvitationsModule(),
     userRegistrationModule(),
-    chartsModule(),
     captchaModule()
   );
 };

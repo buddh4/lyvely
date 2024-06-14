@@ -7,9 +7,8 @@ import {
   IDataPointSettings,
 } from '@lyvely/time-series-interface';
 import { UserAssignmentStrategy } from '@lyvely/api';
-import { getNumberEnumValues, getStringEnumValues } from '@lyvely/common';
+import { getNumberEnumValues, getStringEnumValues, isEqual } from '@lyvely/common';
 import { CalendarInterval } from '@lyvely/dates';
-import { isEqual } from 'lodash';
 
 export abstract class DataPointConfig<
   TSettings extends IDataPointSettings = IDataPointSettings,

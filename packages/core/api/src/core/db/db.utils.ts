@@ -7,10 +7,10 @@ import {
   findByPath,
   assignRawDataTo,
   hasOwnNonNullableProperty,
+  cloneDeepWith,
 } from '@lyvely/common';
 import { IntegrityException } from '@lyvely/interface';
 import mongoose from 'mongoose';
-import { cloneDeepWith } from 'lodash';
 
 export type DocumentIdentity<T extends BaseDocument<any>> = T | TObjectId | string;
 

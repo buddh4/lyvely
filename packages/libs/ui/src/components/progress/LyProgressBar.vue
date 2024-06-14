@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed, normalizeClass, useAttrs } from 'vue';
 import { twMerge } from 'tailwind-merge';
-import { omit } from 'lodash';
+import { omit } from '@lyvely/common';
 
 const props = withDefaults(
   defineProps<{

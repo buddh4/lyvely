@@ -1,6 +1,6 @@
 import { type IProfileFeatureInfo, ProfileType } from '../interfaces';
 import { IFeatureConfig, IFeatureConfigDefinition } from '@/features/interfaces';
-import { isEmpty } from 'lodash';
+import { isEmptyObject } from '@lyvely/common';
 
 type IFindDefinition = (
   c: IFeatureConfig,
@@ -113,7 +113,7 @@ export function mergeFeatureConfig(
   profile: IProfileFeatureInfo,
   config: IFeatureConfig | undefined
 ): IFeatureConfigDefinition {
-  if (!config || isEmpty(config)) return {};
+  if (!config || isEmptyObject(config)) return {};
 
   for (const entry of [...pipe].reverse()) {
     const match = entry.find(config, profile);

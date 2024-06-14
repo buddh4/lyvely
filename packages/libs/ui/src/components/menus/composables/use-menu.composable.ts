@@ -1,7 +1,7 @@
 import { getMenuEntries } from '../registries';
 import { computed, unref } from 'vue';
 import { sortBySortOrder } from '@/helpers';
-import { isNil } from 'lodash';
+import { isNil } from '@lyvely/common';
 
 export const useMenu = <TContext = any>(menuId: string, context?: TContext) => {
   const allMenuEntries = computed(() => getMenuEntries<TContext>(menuId, context));

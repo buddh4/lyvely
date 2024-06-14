@@ -7,7 +7,6 @@ import { getChartCategoryDefinitions, getChartDefinition, getChartDefinitions } 
 import { ISelectOptions, resolveComponentRegistration } from '@lyvely/ui';
 import { createBaseModelAndInit } from '@lyvely/common';
 import { computed, reactive, ref, Ref, watch } from 'vue';
-import { isFunction } from 'lodash';
 import { I18nModelValidator } from '@lyvely/web';
 
 export const useChartTemplates = (
@@ -28,7 +27,8 @@ export const useChartTemplates = (
     getChartCategoryDefinitions()
       .filter(
         (def) =>
-          !isFunction(def.condition) || (def.condition() && (!category || category === def.type.id))
+          typeof def.condition !== 'function' ||
+          (def.condition() && (!category || category === def.type.id))
       )
       .reduce((options, definition) => {
         options.push({ value: definition.type.id, label: definition.label });
@@ -37,9 +37,9 @@ export const useChartTemplates = (
   );
 
   const seriesTypeOptions = computed(() =>
-    getChartDefinitions().reduce((options, definition) => {
-      if (!isFunction(definition.condition) || definition.condition()) {
-        options.push({ value: definition.type.id, label: definition.label });
+    getChartDefinitions().reduce((options, def) => {
+      if (typeof def.condition !== 'function' || def.condition()) {
+        options.push({ value: def.type.id, label: def.label });
       }
       return options;
     }, [] as ISelectOptions)

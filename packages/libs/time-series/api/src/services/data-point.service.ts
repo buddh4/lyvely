@@ -5,11 +5,10 @@ import {
   InvalidDataPointValueTypeException,
 } from '@lyvely/time-series-interface';
 import { UserAssignmentStrategy, ProfileContext, ProtectedProfileContext } from '@lyvely/api';
-import { isPlainObject } from '@lyvely/common';
+import { isPlainObject, isEqual } from '@lyvely/common';
 import { DataPoint, TimeSeriesContent } from '../schemas';
 import { DataPointStrategyDao } from '../daos';
 import { useDataPointStrategyRegistry } from '../strategies';
-import { isEqual } from 'lodash';
 import { IDataPointUpdateResult } from '../interfaces';
 
 /**

@@ -1,4 +1,4 @@
-import { uniqueId } from 'lodash';
+import { uniqueId } from '@lyvely/common';
 import { computed, ref } from 'vue';
 import { t, Translatable } from '@/i18n';
 
