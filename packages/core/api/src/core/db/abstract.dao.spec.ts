@@ -7,7 +7,6 @@ import {
   EventTester,
   getObjectId,
   afterEachTest,
-  afterAllTests,
 } from '../testing/core-test.util';
 import { ModelDefinition } from '@nestjs/mongoose/dist/interfaces';
 import { Injectable } from '@nestjs/common';
@@ -86,10 +85,6 @@ describe('AbstractDao', () => {
 
   afterEach(async () => {
     await afterEachTest(TEST_KEY, testingModule);
-  });
-
-  afterAll(async () => {
-    await afterAllTests();
   });
 
   it('should be defined', () => {

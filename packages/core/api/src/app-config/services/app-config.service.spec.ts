@@ -38,10 +38,6 @@ describe('AppConfigService', () => {
     await testingModule.afterEach();
   });
 
-  afterAll(async () => {
-    return testingModule.afterAll();
-  });
-
   describe('getAppConfig', () => {
     it('inject module config', async () => {
       const config: IAppConfig<{ test: { someConfig: boolean } }> = appConfigService.getAppConfig(<any>{});

@@ -113,11 +113,8 @@ export const useProfileStore = defineStore('profile', () => {
 
     profile.value = activeProfile;
     latestProfileHandle.setValue(activeProfile.handle);
-    if (!profile.value.getMembership()) {
-      useLiveStore().connectProfileGuest(profile.value.id);
-    } else {
-      useLiveStore().closeGuestConnection();
-    }
+
+    useLiveStore().connectUser(profile.value.id);
 
     status.setStatus(Status.SUCCESS);
   }

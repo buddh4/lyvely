@@ -1,14 +1,19 @@
-import { buildTest } from '@/testing';
+import { buildTest, ILyvelyTestingModule } from '@/testing';
 import { i18nITestPlugin } from '../testing';
 import { I18n } from '../components';
 
 describe('I18nModuleLoader', () => {
   let i18n: I18n;
+  let testingModule: ILyvelyTestingModule;
 
   beforeEach(async () => {
-    const test = await buildTest('I18nModuleLoader').plugins([i18nITestPlugin]).compile();
-    i18n = test.get(I18n);
+    testingModule = await buildTest('I18nModuleLoader').plugins([i18nITestPlugin]).compile();
+    i18n = testingModule.get(I18n);
   }, 50000);
+
+  afterEach(async () => {
+    await testingModule.afterEach();
+  });
 
   it('Test module prefix', async () => {
     const translation = i18n.t('i18n.test.hello', { locale: 'de' });

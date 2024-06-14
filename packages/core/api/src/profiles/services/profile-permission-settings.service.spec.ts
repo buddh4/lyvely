@@ -33,10 +33,6 @@ describe('ProfilePermissionsService', () => {
     return testingModule.afterEach();
   });
 
-  afterAll(async () => {
-    return testingModule.afterAll();
-  });
-
   function registerTestPermission(data?: Partial<IProfilePermission>) {
     registerPermissions([
       {

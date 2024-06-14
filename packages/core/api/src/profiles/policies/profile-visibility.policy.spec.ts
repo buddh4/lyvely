@@ -34,10 +34,6 @@ describe('ProfileVisibilityPolicy', () => {
     return testingModule.afterEach();
   });
 
-  afterAll(async () => {
-    return testingModule.afterAll();
-  });
-
   it('should be defined', () => {
     expect(profileVisibilityPolicy).toBeDefined();
   });

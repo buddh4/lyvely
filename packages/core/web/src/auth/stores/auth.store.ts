@@ -11,7 +11,6 @@ import {
   VisitorMode,
 } from '@lyvely/interface';
 import { findByPath, queuePromise } from '@lyvely/common';
-import { useLiveStore } from '@/live/stores/live.store';
 import { useAppConfigStore } from '@/app-config';
 
 export const storedVid = localStorageManager.getStoredValue('visitorId');
@@ -107,8 +106,6 @@ export const useAuthStore = defineStore('user-auth', () => {
     if (user.value.timezone) {
       i18nStore.setTimezone(user.value.timezone);
     }
-
-    useLiveStore().connectUser();
   }
 
   async function setUserLocale(locale: string) {

@@ -44,10 +44,6 @@ describe('AbstractUserProfileActionService', () => {
     await testingModule.afterEach();
   });
 
-  afterAll(async () => {
-    return testingModule.afterAll();
-  });
-
   it('should be defined', () => {
     expect(testProfileActionService).toBeDefined();
   });

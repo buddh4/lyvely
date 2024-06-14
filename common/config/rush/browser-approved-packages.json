@@ -315,6 +315,10 @@
       "allowedCategories": [ "core", "feature", "lib" ]
     },
     {
+      "name": "tsconfig-paths",
+      "allowedCategories": [ "core" ]
+    },
+    {
       "name": "tslib",
       "allowedCategories": [ "application", "core", "feature", "lib" ]
     },
@@ -341,6 +345,10 @@
     {
       "name": "vuedraggable",
       "allowedCategories": [ "feature" ]
+    },
+    {
+      "name": "why-is-node-running",
+      "allowedCategories": [ "core" ]
     },
     {
       "name": "workbox-build",

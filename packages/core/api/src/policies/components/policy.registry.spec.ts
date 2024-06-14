@@ -76,10 +76,6 @@ describe('PolicyRegistry', () => {
     return testingModule.afterEach();
   });
 
-  afterAll(async () => {
-    return testingModule.afterAll();
-  });
-
   it('Make sure we use the policy defined in the registry', async () => {
     expect(testService.policy instanceof UseThisPolicy).toEqual(true);
     expect(await testService.policy.verify()).toEqual(false);

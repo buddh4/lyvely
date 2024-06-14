@@ -13,6 +13,7 @@ import {
   closeInMongodConnections,
   rootMongooseTestModule,
 } from './mongoose-test.utils';
+import { useDayJsDateTimeAdapter } from '@lyvely/dates';
 
 export type Type<T = any> = new (...args: any[]) => T;
 
@@ -20,11 +21,24 @@ export interface ITestPlugin {
   apply?: (builder: TestBuilder) => void;
   prepare?: (moduleBuilder: TestingModuleBuilder) => void;
   afterEach?: (module: TestingModule) => void;
+  /** @deprecated **/
   afterAll?: (module: TestingModule) => void;
+}
+
+export async function tearDownTests() {
+  return closeInMongodConnections();
+}
+
+export async function setupTests() {
+  useDayJsDateTimeAdapter();
 }
 
 export interface ILyvelyTestingModule extends TestingModule {
   afterEach(): Promise<void>;
+
+  /**
+   * @deprecated use globalTeardown and tearDownTests()
+   */
   afterAll(): Promise<void>;
 }
 
@@ -103,7 +117,7 @@ export abstract class TestBuilder {
     };
     (<ILyvelyTestingModule>(<any>testingModule)).afterAll = async () => {
       this._plugins.forEach((plugin) => plugin.afterAll?.(testingModule));
-      await closeInMongodConnections();
+      await tearDownTests();
     };
     return testingModule as ILyvelyTestingModule;
   }

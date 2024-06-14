@@ -38,10 +38,6 @@ describe('content dao', () => {
     return testingModule.afterEach();
   });
 
-  afterAll(async () => {
-    return testingModule.afterAll();
-  });
-
   async function createTestContent(user: User, profile: Profile, testData = 'Testing...') {
     const testContent = new TestContent(
       { profile, user },

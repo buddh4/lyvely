@@ -1,5 +1,5 @@
 import { UrlGenerator } from './url-generator.service';
-import { afterAllTests, afterEachTest, createCoreTestingModule } from '../testing';
+import { afterEachTest, createCoreTestingModule } from '../testing';
 import { TestingModule } from '@nestjs/testing';
 
 describe('UrlGenerator', () => {
@@ -15,10 +15,6 @@ describe('UrlGenerator', () => {
 
   afterEach(async () => {
     await afterEachTest(TEST_KEY, testingModule);
-  });
-
-  afterAll(async () => {
-    await afterAllTests();
   });
 
   it('should be defined', () => {

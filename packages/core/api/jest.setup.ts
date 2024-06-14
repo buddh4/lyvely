@@ -1,4 +1,5 @@
+import 'tsconfig-paths/register';
 import 'reflect-metadata';
-import { useDayJsDateTimeAdapter } from '@lyvely/dates';
+import { setupTests } from '@/testing';
 
-useDayJsDateTimeAdapter();
+export default () => setupTests();

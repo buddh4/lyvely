@@ -20,10 +20,6 @@ describe('Profile model mapping', () => {
     return testingModule.afterEach();
   });
 
-  afterAll(async () => {
-    return testingModule.afterAll();
-  });
-
   describe('Profile with relations', () => {
     it('transformation should contain in valid tag model', async () => {
       const { context } = await testData.createUserAndProfile();

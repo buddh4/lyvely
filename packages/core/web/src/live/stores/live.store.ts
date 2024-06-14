@@ -19,79 +19,42 @@ export const useLiveStore = defineStore('live', () => {
     return !!window.BroadcastChannel && !!navigator.locks;
   }
 
-  function connectUser() {
+  function connectUser(pid?: string) {
     if (isBroadcastEventsEnabled()) {
       navigator.locks.request(
         'live_master',
         async () =>
           new Promise((resolve) => {
             console.debug(`Connect to user event source`);
-            connectUserEventSource();
+            connectUserEventSource(pid);
             window.addEventListener('beforeunload', resolve);
           })
       );
     } else {
-      connectUserEventSource();
+      connectUserEventSource(pid);
     }
   }
 
-  let releaseGuestLock: ((v: any) => void) | undefined;
-  function connectProfileGuest(pid: string) {
-    if (isBroadcastEventsEnabled()) {
-      navigator.locks.request(
-        `live_${pid}_master`,
-        async () =>
-          new Promise((resolve) => {
-            console.debug(`Connect to ${pid} as guest`);
-            releaseGuestLock = resolve;
-            connectProfileGuestEventSource(pid);
-            window.addEventListener('beforeunload', resolve);
-          })
-      );
-    } else {
-      connectProfileGuestEventSource(pid);
-    }
-  }
+  let liveEventSource: EventSource | undefined;
+  let livePid: string | undefined;
+  function connectUserEventSource(pid?: string) {
+    if (liveEventSource && pid === pid) return;
+    else if (liveEventSource) liveEventSource.close();
 
-  function connectUserEventSource() {
-    const eventSource = new EventSource(createApiUrl('/live/user'), {
-      withCredentials: true,
-    });
-    eventSource.onerror = (error) => console.error(error);
-    eventSource.onopen = () => console.debug('Live connection onopen');
-    eventSource.onmessage = ({ data }) => {
+    liveEventSource = new EventSource(
+      createApiUrl('/live/user', livePid ? { pid: livePid } : undefined),
+      {
+        withCredentials: true,
+      }
+    );
+
+    liveEventSource.onerror = (error) => console.error(error);
+    liveEventSource.onopen = () => console.debug('Live connection onopen');
+    liveEventSource.onmessage = ({ data }) => {
       const event = JSON.parse(data) as ILiveEvent;
       broadCastLiveEvent(event);
     };
-    return eventSource;
-  }
-
-  let guestSource: EventSource | undefined;
-  let guestPid: string | undefined;
-  function connectProfileGuestEventSource(pid: string) {
-    if (guestSource && guestPid === pid) return;
-
-    if (guestSource && guestPid !== pid) guestSource.close();
-
-    guestPid = pid;
-
-    guestSource = new EventSource(createApiUrl(`/live/${pid}/guest`), {
-      withCredentials: true,
-    });
-    guestSource.onerror = (error) => console.error(error);
-    guestSource.onopen = () => console.debug('Live connection onopen');
-    guestSource.onmessage = ({ data }) => {
-      const event = JSON.parse(data) as ILiveEvent;
-      broadCastLiveEvent(event);
-    };
-  }
-
-  function closeGuestConnection() {
-    if (guestSource) guestSource.close();
-    if (releaseGuestLock) releaseGuestLock(undefined);
-    releaseGuestLock = undefined;
-    guestSource = undefined;
-    guestPid = undefined;
+    return liveEventSource;
   }
 
   function broadCastLiveEvent(event: ILiveEvent) {
@@ -128,8 +91,6 @@ export const useLiveStore = defineStore('live', () => {
 
   return {
     connectUser,
-    connectProfileGuest,
-    closeGuestConnection,
     on,
     off,
   };

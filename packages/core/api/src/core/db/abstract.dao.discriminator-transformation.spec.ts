@@ -1,7 +1,7 @@
 import { InjectModel, Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { AbstractDao } from './abstract.dao';
 import { Model, TObjectId } from './db.type';
-import { createCoreTestingModule, afterEachTest, afterAllTests } from '../testing/core-test.util';
+import { createCoreTestingModule, afterEachTest } from '../testing/core-test.util';
 import { ModelDefinition } from '@nestjs/mongoose/dist/interfaces';
 import { Injectable } from '@nestjs/common';
 import { TestingModule } from '@nestjs/testing';
@@ -105,10 +105,6 @@ describe('AbstractDao', () => {
 
   afterEach(async () => {
     await afterEachTest(TEST_KEY, testingModule);
-  });
-
-  afterAll(async () => {
-    await afterAllTests();
   });
 
   it('should be defined', () => {

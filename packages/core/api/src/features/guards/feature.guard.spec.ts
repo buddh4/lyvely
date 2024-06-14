@@ -8,7 +8,6 @@ import { FeatureType } from "@lyvely/interface";
 describe('ProfileGuard', () => {
   let testingModule: ILyvelyTestingModule;
   let featureGuard: FeatureGuard;
-  //let featureRegistry: FeatureRegistry;
   let context: ExecutionContext;
 
   const TEST_KEY = 'feature-guard';
@@ -23,9 +22,6 @@ describe('ProfileGuard', () => {
     return testingModule.afterEach();
   });
 
-  afterAll(async () => {
-    return testingModule.afterAll();
-  });
   describe('canActivate()', () => {
     it('enabled class level global feature', async () => {
       registerFeatures([

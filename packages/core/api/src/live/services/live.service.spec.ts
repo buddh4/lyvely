@@ -22,10 +22,6 @@ describe('LiveService', () => {
     return testingModule.afterEach();
   });
 
-  afterAll(async () => {
-    return testingModule.afterAll();
-  });
-
   it('should be defined', () => {
     expect(liveService).toBeDefined();
   });
@@ -40,8 +36,8 @@ describe('LiveService', () => {
         module: 'test',
       };
 
-      const memberPromise = firstValueFrom(await liveService.subscribeUser(member));
-      const ownerPromise = firstValueFrom(await liveService.subscribeUser(owner));
+      const memberPromise = firstValueFrom(await liveService.subscribe(member));
+      const ownerPromise = firstValueFrom(await liveService.subscribe(owner));
 
       liveService.emitProfileEvent(event);
 
@@ -62,7 +58,7 @@ describe('LiveService', () => {
       const userPromise = new Promise((res, rej) => {
         const timeout = setTimeout(() => rej('failed'), 1000);
         liveService
-          .subscribeUser(user)
+          .subscribe(user)
           .then(firstValueFrom)
           .then((result) => {
             clearTimeout(timeout);
@@ -88,7 +84,7 @@ describe('LiveService', () => {
         module: 'test',
       };
 
-      const eventPromise = firstValueFrom(await liveService.subscribeUser(user));
+      const eventPromise = firstValueFrom(await liveService.subscribe(user));
 
       liveService.emitUserEvent(event);
 
@@ -110,7 +106,7 @@ describe('LiveService', () => {
       const userPromise = new Promise((res, rej) => {
         const timeout = setTimeout(() => rej('failed'), 1000);
         liveService
-          .subscribeUser(anotherUser)
+          .subscribe(anotherUser)
           .then(firstValueFrom)
           .then((result) => {
             clearTimeout(timeout);

@@ -21,10 +21,6 @@ describe('MembershipDao', () => {
     return testingModule.afterEach();
   });
 
-  afterAll(async () => {
-    return testingModule.afterAll();
-  });
-
   it('should be defined', () => {
     expect(membershipDao).toBeDefined();
   });

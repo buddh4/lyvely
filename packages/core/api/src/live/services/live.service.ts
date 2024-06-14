@@ -32,21 +32,15 @@ export class LiveService {
     private profileVisibilityPolicy: ProfileVisibilityPolicy
   ) {}
 
+  emitGlobalEvent(event: ILiveEvent) {
+    return this.emit(this.buildLiveGlobalEventName(), event);
+  }
+
   emitProfileEvent(event: ILiveProfileEvent) {
-    this.logger.log(
-      `Send live event ${event.module}.${event.name} for profile ${this.buildLiveProfileEventName(
-        event.pid
-      )}`
-    );
     return this.emit(this.buildLiveProfileEventName(event.pid), event);
   }
 
   emitUserEvent(event: ILiveUserEvent) {
-    this.logger.log(
-      `Send live event ${event.module}.${event.name} to user ${this.buildLiveUserEventName(
-        event.uid
-      )}`
-    );
     return this.emit(this.buildLiveUserEventName(event.uid), event);
   }
 
@@ -58,17 +52,32 @@ export class LiveService {
     }
   }
 
-  async subscribeUser(user: User): Promise<Observable<any>> {
+  async subscribe(user: OptionalUser, pid?: string): Promise<Observable<any>> {
     // TODO: filter by visibility or permission
     // TODO: reconnect on visibility change
     if (this.isStandaloneServer()) {
+      const pids: DocumentIdentity<Profile>[] = (
+        await this.profileRelationsService.findAllProfileRelationsByUser(user)
+      ).map((relation) => relation.pid);
+
+      if (pid && !pids.find((relationPid) => assureStringId(relationPid) === pid)) {
+        await this.verifyNonRelationAccess(user, pid);
+      }
+
+      if (pid) pids.push(pid);
+
       const observables = new Set(
-        (await this.profileRelationsService.findAllProfileRelationsByUser(user)).map((relation) =>
-          fromEvent(this.eventEmitter, this.buildLiveProfileEventName(relation.pid!))
+        pids.map((profileId) =>
+          fromEvent(this.eventEmitter, this.buildLiveProfileEventName(profileId))
         )
       );
 
-      observables.add(fromEvent(this.eventEmitter, this.buildLiveUserEventName(user)));
+      if (user) {
+        observables.add(fromEvent(this.eventEmitter, this.buildLiveUserEventName(user)));
+      }
+
+      observables.add(fromEvent(this.eventEmitter, this.buildLiveGlobalEventName()));
+
       return merge(...observables);
     } else {
       return undefined as any;
@@ -76,20 +85,10 @@ export class LiveService {
     }
   }
 
-  async subscribeGuest(user: OptionalUser, pid: string, oid?: string): Promise<Observable<any>> {
-    // TODO: filter by visibility or permission
-    // TODO: reconnect on visibility change
-    if (this.isStandaloneServer()) {
-      const context = await this.profilesService.findProfileContext(user, pid, oid);
-
-      if (!(await this.profileVisibilityPolicy.verify(context))) {
-        throw new ForbiddenServiceException();
-      }
-
-      return fromEvent(this.eventEmitter, this.buildLiveProfileEventName(context.pid!));
-    } else {
-      return undefined as any;
-      // TODO: redis subscription
+  async verifyNonRelationAccess(user: OptionalUser, pid: string) {
+    const context = await this.profilesService.findProfileContext(user, pid);
+    if (!(await this.profileVisibilityPolicy.verify(context))) {
+      throw new ForbiddenServiceException();
     }
   }
 
@@ -101,7 +100,13 @@ export class LiveService {
     return `live.user.${assureStringId(uid)}`;
   }
 
+  private buildLiveGlobalEventName() {
+    return `live.global`;
+  }
+
   private isStandaloneServer() {
-    return this.configService.get('operationMode') === OperationMode.STANDALONE;
+    return (
+      this.configService.get('operationMode', OperationMode.STANDALONE) === OperationMode.STANDALONE
+    );
   }
 }

@@ -53,10 +53,6 @@ describe('ContentReadPolicy', () => {
     return testingModule.afterEach();
   });
 
-  afterAll(async () => {
-    return testingModule.afterAll();
-  });
-
   it('test custom content read policy', async () => {
     class TestContent extends Content {
       value: string;
