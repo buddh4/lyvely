@@ -1,5 +1,4 @@
-import { UpdateQuery, createObjectId, isObjectId, TObjectId } from './db.type';
-import { BaseDocument } from './base.document';
+import { UpdateQuery, createObjectId, isObjectId, TObjectId, BaseDocument } from '../interfaces';
 import {
   isValidObjectId,
   DeepPartial,

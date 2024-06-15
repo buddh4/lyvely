@@ -17,10 +17,6 @@ describe('I18n', () => {
     return testingModule.afterEach();
   });
 
-  it('should be defined', () => {
-    expect(i18n).toBeDefined();
-  });
-
   describe('translate()', () => {
     it('translate with string key and locale', async () => {
       expect(i18n.t('i18n.test.testKey', { locale: 'en-us' })).toEqual('Test Value');

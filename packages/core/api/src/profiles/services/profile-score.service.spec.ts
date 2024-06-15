@@ -23,7 +23,6 @@ describe('AbstractUserProfileActionService', () => {
   let testProfileActionService: TestProfileScoreService;
   let testData: ProfileTestDataUtils;
   let profileDao: ProfileDao;
-  let app: INestApplication;
 
   const TEST_KEY = 'abstract_user_profile_action_service';
 
@@ -31,21 +30,15 @@ describe('AbstractUserProfileActionService', () => {
     testingModule = await buildProfileTest(TEST_KEY)
       .providers([TestProfileScoreTypeDao, TestProfileScoreService])
       .models([testScoreModelDef])
+      .withApp()
       .compile();
     testProfileActionService = testingModule.get<TestProfileScoreService>(TestProfileScoreService);
     testData = testingModule.get(ProfileTestDataUtils);
     profileDao = testingModule.get(ProfileDao);
-    app = testingModule.createNestApplication();
-    await app.init();
   });
 
   afterEach(async () => {
-    await app.close();
     await testingModule.afterEach();
-  });
-
-  it('should be defined', () => {
-    expect(testProfileActionService).toBeDefined();
   });
 
   describe('createUserProfileAction()', () => {

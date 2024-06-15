@@ -21,10 +21,6 @@ describe('ProfileGuard', () => {
     return testingModule.afterEach();
   });
 
-  it('should be defined', () => {
-    expect(ProfileGuard).toBeDefined();
-  });
-
   describe('canActivate()', () => {
     it('owner can access user profile', async () => {
       const { user: owner, profile } = await testData.createUserAndProfile();

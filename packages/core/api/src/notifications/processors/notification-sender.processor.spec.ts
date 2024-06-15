@@ -68,10 +68,6 @@ describe('NotificationSendProcessor', () => {
     return testingModule.afterEach();
   });
 
-  it('should be defined', () => {
-    expect(processor).toBeDefined();
-  });
-
   describe('processNotification', () => {
     it('test non profile UserSubscription', async () => {
       const user = await testData.createUser();

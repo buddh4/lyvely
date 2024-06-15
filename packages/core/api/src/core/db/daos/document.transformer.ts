@@ -1,6 +1,5 @@
 import type { IDocumentTransformation } from './document.transformation';
-import type { BaseDocument } from './base.document';
-import type { LeanDoc } from './lean-doc.interface';
+import type { BaseDocument, LeanDoc } from '../interfaces';
 import { DiscriminatorTransformation } from './document.transformation';
 
 /**

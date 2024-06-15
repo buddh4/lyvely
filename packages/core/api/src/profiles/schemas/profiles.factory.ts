@@ -8,6 +8,7 @@ import {
 import { UserProfile } from './user-profiles.schema';
 import { GroupProfile } from './group-profiles.schema';
 import { Organization } from './organization.schema';
+import { Profile } from './profiles.schema';
 
 export interface ICreateProfileOptions {
   organization?: Organization | null;
@@ -29,7 +30,8 @@ const profileTypeMap = {
   [ProfileType.Organization]: Organization,
 };
 
-export function getProfileConstructorByType(type: ProfileType) {
+export function getProfileConstructorByType(typeOrProfile: ProfileType | Profile) {
+  const type = typeof typeOrProfile === 'object' ? typeOrProfile.type : typeOrProfile;
   return profileTypeMap[type];
 }
 

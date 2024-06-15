@@ -1,13 +1,13 @@
-import { InjectModel, Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { AbstractDao } from './abstract.dao';
-import { Model, TObjectId } from './db.type';
-import { createCoreTestingModule, afterEachTest } from '../testing/core-test.util';
+import { TObjectId } from '../interfaces';
+import { createCoreTestingModule, afterEachTest } from '../../testing/core-test.util';
 import { ModelDefinition } from '@nestjs/mongoose/dist/interfaces';
-import { Injectable } from '@nestjs/common';
+import { type INestApplication } from '@nestjs/common';
 import { TestingModule } from '@nestjs/testing';
 import {
   BaseDocument,
-  type BaseDocumentData,
+  type BaseDocumentData, Dao,
   DiscriminatorDocumentTransformer,
   DiscriminatorTransformation,
   IDocumentTransformation,
@@ -62,21 +62,15 @@ class TestEntityTransformer extends DiscriminatorDocumentTransformer<TestEntity>
   }
 }
 
-@Injectable()
+@Dao(TestEntity, {
+  discriminator: {
+    [TestEntityA.name]: TestEntityA,
+    [TestEntityB.name]: TestEntityB,
+  }
+})
 class TestEntityDao extends AbstractDao<TestEntity> {
-  @InjectModel(TestEntity.name) protected model: Model<TestEntity>;
-
+  protected modelName = TestEntity.name;
   override transformer = new TestEntityTransformer();
-
-  getModelConstructor(model: LeanDoc<TestEntity>) {
-    if (model.type === TestEntityA.name) return TestEntityA;
-    if (model.type === TestEntityB.name) return TestEntityB;
-    return TestEntity;
-  }
-
-  getModuleId(): string {
-    return 'test';
-  }
 }
 
 const TEST_KEY = 'abstract_dao';
@@ -93,6 +87,7 @@ const TestEntityModelDefinition: ModelDefinition = {
 describe('AbstractDao', () => {
   let testingModule: TestingModule;
   let dao: TestEntityDao;
+  let app: INestApplication;
 
   beforeEach(async () => {
     testingModule = await createCoreTestingModule(
@@ -100,15 +95,14 @@ describe('AbstractDao', () => {
       [TestEntityDao],
       [TestEntityModelDefinition]
     ).compile();
+
+    app = testingModule.createNestApplication();
     dao = testingModule.get(TestEntityDao);
   });
 
   afterEach(async () => {
+    await app.close();
     await afterEachTest(TEST_KEY, testingModule);
-  });
-
-  it('should be defined', () => {
-    expect(dao).toBeDefined();
   });
 
   describe('AbstractDao discriminator transformation', () => {

@@ -17,10 +17,6 @@ describe('CoreModule', () => {
     await afterEachTest(TEST_KEY, testingModule);
   });
 
-  it('registry is defined', () => {
-    expect(moduleRegistry).toBeDefined();
-  });
-
   it('core module is registered', () => {
     expect(moduleRegistry.getTypeMeta('core')).toBeDefined();
     expect(moduleRegistry.getTypeMeta('core')?.id).toEqual('core');

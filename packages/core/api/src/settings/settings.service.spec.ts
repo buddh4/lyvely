@@ -1,15 +1,14 @@
 import {
   AbstractDao,
-  BaseDocument,
+  BaseDocument, Dao,
   DocumentIdentity,
   LeanDoc,
   MixedProp,
-  Model,
   type TObjectId,
 } from '@/core';
 import { buildTest, ILyvelyTestingModule } from '@/testing';
 import { SettingsService } from './settings.service';
-import { InjectModel, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { SettingsRegistry } from './settings.registry';
 import { type BaseModelData, type Type } from '@lyvely/common';
@@ -33,19 +32,8 @@ class TestSettingTarget {
 
 const TestSettingTargetSchema = SchemaFactory.createForClass(TestSettingTarget);
 
-@Injectable()
-class TestSettingTargetDao extends AbstractDao<TestSettingTarget> {
-  @InjectModel(TestSettingTarget.name)
-  protected model: Model<TestSettingTarget>;
-
-  getModelConstructor(model: LeanDoc<TestSettingTarget>): Type<TestSettingTarget> {
-    return TestSettingTarget;
-  }
-
-  getModuleId(): string {
-    return 'test';
-  }
-}
+@Dao(TestSettingTarget)
+class TestSettingTargetDao extends AbstractDao<TestSettingTarget> {}
 
 @Injectable()
 class TestSettingsService extends SettingsService<TestSettingTarget> {

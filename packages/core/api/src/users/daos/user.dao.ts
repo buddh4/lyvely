@@ -1,26 +1,19 @@
-import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
 import {
   AbstractDao,
+  Dao,
   DocumentIdentity,
   FilterQuery,
-  Model,
   UpdateOptions,
   UpdateQuerySet,
 } from '@/core';
 import { RefreshToken, User, UserEmail } from '../schemas';
-import { Type } from '@lyvely/common';
 import { ProfileType } from '@lyvely/interface';
 
 /**
  * Data Access Object for accessing user entities.
  */
-@Injectable()
+@Dao(User)
 export class UserDao extends AbstractDao<User> {
-  constructor(@InjectModel(User.name) protected model: Model<User>) {
-    super();
-  }
-
   /**
    * Finds a user by their username in a case-insensitive manner.
    * @param username
@@ -333,14 +326,6 @@ export class UserDao extends AbstractDao<User> {
       identity.password = user.password;
     }
     return true;
-  }
-
-  getModelConstructor(): Type<User> {
-    return User;
-  }
-
-  getModuleId(): string {
-    return 'users';
   }
 
   pushEmail(user: DocumentIdentity<User>, userEmail: UserEmail) {

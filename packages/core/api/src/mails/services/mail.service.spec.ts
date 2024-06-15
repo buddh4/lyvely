@@ -18,10 +18,6 @@ describe('MailService', () => {
     return testingModule.afterEach();
   });
 
-  it('is defined', () => {
-    expect(mailService).toBeDefined();
-  });
-
   describe('Test json file output', () => {
     it('test simple mail info', async () => {
       const info = await mailService.sendMail({

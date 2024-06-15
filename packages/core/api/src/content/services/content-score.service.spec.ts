@@ -54,10 +54,6 @@ describe('ContentScoreService', () => {
     return testingModule.afterEach();
   });
 
-  it('should be defined', () => {
-    expect(contentScoreService).toBeDefined();
-  });
-
   async function createGroupAndContent() {
     const testData = await testDataUtils.createSimpleGroup();
     const content = new TestContent(testData.ownerContext, {

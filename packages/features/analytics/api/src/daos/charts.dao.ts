@@ -1,21 +1,11 @@
-import {
-  assureObjectId,
-  assureStringId,
-  ContentTypeDao,
-  type DocumentIdentity,
-  Model,
-} from '@lyvely/api';
+import { assureObjectId, assureStringId, ContentTypeDao, type DocumentIdentity } from '@lyvely/api';
 import { Chart, ChartSeriesConfig } from '../schemas';
-import { InjectModel } from '@nestjs/mongoose';
-import { ANALYTICS_MODULE_ID, IChartSeriesConfig } from '@lyvely/analytics-interface';
-import { Injectable } from '@nestjs/common';
+import { IChartSeriesConfig } from '@lyvely/analytics-interface';
 import { findAndReplace } from '@lyvely/common';
+import { Dao } from '@lyvely/api';
 
-@Injectable()
+@Dao(Chart)
 export class ChartsDao extends ContentTypeDao<Chart> {
-  @InjectModel(Chart.name)
-  protected model: Model<Chart>;
-
   async updateSeries(
     chart: DocumentIdentity<Chart>,
     sid: DocumentIdentity<ChartSeriesConfig>,
@@ -47,13 +37,5 @@ export class ChartsDao extends ContentTypeDao<Chart> {
     if (result && chart instanceof Chart) {
       chart.config.series = chart.config.series.filter((c) => !c._id.equals(sid));
     }
-  }
-
-  getModelConstructor() {
-    return Chart;
-  }
-
-  getModuleId(): string {
-    return ANALYTICS_MODULE_ID;
   }
 }

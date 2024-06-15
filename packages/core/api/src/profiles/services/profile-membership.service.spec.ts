@@ -22,10 +22,6 @@ describe('ProfileMembershipService', () => {
     return testingModule.afterEach();
   });
 
-  it('should be defined', () => {
-    expect(membershipService).toBeDefined();
-  });
-
   describe('createMembership', () => {
     it('create group membership', async () => {
       const { profile } = ProfileTestDataUtils.createDummyUserAndProfile(

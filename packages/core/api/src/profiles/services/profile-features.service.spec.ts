@@ -28,10 +28,6 @@ describe('ProfileFeaturesService', () => {
     return testingModule.afterEach();
   });
 
-  it('should be defined', () => {
-    expect(profileFeaturesService).toBeDefined();
-  });
-
   describe('setFeatureState', () => {
     it('enable main feature works', async () => {
       registerFeatures([

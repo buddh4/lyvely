@@ -1,5 +1,3 @@
-import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
 import {
   Organization,
   Profile,
@@ -9,24 +7,23 @@ import {
   GroupProfile,
 } from '../schemas';
 import {
-  Model,
   assureObjectId,
   DocumentIdentity,
   AbstractDao,
   createObjectId,
   IBaseFetchQueryOptions,
-  LeanDoc,
   IFetchQueryOptions,
+  Dao,
 } from '@/core';
 import { User } from '@/users';
-import { assignRawDataTo, Type } from '@lyvely/common';
-import { IntegrityException, ProfileType, ProfileVisibilityLevel } from '@lyvely/interface';
+import { assignRawDataTo } from '@lyvely/common';
+import { ProfileType, ProfileVisibilityLevel } from '@lyvely/interface';
 import { ProfileTypeTransformation } from '../schemas/transformations';
 
-@Injectable()
+@Dao(Profile, {
+  discriminator: (doc) => getProfileConstructorByType(doc.type),
+})
 export class ProfileDao extends AbstractDao<Profile> {
-  @InjectModel(Profile.name) protected model: Model<Profile>;
-
   constructor() {
     super();
     this.registerTransformations(new ProfileTypeTransformation());
@@ -151,20 +148,5 @@ export class ProfileDao extends AbstractDao<Profile> {
       return;
     }
     return this.updateOneSetById(identity, { score: Math.max(newScore, 0) });
-  }
-
-  getModuleId(): string {
-    return 'profiles';
-  }
-
-  getModelConstructor(model: LeanDoc<Profile>): Type<Profile> {
-    if (!model.type) throw new IntegrityException();
-    const ProfileType = getProfileConstructorByType(model.type);
-    if (!ProfileType) {
-      throw new IntegrityException(
-        'Could not construct profile model due to invalid type: ' + model.type
-      );
-    }
-    return ProfileType;
   }
 }

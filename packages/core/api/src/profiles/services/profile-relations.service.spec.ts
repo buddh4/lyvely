@@ -17,10 +17,6 @@ describe('ProfileRelationsService', () => {
     return testingModule.afterEach();
   });
 
-  it('should be defined', () => {
-    expect(relationsService).toBeDefined();
-  });
-
   describe('findProfileRelations', () => {
     it('find visitor relations', async () => {
       const { profile } = await testData.createSimpleGroup();

@@ -57,10 +57,6 @@ describe('UserRegistrationService', () => {
     return testingModule.afterAll();
   });
 
-  it('should be defined', () => {
-    expect(registerService).toBeDefined();
-  });
-
   const validRegistration = createUserRegistrationInstance();
 
   describe('checkUserNameValidity', () => {

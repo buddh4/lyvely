@@ -44,10 +44,6 @@ describe('DataPointDao', () => {
     return testingModule.afterAll();
   });
 
-  it('should be defined', () => {
-    expect(dao).toBeDefined();
-  });
-
   interface IDataPointTestOptions {
     uid?: string;
     cid?: string;

@@ -29,10 +29,6 @@ describe('Habits DAO', () => {
     return testingModule.afterAll();
   });
 
-  it('should be defined', () => {
-    expect(habitsDao).toBeDefined();
-  });
-
   describe('findByProfileAndId', () => {
     it('find habit by profile', async () => {
       const { user, profile } = await testData.createUserAndProfile();

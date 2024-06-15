@@ -1,6 +1,5 @@
 import { UserTestBuilder } from '@/users';
 import { policyITestPlugin } from '@/policies';
-import { LyvelyTestBuilder } from '@/testing';
 import { profilesITestPlugin } from './profile-test.plugin';
 import { permissionsTestingPlugin } from '@/permissions';
 
@@ -11,6 +10,6 @@ export class ProfileTestBuilder extends UserTestBuilder {
   }
 }
 
-export function buildProfileTest(id: string, init: Partial<LyvelyTestBuilder> = {}) {
-  return new ProfileTestBuilder(id, init);
+export function buildProfileTest(id: string) {
+  return new ProfileTestBuilder(id);
 }

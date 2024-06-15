@@ -93,10 +93,6 @@ describe('DataPointService', () => {
     return new TestTimeSeriesContent({ profile, user }, entity.toObject());
   }
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
-  });
-
   describe('updateOrCreateDataPoint()', () => {
     it('non existing log is created', async () => {
       const { user, profile, context } = await testData.createUserAndProfile();

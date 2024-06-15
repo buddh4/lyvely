@@ -29,10 +29,6 @@ describe('UserSubscriptionService', () => {
     return testingModule.afterAll();
   });
 
-  it('should be defined', () => {
-    expect(userSubscriptionService).toBeDefined();
-  });
-
   describe('getSubscriptionContext()', () => {
     it('test single user subscription without profile', async () => {
       const user = await testData.createUser();

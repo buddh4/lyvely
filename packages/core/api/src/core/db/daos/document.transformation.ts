@@ -1,5 +1,4 @@
-import type { BaseDocument } from './base.document';
-import type { LeanDoc } from './lean-doc.interface';
+import type { BaseDocument, LeanDoc } from '../interfaces';
 
 /**
  * Represents an interface for simple document transformation.

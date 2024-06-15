@@ -8,6 +8,6 @@ export class UserTestBuilder extends LyvelyTestBuilder {
   }
 }
 
-export function buildUserTest(id: string, init: Partial<LyvelyTestBuilder> = {}) {
-  return new UserTestBuilder(id, init);
+export function buildUserTest(id: string) {
+  return new UserTestBuilder(id);
 }

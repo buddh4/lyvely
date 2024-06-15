@@ -1,17 +1,5 @@
-import { AbstractDao, Model } from '@/core';
+import { AbstractDao, Dao } from '@/core';
 import { UserNotification } from '../schemas';
-import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
 
-@Injectable()
-export class UserNotificationDao extends AbstractDao<UserNotification> {
-  @InjectModel(UserNotification.name) protected model: Model<UserNotification>;
-
-  getModelConstructor() {
-    return UserNotification;
-  }
-
-  getModuleId(): string {
-    return 'notifications';
-  }
-}
+@Dao(UserNotification)
+export class UserNotificationDao extends AbstractDao<UserNotification> {}

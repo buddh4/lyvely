@@ -1,17 +1,17 @@
-import { InjectModel, Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { AbstractDao } from './abstract.dao';
-import { Model, TObjectId } from './db.type';
+import { Model, TObjectId } from '../interfaces';
 import {
   createCoreTestingModule,
   EventTester,
   afterEachTest,
-} from '../testing/core-test.util';
+} from '../../testing/core-test.util';
 import { ModelDefinition } from '@nestjs/mongoose/dist/interfaces';
-import { Injectable } from '@nestjs/common';
+import { type INestApplication } from '@nestjs/common';
 import { TestingModule } from '@nestjs/testing';
 import {
   BaseDocument,
-  type BaseDocumentData,
+  type BaseDocumentData, Dao,
   type IDocumentTransformation,
   type LeanDoc,
 } from '@/core';
@@ -56,18 +56,8 @@ const TestEntitySchema = SchemaFactory.createForClass(TestEntity);
 
 type TestEntityVersions = TestEntity | TestEntityV1;
 
-@Injectable()
-class TestEntityDao extends AbstractDao<TestEntity, TestEntityVersions> {
-  @InjectModel(TestEntity.name) protected model: Model<TestEntity>;
-
-  getModelConstructor(model: LeanDoc<TestEntity>) {
-    return TestEntity;
-  }
-
-  getModuleId(): string {
-    return 'test';
-  }
-}
+@Dao(TestEntity)
+class TestEntityDao extends AbstractDao<TestEntity, TestEntityVersions> {}
 
 class TestEntityV1ToV2Transformation
   implements IDocumentTransformation<TestEntityVersions, TestEntity, TestEntityV1>
@@ -105,6 +95,7 @@ describe('AbstractDao Transformations', () => {
   let dao: TestEntityDao;
   let ModelV1: Model<TestEntityV1>;
   let Model: Model<TestEntity>;
+  let app: INestApplication;
 
   beforeEach(async () => {
     testingModule = await createCoreTestingModule(
@@ -112,6 +103,8 @@ describe('AbstractDao Transformations', () => {
       [TestEntityDao, EventTester],
       TestEntityModelDefinition
     ).compile();
+
+    app = testingModule.createNestApplication();
     dao = testingModule.get(TestEntityDao);
     dao.registerTransformations(new TestEntityV1ToV2Transformation());
     ModelV1 = testingModule.get('TestEntityV1Model');
@@ -119,6 +112,7 @@ describe('AbstractDao Transformations', () => {
   });
 
   afterEach(async () => {
+    await app.close();
     await afterEachTest(TEST_KEY, testingModule);
   });
 

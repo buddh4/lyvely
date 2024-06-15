@@ -16,10 +16,6 @@ describe('UrlGenrator', () => {
     return testingModule.afterEach();
   });
 
-  it('should be defined', () => {
-    expect(urlGenerator).toBeDefined();
-  });
-
   describe('getAppUrl', () => {
     it('generate base app url', () => {
       const testUrl = urlGenerator.getAppUrl();

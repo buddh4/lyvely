@@ -1,4 +1,4 @@
-import { FilterQuery } from './db.type';
+import { FilterQuery } from '../interfaces';
 import { isNotNil } from '@lyvely/common';
 
 /**

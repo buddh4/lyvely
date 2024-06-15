@@ -4,7 +4,7 @@ import {
   EntityData,
   DocumentIdentity,
   createBaseDocumentInstance,
-} from './db.utils';
+} from '../utils';
 import {
   FilterQuery,
   HydratedDocument,
@@ -18,7 +18,7 @@ import {
   MongooseBaseQueryOptions,
   PipelineStage,
 } from 'mongoose';
-import { BaseDocument } from './base.document';
+import type { BaseDocument, LeanDoc } from '../interfaces';
 import {
   BulkWriteResult,
   CollationOptions,
@@ -28,11 +28,14 @@ import {
 import { Inject, Logger } from '@nestjs/common';
 import { ModelSaveEvent } from './dao.events';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { PropertiesOf, Type, cloneDeep } from '@lyvely/common';
+import { PropertiesOf, Type, cloneDeep, isNil, getPrototypeTree } from '@lyvely/common';
 import type { IDocumentTransformation } from './document.transformation';
-import type { LeanDoc } from './lean-doc.interface';
 import type { IDocumentTransformer } from './document.transformer';
 import { DocumentTransformer } from './document.transformer';
+import { type IDaoMetadata } from './dao.decorator';
+import { AbstractTypeRegistry } from '@/core/components';
+import { META_DAO } from '@/core/db/db.constants';
+import { IntegrityException } from '@lyvely/interface';
 
 interface IPagination {
   page: number;
@@ -136,36 +139,54 @@ export type PartialEntityData<T extends BaseDocument> = Partial<EntityData<T>>;
  *
  * @example
  *
- * class MyModelDao extends AbstractDao<MyModel> {
- *   @InjectModel(MyModel.name)
- *   protected model: Model<MyModel>;
- *
- *   // This function is used to instantiate your model, you can return other constructors if required.
- *   getModelConstructor(model: LeanDoc<T>) {
- *     return model.type === 'special' ? MySpecialModel : MyModel;
- *   }
- *
- *   getModuleId() {
- *     return MY_MODULE_ID;
- *   }
- * }
+ * @Dao(MyModel)
+ * class MyModelDao extends AbstractDao<MyModel> {}
  */
 export abstract class AbstractDao<
   T extends BaseDocument,
   TVersions extends BaseDocument = T,
+  TMeta extends IDaoMetadata<T> = IDaoMetadata<T>,
   TDoc = T & Document,
 > {
   /**
-   * The mongoose model, which is usually injected with @InjectModel()
-   * @protected
+   * Represents the mongoose model containing the main db connection.
+   * This model instance should not be called directly, use the `getModel()` function instead, which
+   * handles multi-tenancy and other model/connection issues.
+   *
+   * @class
+   * @template T - The type of data to be stored in the model.
    */
-  protected abstract model: Model<T>;
+  private model: Model<T>;
 
   /**
    * Logger for logging error and debug information.
    * @protected
    */
   protected logger: Logger;
+
+  /**
+   * The discriminator key used for distinguishing between different types or subtypes.
+   *
+   * If this value is undefined, the discriminator is unknown yet, if it is null there is no
+   * discriminator key otherwise the discriminator key is known.
+   *
+   * @typedef {string|null|undefined} DiscriminatorKey
+   */
+  private discriminatorKey?: string | null;
+
+  /**
+   * Represents the metadata associated with a DAO (Data Access Object) class.
+   *
+   * @template T - The type of the data objects managed by the DAO.
+   */
+  private metaData?: TMeta;
+
+  /**
+   * Can be used as alternative to discriminator metadata definition.
+   *
+   * @template T - The type of items stored in the registry.
+   */
+  protected typeRegistry?: AbstractTypeRegistry<T>;
 
   /**
    * Document transformation registry for the given document type.
@@ -201,12 +222,92 @@ export abstract class AbstractDao<
    * want to overwrite `constructModel` instead, otherwise it is recommended to only overwrite this function.
    * @param leanModel
    */
-  abstract getModelConstructor(leanModel: LeanDoc<T>): Type<T>;
+  protected getModelConstructor(leanModel: LeanDoc<T>): Type<T> {
+    const meta = this.getMetaData();
+    const type = meta.type;
+    const discriminator = meta.discriminator || this.typeRegistry;
+
+    // No meta discriminator and type registry defined, so we can just return the base type.
+    if (!discriminator) return type;
+
+    // A custom discriminator function is defined.
+    if (typeof discriminator === 'function') return discriminator(leanModel) || type;
+
+    // Try to determine the discriminator type by discriminator key and value
+    const discriminatorKey = this.getDiscriminatorKey();
+
+    if (!discriminatorKey || !(discriminatorKey in leanModel)) return type;
+
+    const discriminatorValue: string = (leanModel as Partial<T>)[discriminatorKey] as string;
+
+    if (discriminator instanceof AbstractTypeRegistry) {
+      return discriminator.getTypeConstructor(discriminatorValue, type);
+    }
+
+    // Both is given a discriminator meta setting and type registry, but we still have no result.
+    if (meta.discriminator && this.typeRegistry) {
+      return this.typeRegistry.getTypeConstructor(discriminatorValue, type);
+    }
+
+    return discriminator[discriminatorValue] || type;
+  }
 
   /**
-   * Subclasses should return the related module id used for logging and potentially restrictions and policies.
+   * Retrieves the discriminator key for the current model.
+   *
+   * @private
+   * @returns {string | null} The discriminator key.
    */
-  abstract getModuleId(): string;
+  private getDiscriminatorKey(): string | null {
+    if (this.discriminatorKey || this.discriminatorKey === null) return this.discriminatorKey;
+    const discriminators = this.model.schema.discriminators;
+    if (isNil(discriminators)) {
+      return (this.discriminatorKey = null);
+    }
+
+    if ('discriminatorMapping' in this.model.schema) {
+      this.discriminatorKey = (this.model.schema.discriminatorMapping as { key: string }).key;
+    }
+
+    if (this.discriminatorKey) return this.discriminatorKey;
+
+    for (const schema of Object.values(discriminators)) {
+      const options = ('options' in schema ? schema.options : undefined) as
+        | {
+            discriminatorKey?: string;
+          }
+        | undefined;
+      if (options) {
+        this.discriminatorKey = options.discriminatorKey || null;
+        return this.discriminatorKey;
+      }
+    }
+
+    return (this.discriminatorKey = null);
+  }
+
+  /**
+   * Retrieves the metadata for the current instance or its prototype chain.
+   *
+   * @protected
+   * @return {TMeta} The metadata object.
+   * @throws {IntegrityException} if no dao metadata is set.
+   */
+  protected getMetaData(): TMeta {
+    if (this.metaData) return this.metaData;
+    this.metaData = Reflect.getMetadata(META_DAO, this.constructor);
+
+    if (this.metaData) return this.metaData;
+
+    for (const prototype of getPrototypeTree(this.constructor as Type)) {
+      this.metaData = Reflect.getMetadata(META_DAO, prototype);
+      if (this.metaData) return this.metaData;
+    }
+
+    if (this.metaData) return this.metaData;
+
+    throw new IntegrityException(`No dao metadata set ${this.constructor.name}`);
+  }
 
   /**
    * Registers document transformations.
@@ -764,7 +865,14 @@ export abstract class AbstractDao<
    * @protected
    */
   protected getModel(options?: IBaseQueryOptions | null): Model<T> {
+    const modelName = this.model.baseModelName || this.model.modelName;
+    //const db = this.model.db.useDb('newDb', { useCache: true, noListener: true });
+
     let model = this.model;
+
+    /*if (!db.models[modelName]) {
+      model = db.model<T>(modelName, model.schema);
+    }*/
 
     if (options?.discriminator) {
       const discirminator =
@@ -878,7 +986,7 @@ export abstract class AbstractDao<
 
   /**
    * Deletes a document by identity.
-   * @param filter
+   * @param id
    * @param options
    */
   async deleteById(id: DocumentIdentity<T>, options?: DeleteOptions): Promise<boolean> {

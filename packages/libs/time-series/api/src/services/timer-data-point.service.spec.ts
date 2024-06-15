@@ -80,10 +80,6 @@ describe('TimerDataPointService', () => {
     return new TestTimeSeriesContent({ profile, user }, entity.toObject());
   }
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
-  });
-
   describe('startTimer()', () => {
     it('start new timer', async () => {
       const { user, profile, context } = await testData.createUserAndProfile();

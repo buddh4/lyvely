@@ -46,10 +46,6 @@ describe('content dao', () => {
     return new TestContent({ profile, user }, entity.toObject());
   }
 
-  it('should be defined', () => {
-    expect(contentService).toBeDefined();
-  });
-
   describe('archive', () => {
     it('archive content', async () => {
       const { owner, ownerContext, member, profile } = await testData.createSimpleGroup();

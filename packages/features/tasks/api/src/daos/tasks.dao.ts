@@ -1,27 +1,22 @@
-import { Injectable } from '@nestjs/common';
 import { Task, UserDone } from '../schemas';
 import {
   assureObjectId,
   DocumentIdentity,
   IFetchQueryOptions,
-  Model,
   User,
   Profile,
   ProfileType,
   UserAssignmentStrategy,
   Timer,
+  Dao,
 } from '@lyvely/api';
-import { InjectModel } from '@nestjs/mongoose';
 import { ICalendarPlanDao, CalendarPlanDao } from '@lyvely/calendar-plan';
 import { findAndReplace } from '@lyvely/common';
 import type { ICalendarPlanTidSearchFilter } from '@lyvely/calendar-plan';
 import { type FilterQuery, ProfileContext } from '@lyvely/api';
 
-@Injectable()
+@Dao(Task)
 export class TasksDao extends CalendarPlanDao<Task> implements ICalendarPlanDao<Task> {
-  @InjectModel(Task.name)
-  protected model: Model<Task>;
-
   /**
    * Defines the document query path of the interval field.
    */
@@ -177,13 +172,5 @@ export class TasksDao extends CalendarPlanDao<Task> implements ICalendarPlanDao<
         arrayFilters: [{ 'elem.uid': assureObjectId(user) }],
       }
     );
-  }
-
-  getModelConstructor() {
-    return Task;
-  }
-
-  getModuleId(): string {
-    return 'tasks';
   }
 }

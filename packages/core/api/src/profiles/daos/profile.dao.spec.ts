@@ -21,10 +21,6 @@ describe('ProfileDao', () => {
     return testingModule.afterEach();
   });
 
-  it('should be defined', () => {
-    expect(profileDao).toBeDefined();
-  });
-
   describe('findById()', () => {
     it('find profile by ObjectId', async () => {
       const user = await testData.createUser();

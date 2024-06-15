@@ -1,21 +1,11 @@
-import { AbstractDao, Model } from '@/core';
+import { AbstractDao, Dao } from '@/core';
 import { Captcha } from '../schemas';
-import { InjectModel } from '@nestjs/mongoose';
 
+@Dao(Captcha)
 export class CaptchaDao extends AbstractDao<Captcha> {
-  constructor(@InjectModel(Captcha.name) protected model: Model<Captcha>) {
-    super();
-  }
+  protected modelName = Captcha.name;
 
   async findCaptchaByIdentity(identity: string) {
     return this.findOne({ identity: identity });
-  }
-
-  getModelConstructor() {
-    return Captcha;
-  }
-
-  getModuleId(): string {
-    return 'captcha';
   }
 }

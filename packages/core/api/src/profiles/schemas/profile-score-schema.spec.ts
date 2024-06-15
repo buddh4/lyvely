@@ -35,10 +35,6 @@ describe('ProfileScore', () => {
     return testingModule.afterEach();
   });
 
-  it('should be defined', () => {
-    expect(TestProfileScoreModel).toBeDefined();
-  });
-
   describe('constructor', () => {
     it('Construct with per user strategy', async () => {
       const { user, profile, context } = await testDataUtils.createUserAndProfile();

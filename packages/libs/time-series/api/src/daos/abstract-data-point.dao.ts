@@ -2,11 +2,31 @@ import { User, Profile, AbstractDao, assureObjectId, DocumentIdentity } from '@l
 import { buildDiscriminatorName, DataPoint, TimeSeriesContent } from '../schemas';
 import { CalendarPlanFilter } from '@lyvely/calendar-plan';
 import { getTimingIds, CalendarInterval } from '@lyvely/dates';
+import type { BaseDocument } from '@lyvely/api';
+import type { IDataPointDaoMeta } from './data-point-dao-meta.interface';
 type InterValFilter = { interval: CalendarInterval; tid?: string | { $regex: RegExp } };
 
-export abstract class DataPointStrategyDao<T extends DataPoint = DataPoint> extends AbstractDao<T> {
-  protected abstract contentName: string;
-
+/**
+ * Represents an abstract class for a Data Point Dao.
+ *
+ * @template T - The type of the Data Point.
+ * @template TVersions - The type of the Base Document.
+ * @template TMeta - The type of the Data Point Dao Meta.
+ */
+export abstract class AbstractDataPointDao<
+  T extends DataPoint = DataPoint,
+  TVersions extends BaseDocument = T,
+  TMeta extends IDataPointDaoMeta<T> = IDataPointDaoMeta<T>,
+> extends AbstractDao<T, TVersions, TMeta> {
+  /**
+   * Update the value of a data point for a given user.
+   *
+   * @param {DocumentIdentity<User>} uid - The identifier of the user.
+   * @param {T} dataPoint - The data point to update.
+   * @param {T['value']} value - The new value for the data point.
+   *
+   * @returns {Promise<any>} - A Promise that resolves when the data point value is updated.
+   */
   async updateDataPointValue(uid: DocumentIdentity<User>, dataPoint: T, value: T['value']) {
     return await this.updateOneSetById(
       dataPoint as DocumentIdentity<T>,
@@ -15,11 +35,21 @@ export abstract class DataPointStrategyDao<T extends DataPoint = DataPoint> exte
         value,
       },
       {
-        discriminator: buildDiscriminatorName(this.contentName, dataPoint.constructor.name),
+        discriminator: buildDiscriminatorName(
+          this.getMetaData().content.name,
+          dataPoint.constructor.name
+        ),
       }
     );
   }
 
+  /**
+   * Finds a data point by its tid (timing ID) within the given content.
+   *
+   * @param {TimeSeriesContent} content - The time series content to search within.
+   * @param {string} tid - The time series ID of the data point to find.
+   * @returns {Promise<DataPoint>} - A promise that resolves to the found data point or undefined if not found.
+   */
   async findDataPointByTid(content: TimeSeriesContent, tid: string) {
     // TODO: (TimeSeries History) fetch interval from history
     return this.findOne({
@@ -28,6 +58,15 @@ export abstract class DataPointStrategyDao<T extends DataPoint = DataPoint> exte
     });
   }
 
+  /**
+   * Finds a data point by its tid (timing ID) for a specific user.
+   *
+   * @param {TimeSeriesContent} content - The TimeSeriesContent object used to identify the TimeSeries.
+   * @param {DocumentIdentity<User>} uid - The unique identifier of the user.
+   * @param {string} tid - The identifier of the specific data point to find.
+   *
+   * @return {Promise<DataPoint>} - A Promise that resolves to the found data point.
+   */
   async findUserDataPointByTid(
     content: TimeSeriesContent,
     uid: DocumentIdentity<User>,
@@ -42,8 +81,7 @@ export abstract class DataPointStrategyDao<T extends DataPoint = DataPoint> exte
   }
 
   /**
-   * Finds all data point of a profile filtered by a data point interval filter. Note, this may include multiple data
-   * points of the same content which may need to be merged in presentation layer.
+   * Finds all data point of a profile filtered by a data point interval filter.
    *
    * The interval filter is used to exclude data points which may already be loaded, e.g. on initial load we include
    * data points of unscheduled content. On next load, we do not want to load them again. The filter also includes
@@ -82,6 +120,14 @@ export abstract class DataPointStrategyDao<T extends DataPoint = DataPoint> exte
     });
   }
 
+  /**
+   * Builds a timing interval filter based on the provided profile and filter.
+   *
+   * @param {Profile} profile - The profile object.
+   * @param {CalendarPlanFilter} filter - The filter object.
+   * @private
+   * @returns {object} - The timing interval filter.
+   */
   private buildTimingIntervalFilter(profile: Profile, filter: CalendarPlanFilter) {
     const timingIds = getTimingIds(filter.date, profile.locale, profile.settings?.calendar);
     const relevantTids: string[] = [];

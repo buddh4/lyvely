@@ -38,10 +38,6 @@ describe('ContentScore', () => {
     return testingModule.afterEach();
   });
 
-  it('should be defined', () => {
-    expect(ExtendedTestContentScoreModel).toBeDefined();
-  });
-
   describe('constructor', () => {
     it('Construct ExtendedTestContentScoreModel', async () => {
       const { user, profile, context } = await testDataUtils.createUserAndProfile();

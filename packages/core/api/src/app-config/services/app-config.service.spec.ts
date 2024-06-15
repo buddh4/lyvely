@@ -7,7 +7,6 @@ import { IAppConfig } from '@lyvely/interface';
 
 describe('AppConfigService', () => {
   let testingModule: ILyvelyTestingModule;
-  let app: INestApplication;
   let appConfigService: AppConfigService;
 
   @Injectable()
@@ -27,14 +26,12 @@ describe('AppConfigService', () => {
     testingModule = await buildTest('AppConfigService')
       .imports([TestModule])
       .providers([AppConfigService])
+      .withApp()
       .compile();
-    app = testingModule.createNestApplication();
-    appConfigService = app.get(AppConfigService);
-    await app.init();
+    appConfigService = testingModule.get(AppConfigService);
   });
 
   afterEach(async () => {
-    await app.close();
     await testingModule.afterEach();
   });
 

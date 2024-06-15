@@ -70,12 +70,6 @@ describe('UserNotificationsService', () => {
     return testingModule.afterEach();
   });
 
-  it('should be defined', () => {
-    expect(userNotificationsService).toBeDefined();
-    expect(notificationDao).toBeDefined();
-    expect(userNotificationDao).toBeDefined();
-  });
-
   async function createTestNotification(
     user: User,
     profile: Profile,

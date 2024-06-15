@@ -1,17 +1,17 @@
-import { InjectModel, Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { AbstractDao } from './abstract.dao';
 import { ModelSaveEvent } from './dao.events';
-import { Model, TObjectId } from './db.type';
+import { TObjectId } from '../interfaces';
 import {
   createCoreTestingModule,
   EventTester,
   getObjectId,
   afterEachTest,
-} from '../testing/core-test.util';
+} from '../../testing/core-test.util';
 import { ModelDefinition } from '@nestjs/mongoose/dist/interfaces';
-import { Injectable } from '@nestjs/common';
 import { TestingModule } from '@nestjs/testing';
-import { BaseDocument, type BaseDocumentData, type LeanDoc } from '@/core';
+import { BaseDocument, type BaseDocumentData } from '@/core';
+import { Dao } from "./dao.decorator";
 
 @Schema({ discriminatorKey: 'type' })
 class TestEntity {
@@ -39,6 +39,8 @@ class SubTestEntity extends TestEntity {
   @Prop()
   specialField?: string;
 
+  override type = SubTestEntity.name;
+
   constructor(data: BaseDocumentData<SubTestEntity>) {
     super(false);
     BaseDocument.init(this, data);
@@ -47,18 +49,15 @@ class SubTestEntity extends TestEntity {
 
 const SubTestEntitySchema = SchemaFactory.createForClass(SubTestEntity);
 
-@Injectable()
-class TestEntityDao extends AbstractDao<TestEntity> {
-  @InjectModel(TestEntity.name) protected model: Model<TestEntity>;
-
-  getModelConstructor(model: LeanDoc<TestEntity>) {
-    return model.type === SubTestEntity.name ? SubTestEntity : TestEntity;
+@Dao(TestEntity, {
+  discriminator: {
+   [SubTestEntity.name]: SubTestEntity
   }
+})
+class TestEntityDao extends AbstractDao<TestEntity> {}
 
-  getModuleId(): string {
-    return 'test';
-  }
-}
+@Dao(SubTestEntity, {})
+class SubTestEntityDao extends AbstractDao<SubTestEntity> {}
 
 const TEST_KEY = 'abstract_dao';
 
@@ -71,15 +70,18 @@ const TestEntityModelDefinition: ModelDefinition = {
 describe('AbstractDao', () => {
   let testingModule: TestingModule;
   let dao: TestEntityDao;
+  let subDao: SubTestEntityDao;
   let eventTester: EventTester;
 
   beforeEach(async () => {
     testingModule = await createCoreTestingModule(
       TEST_KEY,
-      [TestEntityDao, EventTester],
+      [TestEntityDao, SubTestEntityDao, EventTester],
       [TestEntityModelDefinition]
     ).compile();
+
     dao = testingModule.get(TestEntityDao);
+    subDao = testingModule.get(SubTestEntityDao);
     eventTester = testingModule.get(EventTester);
   });
 
@@ -87,16 +89,39 @@ describe('AbstractDao', () => {
     await afterEachTest(TEST_KEY, testingModule);
   });
 
-  it('should be defined', () => {
-    expect(dao).toBeDefined();
-  });
+  describe('Sub entity dao', () => {
+    it('save sub entity', async () => {
+      const model = new SubTestEntity({requiredField: 'We need this...', specialField: 'Special!'});
+      const entity = await subDao.save(model);
+      expect(entity).toBeDefined();
+      expect(entity instanceof SubTestEntity).toEqual(true);
+      expect(entity.requiredField).toEqual('We need this...');
+      expect(entity.specialField).toEqual('Special!');
+      expect(entity._id).toBeDefined();
+      expect(model._id).toEqual(entity._id);
+      expect(model.id).toEqual(entity.id);
+    });
+
+    it('load sub entity', async () => {
+      const model = new SubTestEntity({requiredField: 'We need this...', specialField: 'Special!'});
+      let entity = await subDao.save(model);
+      entity = (await subDao.reload(entity))!;
+      expect(entity).toBeDefined();
+      expect(entity instanceof SubTestEntity).toEqual(true);
+      expect(entity.requiredField).toEqual('We need this...');
+      expect(entity.specialField).toEqual('Special!');
+      expect(entity._id).toBeDefined();
+      expect(model._id).toEqual(entity._id);
+      expect(model.id).toEqual(entity.id);
+    });
+  })
 
   describe('save', () => {
     it('save valid entity', async () => {
-      const model = new TestEntity({ requiredField: 'We need this...' });
+      const model = new SubTestEntity({ requiredField: 'We need this...' });
       const entity = await dao.save(model);
       expect(entity).toBeDefined();
-      expect(entity instanceof TestEntity).toEqual(true);
+      expect(entity instanceof SubTestEntity).toEqual(true);
       expect(entity.requiredField).toEqual('We need this...');
       expect(entity._id).toBeDefined();
       expect(model._id).toEqual(entity._id);

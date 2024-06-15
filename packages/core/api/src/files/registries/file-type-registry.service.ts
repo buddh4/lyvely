@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { AbstractTypeRegistry } from '@/core';
-import { File } from '../schemas';
+import { File, GenericFile } from '../schemas';
 
 /**
  * A registry for registering file types.
@@ -12,4 +12,5 @@ import { File } from '../schemas';
 @Injectable()
 export class FileTypeRegistry extends AbstractTypeRegistry<File> {
   protected logger = new Logger(FileTypeRegistry.name);
+  protected override fallBackType = GenericFile;
 }

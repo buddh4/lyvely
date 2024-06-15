@@ -94,10 +94,6 @@ describe('TimeSeriesService', () => {
     return new TestTimeSeriesContent({ profile, user }, entity.toObject());
   }
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
-  });
-
   describe('upsertDataPoint()', () => {
     it('update creates new summary entry', async () => {
       const { user, profile, context } = await testData.createUserAndProfile();

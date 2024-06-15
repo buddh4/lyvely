@@ -1,13 +1,10 @@
-import { AbstractDao, assureObjectId, DocumentIdentity, Model } from '@/core';
+import { AbstractDao, assureObjectId, Dao, DocumentIdentity } from '@/core';
 import { UserInvitation } from '../schemas';
-import { InjectModel } from '@nestjs/mongoose';
 import { User } from '@/users';
 import { Profile } from '@/profiles';
 
+@Dao(UserInvitation)
 export class UserInvitationDao extends AbstractDao<UserInvitation> {
-  @InjectModel(UserInvitation.name)
-  protected model: Model<UserInvitation>;
-
   async findByProfileAndInvitee(
     profile: DocumentIdentity<Profile>,
     invitee: DocumentIdentity<User>
@@ -16,13 +13,5 @@ export class UserInvitationDao extends AbstractDao<UserInvitation> {
       pid: assureObjectId(profile),
       uid: assureObjectId(invitee),
     });
-  }
-
-  getModuleId(): string {
-    return 'invitations';
-  }
-
-  getModelConstructor() {
-    return UserInvitation;
   }
 }

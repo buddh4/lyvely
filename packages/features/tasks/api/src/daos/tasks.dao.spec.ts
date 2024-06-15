@@ -29,10 +29,6 @@ describe('Tasks DAO', () => {
     return testingModule.afterAll();
   });
 
-  it('should be defined', () => {
-    expect(tasksDao).toBeDefined();
-  });
-
   describe('findByTimingIds', () => {
     describe('single user profile', () => {
       it('find undone task on user profile', async () => {
