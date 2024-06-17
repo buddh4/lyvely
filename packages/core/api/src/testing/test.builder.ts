@@ -13,6 +13,7 @@ import {
   rootMongooseTestModule,
 } from './mongoose-test.utils';
 import { useDayJsDateTimeAdapter } from '@lyvely/dates';
+import { ClsModule } from 'nestjs-cls';
 
 export type Type<T = any> = new (...args: any[]) => T;
 
@@ -153,6 +154,7 @@ export function createCoreTestingModule(
 ): TestingModuleBuilder {
   return Test.createTestingModule({
     imports: [
+      ClsModule.forRoot({ global: true, middleware: { mount: true } }),
       rootMongooseTestModule(key),
       ThrottlerModule.forRootAsync({
         imports: [ConfigModule],

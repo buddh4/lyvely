@@ -8,7 +8,10 @@ import { ProfileDao } from '../daos';
 import { Reflector } from '@nestjs/core';
 import { InjectPolicy } from '@/policies';
 import { ProfileContext } from '../contexts';
+import { ClsService } from 'nestjs-cls';
 import { META_PROFILE_ROLE_LEVEL } from '../profiles.constants';
+import type { LyvelyStore } from '@/core/interfaces';
+import type { TObjectId } from '@/core';
 
 /**
  * Represents a base guard for profile context access.
@@ -30,6 +33,9 @@ export class BaseProfileGuard implements CanActivate {
 
   @Inject()
   protected reflector: Reflector;
+
+  @Inject()
+  protected clsService: ClsService<LyvelyStore>;
 
   protected logger = new Logger(BaseProfileGuard.name);
 
@@ -53,6 +59,9 @@ export class BaseProfileGuard implements CanActivate {
     }
 
     if (!request.profile) return false;
+
+    this.clsService.set<TObjectId>('oid', request.profile.oid);
+    this.clsService.set<ProfileContext>('context', request.context);
 
     return (
       this.verifyProfileRoleLevel(request.context, context) &&

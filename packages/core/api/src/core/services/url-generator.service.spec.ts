@@ -1,20 +1,17 @@
 import { UrlGenerator } from './url-generator.service';
-import { afterEachTest, createCoreTestingModule } from '../testing';
-import { TestingModule } from '@nestjs/testing';
+import { createCoreTestingModule, type ICoreTestModule } from '../testing';
 
 describe('UrlGenerator', () => {
   let urlGenerator: UrlGenerator;
-  let testingModule: TestingModule;
-
-  const TEST_KEY = 'UrlGenerator';
+  let testingModule: ICoreTestModule;
 
   beforeEach(async () => {
-    testingModule = await createCoreTestingModule(TEST_KEY, [UrlGenerator]).compile();
+    testingModule = await createCoreTestingModule('UrlGenerator', { providers: [UrlGenerator] }).compile();
     urlGenerator = testingModule.get(UrlGenerator);
   });
 
   afterEach(async () => {
-    await afterEachTest(TEST_KEY, testingModule);
+    await testingModule.afterEach();
   });
 
   describe('getAppUrl', () => {

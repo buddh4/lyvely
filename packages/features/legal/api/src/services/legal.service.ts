@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { ConfigurationPath, ILegalOptions } from '@lyvely/api';
+import { ConfigurationPath } from '@lyvely/api';
 import { LegalSection, LegalSectionDetails } from '@lyvely/legal-interface';
+import type { ILegalOptions } from '../legal-options.interface';
 
 @Injectable()
 export class LegalService {

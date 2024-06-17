@@ -1,34 +1,42 @@
 import {
   applyUpdateTo,
   assureObjectId,
-  EntityData,
-  DocumentIdentity,
+  assureStringId,
   createBaseDocumentInstance,
+  DocumentIdentity,
+  EntityData,
 } from '../utils';
 import {
+  ClientSession,
   FilterQuery,
   HydratedDocument,
   Model,
-  QueryWithHelpers,
-  UpdateQuery,
-  ClientSession,
-  ProjectionType,
+  MongooseBaseQueryOptions,
   MongooseBulkWriteOptions,
   MongooseUpdateQueryOptions,
-  MongooseBaseQueryOptions,
   PipelineStage,
+  ProjectionType,
+  QueryWithHelpers,
+  UpdateQuery,
 } from 'mongoose';
-import type { BaseDocument, LeanDoc } from '../interfaces';
+import type { BaseDocument, LeanDoc, TObjectId } from '../interfaces';
 import {
   BulkWriteResult,
   CollationOptions,
-  UpdateOptions as MongoUpdateOptions,
   DeleteOptions as MongoDeleteOptions,
+  UpdateOptions as MongoUpdateOptions,
 } from 'mongodb';
 import { Inject, Logger } from '@nestjs/common';
 import { ModelSaveEvent } from './dao.events';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { PropertiesOf, Type, cloneDeep, isNil, getPrototypeTree } from '@lyvely/common';
+import {
+  cloneDeep,
+  getPrototypeTree,
+  isNil,
+  isValidObjectId,
+  PropertiesOf,
+  Type,
+} from '@lyvely/common';
 import type { IDocumentTransformation } from './document.transformation';
 import type { IDocumentTransformer } from './document.transformer';
 import { DocumentTransformer } from './document.transformer';
@@ -36,6 +44,13 @@ import { type IDaoMetadata } from './dao.decorator';
 import { AbstractTypeRegistry } from '@/core/components';
 import { META_DAO } from '@/core/db/db.constants';
 import { IntegrityException } from '@lyvely/interface';
+import {
+  TenancyException,
+  TenancyIsolation,
+  TenancyService,
+  type TenancyStore,
+} from '@/core/tenancy';
+import { ClsService } from 'nestjs-cls';
 
 interface IPagination {
   page: number;
@@ -65,6 +80,7 @@ type EntityQuery<T extends BaseDocument> = QueryWithHelpers<
 
 export interface IBaseQueryOptions {
   session?: ClientSession | null;
+  tenancyId?: string | TObjectId;
   discriminator?: string;
 }
 
@@ -148,6 +164,12 @@ export abstract class AbstractDao<
   TMeta extends IDaoMetadata<T> = IDaoMetadata<T>,
   TDoc = T & Document,
 > {
+  @Inject()
+  private tenancyService: TenancyService;
+
+  @Inject()
+  private readonly clsService: ClsService<TenancyStore>;
+
   /**
    * Represents the mongoose model containing the main db connection.
    * This model instance should not be called directly, use the `getModel()` function instead, which
@@ -343,7 +365,7 @@ export abstract class AbstractDao<
    * @protected
    */
   protected getModelName() {
-    return this.getModel().modelName;
+    return this.model.modelName;
   }
 
   /**
@@ -865,14 +887,7 @@ export abstract class AbstractDao<
    * @protected
    */
   protected getModel(options?: IBaseQueryOptions | null): Model<T> {
-    const modelName = this.model.baseModelName || this.model.modelName;
-    //const db = this.model.db.useDb('newDb', { useCache: true, noListener: true });
-
-    let model = this.model;
-
-    /*if (!db.models[modelName]) {
-      model = db.model<T>(modelName, model.schema);
-    }*/
+    let model = this.getTenantModel(options);
 
     if (options?.discriminator) {
       const discirminator =
@@ -886,6 +901,56 @@ export abstract class AbstractDao<
     }
 
     return model || this.model;
+  }
+
+  /**
+   * Retrieves the tenant db model depending on the configured tenancy isolation.
+   *
+   * @private
+   * @returns {Model<T>} The database model for this instance.
+   * @throws {IntegrityException} If the tenant cannot be identified or is invalid.
+   */
+  private getTenantModel(options: IBaseQueryOptions | undefined | null): Model<T> {
+    const isolationLevel = this.tenancyService.getTenancyIsolation();
+    const daoIsolation = this.getMetaData().isolation ?? TenancyIsolation.Profile;
+
+    if (isolationLevel === TenancyIsolation.None || daoIsolation === TenancyIsolation.None) {
+      return this.model;
+    }
+
+    // In case of profile isolation, we do not isolate documents with only strict isolation.
+    if (isolationLevel === TenancyIsolation.Profile && daoIsolation === TenancyIsolation.Strict) {
+      return this.model;
+    }
+
+    const tenancyId = this.getTenancyId(options);
+
+    if (isNil(tenancyId)) throw new TenancyException('Could not identify tenant.');
+    if (!isValidObjectId(tenancyId)) {
+      throw new TenancyException(`Invalid tenant with oid. ${tenancyId}`);
+    }
+
+    if (!this.tenancyService.isIsolatedTenant(tenancyId)) return this.model;
+
+    const db = this.model.db.useDb(this.tenancyService.getTenancyDb(tenancyId), {
+      useCache: true,
+      noListener: true,
+    });
+
+    if (!db.models[this.model.modelName]) {
+      db.model<T>(this.model.modelName, this.model.schema);
+    }
+
+    return db.model<T>(this.model.modelName);
+  }
+
+  /**
+   * Tries to retrieve the tenancy ID from the option or context.
+   * @private
+   * @returns {string | undefined} The tenancy ID if available, otherwise undefined.
+   */
+  private getTenancyId(options?: IBaseQueryOptions | null): string | undefined {
+    return assureStringId(options?.tenancyId ?? this.clsService.get('oid'), true);
   }
 
   /**
@@ -910,7 +975,7 @@ export abstract class AbstractDao<
    */
   async updateBulk(
     updates: { id: DocumentIdentity<T>; update: UpdateQuery<T> }[],
-    options?: MongooseBulkWriteOptions
+    options?: MongooseBulkWriteOptions & IBaseQueryOptions
   ): Promise<Pick<BulkWriteResult, 'modifiedCount'>> {
     if (!updates.length) return { modifiedCount: 0 };
     const { modifiedCount } = await this.getModel(options).bulkWrite(
@@ -920,7 +985,7 @@ export abstract class AbstractDao<
           update: <any>update.update,
         },
       })),
-      <MongooseBulkWriteOptions>options
+      options
     );
 
     return { modifiedCount };
@@ -933,7 +998,7 @@ export abstract class AbstractDao<
    */
   async updateSetBulk(
     updates: { id: DocumentIdentity<T>; update: UpdateQuerySet<T> }[],
-    options?: MongooseBulkWriteOptions
+    options?: MongooseBulkWriteOptions & IBaseQueryOptions
   ): Promise<Pick<BulkWriteResult, 'modifiedCount'>> {
     if (!updates.length) return { modifiedCount: 0 };
     const { modifiedCount } = await this.getModel(options).bulkWrite(
@@ -952,9 +1017,10 @@ export abstract class AbstractDao<
   /**
    * Reloads a given entity by id or instance.
    * @param id
+   * @param options
    */
-  async reload(id: DocumentIdentity<T>): Promise<T | null> {
-    return this.findById(id);
+  async reload(id: DocumentIdentity<T>, options?: IBaseQueryOptions): Promise<T | null> {
+    return this.findById(id, options);
   }
 
   /**

@@ -9,6 +9,8 @@ import { MongooseModuleOptions } from '@nestjs/mongoose/dist/interfaces/mongoose
 import { IFeatureConfig, UserRole, IPermissionConfig } from '@lyvely/interface';
 import type { IStorageProviderDefinition, ILocalStorageProviderOptions } from '@/files/interfaces';
 import type { RedisOptions } from 'ioredis/built/redis/RedisOptions';
+import type { ITenant } from '@/core/tenancy/tenant.interface';
+import type { TenancyIsolation } from '@/core/tenancy/tenancy-isolation.enum';
 
 export type LyvelyMailOptions = MailerOptions & {
   createMessageFiles?: boolean;
@@ -123,26 +125,10 @@ export interface IUserRegistrationOptions {
   mode?: IRegistrationModes;
 }
 
-export interface ILegalOptions {
-  poweredBy?: boolean;
-  sections: {
-    [k: string]: {
-      label: string;
-      content?: string;
-      url?: string;
-      version: string;
-      format?: 'html' | 'markdown';
-      locales?: {
-        [k: string]: {
-          label: string;
-          content?: string;
-          url?: string;
-          version: string;
-          format?: 'html' | 'markdown';
-        };
-      };
-    };
-  };
+export interface ITenancyOptions {
+  isolation: TenancyIsolation;
+  tenants?: ITenant[];
+  collectionPrefix?: string;
 }
 
 export enum OperationMode {
@@ -167,9 +153,9 @@ export type ServerConfiguration<ModuleView = Record<string, unknown>> = {
   mail?: LyvelyMailOptions;
   features?: IFeatureConfig;
   permissions?: IPermissionConfig;
+  tenancy?: ITenancyOptions;
   userRoles?: GlobalUserPermissionRoleConfiguration;
   modules?: ModuleView;
-  legal?: ILegalOptions;
   invitations?: IUserInviteOptions;
   userRegistration?: IUserRegistrationOptions;
   serveStatic?: ServeStaticModuleOptions;

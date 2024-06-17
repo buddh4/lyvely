@@ -45,6 +45,7 @@ import { PingModule } from '@/ping';
 import { DeepPartial } from '@lyvely/common';
 import defaultConfig from '@/config/lyvely.default.config';
 import { FilesModule } from '@/files/files.module';
+import { ClsModule } from 'nestjs-cls';
 import { resolve } from 'node:path';
 
 type TModule = Type | DynamicModule | Promise<DynamicModule> | ForwardReference;
@@ -82,7 +83,8 @@ export class AppModuleBuilder {
     this.options = { ...defaultOptions, ...options };
 
     if (!this.options.manual) {
-      this.importEventEmitterModule()
+      this.importClsModule()
+        .importEventEmitterModule()
         .importCoreModules()
         .importI18nModule()
         .importQueueModule()
@@ -139,6 +141,10 @@ export class AppModuleBuilder {
       CaptchaModule,
       FilesModule
     );
+  }
+
+  public importClsModule() {
+    return this.importModules(ClsModule.forRoot({ global: true, middleware: { mount: true } }));
   }
 
   public importEventEmitterModule() {

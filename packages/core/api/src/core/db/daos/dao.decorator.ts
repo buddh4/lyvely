@@ -4,6 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { META_DAO } from '@/core/db/db.constants';
 import { type BaseDocument, type LeanDoc } from '@/core/db/interfaces';
 import { AbstractTypeRegistry } from '@/core/components';
+import type { TenancyIsolation } from '@/core/tenancy';
 
 /**
  * Represents the metadata for a Dao class.
@@ -13,8 +14,18 @@ import { AbstractTypeRegistry } from '@/core/components';
 export interface IDaoMetadata<T extends BaseDocument> {
   /** A document type. **/
   type: Type<T>;
+
   /** Can be overwritten to define a custom modelName instead of type.name. **/
   modelName?: string;
+
+  /**
+   * Defines the tenancy isolation level of the documents managed by this Dao.
+   * - None: this Dao's documents will never be isolated and always be part of the main db.
+   * - Profile(default): this Dao's documents contains profile related data which may be isolated from the main db if isolation is active.
+   * - Strict: this Dao's documents will only be isolated in case of a strict isolation configuration.
+   **/
+  isolation?: TenancyIsolation;
+
   /** A discriminator strategy. **/
   discriminator?:
     | Record<string, Type<T>>

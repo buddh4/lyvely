@@ -231,6 +231,10 @@
       "allowedCategories": [ "core" ]
     },
     {
+      "name": "nestjs-cls",
+      "allowedCategories": [ "core" ]
+    },
+    {
       "name": "nprogress",
       "allowedCategories": [ "core" ]
     },

@@ -6,10 +6,9 @@ import {
   createCoreTestingModule,
   EventTester,
   getObjectId,
-  afterEachTest,
+  type ICoreTestModule,
 } from '../../testing/core-test.util';
 import { ModelDefinition } from '@nestjs/mongoose/dist/interfaces';
-import { TestingModule } from '@nestjs/testing';
 import { BaseDocument, type BaseDocumentData } from '@/core';
 import { Dao } from "./dao.decorator";
 
@@ -59,8 +58,6 @@ class TestEntityDao extends AbstractDao<TestEntity> {}
 @Dao(SubTestEntity, {})
 class SubTestEntityDao extends AbstractDao<SubTestEntity> {}
 
-const TEST_KEY = 'abstract_dao';
-
 const TestEntityModelDefinition: ModelDefinition = {
   name: TestEntity.name,
   schema: TestEntitySchema,
@@ -68,16 +65,18 @@ const TestEntityModelDefinition: ModelDefinition = {
 };
 
 describe('AbstractDao', () => {
-  let testingModule: TestingModule;
+  let testingModule: ICoreTestModule;
   let dao: TestEntityDao;
   let subDao: SubTestEntityDao;
   let eventTester: EventTester;
 
   beforeEach(async () => {
     testingModule = await createCoreTestingModule(
-      TEST_KEY,
-      [TestEntityDao, SubTestEntityDao, EventTester],
-      [TestEntityModelDefinition]
+      'AbstractDao',
+      {
+        providers: [TestEntityDao, SubTestEntityDao, EventTester],
+        models:  [TestEntityModelDefinition]
+      }
     ).compile();
 
     dao = testingModule.get(TestEntityDao);
@@ -86,7 +85,7 @@ describe('AbstractDao', () => {
   });
 
   afterEach(async () => {
-    await afterEachTest(TEST_KEY, testingModule);
+    await testingModule.afterEach();
   });
 
   describe('Sub entity dao', () => {

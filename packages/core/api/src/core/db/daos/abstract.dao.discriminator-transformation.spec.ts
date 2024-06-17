@@ -1,10 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { AbstractDao } from './abstract.dao';
 import { TObjectId } from '../interfaces';
-import { createCoreTestingModule, afterEachTest } from '../../testing/core-test.util';
+import { createCoreTestingModule, type ICoreTestModule } from '../../testing/core-test.util';
 import { ModelDefinition } from '@nestjs/mongoose/dist/interfaces';
 import { type INestApplication } from '@nestjs/common';
-import { TestingModule } from '@nestjs/testing';
 import {
   BaseDocument,
   type BaseDocumentData, Dao,
@@ -73,8 +72,6 @@ class TestEntityDao extends AbstractDao<TestEntity> {
   override transformer = new TestEntityTransformer();
 }
 
-const TEST_KEY = 'abstract_dao';
-
 const TestEntityModelDefinition: ModelDefinition = {
   name: TestEntity.name,
   schema: TestEntitySchema,
@@ -85,15 +82,17 @@ const TestEntityModelDefinition: ModelDefinition = {
 };
 
 describe('AbstractDao', () => {
-  let testingModule: TestingModule;
+  let testingModule: ICoreTestModule;
   let dao: TestEntityDao;
   let app: INestApplication;
 
   beforeEach(async () => {
     testingModule = await createCoreTestingModule(
-      TEST_KEY,
-      [TestEntityDao],
-      [TestEntityModelDefinition]
+      'AbstractDao',
+      {
+        providers: [TestEntityDao],
+        models:  [TestEntityModelDefinition]
+      }
     ).compile();
 
     app = testingModule.createNestApplication();
@@ -102,7 +101,7 @@ describe('AbstractDao', () => {
 
   afterEach(async () => {
     await app.close();
-    await afterEachTest(TEST_KEY, testingModule);
+    await testingModule.afterEach();
   });
 
   describe('AbstractDao discriminator transformation', () => {

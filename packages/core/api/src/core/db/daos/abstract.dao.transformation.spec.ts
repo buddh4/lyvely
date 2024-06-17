@@ -4,11 +4,10 @@ import { Model, TObjectId } from '../interfaces';
 import {
   createCoreTestingModule,
   EventTester,
-  afterEachTest,
+  type ICoreTestModule,
 } from '../../testing/core-test.util';
 import { ModelDefinition } from '@nestjs/mongoose/dist/interfaces';
 import { type INestApplication } from '@nestjs/common';
-import { TestingModule } from '@nestjs/testing';
 import {
   BaseDocument,
   type BaseDocumentData, Dao,
@@ -75,8 +74,6 @@ class TestEntityV1ToV2Transformation
   }
 }
 
-const TEST_KEY = 'abstract_dao';
-
 const TestEntityModelDefinition: ModelDefinition[] = [
   {
     name: TestEntity.name,
@@ -91,7 +88,7 @@ const TestEntityModelDefinition: ModelDefinition[] = [
 ];
 
 describe('AbstractDao Transformations', () => {
-  let testingModule: TestingModule;
+  let testingModule: ICoreTestModule;
   let dao: TestEntityDao;
   let ModelV1: Model<TestEntityV1>;
   let Model: Model<TestEntity>;
@@ -99,9 +96,11 @@ describe('AbstractDao Transformations', () => {
 
   beforeEach(async () => {
     testingModule = await createCoreTestingModule(
-      TEST_KEY,
-      [TestEntityDao, EventTester],
-      TestEntityModelDefinition
+      'AbstractDao_Transformation',
+      {
+        providers: [TestEntityDao, EventTester],
+        models: TestEntityModelDefinition
+      }
     ).compile();
 
     app = testingModule.createNestApplication();
@@ -113,7 +112,7 @@ describe('AbstractDao Transformations', () => {
 
   afterEach(async () => {
     await app.close();
-    await afterEachTest(TEST_KEY, testingModule);
+    await testingModule.afterEach();
   });
 
   describe('transform', () => {

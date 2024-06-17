@@ -46,6 +46,7 @@
     "@nestjs/serve-static": "^4.0.2",
     "@nestjs/testing": "^10.3.8",
     "@nestjs/throttler": "^5.1.2",
+    "nestjs-cls": "^4.3.0",
     "bcrypt": "^5.1.0",
     "canvas": "^2.11.2",
     "class-transformer": "^0.5.1",
