@@ -3,7 +3,7 @@ import { OnEvent } from '@nestjs/event-emitter';
 import { EVENT_MODULE_APP_CONFIG_ASSEMBLY, ModuleAppConfigAssemblyEvent } from '@/app-config';
 import { FEATURE_MODULE_ID } from '@lyvely/interface';
 import { ConfigService } from '@nestjs/config';
-import { ServerConfiguration } from '@/config';
+import { ServerConfiguration } from '@/core';
 
 @Injectable()
 export class FeaturesEvents {

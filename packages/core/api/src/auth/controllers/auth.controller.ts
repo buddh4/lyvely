@@ -25,18 +25,17 @@ import {
   Headers,
   UserRole,
 } from '@lyvely/interface';
-import { ConfigService } from '@nestjs/config';
 import ms from 'ms';
-import { Public, ValidBody } from '@/core';
-import { ConfigurationPath } from '@/config';
+import { type AuthModuleConfig, Public, ValidBody } from '@/core';
 import { GlobalController } from '@/common';
+import { LyvelyConfigService } from '@/config';
 
 @GlobalController(API_AUTH)
 export class AuthController extends AbstractJwtAuthController implements AuthEndpoint {
   private readonly logger = new Logger(AuthController.name);
   constructor(
     private authService: JwtAuthService,
-    protected override configService: ConfigService<ConfigurationPath>
+    protected override configService: LyvelyConfigService<AuthModuleConfig>
   ) {
     super(configService);
   }
@@ -65,7 +64,9 @@ export class AuthController extends AbstractJwtAuthController implements AuthEnd
     return {
       user: new UserModel(user),
       vid: vid,
-      token_expiration: ms(this.configService.get<string>('auth.jwt.access.expiresIn')!),
+      token_expiration: ms(
+        this.configService.getModuleConfigOrThrow('auth', 'jwt.access.expiresIn')!
+      ),
     };
   }
 
@@ -93,7 +94,11 @@ export class AuthController extends AbstractJwtAuthController implements AuthEnd
       !!oldRefreshToken.remember
     );
 
-    return { token_expiration: ms(this.configService.get<string>('auth.jwt.access.expiresIn')!) };
+    return {
+      token_expiration: ms(
+        this.configService.getModuleConfigOrThrow('auth', 'jwt.access.expiresIn')!
+      ),
+    };
   }
 
   @Public()
@@ -129,7 +134,9 @@ export class AuthController extends AbstractJwtAuthController implements AuthEnd
   async loadUser(@Req() req: UserRequest) {
     return {
       user: new UserModel(req.user),
-      token_expiration: ms(this.configService.get<string>('auth.jwt.access.expiresIn')!),
+      token_expiration: ms(
+        this.configService.getModuleConfigOrThrow('auth', 'jwt.access.expiresIn')!
+      ),
     };
   }
 }

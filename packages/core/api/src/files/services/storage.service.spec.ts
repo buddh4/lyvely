@@ -50,7 +50,7 @@ describe('StorageService', () => {
     it('image mime should produce image file', async () => {
       expect.assertions(4);
 
-      configService.set('files.storage', {
+      configService.set('module.files.storage', {
         default: 'TestProvider',
         providers: [{ id: 'TestProvider', class: TestProvider }],
       } as IStorageConfig);
@@ -85,7 +85,7 @@ describe('StorageService', () => {
           expect(this.options).toEqual({ test: 'b' });
         }
       }
-      configService.set('files.storage', {
+      configService.set('module.files.storage', {
         default: 'AStorage',
         providers: [
           { id: 'AStorage', class: ProviderA, options: { test: 'a' } },
@@ -117,7 +117,7 @@ describe('StorageService', () => {
         }
       }
       class ProviderB extends TestProvider {}
-      configService.set('files.storage', {
+      configService.set('module.files.storage', {
         default: 'AStorage',
         providers: [
           { id: 'AStorage', class: ProviderA, options: { test: 'a' } },

@@ -1,15 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { assureStringId } from '@/core';
-import { ConfigurationPath } from '@/config';
+import { assureStringId, type AuthModuleConfig } from '@/core';
 import { MailInvitation } from '../schemas';
 import { MailInvitationInfo } from '@lyvely/interface';
 import { IMailInvitationContext } from '../interfaces';
 import { OptionalUser, UsersService } from '@/users';
 import { Profile, ProfilesService } from '@/profiles';
 import jwt from 'jsonwebtoken';
-import { ConfigService } from '@nestjs/config';
 import { MailInvitationDao } from '../daos';
 import { AbstractInvitationsService } from './abstract-invitations.service';
+import { LyvelyConfigService } from '@/config';
 
 export type InvitationToken = string;
 
@@ -21,7 +20,7 @@ export class MailInvitationService extends AbstractInvitationsService<
   InvitationToken
 > {
   constructor(
-    private configService: ConfigService<ConfigurationPath>,
+    private configService: LyvelyConfigService<AuthModuleConfig>,
     private mailInvitationDao: MailInvitationDao,
     private userService: UsersService,
     private profileService: ProfilesService
@@ -76,7 +75,7 @@ export class MailInvitationService extends AbstractInvitationsService<
   private verifyToken(token: string): Promise<boolean> {
     if (!token) return Promise.resolve(false);
     return new Promise((resolve) => {
-      jwt.verify(token, this.configService.get('auth.jwt.verify.secret')!, (err) => {
+      jwt.verify(token, this.configService.getModuleConfig('auth', 'jwt.verify.secret')!, (err) => {
         resolve(!err);
       });
     });

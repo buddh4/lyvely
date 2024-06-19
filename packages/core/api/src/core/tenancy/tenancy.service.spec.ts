@@ -1,13 +1,12 @@
 import { createCoreTestingModule, getObjectId, type ICoreTestModule } from '../testing';
-import { TenancyIsolation } from "@/core/tenancy/tenancy-isolation.enum";
-import { TenancyService } from "@/core/tenancy/tenancy.service";
-import type { ITenancyOptions } from "@/config";
-import type { ITenant } from "@/core/tenancy/tenant.interface";
+import { TenancyIsolation } from '@/core/tenancy/tenancy-isolation.enum';
+import { TenancyService } from '@/core/tenancy/tenancy.service';
+import type { ITenancyOptions } from '@/core';
+import type { ITenant } from '@/core/tenancy/tenant.interface';
 
 describe('TenancyService', () => {
   let testingModule: ICoreTestModule;
   let tenancyService: TenancyService;
-
 
   afterEach(async () => {
     await testingModule?.afterEach();
@@ -16,11 +15,11 @@ describe('TenancyService', () => {
   const initTest = async (options?: ITenancyOptions): Promise<void> => {
     testingModule = await createCoreTestingModule('TenancyService', {
       config: { tenancy: options },
-      providers: [TenancyService]
+      providers: [TenancyService],
     }).compile();
 
     tenancyService = testingModule.get(TenancyService);
-  }
+  };
 
   describe('isIsolatedTenant', () => {
     it('do not isolate tenant if isolation level is none', async () => {
@@ -35,17 +34,19 @@ describe('TenancyService', () => {
 
     it('isolate tenant if isolation level is profile and is configured tenant', async () => {
       const tenantId = getObjectId('tenant1');
-      await initTest({ isolation: TenancyIsolation.Profile, tenants: [
-          { oid: tenantId.toString()}
-        ] });
+      await initTest({
+        isolation: TenancyIsolation.Profile,
+        tenants: [{ id: tenantId.toString() }],
+      });
       expect(tenancyService.isIsolatedTenant(tenantId)).toEqual(true);
       expect(tenancyService.isIsolatedTenant(tenantId.toString())).toEqual(true);
     });
 
     it('do not isolate tenant if isolation level is profile and is not a configured tenant', async () => {
-      await initTest({ isolation: TenancyIsolation.Profile, tenants: [
-          { oid: getObjectId('tenant1').toString()}
-        ] });
+      await initTest({
+        isolation: TenancyIsolation.Profile,
+        tenants: [{ id: getObjectId('tenant1').toString() }],
+      });
       expect(tenancyService.isIsolatedTenant(getObjectId('tenant2'))).toEqual(false);
       expect(tenancyService.isIsolatedTenant(getObjectId('tenant2').toString())).toEqual(false);
     });
@@ -54,24 +55,28 @@ describe('TenancyService', () => {
   describe('getTenancyDb', () => {
     it('test default prefix', async () => {
       await initTest();
-     expect(tenancyService.getTenancyDb('b9f08bd502a887fe2634e484')).toEqual('lyvely-b9f08bd502a887fe2634e484');
+      expect(tenancyService.getTenancyDb('b9f08bd502a887fe2634e484')).toEqual(
+        'lyvely-b9f08bd502a887fe2634e484'
+      );
     });
 
     it('overwrite default prefix', async () => {
       await initTest({ isolation: TenancyIsolation.Profile, collectionPrefix: 'tenant-' });
-      expect(tenancyService.getTenancyDb('b9f08bd502a887fe2634e484')).toEqual('tenant-b9f08bd502a887fe2634e484');
+      expect(tenancyService.getTenancyDb('b9f08bd502a887fe2634e484')).toEqual(
+        'tenant-b9f08bd502a887fe2634e484'
+      );
     });
   });
 
-  describe('getTenancyIsolation', () => {
+  describe('getIsolationLevel', () => {
     it('return tenancy isolation none as default', async () => {
       await initTest();
-      expect(tenancyService.getTenancyIsolation()).toEqual(TenancyIsolation.None);
+      expect(tenancyService.getIsolationLevel()).toEqual(TenancyIsolation.None);
     });
 
     it('return configured tenancy isolation', async () => {
-      await initTest({  isolation: TenancyIsolation.Profile });
-      expect(tenancyService.getTenancyIsolation()).toEqual(TenancyIsolation.Profile);
+      await initTest({ isolation: TenancyIsolation.Profile });
+      expect(tenancyService.getIsolationLevel()).toEqual(TenancyIsolation.Profile);
     });
   });
 
@@ -82,8 +87,8 @@ describe('TenancyService', () => {
     });
 
     it('return configured tenants', async () => {
-      const tenants: ITenant[] = [{ oid: 'b9f08bd502a887fe2634e484' }]
-      await initTest({  isolation: TenancyIsolation.Profile, tenants });
+      const tenants: ITenant[] = [{ id: 'b9f08bd502a887fe2634e484' }];
+      await initTest({ isolation: TenancyIsolation.Profile, tenants });
       expect(tenancyService.getTenants()).toEqual(tenants);
     });
   });

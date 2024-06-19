@@ -1,12 +1,8 @@
-import { ConfigurationPath } from '@/config';
+import type { ModuleConfig } from '@/core';
 
 export interface I18nConfigIF {
-  modules: {
-    i18n: {
-      locales?: string[];
-      fallback?: string;
-    };
-  };
+  locales?: string[];
+  fallback?: string;
 }
 
-export type I18nConfigPath = ConfigurationPath<I18nConfigIF>;
+export type I18nConfig = ModuleConfig<'i18n', I18nConfigIF>;

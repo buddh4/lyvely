@@ -1,16 +1,18 @@
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { ConfigurationPath } from '@lyvely/api';
+import { LyvelyConfigService } from '@lyvely/api';
 import { LegalSection, LegalSectionDetails } from '@lyvely/legal-interface';
 import type { ILegalOptions } from '../legal-options.interface';
+import type { ModuleConfig } from '@lyvely/api';
 
 @Injectable()
 export class LegalService {
-  constructor(private readonly configService: ConfigService<ConfigurationPath>) {}
+  constructor(
+    private readonly configService: LyvelyConfigService<ModuleConfig<'legal', ILegalOptions>>
+  ) {}
 
   async getSections(locale: string): Promise<LegalSection[]> {
     const result = [] as LegalSection[];
-    const legal = this.configService.get<ILegalOptions>('modules.legal');
+    const legal = this.configService.getModuleConfig('legal');
     if (!legal?.sections) return this.attachPoweredBy(result);
 
     for (const sectionId in legal.sections) {
@@ -31,7 +33,7 @@ export class LegalService {
   }
 
   private attachPoweredBy(result: LegalSection[]) {
-    if (this.configService.get<boolean>('modules.legal.poweredBy', true)) {
+    if (this.configService.getModuleConfig('poweredBy', true)) {
       result.push({
         id: 'poweredBy',
         label: 'Powered by lyvely',
@@ -57,7 +59,7 @@ export class LegalService {
   }
 
   private getLocalizedSection(sectionId: string, locale?: string) {
-    const legal = this.configService.get<ILegalOptions>('modules.legal');
+    const legal = this.configService.getModuleConfig('legal');
     const section = legal?.sections[sectionId] || null;
 
     if (!locale || !section?.locales) return section;

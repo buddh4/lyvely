@@ -53,7 +53,9 @@ export class LocalStorageProvider extends StorageProvider<ILocalStorageProviderO
   }
 
   static getLocalStorageRoot(configService: ConfigService) {
-    return configService.get('files.storage.local.dest') || LocalStorageProvider.getDefaultRoot();
+    return (
+      configService.get('module.files.storage.local.dest') || LocalStorageProvider.getDefaultRoot()
+    );
   }
 
   /**

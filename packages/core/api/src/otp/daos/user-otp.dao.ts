@@ -1,12 +1,13 @@
-import { AbstractDao, DocumentIdentity, Dao } from '@/core';
+import { AbstractDao, Dao, DocumentIdentity } from '@/core';
 import { UserOtp } from '../schemas';
+import { TenancyIsolation } from '@/core/tenancy';
 
 /**
  * UserOtpDao is a class that provides CRUD operations for the UserOtp model.
  *
  * @extends AbstractDao
  */
-@Dao(UserOtp)
+@Dao(UserOtp, { isolation: TenancyIsolation.Strict })
 export class UserOtpDao extends AbstractDao<UserOtp> {
   /**
    * Increments the number of attempts for a given OTP.

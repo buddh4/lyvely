@@ -28,8 +28,7 @@ describe('TimeSeriesContentSchema', () => {
   const TEST_KEY = 'TimeSeriesContentSchema';
 
   beforeEach(async () => {
-    testingModule = await buildContentTest(TEST_KEY)
-      .models(ContentModels).withApp().compile();
+    testingModule = await buildContentTest(TEST_KEY).models(ContentModels).withApp().compile();
     testData = testingModule.get(ProfileTestDataUtils);
     TestTimeSeriesContentModel = testingModule.get('TestTimeSeriesContentModel');
   });

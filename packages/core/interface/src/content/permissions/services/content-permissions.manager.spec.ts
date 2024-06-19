@@ -8,7 +8,7 @@ import {
 } from '../../../permissions';
 import { ContentUserRole } from '../interfaces';
 import { IntegrityException } from '../../../exceptions';
-import { UserStatus, } from '../../../users';
+import { UserStatus } from '../../../users';
 import { useContentPermissionsManager } from './content-permissions.manager';
 import { ProfileModel } from '../../../profiles';
 
@@ -54,7 +54,9 @@ describe('ContentPermissionsManager', function () {
         groups: options?.groups || [],
       },
       profile || new ProfileModel({}),
-      options?.config ? { ...options.config, featureConfig: {} } : { visitorStrategy: { mode: VisitorMode.Disabled }, featureConfig: {} }
+      options?.config
+        ? { ...options.config, featureConfig: {} }
+        : { visitorStrategy: { mode: VisitorMode.Disabled }, featureConfig: {} }
     );
   };
 

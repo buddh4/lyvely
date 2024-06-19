@@ -4,7 +4,7 @@ import { getFeaturesFromContext } from '../decorators';
 import { Reflector } from '@nestjs/core';
 import { ProfileRequest } from '@/profiles';
 import { ConfigService } from '@nestjs/config';
-import { ServerConfiguration } from '@/config';
+import { ServerConfiguration } from '@/core';
 import { isEnabledFeature } from '@lyvely/interface';
 
 @Injectable()

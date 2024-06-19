@@ -6,7 +6,9 @@ describe('UrlGenerator', () => {
   let testingModule: ICoreTestModule;
 
   beforeEach(async () => {
-    testingModule = await createCoreTestingModule('UrlGenerator', { providers: [UrlGenerator] }).compile();
+    testingModule = await createCoreTestingModule('UrlGenerator', {
+      providers: [UrlGenerator],
+    }).compile();
     urlGenerator = testingModule.get(UrlGenerator);
   });
 

@@ -68,7 +68,7 @@ describe('Habits DAO', () => {
     });
 
     it('assure we do not include an entry of another plan', async () => {
-      const { user, profile,context } = await testData.createUserAndProfile();
+      const { user, profile, context } = await testData.createUserAndProfile();
       const habit = await testData.createHabit(user, profile, {
         interval: CalendarInterval.Daily,
       });

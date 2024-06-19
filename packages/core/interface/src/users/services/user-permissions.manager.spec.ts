@@ -8,7 +8,7 @@ import {
 } from '../../permissions';
 import { UserRelationRole } from '../interfaces';
 import { IntegrityException } from '../../exceptions';
-import { UserModel, UserStatus  } from '../../users';
+import { UserModel, UserStatus } from '../../users';
 import { useUserRelationPermissionsManager } from './user-permissions.manager';
 import { ProfileRelationRole } from '../../profiles';
 
@@ -53,7 +53,9 @@ describe('UserPermissionsService', function () {
         groups: options?.groups || [],
       },
       user,
-      options?.config ? { ...options.config, featureConfig: {} } : { visitorStrategy: { mode: VisitorMode.Disabled }, featureConfig: {} }
+      options?.config
+        ? { ...options.config, featureConfig: {} }
+        : { visitorStrategy: { mode: VisitorMode.Disabled }, featureConfig: {} }
     );
   };
 

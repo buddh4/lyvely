@@ -1,13 +1,13 @@
 import { Avatar, AvatarService } from '@/avatars';
 import { Injectable } from '@nestjs/common';
 import type { ProfileMembershipContext } from '../contexts';
-import { ProfileDao } from '../daos';
+import { ProfilesDao } from '../daos';
 import type { IFileInfo } from '@/files';
 
 @Injectable()
 export class ProfileAvatarService {
   constructor(
-    private readonly profileDao: ProfileDao,
+    private readonly profileDao: ProfilesDao,
     private readonly avatarService: AvatarService
   ) {}
 

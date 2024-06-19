@@ -69,10 +69,10 @@ export const useViteWebAppConfig = (options: IOptions) => {
       rollupOptions: {
         output: {
           manualChunks: {
-            '@lyvely/ui': ['@lyvely/ui']
-          }
-        }
-      }
-    }
+            '@lyvely/ui': ['@lyvely/ui'],
+          },
+        },
+      },
+    },
   };
 };

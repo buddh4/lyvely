@@ -1,12 +1,11 @@
 import { Schema, SchemaFactory } from '@nestjs/mongoose';
 import { AbstractDao } from './abstract.dao';
 import { TObjectId } from '../interfaces';
-import { createCoreTestingModule, type ICoreTestModule, } from '../../testing/core-test.util';
+import { createCoreTestingModule, type ICoreTestModule } from '../../testing/core-test.util';
 import { ModelDefinition } from '@nestjs/mongoose/dist/interfaces';
-import { Dao } from "./dao.decorator";
-import { TenancyException, TenancyIsolation } from "@/core/tenancy";
-import { getObjectId } from "@/testing";
-import type { ITenancyOptions } from "@/config";
+import { Dao } from './dao.decorator';
+import { TenancyException, TenancyIsolation, type ITenancyOptions } from '@/core/tenancy';
+import { getObjectId } from '@/testing';
 
 @Schema()
 class TestDocument {
@@ -16,25 +15,24 @@ class TestDocument {
 
 const TestDocumentSchema = SchemaFactory.createForClass(TestDocument);
 
-
 @Dao(TestDocument, {
-  isolation: TenancyIsolation.Profile
+  isolation: TenancyIsolation.Profile,
 })
 class ProfileIsolationDao extends AbstractDao<TestDocument> {}
 
 @Dao(TestDocument, {
-  isolation: TenancyIsolation.Strict
+  isolation: TenancyIsolation.Strict,
 })
 class StrictIsolationDao extends AbstractDao<TestDocument> {}
 
 @Dao(TestDocument, {
-  isolation: TenancyIsolation.None
+  isolation: TenancyIsolation.None,
 })
 class MainDao extends AbstractDao<TestDocument> {}
 
 const TestDocumentModelDefinition: ModelDefinition = {
   name: TestDocument.name,
-  schema: TestDocumentSchema
+  schema: TestDocumentSchema,
 };
 
 describe('AbstractDao - tenancy', () => {
@@ -43,25 +41,25 @@ describe('AbstractDao - tenancy', () => {
   let profileIsolationDao: ProfileIsolationDao;
   let mainDao: MainDao;
 
-  const initModule = async (isolation: TenancyIsolation, config?: Partial<ITenancyOptions>): Promise<void> => {
-    testingModule = await createCoreTestingModule(
-      'AbstractDao',
-      {
-        providers: [MainDao, ProfileIsolationDao, StrictIsolationDao],
-        models:  [TestDocumentModelDefinition],
-        config: {
-          tenancy: {
-            isolation,
-            ...config
-          }
-        }
-      }
-    ).compile();
+  const initModule = async (
+    isolation: TenancyIsolation,
+    config?: Partial<ITenancyOptions>
+  ): Promise<void> => {
+    testingModule = await createCoreTestingModule('AbstractDao', {
+      providers: [MainDao, ProfileIsolationDao, StrictIsolationDao],
+      models: [TestDocumentModelDefinition],
+      config: {
+        tenancy: {
+          isolation,
+          ...config,
+        },
+      },
+    }).compile();
 
     strictIsolationDao = testingModule.get(StrictIsolationDao);
     profileIsolationDao = testingModule.get(ProfileIsolationDao);
     mainDao = testingModule.get(MainDao);
-  }
+  };
 
   afterEach(async () => {
     await testingModule.afterEach();
@@ -78,7 +76,9 @@ describe('AbstractDao - tenancy', () => {
       await initModule(TenancyIsolation.Strict);
       const document = await mainDao.save(new TestDocument());
       expect(document?._id).toBeDefined();
-      const isolatedDocument = await strictIsolationDao.findById(document, { tenancyId: getObjectId('tenant1') });
+      const isolatedDocument = await strictIsolationDao.findById(document, {
+        tenancyId: getObjectId('tenant1'),
+      });
       expect(isolatedDocument).toBeNull();
     });
 
@@ -87,7 +87,9 @@ describe('AbstractDao - tenancy', () => {
       await initModule(TenancyIsolation.Profile, { tenants: [{ oid: tenantId.toString() }] });
       const document = await mainDao.save(new TestDocument());
       expect(document?._id).toBeDefined();
-      const isolatedDocument = await profileIsolationDao.findById(document, { tenancyId: tenantId });
+      const isolatedDocument = await profileIsolationDao.findById(document, {
+        tenancyId: tenantId,
+      });
       expect(isolatedDocument).toBeNull();
     });
   });
@@ -105,7 +107,7 @@ describe('AbstractDao - tenancy', () => {
 
       profileIsolationDao.save(new TestDocument()).catch((e) => {
         expect(e instanceof TenancyException).toEqual(true);
-      })
+      });
     });
 
     it('TenantId required on Strict level isolation', async () => {
@@ -114,7 +116,7 @@ describe('AbstractDao - tenancy', () => {
 
       profileIsolationDao.save(new TestDocument()).catch((e) => {
         expect(e instanceof TenancyException).toEqual(true);
-      })
+      });
     });
 
     it('Document is isolated on Profile isolation level', async () => {
@@ -157,7 +159,7 @@ describe('AbstractDao - tenancy', () => {
 
       strictIsolationDao.save(new TestDocument()).catch((e) => {
         expect(e instanceof TenancyException).toEqual(true);
-      })
+      });
     });
 
     it('Document is not isolated on Profile isolation level', async () => {

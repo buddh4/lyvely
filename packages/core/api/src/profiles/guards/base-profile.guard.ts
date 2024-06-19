@@ -4,14 +4,14 @@ import { ProfileRequest } from '../types';
 import { isValidObjectId } from '@lyvely/common';
 import { ProfileRelationRole, verifyProfileRoleLevel } from '@lyvely/interface';
 import { ProfileVisibilityPolicy } from '../policies';
-import { ProfileDao } from '../daos';
+import { ProfilesDao } from '../daos';
 import { Reflector } from '@nestjs/core';
 import { InjectPolicy } from '@/policies';
 import { ProfileContext } from '../contexts';
 import { ClsService } from 'nestjs-cls';
 import { META_PROFILE_ROLE_LEVEL } from '../profiles.constants';
 import type { LyvelyStore } from '@/core/interfaces';
-import type { TObjectId } from '@/core';
+import { CLS_CONTEXT, CLS_TENANCY_ID, type TObjectId } from '@/core';
 
 /**
  * Represents a base guard for profile context access.
@@ -29,7 +29,7 @@ export class BaseProfileGuard implements CanActivate {
   protected profileVisibilityPolicy: ProfileVisibilityPolicy;
 
   @Inject()
-  protected profileDao: ProfileDao;
+  protected profileDao: ProfilesDao;
 
   @Inject()
   protected reflector: Reflector;
@@ -60,8 +60,8 @@ export class BaseProfileGuard implements CanActivate {
 
     if (!request.profile) return false;
 
-    this.clsService.set<TObjectId>('oid', request.profile.oid);
-    this.clsService.set<ProfileContext>('context', request.context);
+    this.clsService.set<TObjectId>(CLS_TENANCY_ID, request.profile.oid);
+    this.clsService.set<ProfileContext>(CLS_CONTEXT, request.context);
 
     return (
       this.verifyProfileRoleLevel(request.context, context) &&

@@ -6,7 +6,6 @@ import { Headers } from '@lyvely/interface';
 import { AuthModule, RootAuthGuard } from '../auth';
 import { BaseUserGuard } from '../users';
 import { ServiceExceptionsFilter } from '@/core';
-import { ConfigurationPath, ILyvelyCsrfOptions } from '@/config';
 import { FeatureGuard, FeaturesModule } from '../features';
 import cookieParser from 'cookie-parser';
 import mongoose from 'mongoose';
@@ -23,6 +22,7 @@ import fs from 'fs';
 import * as net from 'net';
 import { MulterConfigFactory } from '@/files';
 import { mkdir } from 'node:fs/promises';
+import { LyvelyConfigService } from '@/config';
 
 useDayJsDateTimeAdapter();
 
@@ -32,7 +32,7 @@ export class LyvelyServer {
   private logger: NestLogger;
   private nestApp: NestExpressApplication;
   private server: express.Express;
-  private configService: ConfigService<ConfigurationPath>;
+  private configService: LyvelyConfigService;
   private options: ILyvelyServerOptions;
 
   async bootstrap(options: ILyvelyServerOptions = {}) {
@@ -40,7 +40,7 @@ export class LyvelyServer {
     this.nestApp = await this.createtNestApp();
 
     this.logger = new NestLogger('main');
-    this.configService = this.nestApp.get(ConfigService);
+    this.configService = this.nestApp.get(LyvelyConfigService);
 
     await this.createPaths();
     this.initVersioning();
@@ -85,12 +85,12 @@ export class LyvelyServer {
   private async initServer() {
     await this.nestApp.init();
 
-    const tls = this.configService.get<https.ServerOptions>('http.tls');
+    const tls = this.configService.get('http.tls');
     if (tls) {
       const port = this.configService.get('http.port', 443);
       if (typeof tls.key === 'string') tls.key = fs.readFileSync(tls.key);
       if (typeof tls.cert === 'string') tls.cert = fs.readFileSync(tls.cert);
-      https.createServer(this.configService.get('http.tls'), this.server).listen(port);
+      https.createServer(tls, this.server).listen(port);
     } else {
       const port = this.configService.get('http.port', 8080);
       http.createServer(this.server).listen(port);
@@ -121,9 +121,9 @@ export class LyvelyServer {
   }
 
   private initCsrf() {
-    const csrfConfig = this.configService.get<ILyvelyCsrfOptions>('csrf', {});
+    const csrfConfig = this.configService.get('csrf');
 
-    if (csrfConfig.enabled === false) {
+    if (csrfConfig?.enabled === false) {
       this.logger.warn('Csrf is disabled');
       return;
     }
@@ -151,7 +151,7 @@ export class LyvelyServer {
   }
 
   private initMongoose() {
-    mongoose.set('debug', !!this.configService.get('mongodb.debug'));
+    mongoose.set('debug', this.configService.get('mongodb.debug', false));
     mongoose.Schema.Types.String.set('trim', true);
   }
 
@@ -175,7 +175,7 @@ export class LyvelyServer {
 
   private initCors() {
     // Cors not required if staticServe is used
-    let cors = this.configService.get<CorsOptions>('http.cors');
+    let cors = this.configService.get('http.cors');
     const staticServe = this.options.serveStatic;
 
     if (!cors && !staticServe) {

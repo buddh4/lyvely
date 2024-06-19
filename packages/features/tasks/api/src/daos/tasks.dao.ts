@@ -8,14 +8,14 @@ import {
   ProfileType,
   UserAssignmentStrategy,
   Timer,
-  Dao,
+  ProfileDao,
 } from '@lyvely/api';
 import { ICalendarPlanDao, CalendarPlanDao } from '@lyvely/calendar-plan';
 import { findAndReplace } from '@lyvely/common';
 import type { ICalendarPlanTidSearchFilter } from '@lyvely/calendar-plan';
 import { type FilterQuery, ProfileContext } from '@lyvely/api';
 
-@Dao(Task)
+@ProfileDao(Task)
 export class TasksDao extends CalendarPlanDao<Task> implements ICalendarPlanDao<Task> {
   /**
    * Defines the document query path of the interval field.

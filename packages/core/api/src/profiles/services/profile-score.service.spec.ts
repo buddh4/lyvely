@@ -9,7 +9,7 @@ import {
   buildProfileTest,
 } from '../testing';
 import { INestApplication } from '@nestjs/common';
-import { ProfileDao } from '../daos';
+import { ProfilesDao } from '../daos';
 import { toTimingId } from '@lyvely/dates';
 
 const testScoreModelDef = {
@@ -22,7 +22,7 @@ describe('AbstractUserProfileActionService', () => {
   let testingModule: ILyvelyTestingModule;
   let testProfileActionService: TestProfileScoreService;
   let testData: ProfileTestDataUtils;
-  let profileDao: ProfileDao;
+  let profileDao: ProfilesDao;
 
   const TEST_KEY = 'abstract_user_profile_action_service';
 
@@ -34,7 +34,7 @@ describe('AbstractUserProfileActionService', () => {
       .compile();
     testProfileActionService = testingModule.get<TestProfileScoreService>(TestProfileScoreService);
     testData = testingModule.get(ProfileTestDataUtils);
-    profileDao = testingModule.get(ProfileDao);
+    profileDao = testingModule.get(ProfilesDao);
   });
 
   afterEach(async () => {

@@ -5,11 +5,12 @@ import type {
   IStorageProviderDefinition,
   IStorageService,
   ILocalStorageProviderOptions,
+  IStorageConfig,
+  FilesModuleConfig,
 } from '../interfaces';
-import { ConfigService } from '@nestjs/config';
 import { Injectable, Logger } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
-import type { IStorageConfig, LyvelyFileOptions, ServerConfiguration } from '@/config';
+import { LyvelyConfigService } from '@/config';
 import { LocalStorageProvider } from '../providers';
 import { IntegrityException, MisconfigurationException } from '@lyvely/interface';
 import { FileUpload } from '../models';
@@ -53,10 +54,10 @@ export class StorageService implements IStorageService {
 
   constructor(
     private readonly fileMimeTypeRegistry: FileMimeTypeRegistry,
-    private readonly configService: ConfigService<ServerConfiguration>,
+    private readonly configService: LyvelyConfigService<FilesModuleConfig>,
     private moduleRef: ModuleRef
   ) {
-    const filesConfig = this.configService.get<LyvelyFileOptions>('files', {});
+    const filesConfig = this.configService.getModuleConfig('files', {});
     const storageConfig = filesConfig.storage || DEFAULT_STORAGE_CONFIG;
 
     this.validateStorageConfig(storageConfig);

@@ -9,13 +9,14 @@ import {
 } from '@nestjs/common';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { I18nModule, I18nModuleLoader } from '@/i18n';
-import { CoreModule, ReverseProxyThrottlerGuard, setTransactionSupport } from '@/core';
 import {
-  ConfigurationPath,
-  ILyvelyMongoDBOptions,
-  ServerConfiguration,
-  loadConfigs,
-} from '@/config';
+  CoreModule,
+  type IMongoDBOptions,
+  ReverseProxyThrottlerGuard,
+  type ServerConfiguration,
+  setTransactionSupport,
+} from '@/core';
+import { loadConfigs, LyvelyConfigModule, LyvelyConfigService } from '@/config';
 import { AppConfigModule } from '@/app-config';
 import { AuthModule } from '@/auth';
 import { UsersModule } from '@/users';
@@ -55,7 +56,7 @@ export interface IAppModuleBuilderOptions {
   configFiles?: Array<string> | false;
   loadDefaultConfig?: boolean;
   loadDBConfig?: boolean;
-  config?: DeepPartial<ServerConfiguration> | null;
+  config?: DeepPartial<ServerConfiguration<{}>> | null;
   serveStatic?: boolean;
   manual?: boolean;
   modules?: TModule[];
@@ -117,7 +118,8 @@ export class AppModuleBuilder {
       ConfigModule.forRoot({
         load: [() => config],
         isGlobal: true,
-      })
+      }),
+      LyvelyConfigModule
     );
   }
 
@@ -166,10 +168,9 @@ export class AppModuleBuilder {
   public importQueueModule() {
     return this.importModules(
       BullModule.forRootAsync({
-        imports: [ConfigModule],
-        inject: [ConfigService],
-        useFactory: async (configService: ConfigService<ConfigurationPath>) => {
-          return { connection: configService.get('redis')! };
+        inject: [LyvelyConfigService],
+        useFactory: async (configService: LyvelyConfigService) => {
+          return { connection: configService.get('redis') };
         },
       })
     );
@@ -180,10 +181,8 @@ export class AppModuleBuilder {
 
     return this.importModules(
       ServeStaticModule.forRootAsync({
-        imports: [ConfigModule],
-        inject: [ConfigService],
-        useFactory: async (configService: ConfigService<ConfigurationPath>) => {
-          // TODO (serveStatic) provide some defaults...
+        inject: [LyvelyConfigService],
+        useFactory: async (configService: LyvelyConfigService) => {
           return [
             configService.get('serveStatic', {
               rootPath: resolve(__dirname, '../static'),
@@ -197,9 +196,9 @@ export class AppModuleBuilder {
   public importMongooseModule() {
     return this.importModules(
       MongooseModule.forRootAsync({
-        inject: [ConfigService],
-        useFactory: async (configService: ConfigService<ConfigurationPath & any>) => {
-          const options = { ...configService.get<ILyvelyMongoDBOptions>('mongodb') };
+        inject: [LyvelyConfigService],
+        useFactory: async (configService: LyvelyConfigService) => {
+          const options = { ...configService.get('mongodb') };
 
           // Just to assure we do not kill another db with our e2e tests.
           if (process.env.NODE_ENV === 'e2e' && !options.uri) {
@@ -226,14 +225,18 @@ export class AppModuleBuilder {
       ThrottlerModule.forRootAsync({
         imports: [ConfigModule],
         inject: [ConfigService],
-        useFactory: (config: ConfigService<ConfigurationPath>) => ({
-          throttlers: [
-            {
-              ttl: config.get('http.rateLimit.ttl') || 60_000,
-              limit: config.get('http.rateLimit.limit') || 120,
-            },
-          ],
-        }),
+        useFactory: (config: LyvelyConfigService) => {
+          const reteLimitConfig = config.get('http.rateLimit');
+
+          return {
+            throttlers: [
+              {
+                ttl: reteLimitConfig?.ttl ?? 60_000,
+                limit: reteLimitConfig?.limit ?? 120,
+              },
+            ],
+          };
+        },
       })
     ).useProviders({
       provide: APP_GUARD,

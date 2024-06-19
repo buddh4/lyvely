@@ -13,12 +13,12 @@ import { OtpService } from '@/otp';
 import { UserDao, User, UsersService } from '@/users';
 import { ProfilesService } from '@/profiles';
 import { MailService } from '@/mails';
-import { ConfigService } from '@nestjs/config';
-import { ConfigurationPath } from '@/config';
 import { InvitationsService, IMailInvitation } from '@/user-invitations';
 import { SystemMessagesService } from '@/system-messages';
 import { validate } from 'class-validator';
 import { I18n } from '@/i18n';
+import { LyvelyConfigService } from '@/config';
+import type { UserRegistrationConfig } from '@/user-registration/interfaces';
 
 const OTP_PURPOSE_VERIFY_REGISTRATION_EMAIL = 'verify-registration-email';
 
@@ -29,7 +29,7 @@ export class UserRegistrationService {
     private profileService: ProfilesService,
     private userService: UsersService,
     private mailerService: MailService,
-    private configService: ConfigService<ConfigurationPath & any>,
+    private configService: LyvelyConfigService<UserRegistrationConfig>,
     private userOtpService: OtpService,
     private invitationsService: InvitationsService,
     private systemMessageService: SystemMessagesService,
@@ -180,11 +180,8 @@ export class UserRegistrationService {
    * invitation.
    * @private
    */
-  private getRegistrationMode() {
-    return this.configService.get<UserRegistrationMode>(
-      'userRegistration.mode',
-      UserRegistrationMode.PUBLIC
-    );
+  private getRegistrationMode(): UserRegistrationMode {
+    return this.configService.get('modules.user-registration.mode', UserRegistrationMode.PUBLIC);
   }
 
   /**

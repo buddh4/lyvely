@@ -1,8 +1,7 @@
 import { Post, Req, UnauthorizedException } from '@nestjs/common';
 import { UserRegistrationService } from '../services';
-import { Public, ValidBody } from '@/core';
+import { type AuthModuleConfig, Public, ValidBody } from '@/core';
 import { GlobalController } from '@/common';
-import { ConfigurationPath } from '@/config';
 import {
   UserRegistrationEndpoint,
   UserRegistration,
@@ -20,6 +19,7 @@ import { AbstractJwtAuthController, JwtAuthService } from '@/auth';
 import { ConfigService } from '@nestjs/config';
 import { Request } from 'express';
 import ms from 'ms';
+import { LyvelyConfigService } from '@/config';
 
 @Public()
 @GlobalController(API_USER_REGISTRATION)
@@ -30,7 +30,7 @@ export class UserRegistrationController
   constructor(
     private registerService: UserRegistrationService,
     private authService: JwtAuthService,
-    protected override configService: ConfigService<ConfigurationPath & any>
+    protected override configService: LyvelyConfigService<AuthModuleConfig>
   ) {
     super(configService);
   }
@@ -76,7 +76,7 @@ export class UserRegistrationController
     return {
       user: new UserModel(user),
       vid: vid,
-      token_expiration: ms(this.configService.get<string>('auth.jwt.access.expiresIn')!),
+      token_expiration: ms(this.configService.getModuleConfig('auth', 'jwt.access.expiresIn')!),
     };
   }
 }

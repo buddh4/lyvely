@@ -1,19 +1,19 @@
 import { Profile, Tag, UserProfile } from '../schemas';
-import { ProfileDao } from './index';
+import { ProfilesDao } from './index';
 import { buildProfileTest, ProfileTestDataUtils } from '../testing';
 import { ILyvelyTestingModule } from '@/testing';
 import { ProfileType } from '@lyvely/interface';
 
-describe('ProfileDao', () => {
+describe('ProfilesDao', () => {
   let testingModule: ILyvelyTestingModule;
-  let profileDao: ProfileDao;
+  let profileDao: ProfilesDao;
   let testData: ProfileTestDataUtils;
 
   const TEST_KEY = 'profile_dao';
 
   beforeEach(async () => {
     testingModule = await buildProfileTest(TEST_KEY).compile();
-    profileDao = testingModule.get<ProfileDao>(ProfileDao);
+    profileDao = testingModule.get<ProfilesDao>(ProfilesDao);
     testData = testingModule.get(ProfileTestDataUtils);
   });
 

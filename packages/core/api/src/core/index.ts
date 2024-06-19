@@ -6,6 +6,7 @@ export * from './filters';
 export * from './guards';
 export * from './services';
 export * from './interfaces';
+export * from './tenancy';
 export * from './core.module';
 export * from './global.emitter';
 export * from './helpers';

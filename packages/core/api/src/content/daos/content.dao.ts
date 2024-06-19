@@ -4,8 +4,9 @@ import { ContentTypeRegistry } from '../components';
 import { Dao, DocumentIdentity, TObjectId } from '@/core';
 import { ContentTypeDao } from './content-type.dao';
 import { ProfileShardData } from '@/profiles';
+import { TenancyIsolation } from '@/core/tenancy';
 
-@Dao(Content)
+@Dao(Content, { isolation: TenancyIsolation.Profile })
 export class ContentDao extends ContentTypeDao<Content> {
   @Inject()
   protected override typeRegistry: ContentTypeRegistry;

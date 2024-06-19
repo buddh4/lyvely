@@ -1,6 +1,7 @@
 import {
   AbstractDao,
-  BaseDocument, Dao,
+  BaseDocument,
+  Dao,
   DocumentIdentity,
   LeanDoc,
   MixedProp,

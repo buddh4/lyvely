@@ -1,6 +1,6 @@
 import { Journal } from '../schemas';
 import { TimeSeriesContentDao } from '@lyvely/time-series';
-import { Dao } from '@lyvely/api';
+import { ProfileDao } from '@lyvely/api';
 
-@Dao(Journal)
+@ProfileDao(Journal)
 export class JournalsDao extends TimeSeriesContentDao<Journal> {}

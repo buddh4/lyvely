@@ -36,6 +36,7 @@ import {
   isValidObjectId,
   PropertiesOf,
   Type,
+  isNotNil,
 } from '@lyvely/common';
 import type { IDocumentTransformation } from './document.transformation';
 import type { IDocumentTransformer } from './document.transformer';
@@ -44,13 +45,7 @@ import { type IDaoMetadata } from './dao.decorator';
 import { AbstractTypeRegistry } from '@/core/components';
 import { META_DAO } from '@/core/db/db.constants';
 import { IntegrityException } from '@lyvely/interface';
-import {
-  TenancyException,
-  TenancyIsolation,
-  TenancyService,
-  type TenancyStore,
-} from '@/core/tenancy';
-import { ClsService } from 'nestjs-cls';
+import { TenancyException, TenancyIsolation, TenancyService } from '@/core/tenancy';
 
 interface IPagination {
   page: number;
@@ -166,9 +161,6 @@ export abstract class AbstractDao<
 > {
   @Inject()
   private tenancyService: TenancyService;
-
-  @Inject()
-  private readonly clsService: ClsService<TenancyStore>;
 
   /**
    * Represents the mongoose model containing the main db connection.
@@ -911,7 +903,7 @@ export abstract class AbstractDao<
    * @throws {IntegrityException} If the tenant cannot be identified or is invalid.
    */
   private getTenantModel(options: IBaseQueryOptions | undefined | null): Model<T> {
-    const isolationLevel = this.tenancyService.getTenancyIsolation();
+    const isolationLevel = this.tenancyService.getIsolationLevel();
     const daoIsolation = this.getMetaData().isolation ?? TenancyIsolation.Profile;
 
     if (isolationLevel === TenancyIsolation.None || daoIsolation === TenancyIsolation.None) {
@@ -923,7 +915,9 @@ export abstract class AbstractDao<
       return this.model;
     }
 
-    const tenancyId = this.getTenancyId(options);
+    const tenancyId = isNotNil(options?.tenancyId)
+      ? assureStringId(options?.tenancyId, true)
+      : this.tenancyService.getTenancyId();
 
     if (isNil(tenancyId)) throw new TenancyException('Could not identify tenant.');
     if (!isValidObjectId(tenancyId)) {
@@ -942,15 +936,6 @@ export abstract class AbstractDao<
     }
 
     return db.model<T>(this.model.modelName);
-  }
-
-  /**
-   * Tries to retrieve the tenancy ID from the option or context.
-   * @private
-   * @returns {string | undefined} The tenancy ID if available, otherwise undefined.
-   */
-  private getTenancyId(options?: IBaseQueryOptions | null): string | undefined {
-    return assureStringId(options?.tenancyId ?? this.clsService.get('oid'), true);
   }
 
   /**

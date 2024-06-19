@@ -6,7 +6,8 @@ import { ModelDefinition } from '@nestjs/mongoose/dist/interfaces';
 import { type INestApplication } from '@nestjs/common';
 import {
   BaseDocument,
-  type BaseDocumentData, Dao,
+  type BaseDocumentData,
+  Dao,
   DiscriminatorDocumentTransformer,
   DiscriminatorTransformation,
   IDocumentTransformation,
@@ -65,7 +66,7 @@ class TestEntityTransformer extends DiscriminatorDocumentTransformer<TestEntity>
   discriminator: {
     [TestEntityA.name]: TestEntityA,
     [TestEntityB.name]: TestEntityB,
-  }
+  },
 })
 class TestEntityDao extends AbstractDao<TestEntity> {
   protected modelName = TestEntity.name;
@@ -87,13 +88,10 @@ describe('AbstractDao', () => {
   let app: INestApplication;
 
   beforeEach(async () => {
-    testingModule = await createCoreTestingModule(
-      'AbstractDao',
-      {
-        providers: [TestEntityDao],
-        models:  [TestEntityModelDefinition]
-      }
-    ).compile();
+    testingModule = await createCoreTestingModule('AbstractDao', {
+      providers: [TestEntityDao],
+      models: [TestEntityModelDefinition],
+    }).compile();
 
     app = testingModule.createNestApplication();
     dao = testingModule.get(TestEntityDao);

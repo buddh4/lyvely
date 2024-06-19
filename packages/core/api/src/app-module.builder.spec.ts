@@ -1,6 +1,8 @@
 import { AppModuleBuilder } from '@/app-module.builder';
 import { Test } from '@nestjs/testing';
 import { ConfigService } from '@nestjs/config';
+import { LyvelyConfigService } from '@/config';
+import type { AuthModuleConfig, ModuleConfig } from '@/core';
 
 describe('AppModuleBuilder', () => {
   describe('build', () => {
@@ -15,9 +17,12 @@ describe('AppModuleBuilder', () => {
         ],
       }).compile();
 
-      const configService = testModule.get<ConfigService>(ConfigService);
+      const configService =
+        testModule.get<LyvelyConfigService<ModuleConfig<'test', { value: string }>>>(
+          LyvelyConfigService
+        );
       expect(configService).toBeDefined();
-      expect(configService.get('modules.test.value')).toEqual('testValue');
+      expect(configService.getModuleConfig('test', 'value')).toEqual('testValue');
     });
 
     it('default configuration loads', async () => {
@@ -31,7 +36,7 @@ describe('AppModuleBuilder', () => {
         ],
       }).compile();
 
-      const configService = testModule.get<ConfigService>(ConfigService);
+      const configService = testModule.get<LyvelyConfigService>(LyvelyConfigService);
       expect(configService).toBeDefined();
       expect(configService.get('http.port')).toEqual(8080);
     });
@@ -43,10 +48,12 @@ describe('AppModuleBuilder', () => {
             configFiles: [],
             loadDBConfig: false,
             config: {
-              auth: {
-                jwt: {
-                  access: {
-                    secret: 'testSecret',
+              modules: {
+                auth: {
+                  jwt: {
+                    access: {
+                      secret: 'testSecret',
+                    },
                   },
                 },
               },
@@ -56,10 +63,11 @@ describe('AppModuleBuilder', () => {
         ],
       }).compile();
 
-      const configService = testModule.get<ConfigService>(ConfigService);
+      const configService =
+        testModule.get<LyvelyConfigService<AuthModuleConfig>>(LyvelyConfigService);
       expect(configService).toBeDefined();
-      expect(configService.get('auth.jwt.access.secret')).toEqual('testSecret');
-      expect(configService.get('auth.jwt.secure-cookies')).toEqual(true);
+      expect(configService.getModuleConfig('auth', 'jwt.access.secret')).toEqual('testSecret');
+      expect(configService.getModuleConfig('auth', 'auth.jwt.secure-cookies')).toEqual(true);
     });
   });
 });

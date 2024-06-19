@@ -3,8 +3,9 @@ import { Membership, Profile } from '../schemas';
 import { User } from '@/users';
 import { AbstractUserProfileRelationsDao } from './abstract-user-profile-relations.dao';
 import { ProfileMembershipRole } from '@lyvely/interface';
+import { TenancyIsolation } from '@/core/tenancy';
 
-@Dao(Membership)
+@Dao(Membership, { isolation: TenancyIsolation.Strict })
 export class MembershipsDao extends AbstractUserProfileRelationsDao<Membership> {
   /**
    * Retrieves a list of memberships that match the given profile and role.

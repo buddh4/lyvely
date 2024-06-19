@@ -3,12 +3,12 @@ import { assureObjectId, DocumentIdentity } from '@/core';
 import { type OptionalUser, User, UsersService } from '@/users';
 import { DocumentNotFoundException } from '@lyvely/interface';
 import { Profile, UserProfileRelation, IUserWithProfileRelation } from '../schemas';
-import { ProfileDao, UserProfileRelationsDao } from '../daos';
+import { ProfilesDao, UserProfileRelationsDao } from '../daos';
 
 @Injectable()
 export class ProfileRelationsService {
   constructor(
-    private profileDao: ProfileDao,
+    private profileDao: ProfilesDao,
     private profileRelationsDao: UserProfileRelationsDao,
     private usersService: UsersService
   ) {}

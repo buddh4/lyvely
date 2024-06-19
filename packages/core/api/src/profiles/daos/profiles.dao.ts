@@ -1,29 +1,31 @@
 import {
+  getProfileConstructorByType,
+  GroupProfile,
   Organization,
   Profile,
-  getProfileConstructorByType,
   Tag,
   UserProfile,
-  GroupProfile,
 } from '../schemas';
 import {
-  assureObjectId,
-  DocumentIdentity,
   AbstractDao,
+  assureObjectId,
   createObjectId,
+  Dao,
+  DocumentIdentity,
   IBaseFetchQueryOptions,
   IFetchQueryOptions,
-  Dao,
 } from '@/core';
 import { User } from '@/users';
 import { assignRawDataTo } from '@lyvely/common';
 import { ProfileType, ProfileVisibilityLevel } from '@lyvely/interface';
 import { ProfileTypeTransformation } from '../schemas/transformations';
+import { TenancyIsolation } from '@/core/tenancy';
 
 @Dao(Profile, {
   discriminator: (doc) => getProfileConstructorByType(doc.type),
+  isolation: TenancyIsolation.Profile,
 })
-export class ProfileDao extends AbstractDao<Profile> {
+export class ProfilesDao extends AbstractDao<Profile> {
   constructor() {
     super();
     this.registerTransformations(new ProfileTypeTransformation());

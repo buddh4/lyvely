@@ -20,3 +20,7 @@ export type FunctionsOf<T> = Pick<T, FunctionPropertyNames<T>>;
 export type Lazy<T> = () => Promise<{ default: T }>;
 
 export type Optional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
+
+export type RequiredDeep<T> = {
+  [P in keyof T]-?: T[P] extends object | undefined ? RequiredDeep<T[P]> : T[P];
+};

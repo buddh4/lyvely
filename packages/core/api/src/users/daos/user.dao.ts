@@ -8,11 +8,12 @@ import {
 } from '@/core';
 import { RefreshToken, User, UserEmail } from '../schemas';
 import { ProfileType } from '@lyvely/interface';
+import { TenancyIsolation } from '@/core/tenancy';
 
 /**
  * Data Access Object for accessing user entities.
  */
-@Dao(User)
+@Dao(User, { isolation: TenancyIsolation.Strict })
 export class UserDao extends AbstractDao<User> {
   /**
    * Finds a user by their username in a case-insensitive manner.

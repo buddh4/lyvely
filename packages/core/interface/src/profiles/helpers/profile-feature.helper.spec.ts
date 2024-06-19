@@ -1,4 +1,10 @@
-import { ProfileModel, ProfileType, clearFeatures, registerFeatures, FeatureType } from '../../index';
+import {
+  ProfileModel,
+  ProfileType,
+  clearFeatures,
+  registerFeatures,
+  FeatureType,
+} from '../../index';
 import { isEnabledProfileFeature } from './profile-feature.helper';
 
 describe('isEnabledProfileFeature', function () {
@@ -19,7 +25,7 @@ describe('isEnabledProfileFeature', function () {
         moduleId: 'test',
         name: 'test.feature',
         enabledByDefault: true,
-        type: FeatureType.Global
+        type: FeatureType.Global,
       },
     ]);
 
@@ -36,7 +42,7 @@ describe('isEnabledProfileFeature', function () {
         moduleId: 'test',
         name: 'test.feature',
         enabledByDefault: true,
-        type: FeatureType.Profile
+        type: FeatureType.Profile,
       },
     ]);
 
@@ -53,7 +59,7 @@ describe('isEnabledProfileFeature', function () {
         moduleId: 'test',
         name: 'test.feature',
         enabledByDefault: false,
-        type: FeatureType.Profile
+        type: FeatureType.Profile,
       },
     ]);
 
@@ -68,7 +74,7 @@ describe('isEnabledProfileFeature', function () {
         id: 'test',
         moduleId: 'test',
         name: 'test.feature',
-        type: FeatureType.Profile
+        type: FeatureType.Profile,
       },
       {
         id: 'test.sub',
@@ -76,7 +82,7 @@ describe('isEnabledProfileFeature', function () {
         name: 'test.sub.feature',
         dependencies: ['test'],
         enabledByDefault: true,
-        type: FeatureType.Profile
+        type: FeatureType.Profile,
       },
     ]);
     const result = isEnabledProfileFeature('test.sub', profile, {
@@ -93,7 +99,7 @@ describe('isEnabledProfileFeature', function () {
         moduleId: 'test',
         name: 'test.feature',
         enabledByDefault: true,
-        type: FeatureType.Profile
+        type: FeatureType.Profile,
       },
       {
         id: 'test.sub',
@@ -101,7 +107,7 @@ describe('isEnabledProfileFeature', function () {
         name: 'test.sub.feature',
         dependencies: ['test'],
         enabledByDefault: true,
-        type: FeatureType.Profile
+        type: FeatureType.Profile,
       },
     ]);
     const result = isEnabledProfileFeature('test.sub', profile);
@@ -117,7 +123,7 @@ describe('isEnabledProfileFeature', function () {
         moduleId: 'test',
         name: 'test.feature',
         enabledByDefault: true,
-        type: FeatureType.Profile
+        type: FeatureType.Profile,
       },
     ]);
 
@@ -137,7 +143,7 @@ describe('isEnabledProfileFeature', function () {
         name: 'test.feature',
         enabledByDefault: true,
         installable: true,
-        type: FeatureType.Profile
+        type: FeatureType.Profile,
       },
     ]);
 
@@ -155,7 +161,7 @@ describe('isEnabledProfileFeature', function () {
         name: 'test.feature',
         installable: true,
         enabledByDefault: false,
-        type: FeatureType.Profile
+        type: FeatureType.Profile,
       },
     ]);
 
@@ -173,7 +179,7 @@ describe('isEnabledProfileFeature', function () {
         name: 'test.feature',
         installable: false,
         enabledByDefault: false,
-        type: FeatureType.Profile
+        type: FeatureType.Profile,
       },
     ]);
 
@@ -194,7 +200,7 @@ describe('isEnabledProfileFeature', function () {
         name: 'test.feature',
         installable: true,
         enabledByDefault: false,
-        type: FeatureType.Profile
+        type: FeatureType.Profile,
       },
     ]);
 
@@ -214,7 +220,7 @@ describe('isEnabledProfileFeature', function () {
         moduleId: 'test',
         name: 'test.feature',
         enabledByDefault: true,
-        type: FeatureType.Profile
+        type: FeatureType.Profile,
       },
     ]);
 
@@ -233,7 +239,7 @@ describe('isEnabledProfileFeature', function () {
         moduleId: 'test',
         name: 'test.feature',
         enabledByDefault: false,
-        type: FeatureType.Profile
+        type: FeatureType.Profile,
       },
     ]);
 

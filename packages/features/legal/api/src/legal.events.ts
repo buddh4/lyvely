@@ -1,17 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
-import { EVENT_MODULE_APP_CONFIG_ASSEMBLY, ModuleAppConfigAssemblyEvent } from '@lyvely/api';
+import {
+  EVENT_MODULE_APP_CONFIG_ASSEMBLY,
+  ModuleAppConfigAssemblyEvent,
+  LyvelyConfigService,
+} from '@lyvely/api';
 import { LegalService } from './services';
 import { ILegalAppConfig } from '@lyvely/legal-interface';
 import { LEGAL_MODULE_ID } from './legal.constants';
-import { ConfigService } from '@nestjs/config';
-import type { ConfigurationPath } from '@lyvely/api';
 
 @Injectable()
 export class LegalEvents {
   constructor(
     private readonly legalService: LegalService,
-    private readonly configService: ConfigService<ConfigurationPath>
+    private readonly configService: LyvelyConfigService
   ) {}
 
   @OnEvent(EVENT_MODULE_APP_CONFIG_ASSEMBLY)

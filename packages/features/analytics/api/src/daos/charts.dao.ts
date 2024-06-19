@@ -2,9 +2,9 @@ import { assureObjectId, assureStringId, ContentTypeDao, type DocumentIdentity }
 import { Chart, ChartSeriesConfig } from '../schemas';
 import { IChartSeriesConfig } from '@lyvely/analytics-interface';
 import { findAndReplace } from '@lyvely/common';
-import { Dao } from '@lyvely/api';
+import { ProfileDao } from '@lyvely/api';
 
-@Dao(Chart)
+@ProfileDao(Chart)
 export class ChartsDao extends ContentTypeDao<Chart> {
   async updateSeries(
     chart: DocumentIdentity<Chart>,

@@ -10,7 +10,7 @@ import {
 } from '../../testing/core-test.util';
 import { ModelDefinition } from '@nestjs/mongoose/dist/interfaces';
 import { BaseDocument, type BaseDocumentData } from '@/core';
-import { Dao } from "./dao.decorator";
+import { Dao } from './dao.decorator';
 
 @Schema({ discriminatorKey: 'type' })
 class TestEntity {
@@ -50,8 +50,8 @@ const SubTestEntitySchema = SchemaFactory.createForClass(SubTestEntity);
 
 @Dao(TestEntity, {
   discriminator: {
-   [SubTestEntity.name]: SubTestEntity
-  }
+    [SubTestEntity.name]: SubTestEntity,
+  },
 })
 class TestEntityDao extends AbstractDao<TestEntity> {}
 
@@ -71,13 +71,10 @@ describe('AbstractDao', () => {
   let eventTester: EventTester;
 
   beforeEach(async () => {
-    testingModule = await createCoreTestingModule(
-      'AbstractDao',
-      {
-        providers: [TestEntityDao, SubTestEntityDao, EventTester],
-        models:  [TestEntityModelDefinition]
-      }
-    ).compile();
+    testingModule = await createCoreTestingModule('AbstractDao', {
+      providers: [TestEntityDao, SubTestEntityDao, EventTester],
+      models: [TestEntityModelDefinition],
+    }).compile();
 
     dao = testingModule.get(TestEntityDao);
     subDao = testingModule.get(SubTestEntityDao);
@@ -90,7 +87,10 @@ describe('AbstractDao', () => {
 
   describe('Sub entity dao', () => {
     it('save sub entity', async () => {
-      const model = new SubTestEntity({requiredField: 'We need this...', specialField: 'Special!'});
+      const model = new SubTestEntity({
+        requiredField: 'We need this...',
+        specialField: 'Special!',
+      });
       const entity = await subDao.save(model);
       expect(entity).toBeDefined();
       expect(entity instanceof SubTestEntity).toEqual(true);
@@ -102,7 +102,10 @@ describe('AbstractDao', () => {
     });
 
     it('load sub entity', async () => {
-      const model = new SubTestEntity({requiredField: 'We need this...', specialField: 'Special!'});
+      const model = new SubTestEntity({
+        requiredField: 'We need this...',
+        specialField: 'Special!',
+      });
       let entity = await subDao.save(model);
       entity = (await subDao.reload(entity))!;
       expect(entity).toBeDefined();
@@ -113,7 +116,7 @@ describe('AbstractDao', () => {
       expect(model._id).toEqual(entity._id);
       expect(model.id).toEqual(entity.id);
     });
-  })
+  });
 
   describe('save', () => {
     it('save valid entity', async () => {

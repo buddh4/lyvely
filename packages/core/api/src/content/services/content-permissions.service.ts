@@ -1,5 +1,4 @@
 import { ConfigService } from '@nestjs/config';
-import { type ConfigurationPath } from '@/config';
 import { Injectable } from '@nestjs/common';
 import { ProfileContentContext } from '../schemas';
 import {
@@ -11,8 +10,13 @@ import {
   isProfilePermission,
   IntegrityException,
 } from '@lyvely/interface';
-import { CONFIG_PATH_PERMISSIONS, GlobalPermissionsService } from '@/permissions';
+import {
+  CONFIG_PATH_PERMISSIONS,
+  GlobalPermissionsService,
+  type PermissionConfig,
+} from '@/permissions';
 import { ProfilePermissionsService } from '@/profiles';
+import { LyvelyConfigService } from '@/config';
 
 /**
  * Service for handling content level permissions within the application.
@@ -33,7 +37,7 @@ export class ContentPermissionsService {
    * @param profilePermissionsService
    */
   constructor(
-    private readonly configService: ConfigService<ConfigurationPath>,
+    private readonly configService: LyvelyConfigService<PermissionConfig>,
     private readonly globalPermissionsService: GlobalPermissionsService,
     private readonly profilePermissionsService: ProfilePermissionsService
   ) {}
@@ -105,8 +109,8 @@ export class ContentPermissionsService {
     const { user } = context;
     const role = context.getContentRole();
     const membership = context.getMembership();
-    const permissionsConfig = this.configService.get(CONFIG_PATH_PERMISSIONS, {
-      visitorStrategy: { mode: VisitorMode.Disabled },
+    const permissionsConfig = this.configService.getModuleConfig('permissions', {
+      mode: VisitorMode.Disabled,
     });
 
     return useContentPermissionsManager().verifyPermission(

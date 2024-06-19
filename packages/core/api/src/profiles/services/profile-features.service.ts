@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { ProfileDao } from '../daos';
+import { ProfilesDao } from '../daos';
 import {
   getAffectedFeatures,
   UpdateFeatureModel,
@@ -11,20 +11,19 @@ import {
   isEnabledProfileFeature,
 } from '@lyvely/interface';
 import { Profile } from '../schemas';
-import { ConfigService } from '@nestjs/config';
-import { ServerConfiguration } from '@/config';
+import { LyvelyConfigService } from '@/config';
 
 /**
  * A service for managing profile level features.
  * @constructor
- * @param {ProfileDao} profileDao - The profile DAO to access profile data.
+ * @param {ProfilesDao} profileDao - The profile DAO to access profile data.
  * @param {ConfigService<ServerConfiguration>} configService - The service for retrieving server configuration.
  */
 @Injectable()
 export class ProfileFeaturesService {
   constructor(
-    private profileDao: ProfileDao,
-    private configService: ConfigService<ServerConfiguration>
+    private profileDao: ProfilesDao,
+    private configService: LyvelyConfigService
   ) {}
 
   /**

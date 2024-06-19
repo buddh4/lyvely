@@ -193,7 +193,7 @@ describe('UserRegistrationService', () => {
 
     it('registration not allowed if registrationMode is none', async () => {
       expect.assertions(1);
-      configService.set('userRegistration.mode', 'none');
+      configService.set('modules.user-registration.mode', 'none');
 
       try {
         await registerService.register(validRegistration);
@@ -204,7 +204,7 @@ describe('UserRegistrationService', () => {
 
     it('registration without invite token not allowed if registrationMode is invite', async () => {
       expect.assertions(1);
-      configService.set('userRegistration.mode', 'invite');
+      configService.set('modules.user-registration.mode', 'invite');
       try {
         await registerService.register(validRegistration);
       } catch (e) {
@@ -214,7 +214,7 @@ describe('UserRegistrationService', () => {
 
     it('registration with invalid invite token not allowed if registrationMode is invite', async () => {
       expect.assertions(1);
-      configService.set('userRegistration.mode', 'invite');
+      configService.set('modules.user-registration.mode', 'invite');
 
       try {
         await registerService.register(validRegistration);
@@ -224,7 +224,7 @@ describe('UserRegistrationService', () => {
     });
 
     it('registration with invalid invite token allowed if registrationMode is public', async () => {
-      configService.set('userRegistration.mode', 'public');
+      configService.set('modules.user-registration.mode', 'public');
       await registerService.register(validRegistration);
       const user = await findUserByMail();
       expect(user).toBeDefined();

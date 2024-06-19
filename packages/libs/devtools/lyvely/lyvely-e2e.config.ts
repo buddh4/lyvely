@@ -10,10 +10,24 @@ export const lyvelyE2EConfig = {
     appUrl: 'http://127.0.0.1:3002',
     // Maybe we should use a mock instead
     rateLimit: {
-      skipIf: () => true
+      skipIf: () => true,
     },
   },
   modules: {
+    auth: {
+      jwt: {
+        'secure-cookies': false,
+        access: {
+          secret: 'e5d2ece45d3b7919fc7b6a8f19abc0cb7916c71bef385ca11f27a0a3b324e3d2',
+        },
+        refresh: {
+          secret: 'e5d2ece45d3b7919fc7b7a8f19abc0cb7916c71bef385ca11f27a0a3b324e3d2',
+        },
+        verify: {
+          secret: 'd660cef7e949e6935a0fc86c073a41363b539542883b18f2e74874ef09dc4482',
+        },
+      },
+    },
     permissions: {
       visitorStrategy: {
         mode: 1,
@@ -35,20 +49,6 @@ export const lyvelyE2EConfig = {
     preview: {
       dir: path.resolve(process.cwd(), '../web/cypress/mails'),
       open: false,
-    },
-  },
-  auth: {
-    jwt: {
-      'secure-cookies': false,
-      access: {
-        secret: 'e5d2ece45d3b7919fc7b6a8f19abc0cb7916c71bef385ca11f27a0a3b324e3d2',
-      },
-      refresh: {
-        secret: 'e5d2ece45d3b7919fc7b7a8f19abc0cb7916c71bef385ca11f27a0a3b324e3d2',
-      },
-      verify: {
-        secret: 'd660cef7e949e6935a0fc86c073a41363b539542883b18f2e74874ef09dc4482',
-      },
     },
   },
 };

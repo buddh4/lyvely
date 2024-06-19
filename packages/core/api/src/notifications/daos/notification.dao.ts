@@ -1,8 +1,9 @@
 import { AbstractDao, createBaseDocumentInstance, Dao, LeanDoc } from '@/core';
 import { Notification } from '../schemas';
 import { NotificationTypeRegistry } from '../components';
+import { TenancyIsolation } from '@/core/tenancy';
 
-@Dao(Notification)
+@Dao(Notification, { isolation: TenancyIsolation.Strict })
 export class NotificationDao extends AbstractDao<Notification> {
   constructor(private notificationTypeRegistry: NotificationTypeRegistry) {
     super();

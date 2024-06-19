@@ -1,6 +1,6 @@
 import { Habit } from '../schemas';
-import { Dao } from '@lyvely/api';
+import { ProfileDao } from '@lyvely/api';
 import { TimeSeriesContentDao } from '@lyvely/time-series';
 
-@Dao(Habit)
+@ProfileDao(Habit)
 export class HabitsDao extends TimeSeriesContentDao<Habit> {}

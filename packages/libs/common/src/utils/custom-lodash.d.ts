@@ -1,4 +1,12 @@
-import type { cloneDeep, merge, uniqueId, cloneDeepWith, escapeRegExp, isEqual, CloneDeepWithCustomizer } from 'lodash-es';
+import type {
+  cloneDeep,
+  merge,
+  uniqueId,
+  cloneDeepWith,
+  escapeRegExp,
+  isEqual,
+  CloneDeepWithCustomizer,
+} from 'lodash-es';
 
 declare module './custom-lodash' {
   export default {
@@ -8,6 +16,6 @@ declare module './custom-lodash' {
     uniqueId,
     escapeRegExp,
     isEqual,
-    CloneDeepWithCustomizer
+    CloneDeepWithCustomizer,
   };
 }

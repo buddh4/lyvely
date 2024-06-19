@@ -10,7 +10,8 @@ import { ModelDefinition } from '@nestjs/mongoose/dist/interfaces';
 import { type INestApplication } from '@nestjs/common';
 import {
   BaseDocument,
-  type BaseDocumentData, Dao,
+  type BaseDocumentData,
+  Dao,
   type IDocumentTransformation,
   type LeanDoc,
 } from '@/core';
@@ -95,13 +96,10 @@ describe('AbstractDao Transformations', () => {
   let app: INestApplication;
 
   beforeEach(async () => {
-    testingModule = await createCoreTestingModule(
-      'AbstractDao_Transformation',
-      {
-        providers: [TestEntityDao, EventTester],
-        models: TestEntityModelDefinition
-      }
-    ).compile();
+    testingModule = await createCoreTestingModule('AbstractDao_Transformation', {
+      providers: [TestEntityDao, EventTester],
+      models: TestEntityModelDefinition,
+    }).compile();
 
     app = testingModule.createNestApplication();
     dao = testingModule.get(TestEntityDao);

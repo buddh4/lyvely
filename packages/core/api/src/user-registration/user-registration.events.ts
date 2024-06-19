@@ -16,7 +16,7 @@ export class UserRegistrationEvents {
   handleModuleConfigAssembly(event: ModuleAppConfigAssemblyEvent) {
     event.setModuleConfig<IUserRegistrationAppConfig>(USER_REGISTRATION_MODULE_ID, {
       registrationMode: this.configService.get(
-        'userRegistration.mode',
+        'modules.user-registration.mode',
         UserRegistrationMode.PUBLIC
       ),
     });

@@ -1,18 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { Content } from '../schemas';
-import { ConfigService } from '@nestjs/config';
 import { LiveService } from '@/live';
 import { assureStringId, Model } from '@/core';
-import { ConfigurationPath } from '@/config';
 import { InjectModel } from '@nestjs/mongoose';
 import { ContentUpdateStateLiveEvent } from '@lyvely/interface';
+import { LyvelyConfigService } from '@/config';
 
 @Injectable()
 export class ContentEventPublisher {
   private emitCreateEvents: boolean;
 
   constructor(
-    private readonly configService: ConfigService<ConfigurationPath>,
+    private readonly configService: LyvelyConfigService,
     private readonly liveService: LiveService,
     @InjectModel(Content.name) private readonly contentModel: Model<Content>
   ) {

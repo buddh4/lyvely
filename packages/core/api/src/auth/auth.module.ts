@@ -10,11 +10,10 @@ import { UsersModule } from '@/users';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthController, ResetPasswordController } from './controllers';
-import { ConfigService } from '@nestjs/config';
-import { ConfigurationPath } from '@/config';
+import { LyvelyConfigService } from '@/config';
 import { CaptchaModule } from '@/captcha';
 import { AUTH_MODULE_ID } from '@lyvely/interface';
-import { LyvelyModule } from '@/core';
+import { type AuthModuleConfig, LyvelyModule } from '@/core';
 
 @LyvelyModule({
   id: AUTH_MODULE_ID,
@@ -25,11 +24,13 @@ import { LyvelyModule } from '@/core';
     CaptchaModule,
     PassportModule,
     JwtModule.registerAsync({
-      useFactory: async (configService: ConfigService<ConfigurationPath>) => ({
-        secret: configService.get('auth.jwt.access.secret'),
-        signOptions: { expiresIn: configService.get('auth.jwt.access.expiresIn', '15m') },
+      useFactory: async (configService: LyvelyConfigService<AuthModuleConfig>) => ({
+        secret: configService.getModuleConfigOrThrow('auth', 'jwt.access.secret'),
+        signOptions: {
+          expiresIn: configService.getModuleConfig('auth', 'jwt.access.expiresIn', '15m'),
+        },
       }),
-      inject: [ConfigService],
+      inject: [LyvelyConfigService],
     }),
   ],
   providers: [

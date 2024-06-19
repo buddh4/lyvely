@@ -2,8 +2,8 @@ import { Module, Global, DynamicModule } from '@nestjs/common';
 import { MailService } from './services';
 import { MailerModule, MailerOptions } from '@nestjs-modules/mailer';
 import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
-import { ConfigurationPath } from '@/config';
 import { ConfigService } from '@nestjs/config';
+import { LyvelyConfigService } from '@/config';
 
 const DEFAULT_MAIL_CONFIG: MailerOptions = {
   transport: {
@@ -44,7 +44,7 @@ export class MailsModule {
       imports: [
         MailerModule.forRootAsync({
           inject: [ConfigService],
-          useFactory: (configService: ConfigService<ConfigurationPath>) => {
+          useFactory: (configService: LyvelyConfigService) => {
             return setDefaults(configService.get('mail'));
           },
         }),

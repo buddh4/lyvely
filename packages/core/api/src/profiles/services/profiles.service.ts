@@ -18,7 +18,7 @@ import {
   CreateOrganizationProfilePermission,
   UserStatus,
 } from '@lyvely/interface';
-import { MembershipsDao, ProfileDao } from '../daos';
+import { MembershipsDao, ProfilesDao } from '../daos';
 import { ProfileContext, ProtectedProfileContext } from '../contexts';
 import slugify from 'slugify';
 import {
@@ -46,17 +46,20 @@ import {
   USER_SETTING_CALENDAR_PREFERENCE_YEARSTART,
 } from '@/user-account/user-account.constants';
 import { ProfileSettingsService } from './profile-settings.service';
-import { ConfigService } from '@nestjs/config';
-import { ConfigurationPath } from '@/config';
 import { ProfilePermissionsService } from './profile-permissions.service';
-import { CONFIG_PATH_PERMISSION_VISITOR_STRATEGY, GlobalPermissionsService } from '@/permissions';
+import {
+  CONFIG_PATH_PERMISSION_VISITOR_STRATEGY,
+  GlobalPermissionsService,
+  type PermissionConfig,
+} from '@/permissions';
 import { pick } from '@lyvely/common';
+import { LyvelyConfigService } from '@/config';
 
 @Injectable()
 export class ProfilesService {
   constructor(
-    private profileDao: ProfileDao,
-    private configService: ConfigService<ConfigurationPath>,
+    private profileDao: ProfilesDao,
+    private configService: LyvelyConfigService<PermissionConfig>,
     private membershipDao: MembershipsDao,
     private membershipService: ProfileMembershipService,
     private relationsService: ProfileRelationsService,
@@ -324,7 +327,7 @@ export class ProfilesService {
   }
 
   async findDefaultVisitorProfile(): Promise<ProfileContext> {
-    const visitorStrategy = this.configService.get(CONFIG_PATH_PERMISSION_VISITOR_STRATEGY);
+    const visitorStrategy = this.configService.getModuleConfig('permissions', 'visitorStrategy');
     if (!visitorStrategy?.handles?.length) {
       throw new MisconfigurationException('No visitor profile set.');
     }

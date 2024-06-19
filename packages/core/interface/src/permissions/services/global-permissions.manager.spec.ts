@@ -7,10 +7,10 @@ import {
   registerPermissions,
   VisitorMode,
   useGlobalPermissionsManager,
-  UserRole
+  UserRole,
 } from '../../permissions';
 import { IntegrityException } from '../../exceptions';
-import { UserStatus, } from '../../users';
+import { UserStatus } from '../../users';
 import { ProfileRelationRole } from '../../profiles';
 
 describe('GlobalPermissionsManager', function () {
@@ -57,7 +57,9 @@ describe('GlobalPermissionsManager', function () {
         groups: options?.groups || [],
       },
       settings,
-      options?.config ? { ...options.config, featureConfig: {} } : { visitorStrategy: { mode: VisitorMode.Disabled }, featureConfig: {} }
+      options?.config
+        ? { ...options.config, featureConfig: {} }
+        : { visitorStrategy: { mode: VisitorMode.Disabled }, featureConfig: {} }
     );
   };
 
@@ -208,15 +210,11 @@ describe('GlobalPermissionsManager', function () {
     const testGroup = 'testGroup';
 
     const settings: IGlobalPermissionObject = {
-      getPermissionSettings: () => [
-        { id: 'test', role: UserRole.Moderator, groups: [testGroup] },
-      ],
+      getPermissionSettings: () => [{ id: 'test', role: UserRole.Moderator, groups: [testGroup] }],
       getPermissionGroups: () => [testGroup],
     };
 
-    expect(
-      verifyTestPermission(UserRole.User, settings, { groups: [testGroup] })
-    ).toEqual(true);
+    expect(verifyTestPermission(UserRole.User, settings, { groups: [testGroup] })).toEqual(true);
     expect(verifyTestPermission(UserRole.User, settings)).toEqual(false);
   });
 
@@ -230,15 +228,11 @@ describe('GlobalPermissionsManager', function () {
     const testGroup = 'testGroup';
 
     const settings: IGlobalPermissionObject = {
-      getPermissionSettings: () => [
-        { id: 'test', role: UserRole.Moderator, groups: [testGroup] },
-      ],
+      getPermissionSettings: () => [{ id: 'test', role: UserRole.Moderator, groups: [testGroup] }],
       getPermissionGroups: () => [],
     };
 
-    expect(
-      verifyTestPermission(UserRole.User, settings, { groups: [testGroup] })
-    ).toEqual(false);
+    expect(verifyTestPermission(UserRole.User, settings, { groups: [testGroup] })).toEqual(false);
   });
 
   it('test circular dependency check', () => {

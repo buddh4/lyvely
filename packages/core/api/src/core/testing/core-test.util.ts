@@ -30,6 +30,7 @@ import { createObjectId } from '@/core';
 import { MetadataScanner } from '@nestjs/core/metadata-scanner';
 import { ModuleDefinition } from '@nestjs/core/interfaces/module-definition.interface';
 import { NestApplicationContextOptions } from '@nestjs/common/interfaces/nest-application-context-options.interface';
+import { LyvelyConfigModule } from '@/config';
 
 const mongods = new Map<string, MongoMemoryServer>();
 
@@ -95,6 +96,7 @@ export class CoreModuleBuilder {
           isGlobal: true,
         }),
         CoreModule,
+        LyvelyConfigModule,
         ...(options?.imports || []),
       ],
       providers: [...(options?.providers || []), EventTester],

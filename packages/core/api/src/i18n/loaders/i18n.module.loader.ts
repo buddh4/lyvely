@@ -6,8 +6,8 @@ import { existsSync } from 'fs';
 import { merge } from '@lyvely/common';
 import { OnEvent } from '@nestjs/event-emitter';
 import { EVENT_MODULE_REGISTRATION, IModuleMetadata, ModuleRegistry } from '@/core';
-import { ConfigService } from '@nestjs/config';
-import { I18nConfigPath } from '../interfaces';
+import { LyvelyConfigService } from '@/config';
+import type { I18nConfig } from '@/i18n/interfaces';
 
 export interface I18nModuleLoaderOptionsIF {
   watch?: boolean;
@@ -21,7 +21,7 @@ export class I18nModuleLoader extends I18nLoader implements OnModuleDestroy {
     private moduleRegistry: ModuleRegistry,
     @Inject(I18N_LOADER_OPTIONS)
     private options: I18nModuleLoaderOptionsIF, //private i18n: I18n,
-    private configService: ConfigService<I18nConfigPath>
+    private configService: LyvelyConfigService<I18nConfig>
   ) {
     super();
     this.options.watch ??= false;
@@ -59,7 +59,7 @@ export class I18nModuleLoader extends I18nLoader implements OnModuleDestroy {
   }
 
   async languages(): Promise<string[] | Observable<string[]>> {
-    return this.configService.get('modules.i18n.locals') || ['en'];
+    return this.configService.getModuleConfig('i18n.locals', ['en']);
   }
 
   async load(): Promise<I18nTranslation | Observable<I18nTranslation>> {

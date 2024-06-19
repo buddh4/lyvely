@@ -2,11 +2,11 @@ import { ExtractJwt } from 'passport-jwt';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { JwtStrategy, JwtTokenPayloadIF } from '@/jwt';
-import { Headers, UserStatus } from '@lyvely/interface';
+import { Headers } from '@lyvely/interface';
 import { User } from '@/users';
 import bcrypt from 'bcrypt';
-import { ConfigService } from '@nestjs/config';
-import { ConfigurationPath } from '@/config';
+import { LyvelyConfigService } from '@/config';
+import type { AuthModuleConfig } from '@/core';
 
 export const COOKIE_REFRESH = 'Refresh';
 // TODO: this should not be hardcoded since the /api path is optional also when using versioning the path differs
@@ -19,22 +19,25 @@ export interface JwtRefreshTokenPayloadIF extends JwtTokenPayloadIF {
   remember: boolean;
 }
 
-export function getRefreshCookieName(configService: ConfigService<ConfigurationPath>) {
-  const useSecureCookies = configService.get('auth.jwt.secure-cookies', true);
+export function getRefreshCookieName(configService: LyvelyConfigService<AuthModuleConfig>) {
+  const useSecureCookies = configService.getModuleConfig('auth', 'jwt.secure-cookies', true);
   return useSecureCookies ? COOKIE_REFRESH_SECURE : COOKIE_REFRESH;
 }
 
 export function extractRefreshCookie(
   req: Request,
-  configService: ConfigService<ConfigurationPath>
+  configService: LyvelyConfigService<AuthModuleConfig>
 ) {
   return req.cookies && req.cookies[getRefreshCookieName(configService)];
 }
 
-export function getRefreshCookieExpiresIn(remember: boolean, configService: ConfigService) {
+export function getRefreshCookieExpiresIn(
+  remember: boolean,
+  configService: LyvelyConfigService<AuthModuleConfig>
+) {
   return remember
-    ? configService.get<string>('auth.jwt.refresh.expiresInRemember')
-    : configService.get<string>('auth.jwt.refresh.expiresIn');
+    ? configService.getModuleConfigOrThrow('auth', 'jwt.refresh.expiresInRemember')
+    : configService.getModuleConfigOrThrow('auth', 'jwt.refresh.expiresIn');
 }
 
 export function clearRefreshCookies(res: Response) {
@@ -47,16 +50,16 @@ export function clearRefreshCookies(res: Response) {
 @Injectable()
 export class JwtRefreshStrategy extends JwtStrategy<JwtRefreshTokenPayloadIF>({
   name: 'jwt-refresh-token',
-  options: (configService) => {
+  options: (configService: LyvelyConfigService<AuthModuleConfig>) => {
     return {
-      secretOrKey: configService.get('auth.jwt.refresh.secret'),
+      secretOrKey: configService.getModuleConfigOrThrow('auth', 'jwt.refresh.secret'),
       jwtFromRequest: ExtractJwt.fromExtractors([
         ExtractJwt.fromExtractors([(req: Request) => extractRefreshCookie(req, configService)]),
       ]),
     };
   },
 }) {
-  constructor(protected configService: ConfigService<ConfigurationPath>) {
+  constructor(protected configService: LyvelyConfigService<AuthModuleConfig>) {
     super(configService);
   }
 

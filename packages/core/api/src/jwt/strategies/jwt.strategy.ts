@@ -2,17 +2,17 @@ import { Strategy, StrategyOptions } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Inject, Type, UnauthorizedException } from '@nestjs/common';
 import { Request } from 'express';
-import { ConfigService } from '@nestjs/config';
 import { JwtTokenPayloadIF } from '../interfaces';
-import { ConfigurationPath } from '@/config';
+import { LyvelyConfigService } from '@/config';
 import { User, UsersService } from '@/users';
 import { UserStatus } from '@lyvely/interface';
 import { getIssuedAt } from '../utils';
+import type { AuthModuleConfig } from '@/core';
 
 export interface JwtStrategyOptionsIF {
   name: string;
   purpose?: string;
-  options: (configService: ConfigService<ConfigurationPath>) => StrategyOptions;
+  options: (configService: LyvelyConfigService<AuthModuleConfig>) => StrategyOptions;
 }
 
 abstract class JwtStrategyClass<
@@ -32,13 +32,14 @@ export function JwtStrategy<TPayload extends JwtTokenPayloadIF = JwtTokenPayload
     @Inject()
     protected usersService: UsersService;
 
-    constructor(protected configService: ConfigService<ConfigurationPath>) {
+    constructor(protected configService: LyvelyConfigService<AuthModuleConfig>) {
+      const jwtConfig = configService.getModuleConfigOrThrow('auth', 'jwt');
       const defaultStrategyOptions: Partial<StrategyOptions> = {
-        issuer: configService.get('auth.jwt.issuer'),
+        issuer: jwtConfig.issuer,
         algorithms: ['HS256', 'RS256'],
         ignoreExpiration: false,
         passReqToCallback: true,
-        secretOrKey: configService.get('auth.jwt.verify.secret'),
+        secretOrKey: jwtConfig.verify.secret,
       };
 
       super(Object.assign(defaultStrategyOptions, options.options(configService)));

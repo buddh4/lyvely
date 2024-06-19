@@ -134,25 +134,27 @@ within the application. Lyvely employs three distinct types of JWT tokens
 
 ```typescript
 { 
-  auth: {
-    jwt: {
-      'secure-cookies': true,
-      access: {
-        secret: 'CHANGEME!', 
-        expiresIn: '2m',
-        sameSite: 'lax',
+  moduls: {
+    auth: {
+      jwt: {
+        'secure-cookies': true,
+          access: {
+          secret: 'CHANGEME!',
+            expiresIn: '2m',
+            sameSite: 'lax',
+        },
+        refresh: {
+          secret: 'CHANGEME!',
+            expiresIn: '5m',
+            expiresInRemember: '200d',
+            sameSite: 'lax',
+        },
+        verify: {
+          secret: 'CHANGEME!',
+            expiresIn: '1d',
+        },
       },
-      refresh: {
-        secret: 'CHANGEME!',
-        expiresIn: '5m',
-        expiresInRemember: '200d', 
-        sameSite: 'lax',
-      },
-      verify: {
-        secret: 'CHANGEME!',
-        expiresIn: '1d',
-      },
-    },
+    }
   }
 }
 ```
@@ -364,8 +366,10 @@ The `userRegistration` configuration allows you to customize the user registrati
 
 ```typescript
 {
-  userRegistration: {
-    mode: 'public',
+  modules: {
+    userRegistration: {
+      mode: 'public',
+    }
   }
 }
 ```

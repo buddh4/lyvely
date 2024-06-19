@@ -37,7 +37,9 @@ describe('AppConfigService', () => {
 
   describe('getAppConfig', () => {
     it('inject module config', async () => {
-      const config: IAppConfig<{ test: { someConfig: boolean } }> = appConfigService.getAppConfig(<any>{});
+      const config: IAppConfig<{ test: { someConfig: boolean } }> = appConfigService.getAppConfig(
+        <any>{}
+      );
       expect(config.modules.test.someConfig).toEqual(true);
     });
   });

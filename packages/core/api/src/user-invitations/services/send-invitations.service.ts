@@ -13,15 +13,15 @@ import { isValidEmail } from '@lyvely/common';
 import { User, UsersService } from '@/users';
 import { JwtSignOptions } from '@nestjs/jwt/dist/interfaces';
 import { JwtService } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
-import { assureObjectId } from '@/core';
-import { ConfigurationPath } from '@/config';
+import { assureObjectId, type AuthModuleConfig } from '@/core';
 import { InvitationDao } from '../daos';
 import { isDefined } from 'class-validator';
 import { Invitation, MailInvitation, UserInvitation } from '../schemas';
 import { NotificationService } from '@/notifications';
 import { ProfileInvitationNotification } from '../notifications';
 import { MultiUserSubscription } from '@/user-subscriptions';
+import { LyvelyConfigService } from '@/config';
+import type { UserInvitationsConfig } from '@/user-invitations/interfaces';
 
 const JWT_USER_INVITE_TOKEN = 'invitation_token';
 
@@ -32,7 +32,7 @@ export class SendInvitationsService {
     private userService: UsersService,
     private mailService: MailService,
     private jwtService: JwtService,
-    private configService: ConfigService<ConfigurationPath>,
+    private configService: LyvelyConfigService<UserInvitationsConfig & AuthModuleConfig>,
     private inviteDao: InvitationDao,
     private notificationService: NotificationService
   ) {}
@@ -215,7 +215,7 @@ export class SendInvitationsService {
 
   private async userCanInviteUsers(host: User, inviteRequest: InvitationRequest) {
     const invites = inviteRequest.invites;
-    const config = this.configService.get('invitations', {});
+    const config = this.configService.getModuleConfig('user-invitations', {});
     if (isDefined(config.maxPerWeek)) {
       const invitesPerWeek = await this.inviteDao.countInvitesByUserThisWeek(host);
       if (invitesPerWeek + invites.length > config.maxPerWeek) {
@@ -246,12 +246,12 @@ export class SendInvitationsService {
 
   public createMailInviteToken(email: string): string {
     const options = {
-      secret: this.configService.get('auth.jwt.verify.secret'),
+      secret: this.configService.getModuleConfig('auth', 'jwt.verify.secret'),
       expiresIn: '1d',
       algorithm: 'HS256',
     } as JwtSignOptions;
 
-    const issuer = this.configService.get('auth.jwt.issuer');
+    const issuer = this.configService.getModuleConfig('auth', 'jwt.issuer');
     if (typeof issuer === 'string') options.issuer = issuer;
 
     return this.jwtService.sign({ sub: email, purpose: JWT_USER_INVITE_TOKEN }, options);
