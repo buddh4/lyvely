@@ -84,7 +84,7 @@ describe('AbstractDao - tenancy', () => {
 
     it('Document is not isolated on Profile isolation level', async () => {
       const tenantId = getObjectId('tenant1');
-      await initModule(TenancyIsolation.Profile, { tenants: [{ oid: tenantId.toString() }] });
+      await initModule(TenancyIsolation.Profile, { tenants: [{ id: tenantId.toString() }] });
       const document = await mainDao.save(new TestDocument());
       expect(document?._id).toBeDefined();
       const isolatedDocument = await profileIsolationDao.findById(document, {
@@ -121,7 +121,7 @@ describe('AbstractDao - tenancy', () => {
 
     it('Document is isolated on Profile isolation level', async () => {
       const tenantId = getObjectId('tenant1');
-      await initModule(TenancyIsolation.Profile, { tenants: [{ oid: tenantId.toString() }] });
+      await initModule(TenancyIsolation.Profile, { tenants: [{ id: tenantId.toString() }] });
       const document = await profileIsolationDao.save(new TestDocument(), { tenancyId: tenantId });
       expect(document).toBeDefined();
 
@@ -131,7 +131,7 @@ describe('AbstractDao - tenancy', () => {
 
     it('Document is isolated on Strict isolation level', async () => {
       const tenantId = getObjectId('tenant1');
-      await initModule(TenancyIsolation.Strict, { tenants: [{ oid: tenantId.toString() }] });
+      await initModule(TenancyIsolation.Strict, { tenants: [{ id: tenantId.toString() }] });
       const document = await profileIsolationDao.save(new TestDocument(), { tenancyId: tenantId });
       expect(document).toBeDefined();
       const mainDBSearch = await mainDao.findById(document);
@@ -164,7 +164,7 @@ describe('AbstractDao - tenancy', () => {
 
     it('Document is not isolated on Profile isolation level', async () => {
       const tenantId = getObjectId('tenant1');
-      await initModule(TenancyIsolation.Profile, { tenants: [{ oid: tenantId.toString() }] });
+      await initModule(TenancyIsolation.Profile, { tenants: [{ id: tenantId.toString() }] });
       const document = await strictIsolationDao.save(new TestDocument(), { tenancyId: tenantId });
       expect(document).toBeDefined();
 
@@ -174,7 +174,7 @@ describe('AbstractDao - tenancy', () => {
 
     it('Document is isolated on Strict isolation level', async () => {
       const tenantId = getObjectId('tenant1');
-      await initModule(TenancyIsolation.Strict, { tenants: [{ oid: tenantId.toString() }] });
+      await initModule(TenancyIsolation.Strict, { tenants: [{ id: tenantId.toString() }] });
       const document = await strictIsolationDao.save(new TestDocument(), { tenancyId: tenantId });
       expect(document).toBeDefined();
       const mainDBSearch = await mainDao.findById(document);

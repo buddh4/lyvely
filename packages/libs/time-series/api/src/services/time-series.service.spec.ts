@@ -1,5 +1,5 @@
-import { ILyvelyTestingModule } from '@lyvely/api';
 import {
+  type ILyvelyTestingModule,
   UserAssignmentStrategy,
   Profile,
   ProfileTestDataUtils,

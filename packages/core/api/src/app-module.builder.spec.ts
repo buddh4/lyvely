@@ -1,6 +1,5 @@
 import { AppModuleBuilder } from '@/app-module.builder';
 import { Test } from '@nestjs/testing';
-import { ConfigService } from '@nestjs/config';
 import { LyvelyConfigService } from '@/config';
 import type { AuthModuleConfig, ModuleConfig } from '@/core';
 
@@ -13,7 +12,7 @@ describe('AppModuleBuilder', () => {
             configFiles: ['testing/test.config.one.js'],
             loadDBConfig: false,
             manual: true,
-          }).build(),
+          }).importClsModule().importEventEmitterModule().build(),
         ],
       }).compile();
 
@@ -32,7 +31,7 @@ describe('AppModuleBuilder', () => {
             configFiles: [],
             loadDBConfig: false,
             manual: true,
-          }).build(),
+          }).importClsModule().importEventEmitterModule().build(),
         ],
       }).compile();
 
@@ -59,7 +58,7 @@ describe('AppModuleBuilder', () => {
               },
             },
             manual: true,
-          }).build(),
+          }).importClsModule().importEventEmitterModule().build(),
         ],
       }).compile();
 
@@ -67,7 +66,7 @@ describe('AppModuleBuilder', () => {
         testModule.get<LyvelyConfigService<AuthModuleConfig>>(LyvelyConfigService);
       expect(configService).toBeDefined();
       expect(configService.getModuleConfig('auth', 'jwt.access.secret')).toEqual('testSecret');
-      expect(configService.getModuleConfig('auth', 'auth.jwt.secure-cookies')).toEqual(true);
+      expect(configService.getModuleConfig('auth', 'jwt.secure-cookies')).toEqual(true);
     });
   });
 });

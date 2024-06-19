@@ -32,7 +32,7 @@ export class UrlGenerator {
   }
 
   protected getBaseApiUrl() {
-    const appUrl = this.configService.get('http.appUrl');
+    const appUrl = this.configService.get('http.baseUrl');
 
     if (!appUrl) {
       throw new MisconfigurationException(

@@ -53,6 +53,9 @@ const lyvelyTestConfig: ServerConfiguration = {
       visitorStrategy: { mode: VisitorMode.Enabled, handles: ['welcome'] },
     },
   },
+  i18n: {
+    locales: ['en', 'de'],
+  },
   mail: {
     createMessageFiles: true,
     messagesPath: `${process.cwd()}/mail/messages/test`,

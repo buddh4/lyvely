@@ -39,7 +39,7 @@ import { ProfilesDao, MembershipsDao, UserProfileRelationsDao, ProfileScoreDao }
 
 import { ProfileVisibilityPolicy } from './policies';
 import { PoliciesModule } from '@/policies';
-import { CoreModule, LyvelyModule } from '@/core';
+import { LyvelyModule } from '@/core';
 import {
   PROFILES_MODULE_ID,
   ProfileType,

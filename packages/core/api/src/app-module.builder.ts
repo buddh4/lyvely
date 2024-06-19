@@ -11,7 +11,6 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { I18nModule, I18nModuleLoader } from '@/i18n';
 import {
   CoreModule,
-  type IMongoDBOptions,
   ReverseProxyThrottlerGuard,
   type ServerConfiguration,
   setTransactionSupport,
@@ -84,9 +83,7 @@ export class AppModuleBuilder {
     this.options = { ...defaultOptions, ...options };
 
     if (!this.options.manual) {
-      this.importClsModule()
-        .importEventEmitterModule()
-        .importCoreModules()
+      this.importCoreModules()
         .importI18nModule()
         .importQueueModule()
         .importRateLimitModule()
@@ -95,6 +92,14 @@ export class AppModuleBuilder {
         .importRecommendedModules()
         .importModules(...this.options.modules);
     }
+  }
+
+  getImports(): TModule[] {
+    return this.imports;
+  }
+
+  getProviders(): Provider[] {
+    return this.providers;
   }
 
   public async importConfigModule() {
@@ -124,25 +129,27 @@ export class AppModuleBuilder {
   }
 
   public importCoreModules() {
-    return this.importModules(
-      CoreModule,
-      LiveModule,
-      PingModule,
-      MailsModule.fromConfig(),
-      ProfilesModule,
-      ContentCoreModule,
-      SystemMessagesModule,
-      UserAccountModule,
-      NotificationsModule,
-      FeaturesModule,
-      PermissionsModule,
-      AppConfigModule,
-      PoliciesModule.forRoot(),
-      UsersModule,
-      AuthModule,
-      CaptchaModule,
-      FilesModule
-    );
+    return this.importClsModule()
+      .importEventEmitterModule()
+      .importModules(
+        CoreModule,
+        LiveModule,
+        PingModule,
+        MailsModule.fromConfig(),
+        ProfilesModule,
+        ContentCoreModule,
+        SystemMessagesModule,
+        UserAccountModule,
+        NotificationsModule,
+        FeaturesModule,
+        PermissionsModule,
+        AppConfigModule,
+        PoliciesModule.forRoot(),
+        UsersModule,
+        AuthModule,
+        CaptchaModule,
+        FilesModule
+      );
   }
 
   public importClsModule() {

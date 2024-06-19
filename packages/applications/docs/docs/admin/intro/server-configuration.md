@@ -134,7 +134,7 @@ within the application. Lyvely employs three distinct types of JWT tokens
 
 ```typescript
 { 
-  moduls: {
+  modules: {
     auth: {
       jwt: {
         'secure-cookies': true,

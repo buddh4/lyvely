@@ -5,24 +5,16 @@ import { I18nModuleLoader } from '../loaders/i18n.module.loader';
 
 export const i18nITestPlugin = {
   apply(builder) {
-    builder
-      .imports([
-        I18nModule,
-        NestJsI18nModule.forRoot({
-          fallbackLanguage: 'en',
-          loader: I18nModuleLoader,
-          loaderOptions: {
-            watch: false,
-          },
-          resolvers: [AcceptLanguageResolver],
-        }),
-      ])
-      .config({
-        modules: {
-          i18n: {
-            locales: ['en', 'de'],
-          },
+    builder.imports([
+      I18nModule,
+      NestJsI18nModule.forRoot({
+        fallbackLanguage: 'en',
+        loader: I18nModuleLoader,
+        loaderOptions: {
+          watch: false,
         },
-      });
+        resolvers: [AcceptLanguageResolver],
+      }),
+    ]);
   },
 } as ITestPlugin;

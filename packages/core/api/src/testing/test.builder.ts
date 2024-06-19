@@ -6,7 +6,6 @@ import { Test, TestingModule, TestingModuleBuilder } from '@nestjs/testing';
 import { getObjectId as mongoSeedingGetObjectId } from 'mongo-seeding';
 import { CoreModule, ModuleRegistry, globalEmitter, createObjectId } from '@/core';
 import { ThrottlerModule } from '@nestjs/throttler';
-import { TestConfigService } from './test-config.service';
 import {
   closeInMongodConnection,
   closeInMongodConnections,
@@ -14,6 +13,7 @@ import {
 } from './mongoose-test.utils';
 import { useDayJsDateTimeAdapter } from '@lyvely/dates';
 import { ClsModule } from 'nestjs-cls';
+import { LyvelyConfigModule } from '@/config';
 
 export type Type<T = any> = new (...args: any[]) => T;
 
@@ -162,8 +162,8 @@ export function createCoreTestingModule(
         useFactory: (config: ConfigService) => ({
           throttlers: [
             {
-              ttl: config.get('http.rateLimit.ttl') || 60_000,
-              limit: config.get('http.rateLimit.limit') || 40,
+              ttl: config.get('http.rateLimit.ttl', 60_000),
+              limit: config.get('http.rateLimit.limit', 40),
             },
           ],
         }),
@@ -177,13 +177,12 @@ export function createCoreTestingModule(
         ],
         isGlobal: true,
       }),
+      LyvelyConfigModule,
       CoreModule,
       ...imports,
     ],
     providers: [EventTester, ...providers],
-  })
-    .overrideProvider(ConfigService)
-    .useClass(TestConfigService);
+  });
 }
 
 export function getObjectId(seed: string) {
