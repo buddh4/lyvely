@@ -148,7 +148,7 @@ function _initBaseModelData<T extends object>(
       // TODO: Handle cases in which propertyType is not String && != ObjectId
       const propertyTypeDefinition = getPropertyTypeDefinition(model.constructor as Type, path);
       const propertyType = propertyTypeDefinition?.type;
-      model[path] = propertyType === String ? data[path].toString() : data[path];
+      model[path] = propertyType === String ? data[path].toString() : (data[path] as any);
     } else if (isPlainObject(data[path])) {
       // Try to get model type by PropertyType decorator, or otherwise try to determine the type from model or data
       const propertyTypeDefinition = getPropertyTypeDefinition(model.constructor as Type, path);
@@ -161,7 +161,7 @@ function _initBaseModelData<T extends object>(
 
       // Only create a new instance if the type is not the expected, otherwise just use the given value
       if (_isOfType(data[path], propertyType)) {
-        model[path] = data[path];
+        model[path] = data[path] as any;
       } else if (PRIMITIVE_TYPES.includes(propertyType)) {
         model[path] = <T[keyof T & string]>null; // We do not want to convert objects to primitives
       } else {
@@ -180,7 +180,7 @@ function _initBaseModelData<T extends object>(
           (<any>model)[path] = new Date(data[path]);
         } catch (err) {
           console.warn(err, 'Tried to assign invalid string date to model property');
-          model[path] = data[path];
+          model[path] = data[path] as any;
         }
       } else {
         model[path] = propertyTypeDefinition
