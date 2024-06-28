@@ -178,7 +178,7 @@ export class ModelValidator<
     delete this.errors[property];
   }
 
-  getError(field: keyof T) {
+  getError(field: keyof T): string | undefined {
     return this.errors[field];
   }
 

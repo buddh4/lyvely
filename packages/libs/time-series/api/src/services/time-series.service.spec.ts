@@ -1,5 +1,5 @@
-import { ILyvelyTestingModule } from '@lyvely/api';
 import {
+  type ILyvelyTestingModule,
   UserAssignmentStrategy,
   Profile,
   ProfileTestDataUtils,
@@ -93,10 +93,6 @@ describe('TimeSeriesService', () => {
     await entity.save();
     return new TestTimeSeriesContent({ profile, user }, entity.toObject());
   }
-
-  it('should be defined', () => {
-    expect(service).toBeDefined();
-  });
 
   describe('upsertDataPoint()', () => {
     it('update creates new summary entry', async () => {

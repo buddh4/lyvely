@@ -1,4 +1,3 @@
-import { LyvelyTestBuilder } from '@/testing';
 import { ProfileTestBuilder } from '@/profiles';
 import { contentITestPlugin } from './content-test.plugin';
 
@@ -9,6 +8,6 @@ export class ContentTestBuilder extends ProfileTestBuilder {
   }
 }
 
-export function buildContentTest(id: string, init: Partial<LyvelyTestBuilder> = {}) {
-  return new ContentTestBuilder(id, init);
+export function buildContentTest(id: string) {
+  return new ContentTestBuilder(id);
 }

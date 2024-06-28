@@ -79,27 +79,21 @@ describe('MileStonesRelationService', () => {
     testingModule = await buildContentTest(TEST_KEY)
       .providers([MilestonesRelationsService, TestMilestoneRelationProvider])
       .models(Models)
+      .withApp()
       .compile();
     testData = testingModule.get(ProfileTestDataUtils);
     service = testingModule.get(MilestonesRelationsService);
     TestContentModel = testingModule.get('TestContentModel');
     testProvider = testingModule.get(TestMilestoneRelationProvider);
-    app = testingModule.createNestApplication();
-    await app.init();
   });
 
   afterEach(async () => {
     await testingModule.afterEach();
-    await app.close();
     testProvider.reset();
   });
 
   afterAll(async () => {
     return testingModule.afterAll();
-  });
-
-  it('should be defined', () => {
-    expect(service).toBeDefined();
   });
 
   const createTestContent = async () => {

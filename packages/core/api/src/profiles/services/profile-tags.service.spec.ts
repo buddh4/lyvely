@@ -23,10 +23,6 @@ describe('ProfileTagsService', () => {
     return testingModule.afterEach();
   });
 
-  it('should be defined', () => {
-    expect(profileTagsService).toBeDefined();
-  });
-
   describe('archiveTag', () => {
     it('archive tag', async () => {
       const { profile } = await testData.createUserAndProfile();

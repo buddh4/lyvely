@@ -5,15 +5,15 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Test, TestingModule, TestingModuleBuilder } from '@nestjs/testing';
 import { getObjectId as mongoSeedingGetObjectId } from 'mongo-seeding';
 import { CoreModule, ModuleRegistry, globalEmitter, createObjectId } from '@/core';
-import { PropertiesOf } from '@lyvely/common';
 import { ThrottlerModule } from '@nestjs/throttler';
-import { TestConfigService } from './test-config.service';
 import {
   closeInMongodConnection,
   closeInMongodConnections,
   rootMongooseTestModule,
 } from './mongoose-test.utils';
 import { useDayJsDateTimeAdapter } from '@lyvely/dates';
+import { ClsModule } from 'nestjs-cls';
+import { LyvelyConfigModule } from '@/config';
 
 export type Type<T = any> = new (...args: any[]) => T;
 
@@ -55,10 +55,10 @@ export abstract class TestBuilder {
   private _imports: Array<Type | DynamicModule | Promise<DynamicModule> | ForwardReference> = [];
   private _config: any = {};
   private _plugins: ITestPlugin[] = [];
+  private _withApp: boolean = false;
 
-  constructor(id: string, data: Partial<PropertiesOf<TestBuilder>> = {}) {
+  constructor(id: string) {
     this.id = id;
-    Object.assign(this, data);
     this.init();
   }
 
@@ -67,6 +67,11 @@ export abstract class TestBuilder {
    * @protected
    */
   protected abstract init();
+
+  withApp() {
+    this._withApp = true;
+    return this;
+  }
 
   models(models: ModelDefinition[]) {
     this._models.push(...models);
@@ -108,17 +113,24 @@ export abstract class TestBuilder {
 
   async compile(): Promise<ILyvelyTestingModule> {
     const testingModule = await this.build().compile();
+
+    const app = this._withApp ? testingModule.createNestApplication() : null;
+
     (<ILyvelyTestingModule>(<any>testingModule)).afterEach = async () => {
       testingModule.get(ModuleRegistry)?.reset();
       testingModule.get(EventTester)?.eventEmitter.removeAllListeners();
       globalEmitter.removeAllListeners();
       this._plugins.forEach((plugin) => plugin.afterEach?.(testingModule));
       await closeInMongodConnection(this.id);
+      if (app) await app.close();
     };
     (<ILyvelyTestingModule>(<any>testingModule)).afterAll = async () => {
       this._plugins.forEach((plugin) => plugin.afterAll?.(testingModule));
       await tearDownTests();
     };
+
+    if (app) await app.init();
+
     return testingModule as ILyvelyTestingModule;
   }
 }
@@ -129,8 +141,8 @@ export class LyvelyTestBuilder extends TestBuilder {
   }
 }
 
-export function buildTest(id: string, init: Partial<LyvelyTestBuilder> = {}) {
-  return new LyvelyTestBuilder(id, init);
+export function buildTest(id: string) {
+  return new LyvelyTestBuilder(id);
 }
 
 export function createCoreTestingModule(
@@ -142,6 +154,7 @@ export function createCoreTestingModule(
 ): TestingModuleBuilder {
   return Test.createTestingModule({
     imports: [
+      ClsModule.forRoot({ global: true, middleware: { mount: true } }),
       rootMongooseTestModule(key),
       ThrottlerModule.forRootAsync({
         imports: [ConfigModule],
@@ -149,8 +162,8 @@ export function createCoreTestingModule(
         useFactory: (config: ConfigService) => ({
           throttlers: [
             {
-              ttl: config.get('http.rateLimit.ttl') || 60_000,
-              limit: config.get('http.rateLimit.limit') || 40,
+              ttl: config.get('http.rateLimit.ttl', 60_000),
+              limit: config.get('http.rateLimit.limit', 40),
             },
           ],
         }),
@@ -164,13 +177,12 @@ export function createCoreTestingModule(
         ],
         isGlobal: true,
       }),
+      LyvelyConfigModule,
       CoreModule,
       ...imports,
     ],
     providers: [EventTester, ...providers],
-  })
-    .overrideProvider(ConfigService)
-    .useClass(TestConfigService);
+  });
 }
 
 export function getObjectId(seed: string) {

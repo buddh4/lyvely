@@ -40,10 +40,6 @@ describe('AvatarService', () => {
     return testingModule.afterAll();
   });
 
-  it('Should be defined', () => {
-    expect(avatarService).toBeDefined();
-  });
-
   const getBufferedAvatar = (): IMemoryFileInfo => {
     if (!testMemoryAvatar) {
       const avatarPath = path.join(__dirname, '../testing/data/avatar.jpeg');

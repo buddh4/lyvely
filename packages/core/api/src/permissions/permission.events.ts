@@ -1,20 +1,20 @@
 import { ConfigService } from '@nestjs/config';
-import { type ConfigurationPath } from '@/config';
 import { OnEvent } from '@nestjs/event-emitter';
 import { EVENT_MODULE_APP_CONFIG_ASSEMBLY, ModuleAppConfigAssemblyEvent } from '@/app-config';
 import { PERMISSIONS_MODULE_ID, VisitorMode } from '@lyvely/interface';
 import { Injectable } from '@nestjs/common';
-import { CONFIG_PATH_PERMISSIONS } from '@/permissions/permissions.constants';
+import { LyvelyConfigService } from '@/config';
+import type { PermissionConfig } from '@/permissions/interfaces';
 
 @Injectable()
 export class PermissionEvents {
-  constructor(private readonly configService: ConfigService<ConfigurationPath>) {}
+  constructor(private readonly configService: LyvelyConfigService<PermissionConfig>) {}
 
   @OnEvent(EVENT_MODULE_APP_CONFIG_ASSEMBLY)
   handleModuleConfigAssembly(event: ModuleAppConfigAssemblyEvent) {
     event.setModuleConfig(
       PERMISSIONS_MODULE_ID,
-      this.configService.get(CONFIG_PATH_PERMISSIONS, {
+      this.configService.getModuleConfig('permissions', {
         visitorStrategy: {
           mode: VisitorMode.Disabled,
         },

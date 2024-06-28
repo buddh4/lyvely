@@ -1,28 +1,14 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
+import { Inject } from '@nestjs/common';
 import { ProfileScore } from '../schemas';
-import { Model, AbstractDao, LeanDoc } from '@/core';
-import { PROFILES_MODULE_ID } from '@lyvely/interface';
-import type { Type } from '@lyvely/common';
+import { AbstractDao, Dao } from '@/core';
 import { ProfileScoreTypeRegistry } from '@/profiles/registires';
+import { TenancyIsolation } from '@/core/tenancy';
 
 /**
  * Generic profile score dao.
  */
-@Injectable()
+@Dao(ProfileScore, { isolation: TenancyIsolation.Profile })
 export class ProfileScoreDao extends AbstractDao<ProfileScore> {
-  @InjectModel(ProfileScore.name) protected model: Model<ProfileScore>;
-
   @Inject()
-  protected profileScoreTypeRegistry: ProfileScoreTypeRegistry;
-
-  override getModelConstructor(leanModel: LeanDoc<ProfileScore>): Type<ProfileScore> {
-    return leanModel?.type && this.profileScoreTypeRegistry.isRegisteredType(leanModel.type)
-      ? this.profileScoreTypeRegistry.getTypeConstructor(leanModel.type) || ProfileScore
-      : ProfileScore;
-  }
-
-  override getModuleId(): string {
-    return PROFILES_MODULE_ID;
-  }
+  protected override typeRegistry: ProfileScoreTypeRegistry;
 }

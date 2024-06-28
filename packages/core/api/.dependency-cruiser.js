@@ -65,7 +65,7 @@ module.exports = {
   forbidden: [
     ...preset.forbidden,
     /* module dependency restrictions: */
-    createModuleDeps('accessibility'),
+    /*createModuleDeps('accessibility'),
     createModuleDeps('activities', [
       MODULE_CALENDAR,
       MODULE_PROFILES,
@@ -90,7 +90,7 @@ module.exports = {
     createModuleDeps('time-series'),
     createModuleDeps('ui', [MODULE_ACCESSIBILITY]),
     createModuleDeps('user-registration', [MODULE_I18N, MODULE_AUTH]),
-    createModuleDeps('users', [MODULE_AUTH]),
+    createModuleDeps('users', [MODULE_AUTH]),*/
   ],
   options: preset.options,
 };

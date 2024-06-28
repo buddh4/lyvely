@@ -4,6 +4,7 @@
   "author": "Julian Harrer",
   "license": "AGPL-3.0-or-later",
   "description": "core-web package",
+  "type": "module",
   "module": "dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
@@ -35,7 +36,7 @@
     "ncu": "ncu",
     "dev": "vite",
     "dev:e2e": "cross-env NODE_ENV=e2e vite --mode=e2e",
-    "deps": "rush-pnpm --rush-skip-checks depcruise --include-only \"^src\" --config .dependency-cruiser.js src"
+    "deps": "rush-pnpm --rush-skip-checks depcruise --include-only \"^src\" --config .dependency-cruiser.cjs src"
   },
   "dependencies": {
     "tslib": "^2.6.2",

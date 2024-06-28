@@ -2,8 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Observable, fromEvent, merge } from 'rxjs';
 import { ConfigService } from '@nestjs/config';
-import { assureStringId, DocumentIdentity } from '@/core';
-import { ConfigurationPath, OperationMode } from '@/config';
+import { assureStringId, DocumentIdentity, OperationMode } from '@/core';
 import { OptionalUser, User } from '@/users';
 import {
   ILiveEvent,
@@ -18,6 +17,7 @@ import {
   ProfileVisibilityPolicy,
 } from '@/profiles';
 import { InjectPolicy } from '@/policies';
+import { LyvelyConfigService } from '@/config';
 
 @Injectable()
 export class LiveService {
@@ -25,7 +25,7 @@ export class LiveService {
 
   constructor(
     private eventEmitter: EventEmitter2,
-    private readonly configService: ConfigService<ConfigurationPath>,
+    private readonly configService: LyvelyConfigService,
     private profilesService: ProfilesService,
     private profileRelationsService: ProfileRelationsService,
     @InjectPolicy(ProfileVisibilityPolicy.name)

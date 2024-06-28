@@ -9,9 +9,7 @@ import {
 } from '@lyvely/interface';
 import { InvalidOtpException, OtpService } from '@/otp';
 import { DocumentIdentity } from '@/core';
-import { ConfigurationPath } from '@/config';
 import { escapeHTML, isValidEmail } from '@lyvely/common';
-import { ConfigService } from '@nestjs/config';
 import { MailService } from '@/mails';
 import { getEnabledLocales, getTimezones } from '@lyvely/dates';
 import { ISettingUpdate } from '@/settings';
@@ -20,6 +18,7 @@ import {
   USER_SETTING_CALENDAR_PREFERENCE_WEEKSTART,
 } from '@/user-account/user-account.constants';
 import { isDefined } from 'class-validator';
+import { LyvelyConfigService } from '@/config';
 
 const OTP_PURPOSE_VERIFY_SECONDARY_EMAIL = 'verify-secondary-email';
 
@@ -34,7 +33,7 @@ interface IOtpEmailVerificationContext {
 export class UserAccountService {
   constructor(
     private userDao: UserDao,
-    private configService: ConfigService<ConfigurationPath>,
+    private configService: LyvelyConfigService,
     private userSettingsService: UserSettingsService,
     private mailService: MailService,
     private userOtpService: OtpService<IOtpEmailVerificationContext>

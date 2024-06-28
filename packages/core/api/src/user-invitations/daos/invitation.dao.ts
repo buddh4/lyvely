@@ -1,27 +1,21 @@
-import { AbstractDao, assureObjectId, DocumentIdentity, LeanDoc, Model } from '@/core';
+import { AbstractDao, assureObjectId, Dao, DocumentIdentity } from '@/core';
 import { Invitation, MailInvitation, UserInvitation } from '../schemas';
-import { InjectModel } from '@nestjs/mongoose';
 import { User } from '@/users';
 import { subtractDays } from '@lyvely/dates';
+import { TenancyIsolation } from '@/core/tenancy';
 
+@Dao(Invitation, {
+  discriminator: {
+    [MailInvitation.name]: MailInvitation,
+    [UserInvitation.name]: UserInvitation,
+  },
+  isolation: TenancyIsolation.Strict,
+})
 export class InvitationDao extends AbstractDao<Invitation> {
-  @InjectModel(Invitation.name)
-  protected model: Model<Invitation>;
-
-  countInvitesByUserThisWeek(user: DocumentIdentity<User>) {
-    return this.model.countDocuments({
+  async countInvitesByUserThisWeek(user: DocumentIdentity<User>) {
+    return this.getModel().countDocuments({
       uid: assureObjectId(user),
       updatedAt: { $gte: subtractDays(new Date(), 7) },
     });
-  }
-
-  getModelConstructor(model: LeanDoc<Invitation>) {
-    if (model.type === MailInvitation.name) return MailInvitation;
-    if (model.type === UserInvitation.name) return UserInvitation;
-    return Invitation;
-  }
-
-  getModuleId(): string {
-    return 'invitations';
   }
 }

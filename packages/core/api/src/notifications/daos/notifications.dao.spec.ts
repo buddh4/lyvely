@@ -64,10 +64,6 @@ describe('NotificationDao', () => {
     return testingModule.afterEach();
   });
 
-  it('should be defined', () => {
-    expect(notificationDao).toBeDefined();
-  });
-
   describe('create', () => {
     it('assure created data is valid', async () => {
       const { user, profile } = await testData.createUserAndProfile();

@@ -7,7 +7,7 @@ const props = withDefaults(
   defineProps<{
     id?: string;
     modelValue: TModel;
-    validator?: ModelValidator<TModel>;
+    validator?: ModelValidator<any, any>;
     labelKey?: string;
     status?: { statusError?: string };
     autoValidation?: boolean;

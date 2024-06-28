@@ -20,7 +20,7 @@ import { JournalsService } from '../services';
 import { JournalsDao } from '../daos';
 import { ILyvelyTestingModule } from '@lyvely/api';
 import { Journal, JournalSchema } from '../schemas';
-import { getContentModelDefinition } from "@lyvely/api";
+import { getContentModelDefinition } from '@lyvely/api';
 
 describe('JournalService', () => {
   let journalsService: JournalsService;

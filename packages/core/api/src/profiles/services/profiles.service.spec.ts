@@ -31,10 +31,6 @@ describe('ProfileService', () => {
     return testingModule.afterEach();
   });
 
-  it('should be defined', () => {
-    expect(profileService).toBeDefined();
-  });
-
   describe('Organization Profile', () => {
     describe('findProfileContextByHandle()', () => {
       it('find sub profile context for owner', async () => {

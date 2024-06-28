@@ -16,6 +16,8 @@ export const EVENT_REGISTRATION = 'EVENT_REGISTRATION';
 export abstract class AbstractTypeRegistry<T, TMeta = any, TModuleMetaView = any> {
   protected abstract logger: Logger;
 
+  protected fallBackType?: Type<T>;
+
   private typeMapping: Map<InjectionToken, ITypeRegistryDefinition<T>> = new Map();
   private typeMeta: Map<InjectionToken, TMeta> = new Map();
   protected emitter: EventEmitter2;
@@ -123,7 +125,7 @@ export abstract class AbstractTypeRegistry<T, TMeta = any, TModuleMetaView = any
   getTypeConstructor(token: InjectionToken, defaultType: Type<T>): Type<T>;
   getTypeConstructor(token: InjectionToken, defaultType?: Type<T>): Type<T> | undefined {
     const definition = this.getTypeDefinition(token);
-    return definition ? definition.constructor : defaultType;
+    return definition ? definition.constructor : defaultType || this.fallBackType;
   }
 
   /**

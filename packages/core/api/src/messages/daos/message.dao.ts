@@ -1,17 +1,7 @@
 import { ContentTypeDao } from '@/content';
 import { Message } from '../schemas';
-import { Model } from '@/core';
-import { InjectModel } from '@nestjs/mongoose';
+import { Dao } from '@/core';
+import { ProfileDao } from '@/profiles';
 
-export class MessageDao extends ContentTypeDao<Message> {
-  @InjectModel(Message.name)
-  protected model: Model<Message>;
-
-  getModelConstructor() {
-    return Message;
-  }
-
-  getModuleId(): string {
-    return 'message';
-  }
-}
+@ProfileDao(Message)
+export class MessageDao extends ContentTypeDao<Message> {}

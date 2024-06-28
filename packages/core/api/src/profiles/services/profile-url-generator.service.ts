@@ -1,12 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { assureStringId, UrlGenerator } from '@/core';
-import { ConfigurationPath } from '@/config';
 import { UrlRoute } from '@lyvely/interface';
+import { LyvelyConfigService } from '@/config';
 
 @Injectable()
 export class ProfileUrlGenerator extends UrlGenerator {
-  constructor(protected override readonly configService: ConfigService<ConfigurationPath>) {
+  constructor(protected override readonly configService: LyvelyConfigService) {
     super(configService);
   }
 

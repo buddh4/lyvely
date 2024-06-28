@@ -42,20 +42,14 @@ describe('content module', () => {
     testingModule = await buildContentTest('content_module')
       .imports([TestModule])
       .models(TestModels)
+      .withApp()
       .compile();
     contentService = testingModule.get<ContentService>(ContentService);
     contentTypeRegistry = testingModule.get<ContentTypeRegistry>(ContentTypeRegistry);
-    app = testingModule.createNestApplication();
-    await app.init();
   });
 
   afterEach(async () => {
     return testingModule.afterEach();
-  });
-
-  it('should be defined', () => {
-    expect(contentService).toBeDefined();
-    expect(contentTypeRegistry).toBeDefined();
   });
 
   describe('auto content registration', () => {

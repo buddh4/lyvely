@@ -17,7 +17,7 @@ import {
 } from '@lyvely/interface';
 import { findAndReplace } from '@lyvely/common';
 import { assureObjectId } from '@/core';
-import { ProfileDao } from '../daos';
+import { ProfilesDao } from '../daos';
 
 /**
  * Service for handling profile level permissions within the application.
@@ -32,7 +32,7 @@ export class ProfilePermissionSettingsService {
    *
    * @param configService - The service used to fetch configuration related to permissions.
    */
-  constructor(private readonly profileDao: ProfileDao) {}
+  constructor(private readonly profileDao: ProfilesDao) {}
 
   /**
    * Sets a permission for a given profile.

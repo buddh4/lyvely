@@ -20,10 +20,6 @@ describe('UserDao', () => {
     return testingModule.afterEach();
   });
 
-  it('should be defined', () => {
-    expect(userDao).toBeDefined();
-  });
-
   async function createTestUser(email = 'test@test.de', username = 'Test') {
     return await userDao.save(
       new User({

@@ -3,13 +3,12 @@ import { escapeHTML } from '@lyvely/common';
 import { User, UsersService } from '@/users';
 import { UserStatus } from '@lyvely/interface';
 import { MailService } from '@/mails';
-import { ConfigService } from '@nestjs/config';
-import { ConfigurationPath } from '@/config';
-import { UrlGenerator } from '@/core';
+import { type AuthModuleConfig, UrlGenerator } from '@/core';
 import { JwtService } from '@nestjs/jwt';
 import { JwtSignOptions } from '@nestjs/jwt/dist/interfaces';
 import { JWT_RESET_PASSWORD_TOKEN } from '../guards';
 import { I18n } from '@/i18n';
+import { LyvelyConfigService } from '@/config';
 
 @Injectable()
 export class ResetPasswordService {
@@ -20,7 +19,7 @@ export class ResetPasswordService {
     private mailService: MailService,
     private jwtService: JwtService,
     private i18n: I18n,
-    private configService: ConfigService<ConfigurationPath>,
+    private configService: LyvelyConfigService<AuthModuleConfig>,
     private urlGenerator: UrlGenerator
   ) {}
 
@@ -81,12 +80,12 @@ export class ResetPasswordService {
 
   public createResetPasswordToken(user: User): string {
     const options = {
-      secret: this.configService.get('auth.jwt.verify.secret'),
+      secret: this.configService.getModuleConfigOrThrow('auth', 'jwt.verify.secret'),
       expiresIn: '3h',
       algorithm: 'HS256',
     } as JwtSignOptions;
 
-    const issuer = this.configService.get('auth.jwt.issuer');
+    const issuer = this.configService.getModuleConfigOrThrow('auth', 'jwt.issuer');
     if (issuer) options.issuer = issuer;
 
     return this.jwtService.sign(

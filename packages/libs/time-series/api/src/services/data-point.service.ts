@@ -7,9 +7,10 @@ import {
 import { UserAssignmentStrategy, ProfileContext, ProtectedProfileContext } from '@lyvely/api';
 import { isPlainObject, isEqual } from '@lyvely/common';
 import { DataPoint, TimeSeriesContent } from '../schemas';
-import { DataPointStrategyDao } from '../daos';
+import { AbstractDataPointDao } from '../daos';
 import { useDataPointStrategyRegistry } from '../strategies';
 import { IDataPointUpdateResult } from '../interfaces';
+import { DataPointSchemaFactory } from '../schemas/data-points/data-point-schema.factory';
 
 /**
  * This class represents a service class for managing and manipulating data points.
@@ -23,7 +24,7 @@ export abstract class DataPointService<
   TValue = TDataPointModel['value'],
 > {
   /** The data point dao, responsible for updating and fetching data points. **/
-  protected abstract dataPointDao: DataPointStrategyDao<TDataPointModel>;
+  protected abstract dataPointDao: AbstractDataPointDao<TDataPointModel>;
 
   constructor(protected dataPointStrategyFacade = useDataPointStrategyFacade()) {}
 
@@ -184,16 +185,15 @@ export abstract class DataPointService<
 
     if (dataPoint) return { dataPoint, isNew: false, oldValue: dataPoint.value };
 
-    const DataPointConstructor = this.dataPointDao.getModelConstructor(<any>{
-      valueType: content.timeSeriesConfig.valueType,
-    });
+    const DataPointConstructor =
+      DataPointSchemaFactory.getModelType(content.timeSeriesConfig.valueType) || DataPoint;
 
     dataPoint = await this.dataPointDao.save(
       new DataPointConstructor(profile, user, content, {
         date: toDate(date),
         value,
         valueType: content.timeSeriesConfig.valueType,
-      })
+      }) as TDataPointModel
     );
 
     return { dataPoint, isNew: true, oldValue: undefined };

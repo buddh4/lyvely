@@ -1,4 +1,4 @@
-import { ServerConfiguration, OperationMode } from '@/config';
+import { ServerConfiguration, OperationMode } from '@/core';
 
 const lyvelyTestConfig: ServerConfiguration = {
   appName: 'lyvely.test.app',
@@ -15,23 +15,29 @@ const lyvelyTestConfig: ServerConfiguration = {
     host: '0.0.0.0',
     port: 6379,
   },
-  auth: {
-    jwt: {
-      'secure-cookies': false,
-      access: {
-        secret: 'e5d2ece45d3b7919fc7b6a8f19abc0cb7916c71bef385ca11f27a0a3b324e3d2',
-        expiresIn: '15m',
-        sameSite: 'lax',
-      },
-      refresh: {
-        secret: 'e5d2ece45d3b7919fc7b7a8f19abc0cb7916c71bef385ca11f27a0a3b324e3d2',
-        expiresIn: '30m',
-        expiresInRemember: '200d',
-        sameSite: 'lax',
-      },
-      verify: {
-        secret: 'e5d2ece45d3b7919fc7b7aff19abc0cb7916c71bef385ca11f27a0a3b324e3d2',
-        expiresIn: '1d',
+  mongodb: {
+    uri: 'mongodb://localhost:27017/lyvely',
+    debug: false,
+  },
+  modules: {
+    auth: {
+      jwt: {
+        'secure-cookies': false,
+        access: {
+          secret: 'e5d2ece45d3b7919fc7b6a8f19abc0cb7916c71bef385ca11f27a0a3b324e3d2',
+          expiresIn: '15m',
+          sameSite: 'lax',
+        },
+        refresh: {
+          secret: 'e5d2ece45d3b7919fc7b7a8f19abc0cb7916c71bef385ca11f27a0a3b324e3d2',
+          expiresIn: '30m',
+          expiresInRemember: '200d',
+          sameSite: 'lax',
+        },
+        verify: {
+          secret: 'e5d2ece45d3b7919fc7b7aff19abc0cb7916c71bef385ca11f27a0a3b324e3d2',
+          expiresIn: '1d',
+        },
       },
     },
   },

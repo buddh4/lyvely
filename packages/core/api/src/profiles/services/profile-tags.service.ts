@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { assureObjectId, DocumentIdentity } from '@/core';
 import { DocumentNotFoundException, FieldValidationException } from '@lyvely/interface';
-import { ProfileDao } from '../daos';
+import { ProfilesDao } from '../daos';
 import { Profile, Tag } from '../schemas';
 
 @Injectable()
 export class ProfileTagsService {
-  constructor(public profileDao: ProfileDao) {}
+  constructor(public profileDao: ProfilesDao) {}
 
   async mergeTags(profile: Profile, tagsNames?: string[]): Promise<Profile> {
     if (!tagsNames || !tagsNames.length) {

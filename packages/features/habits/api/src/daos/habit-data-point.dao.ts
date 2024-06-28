@@ -1,16 +1,5 @@
-import { DataPointDao, InjectDataPointModel } from '@lyvely/time-series';
-import { Injectable } from '@nestjs/common';
-import { Habit, type HabitDataPoint } from '../schemas';
-import { Model } from '@lyvely/api';
+import { AbstractDataPointDao, DataPointDao } from '@lyvely/time-series';
+import { Habit, HabitDataPoint } from '../schemas';
 
-@Injectable()
-export class HabitDataPointDao extends DataPointDao<HabitDataPoint> {
-  @InjectDataPointModel(Habit.name)
-  protected model: Model<HabitDataPoint>;
-
-  protected contentName = Habit.name;
-
-  getModuleId(): string {
-    return 'habits';
-  }
-}
+@DataPointDao({ content: Habit })
+export class HabitDataPointDao extends AbstractDataPointDao<HabitDataPoint> {}

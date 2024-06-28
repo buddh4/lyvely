@@ -23,30 +23,22 @@ const ContentModels = [
 describe('TimeSeriesContentSchema', () => {
   let testingModule: ILyvelyTestingModule;
   let testData: ProfileTestDataUtils;
-  let app: INestApplication;
   let TestTimeSeriesContentModel: Model<TestTimeSeriesContent>;
 
   const TEST_KEY = 'TimeSeriesContentSchema';
 
   beforeEach(async () => {
-    testingModule = await buildContentTest(TEST_KEY).models(ContentModels).compile();
+    testingModule = await buildContentTest(TEST_KEY).models(ContentModels).withApp().compile();
     testData = testingModule.get(ProfileTestDataUtils);
     TestTimeSeriesContentModel = testingModule.get('TestTimeSeriesContentModel');
-    app = testingModule.createNestApplication();
-    await app.init();
   });
 
   afterEach(async () => {
     await testingModule.afterEach();
-    await app.close();
   });
 
   afterAll(async () => {
     return testingModule.afterAll();
-  });
-
-  it('should be defined', () => {
-    expect(TestTimeSeriesContentModel).toBeDefined();
   });
 
   describe('save()', () => {

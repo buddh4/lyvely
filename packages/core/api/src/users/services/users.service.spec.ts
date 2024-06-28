@@ -20,10 +20,6 @@ describe('UserService', () => {
     return testingModule.afterEach();
   });
 
-  it('should be defined', () => {
-    expect(userService).toBeDefined();
-  });
-
   describe('findUserByMainEmail', () => {
     it('find existing user by main email', async () => {
       const user = await testData.createUser('testUser', { email: 'test@test.de' });

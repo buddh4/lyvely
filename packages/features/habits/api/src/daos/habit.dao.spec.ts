@@ -29,10 +29,6 @@ describe('Habits DAO', () => {
     return testingModule.afterAll();
   });
 
-  it('should be defined', () => {
-    expect(habitsDao).toBeDefined();
-  });
-
   describe('findByProfileAndId', () => {
     it('find habit by profile', async () => {
       const { user, profile } = await testData.createUserAndProfile();
@@ -72,7 +68,7 @@ describe('Habits DAO', () => {
     });
 
     it('assure we do not include an entry of another plan', async () => {
-      const { user, profile,context } = await testData.createUserAndProfile();
+      const { user, profile, context } = await testData.createUserAndProfile();
       const habit = await testData.createHabit(user, profile, {
         interval: CalendarInterval.Daily,
       });

@@ -1,14 +1,13 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { MailerService, ISendMailOptions as MailerSendMailOptions } from '@nestjs-modules/mailer';
 import { SentMessageInfo } from 'nodemailer';
-import { ServerConfiguration, LyvelyMailOptions } from '@/config';
 import { UrlGenerator } from '@/core';
-import { ConfigService } from '@nestjs/config';
 import { createWriteStream, writeFile, existsSync, mkdirSync } from 'fs';
 import { Stream } from 'stream';
 import pug from 'pug';
 import { escapeHTML, hasOwnNonNullableProperty } from '@lyvely/common';
 import { UrlRoute } from '@lyvely/interface';
+import { LyvelyConfigService } from '@/config';
 
 export interface IMessageInfo {
   messageId: string;
@@ -30,7 +29,7 @@ export class MailService {
 
   constructor(
     protected readonly mailerService: MailerService,
-    protected readonly configService: ConfigService<ServerConfiguration>,
+    protected readonly configService: LyvelyConfigService,
     protected readonly urlGenerator: UrlGenerator
   ) {}
 
@@ -49,13 +48,13 @@ export class MailService {
     const mailConfig = this.configService.get('mail');
     sendMailOptions.context = sendMailOptions.context || {};
     sendMailOptions.context['footerText'] =
-      mailConfig.footerText || this.configService.get('appName');
-    sendMailOptions.context['footerSubText'] = mailConfig.footerSubtext || '';
+      mailConfig?.footerText || this.configService.get('appName');
+    sendMailOptions.context['footerSubText'] = mailConfig?.footerSubtext || '';
     sendMailOptions.context['logoImageUrl'] =
-      mailConfig.logoImageUrl ||
+      mailConfig?.logoImageUrl ||
       this.urlGenerator.getAppUrl({ path: '/images/mail_default_logo.png' }).href;
     // TODO: translate...
-    sendMailOptions.context['unsubscribeLabel'] = mailConfig.unsubscribeLabel || 'unsubscribe';
+    sendMailOptions.context['unsubscribeLabel'] = mailConfig?.unsubscribeLabel || 'unsubscribe';
   }
 
   private renderPartials(sendMailOptions: ISendMailOptions) {
@@ -78,10 +77,7 @@ export class MailService {
   }
 
   public getMessageFileDir() {
-    return (
-      this.configService.get<LyvelyMailOptions>('mail')?.messagesPath ||
-      `${process.cwd()}/mail/messages`
-    );
+    return this.configService.get('mail')?.messagesPath || `${process.cwd()}/mail/messages`;
   }
 
   public getMessageFilePath(info: SentMessageInfo) {
@@ -114,11 +110,11 @@ export class MailService {
   }
 
   private isCreateMessageModelFile() {
-    return this.configService.get<LyvelyMailOptions>('mail')?.createMessageFiles;
+    return this.configService.get('mail')?.createMessageFiles;
   }
 
   private isStreamTransport(info: SentMessageInfo): info is IStreamMessageInfo {
-    const mailConfig = this.configService.get<LyvelyMailOptions>('mail');
+    const mailConfig = this.configService.get('mail');
     const transport = mailConfig?.transport;
     return (
       hasOwnNonNullableProperty(transport, 'streamTransport') && info.message instanceof Stream
@@ -126,7 +122,7 @@ export class MailService {
   }
 
   private isJsonTransport(info: SentMessageInfo) {
-    const mailConfig = this.configService.get<LyvelyMailOptions>('mail');
+    const mailConfig = this.configService.get('mail');
     const transport = mailConfig?.transport;
     return (
       hasOwnNonNullableProperty(transport, 'jsonTransport') &&

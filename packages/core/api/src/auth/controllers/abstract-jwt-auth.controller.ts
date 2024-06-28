@@ -1,7 +1,6 @@
 import { addMilliSeconds } from '@lyvely/dates';
-import { ConfigService } from '@nestjs/config';
 import ms from 'ms';
-import { ConfigurationPath } from '@/config';
+import { LyvelyConfigService } from '@/config';
 import {
   getAuthCookieName,
   getRefreshCookieName,
@@ -9,26 +8,36 @@ import {
   COOKIE_REFRESH_PATH,
 } from '../guards';
 import { Request } from 'express';
-
-const DEFAULT_ACCESS_TOKEN_EXPIRES_IN = '15m';
-const MIN_ACCESS_TOKEN_EXPIRES_IN = 20_000;
-const DEFAULT_SAME_SITE = 'lax';
-const DEFAULT_SECURE_COOKIES = true;
+import type { AuthModuleConfig } from '@/core';
+import {
+  DEFAULT_ACCESS_TOKEN_EXPIRES_IN,
+  DEFAULT_SAME_SITE,
+  DEFAULT_SECURE_COOKIES,
+  MIN_ACCESS_TOKEN_EXPIRES_IN,
+} from '@/auth/auth.constants';
 
 export abstract class AbstractJwtAuthController {
-  protected constructor(protected configService: ConfigService<ConfigurationPath>) {}
+  protected constructor(protected configService: LyvelyConfigService<AuthModuleConfig>) {}
 
   protected setAuthenticationCookie(req: Request, token: string) {
     const secure = this.useSecureCookies();
     const authCookieName = getAuthCookieName(this.configService);
     const expirationMS = Math.max(
       ms(
-        this.configService.get<string>('auth.jwt.access.expiresIn', DEFAULT_ACCESS_TOKEN_EXPIRES_IN)
+        this.configService.getModuleConfig(
+          'auth',
+          'jwt.access.expiresIn',
+          DEFAULT_ACCESS_TOKEN_EXPIRES_IN
+        )
       ),
       MIN_ACCESS_TOKEN_EXPIRES_IN
     );
     req.res!.cookie(authCookieName, token, {
-      sameSite: this.configService.get('auth.jwt.access.sameSite', DEFAULT_SAME_SITE),
+      sameSite: this.configService.getModuleConfig(
+        'auth',
+        'jwt.access.sameSite',
+        DEFAULT_SAME_SITE
+      ),
       httpOnly: true,
       secure: secure,
       expires: addMilliSeconds(new Date(), expirationMS),
@@ -41,7 +50,11 @@ export abstract class AbstractJwtAuthController {
     const expiresIn = getRefreshCookieExpiresIn(remember, this.configService);
 
     req.res!.cookie(refreshCookieName, token, {
-      sameSite: this.configService.get('auth.jwt.refresh.sameSite', DEFAULT_SAME_SITE),
+      sameSite: this.configService.getModuleConfig(
+        'auth',
+        'jwt.refresh.sameSite',
+        DEFAULT_SAME_SITE
+      ),
       httpOnly: true,
       path: COOKIE_REFRESH_PATH,
       secure: secure,
@@ -50,6 +63,6 @@ export abstract class AbstractJwtAuthController {
   }
 
   private useSecureCookies() {
-    return this.configService.get('auth.jwt.secure-cookies', DEFAULT_SECURE_COOKIES);
+    return this.configService.getModuleConfig('auth', 'jwt.secure-cookies', DEFAULT_SECURE_COOKIES);
   }
 }

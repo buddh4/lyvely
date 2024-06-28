@@ -35,10 +35,6 @@ describe('AbstractUserProfileActionDao', () => {
     return testingModule.afterEach();
   });
 
-  it('should be defined', () => {
-    expect(testScoreDao).toBeDefined();
-  });
-
   describe('create()', () => {
     it('create test score instance', async () => {
       const { user, profile, context } = await testData.createUserAndProfile();

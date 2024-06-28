@@ -9,13 +9,13 @@ import {
 } from '@nestjs/common';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { I18nModule, I18nModuleLoader } from '@/i18n';
-import { CoreModule, ReverseProxyThrottlerGuard, setTransactionSupport } from '@/core';
 import {
-  ConfigurationPath,
-  ILyvelyMongoDBOptions,
-  ServerConfiguration,
-  loadConfigs,
-} from '@/config';
+  CoreModule,
+  ReverseProxyThrottlerGuard,
+  type ServerConfiguration,
+  setTransactionSupport,
+} from '@/core';
+import { loadConfigs, LyvelyConfigModule, LyvelyConfigService } from '@/config';
 import { AppConfigModule } from '@/app-config';
 import { AuthModule } from '@/auth';
 import { UsersModule } from '@/users';
@@ -45,6 +45,7 @@ import { PingModule } from '@/ping';
 import { DeepPartial } from '@lyvely/common';
 import defaultConfig from '@/config/lyvely.default.config';
 import { FilesModule } from '@/files/files.module';
+import { ClsModule } from 'nestjs-cls';
 import { resolve } from 'node:path';
 
 type TModule = Type | DynamicModule | Promise<DynamicModule> | ForwardReference;
@@ -54,7 +55,7 @@ export interface IAppModuleBuilderOptions {
   configFiles?: Array<string> | false;
   loadDefaultConfig?: boolean;
   loadDBConfig?: boolean;
-  config?: DeepPartial<ServerConfiguration> | null;
+  config?: DeepPartial<ServerConfiguration<{}>> | null;
   serveStatic?: boolean;
   manual?: boolean;
   modules?: TModule[];
@@ -82,8 +83,7 @@ export class AppModuleBuilder {
     this.options = { ...defaultOptions, ...options };
 
     if (!this.options.manual) {
-      this.importEventEmitterModule()
-        .importCoreModules()
+      this.importCoreModules()
         .importI18nModule()
         .importQueueModule()
         .importRateLimitModule()
@@ -92,6 +92,14 @@ export class AppModuleBuilder {
         .importRecommendedModules()
         .importModules(...this.options.modules);
     }
+  }
+
+  getImports(): TModule[] {
+    return this.imports;
+  }
+
+  getProviders(): Provider[] {
+    return this.providers;
   }
 
   public async importConfigModule() {
@@ -115,30 +123,37 @@ export class AppModuleBuilder {
       ConfigModule.forRoot({
         load: [() => config],
         isGlobal: true,
-      })
+      }),
+      LyvelyConfigModule
     );
   }
 
   public importCoreModules() {
-    return this.importModules(
-      CoreModule,
-      LiveModule,
-      PingModule,
-      MailsModule.fromConfig(),
-      ProfilesModule,
-      ContentCoreModule,
-      SystemMessagesModule,
-      UserAccountModule,
-      NotificationsModule,
-      FeaturesModule,
-      PermissionsModule,
-      AppConfigModule,
-      PoliciesModule.forRoot(),
-      UsersModule,
-      AuthModule,
-      CaptchaModule,
-      FilesModule
-    );
+    return this.importClsModule()
+      .importEventEmitterModule()
+      .importModules(
+        CoreModule,
+        LiveModule,
+        PingModule,
+        MailsModule.fromConfig(),
+        ProfilesModule,
+        ContentCoreModule,
+        SystemMessagesModule,
+        UserAccountModule,
+        NotificationsModule,
+        FeaturesModule,
+        PermissionsModule,
+        AppConfigModule,
+        PoliciesModule.forRoot(),
+        UsersModule,
+        AuthModule,
+        CaptchaModule,
+        FilesModule
+      );
+  }
+
+  public importClsModule() {
+    return this.importModules(ClsModule.forRoot({ global: true, middleware: { mount: true } }));
   }
 
   public importEventEmitterModule() {
@@ -160,10 +175,9 @@ export class AppModuleBuilder {
   public importQueueModule() {
     return this.importModules(
       BullModule.forRootAsync({
-        imports: [ConfigModule],
-        inject: [ConfigService],
-        useFactory: async (configService: ConfigService<ConfigurationPath>) => {
-          return { connection: configService.get('redis')! };
+        inject: [LyvelyConfigService],
+        useFactory: async (configService: LyvelyConfigService) => {
+          return { connection: configService.get('redis') };
         },
       })
     );
@@ -174,10 +188,8 @@ export class AppModuleBuilder {
 
     return this.importModules(
       ServeStaticModule.forRootAsync({
-        imports: [ConfigModule],
-        inject: [ConfigService],
-        useFactory: async (configService: ConfigService<ConfigurationPath>) => {
-          // TODO (serveStatic) provide some defaults...
+        inject: [LyvelyConfigService],
+        useFactory: async (configService: LyvelyConfigService) => {
           return [
             configService.get('serveStatic', {
               rootPath: resolve(__dirname, '../static'),
@@ -191,9 +203,9 @@ export class AppModuleBuilder {
   public importMongooseModule() {
     return this.importModules(
       MongooseModule.forRootAsync({
-        inject: [ConfigService],
-        useFactory: async (configService: ConfigService<ConfigurationPath & any>) => {
-          const options = { ...configService.get<ILyvelyMongoDBOptions>('mongodb') };
+        inject: [LyvelyConfigService],
+        useFactory: async (configService: LyvelyConfigService) => {
+          const options = { ...configService.get('mongodb') };
 
           // Just to assure we do not kill another db with our e2e tests.
           if (process.env.NODE_ENV === 'e2e' && !options.uri) {
@@ -220,14 +232,18 @@ export class AppModuleBuilder {
       ThrottlerModule.forRootAsync({
         imports: [ConfigModule],
         inject: [ConfigService],
-        useFactory: (config: ConfigService<ConfigurationPath>) => ({
-          throttlers: [
-            {
-              ttl: config.get('http.rateLimit.ttl') || 60_000,
-              limit: config.get('http.rateLimit.limit') || 120,
-            },
-          ],
-        }),
+        useFactory: (config: LyvelyConfigService) => {
+          const reteLimitConfig = config.get('http.rateLimit');
+
+          return {
+            throttlers: [
+              {
+                ttl: reteLimitConfig?.ttl ?? 60_000,
+                limit: reteLimitConfig?.limit ?? 120,
+              },
+            ],
+          };
+        },
       })
     ).useProviders({
       provide: APP_GUARD,

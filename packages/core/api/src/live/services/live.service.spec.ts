@@ -22,10 +22,6 @@ describe('LiveService', () => {
     return testingModule.afterEach();
   });
 
-  it('should be defined', () => {
-    expect(liveService).toBeDefined();
-  });
-
   describe('emitProfileEvent()', () => {
     it('user receives membership profile live event', async () => {
       const { owner, member, profile } = await testData.createSimpleGroup();

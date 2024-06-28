@@ -34,10 +34,6 @@ describe('ProfileVisibilityPolicy', () => {
     return testingModule.afterEach();
   });
 
-  it('should be defined', () => {
-    expect(profileVisibilityPolicy).toBeDefined();
-  });
-
   describe('canActivate()', () => {
     it('owner can see member profile', async () => {
       const { owner, profile } = await testData.createSimpleGroup(ProfileVisibilityLevel.Member);

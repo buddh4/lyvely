@@ -42,6 +42,7 @@ export function getPropertyTypeDefinitions(type: Type): Record<string, IProperty
 /**
  * Returns the property type of a specific property of the given type.
  * @param type
+ * @param propertyKey
  */
 export function getPropertyTypeDefinition(type: Type, propertyKey: string) {
   const typeDefinition = getPropertyTypeDefinitions(type);

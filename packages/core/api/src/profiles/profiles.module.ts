@@ -35,11 +35,11 @@ import {
   ProfilePermissionsController,
 } from './controllers';
 import { UserSettingsService, UsersModule } from '@/users';
-import { ProfileDao, MembershipsDao, UserProfileRelationsDao, ProfileScoreDao } from './daos';
+import { ProfilesDao, MembershipsDao, UserProfileRelationsDao, ProfileScoreDao } from './daos';
 
 import { ProfileVisibilityPolicy } from './policies';
 import { PoliciesModule } from '@/policies';
-import { CoreModule, LyvelyModule } from '@/core';
+import { LyvelyModule } from '@/core';
 import {
   PROFILES_MODULE_ID,
   ProfileType,
@@ -97,7 +97,6 @@ useProfileMappings();
     ManageTagsPermission,
   ],
   imports: [
-    CoreModule,
     UsersModule,
     PoliciesModule,
     AvatarsModule,
@@ -107,7 +106,7 @@ useProfileMappings();
     }),
   ],
   providers: [
-    ProfileDao,
+    ProfilesDao,
     ProfileScoreTypeRegistry,
     ProfileScoreDao,
     ProfilePermissionsService,
@@ -130,7 +129,7 @@ useProfileMappings();
   ],
   exports: [
     ProfilesService,
-    ProfileDao,
+    ProfilesDao,
     ProfileScoreDao,
     ProfileTagsService,
     ProfileModel,

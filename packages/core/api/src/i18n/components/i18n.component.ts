@@ -1,7 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { I18nService } from 'nestjs-i18n';
-import { I18nConfigPath, Translatable } from '../interfaces';
+import { type I18nConfig, Translatable } from '../interfaces';
 import { User } from '@/users';
 import {
   DEFAULT_ENABLED_LOCALES,
@@ -11,6 +10,7 @@ import {
   getLocaleDefinitions,
 } from '@lyvely/interface';
 import { setEnabledLocales } from '@lyvely/dates';
+import { LyvelyConfigService } from '@/config';
 
 export interface ITranslationOptions {
   locale: string;
@@ -24,7 +24,7 @@ export class I18n {
   private logger = new Logger(I18n.name);
 
   constructor(
-    private readonly configService: ConfigService<I18nConfigPath>,
+    private readonly configService: LyvelyConfigService<I18nConfig>,
     private readonly i18nService: I18nService
   ) {
     setEnabledLocales(this.getEnabledLocales());

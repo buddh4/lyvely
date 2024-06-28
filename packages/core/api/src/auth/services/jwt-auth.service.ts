@@ -3,19 +3,20 @@ import { UsersService, User, RefreshToken } from '@/users';
 import { JwtService } from '@nestjs/jwt';
 import bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
-import { ConfigService } from '@nestjs/config';
 import { addMilliSeconds } from '@lyvely/dates';
 import ms from 'ms';
-import { ConfigurationPath } from '@/config';
 import { JwtSignOptions } from '@nestjs/jwt/dist/interfaces';
 import { getRefreshCookieExpiresIn, JWT_ACCESS_TOKEN, JWT_REFRESH_TOKEN } from '../guards';
+import { LyvelyConfigService } from '@/config';
+import type { AuthModuleConfig } from '@/core';
+import { DEFAULT_ACCESS_TOKEN_EXPIRES_IN } from '@/auth/auth.constants';
 
 @Injectable()
 export class JwtAuthService {
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
-    private configService: ConfigService<ConfigurationPath>
+    private configService: LyvelyConfigService<AuthModuleConfig>
   ) {}
 
   async login(user: User, remember: boolean) {
@@ -29,12 +30,16 @@ export class JwtAuthService {
 
   public createAccessToken(user: User): string {
     const options = {
-      secret: this.configService.get('auth.jwt.access.secret'),
-      expiresIn: this.configService.get('auth.jwt.access.expiresIn'),
+      secret: this.configService.getModuleConfigOrThrow('auth', 'jwt.access.secret'),
+      expiresIn: this.configService.getModuleConfig(
+        'auth',
+        'jwt.access.expiresIn',
+        DEFAULT_ACCESS_TOKEN_EXPIRES_IN
+      ),
       algorithm: 'HS256',
     } as JwtSignOptions;
 
-    const issuer = this.configService.get('auth.jwt.issuer');
+    const issuer = this.configService.getModuleConfig('auth', 'jwt.issuer');
     if (issuer) options.issuer = issuer;
 
     return this.jwtService.sign({ sub: user._id.toString(), purpose: JWT_ACCESS_TOKEN }, options);
@@ -48,12 +53,12 @@ export class JwtAuthService {
     const expiresIn = getRefreshCookieExpiresIn(remember, this.configService);
 
     const options = {
-      secret: this.configService.get('auth.jwt.refresh.secret'),
+      secret: this.configService.getModuleConfigOrThrow('auth', 'jwt.refresh.secret'),
       expiresIn: expiresIn,
       algorithm: 'HS256',
     } as JwtSignOptions;
 
-    const issuer = this.configService.get('auth.jwt.issuer');
+    const issuer = this.configService.getModuleConfig('auth', 'jwt.issuer');
     if (issuer) options.issuer = issuer;
 
     const token = this.jwtService.sign(

@@ -37,26 +37,28 @@ export default {
      from: '"${APP_NAME}" <no-reply@${BASE_URL}>',
     },
   },
-  auth: {
-    jwt: {
-      'secure-cookies': true,
-      access: {
-        secret: '${JWT_ACCESS_TOKEN}',
-        expiresIn: '2m',
-        sameSite: 'lax',
-      },
-      refresh: {
-        secret: '${JWT_REFRESH_TOKEN}',
-        expiresIn: '5m',
-        expiresInRemember: '200d',
-        sameSite: 'lax',
-      },
-      verify: {
-        secret: '${JWT_VERIFY_TOKEN}',
-        expiresIn: '1d',
+  modules: {
+    auth: {
+      jwt: {
+        'secure-cookies': true,
+        access: {
+          secret: '${JWT_ACCESS_TOKEN}',
+          expiresIn: '2m',
+          sameSite: 'lax',
+        },
+        refresh: {
+          secret: '${JWT_REFRESH_TOKEN}',
+          expiresIn: '5m',
+          expiresInRemember: '200d',
+          sameSite: 'lax',
+        },
+        verify: {
+          secret: '${JWT_VERIFY_TOKEN}',
+          expiresIn: '1d',
+        },
       },
     },
-  },
+  }
   helmet: {
     contentSecurityPolicy: {
       directives: {

@@ -1,21 +1,7 @@
 import { UserProfileRelation } from '../schemas';
 import { AbstractUserProfileRelationsDao } from './abstract-user-profile-relations.dao';
-import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from '@/core';
-import { Type } from '@lyvely/common';
+import { Dao } from '@/core';
+import { TenancyIsolation } from '@/core/tenancy';
 
-@Injectable()
-export class UserProfileRelationsDao extends AbstractUserProfileRelationsDao {
-  constructor(@InjectModel(UserProfileRelation.name) protected model: Model<UserProfileRelation>) {
-    super();
-  }
-
-  getModelConstructor(): Type<UserProfileRelation> {
-    return UserProfileRelation;
-  }
-
-  getModuleId(): string {
-    return 'profiles';
-  }
-}
+@Dao(UserProfileRelation, { isolation: TenancyIsolation.Strict })
+export class UserProfileRelationsDao extends AbstractUserProfileRelationsDao {}

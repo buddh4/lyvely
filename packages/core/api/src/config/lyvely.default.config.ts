@@ -1,4 +1,4 @@
-import { ServerConfiguration } from '@/config';
+import { ServerConfiguration } from '@/core';
 import { VisitorMode } from '@lyvely/interface';
 
 const mail = process.env.MAIL_HOST
@@ -39,6 +39,26 @@ export default {
         mode: VisitorMode.Disabled,
       },
     },
+    auth: {
+      jwt: {
+        'secure-cookies': true,
+        access: {
+          secret: process.env.JWT_ACCESS_SECRET,
+          expiresIn: '2m',
+          sameSite: 'lax',
+        },
+        refresh: {
+          secret: process.env.JWT_REFRESH_SECRET || process.env.JWT_ACCESS_SECRET,
+          expiresIn: '5m',
+          expiresInRemember: '200d',
+          sameSite: 'lax',
+        },
+        verify: {
+          secret: process.env.JWT_VERIFY_SECRET || process.env.JWT_ACCESS_SECRET,
+          expiresIn: '1d',
+        },
+      },
+    },
   },
   redis: {
     host: process.env.REDIS_HOST || 'localhost',
@@ -55,26 +75,6 @@ export default {
     debug: false,
   },
   mail,
-  auth: {
-    jwt: {
-      'secure-cookies': true,
-      access: {
-        secret: process.env.JWT_ACCESS_SECRET,
-        expiresIn: '2m',
-        sameSite: 'lax',
-      },
-      refresh: {
-        secret: process.env.JWT_REFRESH_SECRET || process.env.JWT_ACCESS_SECRET,
-        expiresIn: '5m',
-        expiresInRemember: '200d',
-        sameSite: 'lax',
-      },
-      verify: {
-        secret: process.env.JWT_VERIFY_SECRET || process.env.JWT_ACCESS_SECRET,
-        expiresIn: '1d',
-      },
-    },
-  },
   helmet: {
     contentSecurityPolicy: {
       directives: {

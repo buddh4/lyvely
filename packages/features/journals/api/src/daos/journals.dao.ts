@@ -1,19 +1,6 @@
 import { Journal } from '../schemas';
-import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from '@lyvely/api';
 import { TimeSeriesContentDao } from '@lyvely/time-series';
+import { ProfileDao } from '@lyvely/api';
 
-@Injectable()
-export class JournalsDao extends TimeSeriesContentDao<Journal> {
-  @InjectModel(Journal.name)
-  protected model: Model<Journal>;
-
-  getModelConstructor() {
-    return Journal;
-  }
-
-  getModuleId(): string {
-    return 'journals';
-  }
-}
+@ProfileDao(Journal)
+export class JournalsDao extends TimeSeriesContentDao<Journal> {}

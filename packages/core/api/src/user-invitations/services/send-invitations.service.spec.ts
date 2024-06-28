@@ -57,10 +57,6 @@ describe('SendInvitations', () => {
     return testingModule.afterAll();
   });
 
-  it('is defined', () => {
-    expect(invitesService).toBeDefined();
-  });
-
   describe('Invite new users to profile', () => {
     it('Member can send an invite to a non existing user', async () => {
       const { owner, profile } = await testData.createSimpleGroup();

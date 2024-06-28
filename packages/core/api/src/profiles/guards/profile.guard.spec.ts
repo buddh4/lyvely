@@ -3,11 +3,13 @@ import { ProfileGuard } from './index';
 import { ProfileRequest } from '../types';
 import { ProfileVisibilityLevel, ProfileMembershipRole } from '@lyvely/interface';
 import { buildProfileTest, ProfileTestDataUtils } from '../testing';
+import { ClsService } from 'nestjs-cls';
 
 describe('ProfileGuard', () => {
   let testingModule: ILyvelyTestingModule;
   let profileGuard: ProfileGuard;
   let testData: ProfileTestDataUtils;
+  let clsService: ClsService;
 
   const TEST_KEY = 'profile-guard';
 
@@ -15,14 +17,12 @@ describe('ProfileGuard', () => {
     testingModule = await buildProfileTest(TEST_KEY).providers([ProfileGuard]).compile();
     profileGuard = testingModule.get(ProfileGuard);
     testData = testingModule.get(ProfileTestDataUtils);
+    clsService = testingModule.get(ClsService);
+    jest.spyOn(clsService, 'set').mockImplementation(() => undefined);
   });
 
   afterEach(async () => {
     return testingModule.afterEach();
-  });
-
-  it('should be defined', () => {
-    expect(ProfileGuard).toBeDefined();
   });
 
   describe('canActivate()', () => {

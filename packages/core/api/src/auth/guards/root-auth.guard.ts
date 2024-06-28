@@ -7,20 +7,14 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Reflector } from '@nestjs/core';
-import { IS_PUBLIC_KEY } from '@/core';
+import { type AuthModuleConfig, IS_PUBLIC_KEY } from '@/core';
 import { extractAuthCookie, JWT_ACCESS_TOKEN } from './strategies';
-import { ConfigService } from '@nestjs/config';
 import { firstValueFrom } from 'rxjs';
-import {
-  VisitorMode,
-  Headers,
-  ForbiddenServiceException,
-  VisitorStrategy,
-} from '@lyvely/interface';
+import { VisitorMode, Headers, ForbiddenServiceException } from '@lyvely/interface';
 import { Request } from 'express';
-import { ConfigurationPath } from '@/config';
-import { CONFIG_PATH_PERMISSION_VISITOR_STRATEGY } from '@/permissions';
 import { type OptionalUserRequest } from '@/users';
+import { LyvelyConfigService } from '@/config';
+import { type IPermissionConfig } from '@lyvely/interface';
 
 @Injectable()
 export class RootAuthGuard extends AuthGuard(JWT_ACCESS_TOKEN) {
@@ -28,7 +22,7 @@ export class RootAuthGuard extends AuthGuard(JWT_ACCESS_TOKEN) {
 
   constructor(
     private reflector: Reflector,
-    private configService: ConfigService<ConfigurationPath>
+    private configService: LyvelyConfigService<AuthModuleConfig>
   ) {
     super();
   }
@@ -99,10 +93,11 @@ export class RootAuthGuard extends AuthGuard(JWT_ACCESS_TOKEN) {
   }
 
   async handleGuestAccess() {
-    const visitorStrategy = this.configService.get<VisitorStrategy>(
-      CONFIG_PATH_PERMISSION_VISITOR_STRATEGY
-    );
-    if (visitorStrategy?.mode !== VisitorMode.Enabled) throw new UnauthorizedException();
+    const visitorStrategy = this.configService.getModuleConfig<IPermissionConfig>('permissions');
+    if (visitorStrategy.visitorStrategy.mode !== VisitorMode.Enabled) {
+      throw new UnauthorizedException();
+    }
+
     return true;
   }
 }

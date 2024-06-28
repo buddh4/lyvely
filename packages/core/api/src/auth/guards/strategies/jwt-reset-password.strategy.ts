@@ -1,8 +1,7 @@
 import { ExtractJwt } from 'passport-jwt';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtStrategy, JwtTokenPayloadIF, getIssuedAt } from '@/jwt';
-import { ConfigService } from '@nestjs/config';
-import { ConfigurationPath } from '@/config';
+import { LyvelyConfigService } from '@/config';
 
 export const JWT_RESET_PASSWORD_TOKEN = 'password-reset';
 
@@ -11,12 +10,12 @@ export class JwtResetPasswordStrategy extends JwtStrategy<JwtTokenPayloadIF>({
   name: JWT_RESET_PASSWORD_TOKEN,
   options: (configService) => {
     return {
-      secretOrKey: configService.get('auth.jwt.verify.secret'),
+      secretOrKey: configService.getModuleConfig('auth', 'jwt.verify.secret'),
       jwtFromRequest: ExtractJwt.fromBodyField('token'),
     };
   },
 }) {
-  constructor(protected configService: ConfigService<ConfigurationPath>) {
+  constructor(protected configService: LyvelyConfigService) {
     super(configService);
   }
 

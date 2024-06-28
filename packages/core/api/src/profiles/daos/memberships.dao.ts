@@ -1,18 +1,12 @@
-import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model, assureObjectId, DocumentIdentity, IBaseQueryOptions, SaveOptions } from '@/core';
+import { assureObjectId, Dao, DocumentIdentity, IBaseQueryOptions, SaveOptions } from '@/core';
 import { Membership, Profile } from '../schemas';
 import { User } from '@/users';
 import { AbstractUserProfileRelationsDao } from './abstract-user-profile-relations.dao';
 import { ProfileMembershipRole } from '@lyvely/interface';
-import { Type } from '@lyvely/common';
+import { TenancyIsolation } from '@/core/tenancy';
 
-@Injectable()
+@Dao(Membership, { isolation: TenancyIsolation.Strict })
 export class MembershipsDao extends AbstractUserProfileRelationsDao<Membership> {
-  constructor(@InjectModel(Membership.name) protected model: Model<Membership>) {
-    super();
-  }
-
   /**
    * Retrieves a list of memberships that match the given profile and role.
    *
@@ -70,13 +64,5 @@ export class MembershipsDao extends AbstractUserProfileRelationsDao<Membership> 
       },
       options
     );
-  }
-
-  getModelConstructor(): Type<Membership> {
-    return Membership;
-  }
-
-  getModuleId(): string {
-    return 'profiles';
   }
 }

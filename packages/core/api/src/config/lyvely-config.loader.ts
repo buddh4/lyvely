@@ -1,4 +1,4 @@
-import { ServerConfiguration } from './lyvely-config.types';
+import { ServerConfiguration } from '@/core';
 import { promises as fsPromises } from 'fs';
 import { join, dirname, isAbsolute } from 'path';
 import { merge } from '@lyvely/common';

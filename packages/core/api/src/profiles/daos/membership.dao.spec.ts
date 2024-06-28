@@ -21,10 +21,6 @@ describe('MembershipDao', () => {
     return testingModule.afterEach();
   });
 
-  it('should be defined', () => {
-    expect(membershipDao).toBeDefined();
-  });
-
   describe('addMembership()', () => {
     it('add membership with default role', async () => {
       const { member, profile } = await testData.createSimpleGroup();

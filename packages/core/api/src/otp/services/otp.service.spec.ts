@@ -19,10 +19,6 @@ describe('OtpService', () => {
     return testingModule.afterEach();
   });
 
-  it('should be defined', () => {
-    expect(userOtpService).toBeDefined();
-  });
-
   describe('createOrUpdateUserOtp', () => {
     it('create default opt', async () => {
       const user = new User({ _id: getObjectId('user1'), status: UserStatus.Active });

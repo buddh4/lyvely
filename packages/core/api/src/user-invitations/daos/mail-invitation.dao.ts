@@ -1,20 +1,10 @@
-import { AbstractDao, Model } from '@/core';
+import { AbstractDao, Dao } from '@/core';
 import { MailInvitation } from '../schemas';
-import { InjectModel } from '@nestjs/mongoose';
+import { TenancyIsolation } from '@/core/tenancy';
 
+@Dao(MailInvitation, { isolation: TenancyIsolation.Strict })
 export class MailInvitationDao extends AbstractDao<MailInvitation> {
-  @InjectModel(MailInvitation.name)
-  protected model: Model<MailInvitation>;
-
   async findByToken(token: string): Promise<MailInvitation | null> {
     return this.findOne({ token });
-  }
-
-  getModuleId(): string {
-    return 'invitations';
-  }
-
-  getModelConstructor() {
-    return MailInvitation;
   }
 }

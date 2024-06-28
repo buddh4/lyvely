@@ -9,7 +9,7 @@ import {
   buildProfileTest,
 } from '../testing';
 import { INestApplication } from '@nestjs/common';
-import { ProfileDao } from '../daos';
+import { ProfilesDao } from '../daos';
 import { toTimingId } from '@lyvely/dates';
 
 const testScoreModelDef = {
@@ -22,8 +22,7 @@ describe('AbstractUserProfileActionService', () => {
   let testingModule: ILyvelyTestingModule;
   let testProfileActionService: TestProfileScoreService;
   let testData: ProfileTestDataUtils;
-  let profileDao: ProfileDao;
-  let app: INestApplication;
+  let profileDao: ProfilesDao;
 
   const TEST_KEY = 'abstract_user_profile_action_service';
 
@@ -31,21 +30,15 @@ describe('AbstractUserProfileActionService', () => {
     testingModule = await buildProfileTest(TEST_KEY)
       .providers([TestProfileScoreTypeDao, TestProfileScoreService])
       .models([testScoreModelDef])
+      .withApp()
       .compile();
     testProfileActionService = testingModule.get<TestProfileScoreService>(TestProfileScoreService);
     testData = testingModule.get(ProfileTestDataUtils);
-    profileDao = testingModule.get(ProfileDao);
-    app = testingModule.createNestApplication();
-    await app.init();
+    profileDao = testingModule.get(ProfilesDao);
   });
 
   afterEach(async () => {
-    await app.close();
     await testingModule.afterEach();
-  });
-
-  it('should be defined', () => {
-    expect(testProfileActionService).toBeDefined();
   });
 
   describe('createUserProfileAction()', () => {

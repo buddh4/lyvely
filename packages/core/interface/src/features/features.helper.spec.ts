@@ -1,6 +1,6 @@
 import { clearFeatures, registerFeatures } from './feature.registry';
 import { isEnabledGlobalFeature } from './features.helper';
-import { FeatureType } from "./interfaces";
+import { FeatureType } from './interfaces';
 
 describe('isEnabledProfileFeature', function () {
   afterEach(() => clearFeatures);
@@ -12,7 +12,7 @@ describe('isEnabledProfileFeature', function () {
         moduleId: 'test',
         name: 'test.feature',
         enabledByDefault: true,
-        type: FeatureType.Global
+        type: FeatureType.Global,
       },
     ]);
 
@@ -26,7 +26,7 @@ describe('isEnabledProfileFeature', function () {
         moduleId: 'test',
         name: 'test.feature',
         enabledByDefault: true,
-       type: FeatureType.Profile
+        type: FeatureType.Profile,
       },
     ]);
 
@@ -40,7 +40,7 @@ describe('isEnabledProfileFeature', function () {
         moduleId: 'test',
         name: 'test.feature',
         enabledByDefault: false,
-        type: FeatureType.Global
+        type: FeatureType.Global,
       },
     ]);
 
@@ -54,7 +54,7 @@ describe('isEnabledProfileFeature', function () {
         moduleId: 'test',
         name: 'test.feature',
         enabledByDefault: true,
-        type: FeatureType.Global
+        type: FeatureType.Global,
       },
     ]);
 
@@ -68,7 +68,7 @@ describe('isEnabledProfileFeature', function () {
         moduleId: 'test',
         name: 'test.feature',
         enabledByDefault: true,
-        type: FeatureType.Global
+        type: FeatureType.Global,
       },
       {
         id: 'test.sub',
@@ -76,7 +76,7 @@ describe('isEnabledProfileFeature', function () {
         name: 'test.feature',
         enabledByDefault: true,
         dependencies: ['test'],
-        type: FeatureType.Global
+        type: FeatureType.Global,
       },
     ]);
 
@@ -94,7 +94,7 @@ describe('isEnabledProfileFeature', function () {
         moduleId: 'test',
         name: 'test.feature',
         enabledByDefault: true,
-        type: FeatureType.Global
+        type: FeatureType.Global,
       },
       {
         id: 'test.sub',
@@ -102,7 +102,7 @@ describe('isEnabledProfileFeature', function () {
         name: 'test.feature',
         enabledByDefault: true,
         dependencies: ['test'],
-        type: FeatureType.Global
+        type: FeatureType.Global,
       },
     ]);
 
