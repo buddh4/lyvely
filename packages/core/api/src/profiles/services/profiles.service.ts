@@ -47,9 +47,8 @@ import {
 import { ProfileSettingsService } from './profile-settings.service';
 import { ProfilePermissionsService } from './profile-permissions.service';
 import { GlobalPermissionsService, type PermissionConfig } from '@/permissions';
-import { pick } from '@lyvely/common';
+import { pick, isNotNil } from '@lyvely/common';
 import { LyvelyConfigService } from '@/config';
-import { isNotNil } from '@lyvely/common/src';
 
 @Injectable()
 export class ProfilesService {
