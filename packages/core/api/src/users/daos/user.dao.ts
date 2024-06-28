@@ -9,12 +9,17 @@ import {
 import { RefreshToken, User, UserEmail } from '../schemas';
 import { ProfileType } from '@lyvely/interface';
 import { TenancyIsolation } from '@/core/tenancy';
+import { LegacyLocaleTransformation } from '../schemas/transformations';
 
 /**
  * Data Access Object for accessing user entities.
  */
 @Dao(User, { isolation: TenancyIsolation.Strict })
 export class UserDao extends AbstractDao<User> {
+  constructor() {
+    super();
+    this.registerTransformations(new LegacyLocaleTransformation());
+  }
   /**
    * Finds a user by their username in a case-insensitive manner.
    * @param username
