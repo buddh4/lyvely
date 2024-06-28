@@ -73,6 +73,7 @@ export const useTaskCalendarPlanStore = defineStore('taskCalendarPlan', () => {
     try {
       const result = await client.setDone(task.id, calendarPlanStore.date);
       task.state.done = result.done;
+      task.state.timer.stop();
       task.meta.updatedAt = new Date();
       profileStore.updateScore(result.score);
     } catch (e) {

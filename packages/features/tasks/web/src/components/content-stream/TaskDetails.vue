@@ -24,6 +24,8 @@ const openTask = () => taskStore.setTaskSelection(props.model, false);
 const startTimer = async () => taskStore.startTimer(props.model);
 const stopTimer = async () => taskStore.stopTimer(props.model);
 const updateTimer = async (value: number) => taskStore.updateTimer(props.model, value);
+
+const canStartTimer = computed(() => !isDisabled.value && !isDone.value);
 </script>
 
 <template>
@@ -46,7 +48,7 @@ const updateTimer = async (value: number) => taskStore.updateTimer(props.model, 
       <div class="flex justify-end">
         <timer-state
           :key="model.state.timer.calculateTotalSpan()"
-          :startable="!isDisabled"
+          :startable="canStartTimer"
           :model="model.state.timer"
           :show-time-on-init="!!model.state.done"
           @start="startTimer"

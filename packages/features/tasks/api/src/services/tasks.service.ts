@@ -47,7 +47,6 @@ export class TasksService extends ContentTypeService<Task, CreateTaskModel> {
     context: ProtectedProfileContext,
     model: CreateTaskModel
   ): Promise<Task> {
-    const { profile } = context;
     return Task.create(context, model);
   }
 
@@ -87,15 +86,27 @@ export class TasksService extends ContentTypeService<Task, CreateTaskModel> {
    * @returns {Promise<Task>} - The updated task.
    */
   async setDone(context: ProtectedProfileContext, task: Task, date: CalendarDate): Promise<Task> {
-    const { user, profile } = context;
-    const wasDone = task.isDone(user);
+    const wasDone = task.isDone(context.user);
 
+    // TODO: We should merge the status + timer update here
+    await Promise.all([
+      this.saveStatusDone(context, task, date),
+      this.stopTimer(context, task),
+      !wasDone ? this.saveScore(context, task, date) : Promise.resolve(),
+    ]);
+
+    return task;
+  }
+
+  private async saveStatusDone(context: ProtectedProfileContext, task: Task, date: CalendarDate) {
+    const { user, profile } = context;
     const timingId = toTimingId(
       date,
       task.config.interval,
       profile.locale,
       profile.settings?.calendar
     );
+
     const doneBy = { uid: assureObjectId(user), tid: timingId, date: new Date() };
     const isDoneByUser = task.isDoneByUser(user);
 
@@ -111,12 +122,6 @@ export class TasksService extends ContentTypeService<Task, CreateTaskModel> {
     } else {
       await this.contentDao.updateDoneBy(profile, task, doneBy);
     }
-
-    if (!wasDone) {
-      await this.saveScore(context, task, date);
-    }
-
-    return task;
   }
 
   private async saveScore(

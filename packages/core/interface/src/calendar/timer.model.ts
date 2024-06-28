@@ -45,6 +45,7 @@ export class TimerModel<TID = string> {
   }
 
   stop() {
+    if (!this.isStarted()) return;
     const span = this.getLatestSpan();
     if (!span) return;
     span.to = Date.now();
