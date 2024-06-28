@@ -7,8 +7,8 @@ import {
 } from '../interfaces';
 import { useDataPointStrategyFacade } from '../components';
 import { NumberDataPointModel } from '../models';
-import { PropertiesOf } from '@lyvely/common';
-import { isDefined, isNumber } from 'class-validator';
+import { PropertiesOf, isNotNil, isNil } from '@lyvely/common';
+import { isNumber } from 'class-validator';
 import { DataPointStrategy } from './data-point.strategy';
 
 export class NumberDataPointStrategy extends DataPointStrategy<
@@ -22,22 +22,22 @@ export class NumberDataPointStrategy extends DataPointStrategy<
   }
 
   async validateValue(config: INumberDataPointConfig, value: number) {
-    return isNumber(value) && (!isDefined(config.max) || value <= config.max!);
+    return isNumber(value) && (isNil(config.max) || value <= config.max!);
   }
 
   prepareValue(config: INumberDataPointConfig, value: number) {
-    return isDefined(config.max) && isNumber(value) ? Math.min(value, config.max!) : value;
+    return isNotNil(config.max) && isNumber(value) ? Math.min(value, config.max!) : value;
   }
 
   prepareConfig(config: INumberDataPointSettings) {
-    if (isDefined(config.optimal) && isDefined(config.max) && config.optimal! > config.max!)
+    if (isNotNil(config.optimal) && isNotNil(config.max) && config.optimal! > config.max!)
       config.optimal = config.max;
-    if (isDefined(config.min) && isDefined(config.max) && config.min! > config.max!)
+    if (isNotNil(config.min) && isNotNil(config.max) && config.min! > config.max!)
       config.min = config.max;
-    if (isDefined(config.min) && isDefined(config.optimal) && config.min! > config.optimal!)
+    if (isNotNil(config.min) && isNotNil(config.optimal) && config.min! > config.optimal!)
       config.optimal = config.min;
 
-    if (!isDefined(config.max) && config.inputType === DataPointInputType.Checkbox) {
+    if (isNil(config.max) && config.inputType === DataPointInputType.Checkbox) {
       config.max = 1;
     }
 
@@ -45,7 +45,7 @@ export class NumberDataPointStrategy extends DataPointStrategy<
       config.max = Math.min(8, config.max);
     }
 
-    if (!isDefined(config.max) && config.inputType === DataPointInputType.Range) {
+    if (isNil(config.max) && config.inputType === DataPointInputType.Range) {
       config.max = 10;
     }
   }

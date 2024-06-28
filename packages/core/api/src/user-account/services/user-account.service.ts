@@ -9,7 +9,7 @@ import {
 } from '@lyvely/interface';
 import { InvalidOtpException, OtpService } from '@/otp';
 import { DocumentIdentity } from '@/core';
-import { escapeHTML, isValidEmail } from '@lyvely/common';
+import { escapeHTML, isValidEmail, isNotNil } from '@lyvely/common';
 import { MailService } from '@/mails';
 import { getEnabledLocales, getTimezones } from '@lyvely/dates';
 import { ISettingUpdate } from '@/settings';
@@ -17,7 +17,6 @@ import {
   USER_SETTING_CALENDAR_PREFERENCE_YEARSTART,
   USER_SETTING_CALENDAR_PREFERENCE_WEEKSTART,
 } from '@/user-account/user-account.constants';
-import { isDefined } from 'class-validator';
 import { LyvelyConfigService } from '@/config';
 
 const OTP_PURPOSE_VERIFY_SECONDARY_EMAIL = 'verify-secondary-email';
@@ -191,11 +190,11 @@ export class UserAccountService {
 
     const { weekStart, yearStart } = preferences;
 
-    if (isDefined(weekStart)) {
+    if (isNotNil(weekStart)) {
       update.push({ key: USER_SETTING_CALENDAR_PREFERENCE_WEEKSTART, value: weekStart });
     }
 
-    if (isDefined(yearStart)) {
+    if (isNotNil(yearStart)) {
       update.push({ key: USER_SETTING_CALENDAR_PREFERENCE_YEARSTART, value: yearStart });
     }
 

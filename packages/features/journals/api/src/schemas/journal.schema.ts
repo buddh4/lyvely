@@ -21,7 +21,6 @@ import {
   User,
   assureObjectId,
   NestedSchema,
-  Profile,
   ContentDataType,
   TObjectId,
   ProtectedProfileContext,

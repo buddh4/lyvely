@@ -26,7 +26,7 @@ const weekStartName = computed(() => {
   return getLocalizedDayName(weekStart, 'long', user.value!.locale || getFallbackLocale());
 });
 
-const weekStrategy = [
+const yearStartNames = [
   t('user-account.i18n.week-strategy.0'),
   t('user-account.i18n.week-strategy.1'),
   t('user-account.i18n.week-strategy.2'),
@@ -39,7 +39,7 @@ const weekStrategy = [
 const yearStartName = computed(() => {
   let { yearStart } = getDefaultCalendarPreferences(user.value!.locale || getFallbackLocale());
   yearStart = authStore.getSetting<number>(USER_SETTING_CALENDAR_PREFERENCE_YEARSTART, yearStart);
-  return weekStrategy[yearStart];
+  return yearStartNames[yearStart];
 });
 </script>
 
@@ -107,7 +107,7 @@ const yearStartName = computed(() => {
         class="flex cursor-pointer rounded p-3 hover:bg-highlight"
         @click="yearStart = i">
         <div class="flex-grow">
-          {{ weekStrategy[i] }}
+          {{ yearStartNames[i] }}
         </div>
         <ly-radio v-model="yearStart" :value="i" />
       </div>

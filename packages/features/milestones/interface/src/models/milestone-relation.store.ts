@@ -2,8 +2,7 @@ import { CalendarPlanStore } from '@lyvely/calendar-plan-interface';
 import { MilestoneModel } from './milestone.model';
 import { MilestoneRelationModel } from './milestone-relation.model';
 import { MilestoneSearchResponse } from './milestone-search.response';
-import { isDefined } from 'class-validator';
-import { mergePercentages } from '@lyvely/common';
+import { mergePercentages, isNil, isNotNil } from '@lyvely/common';
 
 type MilestoneIdentity = MilestoneModel | string;
 type MID = string;
@@ -72,7 +71,7 @@ export class MilestoneRelationsStore extends CalendarPlanStore<
     if (!tidStore) return;
 
     const relationIndex = tidStore?.findIndex((r) => r.cid === relation.cid);
-    if (tidStore && isDefined(relationIndex) && 'undefined' && relationIndex! < 0) {
+    if (tidStore && isNotNil(relationIndex) && 'undefined' && relationIndex! < 0) {
       tidStore.push(relation);
     } else {
       tidStore[relationIndex] = relation;
@@ -81,7 +80,7 @@ export class MilestoneRelationsStore extends CalendarPlanStore<
 
   calculateProgress(identity: MilestoneIdentity, timingId: string): number | undefined {
     const progresses = this.getRelations(identity, timingId)
-      .filter((relation) => isDefined(relation.progress))
+      .filter((relation) => isNotNil(relation.progress))
       .map<number>((relation) => relation.progress!);
     return progresses.length ? mergePercentages(progresses) : undefined;
   }
@@ -96,8 +95,8 @@ export class MilestoneRelationsStore extends CalendarPlanStore<
       if (a && !b) return 1;
       if (!a && b) return -1;
       if (a && b) {
-        if (isDefined(a.progress) && !isDefined(b.progress)) return -1;
-        if (!isDefined(a.progress) && isDefined(b.progress)) return 1;
+        if (isNotNil(a.progress) && isNil(b.progress)) return -1;
+        if (isNil(a.progress) && isNotNil(b.progress)) return 1;
         if (a.progress! > b.progress!) return 1;
         if (a.progress! < b.progress!) return -1;
       }

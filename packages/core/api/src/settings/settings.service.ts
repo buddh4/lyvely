@@ -1,10 +1,10 @@
 import { AbstractDao, BaseDocument, DocumentIdentity } from '@/core';
 import { SettingsRegistry } from '@/settings/settings.registry';
 import { FieldValidationException, ISetting } from '@lyvely/interface';
-import { IFieldValidationResult } from '@lyvely/common';
+import { IFieldValidationResult, isNotNil } from '@lyvely/common';
 import { Logger } from '@nestjs/common';
 import { ISettingUpdate } from '@/settings/settings.interface';
-import { isBoolean, isDefined, isNumber, isString } from 'class-validator';
+import { isBoolean, isNumber, isString } from 'class-validator';
 
 export abstract class SettingsService<TModel extends BaseDocument & { settings: any }> {
   protected abstract logger: Logger;
@@ -20,7 +20,7 @@ export abstract class SettingsService<TModel extends BaseDocument & { settings: 
         const { key, value } = update;
         const setting = this.settingsRegistry.getSetting(key);
 
-        if (isDefined(setting) && this.validateSettingValue(setting!, value)) {
+        if (isNotNil(setting) && this.validateSettingValue(setting!, value)) {
           result[`settings.${setting!.key}`] = value;
         } else {
           validationErrors.push({ property: key });

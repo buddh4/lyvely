@@ -40,20 +40,16 @@ import {
 import { ProfileMembershipService } from './profile-membership.service';
 import { ProfileRelationsService } from './profile-relations.service';
 import { ISettingUpdate } from '@/settings';
-import { isDefined } from 'class-validator';
 import {
   USER_SETTING_CALENDAR_PREFERENCE_WEEKSTART,
   USER_SETTING_CALENDAR_PREFERENCE_YEARSTART,
 } from '@/user-account/user-account.constants';
 import { ProfileSettingsService } from './profile-settings.service';
 import { ProfilePermissionsService } from './profile-permissions.service';
-import {
-  CONFIG_PATH_PERMISSION_VISITOR_STRATEGY,
-  GlobalPermissionsService,
-  type PermissionConfig,
-} from '@/permissions';
+import { GlobalPermissionsService, type PermissionConfig } from '@/permissions';
 import { pick } from '@lyvely/common';
 import { LyvelyConfigService } from '@/config';
+import { isNotNil } from '@lyvely/common/src';
 
 @Injectable()
 export class ProfilesService {
@@ -677,11 +673,11 @@ export class ProfilesService {
 
     const { weekStart, yearStart } = preferences;
 
-    if (isDefined(weekStart)) {
+    if (isNotNil(weekStart)) {
       update.push({ key: USER_SETTING_CALENDAR_PREFERENCE_WEEKSTART, value: weekStart });
     }
 
-    if (isDefined(yearStart)) {
+    if (isNotNil(yearStart)) {
       update.push({ key: USER_SETTING_CALENDAR_PREFERENCE_YEARSTART, value: yearStart });
     }
 

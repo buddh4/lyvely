@@ -9,8 +9,7 @@ import {
 import { UserStatus } from '@/users/interfaces/user-status.enum';
 import { VisitorMode } from '@/permissions/interfaces/visitor-strategy.interface';
 import { IntegrityException } from '@/exceptions';
-import { isDefined } from 'class-validator';
-import { clamp, hasIntersection } from '@lyvely/common';
+import { clamp, hasIntersection, isNotNil } from '@lyvely/common';
 
 /**
  * AbstractPermissionsService is an abstract class that provides common functionality for permission services.
@@ -293,7 +292,7 @@ export abstract class AbstractPermissionsManager<
     // If the role is not associated with a status we assume its active by default e.g. visitors.
     if (!userStatus) return true;
     const userStatusRequirement = permission.userStatuses || [UserStatus.Active];
-    return !isDefined(userStatus) || userStatusRequirement.includes(userStatus!);
+    return isNotNil(userStatus) || userStatusRequirement.includes(userStatus!);
   }
 
   /**

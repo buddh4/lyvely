@@ -3,8 +3,8 @@ import { Habit, type HabitDataPoint, HabitScore } from '../schemas';
 import { DataPointService, IDataPointUpdateResult, TimerDataPointValue } from '@lyvely/time-series';
 import { HabitDataPointDao } from '../daos';
 import { ContentScoreService, ProtectedProfileContext } from '@lyvely/api';
-import { isDefined } from 'class-validator';
 import { CalendarDate, getFullDayTZDate } from '@lyvely/dates';
+import { isNotNil } from '@lyvely/common';
 
 @Injectable()
 export class HabitDataPointService extends DataPointService<Habit, HabitDataPoint> {
@@ -47,7 +47,7 @@ export class HabitDataPointService extends DataPointService<Habit, HabitDataPoin
 
   private static calculateDataPointScore(habit: Habit, value: HabitDataPoint['value']): number {
     if (typeof value === 'number') {
-      const newValue = isDefined(habit.timeSeriesConfig.max)
+      const newValue = isNotNil(habit.timeSeriesConfig.max)
         ? Math.min(value, habit.timeSeriesConfig.max!)
         : value;
       return newValue * habit.config.score;

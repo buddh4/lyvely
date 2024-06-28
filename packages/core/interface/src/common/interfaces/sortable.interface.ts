@@ -48,5 +48,5 @@ export function sortBySortOrder(a: ISortable, b: ISortable) {
   if (aSortOrder === bSortOrder) return 0;
   if (typeof aSortOrder === 'undefined') return 1;
   if (typeof bSortOrder === 'undefined') return -1;
-  return (aSortOrder || 0) - (bSortOrder || 0);
+  return (aSortOrder ?? 0) - (bSortOrder ?? 0);
 }

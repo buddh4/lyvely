@@ -9,13 +9,12 @@ import {
   DocumentNotFoundException,
 } from '@lyvely/interface';
 import { MailService } from '@/mails';
-import { isValidEmail } from '@lyvely/common';
+import { isValidEmail, isNotNil } from '@lyvely/common';
 import { User, UsersService } from '@/users';
 import { JwtSignOptions } from '@nestjs/jwt/dist/interfaces';
 import { JwtService } from '@nestjs/jwt';
 import { assureObjectId, type AuthModuleConfig } from '@/core';
 import { InvitationDao } from '../daos';
-import { isDefined } from 'class-validator';
 import { Invitation, MailInvitation, UserInvitation } from '../schemas';
 import { NotificationService } from '@/notifications';
 import { ProfileInvitationNotification } from '../notifications';
@@ -216,7 +215,7 @@ export class SendInvitationsService {
   private async userCanInviteUsers(host: User, inviteRequest: InvitationRequest) {
     const invites = inviteRequest.invites;
     const config = this.configService.getModuleConfig('user-invitations', {});
-    if (isDefined(config.maxPerWeek)) {
+    if (isNotNil(config.maxPerWeek)) {
       const invitesPerWeek = await this.inviteDao.countInvitesByUserThisWeek(host);
       if (invitesPerWeek + invites.length > config.maxPerWeek) {
         throw new MaxInvitationError(config.maxPerWeek - (invitesPerWeek + invites.length));
