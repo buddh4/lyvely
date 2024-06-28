@@ -21,7 +21,7 @@ export interface IProps {
   options?: IConfirmOptions;
 }
 
-withDefaults(defineProps<IProps>(), {
+const props = withDefaults(defineProps<IProps>(), {
   submit: false,
   active: false,
   text: '',
@@ -44,7 +44,7 @@ function onClick() {
 </script>
 
 <template>
-  <ly-button v-bind="omit(attrs, 'options')" @click="onClick">
+  <ly-button v-bind="{ ...props, ...omit(attrs, 'options') }" @click="onClick">
     <slot />
   </ly-button>
   <ly-confirm-modal v-model="showConfirm" :options="options" @submit="$emit('click')">
