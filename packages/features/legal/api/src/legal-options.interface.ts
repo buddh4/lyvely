@@ -1,3 +1,5 @@
+import type { ModuleConfig } from '@lyvely/api';
+
 export interface ILegalOptions {
   poweredBy?: boolean;
   sections: {
@@ -19,3 +21,5 @@ export interface ILegalOptions {
     };
   };
 }
+
+export type LegalConfig = ModuleConfig<'legal', ILegalOptions>;

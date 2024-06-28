@@ -8,12 +8,13 @@ import {
 import { LegalService } from './services';
 import { ILegalAppConfig } from '@lyvely/legal-interface';
 import { LEGAL_MODULE_ID } from './legal.constants';
+import type { LegalConfig } from './legal-options.interface';
 
 @Injectable()
 export class LegalEvents {
   constructor(
     private readonly legalService: LegalService,
-    private readonly configService: LyvelyConfigService
+    private readonly configService: LyvelyConfigService<LegalConfig>
   ) {}
 
   @OnEvent(EVENT_MODULE_APP_CONFIG_ASSEMBLY)

@@ -1,14 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { LyvelyConfigService } from '@lyvely/api';
 import { LegalSection, LegalSectionDetails } from '@lyvely/legal-interface';
-import type { ILegalOptions } from '../legal-options.interface';
-import type { ModuleConfig } from '@lyvely/api';
+import type { LegalConfig } from '../legal-options.interface';
 
 @Injectable()
 export class LegalService {
-  constructor(
-    private readonly configService: LyvelyConfigService<ModuleConfig<'legal', ILegalOptions>>
-  ) {}
+  constructor(private readonly configService: LyvelyConfigService<LegalConfig>) {}
 
   async getSections(locale: string): Promise<LegalSection[]> {
     const result = [] as LegalSection[];
@@ -33,7 +30,7 @@ export class LegalService {
   }
 
   private attachPoweredBy(result: LegalSection[]) {
-    if (this.configService.getModuleConfig('poweredBy', true)) {
+    if (this.configService.getModuleConfig('legal', 'poweredBy', true)) {
       result.push({
         id: 'poweredBy',
         label: 'Powered by lyvely',
@@ -64,8 +61,7 @@ export class LegalService {
 
     if (!locale || !section?.locales) return section;
 
-    while (true) {
-      if (section.locales[locale] || locale.indexOf('-') === -1) break;
+    while (!(section.locales[locale] || locale.indexOf('-') === -1)) {
       locale = locale.slice(0, locale.lastIndexOf('-'));
     }
 
