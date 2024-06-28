@@ -1,5 +1,4 @@
 import { Type } from './util.types';
-import { isDefined } from 'class-validator';
 import _ from './custom-lodash';
 
 const BLACKLISTED_PATH = [
@@ -184,10 +183,10 @@ export function findByPath<T>(
     } else if (result && !result[sub] && options?.create && index !== subPaths.length) {
       result[sub] = index !== subPaths.length - 1 ? {} : options?.defaultValue || {};
     }
-    result = isDefined(result?.[sub]) ? result[sub] : undefined;
+    result = isNotNil(result?.[sub]) ? result[sub] : undefined;
   });
 
-  return result || options?.defaultValue;
+  return result ?? options?.defaultValue;
 }
 
 /**
