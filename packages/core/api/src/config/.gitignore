@@ -1,3 +1,5 @@
 *.config.ts
+lyvely.development.config.ts
+lyvely.ts
 !lyvely.default.config.ts
 !lyvely.e2e.config.ts
