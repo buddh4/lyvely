@@ -1,0 +1,3 @@
+*.config.ts
+!lyvely.default.config.ts
+!lyvely.e2e.config.ts

@@ -45,7 +45,7 @@ export type BaseModelData<TModel extends object> =
  * @template T - The type of the model.
  */
 export const BaseModel = {
-  init<TModel extends Object = any>(
+  init<TModel extends object>(
     instance: TModel,
     data?: BaseModelData<TModel>,
     options?: InitModelDataOptions

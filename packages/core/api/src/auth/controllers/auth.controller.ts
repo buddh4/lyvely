@@ -118,8 +118,6 @@ export class AuthController extends AbstractJwtAuthController implements AuthEnd
 
     clearAccessCookies(res!);
     clearRefreshCookies(res!);
-    req.user = undefined as any;
-    // TODO: trigger event
   }
 
   getVisitorIdHeader(req: UserRequest): string {

@@ -19,7 +19,7 @@ export class MulterConfigFactory implements MulterOptionsFactory {
     };
   }
 
-  static getUploadDirectoryPath(configService: LyvelyConfigService<any>): string {
+  static getUploadDirectoryPath(configService: LyvelyConfigService): string {
     return configService.getModuleConfig<string>(
       'files',
       'upload.dest',
