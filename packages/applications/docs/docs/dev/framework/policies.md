@@ -6,8 +6,8 @@ while Permissions primarily focus on determining whether a user has permission f
 permissions, Policies can perform more intricate checks, including interactions with other services or server configurations.
 
 To illustrate, consider the example of write access to content documents. This access cannot rely solely on permission 
-checks. For instance, content should be writable by its author, but not if it is locked or archived. Some content types
-may also define specific rules for writing or deleting content—all of which can
+checks. For instance, content should be writable by its author, but not if the content is locked or the content type
+does not allow being written. Some content types may also define specific rules for writing or deleting content—all of which can
 be addressed using Policies.
 
 Policies are globally accessible and can be integrated into your services or used in conjunction with 
@@ -15,7 +15,7 @@ controller guards.
 
 It's worth noting that Policies are mainly employed in the backend. If there's a need to access certain policies 
 in the frontend, your module should provide access either through API endpoints or by injecting policies into the 
-application or profile configuration.
+app configuration.
 
 ## `IPolicy` Interface
 
@@ -45,11 +45,12 @@ export class ClosePollPolicy implements IContentPolicy<Poll> {
 }
 ```
 
-:::info
+:::warning
 When injecting dependencies into your policy, it's advisable to utilize the 
 [NestJS ModuleRef](https://docs.nestjs.com/fundamentals/module-ref) mechanism. This is recommended since 
 your policy will be part of a global policy module rather than the module where it is defined. 
-Using `ModuleRef` ensures that dependencies can be correctly resolved within the NestJS application context.
+Using `ModuleRef` ensures that dependencies can be correctly resolved within the NestJS application context. Also, make 
+sure your module exports all services consumed by your policies.
 :::
 
 ## Export a Policy

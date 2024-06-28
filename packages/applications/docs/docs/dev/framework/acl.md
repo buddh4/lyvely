@@ -49,32 +49,7 @@ to visitors.
 
 Endpoints with stricter ACL requirements must be equipped with the corresponding decorators.
 
-### `@GlobalController`
-
-This decorator should be used for non profile related controllers and adds support for global permission check using
-the `@Permissions` decorator.
-
-### `@ProfileController`
-
-This decorator should be used for all profile related controllers. Using this decorator will ensure that the request is
-a valid profile request and adds support for various profile access checks and adds a `ProfileContext` to the controller 
-request. You can use the following request types for your controller, depending
-on the defined access rules of your endpoint:
-
-
-
-### `@ContentTypeController`
-
-This decorator should be used for all profile content related controllers. Using this decorator will ensure that the 
-request is a valid profile content request and adds support for various content related access checks as content type 
-and content. You can use the following request types for your controller, depending on the defined access rules of 
-your endpoint:
-
-- `ProfileContentRequest`: A profile request with an optional `user` and `ProfileContentContext` in case of visitor access.
-- `ProtectedProfileContentRequest`: A profile request with a `user` and `ProtectedProfileContentContext` (no visitor access).
-- `ProfileMemberContentRequest`: A profile request of a valid member `user` and `ProfileMembershipContentContext`.
-
-### `@Public` Endpoints
+### `@Public`
 
 Public endpoints are endpoints that never require any kind of authentication, even if the visitor mode is disabled
 such as the login or app-config endpoint. Public routes are marked with the `@Public` decorator at
@@ -89,13 +64,13 @@ You may want to use the `@Public` decorator in some cases when using custom [JWT
 the default jwt authentication.
 :::
 
-### `@ProfileEndpoint` Decorator
+### `@ProfileEndpoint`
 
 The `@ProfileEndpoint` can be used to add profile guard support on `@GlobalController` controller functions. This may be used
 if you need to mix global and profile controller logic within a single controller. Note mixing global and profile context
 is usually not recommended since it increases the complexity of your controller and therefore is prone to errors.
 
-### `@UserRoleAccess` Decorator
+### `@UserRoleAccess`
 
 The `@UserRoleAccess` decorator can be used to restrict the access to an endpoint by defining one of the following
 user roles levels, which will grant access for the given role and all roles above:
@@ -107,7 +82,7 @@ user roles levels, which will grant access for the given role and all roles abov
 | User      | Adds access for any active user.                                |
 | Visitor   | Grants access for all users and platform visitors (if enabled). |
 
-### `@UserStatusAccess` Decorator
+### `@UserStatusAccess`
 
 The `@UserStatusAccess` decorator can be used to restrict the access to an endpoint by defining one of the following
 user statuses. If no such decorator is defined we only allow access of authenticated users with an `active` status and skip
@@ -120,7 +95,7 @@ this check for visitor users. In order to skip this check and allow any user sta
 | EmailVerification | User awaiting email verification. |
 | Locked            | A temporarily locked user.        |
 
-### The `@ProfileRoleAccess` Decorator
+### `@ProfileRoleAccess`
 
 The `@ProfileRoleAccess` decorator can be used to restrict the access to an endpoint by defining one of the following 
 profile roles levels, which will grant access for the given role and all roles above.
@@ -141,7 +116,7 @@ This decorator is only valid on controllers marked with a `@ProfileController` i
 | User         | Adds access for any active user of the platform.                |
 | Visitor      | Grants access for all users and platform visitors (if enabled). |
 
-### `@Permissions` Decorator
+### `@Permissions`
 
 The `@Permissions` decorator can be used to restrict controller access by permissions.
 
@@ -149,7 +124,7 @@ The `@Permissions` decorator can be used to restrict controller access by permis
 Please refer to the [Permissions Section](permissions.md) for more information.
 :::
 
-### `@Feature` Decorator
+### `@Feature`
 
 The `@Feature` decorator can be used to restrict controller access by feature switch.
 
@@ -157,7 +132,7 @@ The `@Feature` decorator can be used to restrict controller access by feature sw
 Please refer to the [Features Section](features.md) for more information.
 :::
 
-### `@Policy` Decorator
+### `@Policy`
 
 The `@Policy` decorator can be used to restrict controller access by policies.
 
@@ -207,47 +182,12 @@ visibility levels:
 For even more granular control over access, you can employ the `permissions` route metadata setting. 
 This allows you to restrict access to routes based on specific permissions user permissions.
 
-### ´v-if-feature´ directive
-
-The `v-if-feature` directive can be used to show or hide ui elements depending on feature switches. In case of profile
-features the directive checks against active features of the currently active profile. 
-
-```html
-<template>
-    <div v-if-feature="'polls'">
-        <!-- This content will only be rendered if the polls feature is active on the current profile. -->
-    </div>
-</template>
-```
-
-In the following example we check for multiple features on a component:
-
-```html
-```html
-<template>
-    <!-- This button will only be rendered if both sub features are active on the current profile. -->
-    <ly-button v-if-feature="['polls.subfeature1', 'polls.subfeature2']" />
-</template>
-```
-
-### ´v-if-permission´ directive
-
-The `v-if-permission` directive is designed to dynamically display or hide UI elements based on specific permissions. 
-When it comes to profile permissions, this directive verifies the permission settings associated with the currently
-active profile.
-
-:::warning
-This directive currently should only be used for plain html elements and not component due to the fact that components
-with multiple root elements do not support custom directives in vue. Therefore, its currently not supported
-on components  like `<ly-button>`.  In such cases use `useProfileStore().verifyPermissions()` instead.
-:::
-
 ## JWT
 
 In certain cases, security requirements may demand the implementation of custom JWT-based access guards. To address 
 this need, Lyvely provides support for a basic `JwtStrategy` within the `@lyvely/api` package.
 
-### Implementing a Custom JWT Strategy
+### Custom JWT Strategies
 
 Below is an example demonstrating the creation of a custom JWT guard to manage access for a "reset password" endpoint:
 
@@ -293,7 +233,7 @@ The `auth.jwt.verify.secret` will be used by default and could be omitted in our
 By default, disabled users are blocked, and tokens issued before the `sessionResetAt` user property are invalidated.
 :::
 
-### Implementing a Custom JWT Guard
+### Custom JWT Guards
 
 We can now create a corresponding guard for our password reset strategy as follows:
 
@@ -301,8 +241,6 @@ We can now create a corresponding guard for our password reset strategy as follo
 @Injectable()
 export class JwtRefreshGuard extends AuthGuard(JWT_RESET_PASSWORD_TOKEN) {}
 ```
-
-### Using a Custom JWT Guard
 
 Now, we can assign our newly created guard to a controller, or as shown in the following example, to a controller 
 function:

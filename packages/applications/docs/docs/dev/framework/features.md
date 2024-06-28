@@ -1,7 +1,7 @@
 # Features
 
 Lyvely offers a robust mechanism for defining and managing feature switches. Features are typically defined in the 
-`Interface` layer of a module and can be utilized in both the `Web` and `API` layers to determine if specific features 
+`interface` layer of a module and can be utilized in both the `Web` and `API` layers to determine if specific features 
 are enabled or disabled, either globally or on a per-profile basis. Modules have the capability to define multiple 
 features and sub-features, granting fine-grained control over feature switches.
 
@@ -18,7 +18,7 @@ Features are described using the `IFeature` interface, which allows for the foll
 | **installable**      | Indicates whether this feature can be manually installed in the frontend.                                                                |
 | **enabledByDefault** | Specifies whether this feature is enabled by default.                                                                                    |
 | **configurable**     | Indicates whether this feature offers additional configuration settings.                                                                 |
-| **global**           | Determines whether this feature is global or profile-specific.                                                                           |
+| **type**           | Either `global` or `profile`.                                                                                                             |
 | **dependencies**     | An optional array containing IDs of dependent features. A feature is only considered enabled if all dependent features are also enabled. |
 | **categories**       | An optional array of categories used for filtering in the frontend (currently not in use).                                               |
 
@@ -98,6 +98,15 @@ function as follows:
 const isFeatureEnabled = computed(() => useProfileFeatureStore().isFeaturesEnabled(PollsFeature.id));
 ```
 
+#### `useProfileFeatures()`
+
+The `useProfileFeatures` composable accepts multiple feature ids and provides a more convenient way of accessing reactive
+feature switches:
+
+```typescript
+const { isEnabled } = useProfileFeatures(PollsFeature.id);
+```
+
 #### Feature Switch in Menus
 
 When using the `useProfileMenu`  utility, the menu API includes automatic and reactive feature switches:
@@ -107,7 +116,7 @@ import {registerMenuEntry} from "@lyvely/ui";
 
 registerMenuEntry(MY_MENU, {
   id: 'my-menu-polls',
-  features: PollsFeature.id,
+  feature: PollsFeature.id,
   // Other Options...
 })
 ```
@@ -122,14 +131,14 @@ Please refer to the [Menus Guide](../ui/menus.md) for more information about men
 
 #### Feature Switch in Routes
 
-You can restrict route access by defining the `meta.features` property of a route:
+You can restrict route access by defining the `meta.feature` property of a route:
 
 ```typescript
 export const pollsRoutes = [{
   name: 'Polls',
   path: 'polls',
   meta: {
-    features: PollsFeature.id
+    feature: PollsFeature.id
     // Other options...
   },
   //...

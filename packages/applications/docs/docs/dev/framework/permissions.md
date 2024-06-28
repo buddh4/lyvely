@@ -90,7 +90,7 @@ export default () => ({
 
 ## Configuring Permissions
 
-If there is no specific setting defined for a particular permission, the permission check will fall back to the permission
+As long as a particular permission is not overridden, the permission check will fall back to the default permission 
 configuration. The permission configuration provides the ability to override the default permission role and set default
 groups for a permission:
 
@@ -127,7 +127,7 @@ Global permissions encompass platform-wide user permissions and are associated w
 | **User**      | Any "normal" authenticated user.     |
 | **Visitor**   | Non-authenticated platform visitor.  |
 
-### Verify Global Permissions
+#### Verify Global Permissions
 
 #### Backend:
 

@@ -1,6 +1,6 @@
 # Models
 
-Model classes primarily find their use within the interface layer of a module, serving the purpose of defining Data 
+Model classes are primarily implemented in the interface layer of a module, serving the purpose of defining Data 
 Transfer Objects (DTOs) or domain models. To facilitate the creation and management of these model classes, 
 the `@lyvely/common` package offers a set of utilities, which will be detailed in the upcoming sections.
 

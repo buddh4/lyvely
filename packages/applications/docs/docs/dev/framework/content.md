@@ -182,7 +182,7 @@ In the example above we use generic types for our id fields. This is a good prac
 model classes as interfaces in our backend, which use ObjectIds instead of string ids.
 :::
 
-### Content Endpoints
+### Content Endpoint
 
 To facilitate typesafe interfaces between the frontend and backend, Lyvely promotes the use of endpoint interfaces. 
 An endpoint is defined within the interface package and can be implemented as follows:
@@ -199,7 +199,7 @@ export const API_POLLS = 'polls';
 ```
 
 
-### Client Service
+### Content Client
 
 To request our backend API we first need to implement our poll repository and client:
 
@@ -248,7 +248,7 @@ This section covers the implementation of custom content types within the API la
 managing access control and encompasses the majority of the business logic, encapsulated within service classes. 
 Additionally, it provides an intermediary data access layer, facilitating communication between services and the database.
 
-### Content Type Schema
+### Content Schema
 
 A custom content type schema derives from the abstract `ContentType` class and comprises several nested schema elements, 
 each serving a distinct purpose:
@@ -503,7 +503,7 @@ Please refer to the [Policies Section](policies.md) for further information rega
 of policies.
 :::
 
-### Content Type DAO
+### Content DAO
 
 As explained in the Data Access Overview section, Lyvely employs the **Data Access Object (DAO) pattern** for database 
 access. This pattern introduces a layer between your services and the database, responsible for abstracting complex and 
@@ -541,7 +541,7 @@ updating documents.
 
 :::
 
-### Content Type Service
+### Content Service
 
 Similar to the DAO layer, the Content API offers a base content service designed for custom content types—the 
 `ContentTypeService`. This abstract service class serves as a template for creating, querying, and updating content 
@@ -605,7 +605,7 @@ can be used as mongodb `$set` update for performance optimization.
 
 :::
 
-### Content Type Controller
+### Content Controller
 
 The base `ContentTypeController` class is used to implement our endpoint as in the following example:
 
@@ -628,7 +628,7 @@ export class PollsController
 }
 ```
 
-### Content Type Module
+### Content Module
 
 The final step of our backend implementation, includes creating our module class and registering our newly created
 content type as follows:
@@ -751,12 +751,12 @@ It serves as the space where a content type selection is dynamically injected.
 ### Content Stream Entry
 
 To create a custom stream view for our Poll content, we can implement and register a `ContentStreamEntry` component.
+In the following example we overwrite the `#image` and `#default` slot.
 
 ```html
 <script lang="ts" setup>
 import { PollModel } from 'lyvely-polls-interface';
-import { ContentModel, ContentStreamEntry, IStream } from '@lyvely/web';
-import { LyIcon } from '@lyvely/ui';
+import { IStream } from '@lyvely/web';
 
 export interface IProps {
   model: PollModel;
@@ -770,11 +770,7 @@ const props = defineProps<IProps>();
 <template>
   <content-stream-entry v-bind="props" :merge="true">
     <template #image>
-      <div class="flex justify-center rounded-full border border-divide w-8 h-8 bg-main">
-        <router-link :to="{ name: 'Polls' }">
-          <ly-icon name="polls" class="text-main" />
-        </router-link>
-      </div>
+      <!-- Some random image -->
     </template>
 
     <template #default>
@@ -795,6 +791,12 @@ const props = defineProps<IProps>();
 
 > The [Content Registration](#content-registration) section will describe how to register this component.
 
+:::tip
+In most cases you won't have to overwrite the default stream entry widget, since it already provides rendering of the
+content icon and default content fields as `title` and `text`. The Detail View is often more important and used for
+content specific details.
+:::
+
 ### Content Details View
 
 Just like our stream entry, you can also create a custom content detail component as follows:
@@ -802,8 +804,6 @@ Just like our stream entry, you can also create a custom content detail componen
 ```html
 <script lang="ts" setup>
 import { PollModel } from 'lyvely-polls-interface';
-import { ContentDetails } from '@lyvely/web';
-import { LyIcon, LyMarkdownView } from '@lyvely/ui';
 
 export interface IProps {
   model: PollModel;
@@ -899,7 +899,6 @@ The following example shows a common way of overwriting the default `ContentStre
 ```vue
 <script lang="ts" setup>
 import { SystemMessageModel, ContentModel } from '@lyvely/interface';
-import { ContentStreamEntry, StreamEntryLayout } from '@/content';
 import { IStream } from '@/stream/stream.composable';
 
 export interface IProps {

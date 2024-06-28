@@ -25,10 +25,10 @@ The following basic server configurations are available:
 - `operationMode`: Operation mode setting, with plans for future expansion. Currently supports `standalone` mode.
 
 
-## Serve the frontend through the NestJs server
+## Serve Static
 
 Lyvely can utilize the [Serve Static NestJs module](https://docs.nestjs.com/recipes/serve-static) to serve the frontend 
-through the backend. To set up this configuration, follow these steps:
+through the backend. To set up this configuration, follow these steps.
 
 Add the following snippet to your `lyvely.ts`  configuration, specifying the rootPath as the path to your web
 application's distribution folder:
