@@ -26,7 +26,8 @@ export const DEFAULT_FALLBACK_LOCALE = 'en-us';
  * This array needs to be extended in case additional locales need to be supported.
  */
 export const LOCALE_NAMES = {
-  en: 'English (US)',
+  en: 'English',
+  'en-us': 'English (US)',
   'en-gb': 'English (UK)',
   de: 'Deutsch',
   fr: 'Français',
