@@ -7,6 +7,7 @@ import {
   assignRawDataTo,
   hasOwnNonNullableProperty,
   cloneDeepWith,
+  isNil,
 } from '@lyvely/common';
 import { IntegrityException } from '@lyvely/interface';
 import mongoose from 'mongoose';
@@ -28,7 +29,7 @@ export function assureObjectId<T extends BaseDocument<any> = BaseDocument<any>>(
   identity: DocumentIdentity<T> | undefined | null,
   optional?: boolean
 ): TObjectId | undefined {
-  if (!identity && optional) return undefined;
+  if (isNil(identity) && optional) return undefined;
 
   if (typeof identity === 'string') {
     if (isValidObjectId(identity)) {

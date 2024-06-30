@@ -638,31 +638,6 @@ export abstract class AbstractDao<
   }
 
   /**
-   * Upserts all documents matching the given filter.
-   * @param filter
-   * @param update
-   * @param options
-   */
-  async upsert(
-    filter: FilterQuery<T>,
-    update: UpdateQuery<T>,
-    options: IUpsertQueryOptions = {}
-  ): Promise<T | null> {
-    options.new ??= true;
-    const query = this.getModel(options).findOneAndUpdate(filter, update, {
-      upsert: true,
-      ...options,
-    });
-
-    if (options?.collation) {
-      query.collation(options.collation);
-    }
-
-    const model = await query.lean();
-    return model ? this.constructModel(model) : null;
-  }
-
-  /**
    * Applies some default filters to the query based on the given options.
    * @param options
    * @protected
@@ -786,6 +761,31 @@ export abstract class AbstractDao<
     }
 
     return this.transformAndConstructModel(result);
+  }
+
+  /**
+   * Upserts all documents matching the given filter.
+   * @param filter
+   * @param update
+   * @param options
+   */
+  async upsert(
+    filter: FilterQuery<T>,
+    update: UpdateQuery<T>,
+    options: IUpsertQueryOptions = {}
+  ): Promise<T | null> {
+    options.new ??= true;
+    const query = this.getModel(options).findOneAndUpdate(filter, update, {
+      upsert: true,
+      ...options,
+    });
+
+    if (options?.collation) {
+      query.collation(options.collation);
+    }
+
+    const model = await query.lean();
+    return model ? this.constructModel(model) : null;
   }
 
   /**
