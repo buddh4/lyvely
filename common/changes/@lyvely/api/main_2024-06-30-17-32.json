@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@lyvely/api",
+      "comment": "fix: Missing locale name for en-us in language settings",
+      "type": "none"
+    }
+  ],
+  "packageName": "@lyvely/api"
+}
