@@ -178,7 +178,7 @@ export class MonthlyPlan extends QuarterlyPlan {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   override getTitle(date: Date, locale: string, preferences?: ICalendarPreferences): ITranslatable {
     const format = isCurrentYear(date) ? 'MMMM' : 'MMM · YYYY';
-    return dateTime(date).format(format);
+    return dateTime(date, locale).format(format);
   }
 
   override getAccessibleTitle(
@@ -256,7 +256,7 @@ export class DailyPlan extends WeeklyPlan {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   override getTitle(date: Date, locale: string, preferences?: ICalendarPreferences): ITranslatable {
     const format = isCurrentYear(date) ? 'ddd D MMM ' : 'ddd D MMM  · YYYY';
-    return dateTime(date).format(format);
+    return dateTime(date, locale).format(format);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

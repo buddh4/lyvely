@@ -1,6 +1,6 @@
 import { CalendarPlan } from '@lyvely/calendar-plan-interface';
 import { CalendarInterval, isToday as isTodayUtil } from '@lyvely/dates';
-import { useProfileStore, useI18nStore, getFallbackLocale, t } from '@lyvely/web';
+import { useProfileStore, useI18nStore, t } from '@lyvely/web';
 import { computed, toRefs } from 'vue';
 import { useCalendarPlanStore } from '../stores';
 
@@ -13,15 +13,10 @@ export function useCalendarPlanPlanNavigation(interval: CalendarInterval) {
   const { switchToToday, getNextDate, getPreviousDate } = calendarPlanStore;
 
   const isDaily = interval === CalendarInterval.Daily;
-  const isWeekly = interval === CalendarInterval.Weekly;
   const isUnscheduled = interval === CalendarInterval.Unscheduled;
 
   function getAccessibleTitle(d: Date) {
-    // For weekly
-    const localeValue = (isWeekly ? profileStore.locale : locale) || getFallbackLocale();
-    let title = t(
-      calendarPlan.getAccessibleTitle(d, localeValue, profileStore.getSetting('calendar'))
-    );
+    let title = t(calendarPlan.getAccessibleTitle(d, locale, profileStore.getSetting('calendar')));
 
     if (isDaily && isTodayUtil(d)) {
       title = t('calendar-plan.today') + ' ' + title;
