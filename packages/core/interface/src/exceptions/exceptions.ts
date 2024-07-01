@@ -98,6 +98,13 @@ export class IntegrityException extends ServiceException {
   }
 }
 
+export class ConflictException extends ServiceException {
+  constructor(msgOrData?: string | any, msg = 'The request is outdated.') {
+    super(msgOrData, msg);
+    this.status = 409;
+  }
+}
+
 export class MisconfigurationException extends ServiceException {
   constructor(msgOrData?: string | any, msg = 'An error due to misconfiguration occurred.') {
     super(msgOrData, msg);

@@ -8,6 +8,7 @@ import {
   UnauthorizedServiceException,
   RateLimitException,
   DocumentNotFoundException,
+  ConflictException,
 } from './exceptions';
 import { IFieldValidationResult, IModelValidationResult } from '@lyvely/common';
 
@@ -57,6 +58,10 @@ export function isForbiddenError(error: any): error is AxiosError {
   return isAxiosErrorWithResponseData(error) && error.response.status === 403;
 }
 
+export function isConflictError(error: any): error is AxiosError {
+  return isAxiosErrorWithResponseData(error) && error.response.status === 409;
+}
+
 export function isUnauthorizedForbidden(error: any): error is AxiosError {
   return isAxiosErrorWithResponseData(error) && error.response.status === 401;
 }
@@ -101,6 +106,8 @@ export function errorToServiceException(error: any, throws = false): ServiceExce
     result = error;
   } else if (isAxiosErrorWithoutResponseData(error)) {
     result = new NetworkException();
+  } else if (isConflictError(error)) {
+    result = new ConflictException();
   } else if (isForbiddenError(error)) {
     result = new ForbiddenServiceException(error.response?.data);
   } else if (isUnauthorizedForbidden(error)) {
