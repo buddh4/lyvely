@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@lyvely/api",
+      "comment": "feat: Adde new ConflictException",
+      "type": "none"
+    }
+  ],
+  "packageName": "@lyvely/api"
+}

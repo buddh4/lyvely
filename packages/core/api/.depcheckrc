@@ -7,5 +7,11 @@ ignores: [
   "@types/multer",
   "@types/qs",
   "@types/express-serve-static-core",
-  "@types/jest"
+  "@types/jest",
+  "unified",
+  "remark-parse",
+  "remark-gfm",
+  "remark-stringify",
+  "unist-util-visit",
+  "@types/unist",
   ]

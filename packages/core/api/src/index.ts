@@ -19,6 +19,7 @@ export * from './permissions';
 export * from './ping';
 export * from './policies';
 export * from './profiles';
+export * from './markdown';
 export * from './settings';
 export * from './streams';
 export * from './calendar';

@@ -9,7 +9,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "gulp clean && tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json && gulp copyAssets",
-    "test": "jest --forceExit",
+    "test": "cross-env jest --forceExit",
     "lint": "eslint -c .eslintrc.cjs \"src/**/*.ts\" --fix",
     "format": "prettier src --write",
     "prettier": "prettier src --check",
@@ -76,7 +76,12 @@
     "uuid": "^9.0",
     "mongo-seeding": "^4.0",
     "rimraf": "^5.0",
-    "mongodb-memory-server": "^8.13.0"
+    "mongodb-memory-server": "^8.13.0",
+    "unified": "^11.0.5",
+    "remark-parse": "^11.0.0",
+    "remark-gfm": "^4.0.0",
+    "remark-stringify": "^11.0.0",
+    "unist-util-visit": "^5.0.0"
   },
   "devDependencies": {
     "typescript": "^5.4",
@@ -87,6 +92,7 @@
     "@types/multer": "^1.4.11",
     "@types/pug": "2.0.6",
     "@types/express-serve-static-core": "^4.19.0",
+    "@types/unist": "^3.0.2",
     "del": "^6.1.1",
     "gulp": "^5.0.0",
     "@types/qs": "^6.9.15",
