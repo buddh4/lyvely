@@ -43,6 +43,54 @@ export function findParent(
 }
 
 /**
+ * Returns the index of the given element in its parent's children.
+ *
+ * @param {HTMLElement} element - The element to get the index for.
+ * @return {number} - The index of the element in its parent's children.
+ * @throws {Error} - If the element has no parent.
+ */
+export function getElementIndex(element: HTMLElement): number {
+  if (!element.parentElement)
+    throw new Error('Element has no parent or parent is not a dom element.');
+  return Array.from(element.parentElement.children).indexOf(element);
+}
+
+/**
+ * Finds the Depth First Index (DFI) of a target element (or ancestor) matching a given selector within a container element.
+ *
+ * @param {HTMLElement} container - The container element to search within
+ * @param {HTMLElement} target - The target element to find
+ * @param {string} [selector] - Optional CSS selector to filter elements to be considered
+ *
+ * @return {number} - The index of the target element within the matched elements, or -1 if not found
+ */
+export function findDfi(container: Element, target: Element, selector: string) {
+  let index = -1;
+  let currentIndex = -1;
+
+  function dfs(node: Element) {
+    if (node === target) {
+      index = currentIndex;
+      return true; // Target found, stop the search
+    }
+
+    // Traverse the child nodes and only consider nodes that match the selector
+    for (const child of node.children) {
+      if (child.matches(selector)) {
+        currentIndex++;
+      }
+
+      if (dfs(child)) return true; // Stop searching once the target is found
+    }
+
+    return false; // Continue searching
+  }
+
+  dfs(container);
+  return index;
+}
+
+/**
  * Finds the first HTML element within a given element, including itself, matching the specified selector.
  * Returns null if the given element is null or if no matching element is found.
  *
