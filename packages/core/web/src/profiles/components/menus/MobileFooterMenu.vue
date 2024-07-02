@@ -101,7 +101,7 @@ const latestEntries = computed(() => {
 }
 
 .nav-link.router-link-active {
-  border-bottom: 2px solid var(--color-pop);
+  border-bottom: 2px solid rgb(var(--color-pop) / 1);
 }
 
 .slide-fade-enter-active {

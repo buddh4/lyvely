@@ -37,12 +37,12 @@
   }
 
   .scrollbar-thin::-webkit-scrollbar-thumb {
-    background: var(--color-secondary-light);
+    background: rgb(var(--color-secondary-light) / 1);
     border-radius: 5px;
   }
 
   .dark .scrollbar-thin::-webkit-scrollbar-thumb {
-    background: var(--color-secondary-dark);
+    background: rgb(var(--color-secondary-dark) / 1);
     transition: background-color 0.3s ease;
   }
 }

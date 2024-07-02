@@ -93,7 +93,7 @@ const style = computed<any>(() => ({ 'z-index': zIndex.value }));
         v-if="modelValue"
         :id="id"
         ref="root"
-        class="drawer"
+        class="drawer fixed"
         :style="style"
         v-bind="attrs"
         @keyup.esc="close">
@@ -122,15 +122,13 @@ const style = computed<any>(() => ({ 'z-index': zIndex.value }));
 
 <style scoped lang="postcss">
 .drawer {
-  @apply bg-highlight;
-  position: fixed;
+  @apply bg-main;
   top: 46px;
   right: 0;
   height: calc(100svh - 46px);
 
   min-width: 280px;
   max-width: 280px;
-  background: var(--elements-main);
 
   will-change: transform;
   contain: paint;

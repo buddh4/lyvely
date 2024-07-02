@@ -24,13 +24,13 @@ const Template = (args: any) => ({
 });
 
 export const Component = Template.bind({});
-(<any>Component).args = {
+(Component as any).args = {
   if: true,
   tag: LyAlert,
 };
 
 export const Tag = Template.bind({});
-(<any>Tag).args = {
+(Tag as any).args = {
   if: true,
   tag: 's',
 };

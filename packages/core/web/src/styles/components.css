@@ -9,13 +9,13 @@
 }
 
 #nprogress .bar {
-  background: var(--color-lyvely) !important;
+  background: rgb(var(--color-lyvely) / 1) !important;
 }
 
 #nprogress .peg {
   box-shadow:
-    0 0 10px var(--color-lyvely),
-    0 0 5px var(--color-lyvely);
+    0 0 10px rgb(var(--color-lyvely) / 1),
+    0 0 5px rgb(var(--color-lyvely) / 1);
 }
 
 #nprogress .spinner-icon {
@@ -51,7 +51,7 @@
   mask-origin: content-box;
   mask-position: center;
   mask-repeat: no-repeat;
-  background-color: var(--color-primary);
+  background-color: rgb(var(--color-primary) / 1);
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;

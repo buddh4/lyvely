@@ -105,6 +105,6 @@ function toggle() {
 }
 
 .dropdown a:focus {
-  background-color: var(--elements-highlight);
+  background-color: rgb(var(--elements-highlight) / 1);
 }
 </style>

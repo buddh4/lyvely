@@ -30,7 +30,7 @@ const progress = computed(() => getScaledProgress(score.value || 0));
     <template #trigger="{ toggle }">
       <div data-id="profile-combo-button" class="flex items-stretch justify-center">
         <ly-button
-          class="rounded-l-2xl border border-r-0 border-divide px-3 py-2"
+          class="rounded-l-2xl rounded-r-none border border-r-0 border-divide px-3 py-2"
           @click="toggleSidebar">
           <ly-icon name="menu" class="w-3" style="margin-top: -3px" />
         </ly-button>
@@ -70,7 +70,7 @@ const progress = computed(() => getScaledProgress(score.value || 0));
 
         <ly-button
           data-id="btn-toggle-profile-relations"
-          class="rounded-r-2xl border border-l-0 border-divide px-3"
+          class="rounded-l-none rounded-r-2xl border border-l-0 border-divide px-3"
           @click="toggle">
           <ly-icon style="margin-top: -1px" name="caret-down" />
         </ly-button>

@@ -34,7 +34,7 @@ const attrs = useAttrs();
 
 function getClassNames(isActive?: boolean) {
   const { classResult } = useTwMerge([
-    'button select-none no-underline text-center inline-block rounded py-1.5 px-2.5',
+    'button select-none no-underline text-center inline-block rounded-l rounded-r py-1.5 px-2.5',
     {
       loading: props.loading,
       active: props.active || isActive,
@@ -158,9 +158,9 @@ function getAriaPressed($attrs: any) {
 .button.primary.loading {
   background: linear-gradient(
     to right,
-    var(--color-primary) 8%,
-    var(--color-primary-light) 38%,
-    var(--color-primary) 54%
+    rgb(var(--color-primary) / 1) 8%,
+    rgb(var(--color-primary-light) / 1) 38%,
+    rgb(var(--color-primary) / 1) 54%
   );
   background-size: 1000px 640px;
   position: relative;
@@ -169,9 +169,9 @@ function getAriaPressed($attrs: any) {
 .button.secondary.loading {
   background: linear-gradient(
     to right,
-    var(--color-secondary) 8%,
-    var(--color-secondary-light) 38%,
-    var(--color-secondary) 54%
+    rgb(var(--color-secondary) / 1) 8%,
+    rgb(var(--color-secondary-light) / 1) 38%,
+    rgb(var(--color-secondary) / 1) 54%
   );
   background-size: 1000px 640px;
   position: relative;
@@ -180,9 +180,9 @@ function getAriaPressed($attrs: any) {
 .button.info.loading {
   background: linear-gradient(
     to right,
-    var(--color-info) 8%,
-    var(--color-info-light) 38%,
-    var(--color-info) 54%
+    rgb(var(--color-info) / 1) 8%,
+    rgb(var(--color-info-light) / 1) 38%,
+    rgb(var(--color-info) / 1) 54%
   );
   background-size: 1000px 640px;
   position: relative;
@@ -191,9 +191,9 @@ function getAriaPressed($attrs: any) {
 .button.success.loading {
   background: linear-gradient(
     to right,
-    var(--color-success) 8%,
-    var(--color-success-light) 38%,
-    var(--color-success) 54%
+    rgb(var(--color-success) / 1) 8%,
+    rgb(var(--color-success-light) / 1) 38%,
+    rgb(var(--color-success) / 1) 54%
   );
   background-size: 1000px 640px;
   position: relative;
@@ -202,9 +202,9 @@ function getAriaPressed($attrs: any) {
 .button.warning.loading {
   background: linear-gradient(
     to right,
-    var(--color-warning) 8%,
-    var(--color-warning-light) 38%,
-    var(--color-warning) 54%
+    rgb(var(--color-warning) / 1) 8%,
+    rgb(var(--color-warning-light) / 1) 38%,
+    rgb(var(--color-warning) / 1) 54%
   );
   background-size: 1000px 640px;
   position: relative;
@@ -218,9 +218,9 @@ function getAriaPressed($attrs: any) {
   animation-timing-function: linear;
   background: linear-gradient(
     to right,
-    var(--color-danger) 8%,
-    var(--color-danger-light) 38%,
-    var(--color-danger) 54%
+    rgb(var(--color-danger) / 1) 8%,
+    rgb(var(--color-danger-light) / 1) 38%,
+    rgb(var(--color-danger) / 1) 54%
   );
   background-size: 1000px 640px;
   position: relative;

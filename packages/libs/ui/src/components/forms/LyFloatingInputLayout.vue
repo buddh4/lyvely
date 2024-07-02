@@ -48,7 +48,7 @@ const wrapperClasses = computed(() => {
         v-if="label"
         :id="inputId + 'label'"
         :for="inputId"
-        class="pointer-events-none absolute inset-0 z-10 inline-block px-3 py-2 text-xs opacity-70"
+        class="pointer-events-none absolute z-10 inline-block px-3 pt-2 text-xs text-main text-opacity-70"
         :aria-describedby="ariaDescribedBy">
         {{ t(label) }}
       </label>

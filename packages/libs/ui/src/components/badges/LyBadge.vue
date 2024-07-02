@@ -80,7 +80,7 @@ const show = computed({
 
 <style lang="postcss">
 .badge-dark {
-  color: var(--color-inverted);
+  color: rgb(var(--color-inverted) / 1);
 }
 .badge-light {
   color: #000000;

@@ -92,56 +92,56 @@ onMounted(() => {
 <style>
 [type='radio'].primary {
   --tw-ring-offset-shadow: none;
-  border-color: var(--color-primary);
+  border-color: rgb(var(--color-primary) / 1);
 }
 
 [type='radio'].primary:checked {
-  background-color: var(--color-primary);
+  background-color: rgb(var(--color-primary) / 1);
 }
 
 [type='radio'].secondary {
   --tw-ring-offset-shadow: none;
-  border-color: var(--color-secondary);
+  border-color: rgb(var(--color-secondary) / 1);
 }
 
 [type='radio'].secondary:checked {
-  background-color: var(--color-secondary);
+  background-color: rgb(var(--color-secondary) / 1);
 }
 
 [type='radio'].success {
   --tw-ring-offset-shadow: none;
-  border-color: var(--color-success);
+  border-color: rgb(var(--color-success) / 1);
 }
 
 [type='radio'].success:checked {
-  background-color: var(--color-success);
+  background-color: rgb(var(--color-success) / 1);
   opacity: 1;
 }
 
 [type='radio'].info {
   --tw-ring-offset-shadow: none;
-  border-color: var(--color-info);
+  border-color: rgb(var(--color-info) / 1);
 }
 
 [type='radio'].info:checked {
-  background-color: var(--color-info);
+  background-color: rgb(var(--color-info) / 1);
 }
 
 [type='radio'].warning {
   --tw-ring-offset-shadow: none;
-  border-color: var(--color-warning);
+  border-color: rgb(var(--color-warning) / 1);
 }
 
 [type='radio'].warning:checked {
-  background-color: var(--color-warning);
+  background-color: rgb(var(--color-warning) / 1);
 }
 
 [type='radio'].danger {
   --tw-ring-offset-shadow: none;
-  border-color: var(--color-danger);
+  border-color: rgb(var(--color-danger) / 1);
 }
 
 [type='radio'].danger:checked {
-  background-color: var(--color-danger);
+  background-color: rgb(var(--color-danger) / 1);
 }
 </style>

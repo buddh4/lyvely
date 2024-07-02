@@ -8,7 +8,7 @@ fieldset[disabled] .multiselect {
   top: 1px;
   width: 48px;
   height: 35px;
-  background: var(--text-main);
+  background: rgb(var(--text-main) / 1);
   display: block;
 }
 
@@ -68,7 +68,7 @@ fieldset[disabled] .multiselect {
   width: 100%;
   min-height: 40px;
   text-align: left;
-  color: var(--elements-highlight);
+  color: rgb(var(--elements-highlight) / 1);
 }
 
 .multiselect * {
@@ -115,7 +115,7 @@ fieldset[disabled] .multiselect {
   line-height: 20px;
   border: none;
   border-radius: 5px;
-  background: var(--elements-highlight);
+  background: rgb(var(--elements-highlight) / 1);
   padding: 3px 0 0 0;
   width: 100%;
   transition: border 0.1s ease;
@@ -125,15 +125,15 @@ fieldset[disabled] .multiselect {
 }
 
 .multiselect__input::-moz-placeholder {
-  color: var(--text-dimmed);
+  color: rgb(var(--text-dimmed) / 1);
 }
 
 .multiselect__input:-ms-input-placeholder {
-  color: var(--text-dimmed);
+  color: rgb(var(--text-dimmed) / 1);
 }
 
 .multiselect__input::placeholder {
-  color: var(--text-dimmed);
+  color: rgb(var(--text-dimmed) / 1);
 }
 
 .multiselect__tag ~ .multiselect__input,
@@ -257,7 +257,7 @@ fieldset[disabled] .multiselect {
 }
 
 .multiselect__placeholder {
-  color: var(--text-dimmed);
+  color: rgb(var(--text-dimmed) / 1);
   display: inline-block;
   margin-bottom: 10px;
   padding-top: 2px;
@@ -378,12 +378,12 @@ fieldset[disabled] .multiselect {
 
 .multiselect__option--group {
   background: #ededed;
-  color: var(--text-dimmed);
+  color: rgb(var(--text-dimmed) / 1);
 }
 
 .multiselect__option--group.multiselect__option--highlight {
   background: #35495e;
-  color: var(--text-dimmed);
+  color: rgb(var(--text-dimmed) / 1);
 }
 
 .multiselect__option--group.multiselect__option--highlight:after {
@@ -396,13 +396,13 @@ fieldset[disabled] .multiselect {
 
 .multiselect__option--group-selected.multiselect__option--highlight {
   background: #ff6a6a;
-  color: var(--text-dimmed);
+  color: rgb(var(--text-dimmed) / 1);
 }
 
 .multiselect__option--group-selected.multiselect__option--highlight:after {
   background: #ff6a6a;
   content: attr(data-deselect);
-  color: var(--text-dimmed);
+  color: rgb(var(--text-dimmed) / 1);
 }
 
 .multiselect-enter-active,

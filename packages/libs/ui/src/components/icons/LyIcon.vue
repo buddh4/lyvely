@@ -39,26 +39,26 @@ const iconBindings = computed(() => library.value?.getBindings(props));
 }
 
 .icon.success {
-  fill: var(--color-success);
+  fill: rgb(var(--color-success) / 1);
 }
 
 .icon.primary {
-  fill: var(--color-primary);
+  fill: rgb(var(--color-primary) / 1);
 }
 
 .icon.secondary {
-  fill: var(--color-secondary);
+  fill: rgb(var(--color-secondary) / 1);
 }
 
 .icon.warning {
-  fill: var(--color-warning);
+  fill: rgb(var(--color-warning) / 1);
 }
 
 .icon.danger {
-  fill: var(--color-danger);
+  fill: rgb(var(--color-danger) / 1);
 }
 
 .icon.info {
-  fill: var(--color-info);
+  fill: rgb(var(--color-info) / 1);
 }
 </style>

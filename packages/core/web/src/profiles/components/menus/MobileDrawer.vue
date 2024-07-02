@@ -70,6 +70,6 @@ const { direction } = useSwipe(mobileNavDrawer, {
 }
 
 .mobileNavDrawer .router-link-active {
-  border-left: 4px solid var(--color-pop);
+  border-left: 4px solid rgb(var(--color-pop) / 1);
 }
 </style>

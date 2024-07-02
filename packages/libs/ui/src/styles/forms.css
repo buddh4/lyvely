@@ -97,7 +97,7 @@ input[type='range']:disabled::-webkit-slider-runnable-track {
 input[type='range']::-webkit-slider-thumb {
   @apply rounded-full;
   box-shadow: 0 0.1rem 0.25rem rgba(0, 0, 0, 0.1);
-  background-color: var(--color-primary);
+  background-color: rgb(var(--color-primary) / 1);
   margin-top: calc((0.5rem - 1rem) * 0.5);
   border: 0;
   height: 1rem;
@@ -115,39 +115,39 @@ input[type='range']::-webkit-slider-thumb {
 }
 
 input[type='range'].success::-webkit-slider-thumb {
-  background-color: var(--color-success);
+  background-color: rgb(var(--color-success) / 1);
 }
 
 input[type='range'].warning::-webkit-slider-thumb {
-  background-color: var(--color-warning);
+  background-color: rgb(var(--color-warning) / 1);
 }
 
 input[type='range'].info::-webkit-slider-thumb {
-  background-color: var(--color-info);
+  background-color: rgb(var(--color-info) / 1);
 }
 
 input[type='range'].danger::-webkit-slider-thumb {
-  background-color: var(--color-danger);
+  background-color: rgb(var(--color-danger) / 1);
 }
 
 input[type='range']:active:not(:disabled)::-webkit-slider-thumb {
-  background-color: var(--color-primary-light);
+  background-color: rgb(var(--color-primary-light) / 1);
 }
 
 input[type='range'].success:active:not(:disabled)::-webkit-slider-thumb {
-  background-color: var(--color-success-light);
+  background-color: rgb(var(--color-success-light) / 1);
 }
 
 input[type='range'].warning:active:not(:disabled)::-webkit-slider-thumb {
-  background-color: var(--color-warning-light);
+  background-color: rgb(var(--color-warning-light) / 1);
 }
 
 input[type='range'].info:active:not(:disabled)::-webkit-slider-thumb {
-  background-color: var(--color-info-light);
+  background-color: rgb(var(--color-info-light) / 1);
 }
 
 input[type='range'].danger:active:not(:disabled)::-webkit-slider-thumb {
-  background-color: var(--color-danger-light);
+  background-color: rgb(var(--color-danger-light) / 1);
 }
 
 input[type='range']:disabled::-webkit-slider-thumb {
@@ -176,7 +176,7 @@ input[type='range']:disabled::-moz-range-track {
 input[type='range']::-moz-range-thumb {
   @apply rounded-full;
   box-shadow: 0 0.1rem 0.25rem rgba(0, 0, 0, 0.1);
-  background-color: var(--color-primary);
+  background-color: rgb(var(--color-primary) / 1);
   margin-top: calc((0.5rem - 1rem) * 0.5);
   border: 0;
   height: 1rem;
@@ -194,39 +194,39 @@ input[type='range']::-moz-range-thumb {
 }
 
 input[type='range'].success::-moz-range-thumb {
-  background-color: var(--color-success);
+  background-color: rgb(var(--color-success) / 1);
 }
 
 input[type='range'].warning::-moz-range-thumb {
-  background-color: var(--color-warning);
+  background-color: rgb(var(--color-warning) / 1);
 }
 
 input[type='range'].info::-moz-range-thumb {
-  background-color: var(--color-info);
+  background-color: rgb(var(--color-info) / 1);
 }
 
 input[type='range'].danger::-moz-range-thumb {
-  background-color: var(--color-danger);
+  background-color: rgb(var(--color-danger) / 1);
 }
 
 input[type='range']:active::-moz-range-thumb {
-  background-color: var(--color-primary-light);
+  background-color: rgb(var(--color-primary-light) / 1);
 }
 
 input[type='range'].success:active::-moz-range-thumb {
-  background-color: var(--color-success-light);
+  background-color: rgb(var(--color-success-light) / 1);
 }
 
 input[type='range'].warning:active::-moz-range-thumb {
-  background-color: var(--color-warning-light);
+  background-color: rgb(var(--color-warning-light) / 1);
 }
 
 input[type='range'].info:active::-moz-range-thumb {
-  background-color: var(--color-info-light);
+  background-color: rgb(var(--color-info-light) / 1);
 }
 
 input[type='range'].danger:active::-moz-range-thumb {
-  background-color: var(--color-danger-light);
+  background-color: rgb(var(--color-danger-light) / 1);
 }
 
 input[type='range']:disabled::-moz-range-thumb {
@@ -268,12 +268,12 @@ fieldset:not(:last-child, .mb-0) {
 
 .form-input.required label:after {
   content: ' *';
-  color: var(--color-primary);
+  color: rgb(var(--color-primary) / 1);
 }
 
 .form-input.required label:after {
   content: ' *';
-  color: var(--color-primary);
+  color: rgb(var(--color-primary) / 1);
 }
 
 .form-select {
@@ -300,6 +300,13 @@ textarea.floating-input,
   padding: 1.625rem 0.75rem 0.625rem;
   transition: border-color 0.5s;
   @apply block w-full rounded-md border border-divide bg-white shadow-sm focus:border-divide focus:ring focus:ring-blue-200 focus:ring-opacity-50;
+}
+
+.form-input>label:has(+ textarea.floating-input) {
+    width: calc(100% - 17px);
+    border-radius: 0.375rem;
+    opacity: 0.95;
+    @apply bg-white dark:bg-highlight;
 }
 
 select.floating-input {
@@ -363,6 +370,6 @@ textarea.floating-input {
 }
 
 .floating-input.is-invalid {
-  border-color: var(--color-danger);
+  border-color: rgb(var(--color-danger) / 1);
   @apply ring-red-500 ring-opacity-25;
 }
