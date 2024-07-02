@@ -76,7 +76,7 @@ export function toWeekTimingId(
   // Use ISO week date calculations if yearStart === 0
   if (preferences?.yearStart === 0) {
     weekYear = date.isoWeekYear();
-    firstDayOfWeek = date.isoWeekday(preferences.weekStart ?? 1); // default Monday
+    firstDayOfWeek = date.isoWeekday(1); // Monday
   } else {
     weekYear = date.weekYear();
     firstDayOfWeek = date.weekday(0); // Locale aware first day of week
