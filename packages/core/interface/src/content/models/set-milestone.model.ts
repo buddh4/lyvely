@@ -8,7 +8,9 @@ export class SetMilestoneModel {
   @IsMongoId()
   mid: string;
 
-  constructor(data: PropertiesOf<SetMilestoneModel>) {
-    this.mid = data.mid;
+  constructor(data?: PropertiesOf<SetMilestoneModel>) {
+    if (data?.mid) {
+      this.mid = data.mid;
+    }
   }
 }

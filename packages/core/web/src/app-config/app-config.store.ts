@@ -72,7 +72,7 @@ export const useAppConfigStore = defineStore('app-config', () => {
   >(moduleId: string, path?: TPath, defaultValue?: TResult): TResult | undefined {
     if (!config.value) return defaultValue;
 
-    const moduleConfig = config.value.modules[moduleId];
+    const moduleConfig = config.value.modules?.[moduleId];
 
     if (!moduleConfig) return defaultValue;
     if (!path) return moduleConfig as TResult;
