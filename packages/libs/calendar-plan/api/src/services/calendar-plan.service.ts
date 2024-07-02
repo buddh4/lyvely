@@ -30,7 +30,7 @@ export abstract class CalendarPlanService<TModel extends CalendarPlanEntity> {
     const { profile } = context;
 
     const models = await this.contentDao.findByTimingIds(context, {
-      tIds: getTimingIds(filter.date, profile.locale, filter.level, profile.settings?.calendar),
+      tIds: getTimingIds(filter.date, profile.locale, profile.settings?.calendar, filter.level),
       ...filter,
     });
 

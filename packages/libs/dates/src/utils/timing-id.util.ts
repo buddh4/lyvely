@@ -76,7 +76,7 @@ export function toWeekTimingId(
   // Use ISO week date calculations if yearStart === 0
   if (preferences?.yearStart === 0) {
     weekYear = date.isoWeekYear();
-    firstDayOfWeek = date.isoWeekday(1); // Monday
+    firstDayOfWeek = date.isoWeekday(preferences.weekStart ?? 1); // default Monday
   } else {
     weekYear = date.weekYear();
     firstDayOfWeek = date.weekday(0); // Locale aware first day of week
@@ -163,15 +163,15 @@ export function parseTimingId(tid: string): ITiming {
  *
  * @param {CalendarDateTime} d - The date for which to retrieve timing ids.
  * @param {string} locale - The locale to use for formatting the timing ids.
- * @param {CalendarInterval} [level=CalendarInterval.Unscheduled] - The level of timing ids to retrieve.
  * @param {ICalendarPreferences} [preferences] - The calendar preferences to use for formatting the timing ids.
+ * @param {CalendarInterval} [level=CalendarInterval.Unscheduled] - The level of timing ids to retrieve.
  * @returns {string[]} - An array of timing ids for the given date.
  */
 export function getTimingIds(
   d: CalendarDateTime,
   locale: string,
-  level = CalendarInterval.Unscheduled,
-  preferences?: ICalendarPreferences
+  preferences?: ICalendarPreferences,
+  level = CalendarInterval.Unscheduled
 ) {
   const dayId = toTimingId(d, CalendarInterval.Daily, locale);
   const weekId = toWeekTimingId(d, locale, preferences);
@@ -179,5 +179,5 @@ export function getTimingIds(
   const quarterId = monthId.substring(0, monthId.lastIndexOf(';'));
   const yearId = quarterId.substring(0, quarterId.lastIndexOf(';'));
   const result = ['U', yearId, quarterId, monthId, weekId, dayId];
-  return level > 0 ? result.splice(0, level) : result;
+  return level > 0 ? result.splice(level, result.length) : result;
 }

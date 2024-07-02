@@ -8,6 +8,7 @@ import habitsModule from './module';
 import { analyticsModule } from '@lyvely/analytics-web';
 
 new LyvelyWebApp({
+  apiUrl: 'http://127.0.0.1:8080/api',
   modules: [habitsModule(), analyticsModule()],
 })
   .init('#app')

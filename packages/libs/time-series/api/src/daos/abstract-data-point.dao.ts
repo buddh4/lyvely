@@ -129,16 +129,14 @@ export abstract class AbstractDataPointDao<
    * @returns {object} - The timing interval filter.
    */
   private buildTimingIntervalFilter(profile: Profile, filter: CalendarPlanFilter) {
-    const timingIds = getTimingIds(filter.date, profile.locale, profile.settings?.calendar);
-    const relevantTids: string[] = [];
+    const timingIds = getTimingIds(
+      filter.date,
+      profile.locale,
+      profile.settings?.calendar,
+      filter.level
+    );
 
-    for (let i = CalendarInterval.Daily; i >= 0; i--) {
-      if (filter.level <= i) {
-        relevantTids.push(timingIds[i]);
-      }
-    }
-
-    return { tid: { $in: relevantTids } };
+    return { tid: { $in: timingIds } };
   }
 
   /**

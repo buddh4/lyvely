@@ -1,11 +1,11 @@
 import {
-  getTimingIds,
-  toTimingId,
   CalendarDateTime,
   CalendarInterval,
+  getTimingIds,
   ICalendarPreferences,
-  useDayJsLocaleManager,
   parseTimingId,
+  toTimingId,
+  useDayJsLocaleManager,
 } from '../index';
 
 describe('time series utils', () => {
@@ -15,7 +15,7 @@ describe('time series utils', () => {
   });
 
   describe('getTimingIds', () => {
-    it('get calendar ids', () => {
+    it('get all ids', () => {
       const date = new Date('2022-02-20');
       const tIds = getTimingIds(date, 'de');
       expect(tIds[CalendarInterval.Unscheduled]).toEqual('U');
@@ -24,6 +24,14 @@ describe('time series utils', () => {
       expect(tIds[CalendarInterval.Monthly]).toEqual('Y:2022;Q:1;M:02');
       expect(tIds[CalendarInterval.Weekly]).toEqual('Y:2022;Q:1;M:02;W:07');
       expect(tIds[CalendarInterval.Daily]).toEqual('Y:2022;Q:1;M:02;D:20');
+    });
+
+    it('get timing ids filtered by level', () => {
+      const date = new Date('2022-02-20');
+      const tIds = getTimingIds(date, 'de', {}, CalendarInterval.Monthly);
+      expect(tIds[0]).toEqual('Y:2022;Q:1;M:02'); // Monthly
+      expect(tIds[1]).toEqual('Y:2022;Q:1;M:02;W:07'); // Weekly
+      expect(tIds[2]).toEqual('Y:2022;Q:1;M:02;D:20'); // Daily
     });
   });
 
