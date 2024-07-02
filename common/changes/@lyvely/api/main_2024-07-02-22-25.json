@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@lyvely/api",
+      "comment": "fix: Weekly data point update not working for iso start of week",
+      "type": "none"
+    }
+  ],
+  "packageName": "@lyvely/api"
+}

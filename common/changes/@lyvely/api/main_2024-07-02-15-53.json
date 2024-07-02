@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@lyvely/api",
+      "comment": "feat(web): Improved default content details view",
+      "type": "none"
+    }
+  ],
+  "packageName": "@lyvely/api"
+}

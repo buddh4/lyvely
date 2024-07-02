@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@lyvely/dates",
+      "comment": "fix: Tid level filter returns inverted result",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@lyvely/dates"
+}
