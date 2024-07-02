@@ -4,3 +4,4 @@ export * from './create-content.model';
 export * from './content-update-response.model';
 export * from './set-milestone.model';
 export * from './content-request.filter';
+export * from './update-task-list-item.model';

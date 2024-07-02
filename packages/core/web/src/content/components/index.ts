@@ -8,6 +8,7 @@ import ContentStreamFooter from './ContentStreamFooter.vue';
 import UpsertContentModal from './UpsertContentModal.vue';
 import DefaultStreamEntry from './DefaultStreamEntry.vue';
 import ContentDropdown from './ContentDropdown.vue';
+import ContentMarkdown from './ContentMarkdown.vue';
 
 export {
   ContentDetails,
@@ -19,5 +20,6 @@ export {
   UpsertContentModal,
   DefaultStreamEntry,
   ContentDropdown,
+  ContentMarkdown,
   ContentToolbar,
 };

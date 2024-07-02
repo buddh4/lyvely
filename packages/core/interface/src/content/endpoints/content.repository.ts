@@ -1,4 +1,4 @@
-import { SetMilestoneModel } from '../models';
+import { SetMilestoneModel, UpdateTaskListItemModel } from '../models';
 import { API_CONTENT, ContentEndpoints, IContentClient } from './content.endpoint';
 import { useApi } from '@/repository';
 import { IProfileApiRequestOptions } from '@/endpoints';
@@ -22,5 +22,17 @@ export default {
 
   restore(cid: string, options?: IProfileApiRequestOptions) {
     return api.post<'restore'>(ContentEndpoints.RESTORE(cid), {}, options);
+  },
+
+  updateTaskListItem(
+    cid: string,
+    update: UpdateTaskListItemModel,
+    options?: IProfileApiRequestOptions
+  ) {
+    return api.put<'updateTaskListItem'>(
+      ContentEndpoints.UPDATE_TASK_LIST_ITEM(cid),
+      update,
+      options
+    );
   },
 };

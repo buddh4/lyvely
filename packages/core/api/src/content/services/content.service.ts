@@ -1,7 +1,11 @@
 import { Content, ProfileContentContext } from '../schemas';
-import { Injectable, Logger } from '@nestjs/common';
+import { ConflictException, Injectable, Logger } from '@nestjs/common';
 import { ContentDao, IContentSearchFilter } from '../daos';
-import { DocumentNotFoundException } from '@lyvely/interface';
+import {
+  DocumentNotFoundException,
+  FieldValidationException,
+  UpdateTaskListItemModel,
+} from '@lyvely/interface';
 import { ProfileContext } from '@/profiles';
 import {
   assureObjectId,
@@ -12,6 +16,7 @@ import {
 } from '@/core';
 import { User } from '@/users';
 import { ContentPolicyService } from './content-policy.service';
+import { updateMarkdownTaskListItem } from '@/markdown';
 
 @Injectable()
 export class ContentService {
@@ -129,5 +134,33 @@ export class ContentService {
     }
 
     return this.contentDao.updateMilestone(profile, content, mid);
+  }
+
+  /**
+   * Updates a task list item of the main content.
+   * Throws a ConflictException if the provided update version does not match the last updated version of the item.
+   *
+   * @param {ProfileContentContext} context - The context in which the task list item needs to be updated.
+   * @param {UpdateTaskListItemModel} update - The updated details of the task list item.
+   * @return {Promise<boolean>} A promise that resolves to true if the task list item is successfully updated.
+   * @throws {ConflictException} If the provided update version does not match the last updated version of the item.
+   */
+  async updateTaskListItem(
+    context: ProfileContentContext,
+    update: UpdateTaskListItemModel
+  ): Promise<boolean> {
+    const { profile, content } = context;
+    const { position, version, checked } = update;
+
+    if (position.length < 2)
+      throw new FieldValidationException([{ property: 'position', errors: ['isValid'] }]);
+
+    if (content.meta.updatedAt > version) throw new ConflictException();
+
+    return this.contentDao.updateTextContent(
+      profile,
+      content,
+      await updateMarkdownTaskListItem(content.content.getTextContent(), position, checked)
+    );
   }
 }

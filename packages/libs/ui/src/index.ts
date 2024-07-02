@@ -128,6 +128,7 @@ export type { IConfirmOptions } from './components/dialogs/confirm-options.inter
 export * from './components/stack/interfaces';
 export * from './helpers';
 export * from './types';
+export * from './components/markdown';
 export * from './components/layouts/interfaces';
 export * from './interfaces';
 export * from './components/menus';

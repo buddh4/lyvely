@@ -135,6 +135,10 @@
       "allowedCategories": [ "application", "feature", "lib" ]
     },
     {
+      "name": "@mdit/plugin-tasklist",
+      "allowedCategories": [ "lib" ]
+    },
+    {
       "name": "@mdx-js/react",
       "allowedCategories": [ "application" ]
     },
@@ -284,15 +288,19 @@
     },
     {
       "name": "remark-gfm",
-      "allowedCategories": [ "lib" ]
+      "allowedCategories": [ "core", "lib" ]
     },
     {
       "name": "remark-parse",
-      "allowedCategories": [ "lib" ]
+      "allowedCategories": [ "core", "lib" ]
     },
     {
       "name": "remark-rehype",
       "allowedCategories": [ "lib" ]
+    },
+    {
+      "name": "remark-stringify",
+      "allowedCategories": [ "core" ]
     },
     {
       "name": "rollup-plugin-visualizer",
@@ -328,7 +336,11 @@
     },
     {
       "name": "unified",
-      "allowedCategories": [ "lib" ]
+      "allowedCategories": [ "core", "lib" ]
+    },
+    {
+      "name": "unist-util-visit",
+      "allowedCategories": [ "core" ]
     },
     {
       "name": "vue",

@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@lyvely/api",
+      "comment": "fix: Added ValidBody options only type",
+      "type": "none"
+    }
+  ],
+  "packageName": "@lyvely/api"
+}

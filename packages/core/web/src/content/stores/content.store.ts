@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import { ContentModel, ContentUpdateResponse, IContent, useContentClient } from '@lyvely/interface';
 import { useGlobalDialogStore, useEventBus } from '@/core';
 import { useProfileStore } from '@/profiles/stores/profile.store';
+import type { TaskListClickEvent } from '@lyvely/ui';
 
 type ContentEventType = 'archived' | 'restored' | 'created' | 'updated' | 'set-milestone';
 
@@ -31,6 +32,20 @@ export const useContentStore = defineStore('content', () => {
       .then(() => {
         content.meta.archived = true;
         emitPostContentEvent(content.type, 'archived', content);
+        emitPostContentUpdateEvent(content.type, content);
+      })
+      .catch(globalDialog.showUnknownError);
+  }
+
+  async function updateTaskListItem(content: ContentModel, event: TaskListClickEvent) {
+    return contentClient
+      .updateTaskListItem(content.id, {
+        ...event,
+        version: content.meta.updatedAt,
+      })
+      .then((updated) => {
+        content.content.text = updated.content.text;
+        content.meta.updatedAt = updated.meta.updatedAt;
         emitPostContentUpdateEvent(content.type, content);
       })
       .catch(globalDialog.showUnknownError);
@@ -147,6 +162,7 @@ export const useContentStore = defineStore('content', () => {
     archive,
     restore,
     toggleArchive,
+    updateTaskListItem,
     handleCreateContent,
     handleUpdateContent,
     emitPostContentEvent,

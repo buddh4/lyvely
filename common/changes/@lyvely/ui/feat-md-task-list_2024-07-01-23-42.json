@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@lyvely/ui",
+      "comment": "feat: Added task list markdown support",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@lyvely/ui"
+}

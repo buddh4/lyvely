@@ -4,7 +4,10 @@ import { computed, nextTick, onMounted, ref, watch } from 'vue';
 import { getBackgroundColor, hasOverflow } from '@/helpers';
 import {
   MARKDOWN_PRESET_DEFAULT,
+  MARKDOWN_PRESET_DEFAULT_EDITABLE,
+  MARKDOWN_VIEW_CLASS,
   renderMarkdown,
+  type TaskListClickEvent,
 } from '@/components/markdown/use-markdown.composable';
 
 // TODO: Accessibility https://www.w3.org/WAI/WCAG21/Techniques/general/G201
@@ -15,24 +18,28 @@ interface IProps {
   preset?: string;
   maxWidth?: boolean;
   shadow?: boolean;
+  editable?: boolean;
   maxHeight?: boolean | string;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
   md: '',
-  preset: MARKDOWN_PRESET_DEFAULT,
+  preset: undefined,
   prose: true,
   maxWidth: false,
+  editable: false,
   shadow: true,
   maxHeight: false,
 });
 
 const cssClass = {
+  [MARKDOWN_VIEW_CLASS]: true,
   'overflow-hidden prose-a:text-blue-600 prose-a:no-underline dark:prose-a:text-blue-500': true,
   'prose prose-sm dark:prose-invert': props.prose,
   'max-w-none': !props.maxWidth,
 };
 
+const emits = defineEmits(['updateTaskListItem']);
 const isOverflow = ref(false);
 const showAll = ref(!props.maxHeight);
 const maxHeightState = computed(() => {
@@ -57,14 +64,24 @@ function getShadowBackground() {
   return bgColor ? `linear-gradient(0deg, ${bgColor} 20%, transparent 100%)` : 'transparent';
 }
 
-const html = ref('');
+const output = ref('');
 
 const render = () => {
   setTimeout(() => {
     try {
-      html.value = renderMarkdown(props.md, props.preset);
-      if (!html.value.length) return;
-      setTimeout(() => (isOverflow.value = hasOverflow(stage.value!, 20)));
+      const preset =
+        props.preset || props.editable ? MARKDOWN_PRESET_DEFAULT_EDITABLE : MARKDOWN_PRESET_DEFAULT;
+      const { html, addTaskListHandler } = renderMarkdown(props.md, preset);
+      output.value = html;
+      if (!output.value.length) return;
+
+      setTimeout(() => {
+        isOverflow.value = hasOverflow(stage.value!, 20);
+        if (!props.editable) return;
+        addTaskListHandler(stage.value!, (event: TaskListClickEvent) => {
+          emits('updateTaskListItem', event);
+        });
+      });
     } catch (e) {
       return 'Error';
     }
@@ -80,11 +97,11 @@ onMounted(() => {
 <template>
   <div>
     <div
-      v-if="html.length"
+      v-if="output.length"
       ref="stage"
       :class="cssClass"
       :style="{ 'max-height': maxHeightState }"
-      v-html="html" />
+      v-html="output" />
     <div v-else :style="{ 'max-height': maxHeightState }" :class="cssClass">{{ md }}</div>
     <div v-if="isOverflow && maxHeight !== false" class="relative flex w-full justify-end">
       <div

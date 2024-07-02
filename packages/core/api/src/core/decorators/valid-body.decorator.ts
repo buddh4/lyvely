@@ -12,6 +12,7 @@ export interface IValidBodyOptions extends ValidationPipeOptions {
 }
 
 export function ValidBody(): ParameterDecorator;
+export function ValidBody(options?: IValidBodyOptions): ParameterDecorator;
 export function ValidBody(property?: string, options?: IValidBodyOptions): ParameterDecorator;
 export function ValidBody(
   property?: string | IValidBodyOptions,
