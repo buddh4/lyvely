@@ -8,11 +8,10 @@ import { isTextSelection, LyIcon, LyMarkdownView } from '@lyvely/ui';
 import { t } from '@/i18n';
 import TagList from '@/tags/components/TagList.vue';
 import { IStream } from '@/stream/stream.composable';
-import { getContentTypeIcon, getContentTypeOptions } from '../registries';
-import { useUserInfo } from '@/profiles/composables';
 import { toContentDetails } from '@/content/routes/content-route.helper';
 import ContentToolbar from './ContentToolbar.vue';
-import { type IDefaultStreamEntryOptions, StreamEntryLayout } from '@/content/interfaces';
+import { useContentStreamEntryInfo } from './content-stream-entry-info.composable';
+import { StreamEntryLayout } from '@/content/interfaces';
 
 export interface IProps {
   model: ContentModel;
@@ -37,20 +36,18 @@ const props = withDefaults(defineProps<IProps>(), {
 
 defineEmits(['selectTag']);
 
-const contentTypeOptions = getContentTypeOptions(props.model);
-const streamEntryOptions = (<IDefaultStreamEntryOptions>contentTypeOptions?.interfaces?.stream)
-  ?.entryOptions;
-const merge = computed(() => props.merge ?? streamEntryOptions?.merge ?? true);
-const layout = computed(
-  () => props.layout ?? (streamEntryOptions?.layout || StreamEntryLayout.Block)
-);
-const isMessageLayout = layout.value === StreamEntryLayout.Message;
-const icon = computed(() => props.icon ?? getContentTypeIcon(props.model));
-const iconClass = computed(() => props.iconClass ?? (streamEntryOptions?.iconClass || 'text-main'));
-const omitTags = computed(() => props.omitTags ?? streamEntryOptions?.omitTags ?? false);
-const contentTypeRoute = contentTypeOptions?.route;
-
-const userInfo = useUserInfo(props.model.meta.createdBy);
+const {
+  icon,
+  iconClass,
+  userInfo,
+  contentRoute,
+  contentTypeName,
+  showUserAvatar,
+  layout,
+  omitTags,
+  merge,
+  isMessageLayout,
+} = useContentStreamEntryInfo(props);
 
 const prevEntry = computed(() => props.stream?.getStreamEntryAt(props.index - 1));
 const nextEntry = computed(() => props.stream?.getStreamEntryAt(props.index + 1));
@@ -101,12 +98,6 @@ function onContentClick(evt: MouseEvent) {
   router.push(toContentDetails(props.model));
 }
 
-const contentTypeName = t(contentTypeOptions?.name || '');
-
-const showUserAvatar = computed(
-  () => !props.icon && userInfo.value && (isMessageLayout || !icon.value)
-);
-
 const borderClass = 'border border-divide dark:hover:border-gray-600 hover:border-gray-400';
 const baseLayoutClass = `relative inline-flex flex-col max-w-full cursor-pointer bg-main ${borderClass}`;
 const bodyWrapperClass = computed(
@@ -138,7 +129,7 @@ const maxWidth = true;
             :name="userInfo!.displayName"
             :guid="userInfo!.guid" />
           <div v-else :class="['flex h-8 w-8 justify-center rounded-full bg-main', borderClass]">
-            <router-link v-if="contentTypeRoute" :to="contentTypeRoute" class="flex justify-center">
+            <router-link v-if="contentRoute" :to="contentRoute" class="flex justify-center">
               <ly-icon v-if="icon" :name="icon" :class="iconClass" />
             </router-link>
             <ly-icon v-else-if="icon" :name="icon" :class="iconClass" />

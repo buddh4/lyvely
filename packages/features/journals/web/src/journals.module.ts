@@ -65,9 +65,6 @@ export const journalsModule = () => {
             createModel: CreateJournalModel,
             component: () => import('./components/modals/UpsertJournalModal.vue'),
           },
-          stream: {
-            details: () => import('./components/content-stream/JournalDetails.vue'),
-          },
         },
       });
     },

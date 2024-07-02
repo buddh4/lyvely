@@ -7,7 +7,7 @@ import {
   TimeSeriesTimerInput,
   TimeSeriesSummary,
 } from '@lyvely/time-series-web';
-import { ContentDetails, t } from '@lyvely/web';
+import { ContentDetails, t, ContentMarkdown } from '@lyvely/web';
 import { useHabitCalendarPlanStore } from '@/stores';
 import { onMounted, onUnmounted, ref, watch } from 'vue';
 import {
@@ -16,7 +16,7 @@ import {
   useCalendarPlanStore,
 } from '@lyvely/calendar-plan-web';
 import { useUpdateHabit } from '@/composables';
-import { LyIcon, LyButton, LyMarkdownView } from '@lyvely/ui';
+import { LyIcon, LyButton } from '@lyvely/ui';
 
 export interface IProps {
   model: HabitModel;
@@ -68,7 +68,7 @@ onUnmounted(unwatchDate);
     </template>
     <template #body>
       <div v-if="model.content.text?.length" class="mb-4">
-        <ly-markdown-view :md="model.content.text" class="text-sm" />
+        <content-markdown :model="model" />
       </div>
       <div>
         <time-series-summary

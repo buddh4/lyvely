@@ -10,6 +10,8 @@ import DefaultStreamEntry from './DefaultStreamEntry.vue';
 import ContentDropdown from './ContentDropdown.vue';
 import ContentMarkdown from './ContentMarkdown.vue';
 
+export * from './content-stream-entry-info.composable';
+
 export {
   ContentDetails,
   ContentDetailsHeader,

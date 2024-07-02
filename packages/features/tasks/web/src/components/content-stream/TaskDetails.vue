@@ -2,8 +2,8 @@
 import { TaskModel } from '@lyvely/tasks-interface';
 import { computed } from 'vue';
 import { useTaskCalendarPlanStore } from '@/stores';
-import { TimerState, ContentDetails, t } from '@lyvely/web';
-import { LyIcon, LyButton, LyMarkdownView } from '@lyvely/ui';
+import { TimerState, ContentDetails, t, ContentMarkdown } from '@lyvely/web';
+import { LyIcon, LyButton } from '@lyvely/ui';
 import { useCalendarPlanItem } from '@lyvely/calendar-plan-web';
 
 export interface IProps {
@@ -43,7 +43,7 @@ const canStartTimer = computed(() => !isDisabled.value && !isDone.value);
     </template>
     <template #body>
       <div v-if="model.content.text?.length" class="mb-2 text-sm">
-        <ly-markdown-view :md="model.content.text" class="text-sm" />
+        <content-markdown :model="model" />
       </div>
       <div class="flex justify-end">
         <timer-state

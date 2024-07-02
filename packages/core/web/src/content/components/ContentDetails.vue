@@ -4,11 +4,9 @@ import { ContentModel } from '@lyvely/interface';
 import ContentDropdown from '@/content/components/ContentDropdown.vue';
 import TagList from '@/tags/components/TagList.vue';
 import { useRouter } from 'vue-router';
-import { computed } from 'vue';
-import { translate } from '@/i18n';
-import { getContentTypeOptions } from '../registries';
-import { useUserInfo } from '@/profiles/composables';
 import ContentMarkdown from './ContentMarkdown.vue';
+import { LyIcon } from '@lyvely/ui';
+import { useContentStreamEntryInfo } from './content-stream-entry-info.composable';
 
 export interface IProps {
   model: ContentModel;
@@ -19,17 +17,14 @@ const props = withDefaults(defineProps<IProps>(), {
   showType: true,
 });
 
+const { icon, iconClass, userInfo, contentTypeName, contentRoute, showUserAvatar } =
+  useContentStreamEntryInfo(props);
+
 const router = useRouter();
 
 function selectTag(tagId: string) {
   router.push({ name: 'stream', query: { tagIds: [tagId] } });
 }
-
-const contentTypeName = computed(() =>
-  translate(getContentTypeOptions(props.model.type)?.name || '')
-);
-
-const userInfo = useUserInfo(props.model.meta.createdBy);
 </script>
 
 <template>
@@ -38,10 +33,16 @@ const userInfo = useUserInfo(props.model.meta.createdBy);
       <div class="flex items-center justify-items-stretch gap-2">
         <slot name="image">
           <ly-avatar
-            v-if="userInfo"
+            v-if="showUserAvatar"
             class="h-8 w-8"
-            :name="userInfo.displayName"
-            :guid="userInfo.guid" />
+            :name="userInfo!.displayName"
+            :guid="userInfo!.guid" />
+          <div v-else class="flex h-8 w-8 justify-center rounded-full border border-divide bg-main">
+            <router-link v-if="contentRoute" :to="contentRoute" class="flex justify-center">
+              <ly-icon v-if="icon" :name="icon" :class="iconClass" />
+            </router-link>
+            <ly-icon v-else-if="icon" :name="icon" :class="iconClass" />
+          </div>
         </slot>
         <div class="flex flex-col text-sm">
           <slot name="title">
