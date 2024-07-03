@@ -6,7 +6,7 @@ import {
   UpdateProfileModel,
   useProfilesClient,
 } from '@lyvely/interface';
-import { useUpsertModelStore } from '@/common';
+import { useUpsertModel } from '@/common';
 import { useProfileStore } from './profile.store';
 import { useFlashStore } from '@/ui';
 import { useProfileRelationInfosStore } from './profile-relation-infos.store';
@@ -16,7 +16,7 @@ export const useUpdateProfileStore = defineStore('update-profile', () => {
   const profileStore = useProfileStore();
   const { profile } = storeToRefs(profileStore);
 
-  const editStore = useUpsertModelStore<
+  const editStore = useUpsertModel<
     ProfileWithRelationsModel,
     CreateProfileModel,
     UpdateProfileModel

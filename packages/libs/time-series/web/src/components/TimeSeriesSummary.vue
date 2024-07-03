@@ -50,7 +50,8 @@ const props = withDefaults(defineProps<IProps>(), {
   showTrend: true,
 });
 
-const { locale } = storeToRefs(useProfileStore());
+const profileStore = useProfileStore();
+const { locale } = storeToRefs(profileStore);
 
 const chartRoot = ref<HTMLElement>();
 let chart: EChartsType;
@@ -76,7 +77,8 @@ function renderSummaryChart(summary: ITimeSeriesSummary) {
   const { tids, values, movingAverages } = MovingAverageCalculator.calculateMovingAverage(
     summary,
     props.interval,
-    locale.value!
+    locale.value!,
+    profileStore.getSetting('calendar')
   );
 
   chart = init(chartRoot.value!);

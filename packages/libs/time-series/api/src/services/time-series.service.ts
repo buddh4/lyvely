@@ -122,7 +122,12 @@ export abstract class TimeSeriesService<
     if (!implementsINumericDataPoint(dataPoint)) return;
     if (isEqual(dataPoint.value, oldValue)) return;
 
-    const tidWindow = getTidWindow(dataPoint.interval, context.profile.locale);
+    const tidWindow = getTidWindow(
+      dataPoint.interval,
+      context.profile.locale,
+      undefined,
+      profile.settings?.calendar
+    );
 
     if (!tidWindow.includes(tid)) return;
 

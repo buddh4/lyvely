@@ -66,7 +66,7 @@ export interface IUpdateModelStoreOptions<
  * @example
  *
  * <script lang="ts" setup>
- * const updateStore = useUpsertModelStore({
+ * const updateStore = useUpsertModel({
  *   client: useMyModelClient()
  * });
  *
@@ -84,7 +84,7 @@ export interface IUpdateModelStoreOptions<
  * </template>
  * @param options
  */
-export function useUpsertModelStore<
+export function useUpsertModel<
   TModel,
   TCreateModel extends object,
   TUpdateModel extends object = Partial<TCreateModel>,

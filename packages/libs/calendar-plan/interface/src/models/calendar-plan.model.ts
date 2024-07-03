@@ -294,8 +294,8 @@ const PlanFactory = {
 export function getTidWindow(
   interval: CalendarInterval,
   locale: string,
-  windowSize?: number,
-  preferences?: ICalendarPreferences
+  windowSize: number | undefined | null,
+  preferences: ICalendarPreferences | undefined
 ) {
   const calendarPlan = CalendarPlan.getInstance(interval);
   windowSize ||= calendarPlan.getDefaultWindowSize();

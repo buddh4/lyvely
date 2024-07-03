@@ -1,6 +1,7 @@
 import { ITimeSeriesSummary } from '../interfaces';
 import { CalendarInterval } from '@lyvely/dates';
 import { CalendarPlan, getTidWindow } from '@lyvely/calendar-plan-interface';
+import type { ICalendarPreferences } from '@lyvely/dates';
 
 export interface IMovingAverageData {
   tid: string;
@@ -38,6 +39,7 @@ export class MovingAverageCalculator {
     summary: ITimeSeriesSummary,
     interval: CalendarInterval,
     locale: string,
+    preferences: ICalendarPreferences | undefined,
     windowSize?: number
   ) {
     const calendarPlan = CalendarPlan.getInstance(interval); // 7-day moving average
@@ -45,7 +47,7 @@ export class MovingAverageCalculator {
     const averageWindowSize = Math.min(windowSize, Math.ceil(summary.window.length / 2));
     const calculator = new MovingAverageCalculator(averageWindowSize);
 
-    const tids: string[] = getTidWindow(interval, locale, windowSize);
+    const tids: string[] = getTidWindow(interval, locale, windowSize, preferences);
     const values: number[] = [];
     const movingAverages: Array<number | null> = [];
     const differences: Array<number | null> = [];
