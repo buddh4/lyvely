@@ -1,5 +1,4 @@
 import { Plugin } from 'vite';
-import { externalizeDeps } from 'vite-plugin-externalize-deps';
 import vuePlugin from '@vitejs/plugin-vue';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
@@ -10,6 +9,7 @@ interface IOptions {
   locales?: string | boolean;
   input?: string[];
   plugins?: Plugin[];
+  minify?: boolean;
 }
 
 const tsconfigPathDefault: (options: any) => Plugin = !!(<any>tsconfigPaths).default
@@ -17,7 +17,7 @@ const tsconfigPathDefault: (options: any) => Plugin = !!(<any>tsconfigPaths).def
   : tsconfigPaths;
 
 export const useViteWebAppConfig = (options: IOptions) => {
-  const __dirname = process.cwd();
+  const cwd = process.cwd();
 
   options = { locales: true, ...options };
 
@@ -34,11 +34,11 @@ export const useViteWebAppConfig = (options: IOptions) => {
         // locale messages resource pre-compile option
         include: [
           resolve(
-            __dirname,
+            cwd,
             typeof options.locales === 'string' ? options.locales : './locales/**'
           ),
           resolve(
-            __dirname,
+            cwd,
             typeof options.locales === 'string' ? options.locales : './src/**/locales/**'
           ),
         ],
@@ -46,7 +46,7 @@ export const useViteWebAppConfig = (options: IOptions) => {
     );
   }
 
-  const input = options.input || sync(resolve(__dirname, 'src/**/*.ts'));
+  const input = options.input || sync(resolve(cwd, 'src/**/*.ts'));
 
   /// <reference types="vitest" />
   return {
@@ -65,15 +65,21 @@ export const useViteWebAppConfig = (options: IOptions) => {
     },
     assetsInclude: ['**/*.svg', '**/*.png'],
     resolve: {
-      alias: [{ find: /^@(?=\/)/, replacement: resolve(__dirname, './src') }],
+      alias: [
+        { find: /^@(?=\/)/, replacement: resolve(cwd, './src') },
+        // This will exclude the phonenumber-js lib which is huge and currently not in use
+        { find: 'libphonenumber-js/max', replacement: '@lyvely/devtools/vite-helper/libphonenumber-stub' }
+      ],
     },
     build: {
       // Note this value should be aligned with the PWAs maximumFileSizeToCacheInBytes
-      chunkSizeWarningLimit: 700,
+      chunkSizeWarningLimit: 750,
+      minify: options.minify ?? true,
       rollupOptions: {
         output: {
           manualChunks: {
             '@lyvely/ui': ['@lyvely/ui'],
+            'vue': ['vue']
           },
         },
       },

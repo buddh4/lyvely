@@ -33,7 +33,7 @@
     "@lyvely/dates": "workspace:*",
     "@lyvely/calendar-plan-interface": "workspace:*",
     "@lyvely/interface": "workspace:*",
-    "@buddh4/mapped-types": "^1.1.0",
+    "@buddh4/mapped-types": "^1.2.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
     "reflect-metadata": "^0.1.12 || ^0.2.0",

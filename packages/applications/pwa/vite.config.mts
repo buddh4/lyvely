@@ -8,7 +8,7 @@ export default defineConfig(
     ...useViteWebAppConfig({
       plugins: [
         visualizer({
-         // template: 'network'
+          //template: 'network'
         }),
         VitePWA({
           includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'safari-pinned-tab.svg'],
@@ -18,7 +18,7 @@ export default defineConfig(
           registerType: 'prompt',
           injectManifest: {
             // Note this value should be aligned with build.chunkSizeWarningLimit
-            maximumFileSizeToCacheInBytes: 700 * 1024 // 700KB
+            maximumFileSizeToCacheInBytes: 750 * 1024 // 750KB
           },
           workbox: {
             globPatterns: ['**/*.{js,css,html,ico,png,svg}'],

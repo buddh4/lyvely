@@ -33,12 +33,14 @@ export default async (options) => {
       output: [
         {
           sourcemap: !production,
+          preserveModules: true,
           dir: 'dist/esm',
           format: 'esm',
         },
         {
           sourcemap: !production,
           dir: 'dist/cjs',
+          preserveModules: true,
           format: 'cjs',
           entryFileNames: '[name].cjs',
         },

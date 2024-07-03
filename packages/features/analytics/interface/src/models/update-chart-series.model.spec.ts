@@ -1,4 +1,4 @@
-import { getChartSeriesConfigTypes, registerChartSeries, resetChartSeries } from '../registries';
+import { registerChartSeries, resetChartSeries } from '../registries';
 import { ChartSeriesConfigModel } from './chart-series-config.model';
 import { UpdateChartSeriesModel } from './update-chart-series.model';
 import { Exclude, Expose, plainToClass } from 'class-transformer';

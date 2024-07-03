@@ -30,7 +30,7 @@
   ],
   "dependencies": {
     "tslib": "^2.6.2",
-    "@buddh4/mapped-types": "^1.1.0",
+    "@buddh4/mapped-types": "^1.2.1",
     "@lyvely/common": "workspace:*",
     "@lyvely/dates": "workspace:*",
     "@lyvely/devtools": "workspace:*",
