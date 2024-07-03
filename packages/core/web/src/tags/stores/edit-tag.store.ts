@@ -1,11 +1,11 @@
 import { defineStore } from 'pinia';
 import { TagModel, UpdateTagModel, CreateTagModel, useProfileTagsClient } from '@lyvely/interface';
 import { computed } from 'vue';
-import { useUpsertModelStore, useArchiveModel } from '@/common';
+import { useUpsertModel, useArchiveModel } from '@/common';
 import { useProfileStore } from '@/profiles/stores/profile.store';
 
 export const useEditTagStore = defineStore('tagEdit', () => {
-  const editState = useUpsertModelStore<TagModel, CreateTagModel, UpdateTagModel>({
+  const editState = useUpsertModel<TagModel, CreateTagModel, UpdateTagModel>({
     client: useProfileTagsClient(),
     onSubmitSuccess: (tag?: TagModel) => {
       if (tag) {
