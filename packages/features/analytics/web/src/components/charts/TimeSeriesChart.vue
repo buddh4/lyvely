@@ -83,6 +83,7 @@ interface IChartSeries {
   type: string;
   name: string;
   color?: string;
+  smooth?: boolean;
 }
 
 async function transformResponseToChartData(
@@ -143,7 +144,7 @@ async function transformSeries(
       ? (await useProfileStore().getUserInfo(series.name))?.displayName || series.name
       : series.name;
 
-  return { data, type, name, color: series.color };
+  return { data, type, name, color: series.color, smooth: true };
 }
 
 async function renderChart() {

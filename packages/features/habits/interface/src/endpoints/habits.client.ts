@@ -15,7 +15,7 @@ import {
   unwrapResponse,
   IProfileApiRequestOptions,
 } from '@lyvely/interface';
-import { useSingleton } from '@lyvely/common';
+import { useSingleton, createBaseModelAndInit } from '@lyvely/common';
 import { CalendarPlanSort, CalendarPlanFilter } from '@lyvely/calendar-plan-interface';
 import { useDataPointStrategyFacade, TimerDataPointModel } from '@lyvely/time-series-interface';
 import repository from './habits.repository';
@@ -61,7 +61,7 @@ export class HabitsClient implements IHabitsEndpointClient {
   ): Promise<UpdateHabitDataPointResponse> {
     const result = await unwrapResponse(repository.updateDataPoint(cid, update, options));
     result.dataPoint = useDataPointStrategyFacade().createDataPoint(result.dataPoint);
-    result.model = new HabitModel(result.model);
+    result.model = createBaseModelAndInit(HabitModel, result.model);
     return result;
   }
 

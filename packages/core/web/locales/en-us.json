@@ -98,6 +98,10 @@
     "none": "None",
     "not-set": "Not set",
     "restore": "Add from archive",
+    "user-strategy": {
+      "per-user": "Per User",
+      "shared": "Shared"
+    },
     "status": {
       "404": "Page not found!",
       "403": "You are not allowed to view this page!",
@@ -115,7 +119,8 @@
       "max": "Max",
       "optimal": "Optimal",
       "min": "Min",
-      "color": "Color"
+      "color": "Color",
+      "userStrategy": "User Strategy"
     },
     "filter": {
       "search": "Search",

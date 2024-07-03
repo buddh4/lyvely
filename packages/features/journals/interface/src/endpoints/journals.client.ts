@@ -8,7 +8,7 @@ import {
 import { IJournalsEndpointService } from './journals.endpoint';
 import { CalendarPlanSort, CalendarPlanFilter } from '@lyvely/calendar-plan-interface';
 import { useDataPointStrategyFacade, UpdateDataPointModel } from '@lyvely/time-series-interface';
-import { useSingleton } from '@lyvely/common';
+import { useSingleton, createBaseModelAndInit } from '@lyvely/common';
 import {
   SortResponse,
   IProfileApiRequestOptions,
@@ -38,7 +38,7 @@ export class JournalsClient implements IJournalsEndpointService {
   async getByFilter(filter: CalendarPlanFilter, options?: IProfileApiRequestOptions) {
     const { models, dataPoints } = await unwrapResponse(repository.getByFilter(filter, options));
     return {
-      models: models.map((journal) => new JournalModel(journal)),
+      models: models.map((journal) => createBaseModelAndInit(JournalModel, journal)),
       dataPoints: dataPoints.map((dataPoint) => dataPointService.createDataPoint(dataPoint)),
     };
   }

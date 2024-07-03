@@ -85,7 +85,7 @@ export class JournalsController
     );
 
     return new UpdateDataPointResponse({
-      model: content.toModel(),
+      model: content.toModel(context.user),
       dataPoint: DataPointModelConverter.toModel(dataPoint),
     });
   }

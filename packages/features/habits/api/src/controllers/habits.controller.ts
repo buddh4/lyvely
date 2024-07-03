@@ -60,7 +60,7 @@ export class HabitsController
     const { context } = req;
     const { models, dataPoints } = await this.timeSeriesService.findTimeSeries(context, filter);
     return new HabitSearchResponse({
-      models: models.map<HabitModel<any>>((c) => c.toModel()),
+      models: models.map<HabitModel<any>>((c) => c.toModel(context.user)),
       dataPoints: dataPoints.map((value) =>
         DataPointModelConverter.toModel<NumberDataPointModel | TimerDataPointModel>(value)
       ),
@@ -95,7 +95,7 @@ export class HabitsController
 
     return new UpdateHabitDataPointResponse({
       score: profile.score,
-      model: content.toModel() as HabitModel<any>,
+      model: content.toModel(context.user),
       dataPoint: DataPointModelConverter.toModel<NumberDataPointModel>(dataPoint),
     });
   }

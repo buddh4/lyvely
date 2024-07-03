@@ -13,20 +13,20 @@ export interface ITimeSeriesSummaryWindowEntry {
 }
 
 export interface ITimeSeriesSummary<TID = string> {
-  uid?: TID;
+  uid: TID | null;
   window: ITimeSeriesSummaryWindowEntry[];
 }
 
 export interface ITimeSeriesState<TID = string> {
-  summary: ITimeSeriesSummary<TID>[];
+  summaries: ITimeSeriesSummary<TID>[];
 }
 
 export interface ITimeSeriesContent<
   TID = string,
-  TDataPointConfig = IDataPointConfig,
-  TState extends ITimeSeriesState = ITimeSeriesState,
+  TConfig extends ITimeSeriesContentConfig = ITimeSeriesContentConfig,
+  TState extends ITimeSeriesState<TID> = ITimeSeriesState<TID>,
   TData extends IContentDataType = IContentDataType,
-> extends IContent<TID, ITimeSeriesContentConfig<TDataPointConfig>, TState, TData> {
+> extends IContent<TID, TConfig, TState, TData> {
   get interval(): CalendarInterval;
   set interval(interval: CalendarInterval);
 }

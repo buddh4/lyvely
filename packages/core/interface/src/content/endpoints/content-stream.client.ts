@@ -1,7 +1,7 @@
 import { ContentModel, ContentRequestFilter } from '../models';
 import { IContentStreamClient } from './content-stream.endpoint';
 import { IStreamOptions, IStreamResponse, IStreamState } from '@/streams';
-import { useSingleton, PropertiesOf } from '@lyvely/common';
+import { useSingleton, PropertiesOf, createBaseModelAndInit } from '@lyvely/common';
 import repositry from './content-stream.repository';
 import { IProfileApiRequestOptions, unwrapResponse } from '@/endpoints';
 import { getContentModelType } from '../registries';
@@ -62,7 +62,7 @@ export class ContentStreamClient implements IContentStreamClient {
 
   private createModel(model: PropertiesOf<ContentModel>) {
     const ModelClass = this.getModelClass(model.type);
-    return new ModelClass(model);
+    return createBaseModelAndInit(ModelClass, model);
   }
 
   private getModelClass(type: string) {

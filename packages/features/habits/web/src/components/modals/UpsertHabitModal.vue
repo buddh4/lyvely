@@ -12,6 +12,7 @@ import {
   ContentEditModalEmits,
   useContentUpsertModal,
   ICreateContentInitOptions,
+  getUserStrategyOptions,
 } from '@lyvely/web';
 import { getCalendarPlanOptions } from '@lyvely/calendar-plan-web';
 import { LyModal, LyFormModel, LyTextField, LySelect, LyTextarea, isTouchScreen } from '@lyvely/ui';
@@ -40,6 +41,7 @@ function adjustAndSubmit() {
 }
 
 const calendarPlanOptions = computed(() => getCalendarPlanOptions());
+const userStrategyOptions = computed(() => getUserStrategyOptions());
 
 const modalTitle = computed(() => {
   return isCreate.value ? `habits.create.title` : `habits.edit.title`;
@@ -65,11 +67,21 @@ const modalTitle = computed(() => {
           :required="true"
           :autofocus="isCreate || !isTouchScreen()"
           :auto-validation="false" />
-        <ly-select
-          property="interval"
-          type="number"
-          :required="true"
-          :options="calendarPlanOptions" />
+      </fieldset>
+
+      <fieldset>
+        <div class="grid grid-cols-2 grid-rows-1 gap-2">
+          <ly-select
+            property="interval"
+            type="number"
+            :required="true"
+            :options="calendarPlanOptions" />
+          <ly-select
+            property="userStrategy"
+            type="number"
+            :required="true"
+            :options="userStrategyOptions" />
+        </div>
       </fieldset>
 
       <fieldset>

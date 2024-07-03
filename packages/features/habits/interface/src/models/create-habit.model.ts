@@ -19,7 +19,7 @@ import {
   Min,
 } from 'class-validator';
 import { UserAssignmentStrategy } from '@lyvely/interface';
-import { BaseModel, type BaseModelData, Gte, Lte, type PropertiesOf, Trim } from '@lyvely/common';
+import { BaseModel, type BaseModelData, Gte, Lte, Trim } from '@lyvely/common';
 
 @Expose()
 export class CreateHabitModel implements INumberDataPointSettings, ITimerDataPointSettings {

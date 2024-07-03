@@ -61,7 +61,7 @@ export const JournalConfigSchema = TimeSeriesConfigSchemaFactory.createForClass(
  */
 @Schema()
 export class Journal
-  extends TimeSeriesContent<JournalDataPointConfig>
+  extends TimeSeriesContent<JournalConfig>
   implements PropertiesOf<JournalModel<TObjectId>>
 {
   @Prop({ type: JournalConfigSchema, required: true })
@@ -89,7 +89,7 @@ export class Journal
   }
 
   toModel(user?: User): JournalModel<any> {
-    return new JournalModel(this);
+    return new JournalModel(this, user?.id);
   }
 }
 

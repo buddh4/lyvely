@@ -71,12 +71,7 @@ onUnmounted(unwatchDate);
         <content-markdown :model="model" />
       </div>
       <div>
-        <time-series-summary
-          class="mt-4"
-          :value-type="model.timeSeriesConfig.valueType"
-          :summary="model.timeSeriesSummary"
-          :interval="model.interval"
-          height="200px" />
+        <time-series-summary class="mt-4" :model="model" height="200px" />
       </div>
     </template>
     <template #footer>

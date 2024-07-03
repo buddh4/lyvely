@@ -1,4 +1,4 @@
-import { ProfileContext, ProtectedProfileContext } from '@lyvely/api';
+import { ProfileContext, ProtectedProfileContext, UserAssignmentStrategy } from '@lyvely/api';
 import { CalendarDate, CalendarInterval, isInFuture } from '@lyvely/dates';
 import {
   CalendarPlanFilter,
@@ -6,7 +6,7 @@ import {
   SortableCalendarPlanService,
 } from '@lyvely/calendar-plan';
 import { implementsINumericDataPoint } from '@lyvely/time-series-interface';
-import { DataPoint, TimeSeriesContent, TimeSeriesSummaryWindowEntry } from '../schemas';
+import { DataPoint, TimeSeriesContent, TimeSeriesSummary } from '../schemas';
 import { IDataPointUpdateResult, ITimeSeriesContentSearchResult } from '../interfaces';
 import { DataPointService } from './data-point.service';
 import { TimeSeriesContentDao } from '../daos';
@@ -115,12 +115,14 @@ export abstract class TimeSeriesService<
     model: TModel,
     update: IDataPointUpdateResult<TDataPointModel>
   ) {
-    const { profile } = context;
+    const { profile, user } = context;
     const { dataPoint, oldValue } = update;
     const { tid } = dataPoint;
-    if (dataPoint.interval === CalendarInterval.Unscheduled) return;
-    if (!implementsINumericDataPoint(dataPoint)) return;
-    if (isEqual(dataPoint.value, oldValue)) return;
+
+    // Pre conditions
+    if (dataPoint.interval === CalendarInterval.Unscheduled) return false;
+    if (!implementsINumericDataPoint(dataPoint)) return false;
+    if (isEqual(dataPoint.value, oldValue)) return false;
 
     const tidWindow = getTidWindow(
       dataPoint.interval,
@@ -131,27 +133,24 @@ export abstract class TimeSeriesService<
 
     if (!tidWindow.includes(tid)) return;
 
-    const newValue = dataPoint.numericValue;
-    const existingEntry = model.timeSeriesSummary.window.find((entry) => entry.tid === tid);
+    const isPerUserStrategy =
+      model.timeSeriesConfig.userStrategy === UserAssignmentStrategy.PerUser;
 
-    if (existingEntry && existingEntry.value === newValue) return;
+    let summary = model.getSummary(user);
 
-    if (existingEntry) {
-      existingEntry.value = newValue;
-    } else {
-      model.timeSeriesSummary.window.push(new TimeSeriesSummaryWindowEntry(tid, newValue));
+    if (!summary) {
+      summary = new TimeSeriesSummary({ uid: isPerUserStrategy ? user._id : null });
+      model.state.summaries.push(summary);
     }
 
-    model.timeSeriesSummary.window = model.timeSeriesSummary.window
-      .filter((entry) => tidWindow.includes(entry.tid))
-      .sort((a, b) => {
-        const indexA = tidWindow.findIndex((tid) => tid === a.tid);
-        const indexB = tidWindow.findIndex((tid) => tid === b.tid);
-        return indexA - indexB;
-      });
+    const wasUpdated = summary.upsertWindow(tid, dataPoint.numericValue);
+
+    if (!wasUpdated) return;
+
+    summary.clearByTidWindow(tidWindow);
 
     return this.contentDao.updateOneByProfileAndIdSet(profile, model, {
-      timeSeriesSummary: model.timeSeriesSummary,
+      'state.summaries': model.state.summaries,
     });
   }
 }

@@ -58,7 +58,7 @@ export const HabitConfigSchema = TimeSeriesConfigSchemaFactory.createForClass(Ha
 
 @Schema()
 export class Habit
-  extends TimeSeriesContent<HabitDataPointConfig>
+  extends TimeSeriesContent<HabitConfig>
   implements PropertiesOf<HabitModel<TObjectId>>
 {
   @Prop({ type: HabitConfigSchema, required: true })
@@ -95,8 +95,8 @@ export class Habit
     );
   }
 
-  toModel(user?: User): HabitModel {
-    return new HabitModel(this);
+  toModel(user?: User): HabitModel<any> {
+    return new HabitModel(this, user?.id);
   }
 
   applyUpdate(update: UpdateHabitModel) {

@@ -1,14 +1,13 @@
 <script lang="ts" setup>
 import {
   MovingAverageCalculator,
-  ITimeSeriesSummary,
   DataPointValueType,
+  TimeSeriesContentModel,
 } from '@lyvely/time-series-interface';
-import { CalendarInterval } from '@lyvely/dates';
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import { init, type EChartsType, use } from 'echarts/core';
 import { storeToRefs } from 'pinia';
-import { useProfileStore, t, usePageStore } from '@lyvely/web';
+import { useProfileStore, t, usePageStore, useAuthStore } from '@lyvely/web';
 import { BarChart, LineChart } from 'echarts/charts';
 import {
   DatasetComponent,
@@ -36,9 +35,7 @@ use([
 ]);
 
 export interface IProps {
-  summary: ITimeSeriesSummary;
-  interval: CalendarInterval;
-  valueType: string;
+  model: TimeSeriesContentModel;
   showTrend?: boolean;
   width?: string | number;
   height?: string | number;
@@ -56,11 +53,10 @@ const { locale } = storeToRefs(profileStore);
 const chartRoot = ref<HTMLElement>();
 let chart: EChartsType;
 
-watch(
-  () => props.summary,
-  () => renderSummaryChart(props.summary),
-  { deep: true }
-);
+const summary = computed(() => props.model.getSummary(useAuthStore().user?.id));
+
+// We need the setTimeout if the summary is initialized, I assume the rendering conflicts with the style update.
+watch(summary, () => setTimeout(renderSummaryChart, 100), { deep: true });
 
 const { isDark } = storeToRefs(usePageStore());
 
@@ -68,15 +64,18 @@ const textStyle = computed(() => ({ color: isDark.value ? '#f3f4f6' : '#4b5563' 
 
 watch(isDark, () => {
   if (!chart) return;
-  renderSummaryChart(props.summary);
+  renderSummaryChart();
 });
 
 const onResize = () => chart?.resize();
 
-function renderSummaryChart(summary: ITimeSeriesSummary) {
+function renderSummaryChart() {
+  const timeSeriesSummary = summary.value;
+  if (!timeSeriesSummary) return;
+
   const { tids, values, movingAverages } = MovingAverageCalculator.calculateMovingAverage(
-    summary,
-    props.interval,
+    timeSeriesSummary,
+    props.model.interval,
     locale.value!,
     profileStore.getSetting('calendar')
   );
@@ -111,7 +110,7 @@ function renderSummaryChart(summary: ITimeSeriesSummary) {
       type: 'value',
       axisLabel: {
         formatter: (value: number) => {
-          if (props.valueType !== DataPointValueType.Timer) return value;
+          if (props.model.timeSeriesConfig.valueType !== DataPointValueType.Timer) return value;
           const hours = Math.floor(value / 3600000);
           const minutes = Math.floor((value - hours * 3600000) / 60000);
           const seconds = ((value % 60000) / 1000).toFixed(0);
@@ -148,15 +147,20 @@ function renderSummaryChart(summary: ITimeSeriesSummary) {
   });
 }
 
+const style = computed(() => ({
+  height: summary.value ? props.height : 0,
+  width: summary.value ? props.width : 0,
+}));
+
 onMounted(() => {
-  renderSummaryChart(props.summary);
+  renderSummaryChart();
   window.addEventListener('resize', onResize);
 });
 onUnmounted(() => window.removeEventListener('resize', onResize));
 </script>
 
 <template>
-  <div ref="chartRoot" :style="{ height, width }"></div>
+  <div ref="chartRoot" :style="style"></div>
 </template>
 
 <style scoped></style>

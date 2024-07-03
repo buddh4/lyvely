@@ -14,6 +14,7 @@ import {
   ITimeSeriesContentConfig,
   DataPointValueType,
 } from '@lyvely/time-series-interface';
+import { TimeSeriesContentModel } from '@lyvely/time-series-interface/src';
 
 type TestDataPointConfig =
   | CheckboxNumberDataPointConfig
@@ -43,7 +44,7 @@ export class TestTimeSeriesContent extends TimeSeriesContent {
   @Prop()
   someTestField: string;
 
-  toModel(): ContentModel<string> {
+  toModel(): TimeSeriesContentModel<string> {
     throw new Error('Method not implemented.');
   }
 }
