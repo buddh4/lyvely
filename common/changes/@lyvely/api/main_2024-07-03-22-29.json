@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@lyvely/api",
+      "comment": "feat: Added user strategy support",
+      "type": "none"
+    }
+  ],
+  "packageName": "@lyvely/api"
+}
