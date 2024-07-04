@@ -267,15 +267,18 @@ const UserFeatureList: FeatureItem[] = [
 function Feature({title, svgPaths, svgViewBox, description}: FeatureItem) {
   return (
     <div className={clsx('col col--4 relative')}>
-      <svg viewBox={svgViewBox} className="w-5 text-primary absolute left-0 top-[5px]">
-        {svgPaths.map((path, idx) => (
-          <path fill="currentColor" d={path}></path>
-        ))}
-      </svg>
-      <div className="mx-4 text-left">
-        <h4 className="text-lg mb-2 font-semibold text-gray-600 dark:text-gray-100">{title}</h4>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mb-8">{description}</p>
+      <div class="relative">
+        <svg viewBox={svgViewBox} className="w-5 text-primary absolute left-0 top-[5px]">
+          {svgPaths.map((path, idx) => (
+            <path fill="currentColor" d={path}></path>
+          ))}
+        </svg>
+        <div className="ml-7 text-left">
+          <h4 className="text-lg mb-2 font-semibold text-gray-600 dark:text-gray-100">{title}</h4>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mb-8">{description}</p>
+        </div>
       </div>
+
     </div>
   );
 }

@@ -4,21 +4,23 @@ Model classes are primarily implemented in the interface layer of a module, serv
 Transfer Objects (DTOs) or domain models. To facilitate the creation and management of these model classes, 
 the `@lyvely/common` package offers a set of utilities, which will be detailed in the upcoming sections.
 
-## `BaseModel.init`
+## `BaseModel`
 
 The `BaseModel.init` function within the `@lyvely/common` package offers functionalities for initializing and transforming 
 model instances. Model classes often mirror the structure of a backend document schema and can also serve as interfaces 
 for such schema models, ensuring strict type safety. In such instances, it is advisable to append the `Model` 
 suffix to the class name to avoid naming conflicts.
 
-Some transformation rules mentioned in the following sections facilitate using a document schema object as a constructor 
-argument of a model class, provided that the structures of both models are equivalent, except for the id type.
+:::note
+Some transformation rules mentioned in the following sections facilitate using a backend document as a constructor 
+argument of a model class, provided that the structures of both models except for the id type are equivalent.
+:::
 
-For example, let's consider a hypothetical `UserModel` as an illustration:
+For example, let's consider a hypothetical `UserModel` class as an illustration:
 
 ```typescript
 import { Exclude } from "class-transformer";
-import { BaseModel, PropertyType } from "@lyvely/common";
+import { BaseModel, PropertyType, TransformObjectId } from "@lyvely/common";
 
 @Exclude()
 export class UserContactModel<TID = string> {
@@ -66,16 +68,18 @@ export class UsersResponse<TID = string> {
 }
 ```
 
-- To control which fields are included when serializing or deserializing a model, you can use the `@Expose` and `@Exclude`
-  decorators. In most scenarios, especially when dealing with models that may contain sensitive data, it is advisable to
-  use `@Exclude` at the class level to exclude all fields by default and then explicitly `@Expose` the fields that are safe to
-  transmit to the client or server.
-- The `@PropertyType` decorator is used to specify the data type of a property for the purpose of auto-transformation,
-  and will be explored in greater depth in an upcoming section.
-- The `@TransformObjectId` decorator will automatically transform `ObjectId` values to `string`.
-  This is useful if our schema implements our model (beside the type of ids) we can simply use schema model instances as
-  constructor argument when creating models.
-- For transforming arrays of `ObjectIds` to string arrays use the `@TransformObjectIds` decorator.
+To control which fields are included when serializing or deserializing a model, you can use the `@Expose` and `@Exclude`
+decorators. In most scenarios, especially when dealing with models that may contain sensitive data, it is advisable to
+use `@Exclude` at the class level to exclude all fields by default and then explicitly `@Expose` the fields that are safe to
+transmit to the client or server.
+
+The `@PropertyType` decorator is used to specify the data type of a property for the purpose of auto-transformation and
+initialization, and will be explored in greater depth in an upcoming section.
+
+The `@TransformObjectId` decorator ensures the transformation of `ObjectId` values to `string`.
+This is useful if our document schema implements our model schema, so we simply can use document instances as
+constructor argument when creating models. For transforming arrays of `ObjectIds` to string arrays use 
+the `@TransformObjectIds` decorator.
 
 In this example our backend schema can implement the model properties as follows:
 
@@ -101,7 +105,7 @@ export class UsersController {
 
 ### Constructor
  
-To create an instance of our `UserModel`, you can use the following approach:
+To manually instantiate our `UserModel`, you can use the following approach:
 
 ```typescript
 const user = new UserModel({
@@ -118,7 +122,7 @@ based on the `@PropertyType` decorator while respecting our transformation rules
 
 When extending a class using `BaseModel.init` in its constructor, you should call the parent constructor with `false`,
 which is included in the `StrictBaseModelData` and `BaseModelData` types, and manually call `BaseModel.init` in the subclass.
-This is required if the subclass adds or overwrites properties since ES2020 class fields do not support setting fields
+This is required if the subclass adds or overwrites properties since *ES2020* class fields do not support setting fields
 of a subclass within the super constructor:
 
 ```typescript
@@ -178,9 +182,13 @@ export class UserModel<TID = string> {
 ```
 
 If we now instantiate a new `UserModel` without specifying a `status` value in the constructor, the default status will be 
-applied. Alternatively, for simple cases like this, we can simplify the process using a 
-`@PropertyType(Number, { default: UserStatus.Active })` decorator to achieve the same result. Additionally, the 
+applied.
+
+:::tip
+For simple cases like this, you should prefer using the
+`@PropertyType(Number, { default: UserStatus.Active })` decorator to achieve the same result. Additionally, the
 `@PropertyType` decorator ensures that the value is correctly transformed to the specified type.
+:::
 
 ### afterInit
 
@@ -210,6 +218,12 @@ export class UserModel<TID = string> {
     }
 }
 ```
+
+:::tip
+For simple cases like this, you should prefer using the
+`@PropertyType(Number, { default: UserStatus.Active })` decorator to achieve the same result. Additionally, the
+`@PropertyType` decorator ensures that the value is correctly transformed to the specified type.
+:::
 
 ### PropertyType
 
@@ -275,26 +289,26 @@ transformation of the http body, Lyvely offers the `@ValidBody` helper decorator
 the NestJS `@Body` decorator and by default adds a validation pipeline.
 
 In your controller, you can manually define a `ClassSerializerInterceptor` interceptor to enable automatic serialization
-and deserialization. To simplify this process, Lyvely offers the `@UseClassSerializer` utility decorator,
+and deserialization of controller results. To simplify this process, Lyvely offers the `@UseClassSerializer` utility decorator,
 which can (and in most cases should) be applied to controller classes or controller functions.
 
 
 ```typescript
-@Controller(API_USER_INVITATIONS)
+@Controller('/my-route')
 @UseClassSerializer()
-export class InvitationsController implements UserInvitationsEndpoint {
-  constructor(private sendInviteService: SendInvitationsService) {}
+export class MyController {
+  constructor(private myService: MyService) {}
 
-  @Post()
-  @HttpCode(HttpStatus.NO_CONTENT)
-  async sendInvitations(@Body() invites: InvitationRequest, @Req() req: UserRequest) {
-    await this.sendInviteService.sendInvitations(req.user, invites);
+  @Get()
+  async doeSomething() {
+    const result = await this.myService.doSomething();
+    return new MyResultModel(result);
   }
 }
 ```
 
-In the previous example the `InvitationRequest` model will be automatically transformed due to the `@UseClassSerializer`
-decorator and validated due to the global validation pipeline.
+In the previous example the `MyResultModel` model returned by the controller will be automatically transformed due to 
+the `@UseClassSerializer` decorator.
 
 :::warning
 Automatic validation and transformation does not apply to generic types. If you intend to utilize generic types in a controller body 

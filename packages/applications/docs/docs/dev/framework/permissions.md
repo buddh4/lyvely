@@ -4,13 +4,18 @@ Lyvely provides a comprehensive permissions system that encompasses three distin
 
 - **Global Permissions:** These permissions apply across the entire platform and are not associated with any specific profile.
 - **Profile Permissions:** These permissions define what actions users can perform within a specific profile.
+- **Content Permissions:** These permissions regulate the permissions of a user in a content context.
 - **User Permissions:** These permissions regulate interactions and access between individual users.
+
+:::warning
+**User Permissions** between users are not yet implemented.
+:::
 
 ## Overview
 
 The permission system is primarily designed to govern access control for various resources. It accomplishes this by 
 evaluating the permissions granted to a `PermissionSubject`, such as a user, in relation to a `PermissionObject`, 
-which could be a profile, another user or the platform itself. The evaluation process involves checking the 
+which could be a profile, content, another user or the platform itself. The evaluation process involves checking the 
 `PermissionSettings` associated with the `PermissionObject` for a given permission. If no specific settings exist for a 
 particular permission, the permission system then examines the system-wide configuration and, as a last resort, 
 falls back to the default permission definition.
@@ -50,7 +55,7 @@ export const CreatePollsPermission: IProfilePermission = {
   moduleId: POLLS_MODULE_ID,
   name: 'polls.permissions.create.name',
   description: 'polls.permissions.create.description',
-  type: BasePermissionType.Profile,
+  type: BasePermissionType.Content,
   default: ProfileRelationRole.Member,
   min: ProfileRelationRole.Moderator,
   max: ProfileRelationRole.User,
@@ -100,6 +105,7 @@ export default {
   permissions: {
     defaults: [
       { id: CreatePollsPermission.id, role: BasePermissionRole.Moderator },
+      { id: MyGlobalPermission.id, groups: ['SomeGroup'] },
     ]
   }
 }
@@ -127,9 +133,7 @@ Global permissions encompass platform-wide user permissions and are associated w
 | **User**      | Any "normal" authenticated user.     |
 | **Visitor**   | Non-authenticated platform visitor.  |
 
-#### Verify Global Permissions
-
-#### Backend:
+### `GlobalPermissionsService`
 
 To manually verify a global permission in the backend, you can use the `GlobalPermissionsService` as demonstrated below:
 
@@ -163,7 +167,7 @@ export class MyModuleController {
 }
 ```
 
-#### Frontend:
+### `useGlobalPermissions` Composable:
 
 In the frontend you can make use of the `useGlobalPermissions` composable for reactive permission checks:
 
@@ -171,4 +175,111 @@ In the frontend you can make use of the `useGlobalPermissions` composable for re
 <script lang="ts" setup>
     const { isAllowed } = useGlobalPermissions(PermissionA, PermissionB);
 </script>
+```
+
+## Profile Permissions
+
+Profile permissions manage access to certain profile features. Profile permissions support the following user roles:
+
+| Role             | Description                                        |
+|------------------|----------------------------------------------------|
+| **Owner**        | Owner of the profile.                              |
+| **Admin**        | Admin of the profile.                              |
+| **Moderator**    | Moderator of the profile.                          |
+| **Member**       | Simple member of the profile.                      |
+| **Guest**        | Guest member of the profile.                       |
+| **Organization** | Organization member of the profiles' organization. |
+| **Follower**     | Follower of the profile.                           |
+| **User**         | An authenticated user.                             |
+| **Visitor**      | An unauthenticated visitor.                        |
+
+### `ProfilePermissionsService`
+
+To manually verify profile permissions in the backend, you can use the `ProfilePermissionsService` as demonstrated below:
+
+```typescript
+import { ProfilePermissionsService } from "@lyvely/api";
+
+@Injectable()
+export class MyService {
+  constructor(private readonly profilePermissionsService: ProfilePermissionsService);
+  
+  public checKPermission(context: ProfileContext) {
+    return this.profilePermissionsService.verifyPermission(context, MyProfilePermission.id)
+  }
+}
+```
+
+You can also check permissions on controller level as follows:
+
+```typescript
+@ProfileController(ENDPOINT_MY_MODULE)
+class MyController {
+  @Get()
+  @Permissions(MyProfilePermission.id)
+  async getMyModels(): Promise<MyModelReponse> {
+    // Some buiness logic
+  }
+}
+```
+
+### `useProfilePermissions` Composable
+
+Within your views or stores you can facilitate the `useProfilePermissions` composable to check for user permissions on
+the currently active profile as in the following example:
+
+```typescript
+const { isAllowed, isAllowedStrict } = useProfilePermissions(CreateMessagePermission);
+```
+
+The `isAllowed` result ensures **any** given permission was granted, while the `isAllowedStrict` result ensures that
+**all** provided permissions are granted.
+
+## Content Permissions
+
+Content permissions manage user access to certain content features. Content permissions support the following user roles:
+
+| Role             | Description                                        |
+|------------------|----------------------------------------------------|
+| **Owner**        | Owner of the profile.                              |
+| **Admin**        | Admin of the profile.                              |
+| **Manager**      | Manager of the content                             |
+| **Author**       | Author of the content                              |
+| **Assignee**     | Assignee of the content                            |
+| **Moderator**    | Moderator of the profile.                          |
+| **Member**       | Simple member of the profile.                      |
+| **Guest**        | Guest member of the profile.                       |
+| **Organization** | Organization member of the profiles' organization. |
+| **Follower**     | Follower of the profile.                           |
+| **User**         | An authenticated user.                             |
+| **Visitor**      | An unauthenticated visitor.                        |
+
+### `ContentPermissionsService`
+
+To manually verify content permissions in the backend, you can use the `ProfilePermissionsService` as demonstrated below:
+
+```typescript
+import {ContentPermissionsService} from "@lyvely/api";
+
+@Injectable()
+export class MyService {
+  constructor(private readonly contentPermissionsService: ContentPermissionsService);
+
+  public checKPermission(context: ProfileContentContext) {
+    return this.contentPermissionsService.verifyPermission(context, MyContentPermission.id)
+  }
+}
+```
+
+You can also check permissions on controller level as follows:
+
+```typescript
+@ContentTypeController(ENDPOINT_MY_MODULE, MyContentType)
+class MyController {
+  @Put()
+  @Permissions(UpdateMyContentPermission.id)
+  async updateMyContent(): Promise<MyModelReponse> {
+    // Some buiness logic
+  }
+}
 ```

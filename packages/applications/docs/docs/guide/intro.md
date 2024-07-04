@@ -26,7 +26,7 @@ and visibility settings. There are three types of profiles:
 
 
 - `User`: These profiles consist of a single member. A private user profile is automatically created once you
-join the platform. Only the owner of the profile can create and manage content and other features within the profile. 
+join the platform. Only the owner of the profile can create and manage content and other features within this type of profile. 
 Users can create additional private or public user profiles for different aspects of their personal and professional lives.
 - `Group`: A group profile offers collaborative features for your friends, family or colleagues. Create group profiles 
 for projects, departments, teams or any other form of user space.
@@ -40,7 +40,7 @@ a casual username, while for a work-related profile, you might choose your work 
 
 ## Users & Permissions
 
-As mentioned in the last section, some types of profile support multiple members which can be managed by the owner
+As mentioned in the last section, some profile types support multiple members which can be managed by the owner
 or administrators of a profile. Each member is assigned with a specific **role** within the profile as well as optional 
 **groups**. Both, the role and groups are used to manage **permissions** within a profile. Some permissions can also be 
 granted to non-member users. There are the following user roles available:
@@ -107,7 +107,7 @@ relevant infrequently.
 The right choice of tags is important for organizing your content and effectively analyzing your progression.
 Here are some examples of tags:
 
-- `Healt`: If your goal is a healthier lifestyle, you may create a general health tag for all activities or resources 
+- `Health`: If your goal is a healthier lifestyle, you may create a general health tag for all activities or resources 
 related to improving your health.
 - `Family`: You can tag activities to distinguish how much effort you spend on different aspects of your life.
 - `P:1`: In a project context, you may define priority or cost estimation tags.
@@ -125,7 +125,7 @@ Within your profiles, you can enable, disable and configure a set of features to
 of features depends on the installed modules of the platform and its policies. Some platforms may only allow certain
 features for certain profiles. A module may offer multiple features for fine-granular customization of a profile.
 
-### Stream
+## Stream
 
 The stream can be used to communicate with members or for brainstorming and information management. The stream will 
 contain various types of content in a chat-like view. Each content entry supports multi-level 
@@ -133,98 +133,3 @@ sub-discussions consisting of streams themselves. This means you can not only cr
 as with many other platforms, but rather add any kind of content to a discussion and sub-discussions.
 
 Users can create any type of content directly in the stream view.
-
-### Habits
-
-With the Habits feature, you can keep track of recurring activities within a profile. A habit can be configured with the
-following options:
-
-- **Title**: The content title.
-- **Description**: A detailed description of the habit.
-- **Interval**: The interval of the habit e.g. Day, Week, Month (see below).
-- **Min Value**: The minimum of units you plan to complete the habit within the interval.
-- **Optimal Value**: The optimal amount of units you plan to complete the habit within the interval.
-- **Max Value**: The max amount of units you plan to complete the habit within the interval.
-- **Score**: Choose a score, which reflects the effort and priority of a habit.
-- **User Strategy**: A habit can be configured as `per-user` or `shared` for personal or collaborative habit management.
-- **Input Type**: The type of input used to keep track of our habit.
-  - `Checkboxes`: A checkbox list limited to 1-8 checkboxes.
-  - `Spinner`: Manual number input with spinner buttons.
-  - `Range`: A range input slider.
-  - `Timer`: A timer input with play/pause button and manual input capabilities.
-
-Habits are managed within a calendar-plan view, which separates habits in one of the following intervals:
-
-- `Daily`: A habit which I should be done once or multiple times a day. 
-  - I want drink at least 2 litre a day (split into 4 units).
-  - I want to wake up at 8:00 AM each day.
-- `Weekly`:  A habit which I should be done once or multiple times a week.
-  - I want to do sports at least twice a week, but optimal three times and max 5 times.
-- `Monthly`:  A habit which I should be done once or multiple times a month.
-  - Once a month our team wants to do at least a team event.
-- `Quarterly`:  A habit which I should be done once or multiple times a quarter.
-  - Once a quarter our department should perform a goal assessment for long-term goals. 
-- `Yearly`:  A habit which I should be done once or multiple times a year.
-  - I want to do a general health check once a year.
-- `Unscheduled`: A habit which is not scheduled.
-  - Our team wants to keep track about the amount of time spent on each project.
-
-### Tasks
-
-The Task feature can be used to manage tasks in the same calendar-plan view as habits. The calendar-plan view can be used
-to manage tasks by priority. New tasks are commonly added as `unsceduled` and can be moved up until it is planned
-today or within the next few days. A task supports the following options:
-
-- **Title**: The content title.
-- **Description**: A detailed description of the task.
-- **Interval**: The interval the task is planned reflecting its priority e.g. within next few days, within this week (see below).
-- **Score**: Choose a score, which reflects the cost of a task.
-- **User Strategy**: A task can be configured as `per-user` or `shared` for personal or collaborative task management.
-
-As mentioned, tasks are managed within a calendar-plan view, which separates tasks in one of the following intervals (suggestion):
-
-- `Daily`: A task which should be completed within the next 1-2 days.
-- `Weekly`:  A taks which should ideally be completed within this week.
-- `Monthly`:  A Habit which I should be done once or multiple times a month.
-- `Quarterly`:  A Habit which I should be done once or multiple times a quarter.
-- `Yearly`:  A Habit which I should be done once or multiple times a year.
-- `Unscheduled`: A Habit which is not scheduled.
-
-:::note
-The actual strategy of choosing an interval for your tasks is up to you and your team.
-:::
-
-### Journals
-
-While Tasks and Habits are used for tracking activities and todos within a profile, the Journals feature is meant to 
-track any kind of recurring data for reporting purposes in a calendar-plan view and supports additional input types:
-
-- **Numbers**: Similar to habits
-- **Text**: Textarea input
-- **Time**: A timer with play/pause button as well as manual input.
-- **Multi Select** A checkbox list selection of predefined values.
-- **Radio Select** A radio input selection of predefined values.
-- **Dropdown Select** A dropdown selection of predefined values.
-
-### Milestones
-
-The “Milestones” feature can be used to track and discuss the progression of different types of content by summarizing 
-them in a milestone. Similar to the previous described features, the Milestone feature offers a calendar-plan
-view for sorting and scheduling milestones by priority.
-
-### Analytics
-
-The Analytics feature is a powerful tool for evaluating data such as habit and journal data as well as profile scores by
-creating customized charts. This feature allows you to add and combine multiple chart series to
-analyze the correlations between your profile data. The following chart series are available by default:
-
-- **Profile Score**: Visualizes the progression of the profile score over time, allowing you to track and analyze 
-trends in performance or changes in score throughout a specified period optionally filtered by tags.
-- **User Score**: Visualizes scores grouped by users. You can choose specific users and/or include the currently active 
-user. Optionally you can filter for scores related to certain tags.
-
-### Legal
-
-The Legal module is used to manage legal links and translatable texts, as privacy notes terms of service which are 
-embedded in certain parts of your platform to comply with regulatory requirements and ensure legal compliance. At the
-moment the links and texts are managed by configuration file.

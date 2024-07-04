@@ -12,7 +12,12 @@ used in the web layer and give you a comprehensive insight into managing access 
 ### Visitor Strategy
 
 The Lyvely backend can be configured to enable or disable restricted access for non-authenticated users, called visitors.
-Access for visitors can be configured with the following configuration snippet:
+When an API endpoint controller lacks any ACL-specific decorators, the global authentication guard will attempt to
+authenticate the user using a JWT token. If the guard doesn't detect a valid JWT token, it will then check if the
+visitor mode is enabled. If visitor mode is enabled, access will be granted not only to authenticated users but also
+to visitors. Endpoints with stricter ACL requirements must be equipped with the corresponding decorators.
+
+Enable access for visitors in your configuration:
 
 ```typescript
 {
@@ -31,29 +36,20 @@ Access for visitors can be configured with the following configuration snippet:
 
 The `visitorStrategy` configuration provides support for two essential fields:
 
-| Field     | Description                                                                                                                                                                 |
-|-----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `mode`    | Set this field to `0` or `VisitorMode.Disabled` (default) to disable visitor access, or `1` or `VisitorMode.Enabled` to enable visitor access.                                    |
-| `handles` | Use this field to specify the profile handles of profiles accessible to visitors. The first entry will be the default profile for visitors, while the others will be available for selection in the profile chooser. |
+| Field     | Description                                                                                                                                                                                                                                                                                  |
+|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `mode`    | Set this field to `0` or `VisitorMode.Disabled` (default) to disable visitor access, or `1` or `VisitorMode.Enabled` to enable visitor access.                                                                                                                                               |
+| `handles` | Use this field to specify the profile handles of profiles accessible to visitors. The first entry will be the default profile for visitors, while the others will be available for selection in the profile chooser. Other profiles may manually set the visibility to allow visitor access. |
 
 :::note
 The profiles configured for visitors must be configured with the `visibility` level `VisibilityLevel.Visitor`.
 :::
 
-### Default Endpoint
+### `@Public` Endpoints
 
-When an API endpoint controller lacks any ACL-specific decorators, the global authentication guard will attempt to 
-authenticate the user using a JWT token. If the guard doesn't detect a valid JWT token, it will then check if the 
-visitor mode is enabled. If visitor mode is enabled, access will be granted not only to authenticated users but also 
-to visitors.
-
-Endpoints with stricter ACL requirements must be equipped with the corresponding decorators.
-
-### `@Public`
-
-Public endpoints are endpoints that never require any kind of authentication, even if the visitor mode is disabled
+Public endpoints are endpoints that do not require any kind of authentication, even if the visitor mode is disabled
 such as the login or app-config endpoint. Public routes are marked with the `@Public` decorator at
-Controller or Controller Function level.
+controller or controller function level.
 
 :::warning
 Endpoints decorated with `@Public` will skip the visitor mode configuration check.
@@ -142,7 +138,8 @@ Please refer to the [Policies Section](policies.md) for more information.
 
 ### Custom guards
 
-If you have a specific use-case not covered by the decorators above you can also implement your own guards.
+If you have a specific use-case not covered by the decorators above you can also implement your own NestJS controller
+guards.
 
 :::info
 Please refer to the [NestJS Guards Guide](https://docs.nestjs.com/guards) for detailed information about implementing
@@ -151,12 +148,12 @@ custom access guards.
 
 ## Web access
 
-The access control layer (ACL) can be managed when defining routes or within the views itself as explained in the
+The frontend ACL can be either defined on route level or within the views itself as explained in the
 following sections.
 
 :::warning
-While you can hide UI elements or limit access to routes for specific user types in the frontend, it's crucial to
-emphasize that real access control should be enforced in the backend.
+While you can hide UI elements or limit access to routes for specific user roles in the frontend, it's crucial to
+emphasize that access control needs to be enforced in the backend.
 :::
 
 ### `isPublic` Route Metadata
@@ -172,15 +169,25 @@ Much like the `@Visibility` decorator used in the backend, you can control route
 the visibility level of a route. You achieve this by setting the `visibility` metadata option to one of the valid 
 visibility levels:
 
-- `0` or `VisibilityLevel.Member`: This restricts access to profile members only.
-- `1` or `VisibilityLevel.Organization`: Access is granted to members and members of the organization.
-- `2` or `VisibilityLevel.User`: Access is extended to all authenticated users on the platform.
-- `3` or `VisibilityLevel.Visitor`:  Access is granted to visitors as well, but this depends on whether `visitorMode`  is enabled.
+- `0` or `ProfileVisibilityLevel.Member`: This restricts access to profile members only.
+- `1` or `ProfileVisibilityLevel.Organization`: Access is granted to members and members of the organization.
+- `2` or `ProfileVisibilityLevel.Follower`: Access is granted to followers of a profile.
+- `3` or `ProfileVisibilityLevel.User`: Access is extended to all authenticated users on the platform.
+- `4` or `ProfileVisibilityLevel.Visitor`:  Access is granted to visitors as well, but this depends on whether `visitorMode`  is enabled.
 
-### `permissions` Route Metadata
+### `permissions`
 
-For even more granular control over access, you can employ the `permissions` route metadata setting. 
-This allows you to restrict access to routes based on specific permissions user permissions.
+:::info
+Please refer to the [Permissions Section](permissions.md) for more information.
+:::
+
+### `useProfileFeatures` Composable
+
+Within your views or stores you can facilitate the `useProfileFeatures` composable as in the following example:
+
+```typescript
+const { isEnabled } = useProfileFeatures(MilestonesFeature.id);
+```
 
 ## JWT
 

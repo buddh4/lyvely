@@ -14,10 +14,13 @@ The fundamental structure of a module follows this general outline:
 ```
 ├── packages
 │   ├── api
+│   │   ├── src
 │   │   ├── package.json
 │   ├── interface
+│   │   ├── src
 │   │   ├── package.json
 │   ├── web
+│   │   ├── src
 │   │   ├── package.json
 │   package.json
 ```
@@ -28,9 +31,9 @@ Detailed instructions for implementing various aspects of a module are provided 
 
 ## The Interface Package
 
-The primary role of the `interface` package is to define endpoint interfaces and model or DTO (Data Transfer Object) 
+The primary role of the `interface` package is to define endpoint interfaces and model
 classes. In certain instances, it also houses shared domain logic used between the API and web layers. 
-The `interface` package is essentially a TypeScript library built using `rollup`. 
+The `interface` package is essentially a TypeScript library built using [rollup](https://rollupjs.org/). 
 
 In most cases, the `interface` package relies on two key dependencies:
 
@@ -55,15 +58,15 @@ A minimal `interface` package, excluding configuration files, typically takes on
 
 The interface package is responsible for:
 
-- Defining shared models and interfaces
-- Defining endpoint interfaces and clients
-- Defining [permissions](permissions.md)
-- Defining [features](features.md)
+- Shared **models**, **interfaces** and validation rules
+- Endpoint **interfaces** and **clients**
+- [Permissions definitions](permissions.md)
+- [Features definitions](features.md)
 
 ## The API Package
 
 The `api` package is responsible for implementing the backend API and other backend services, such as queues, 
-workers, and scheduled jobs. The `api` package is essentially a `NestJS` module, complete with its own dedicated 
+workers, and scheduled jobs. The `api` package is essentially a [NestJS](https://nestjs.com/) module, complete with its own dedicated 
 test environment.
 
 In most cases, the interface package relies on three key dependencies:
@@ -88,7 +91,8 @@ A minimal `api` package, excluding configuration files, typically adheres to thi
 
 :::note
 For added convenience, the `@lyvely/api` module re-exports the `@lyvely/interface` module, eliminating the need for
-explicit imports of the core `interface` package within a modules `api` package.
+explicit imports of the core `interface` package within a modules `api` package. It is a recommended practice to follow
+this strategy in your own modules.
 :::
 
 :::info
@@ -99,9 +103,7 @@ their specific types, e.g. `controllers`, `schemas`, `daos`, `services`.
 ### API Module
 
 The `@LyvelyModule` decorator extends the functionality of a standard [NestJS Module](https://docs.nestjs.com/modules) 
-by incorporating Lyvely-specific configuration options.
-
-The `@LyvelyModule` decorator offers the following additional options:
+by incorporating Lyvely-specific configuration options. This decorator offers the following additional options:
 
 | Option      | Type        | Description                                       |
 |-------------|-------------|---------------------------------------------------|
@@ -141,8 +143,21 @@ export class ContentCoreModule {}
 
 ### API Testing
 
-To initiate the test environment for an `api` package, run the `pnpm run dev -w my-module-api` command. 
-This will launch a Lyvely API server with the default test configuration on `127.0.0.1:8080`.
+To initiate the test environment for an `api` package, run one of the following commands: 
+
+- `rush run -t <api-package> -s dev`: Runs a test api server of the selected package.
+- `rush run -t <api-package> -s dev:debug`: Runs a test api server in debug mode of the selected package.
+
+Just replace the `<api-package>` with the api package you want to test. This will launch a Lyvely API server with the 
+default test configuration on `127.0.0.1:8080`. 
+
+For some core packages the monorepo provides a more convenient way of running a test server:
+
+- `rush api`: Runs the core api test server.
+- `rush api:debug`: Runs the core api test server in debug mode.
+
+- `rush server`: Runs a test server for the server application, which includes all feature modules.
+- `rush server:debug`: Runs a test server for the server application including all feature modules in debug mode.
 
 ## The Web Package
 
@@ -154,16 +169,17 @@ This package will typically rely on the following packages:
 - `@lyvely/web`: The core web package is used for:
   - Module registration
   - Registration of menu entries
-  - UI component registrations
   - UI layout registrations
   - Registration of routes and guards
   - Registration of specific interfaces as content types and features, among other functionalities.
+  - Provides the `LyvelyWebApp` for starting the web application.
 - `@lyvely/ui`: This package contains core UI components for a seamless integration.
 - Its own `interface` package, which is used for importing clients and models to handle validation and domain logic.
 
 :::note
 For added convenience, the `@lyvely/web` module re-exports the `@lyvely/interface` module, eliminating the need for
-explicit imports of the core `interface` package within a modules `web` package.
+explicit imports of the core `interface` package within a modules `web` package. It is a recommended practice to follow
+this strategy in your own modules.
 :::
 
 ### Web Module
@@ -174,6 +190,7 @@ A frontend module consists of the following properties:
 |--------------|---------------------------------------------------------|
 | id           | A unique module identifier.                             |
 | i18n         | Locale file registration.                               |
+| icon         | An optional module related icon name.                   |
 | dependencies | Array of dependent modules.                             |
 | features     | An array of feature definitions.                        |
 | permissions  | An array of permission definitions.                     |
@@ -183,95 +200,25 @@ A frontend module consists of the following properties:
 
 #### Module `init`
 
-The `init` function can be used to manually initialize aspects of your module as registering menu entries or
-new content types.
+The `init` function can be used to manually initialize aspects of your module as for example registering menu entries,
+content types or svg icons.
 
 :::warning
 The `init` function is called right before creating the vue application, which means you should not
-use any pinia stores directly within this function. (This may change in the future)
+use any pinia stores directly within this function. (This may change in the future.)
 :::
 
-#### Locales
-
-The `i18n` option can be used to register locale files. This allows you to create and load specific translations
-on demand. There are two special keys to consider:
-
-- `base`: This locale file will be loaded once the application starts and may contain translations that need to be 
-available on startup, such as menu entries or notification texts.
-- `locale`: This is the default locale file of the module and may be loaded when accessing module-related routes as 
-in the following route configuration:
-
-```typescript
-export const pollsRoutes: RouteRecordRaw[] = [
-  {
-    name: 'Polls',
-    path: profilePath('/polls'),
-    meta: {
-      i18n: { load: ['polls'] }, // This will load the the default locale when entering the route.
-      layout: LAYOUT_PROFILE,
-      title: () => t('habits.title'),
-    },
-    component: () => import('../views/PollsView.vue'),
-  },
-];
-```
-
-#### Example:
-
-```typescript
-export const pollsModule = () => {
-  return {
-    id: POLLS_MODULE_ID,
-    i18n: {
-      base: (locale: string) => import(`./locales/base.${locale}.json`),
-      locale: (locale: string) => import(`./locales/${locale}.json`),
-    },
-    dependencies: [someOtherModule()],
-    features: [PollsFeature],
-    routes: habitRoutes,
-    init: () => {
-      registerMenuEntry(MENU_PROFILE_DRAWER, () => ({
-        id: 'profile-polls',
-        moduleId: POLLS_MODULE_ID,
-        text: 'polls.title',
-        sortOrder: 1501,
-        features: PollsFeature.id,
-        icon: 'polls',
-        condition: useProfileFeatureStore().isFeatureEnabled(PollsFeature.id),
-        to: { name: 'Polls' },
-      }));
-      
-      registerContentType({
-        type: PollsModel.contentType,
-        moduleId: POLLS_MODULE_ID,
-        name: translation('polls.name'),
-        icon: 'polls',
-        feature: PollsFeature.id,
-        modelClass: PollsModel,
-        interfaces: {
-          create: {
-            mode: 'modal',
-            modelClass: CreatePollModel,
-            component: () => import('./components/modals/EditPollModal.vue'),
-          },
-          edit: {
-            mode: 'modal',
-            component: () => import('./components/modals/EditPollModal.vue'),
-          },
-          stream: {
-            details: () => import('./components/content-stream/PollsDetails.vue'),
-            entry: () => import('./components/content-stream/PollsStreamEntry.vue'),
-          },
-        },
-      });
-    },
-  } as IModule;
-};
-```
-
+:::tip
+Please refer to the [i18n guide](i18n.md#locale-handling-in-the-frontend) for information about handling locales and
+translations in the frontend.
+:::
 
 ### Web Testing
 
-To initiate the test environment for a `web` package, run the `pnpm run web:dev` command.
-This will launch a Lyvely web test server with the default test configuration on `127.0.0.1:3000`.
-This requires the API test environment of the same module to run.
+To initiate the test environment for a `web` package, run the `rush -t <web-package> -s dev` command.
+This will launch a Lyvely test web server with default test configuration on `127.0.0.1:3000`.
+
+For testing the core or pwa packages there are more convenient ways of starting a web server:
+
+- `rush web`: Runs a test web server for the core web package.
+- `rush pwa`: Runs a test web server for the pwa application, which includes all features.

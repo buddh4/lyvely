@@ -31,8 +31,8 @@ const UseCaseList: UseCaseItem[] = [
     description: (
       <>
         Lyvely provides intuitive tools to plan and communicate between family and friends in a private and secure way.
-        By creating a group or organization profile for your family and friends you can intuitively plan and discuss
-        upcoming events, todos and other issues.
+        Create group profiles for your family and friends to plan, discuss, and stay on top of upcoming events, to-dos,
+        and more.
       </>
     ),
   },
@@ -52,8 +52,8 @@ const UseCaseList: UseCaseItem[] = [
     description: (
       <>
         Lyvely can help your organization grow by providing group and organization level profiles and tools used to plan
-        communicate and overview activities within your business, from keeping track of goals to graphical representation
-        of the data important for your business success.
+        communicate and overview activities within your business or teams, from keeping track of goals to graphical
+        representation of the data important for your business success.
       </>
     ),
   },
@@ -62,8 +62,8 @@ const UseCaseList: UseCaseItem[] = [
     Svg: svgForCustomers,
     description: (
       <>
-        Invite your customers to a Lyvely profile and collaboratively plan task and activities, communicate and share
-        further information. Since profiles and users are private by default, Lyvely can serve as a safe space
+        Invite your customers to a Lyvely profile and collaboratively plan tasks, discuss issues and share
+        project related information. Since profiles and users are private by default, Lyvely can serve as a safe space
         for you and your customers to discuss issues and provide customer support.
       </>
     ),
@@ -75,7 +75,7 @@ const UseCaseList: UseCaseItem[] = [
       <>
         Use Lyvely for school and keep track of your progression, take notes and create group profiles for school projects
         to communicate with your friends. Many of the features such as tasks, habits and journals support shared or user-specific
-        modes, which can be useful if you want to delegate activities to multiple users..
+        modes, which can be useful if you want to delegate activities to multiple users.
       </>
     ),
   },

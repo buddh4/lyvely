@@ -1,9 +1,9 @@
 # Policies
 
-Through the use of Policies, you can establish configurable rules to govern your platform. Much like Permissions, 
-Policies serve as a means of access control, allowing you to restrict access to specific features or endpoints. However,
-while Permissions primarily focus on determining whether a user has permission for certain actions based on one or multiple
-permissions, Policies can perform more intricate checks, including interactions with other services or server configurations.
+Through the use of policies, you can establish configurable rules to govern your platform. Much like permissions, 
+policies serve as a means of access control, allowing you to restrict access to specific features or endpoints. However,
+while permissions primarily focus on determining whether a user has permission for certain actions based on one or multiple
+permissions, policies can perform more intricate checks, including interactions with other services or server configurations.
 
 To illustrate, consider the example of write access to content documents. This access cannot rely solely on permission 
 checks. For instance, content should be writable by its author, but not if the content is locked or the content type
@@ -13,7 +13,7 @@ be addressed using Policies.
 Policies are globally accessible and can be integrated into your services or used in conjunction with 
 controller guards.
 
-It's worth noting that Policies are mainly employed in the backend. If there's a need to access certain policies 
+It's worth noting that policies are mainly employed in the backend. If there's a need to access certain policies 
 in the frontend, your module should provide access either through API endpoints or by injecting policies into the 
 app configuration.
 

@@ -16,8 +16,27 @@ import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
 const sidebars: SidebarsConfig = {
     Guide: [
         'guide/intro',
-        'guide/health',
-        'guide/team',
+        {
+            type: 'category',
+            label: 'Features',
+            items: [
+                'guide/tasks',
+                'guide/habits',
+                'guide/journals',
+                'guide/milestones',
+                'guide/analytics',
+                'guide/legal',
+            ]
+        },
+        {
+            type: 'category',
+            label: 'Recipes',
+            items: [
+                'guide/health',
+                'guide/team',
+            ]
+        },
+
       ],
     Administration: [
         'admin/intro/installation',
@@ -31,6 +50,7 @@ const sidebars: SidebarsConfig = {
             label: 'Framework',
             items: [
                 'dev/framework/modules',
+                'dev/framework/i18n',
                 'dev/framework/models',
                 'dev/framework/da',
                 'dev/framework/controllers',

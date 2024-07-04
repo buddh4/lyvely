@@ -16,7 +16,7 @@ function HomepageHeader() {
   return (
     <header className={clsx('hero hero--primary', styles.heroBanner)}>
       <div className="container">
-        <h1 className="hero__title flex items-center gap-4">
+        <h1 className="hero__title flex flex-col md:flex-row items-center gap-4">
           <img
             alt="'Lyvely logo'"
             className="w-40"
@@ -24,8 +24,8 @@ function HomepageHeader() {
             width="200"
             height="200"
           />
-          <p class="text-6xl text-left">
-            Flexible <b>self-improvement</b> and <b>collaboration</b> platform for anyone
+          <p class="text-3xl md:text-6xl md:text-left">
+            Flexible <b>self-improvement</b> and <b>collaboration</b> platform and framework
           </p>
 
         </h1>
