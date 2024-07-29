@@ -29,7 +29,7 @@ platforms.
 
 ## Getting Started
 
-To get started with Lyvely, follow the installation instructions in our [documentation](https://docs.lyvely.app).
+To get started with Lyvely, follow the installation instructions in our [documentation](https://www.lyvelyjs.com/docs/admin/intro/installation).
 
 ## Core Features
 
