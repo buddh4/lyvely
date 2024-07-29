@@ -84,7 +84,7 @@ the `@TransformObjectIds` decorator.
 In this example our backend schema can implement the model properties as follows:
 
 ```typescript
-export class User extends BaseDocument<User> implements PropertiesOf<UserModel<TObjectId>> {
+export class User implements PropertiesOf<UserModel<TObjectId>> {
     /** Implementation of User schema **/
 }
 ```
