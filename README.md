@@ -12,6 +12,9 @@ Lyvely is a flexible self-management and collaboration platform designed for bot
 It serves as a ready-to-use solution and furthermore offers a powerful framework for building customized collaboration
 platforms.
 
+> ⚠️ Lyvely is an actively developed project, and its features and APIs are subject to ongoing improvements and refinements. 
+> We welcome contributions from the community to help shape the future of Lyvely and make it even more valuable to users.
+
 ## What sets Lyvely apart?
 
 - It supports **versatile use-cases** from individual users, groups to organizations.
@@ -23,9 +26,6 @@ platforms.
   habits or company data, journals.
 - There is **no restrictions** on how to use the platform, use the flexible set of features as it suits your use case.
 - Instead of focusing on external integrations, the aim is to enable **seamless integration** between features through the module system.
-
-> ⚠️ Lyvely is an actively developed project, and its features and APIs are subject to ongoing improvements and refinements. 
-> We welcome contributions from the community to help shape the future of Lyvely and make it even more valuable to users.
 
 ## Getting Started
 
