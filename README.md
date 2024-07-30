@@ -109,11 +109,6 @@ code organization and extensibility.
 for building scalable, content-centric applications.
  - [Redis](https://redis.io/): Redis serves as a multipurpose key-value store, providing reliability for caching, queuing and messaging within Lyvely.
 
-## Contributing
-
-We welcome contributions from the community! If you'd like to contribute to Lyvely, please review our 
-[contribution guidelines]().
-
 ## License
 
 Copyright (C) 2022-2024 Julian Harrer
