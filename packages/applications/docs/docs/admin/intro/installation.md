@@ -67,7 +67,7 @@ npm install -g @microsoft/rush
 1. Clone the Lyvely repository from GitHub using the following command:
 
 ```shell
-git clone https://github.com/lyvely/lyvely.git
+git clone https://github.com/buddh4/lyvely.git
 ```
 
 2. Navigate to the project directory:
