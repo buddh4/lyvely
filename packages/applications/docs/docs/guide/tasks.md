@@ -1,8 +1,10 @@
 # Tasks
 
+## Calendar Plan View
+
 The Task feature can be used to manage tasks in a calendar-plan view. The calendar-plan view can be used
 to sort tasks by priority. New tasks are may be added as `Unsceduled` similar to a backlog and can be moved up until 
-the task is planned for today or within the next few days. 
+the task is planned for today or within the next few days.
 
 ![](./img/feature_tasks_overview.png)
 
@@ -26,3 +28,9 @@ As mentioned, tasks are managed within a calendar-plan view, which separates tas
 :::note
 The actual strategy of choosing an interval for your tasks is up to you and your team.
 :::
+
+## Task Details
+
+The following image shows the detail view of a task entry:
+
+![](./img/feature_tasks_details.png)

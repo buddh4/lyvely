@@ -8,3 +8,6 @@ analyze the correlations between your profile data. The following chart series a
   trends in performance or changes in score throughout a specified period optionally filtered by tags.
 - **User Score**: Visualizes scores grouped by users. You can choose specific users and/or include the currently active
   user. Optionally you can filter for scores related to certain tags.
+- **Time Series Values**: Visualizes time-series values as **Journal** or **Habit** values over time.
+
+![](./img/feature_analytics_overview.png)

@@ -125,11 +125,3 @@ Within your profiles, you can enable, disable and configure a set of features to
 of features depends on the installed modules of the platform and its policies. Some platforms may only allow certain
 features for certain profiles. A module may offer multiple features for fine-granular customization of a profile.
 
-## Stream
-
-The stream can be used to communicate with members or for brainstorming and information management. The stream will 
-contain various types of content in a chat-like view. Each content entry supports multi-level 
-sub-discussions consisting of streams themselves. This means you can not only create single-level, text-only comments
-as with many other platforms, but rather add any kind of content to a discussion and sub-discussions.
-
-Users can create any type of content directly in the stream view.

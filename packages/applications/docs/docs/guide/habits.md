@@ -2,6 +2,8 @@
 
 With the Habits feature, you can keep track of recurring activities within a profile. 
 
+## Calendar Plan View
+
 ![](./img/feature_habits_overview.png)
 
 A habit can be configured with the
@@ -36,3 +38,9 @@ Habits are managed within a calendar-plan view, which separates habits in one of
     - I want to do a general health check once a year.
 - `Unscheduled`: A habit which is not scheduled.
     - Our team wants to keep track about the amount of time spent on each project.
+
+## Habit Details
+
+The following image shows the detail view of a habit entry:
+
+![](./img/feature_habits_details.png)

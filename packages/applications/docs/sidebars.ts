@@ -20,6 +20,7 @@ const sidebars: SidebarsConfig = {
             type: 'category',
             label: 'Features',
             items: [
+                'guide/stream',
                 'guide/tasks',
                 'guide/habits',
                 'guide/journals',
