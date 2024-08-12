@@ -38,12 +38,15 @@ const model = computed({
   get: () => props.modelValue || [],
   set: (value: Array<string>) => emit('update:modelValue', value),
 });
+
+// Load async content info
+const selection = computed(() => model.value.map(getOption));
 </script>
 
 <template>
   <ly-badge-picker
+    :id="inputId"
     v-model="model"
-    :input-id="inputId"
     :options="options"
     :multiple="multiple"
     :label="label"

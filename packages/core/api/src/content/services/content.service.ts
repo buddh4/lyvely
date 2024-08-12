@@ -27,6 +27,10 @@ export class ContentService {
     protected contentPolicyService: ContentPolicyService
   ) {}
 
+  async search(context: ProfileContext, filter: IContentSearchFilter) {
+    return this.contentDao.search(context.profile, filter);
+  }
+
   /**
    * Finds a single content document and populates its content policies. When using this function, you either need to
    * manually validate the required policies or use the `roleLevel` search filter.
@@ -38,7 +42,7 @@ export class ContentService {
    * @private
    * @throws ForbiddenException
    */
-  public async findByContextAndId(
+  async findByContextAndId(
     context: ProfileContext,
     cid: DocumentIdentity<Content>,
     filter?: IContentSearchFilter,

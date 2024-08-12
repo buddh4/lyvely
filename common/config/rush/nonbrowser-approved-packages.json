@@ -4,7 +4,7 @@
   "packages": [
     {
       "name": "@lyvely/analytics",
-      "allowedCategories": [ "application", "feature" ]
+      "allowedCategories": [ "application", "feature", "lib" ]
     },
     {
       "name": "@lyvely/api",

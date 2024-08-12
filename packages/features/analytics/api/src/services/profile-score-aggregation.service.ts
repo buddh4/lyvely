@@ -35,16 +35,13 @@ export class ProfileScoreAggregationService {
   ): Promise<TimeSeriesChartData<string>[]> {
     const { profile } = context;
 
-    const $match = {
-      oid: profile.oid,
-      pid: profile._id,
-    };
-
     return runTimeSeriesAggregation(this.profileScoreDao, {
       name: options?.name || 'Score',
       color: options?.color,
       interval: options?.interval || '7D',
       filter: {
+        oid: profile.oid,
+        pid: profile._id,
         uids: options?.uids,
         tagIds: options?.tagIds,
         cid: options?.cid,
@@ -54,7 +51,6 @@ export class ProfileScoreAggregationService {
       accumulator: ChartSeriesAccumulation.Sum,
       accumulationField: 'score',
       dateField: 'date',
-      $match,
       locale: profile.locale,
       preferences: profile.settings?.calendar,
       endDate: options?.endDate || new Date(),

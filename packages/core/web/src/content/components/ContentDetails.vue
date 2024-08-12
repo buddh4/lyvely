@@ -7,6 +7,8 @@ import { useRouter } from 'vue-router';
 import ContentMarkdown from './ContentMarkdown.vue';
 import { LyIcon } from '@lyvely/ui';
 import { useContentStreamEntryInfo } from './content-stream-entry-info.composable';
+import ContentPicker from './ContentPicker.vue';
+import type { IContent } from '@lyvely/interface/src';
 
 export interface IProps {
   model: ContentModel;
@@ -25,6 +27,10 @@ const router = useRouter();
 function selectTag(tagId: string) {
   router.push({ name: 'stream', query: { tagIds: [tagId] } });
 }
+
+const testHandler = (test: string) => ({
+  contents: [{ id: 'asdf', content: { title: 'Test', text: 'TestText' } }] as IContent[],
+});
 </script>
 
 <template>
@@ -72,6 +78,7 @@ function selectTag(tagId: string) {
     </tag-list>
     <div class="rounded-b border-divide bg-main p-2.5 text-sm md:px-4">
       <slot name="body">
+        <content-picker :handler="testHandler" />
         <content-markdown :model="model" />
       </slot>
     </div>

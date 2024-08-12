@@ -1,7 +1,4 @@
-import {
-  IChartCategoryDefinition,
-  registerChartCategories as registerCategories,
-} from '@lyvely/analytics-interface';
+import { IChartCategoryDefinition } from '@lyvely/analytics-interface';
 import type { Type } from '@lyvely/api';
 import { ChartConfig } from '../schemas';
 
@@ -27,7 +24,6 @@ export function registerChartCategories(definition: IApiChartCategoryDefinition[
 export function registerChartCategory(definition: IApiChartCategoryDefinition) {
   const { type } = definition;
   chartCategoryApiRegistry.set(type.id, definition);
-  registerCategories(definition.type);
 }
 
 export function getChartCategoryDefinitions(): Array<IApiChartCategoryDefinition> {

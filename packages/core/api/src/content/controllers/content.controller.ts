@@ -4,18 +4,32 @@ import {
   SetMilestoneModel,
   ContentEndpoints,
   UpdateTaskListItemModel,
+  ContentFilter,
+  ContentSearchResult,
 } from '@lyvely/interface';
-import { Post, HttpCode, HttpStatus, Param, Request, Put } from '@nestjs/common';
+import { Post, HttpCode, HttpStatus, Param, Request, Put, Get } from '@nestjs/common';
 import { Policies } from '@/policies';
 import { ContentService } from '../services';
 import { ContentDeletePolicy, ContentWritePolicy } from '../policies';
 import { ProtectedProfileContentRequest } from '../types';
 import { ContentTypeController } from '../decorators';
 import { ValidBody } from '@/core';
+import type { ProfileRequest } from '@/profiles';
+import { IContentSearchFilter } from '@/content/daos';
 
 @ContentTypeController(API_CONTENT)
 export class ContentController implements ContentEndpoint {
   constructor(private contentService: ContentService) {}
+
+  @Get(ContentEndpoints.SEARCH())
+  async search(
+    @ValidBody() filter: IContentSearchFilter,
+    @Request() req: ProfileRequest
+  ): Promise<ContentSearchResult> {
+    const { context } = req;
+    const content = await this.contentService.search(context, filter);
+    return new ContentSearchResult({ result: content.map((c) => c.toModel(context.user)) });
+  }
 
   @Post(ContentEndpoints.ARCHIVE(':cid'))
   @HttpCode(HttpStatus.NO_CONTENT)

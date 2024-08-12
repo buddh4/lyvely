@@ -58,7 +58,7 @@ export interface IChartSeriesDefinition<
   TConfigType extends IChartSeriesConfig = IChartSeriesConfig,
 > {
   /** A unique id for this chart series type. **/
-  readonly id: string;
+  id: string;
 
   /**
    * An optional config class type representing a model holding configuration options usually provided by the frontend

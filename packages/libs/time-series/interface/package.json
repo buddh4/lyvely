@@ -31,6 +31,7 @@
   "dependencies": {
     "@lyvely/common": "workspace:*",
     "@lyvely/dates": "workspace:*",
+    "@lyvely/analytics-interface": "workspace:*",
     "@lyvely/calendar-plan-interface": "workspace:*",
     "@lyvely/interface": "workspace:*",
     "class-transformer": "^0.5.1",

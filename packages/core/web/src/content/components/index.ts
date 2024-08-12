@@ -9,6 +9,7 @@ import UpsertContentModal from './UpsertContentModal.vue';
 import DefaultStreamEntry from './DefaultStreamEntry.vue';
 import ContentDropdown from './ContentDropdown.vue';
 import ContentMarkdown from './ContentMarkdown.vue';
+import ContentPicker from './ContentPicker.vue';
 
 export * from './content-stream-entry-info.composable';
 
@@ -24,4 +25,5 @@ export {
   ContentDropdown,
   ContentMarkdown,
   ContentToolbar,
+  ContentPicker,
 };

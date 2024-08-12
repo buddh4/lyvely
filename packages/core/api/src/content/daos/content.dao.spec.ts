@@ -1,6 +1,6 @@
 import { ILyvelyTestingModule } from '@/testing';
 import { ContentDao } from './index';
-import { Content, ContentSchema } from '../schemas';
+import { Content, ContentSchema, ContentMetadata } from '../schemas';
 import { buildContentTest, TestContent, TestContentData, TestContentSchema } from '../testing';
 import { Model } from '@/core';
 import { User } from '@/users';
@@ -38,11 +38,11 @@ describe('content dao', () => {
     return testingModule.afterEach();
   });
 
-  async function createTestContent(user: User, profile: Profile, testData = 'Testing...') {
+  async function createTestContent(user: User, profile: Profile, testData = 'Testing...', initData: Partial<TestContent> = {}) {
     const testContent = new TestContent(
       { profile, user },
-      {
-        content: new TestContentData({ testData: testData }),
+      { ...{content: new TestContentData({ testData: testData }) },
+          ...initData
       }
     );
     const entity = await testContentModel.create(testContent);
@@ -70,5 +70,35 @@ describe('content dao', () => {
       expect(search instanceof TestContent).toEqual(true);
       expect(search.content.testData).toEqual('Hello World');
     });
+  });
+
+  describe('search', () => {
+    describe('archived', () => {
+      it('ignore archived flag', async () => {
+        const { user, profile } = ProfileTestDataUtils.createDummyUserAndProfile();
+        const archivedContent = await createTestContent(user, profile, 'A', { meta: new ContentMetadata({ archived: true }) });
+        const nonArchivedContent = await createTestContent(user, profile, 'B');
+        const search = await contentDao.search(profile, {});
+        expect(search.length).toEqual(2);
+      });
+
+      it('search archived content', async () => {
+        const { user, profile } = ProfileTestDataUtils.createDummyUserAndProfile();
+        const archivedContent = await createTestContent(user, profile, 'A', { meta: new ContentMetadata({ archived: true }) });
+        const nonArchivedContent = await createTestContent(user, profile, 'B');
+        const search = await contentDao.search(profile, { archived: true });
+        expect(search.length).toEqual(1);
+        expect(search[0]._id).toEqual(archivedContent._id);
+      });
+
+      it('search non archived content', async () => {
+        const { user, profile } = ProfileTestDataUtils.createDummyUserAndProfile();
+        const archivedContent = await createTestContent(user, profile, 'A', { meta: new ContentMetadata({ archived: true }) });
+        const nonArchivedContent = await createTestContent(user, profile, 'B');
+        const search = await contentDao.search(profile, { archived: false });
+        expect(search.length).toEqual(1);
+        expect(search[0]._id).toEqual(nonArchivedContent._id);
+      });
+    })
   });
 });

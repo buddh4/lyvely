@@ -1,12 +1,23 @@
 import { useSingleton } from '@lyvely/common';
 import { IContentClient } from './content.endpoint';
 import repository from './content.repository';
-import { IProfileApiRequestOptions, unwrapResponse } from '@/endpoints';
-import { ContentModel, UpdateTaskListItemModel } from '../models';
+import { IProfileApiRequestOptions, unwrapAndTransformResponse, unwrapResponse } from '@/endpoints';
+import {
+  ContentFilter,
+  ContentModel,
+  ContentSearchResult,
+  UpdateTaskListItemModel,
+} from '../models';
 import { getContentModelType } from '../registries';
 import type { PropertiesOf } from '@lyvely/common';
 
 export class ContentClient implements IContentClient {
+  async search(
+    filter: ContentFilter,
+    options?: IProfileApiRequestOptions
+  ): Promise<ContentSearchResult> {
+    return unwrapAndTransformResponse(repository.search(filter, options), ContentSearchResult);
+  }
   async setMilestone(id: string, mid: string, options?: IProfileApiRequestOptions): Promise<void> {
     return unwrapResponse(repository.setMilestone(id, mid, options));
   }

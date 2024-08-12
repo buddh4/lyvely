@@ -30,6 +30,7 @@
     "@lyvely/api": "workspace:*",
     "@lyvely/common": "workspace:*",
     "@lyvely/dates": "workspace:*",
+    "@lyvely/analytics": "workspace:*",
     "@lyvely/calendar-plan": "workspace:*",
     "@lyvely/time-series-interface": "workspace:*",
     "reflect-metadata": "^0.1.12 || ^0.2.0",

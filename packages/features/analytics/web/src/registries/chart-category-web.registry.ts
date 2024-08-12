@@ -1,7 +1,4 @@
-import {
-  IChartCategoryDefinition,
-  registerChartCategories as registerCategories,
-} from '@lyvely/analytics-interface';
+import { IChartCategoryDefinition } from '@lyvely/analytics-interface';
 import type { ComponentRegistration } from '@lyvely/ui';
 
 /**
@@ -32,7 +29,6 @@ export function registerChartCategories(definition: IWebChartCategoryDefinition[
 export function registerChartCategory(definition: IWebChartCategoryDefinition) {
   const { type } = definition;
   chartCategoryWebRegistry.set(type.id, definition);
-  registerCategories(definition.type);
 }
 
 export function getChartCategoryDefinitions(): Array<IWebChartCategoryDefinition> {

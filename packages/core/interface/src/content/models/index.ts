@@ -1,5 +1,6 @@
 export * from './content.model';
-export * from './content.filter';
+export * from './content.filter.model';
+export * from './content-search-result.model';
 export * from './create-content.model';
 export * from './content-update-response.model';
 export * from './set-milestone.model';

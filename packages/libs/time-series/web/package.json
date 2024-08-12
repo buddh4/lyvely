@@ -37,6 +37,7 @@
     "@lyvely/time-series-interface": "workspace:*",
     "@lyvely/ui": "workspace:*",
     "@lyvely/web": "workspace:*",
+    "@lyvely/analytics-web": "workspace:*",
     "@lyvely/calendar-plan-web": "workspace:*",
     "@lyvely/dates": "workspace:*",
     "echarts": "^5.5",

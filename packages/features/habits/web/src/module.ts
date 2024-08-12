@@ -14,10 +14,12 @@ import {
   HabitsFeature,
   ActivityHabitsFeature,
   HabitPermissions,
+  CHART_SERIES_HABIT_VALUE,
 } from '@lyvely/habits-interface';
 import { habitRoutes } from '@/routes';
 import { calendarPlanModule } from '@lyvely/calendar-plan-web';
 import { timeSeriesModule } from '@lyvely/time-series-web';
+import { registerCharts } from '@lyvely/analytics-web';
 import { ROUTES_HABITS_HOME } from '@/habits.constants';
 
 export default () => {
@@ -55,6 +57,14 @@ export default () => {
           to: { name: 'Habits' },
         };
       });
+      registerCharts([
+        {
+          type: CHART_SERIES_HABIT_VALUE,
+          label: 'habits.charts.value.label',
+          description: 'habits.charts.value.info',
+          form: () => import('./components/TimeSeriesChartForm.vue'),
+        },
+      ]);
       registerContentType({
         type: HabitModel.contentType,
         moduleId: HABITS_MODULE_ID,

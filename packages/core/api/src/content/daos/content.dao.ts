@@ -5,6 +5,8 @@ import { Dao, DocumentIdentity, TObjectId } from '@/core';
 import { ContentTypeDao } from './content-type.dao';
 import { ProfileShardData } from '@/profiles';
 import { TenancyIsolation } from '@/core/tenancy';
+import { buildContentFilterQuery } from './content-query.builder';
+import { type IContentSearchFilter } from './content-search-filter.interface';
 
 /**
  * A generic content DAO used for common content data access jobs.
@@ -14,6 +16,18 @@ import { TenancyIsolation } from '@/core/tenancy';
 export class ContentDao extends ContentTypeDao<Content> {
   @Inject()
   protected override typeRegistry: ContentTypeRegistry;
+
+  /**
+   * Searches for content based on a given filter.
+   *
+   * @param {ProfileShardData} context - The context of the search operation.
+   * @param {IContentSearchFilter} filter - The filter to be applied to the search.
+   *
+   * @return {Promise<Content[]>} - A Promise that resolves with an array of Content objects matching the filter.
+   */
+  async search(context: ProfileShardData, filter: IContentSearchFilter): Promise<Content[]> {
+    return this.findAll(buildContentFilterQuery(filter));
+  }
 
   /**
    * Increments the child count of a parent document by 1.

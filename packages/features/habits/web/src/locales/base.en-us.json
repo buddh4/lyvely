@@ -2,6 +2,12 @@
   "habits": {
     "name": "Habit",
     "title": "Habits",
+    "charts": {
+      "value": {
+        "label": "Habit Value",
+        "info": "Visualizes the progression of a habit value over time."
+      }
+    },
     "features": {
       "habits": {
         "name": "Habits",

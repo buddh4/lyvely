@@ -17,7 +17,6 @@ import https from 'https';
 import compression from 'compression';
 import { useDayJsDateTimeAdapter } from '@lyvely/dates';
 import { ExpressAdapter, NestExpressApplication } from '@nestjs/platform-express';
-import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 import fs from 'fs';
 import * as net from 'net';
 import { MulterConfigFactory } from '@/files';

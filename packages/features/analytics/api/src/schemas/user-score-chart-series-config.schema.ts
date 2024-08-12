@@ -5,10 +5,9 @@ import {
   TimeSeriesChartType,
   UserScoreSeriesConfigModel,
 } from '@lyvely/analytics-interface';
-import { TimeSeriesChartConfigSchema } from './time-series-chart.schema';
 import { ChartSeriesConfig } from './chart-series-config.schema';
-import { ChartSchemaFactory } from './chart-schema.factory';
 import { BaseModel, getStringEnumValues, type StrictBaseModelData } from '@lyvely/common';
+import { ChartSeriesSchemaFactory } from './chart-series-schema.factory';
 
 @NestedSchema()
 export class UserScoreChartSeriesConfig
@@ -35,8 +34,7 @@ export class UserScoreChartSeriesConfig
   }
 }
 
-export const UserScoreChartSeriesConfigSchema = ChartSchemaFactory.createSeriesForClass(
+export const UserScoreChartSeriesConfigSchema = ChartSeriesSchemaFactory.createTimeSeriesForClass(
   CHART_SERIES_USER_SCORE.id,
-  TimeSeriesChartConfigSchema,
   UserScoreChartSeriesConfig
 );

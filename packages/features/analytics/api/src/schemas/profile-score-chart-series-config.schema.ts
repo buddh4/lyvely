@@ -3,12 +3,11 @@ import {
   TimeSeriesChartType,
   TimeSeriesConfigModel,
 } from '@lyvely/analytics-interface';
-import { TimeSeriesChartConfigSchema } from './time-series-chart.schema';
-import { ChartSchemaFactory } from './chart-schema.factory';
 import { NestedSchema, ObjectIdArrayProp, TObjectId } from '@lyvely/api';
 import { ChartSeriesConfig } from './chart-series-config.schema';
 import { Prop } from '@nestjs/mongoose';
 import { BaseModel, getStringEnumValues, type StrictBaseModelData } from '@lyvely/common';
+import { ChartSeriesSchemaFactory } from './chart-series-schema.factory';
 
 @NestedSchema()
 export class ProfileScoreChartSeriesConfig
@@ -32,8 +31,8 @@ export class ProfileScoreChartSeriesConfig
   }
 }
 
-export const ProfileScoreChartSeriesConfigSchema = ChartSchemaFactory.createSeriesForClass(
-  CHART_SERIES_PROFILE_SCORE.id,
-  TimeSeriesChartConfigSchema,
-  ProfileScoreChartSeriesConfig
-);
+export const ProfileScoreChartSeriesConfigSchema =
+  ChartSeriesSchemaFactory.createTimeSeriesForClass(
+    CHART_SERIES_PROFILE_SCORE.id,
+    ProfileScoreChartSeriesConfig
+  );

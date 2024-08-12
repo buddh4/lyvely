@@ -48,11 +48,11 @@
     },
     {
       "name": "@lyvely/analytics-interface",
-      "allowedCategories": [ "feature" ]
+      "allowedCategories": [ "feature", "lib" ]
     },
     {
       "name": "@lyvely/analytics-web",
-      "allowedCategories": [ "application", "feature" ]
+      "allowedCategories": [ "application", "feature", "lib" ]
     },
     {
       "name": "@lyvely/calendar-plan-interface",
