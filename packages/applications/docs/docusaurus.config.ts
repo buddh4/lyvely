@@ -107,11 +107,19 @@ const config: Config = {
         style: 'dark',
         links: [
           {
-            title: 'Docs',
+            title: 'Guides',
             items: [
               {
-                label: 'Tutorial',
-                to: '/docs/intro',
+                label: 'User Guide',
+                to: '/docs/guide/intro',
+              },
+              {
+                label: 'Feature Guide',
+                to: '/docs/guide/stream',
+              },
+              {
+                label: 'Recipes',
+                to: '/docs/guide/health',
               },
             ],
           },
@@ -119,26 +127,22 @@ const config: Config = {
             title: 'Community',
             items: [
               {
-                label: 'Stack Overflow',
-                href: 'https://stackoverflow.com/questions/tagged/lyvely',
+                label: 'Lyvely App',
+                href: 'https://lyvely.app/',
               },
               /*{
                 label: 'Discord',
                 href: 'https://discordapp.com/invite/docusaurus',
               },*/
-              {
-                label: 'X',
-                href: 'https://x.com/lyvelyjs',
-              },
             ],
           },
           {
             title: 'More',
             items: [
-              {
+              /*{
                 label: 'Blog',
                 to: '/blog',
-              },
+              },*/
               {
                 label: 'GitHub',
                 href: 'https://github.com/buddh4/lyvely',

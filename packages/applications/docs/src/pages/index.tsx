@@ -10,6 +10,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 
 import styles from './index.module.css';
+import UnderConstruction from "@site/src/components/UnderConstruction";
 
 function HomepageHeader() {
   const {siteConfig} = useDocusaurusContext();
@@ -45,8 +46,8 @@ export default function Home(): JSX.Element {
   const {siteConfig} = useDocusaurusContext();
   return (
     <Layout
-      title={`Hello from ${siteConfig.title}`}
-      description="Description will go into a meta tag in <head />">
+      description="A versatile and extensible platform for self-management and collaboration.">
+      <UnderConstruction />
       <HomepageHeader />
       <main>
         <HomepageUseCases />

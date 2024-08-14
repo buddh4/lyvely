@@ -1,10 +1,20 @@
 # Tasks
 
+The Task feature can be used to manage tasks within a profile.
+
 ## Calendar Plan View
 
-The Task feature can be used to manage tasks in a calendar-plan view. The calendar-plan view can be used
-to sort tasks by priority. New tasks are may be added as `Unsceduled` similar to a backlog and can be moved up until 
-the task is planned for today or within the next few days.
+The task calendar-plan view can be used to sort tasks by priority. New tasks are may be added as `Unsceduled` similar 
+to a backlog and can be moved up until the task is planned for today or within the next few days.
+
+Tasks are only visible if they are scheduled within the currently active plan (e.g., day, week, month). Navigate through
+different calendar views using the arrow buttons located at the top of each section.
+
+In this view, you can complete tasks, as well as edit or archive them, using the dropdown button at the top right of 
+each entry.
+
+Additionally, you can filter the calendar view by clicking on tags or using the filter bar at the top. You also have the
+option to start the task timer for time tracking.
 
 ![](./img/feature_tasks_overview.png)
 

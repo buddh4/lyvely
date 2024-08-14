@@ -12,6 +12,15 @@ for formating text including task lists.
 
 ## Main Profile Stream
 
+The profile stream displays all content created within a profile that is not part of a sub-discussion. It typically 
+serves as the default view for a profile and can be accessed through both the profile navigation and the mobile footer.
+
+In the profile stream, you can easily **create new content** by clicking the `+` button. To submit messages quickly, use the 
+message input field and either press `Enter` or click the submit button on the right.
+
+The **filter bar** allows you to quickly search for specific tags. For additional filtering options, click the filter button 
+on the right side of the filter bar. When a filter is active, the filter icon will display a green indicator.
+
 ![Main Profile Stream](./img/feature_stream_overview.png)
 
 :::info
