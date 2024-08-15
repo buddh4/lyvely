@@ -103,9 +103,9 @@ const baseLayoutClass = `relative inline-flex flex-col max-w-full cursor-pointer
 const bodyWrapperClass = computed(
   () =>
     ({
-      none: 'relative',
-      message: `message-bubble ${baseLayoutClass} px-4 py-1.5`,
-      block: `${baseLayoutClass} p-4 rounded-xl`,
+      [StreamEntryLayout.None]: 'relative',
+      [StreamEntryLayout.Message]: `message-bubble ${baseLayoutClass} px-4 py-1.5`,
+      [StreamEntryLayout.Collaborative]: `${baseLayoutClass} p-4 rounded-xl`,
     })[layout.value]
 );
 

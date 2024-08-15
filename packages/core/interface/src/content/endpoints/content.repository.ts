@@ -1,15 +1,23 @@
-import { ContentFilter, SetMilestoneModel, UpdateTaskListItemModel } from '../models';
+import { SetMilestoneModel, UpdateTaskListItemModel } from '../models';
 import { API_CONTENT, ContentEndpoints, IContentClient } from './content.endpoint';
 import { useApi } from '@/repository';
 import { IProfileApiRequestOptions } from '@/endpoints';
+import type { IContentSearchQuery } from '../interfaces';
 // TODO: https://github.com/microsoft/TypeScript/issues/47663
 
 const api = useApi<IContentClient>(API_CONTENT);
 
 export default {
-  search(filter: ContentFilter, options?: IProfileApiRequestOptions) {
-    return api.get<'search'>(ContentEndpoints.SEARCH(), {
+  search(filter: IContentSearchQuery, options?: IProfileApiRequestOptions) {
+    return api.get<'search'>(ContentEndpoints.SEARCH, {
       params: filter,
+      ...options,
+    });
+  },
+
+  getInfos(cids: string[], options?: IProfileApiRequestOptions) {
+    return api.get<'getInfos'>(ContentEndpoints.INFOS, {
+      params: cids,
       ...options,
     });
   },

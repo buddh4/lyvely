@@ -1,5 +1,5 @@
 import { ContentModel } from '@lyvely/interface';
-import { getContentTypeIcon, getContentTypeOptions } from '../registries';
+import { getContentTypeIcon, getContentTypeOptions, getStreamEntryLayout } from '../registries';
 import { IDefaultStreamEntryOptions, StreamEntryLayout } from '../interfaces';
 import { computed } from 'vue';
 import { useUserInfo } from '@/profiles';
@@ -19,9 +19,10 @@ export const useContentStreamEntryInfo = (options: UseStreamEntryInfoOptions) =>
   const contentTypeOptions = getContentTypeOptions(model);
   const streamEntryOptions = (<IDefaultStreamEntryOptions>contentTypeOptions?.interfaces?.stream)
     ?.entryOptions;
-  const layout = computed(
-    () => options.layout ?? (streamEntryOptions?.layout || StreamEntryLayout.Block)
-  );
+  const layout = computed(() => {
+    if (options.layout) return options.layout;
+    return getStreamEntryLayout(model);
+  });
   const icon = computed(() => options.icon ?? getContentTypeIcon(model));
   const iconClass = computed(
     () => options.iconClass ?? (streamEntryOptions?.iconClass || 'text-main')

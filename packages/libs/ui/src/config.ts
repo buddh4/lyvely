@@ -32,7 +32,7 @@ export function createAvatarUrl(guid: string | IAvatarData, timestamp?: number):
     timestamp = guid.timestamp;
     guid = guid.guid;
   }
-  return getAvatarUrl(guid, timestamp);
+  return getAvatarUrl(guid as string, timestamp);
 }
 
 export function setConfigOptions(options?: LyvelyUiOptions) {

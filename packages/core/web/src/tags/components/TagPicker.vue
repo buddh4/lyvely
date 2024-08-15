@@ -10,14 +10,14 @@ export interface IProps {
   modelValue: Array<string> | undefined;
   optionKey?: 'id' | 'name';
   inputId?: string;
-  multiple?: boolean;
+  max?: number;
   label?: string;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
   inputId: uniqueId('tag-picker'),
   optionKey: 'id',
-  multiple: true,
+  max: 100,
   label: translation('tags.chooser.label'),
 });
 
@@ -38,17 +38,14 @@ const model = computed({
   get: () => props.modelValue || [],
   set: (value: Array<string>) => emit('update:modelValue', value),
 });
-
-// Load async content info
-const selection = computed(() => model.value.map(getOption));
 </script>
 
 <template>
-  <ly-badge-picker
+  <ly-picker
     :id="inputId"
     v-model="model"
-    :options="options"
-    :multiple="multiple"
+    :provider="options"
+    :max="max"
     :label="label"
     :add="true" />
 </template>

@@ -58,10 +58,10 @@ const { isAllowed: canCreateUserProfile } = useGlobalPermissions(CreateUserProfi
       :validator="validator">
       <ly-text-field property="name" :required="true" :autofocus="!isTouchScreen()" />
       <ly-textarea property="description" />
-      <ly-badge-picker
+      <ly-picker
         v-model="model.usage"
         label="profiles.create.placeholders.usage"
-        :options="usageOptions"
+        :provider="usageOptions"
         :labels="usageLabel" />
       <ly-radio
         v-if="!isOrganization && canCreateUserProfile"

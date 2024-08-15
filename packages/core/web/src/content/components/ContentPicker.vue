@@ -1,28 +1,68 @@
 <script setup lang="ts">
-import { type Translatable, useTwMerge } from '@lyvely/ui';
-import type { ContentPickerHandler, IContent } from '@lyvely/interface';
+import { computed } from 'vue';
+import { type IAvatar, IPickerOption, type Translatable } from '@lyvely/ui';
 import { uniqueId } from '@lyvely/common';
-import { computed, ref } from 'vue';
 import { translation } from '@/i18n';
+import type { IContentPickerProvider, IContentSearchQuery } from '@lyvely/interface';
+import { ContentModel, useContentClient } from '@lyvely/interface';
+import { getContentTypeIcon, getStreamEntryLayout } from '@/content/registries';
+import { StreamEntryLayout } from '@/content/interfaces';
+import { useUserInfo } from '@/profiles';
 
 const props = withDefaults(
   defineProps<{
     modelValue: Array<string> | undefined;
-    handler: ContentPickerHandler;
+    filter?: IContentSearchQuery;
+    provider?: IContentPickerProvider;
     label?: Translatable;
+    title?: Translatable;
     max?: number;
     id?: string;
   }>(),
   {
     id: uniqueId('tag-picker'),
     label: translation('common.content'),
-    max: 1,
+    title: translation('content.picker.title'),
+    provider: undefined,
   }
 );
 
-const searchResult = ref<IContent[]>([]);
-const visible = ref(false);
 const emit = defineEmits(['update:modelValue']);
+
+const defaultProvider = async (query: string) => {
+  const { result } = await useContentClient().search({ ...props.provider, query });
+  return result.map((content: ContentModel) => content.getInfo());
+};
+
+const contentProvider = async (search?: string) => {
+  if (!search?.length) {
+    return props.modelValue?.length ? useContentClient().getInfos(props.modelValue) : [];
+  }
+
+  const provider = props.provider || defaultProvider;
+
+  const result = await provider(search);
+  return result.map((contentInfo) => {
+    const layout = getStreamEntryLayout(contentInfo.type);
+    const userInfo = useUserInfo(contentInfo.createdBy).value;
+    const showAvatar = userInfo && layout === StreamEntryLayout.Message;
+    const icon = getContentTypeIcon(contentInfo.type);
+    const avatar: IAvatar | undefined = showAvatar
+      ? {
+          guid: userInfo.guid!,
+          name: userInfo.displayName,
+        }
+      : undefined;
+
+    return {
+      key: contentInfo.id,
+      label: contentInfo.title,
+      description: contentInfo.text,
+      icon,
+      avatar,
+    } satisfies IPickerOption;
+  });
+};
 
 const model = computed({
   get: () => props.modelValue || [],
@@ -31,25 +71,7 @@ const model = computed({
 </script>
 
 <template>
-  <ly-floating-input-layout
-    :id="id"
-    :data-id="id"
-    tabindex="0"
-    class="floating-input h-auto cursor-pointer"
-    :label="label"
-    @click="visible = true"
-    @keyup.enter.prevent="visible = true">
-    <div class="flex pt-2">
-      <template v-for="option in selection" :key="getOptionKey(option)">
-        <ly-badge
-          v-if="option"
-          :text="{ plain: getLabel(option) }"
-          :color="getColor(option)"
-          :class="getBadgeClass(option)"
-          :avatar="getAvatar(option)" />
-      </template>
-    </div>
-  </ly-floating-input-layout>
+  <ly-picker v-model="model" :max="max" :label="label" :provider="contentProvider" />
 </template>
 
 <style scoped></style>

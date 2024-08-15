@@ -5,6 +5,12 @@ export interface IAvatarData {
   timestamp?: number;
 }
 
+export interface IFallbackAvatarData {
+  name: string;
+}
+
+export type IAvatar = IAvatarData | IFallbackAvatarData;
+
 export interface ISelectOption {
   label: Translatable;
   value: string | number;

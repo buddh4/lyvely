@@ -1,3 +1,3 @@
-import type { IContentSearchResult } from './content-search-result.interface';
+import type { IContentInfo } from './content-info.interface';
 
-export type ContentPickerHandler = (search: string) => Promise<IContentSearchResult>;
+export type IContentPickerProvider = (search: string) => Promise<IContentInfo[]>;

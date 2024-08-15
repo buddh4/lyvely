@@ -9,10 +9,11 @@ import {
 } from '@lyvely/common';
 import { Exclude, Expose } from 'class-transformer';
 import { IsString, Length, IsOptional } from 'class-validator';
-import { getDefaultTypeMeta } from '../interfaces';
-import type {
+import {
+  getDefaultTypeMeta,
+  type IContentInfo,
   CreatedAsType,
-  IContentPolicies,
+  type IContentPolicies,
   IContent,
   IContentAuthor,
   IContentDataType,
@@ -21,6 +22,8 @@ import type {
   IContentTypeMeta,
 } from '../interfaces';
 import { ProfileRoleLevel } from '@/profiles';
+import { truncate } from '@lyvely/common';
+import { MAX_CONTENT_TITLE_LENGTH } from '../content.constants';
 
 export class ContentDataTypeModel implements IContentDataType {
   @IsString()
@@ -164,6 +167,21 @@ export class ContentModel<
     };
   }
 
+  /**
+   * Retrieves information about the content.
+   *
+   * @return {IContentInfo} The content information, including the id, type, title, and text.
+   */
+  getInfo(): IContentInfo<TID> {
+    return {
+      id: this.id,
+      type: this.type,
+      title: this.getTitle(),
+      text: this.getText(),
+      createdBy: this.meta.createdBy,
+    };
+  }
+
   getDefaultConfig(): TConfig | undefined {
     return undefined;
   }
@@ -173,7 +191,7 @@ export class ContentModel<
   }
 
   getTitle() {
-    return this.content.title || '';
+    return this.content.title || truncate(this.getText(), MAX_CONTENT_TITLE_LENGTH);
   }
 
   getText() {

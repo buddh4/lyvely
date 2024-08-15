@@ -17,6 +17,9 @@
       "initError": "Something went wrong, please try again later!",
       "back-to-stream": "Back to Stream",
       "back-to-parent": "View Parent Content"
+    },
+    "picker": {
+      "title": "Choose a content"
     }
   }
 }

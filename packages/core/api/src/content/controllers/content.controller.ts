@@ -4,10 +4,11 @@ import {
   SetMilestoneModel,
   ContentEndpoints,
   UpdateTaskListItemModel,
-  ContentFilter,
   ContentSearchResult,
+  ContentInfoModel,
+  ContentInfoResultModel,
 } from '@lyvely/interface';
-import { Post, HttpCode, HttpStatus, Param, Request, Put, Get } from '@nestjs/common';
+import { Post, HttpCode, HttpStatus, Param, Request, Put, Get, Query } from '@nestjs/common';
 import { Policies } from '@/policies';
 import { ContentService } from '../services';
 import { ContentDeletePolicy, ContentWritePolicy } from '../policies';
@@ -15,20 +16,38 @@ import { ProtectedProfileContentRequest } from '../types';
 import { ContentTypeController } from '../decorators';
 import { ValidBody } from '@/core';
 import type { ProfileRequest } from '@/profiles';
-import { IContentSearchFilter } from '@/content/daos';
+import { isMongoId } from 'class-validator';
+import type { IContentInfoResult, IContentSearchQuery } from '@lyvely/interface';
 
 @ContentTypeController(API_CONTENT)
 export class ContentController implements ContentEndpoint {
   constructor(private contentService: ContentService) {}
 
-  @Get(ContentEndpoints.SEARCH())
+  @Get(ContentEndpoints.SEARCH)
   async search(
-    @ValidBody() filter: IContentSearchFilter,
+    @Query() filter: IContentSearchQuery,
     @Request() req: ProfileRequest
   ): Promise<ContentSearchResult> {
     const { context } = req;
-    const content = await this.contentService.search(context, filter);
+    const content = await this.contentService.search(context, {
+      tagIds: filter.tagId ? [filter.tagId] : undefined,
+      archived: filter.archived,
+      query: filter.query,
+      type: filter.type,
+    });
     return new ContentSearchResult({ result: content.map((c) => c.toModel(context.user)) });
+  }
+
+  @Get(ContentEndpoints.INFOS)
+  async getInfos(
+    @Param('cids') cids: string[],
+    @Request() req: ProfileRequest
+  ): Promise<IContentInfoResult> {
+    const { context } = req;
+    cids = cids.filter(isMongoId);
+    const result = await this.contentService.findByIds(context, cids.filter(isMongoId));
+    const infos = result.map((content) => content.getInfo());
+    return new ContentInfoResultModel({ infos });
   }
 
   @Post(ContentEndpoints.ARCHIVE(':cid'))

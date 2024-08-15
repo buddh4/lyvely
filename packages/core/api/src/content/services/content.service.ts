@@ -31,6 +31,12 @@ export class ContentService {
     return this.contentDao.search(context.profile, filter);
   }
 
+  async findByIds(context: ProfileContext, cids: DocumentIdentity<Content>[]): Promise<Content[]> {
+    const contents = await this.contentDao.findAllByProfileAndIds(context.profile, cids);
+    await this.contentPolicyService.populateContentPolicies(context, contents);
+    return contents.filter((content) => content.policies.canRead);
+  }
+
   /**
    * Finds a single content document and populates its content policies. When using this function, you either need to
    * manually validate the required policies or use the `roleLevel` search filter.

@@ -26,7 +26,7 @@ export class ContentDao extends ContentTypeDao<Content> {
    * @return {Promise<Content[]>} - A Promise that resolves with an array of Content objects matching the filter.
    */
   async search(context: ProfileShardData, filter: IContentSearchFilter): Promise<Content[]> {
-    return this.findAll(buildContentFilterQuery(filter));
+    return this.findAllByProfile(context, buildContentFilterQuery(filter));
   }
 
   /**

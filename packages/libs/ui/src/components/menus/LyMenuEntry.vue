@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { IconBindingsIF, IMenuEntry } from './interfaces';
+import { type IconBindingsIF } from '@/components/icons';
+import { type IMenuEntry } from './interfaces';
 import { t } from '@/i18n';
 import { computed } from 'vue';
 import { isPlainObject } from '@lyvely/common';

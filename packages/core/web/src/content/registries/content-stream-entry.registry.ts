@@ -7,6 +7,8 @@ import {
   ICreateContentModalProps,
   IEditContentModalProps,
   type IEditOrCreateModalProps,
+  StreamEntryLayout,
+  IDefaultStreamEntryOptions,
 } from '../interfaces';
 import { resolveComponentRegistration, ComponentRegistration } from '@lyvely/ui';
 import type { Type } from '@lyvely/common';
@@ -95,6 +97,22 @@ export function getContentTypeOptions(
 ): IContentTypeOptions | undefined {
   const type = typeof contentOrType === 'string' ? contentOrType : contentOrType.type;
   return contentTypeOptionsRegistry.get(type);
+}
+
+/**
+ * Retrieves the layout for a stream entry based on the provided content or content type.
+ *
+ * @param {string | ContentModel} contentOrType - The content or content type to determine the layout for.
+ *
+ * @return {StreamEntryLayout} - The layout for the stream entry.
+ */
+export function getStreamEntryLayout(contentOrType: string | ContentModel): StreamEntryLayout {
+  const contentTypeOptions = getContentTypeOptions(contentOrType);
+  const streamEntryOptions = (<IDefaultStreamEntryOptions>contentTypeOptions?.interfaces?.stream)
+    ?.entryOptions;
+  if (streamEntryOptions?.layout) return streamEntryOptions?.layout;
+  if (contentTypeOptions?.meta?.isCollaborative === false) return StreamEntryLayout.Message;
+  return StreamEntryLayout.Collaborative;
 }
 
 /**

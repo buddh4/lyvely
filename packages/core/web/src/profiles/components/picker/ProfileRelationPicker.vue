@@ -9,13 +9,14 @@ import { ProfileRelationModel, isMultiUserProfile } from '@lyvely/interface';
 export interface IProps {
   modelValue: Array<string> | undefined;
   inputId?: string;
-  multiple?: boolean;
+  max?: number;
   label?: string;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
   inputId: uniqueId('profile-relation-picker'),
   label: translation('profiles.ui.relations.picker.title'),
+  max: 100,
 });
 
 const { profile } = storeToRefs(useProfileStore());
@@ -38,12 +39,12 @@ const model = computed({
 </script>
 
 <template>
-  <ly-badge-picker
+  <ly-picker
     v-if="isMultiUserProfile(profile)"
     v-model="model"
     :input-id="inputId"
-    :multiple="multiple"
-    :options="options"
+    :max="max"
+    :provider="options"
     :label="label"
     :add="true" />
 </template>

@@ -126,3 +126,13 @@ export function getBackgroundColor(element: HTMLElement): string | null {
 
   return null; // Return null if no valid background color was found
 }
+
+/**
+ * Escapes special characters in a CSS selector.
+ *
+ * @param selector - The CSS selector to escape.
+ * @return The escaped selector string.
+ */
+export function escapeSelector(selector: string): string {
+  return selector.replace(/([#.;,:+~>[\]=])/g, '\\$1');
+}

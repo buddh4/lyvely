@@ -1,15 +1,12 @@
 import { Endpoint, profileApiPrefix } from '@/endpoints';
-import {
-  UpdateTaskListItemModel,
-  ContentModel,
-  ContentFilter,
-  ContentSearchResult,
-} from '../models';
+import { UpdateTaskListItemModel, ContentModel, ContentSearchResult } from '../models';
+import type { IContentInfoResult, IContentSearchQuery } from '../interfaces';
 
 export const API_CONTENT = profileApiPrefix('content');
 
 export interface IContentClient {
-  search: (filter: ContentFilter) => Promise<ContentSearchResult>;
+  search: (filter: IContentSearchQuery) => Promise<ContentSearchResult>;
+  getInfos: (cids: string[]) => Promise<IContentInfoResult>;
   archive: (cid: string) => Promise<void>;
   restore: (cid: string) => Promise<void>;
   setMilestone: (cid: string, mid: string) => Promise<void>;
@@ -19,7 +16,8 @@ export interface IContentClient {
 export type ContentEndpoint = Endpoint<IContentClient>;
 
 export const ContentEndpoints = {
-  SEARCH: () => `/search`,
+  SEARCH: `/search`,
+  INFOS: `/infos`,
   ARCHIVE: (cid: string) => `${cid}/archive`,
   RESTORE: (cid: string) => `${cid}/restore`,
   SET_MILESTONE: (cid: string) => `${cid}/set-milestone`,

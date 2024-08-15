@@ -35,7 +35,7 @@ import LyContentPanel from './components/panels/LyContentPanel.vue';
 import LyProgressBar from './components/progress/LyProgressBar.vue';
 import LyDimmed from './components/texts/LyDimmed.vue';
 import LyTruncate from './components/texts/LyTruncate.vue';
-import LyBadgePicker from './components/forms/LyBadgePicker.vue';
+import LyPicker from './components/forms/LyPicker.vue';
 import LyCheckboxRange from './components/forms/LyCheckboxRange.vue';
 import LyEditableText from './components/forms/LyEditableText.vue';
 import LyFloatingInputLayout from './components/forms/LyFloatingInputLayout.vue';
@@ -105,7 +105,7 @@ const createLyvelyUi = (options?: LyvelyUiOptions) => {
       Vue.component('LySliderMenu', LySliderMenu);
       Vue.component('LyDimmed', LyDimmed);
       Vue.component('LyTruncate', LyTruncate);
-      Vue.component('LyBadgePicker', LyBadgePicker);
+      Vue.component('LyPicker', LyPicker);
       Vue.component('LyCheckboxRange', LyCheckboxRange);
       Vue.component('LyEditableText', LyEditableText);
       Vue.component('LyFloatingInputLayout', LyFloatingInputLayout);
@@ -126,6 +126,7 @@ const createLyvelyUi = (options?: LyvelyUiOptions) => {
 
 export type { IConfirmOptions } from './components/dialogs/confirm-options.interface';
 export * from './components/stack/interfaces';
+export * from './components/forms/picker-option.interface';
 export * from './helpers';
 export * from './types';
 export * from './components/markdown';
@@ -149,7 +150,7 @@ export {
   LyNumberField,
   LyFormModel,
   LyFloatingInputLayout,
-  LyBadgePicker,
+  LyPicker,
   LySliderMenu,
   LyDimmed,
   LyTruncate,

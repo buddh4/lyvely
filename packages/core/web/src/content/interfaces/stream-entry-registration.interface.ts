@@ -46,8 +46,9 @@ export interface IContentDetailsOptions {
  * Defines the layout of the default stream entry.
  */
 export enum StreamEntryLayout {
+  None = 'none',
   Message = 'message',
-  Block = 'block',
+  Collaborative = 'Collaborative',
 }
 
 /**
