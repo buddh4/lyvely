@@ -90,7 +90,7 @@ rush build
 
 5. Configure the server:
 
-Navigate to `packages/server/src/config` and copy `lyvely.development.config.ts.dist` to `lyvely.development.config.ts`.
+Navigate to `packages/applications/server/src/config` and copy `lyvely.development.config.ts.dist` to `lyvely.development.config.ts`.
 
 ```shell
 cd packages/applications/server/src/config
