@@ -29,6 +29,7 @@ const {
   seriesTypeDefinition,
   seriesConfigModel,
   seriesFormComponent,
+  seriesFormProps,
   seriesTypeOptions,
   categoryOptions,
 } = useChartTemplates(formValue, seriesTypeId, props.category);
@@ -71,7 +72,8 @@ const {
       <component
         :is="seriesFormComponent"
         v-if="seriesFormComponent && seriesConfigModel"
-        v-model="seriesConfigModel" />
+        v-model="seriesConfigModel"
+        v-bind="seriesFormProps" />
     </div>
   </fieldset>
 </template>

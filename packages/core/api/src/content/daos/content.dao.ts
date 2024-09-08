@@ -74,7 +74,7 @@ export class ContentDao extends ContentTypeDao<Content> {
   async updateMilestone(
     context: ProfileShardData,
     content: DocumentIdentity<Content>,
-    mid: TObjectId | string
+    mid: TObjectId | string | null
   ): Promise<boolean> {
     return this.updateOneByProfileAndIdSet(context, content, { 'meta.mid': mid });
   }

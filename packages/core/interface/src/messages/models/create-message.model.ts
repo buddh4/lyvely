@@ -1,12 +1,12 @@
 import { Exclude, Expose } from 'class-transformer';
 import { IsString, Length, IsNotEmpty } from 'class-validator';
 import { MESSAGE_MAX_LENGTH } from '../messages.constants';
-import { CreateContentModel } from '@/content';
+import { CreateBaseContentModel } from '@/content';
 import { BaseModel, type BaseModelData, Trim } from '@lyvely/common';
 import { isPlainObject } from '@lyvely/common';
 
 @Exclude()
-export class CreateMessageModel extends CreateContentModel {
+export class CreateMessageModel extends CreateBaseContentModel {
   @Expose()
   @IsString()
   @IsNotEmpty()

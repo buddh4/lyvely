@@ -80,6 +80,16 @@ export class ContentCondition {
   }
 
   /**
+   * Filters the content based on the provided DocumentIdentities.
+   *
+   * @param {Array<DocumentIdentity<Content>>} cids - The DocumentIdentity that will be used to filter the content.
+   * @returns {FilterQuery<Content>} - The filter query object with the specified _id.
+   */
+  static cids(cids: Array<DocumentIdentity<Content>>): FilterQuery<Content> {
+    return { _id: { $in: cids.map((cid) => assureObjectId(cid)) } };
+  }
+
+  /**
    * Filters the content based on the provided type.
    *
    * @param {DocumentIdentity<Content>} type - The content type.
@@ -196,14 +206,15 @@ export function buildContentFilterQuery<T extends Content = Content>(
     isNotNil(filter.pid) ? ContentCondition.pid(filter.pid) : null,
     isNotNil(filter.oid) ? ContentCondition.oid(filter.oid) : null,
     isNotNil(filter.cid) ? ContentCondition.cid(filter.cid) : null,
+    filter.cids?.length ? ContentCondition.cids(filter.cids) : null,
     isNotNil(filter.type) ? ContentCondition.type(filter.type) : null,
-    isNotNil(filter.tagIds) ? ContentCondition.tagIds(filter.tagIds) : null,
+    filter.tagIds?.length ? ContentCondition.tagIds(filter.tagIds) : null,
     isNotNil(filter.parentId) ? ContentCondition.parentId(filter.parentId) : null,
     isNotNil(filter.archived) ? ContentCondition.archived(filter.archived) : null,
     isNotNil(filter.deleted) ? ContentCondition.deleted(filter.deleted) : null,
     isNotNil(filter.query) ? ContentCondition.query(filter.query) : null,
     isNotNil(filter.roleLevel) ? ContentCondition.visibility(filter.roleLevel) : null,
-  ].filter((c) => isNotNil(c));
+  ].filter(isNotNil);
 
   if (isNotNil(filter.conditions)) {
     conditions.push(...filter.conditions.filter((c) => isNotNil(c)));

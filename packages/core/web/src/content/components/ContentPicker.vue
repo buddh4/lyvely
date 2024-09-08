@@ -30,13 +30,13 @@ const props = withDefaults(
 const emit = defineEmits(['update:modelValue']);
 
 const defaultProvider = async (query: string) => {
-  const { result } = await useContentClient().search({ ...props.provider, query });
-  return result.map((content: ContentModel) => content.getInfo());
+  const { infos } = await useContentClient().getInfos({ ...props.filter, query });
+  return infos;
 };
 
 const contentProvider = async (search?: string) => {
   if (!search?.length) {
-    return props.modelValue?.length ? useContentClient().getInfos(props.modelValue) : [];
+    return props.modelValue?.length ? useContentClient().getInfos({ cids: props.modelValue }) : [];
   }
 
   const provider = props.provider || defaultProvider;

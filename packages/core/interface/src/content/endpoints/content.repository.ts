@@ -15,9 +15,9 @@ export default {
     });
   },
 
-  getInfos(cids: string[], options?: IProfileApiRequestOptions) {
+  getInfos(filter: IContentSearchQuery, options?: IProfileApiRequestOptions) {
     return api.get<'getInfos'>(ContentEndpoints.INFOS, {
-      params: cids,
+      params: filter,
       ...options,
     });
   },
@@ -28,6 +28,10 @@ export default {
       new SetMilestoneModel({ mid }),
       options
     );
+  },
+
+  unssetMilestone(cid: string, options?: IProfileApiRequestOptions) {
+    return api.post<'setMilestone'>(ContentEndpoints.SET_MILESTONE(cid), options);
   },
 
   archive(cid: string, options?: IProfileApiRequestOptions) {

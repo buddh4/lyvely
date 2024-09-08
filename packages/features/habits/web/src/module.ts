@@ -5,6 +5,7 @@ import {
   registerContentType,
   translation,
   useProfileFeatureStore,
+  IContentSearchQuery,
 } from '@lyvely/web';
 import { registerMenuEntry } from '@lyvely/ui';
 import {
@@ -18,7 +19,7 @@ import {
 } from '@lyvely/habits-interface';
 import { habitRoutes } from '@/routes';
 import { calendarPlanModule } from '@lyvely/calendar-plan-web';
-import { timeSeriesModule } from '@lyvely/time-series-web';
+import { timeSeriesModule, TimeSeriesChartForm } from '@lyvely/time-series-web';
 import { registerCharts } from '@lyvely/analytics-web';
 import { ROUTES_HABITS_HOME } from '@/habits.constants';
 
@@ -62,7 +63,10 @@ export default () => {
           type: CHART_SERIES_HABIT_VALUE,
           label: 'habits.charts.value.label',
           description: 'habits.charts.value.info',
-          form: () => import('./components/TimeSeriesChartForm.vue'),
+          form: TimeSeriesChartForm,
+          formProps: {
+            filter: { type: HabitModel.contentType } satisfies IContentSearchQuery,
+          },
         },
       ]);
       registerContentType({

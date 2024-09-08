@@ -16,6 +16,9 @@ export interface IContentSearchFilter {
   /** Search for a specific document. **/
   cid?: DocumentIdentity<Content>;
 
+  /**  Search for multiple documents. **/
+  cids?: Array<DocumentIdentity<Content>>;
+
   /** Filter by parent content. **/
   parentId?: DocumentIdentity<Content>;
 

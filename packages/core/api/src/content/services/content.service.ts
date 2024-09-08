@@ -27,10 +27,26 @@ export class ContentService {
     protected contentPolicyService: ContentPolicyService
   ) {}
 
-  async search(context: ProfileContext, filter: IContentSearchFilter) {
-    return this.contentDao.search(context.profile, filter);
+  /**
+   * Searches for content based on the provided context and filter.
+   *
+   * @param {ProfileContext} context - The profile context used for searching content.
+   * @param {IContentSearchFilter} filter - The filter criteria for searching content.
+   * @return {Promise<Content[]>} - A promise that resolves to an array of content.
+   */
+  async search(context: ProfileContext, filter: IContentSearchFilter): Promise<Content[]> {
+    const contents = await this.contentDao.search(context.profile, filter);
+    return this.contentPolicyService.populateContentPolicies(context, contents);
   }
 
+  /**
+   * Retrieves a list of Content objects based on the given profile context and
+   * document identities, populates their policies, and filters them by read access.
+   *
+   * @param {ProfileContext} context - The profile context containing user details and settings.
+   * @param {DocumentIdentity<Content>[]} cids - An array of document identities to be fetched.
+   * @return {Promise<Content[]>} A promise that resolves to an array of Content objects that the user has read access to.
+   */
   async findByIds(context: ProfileContext, cids: DocumentIdentity<Content>[]): Promise<Content[]> {
     const contents = await this.contentDao.findAllByProfileAndIds(context.profile, cids);
     await this.contentPolicyService.populateContentPolicies(context, contents);
@@ -144,6 +160,18 @@ export class ContentService {
     }
 
     return this.contentDao.updateMilestone(profile, content, mid);
+  }
+
+  /**
+   * Unsets the milestone for a specific content identified by its content ID (cid).
+   *
+   * @param {ProfileContentContext} context
+   * @return {Promise<boolean>} - True if the milestone was set successfully, false otherwise.
+   * @throws {DocumentNotFoundException} - If the milestone cannot be found.
+   */
+  async unsetMilestone(context: ProfileContentContext): Promise<boolean> {
+    const { profile, content } = context;
+    return this.contentDao.updateMilestone(profile, content, null);
   }
 
   /**

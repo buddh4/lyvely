@@ -308,7 +308,9 @@ const showEmptyEntry = computed(() => !showAddEntry.value && !loadedOptions.valu
               :description="getDescription(option)"
               :color="getColor(option)"
               :class="getBadgeClass(option)"
-              :avatar="getAvatar(option)" />
+              :avatar="getAvatar(option)"
+              :icon="getIcon(option)"
+              :icon-bindings="getIconBindings(option)" />
           </slot>
         </div>
         <div

@@ -2,7 +2,7 @@ import { IStreamEntryProps } from './stream-entry-props.interface';
 import { IContentDetailsProps } from './content-details-props.interface';
 import { type IEditOrCreateModalProps } from './edit-content-modal-props.interface';
 import { Type } from '@lyvely/common';
-import { ContentModel, CreateContentModel, IContentTypeMeta } from '@lyvely/interface';
+import { ContentModel, CreateBaseContentModel, IContentTypeMeta } from '@lyvely/interface';
 import { RouteLocationRaw } from 'vue-router';
 import { ComponentRegistration, Translatable } from '@lyvely/ui';
 
@@ -55,7 +55,7 @@ export enum StreamEntryLayout {
  * Represents the options used to create a content type.
  */
 export interface IContentTypeCreateModalOptions {
-  createModel: Type<CreateContentModel>;
+  createModel: Type<CreateBaseContentModel>;
   createComponent: ComponentRegistration<IEditOrCreateModalProps>;
 }
 
@@ -71,7 +71,7 @@ export interface IContentTypeUpsertRouteOptions {
  * Interface representing options for editing a content type.
  */
 export interface IContentTypeModalOptions {
-  createModel: Type<CreateContentModel>;
+  createModel: Type<CreateBaseContentModel>;
   createComponent: ComponentRegistration<IEditOrCreateModalProps>;
   editComponent: ComponentRegistration<IEditOrCreateModalProps>;
 }
@@ -82,7 +82,7 @@ export interface IContentTypeModalOptions {
  * @interface
  */
 export interface IContentTypeUpsertModalOptions {
-  createModel: Type<CreateContentModel>;
+  createModel: Type<CreateBaseContentModel>;
   component: ComponentRegistration<IEditOrCreateModalProps>;
 }
 

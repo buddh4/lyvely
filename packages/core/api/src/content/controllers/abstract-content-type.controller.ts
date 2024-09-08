@@ -7,7 +7,7 @@ import { Type, PropertiesOf, createBaseModelAndInit } from '@lyvely/common';
 import {
   ContentTypeEndpoint,
   ContentModel,
-  CreateContentModel,
+  CreateBaseContentModel,
   ContentUpdateResponse,
   FieldValidationException,
   TagModel,
@@ -20,7 +20,7 @@ import { ValidBody } from '@/core';
 
 export abstract class AbstractContentTypeController<
   TContent extends Content,
-  TCreateModel extends CreateContentModel,
+  TCreateModel extends CreateBaseContentModel,
   TUpdateModel extends Partial<TCreateModel> = Partial<TCreateModel>,
   TModel extends ContentModel<any> = ReturnType<TContent['toModel']>,
 > implements ContentTypeEndpoint<TModel, TCreateModel, TUpdateModel>

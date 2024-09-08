@@ -1,5 +1,5 @@
 import { Component } from 'vue';
-import { ContentModel, registerContentModelType, CreateContentModel } from '@lyvely/interface';
+import { ContentModel, registerContentModelType, CreateBaseContentModel } from '@lyvely/interface';
 import {
   IContentTypeOptions,
   IStreamEntryProps,
@@ -119,12 +119,12 @@ export function getStreamEntryLayout(contentOrType: string | ContentModel): Stre
  * Returns the create model for a specified content type.
  *
  *
- * @return {Type<CreateContentModel> | undefined} - The create model for the specified content type, or undefined if it is not found.
+ * @return {Type<CreateBaseContentModel> | undefined} - The create model for the specified content type, or undefined if it is not found.
  * @param contentOrType
  */
 export function getContentCreateModel(
   contentOrType: string | ContentModel
-): Type<CreateContentModel> | undefined {
+): Type<CreateBaseContentModel> | undefined {
   const upsertOptions = getContentTypeOptions(contentOrType)?.interfaces?.upsert;
   if (!upsertOptions || !('createModel' in upsertOptions)) return undefined;
   return upsertOptions.createModel;

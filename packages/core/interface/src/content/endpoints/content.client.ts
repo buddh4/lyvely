@@ -18,12 +18,19 @@ export class ContentClient implements IContentClient {
     });
   }
 
-  async getInfos(cids: string[], options?: IProfileApiRequestOptions): Promise<IContentInfoResult> {
-    return unwrapResponse(repository.getInfos(cids, options));
+  async getInfos(
+    filter: IContentSearchQuery,
+    options?: IProfileApiRequestOptions
+  ): Promise<IContentInfoResult> {
+    return unwrapResponse(repository.getInfos(filter, options));
   }
 
   async setMilestone(id: string, mid: string, options?: IProfileApiRequestOptions): Promise<void> {
     return unwrapResponse(repository.setMilestone(id, mid, options));
+  }
+
+  async unsetMilestone(id: string, options?: IProfileApiRequestOptions): Promise<void> {
+    return unwrapResponse(repository.unssetMilestone(id, options));
   }
 
   async archive(cid: string, options?: IProfileApiRequestOptions): Promise<void> {
