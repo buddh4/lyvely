@@ -13,17 +13,19 @@ const runCommand = (command) => {
   }
 };
 
+/**
+ * @param cssContent
+ * @returns {*}
+ */
 const unescapeCssSelectors = (cssContent) => {
   return (
     removeSpecialBlocks(cssContent)
       // Remove comments
       .replace(/\s*\/\*[^\*]+\*\/\s*/g, ' ')
-      // Remove all at rule blocks
-      .replace(/@.*$/g, ' ')
       // Remove all definitions
       .replace(/\{[^}]*\}/g, ' ')
       // Remove pseudo classes (which are unescaped)
-      .replace(/(?<!\\):[^ ]+$/g, ' ')
+      .replace(/(?<!\\):[^ ]+/g, ' ')
       // Remove escapes
       .replace(/\\/g, '')
   );
