@@ -41,7 +41,7 @@ const path = computed(() => {
     class="hidden rounded-2xl border border-divide p-2 px-3 text-xs sm:inline-flex sm:flex-nowrap">
     <router-link v-if="isProfileRoute" to="/" class="flex flex-nowrap gap-1 text-main">
       <span class="text-pop">@</span>
-      <ly-truncate :text="profileName" max="10" class="whitespace-nowrap" />
+      <ly-truncate :text="profileName" max="15" class="whitespace-nowrap" />
     </router-link>
     <router-link v-else to="/account" class="text-main">
       <span class="text-pop">@</span>
