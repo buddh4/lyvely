@@ -15,15 +15,28 @@ const runCommand = (command) => {
 
 const unescapeCssSelectors = (cssContent) => {
   return (
-    cssContent
+    removeSpecialBlocks(cssContent)
+      // Remove comments
+      .replace(/\s*\/\*[^\*]+\*\/\s*/g, ' ')
+      // Remove all at rule blocks
+      .replace(/@.*$/g, ' ')
       // Remove all definitions
-      .replace(/{[^}]*}/g, ' ')
+      .replace(/\{[^}]*\}/g, ' ')
       // Remove pseudo classes (which are unescaped)
-      .replace(/(?<!\\):[^ ]+/g, ' ')
+      .replace(/(?<!\\):[^ ]+$/g, ' ')
       // Remove escapes
       .replace(/\\/g, '')
   );
 };
+
+function removeSpecialBlocks(cssText) {
+  // Regular expression to match and replace any @rule block, keeping only the inner content
+  const regex = /@\w+\s*[^{]*\{([\s\S]*?)\}/g;
+
+  // Replace all matches of the outer block with only their inner content
+  return cssText.replace(regex, (_, innerContent) => innerContent.trim());
+}
+
 
 const unescapeCssFile = (inputFilePath, outputFilePath) => {
   fs.readFile(inputFilePath, 'utf8', (err, data) => {
