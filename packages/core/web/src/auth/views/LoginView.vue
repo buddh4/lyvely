@@ -164,7 +164,9 @@ onUnmounted(loginStore.reset);
           </small>
         </div>
 
-        <div class="relative mt-5 flex flex-col gap-2 border-t border-divide pt-4">
+        <div
+          v-if="isVisitorModeEnabled"
+          class="relative mt-5 flex flex-col gap-2 border-t border-divide pt-4">
           <div class="absolute top-0 flex w-full justify-center" style="margin-top: -0.5em">
             <div class="inline-block bg-main px-2 text-xs font-bold uppercase text-dimmed">or</div>
           </div>
@@ -177,7 +179,7 @@ onUnmounted(loginStore.reset);
               {{ t('auth.login.visitor') }}
             </div>
           </ly-button>
-          <ly-button class="flex w-full items-center justify-center gap-2 bg-red-500 text-white">
+          <!-- ly-button class="flex w-full items-center justify-center gap-2 bg-red-500 text-white">
             <ly-icon name="google" />
             <div class="inline-block min-w-[6rem]">Google</div>
           </ly-button>
@@ -188,7 +190,7 @@ onUnmounted(loginStore.reset);
           <ly-button class="flex w-full items-center justify-center gap-2 bg-blue-700 text-white">
             <ly-icon name="facebook" />
             <div class="inline-block min-w-[6rem]">Facebook</div>
-          </ly-button>
+          </ly-button -->
         </div>
       </div>
 
