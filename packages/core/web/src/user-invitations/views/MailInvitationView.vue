@@ -10,6 +10,7 @@ import { useAuthStore } from '@/auth/stores/auth.store';
 import { storeToRefs } from 'pinia';
 import { useAppConfigStore } from '@/app-config/app-config.store';
 import { LyCenteredPanel } from '@lyvely/ui';
+import { PATH_SIGN_UP } from '@/user-registration';
 
 const router = useRouter();
 
@@ -27,7 +28,7 @@ function logoutAndRegister() {
 }
 
 function register() {
-  document.location = `/register?invite=${encodeURIComponent(token)}&email=${encodeURIComponent(
+  document.location = `${PATH_SIGN_UP}?invite=${encodeURIComponent(token)}&email=${encodeURIComponent(
     mailInviteInfo.value!.email
   )}`;
 }
