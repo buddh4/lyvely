@@ -1,15 +1,7 @@
 import { Translatable } from '@/i18n';
-import { IconOptionsIF } from '@/components/icons';
 import { RouteLocationRaw } from 'vue-router';
 import { ComputedRef, Ref } from 'vue';
-
-export interface IconBindingsIF {
-  title?: Translatable;
-  options?: IconOptionsIF;
-  scaleTo?: number;
-  class?: string;
-  autoScale?: boolean;
-}
+import type { IconBindingsIF } from '@/components/icons';
 
 export interface IBaseMenuEntry<TContext = any> {
   id: string;

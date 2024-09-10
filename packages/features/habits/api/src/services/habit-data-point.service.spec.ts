@@ -12,6 +12,7 @@ import {
 } from '@lyvely/api';
 import { DataPoint } from '@lyvely/time-series';
 import { ILyvelyTestingModule } from '@lyvely/api';
+import { HabitValueAggregationService } from "./habit-value-aggregation.service";
 
 describe('HabitDataPointService', () => {
   let habitDataPointService: HabitDataPointService;
@@ -25,7 +26,7 @@ describe('HabitDataPointService', () => {
   beforeEach(async () => {
     testingModule = await buildProfileTest(TEST_KEY)
       .plugins([habitITestPlugin])
-      .providers([HabitDataPointService, HabitDataPointDao, ContentScoreService, ContentScoreDao])
+      .providers([HabitDataPointService, HabitDataPointDao, ContentScoreService, ContentScoreDao, HabitValueAggregationService])
       .compile();
     habitDataPointService = testingModule.get<HabitDataPointService>(HabitDataPointService);
     testData = testingModule.get(HabitTestDataUtil);

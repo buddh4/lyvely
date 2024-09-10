@@ -9,12 +9,13 @@ import {
 import { AbstractStreamService } from '../service';
 import { BaseDocument, ValidBody } from '@/core';
 import { PropertiesOf } from '@lyvely/common';
+import type { IOptionalUserContext, UserRequest } from '@/users';
 
 export abstract class AbstractStreamController<
   TModel extends BaseDocument,
   TResult,
   TFilter extends IStreamFilter = any,
-  TContext = any,
+  TContext extends IOptionalUserContext = IOptionalUserContext,
 > {
   protected abstract streamEntryService: AbstractStreamService<TModel, TFilter>;
 
@@ -23,9 +24,9 @@ export abstract class AbstractStreamController<
   @Post(StreamEndpoints.TAIL)
   async loadTail(
     @ValidBody() streamRequest: StreamRequest<TFilter>,
-    @Req() req: { context: TContext }
+    @Req() req: UserRequest & { context: TContext }
   ): Promise<StreamResponse<TResult>> {
-    const context = req.context;
+    const context = req.context || { user: req.user };
     const response = await this.streamEntryService.loadTail(
       context,
       new StreamRequest(streamRequest)

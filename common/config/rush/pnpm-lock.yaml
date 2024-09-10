@@ -1201,6 +1201,9 @@ importers:
       '@nestjs/common':
         specifier: ^10.3.8
         version: 10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@nestjs/event-emitter':
+        specifier: ^2.0
+        version: 2.0.4(@nestjs/common@10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.9(@nestjs/common@10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.3.9)(reflect-metadata@0.2.2)(rxjs@7.8.1))
       '@nestjs/mongoose':
         specifier: ^10.0.6
         version: 10.0.6(@nestjs/common@10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.9(@nestjs/common@10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.3.9)(reflect-metadata@0.2.2)(rxjs@7.8.1))(mongoose@8.4.4(@aws-sdk/credential-providers@3.600.0)(socks@2.8.3))(rxjs@7.8.1)
@@ -1271,6 +1274,9 @@ importers:
       '@buddh4/mapped-types':
         specifier: ^1.2.1
         version: 1.2.1
+      '@lyvely/analytics-interface':
+        specifier: workspace:*
+        version: link:../../analytics/interface
       '@lyvely/calendar-plan-interface':
         specifier: workspace:*
         version: link:../../../libs/calendar-plan/interface
@@ -1492,6 +1498,9 @@ importers:
 
   ../../packages/features/journals/api:
     dependencies:
+      '@lyvely/analytics':
+        specifier: workspace:*
+        version: link:../../analytics/api
       '@lyvely/api':
         specifier: workspace:*
         version: link:../../../core/api
@@ -1510,6 +1519,9 @@ importers:
       '@nestjs/common':
         specifier: ^10.3.8
         version: 10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@nestjs/event-emitter':
+        specifier: ^2.0
+        version: 2.0.4(@nestjs/common@10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.9(@nestjs/common@10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.3.9)(reflect-metadata@0.2.2)(rxjs@7.8.1))
       '@nestjs/mongoose':
         specifier: ^10.0.6
         version: 10.0.6(@nestjs/common@10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.9(@nestjs/common@10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.3.9)(reflect-metadata@0.2.2)(rxjs@7.8.1))(mongoose@8.4.4(@aws-sdk/credential-providers@3.600.0)(socks@2.8.3))(rxjs@7.8.1)
@@ -1580,6 +1592,9 @@ importers:
       '@buddh4/mapped-types':
         specifier: ^1.2.1
         version: 1.2.1
+      '@lyvely/analytics-interface':
+        specifier: workspace:*
+        version: link:../../analytics/interface
       '@lyvely/calendar-plan-interface':
         specifier: workspace:*
         version: link:../../../libs/calendar-plan/interface
@@ -1680,6 +1695,9 @@ importers:
 
   ../../packages/features/journals/web:
     dependencies:
+      '@lyvely/analytics-web':
+        specifier: workspace:*
+        version: link:../../analytics/web
       '@lyvely/calendar-plan-web':
         specifier: workspace:*
         version: link:../../../libs/calendar-plan/web
@@ -3181,6 +3199,9 @@ importers:
 
   ../../packages/libs/time-series/api:
     dependencies:
+      '@lyvely/analytics':
+        specifier: workspace:*
+        version: link:../../../features/analytics/api
       '@lyvely/api':
         specifier: workspace:*
         version: link:../../../core/api
@@ -3257,6 +3278,9 @@ importers:
 
   ../../packages/libs/time-series/interface:
     dependencies:
+      '@lyvely/analytics-interface':
+        specifier: workspace:*
+        version: link:../../../features/analytics/interface
       '@lyvely/calendar-plan-interface':
         specifier: workspace:*
         version: link:../../calendar-plan/interface
@@ -3351,6 +3375,9 @@ importers:
 
   ../../packages/libs/time-series/web:
     dependencies:
+      '@lyvely/analytics-web':
+        specifier: workspace:*
+        version: link:../../../features/analytics/web
       '@lyvely/calendar-plan-web':
         specifier: workspace:*
         version: link:../../calendar-plan/web
@@ -14880,8 +14907,8 @@ packages:
   vue-component-type-helpers@2.0.22:
     resolution: {integrity: sha512-gPr2Ba7efUwy/Vfbuf735bHSVdN4ycoZUCHfypkI33M9DUH+ieRblLLVM2eImccFYaWNWwEzURx02EgoXDBmaQ==}
 
-  vue-component-type-helpers@2.0.24:
-    resolution: {integrity: sha512-Jr5N8QVYEcbQuMN1LRgvg61758G8HTnzUlQsAFOxx6Y6X8kmhJ7C+jOvWsQruYxi3uHhhS6BghyRlyiwO99DBg==}
+  vue-component-type-helpers@2.1.6:
+    resolution: {integrity: sha512-ng11B8B/ZADUMMOsRbqv0arc442q7lifSubD0v8oDXIFoMg/mXwAPUunrroIDkY+mcD0dHKccdaznSVp8EoX3w==}
 
   vue-demi@0.14.8:
     resolution: {integrity: sha512-Uuqnk9YE9SsWeReYqK2alDI5YzciATE0r2SkA6iMAtuXvNTMNACJLJEXNXaEy94ECuBe4Sk6RzRU80kjdbIo1Q==}
@@ -20230,7 +20257,7 @@ snapshots:
       ts-dedent: 2.2.0
       type-fest: 2.19.0
       vue: 3.4.31(typescript@5.5.2)
-      vue-component-type-helpers: 2.0.24
+      vue-component-type-helpers: 2.1.6
     transitivePeerDependencies:
       - encoding
       - prettier
@@ -30053,7 +30080,7 @@ snapshots:
 
   vue-component-type-helpers@2.0.22: {}
 
-  vue-component-type-helpers@2.0.24: {}
+  vue-component-type-helpers@2.1.6: {}
 
   vue-demi@0.14.8(vue@3.4.31(typescript@5.5.2)):
     dependencies:

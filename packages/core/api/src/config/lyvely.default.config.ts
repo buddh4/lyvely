@@ -31,7 +31,7 @@ const mail = process.env.MAIL_HOST
 export default {
   appName: process.env.APP_NAME || 'lyvely.app',
   operationMode: 'standalone',
-  docUrl: 'https://docs.lyvely.app',
+  docUrl: 'https://lyvelyjs.com',
   contactMail: 'help@lyvely.app',
   modules: {
     permissions: {

@@ -10,14 +10,14 @@ export interface IProps {
   modelValue: Array<string> | undefined;
   optionKey?: 'id' | 'name';
   inputId?: string;
-  multiple?: boolean;
+  max?: number;
   label?: string;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
   inputId: uniqueId('tag-picker'),
   optionKey: 'id',
-  multiple: true,
+  max: 100,
   label: translation('tags.chooser.label'),
 });
 
@@ -41,11 +41,11 @@ const model = computed({
 </script>
 
 <template>
-  <ly-badge-picker
+  <ly-picker
+    :id="inputId"
     v-model="model"
-    :input-id="inputId"
-    :options="options"
-    :multiple="multiple"
+    :provider="options"
+    :max="max"
     :label="label"
     :add="true" />
 </template>

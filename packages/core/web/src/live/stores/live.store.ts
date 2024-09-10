@@ -22,7 +22,7 @@ export const useLiveStore = defineStore('live', () => {
   function connectUser(pid?: string) {
     if (isBroadcastEventsEnabled()) {
       navigator.locks.request(
-        'live_master',
+        `live_master`,
         async () =>
           new Promise((resolve) => {
             console.debug(`Connect to user event source`);
@@ -38,15 +38,14 @@ export const useLiveStore = defineStore('live', () => {
   let liveEventSource: EventSource | undefined;
   let livePid: string | undefined;
   function connectUserEventSource(pid?: string) {
-    if (liveEventSource && pid === pid) return;
+    if (liveEventSource && pid === livePid) return;
     else if (liveEventSource) liveEventSource.close();
 
-    liveEventSource = new EventSource(
-      createApiUrl('/live/user', livePid ? { pid: livePid } : undefined),
-      {
-        withCredentials: true,
-      }
-    );
+    livePid = pid;
+
+    liveEventSource = new EventSource(createApiUrl('/live/user', pid ? { pid } : undefined), {
+      withCredentials: true,
+    });
 
     liveEventSource.onerror = (error) => console.error(error);
     liveEventSource.onopen = () => console.debug('Live connection onopen');
@@ -54,6 +53,7 @@ export const useLiveStore = defineStore('live', () => {
       const event = JSON.parse(data) as ILiveEvent;
       broadCastLiveEvent(event);
     };
+
     return liveEventSource;
   }
 

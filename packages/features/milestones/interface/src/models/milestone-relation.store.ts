@@ -15,7 +15,7 @@ export class MilestoneRelationsStore extends CalendarPlanStore<
   MilestoneModel,
   MilestoneSearchResponse
 > {
-  protected relationsByTid: Map<MID, Map<TID | undefined, MilestoneRelationModel[]>> = new Map();
+  protected relationsByTid: Map<MID, Map<TID | null, MilestoneRelationModel[]>> = new Map();
 
   constructor(models?: MilestoneModel[], relations?: MilestoneRelationModel[]) {
     super(models);
@@ -50,7 +50,7 @@ export class MilestoneRelationsStore extends CalendarPlanStore<
 
   private _setRelation(
     relation: MilestoneRelationModel,
-    relations: Map<MID, Map<TID | undefined, MilestoneRelationModel[]>>
+    relations: Map<MID, Map<TID | null, MilestoneRelationModel[]>>
   ) {
     const mid = relation.mid;
 
@@ -60,13 +60,13 @@ export class MilestoneRelationsStore extends CalendarPlanStore<
       relations.set(mid, new Map());
     }
 
-    if (!relation.tid) return;
+    const tid = relation.tid || null;
 
-    if (!relations.get(mid)?.get(relation.tid)) {
-      relations.get(mid)!.set(relation.tid, []);
+    if (!relations.get(mid)?.get(tid)) {
+      relations.get(mid)!.set(tid, []);
     }
 
-    const tidStore = relations.get(mid)?.get(relation.tid);
+    const tidStore = relations.get(mid)!.get(tid);
 
     if (!tidStore) return;
 
@@ -88,9 +88,8 @@ export class MilestoneRelationsStore extends CalendarPlanStore<
   getRelations(identity: MilestoneIdentity, timingId: string): MilestoneRelationModel[] {
     const relationsByTimingId = (this.relationsByTid.get(this.getId(identity))?.get(timingId) ||
       []) as MilestoneRelationModel[];
-    const relationsWithoutTimingId = (this.relationsByTid
-      .get(this.getId(identity))
-      ?.get(undefined) || []) as MilestoneRelationModel[];
+    const relationsWithoutTimingId = (this.relationsByTid.get(this.getId(identity))?.get(null) ||
+      []) as MilestoneRelationModel[];
     return [...relationsByTimingId, ...relationsWithoutTimingId].sort((a, b) => {
       if (a && !b) return 1;
       if (!a && b) return -1;

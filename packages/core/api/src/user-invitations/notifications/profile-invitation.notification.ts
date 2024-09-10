@@ -32,20 +32,20 @@ export class ProfileInvitationNotification extends NotificationType {
 
   getTitle(context: INotificationContext): Translatable {
     return {
-      key: 'invitations.notifications.title',
+      key: 'user-invitations.notifications.title',
       params: {
-        hostName: escapeHtmlIf(this.userInfo?.name, context.format === RenderFormat.HTML),
-        profileName: escapeHtmlIf(this.profileInfo?.name, context.format === RenderFormat.HTML),
+        host: escapeHtmlIf(this.userInfo?.name, context.format === RenderFormat.HTML),
+        profile: escapeHtmlIf(this.profileInfo?.name, context.format === RenderFormat.HTML),
       },
     };
   }
 
   getBody(ctx: INotificationContext): Translatable {
     return {
-      key: 'invitations.notifications.body',
+      key: 'user-invitations.notifications.body',
       params: {
-        hostName: escapeHtmlIf(this.userInfo?.name, ctx.format === RenderFormat.HTML),
-        profileName: escapeHtmlIf(this.profileInfo?.name, ctx.format === RenderFormat.HTML),
+        host: escapeHtmlIf(this.userInfo?.name, ctx.format === RenderFormat.HTML),
+        profile: escapeHtmlIf(this.profileInfo?.name, ctx.format === RenderFormat.HTML),
       },
     };
   }

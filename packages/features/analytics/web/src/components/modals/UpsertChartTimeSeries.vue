@@ -12,7 +12,7 @@ const title = computed(() =>
 
 <template>
   <ly-modal v-model="showModal" :title="title" @close="reset" @submit="submit">
-    <chart-series-form v-model="model" :is-create="isCreate" :embedded="true" />
+    <chart-series-form v-model="model" :is-create="isCreate" :embedded="false" />
     <template #pre-footer>
       <ly-confirm-button
         v-if="!isCreate"

@@ -13,7 +13,7 @@
       },
       "milestone-activities": {
         "name": "Activity Milestones",
-        "description": "If disabled, adds a dedicated tasks menu entry."
+        "description": "If disabled, adds a dedicated milestones menu entry."
       }
     },
     "chooser": {

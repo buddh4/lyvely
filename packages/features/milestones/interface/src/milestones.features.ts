@@ -5,5 +5,6 @@ export const MilestonesFeature = createContentFeature('milestones', MILESTONES_M
 
 export const ActivityMilestonesFeature = createProfileFeature(
   'milestone-activities',
-  MILESTONES_MODULE_ID
+  MILESTONES_MODULE_ID,
+  { dependencies: [MilestonesFeature.id, 'activities'] }
 );

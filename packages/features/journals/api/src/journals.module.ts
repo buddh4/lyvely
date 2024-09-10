@@ -1,4 +1,3 @@
-import { Module } from '@nestjs/common';
 import {
   LyvelyModule,
   UsersModule,
@@ -10,13 +9,19 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Journal, JournalSchema } from './schemas';
 import { DataPointValueType, getDataPointModelDefinition } from '@lyvely/time-series';
 import { JournalDataPointDao, JournalsDao } from './daos';
-import { JournalTimeSeriesService, JournalDataPointService, JournalsService } from './services/';
+import {
+  JournalTimeSeriesService,
+  JournalDataPointService,
+  JournalsService,
+  JournalValueAggregationService,
+} from './services';
 import { JournalsController } from './controllers';
 import {
   JOURNALS_MODULE_ID,
   JournalsFeature,
   JournalPermissions,
 } from '@lyvely/journals-interface';
+import { JournalsEvents } from './journals.events';
 
 @LyvelyModule({
   id: JOURNALS_MODULE_ID,
@@ -42,7 +47,9 @@ import {
   providers: [
     JournalsDao,
     JournalsService,
+    JournalsEvents,
     JournalTimeSeriesService,
+    JournalValueAggregationService,
     JournalDataPointDao,
     JournalDataPointService,
   ],

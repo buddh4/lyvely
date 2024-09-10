@@ -1,10 +1,18 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Habit, type HabitDataPoint, HabitScore } from '../schemas';
+import { Habit, type HabitDataPoint, HabitScore, HabitValueChartSeriesConfig } from '../schemas';
 import { DataPointService, IDataPointUpdateResult, TimerDataPointValue } from '@lyvely/time-series';
 import { HabitDataPointDao } from '../daos';
 import { ContentScoreService, ProtectedProfileContext } from '@lyvely/api';
 import { CalendarDate, getFullDayTZDate } from '@lyvely/dates';
 import { isNotNil } from '@lyvely/common';
+import {
+  AnalyticsEvents,
+  FetchSeriesDataEvent,
+  isTimeSeriesAggregationInterval,
+} from '@lyvely/analytics';
+import { OnEvent } from '@nestjs/event-emitter';
+import { CHART_SERIES_HABIT_VALUE } from '@lyvely/habits-interface';
+import { HabitValueAggregationService } from './habit-value-aggregation.service';
 
 @Injectable()
 export class HabitDataPointService extends DataPointService<Habit, HabitDataPoint> {
@@ -13,6 +21,24 @@ export class HabitDataPointService extends DataPointService<Habit, HabitDataPoin
 
   @Inject()
   protected scoreService: ContentScoreService;
+
+  @Inject()
+  protected aggregationService: HabitValueAggregationService;
+
+  @OnEvent(AnalyticsEvents.EVENT_FETCH_SERIES_DATA)
+  onFetchSeriesDataEvent(event: FetchSeriesDataEvent) {
+    const { context, config, query } = event;
+
+    if (event.isSeriesType<HabitValueChartSeriesConfig>(config, CHART_SERIES_HABIT_VALUE.id)) {
+      event.setResult(
+        this.aggregationService.aggregateTimeSeriesValues(context, {
+          name: config.name,
+          color: config.color,
+          interval: isTimeSeriesAggregationInterval(query?.interval) ? query?.interval : undefined,
+        })
+      );
+    }
+  }
 
   protected override async postProcess(
     context: ProtectedProfileContext,

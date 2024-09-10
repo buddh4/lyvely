@@ -1,0 +1,12 @@
+{
+  "send-invitations": {
+    "subject-profile": "{host} invited you to join {profile}",
+    "subject-global": "{host} invited you to join {appName}",
+    "link-info": "This link is only valid for 1 day",
+    "join": "Join Now"
+  },
+  "notifications": {
+    "title": "Invitation to join {profile}",
+    "body": "{host} invited you to join {profile}"
+  }
+}

@@ -5,6 +5,7 @@ import {
   HabitsService,
   HabitTimeSeriesService,
   HabitDataPointTimerService,
+  HabitValueAggregationService,
 } from './services';
 import {
   UsersModule,
@@ -23,6 +24,7 @@ import {
   HabitsFeature,
   HabitPermissions,
 } from '@lyvely/habits-interface';
+import { HabitsEvents } from './habits.events';
 
 @LyvelyModule({
   id: HABITS_MODULE_ID,
@@ -47,6 +49,8 @@ import {
   controllers: [HabitsController],
   providers: [
     HabitsDao,
+    HabitsEvents,
+    HabitValueAggregationService,
     HabitDataPointDao,
     HabitDataPointService,
     HabitTimeSeriesService,

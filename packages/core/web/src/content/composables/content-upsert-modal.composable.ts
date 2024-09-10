@@ -2,7 +2,7 @@ import { computed, ref, Ref } from 'vue';
 import {
   IEditableModel,
   ContentModel,
-  CreateContentModel,
+  CreateBaseContentModel,
   ContentUpdateResponse,
 } from '@lyvely/interface';
 import { IEditOrCreateModalProps } from '@/content/interfaces/edit-content-modal-props.interface';
@@ -18,7 +18,7 @@ type TContentEditModalEmits = 'update:modelValue' | 'success';
 
 export function useContentUpsertModal<
   TModel extends ContentModel & IEditableModel<TUpdateModel>,
-  TCreateModel extends CreateContentModel,
+  TCreateModel extends CreateBaseContentModel,
   TUpdateModel extends Partial<TCreateModel> = Partial<TCreateModel>,
   TResponse extends ContentUpdateResponse<TModel> = ContentUpdateResponse<TModel>,
 >(

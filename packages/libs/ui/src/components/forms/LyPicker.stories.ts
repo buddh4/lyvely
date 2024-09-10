@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
-import LyBadgeChooser from '@/components/forms/LyBadgePicker.vue';
+import LyPicker from '@/components/forms/LyPicker.vue';
 import { setTranslationProvider } from '@/i18n';
 
 setTranslationProvider((test: any) => {
@@ -14,16 +14,15 @@ const argTypes = {};
 
 const meta = {
   title: 'Forms/BadgeChooser',
-  component: LyBadgeChooser,
-  // This component will have an automatically generated docsPage entry: https://storybook.js.org/docs/vue/writing-docs/autodocs
+  component: LyPicker as any,
   tags: [],
   argTypes,
-} satisfies Meta<typeof LyBadgeChooser>;
+} satisfies Meta<typeof LyPicker>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const BadgeChooser: Story = {
+export const Picker: Story = {
   args: {
     label: 'Badges',
     modelValue: ['BadgeA'],

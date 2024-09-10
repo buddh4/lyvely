@@ -72,7 +72,8 @@ export abstract class ContentTypeDao<
    * @return {FilterQuery<T> | undefined} - The filter query object or undefined if the filter is not provided.
    */
   protected buildFilterQuery(filter?: TFilter): FilterQuery<T> | undefined {
-    return buildContentFilterQuery<T, TFilter>(filter);
+    if (!filter) return undefined;
+    return buildContentFilterQuery<T>(filter);
   }
 
   /**

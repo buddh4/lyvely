@@ -21,6 +21,9 @@ export default () => {
         moduleId: MESSAGES_MODULE_ID,
         name: translation('messages.content.name'),
         icon: 'stream',
+        meta: {
+          isCollaborative: false,
+        },
         modelClass: MessageModel,
         interfaces: {
           upsert: {

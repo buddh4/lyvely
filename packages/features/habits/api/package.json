@@ -32,6 +32,7 @@
     "tslib": "^2.6.2",
     "@nestjs/common": "^10.3.8",
     "@nestjs/mongoose": "^10.0.6",
+    "@nestjs/event-emitter": "^2.0",
     "@lyvely/api": "workspace:*",
     "@lyvely/dates": "workspace:*",
     "@lyvely/analytics": "workspace:*",

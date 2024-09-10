@@ -25,6 +25,9 @@ export interface IWebChartDefinition<
   /** An optional form component for chart specific settings. **/
   form?: ComponentRegistration;
 
+  /** Form component properties used for the `form` component. **/
+  formProps?: any;
+
   /** Optional config model initializer. As default the chart definition constructor is used (if any) **/
   initModel?(): TConfigType;
 

@@ -2,8 +2,8 @@
 import 'intro.js/minified/introjs.min.css';
 import { storeToRefs } from 'pinia';
 import { translate } from '@/i18n';
-import { useIntroductionTourStore } from '@/help/stores/introduction-tour.store';
-import HelpTour from '@/help/components/HelpTour.vue';
+import { useIntroductionTourStore } from '../stores';
+import HelpTour from './HelpTour.vue';
 
 const introductionTourStore = useIntroductionTourStore();
 const { active } = storeToRefs(introductionTourStore);
@@ -31,16 +31,19 @@ const steps = [
     position: 'bottom',
   },
   {
-    element: document.querySelector('#account-menu')!,
+    element: document.querySelector("[data-id='btn-account-drawer']")!,
     title: translate('help.intro.account_menu_title'),
     intro: `<p>${translate('help.intro.account_menu')}</p>`,
     position: 'bottom',
   },
 ] as Array<any>;
+
+// Note: Somehow we need the hidden div, otherwise the modelValue is not synced.
 </script>
 
 <template>
   <help-tour v-model="active" :steps="steps" />
+  <div class="hidden"></div>
 </template>
 
 <style scoped></style>

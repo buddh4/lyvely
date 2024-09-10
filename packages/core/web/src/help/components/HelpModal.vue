@@ -27,7 +27,7 @@ function startIntroTour() {
   introductionTourStore.startTour();
 }
 
-const docUrl = computed(() => appConfigStore.get('docUrl', 'https://docs.lyvely.app'));
+const docUrl = computed(() => appConfigStore.get('docUrl', 'https://lyvelyjs.com'));
 
 function toDocs() {
   showModal.value = false;
@@ -36,7 +36,12 @@ function toDocs() {
 </script>
 
 <template>
-  <ly-modal v-model="showModal" icon="help" icon-class="text-info-dark" title="help.modal.title">
+  <ly-modal
+    v-model="showModal"
+    icon="help"
+    icon-class="text-info-dark"
+    title="help.modal.title"
+    cancel-button-text="common.close">
     <template #title>
       {{ t(title, { appName: appName || 'lyvely' }) }}
     </template>

@@ -1,0 +1,11 @@
+{
+  "send-invitations": {
+    "subject-profile": "{host} invited you to join {profile}",
+    "subject-global": "{host} invited you to join {app}",
+    "link-info": "This link is only valid for 1 day",
+    "headline": "Confirm your email address",
+    "guide": "Please enter the confirmation code below in the browser window where you've started to sign up for {appName}",
+    "disclaimer": "If you did not sign up to {appName}, please ignore this email.",
+    "contact": "In case you have any questions about setting up {appName}, contact us at {contactLink}"
+  }
+}

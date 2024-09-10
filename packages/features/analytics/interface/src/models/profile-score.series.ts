@@ -29,6 +29,6 @@ export class ProfileScoreSeriesConfigModel<TID = string> extends TimeSeriesConfi
 
 export const CHART_SERIES_PROFILE_SCORE: IChartSeriesDefinition = {
   id: 'analytics-profile-score',
-  configType: TimeSeriesConfigModel,
+  configType: ProfileScoreSeriesConfigModel,
   categoryTypes: [TIME_SERIES_CHART.id],
-} as const;
+};

@@ -29,7 +29,7 @@ import {
 } from '@/profiles';
 import { ContentDataType, ContentDataTypeSchema } from './content-data-type.schema';
 import { IPolicy } from '@/policies';
-import type { IContentPolicies } from '@lyvely/interface';
+import type { IContentPolicies, IContentInfo } from '@lyvely/interface';
 
 export class ProfileContentContext<
   TContent extends Content = Content,
@@ -310,6 +310,21 @@ export class Content<
   }
 
   /**
+   * Retrieves information about the content.
+   *
+   * @return {IContentInfo} The content information, including the id, type, title, and text.
+   */
+  getInfo(): IContentInfo<TObjectId> {
+    return {
+      id: this.id,
+      type: this.type,
+      title: this.getTitle(),
+      text: this.getText(),
+      createdBy: this.meta.createdBy,
+    };
+  }
+
+  /**
    * Can be overwritten in order to return a content type specific write policy.
    */
   getWritePolicy(): Type<IPolicy<ProfileContentContext>> | null {
@@ -351,6 +366,8 @@ export abstract class ContentType<
 }
 
 export const ContentSchema = SchemaFactory.createForClass(Content);
+
+ContentSchema.index({ oid: 1, pid: 1, 'content.title': 'text', 'content.text': 'text' });
 
 export function getContentModelDefinition(definitions: ModelDefinition[]): ModelDefinition {
   return {

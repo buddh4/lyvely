@@ -20,16 +20,6 @@ import { DataPointInputType, DataPointValueType } from '@lyvely/time-series-inte
 
 @Expose()
 export class CreateJournalModel extends CreateContentModel {
-  @IsString()
-  @IsNotEmpty()
-  @Length(0, 100)
-  title: string;
-
-  @IsOptional()
-  @IsString()
-  @Length(0, 2000)
-  text?: string;
-
   @IsEnum(CalendarInterval)
   interval: CalendarInterval;
 

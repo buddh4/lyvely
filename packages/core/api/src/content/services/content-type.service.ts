@@ -12,7 +12,7 @@ import { Content } from '../schemas';
 import {
   DocumentNotFoundException,
   ForbiddenServiceException,
-  CreateContentModel,
+  CreateBaseContentModel,
 } from '@lyvely/interface';
 import { Inject, Logger } from '@nestjs/common';
 import { ContentEventPublisher } from '../components';
@@ -29,7 +29,7 @@ import { ContentPolicyService } from './content-policy.service';
  */
 export abstract class ContentTypeService<
   T extends Content,
-  TCreateModel extends CreateContentModel,
+  TCreateModel extends CreateBaseContentModel,
   TUpdateModel extends Partial<TCreateModel> = Partial<TCreateModel>,
   TFilter extends IContentSearchFilter = IContentSearchFilter,
 > {

@@ -4,6 +4,7 @@ import { HTMLAttributes, computed, ref, onMounted } from 'vue';
 import LyFloatingInputLayout from './LyFloatingInputLayout.vue';
 import { msToTime, timeToMs, padTime } from '@lyvely/dates';
 import { Translatable, t } from '@/i18n';
+import { escapeSelector } from '@/helpers';
 
 export interface IProps {
   id?: string;
@@ -186,7 +187,7 @@ function getMaxByInterval(interval: TimerInterval) {
 
 const root = ref<HTMLElement>();
 function setFocus(interval: TimerInterval) {
-  root.value?.querySelector<HTMLElement>(`[data-timer-${interval}-input]`)?.focus();
+  root.value?.querySelector<HTMLElement>(`[data-timer-${escapeSelector(interval)}-input]`)?.focus();
 }
 
 onMounted(() => {

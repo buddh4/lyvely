@@ -12,7 +12,7 @@ const darkTheme = themes.dracula;
 const config: Config = {
   title: 'Lyvely Documentation',
   tagline: 'What else...',
-  url: 'https://docs.lyvely.app',
+  url: 'https://lyvelyjs.com',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',

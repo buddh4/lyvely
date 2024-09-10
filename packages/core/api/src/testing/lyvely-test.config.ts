@@ -5,7 +5,7 @@ import { join } from 'path';
 const lyvelyTestConfig: ServerConfiguration = {
   appName: 'lyvely.test.app',
   operationMode: OperationMode.STANDALONE,
-  docUrl: 'https://docs.lyvely.app',
+  docUrl: 'https://lyvelyjs.com',
   contactMail: 'test@test.de',
   http: {
     baseUrl: 'https://api.test.com',

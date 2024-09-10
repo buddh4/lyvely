@@ -37,6 +37,7 @@
     "pinia": "^2.0",
     "@lyvely/web": "workspace:*",
     "@lyvely/ui": "workspace:*",
+    "@lyvely/analytics-web": "workspace:*",
     "@lyvely/journals-interface": "workspace:*",
     "@lyvely/calendar-plan-web": "workspace:*",
     "@lyvely/time-series-web": "workspace:*"

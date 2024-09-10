@@ -19,7 +19,7 @@ export class AppConfigService {
   getAppConfig(req: OptionalUserRequest): IAppConfig<any> {
     const config: IAppConfig<any> = {
       appName: this.configService.get('appName', 'lyvely'),
-      docUrl: this.configService.get('docUrl', 'https://docs.lyvely.app'),
+      docUrl: this.configService.get('docUrl', 'https://lyvelyjs.com'),
       modules: {},
     };
 

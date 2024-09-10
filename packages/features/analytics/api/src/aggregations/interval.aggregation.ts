@@ -1,6 +1,13 @@
 import type { AccumulatorOperator, PipelineStage } from 'mongoose';
 import { ChartSeriesAccumulation } from '@lyvely/analytics-interface';
-import { CalendarPreferences, Content, type DocumentIdentity, Tag, type User } from '@lyvely/api';
+import {
+  CalendarPreferences,
+  Content,
+  type DocumentIdentity,
+  Tag,
+  type User,
+  Profile,
+} from '@lyvely/api';
 import type { TimeSeriesAggregationInterval } from '@lyvely/analytics-interface';
 import { assureObjectId } from '@lyvely/api';
 
@@ -8,6 +15,8 @@ export interface IntervalAggregationFilter {
   uids?: DocumentIdentity<User>[];
   tagIds?: DocumentIdentity<Tag>[];
   cid?: DocumentIdentity<Content>;
+  pid?: DocumentIdentity<Profile>;
+  oid?: DocumentIdentity<Profile>;
   contentType?: string;
 }
 
@@ -19,7 +28,7 @@ export interface IntervalAggregationOptions {
   /** Aggregation interval **/
   interval: TimeSeriesAggregationInterval;
   /** Initial $match filter. **/
-  $match: PipelineStage.Match['$match'];
+  $match?: PipelineStage.Match['$match'];
   /** Defines how the accumulationField should be accumulated. **/
   accumulator: ChartSeriesAccumulation;
   /** Defines the field name used for the aggregation value accumulation. **/
@@ -28,6 +37,10 @@ export interface IntervalAggregationOptions {
   dateField?: string;
   /** Defines the field name containing the optional uid. Default: `uid`. This document field required for uid filter support. **/
   uidField?: string;
+  /** Defines the field name containing the optional oid. Default: `oid`. **/
+  oidField?: string;
+  /** Defines the field name containing the optional pid. Default: `pid`. **/
+  pidField?: string;
   /** Defines the field name containing the optional tagId array. Default: `tagIds`. This document field required for tagIds filter support. **/
   tagIdField?: string;
   /** Defines the field name containing the optional cid. Default: `cid`. This document field required for cid filter support. **/
@@ -81,6 +94,14 @@ export abstract class IntervalAggregation {
 
   build(): [PipelineStage.Match, PipelineStage.Group, PipelineStage.Sort] {
     const match = this.getMatchFilter();
+
+    if (this.options.filter?.oid) {
+      match[this.getOidField()] = assureObjectId(this.options.filter.oid);
+    }
+
+    if (this.options.filter?.pid) {
+      match[this.getPidField()] = assureObjectId(this.options.filter.pid);
+    }
 
     if (this.options.filter?.uids?.length) {
       match[this.getUidField()] = {
@@ -137,6 +158,14 @@ export abstract class IntervalAggregation {
 
   protected getUidField(): string {
     return this.options.uidField || 'uid';
+  }
+
+  protected getPidField(): string {
+    return this.options.pidField || 'pid';
+  }
+
+  protected getOidField(): string {
+    return this.options.oidField || 'oid';
   }
 
   protected getTagIdField(): string {

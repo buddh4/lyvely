@@ -4,6 +4,7 @@ import {
   registerContentType,
   MENU_PROFILE_DRAWER,
   MENU_PROFILE_MOBILE_FOOTER,
+  IContentSearchQuery,
 } from '@lyvely/web';
 import { registerMenuEntries } from '@lyvely/ui';
 import {
@@ -12,11 +13,13 @@ import {
   JournalsFeature,
   JOURNALS_MODULE_ID,
   JournalPermissions,
+  CHART_SERIES_JOURNAL_VALUE,
 } from '@lyvely/journals-interface';
 import { journalRoutes } from './routes';
 import { calendarPlanModule } from '@lyvely/calendar-plan-web';
-import { timeSeriesModule } from '@lyvely/time-series-web';
+import { timeSeriesModule, TimeSeriesChartForm } from '@lyvely/time-series-web';
 import { ROUTE_JOURNALS_HOME } from '@/journals.constants';
+import { registerCharts } from '@lyvely/analytics-web';
 
 export const journalsModule = () => {
   return {
@@ -51,6 +54,17 @@ export const journalsModule = () => {
           feature: JournalsFeature.id,
           icon: 'journal',
           to: { name: 'Journals' },
+        },
+      ]);
+      registerCharts([
+        {
+          type: CHART_SERIES_JOURNAL_VALUE,
+          label: 'journals.charts.value.label',
+          description: 'journals.charts.value.info',
+          form: TimeSeriesChartForm,
+          formProps: {
+            filter: { type: JournalModel.contentType } satisfies IContentSearchQuery,
+          },
         },
       ]);
       registerContentType({

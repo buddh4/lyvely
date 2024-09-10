@@ -23,6 +23,10 @@ export const useChartTemplates = (
       : null
   );
 
+  const seriesFormProps = computed(() =>
+    seriesTypeDefinition.value?.formProps ? seriesTypeDefinition.value.formProps : null
+  );
+
   const categoryOptions = computed(() =>
     getChartCategoryDefinitions()
       .filter(
@@ -92,6 +96,7 @@ export const useChartTemplates = (
     seriesTypeDefinition,
     seriesConfigModel,
     seriesFormComponent,
+    seriesFormProps,
     seriesTypeOptions,
     validator,
   };

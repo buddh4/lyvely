@@ -6,7 +6,7 @@ import {
   DocumentNotFoundException,
 } from '@lyvely/interface';
 import { computed, onMounted, ref } from 'vue';
-import { profileIdRoute } from '@/profiles/routes/profile-route.helper';
+import { profileIdPath, profileIdRoute } from '@/profiles/routes/profile-route.helper';
 import { LyCenteredPanel } from '@lyvely/ui';
 
 const router = useRouter();
@@ -20,7 +20,9 @@ async function accept() {
   if (!userInviteInfo.value) return;
   const pid = userInviteInfo.value!.pid;
   await userInvitationsClient.accept(pid);
-  await router.push(profileIdRoute(pid));
+  //await router.push(profileIdRoute(pid));
+  // TODO: We do a full refresh in order to reconnect to live, move to router after the live handling is fixed
+  document.location = profileIdPath(pid);
 }
 
 function decline() {

@@ -1,5 +1,5 @@
 import { Component } from 'vue';
-import { ContentModel, registerContentModelType, CreateContentModel } from '@lyvely/interface';
+import { ContentModel, registerContentModelType, CreateBaseContentModel } from '@lyvely/interface';
 import {
   IContentTypeOptions,
   IStreamEntryProps,
@@ -7,6 +7,8 @@ import {
   ICreateContentModalProps,
   IEditContentModalProps,
   type IEditOrCreateModalProps,
+  StreamEntryLayout,
+  IDefaultStreamEntryOptions,
 } from '../interfaces';
 import { resolveComponentRegistration, ComponentRegistration } from '@lyvely/ui';
 import type { Type } from '@lyvely/common';
@@ -98,15 +100,31 @@ export function getContentTypeOptions(
 }
 
 /**
+ * Retrieves the layout for a stream entry based on the provided content or content type.
+ *
+ * @param {string | ContentModel} contentOrType - The content or content type to determine the layout for.
+ *
+ * @return {StreamEntryLayout} - The layout for the stream entry.
+ */
+export function getStreamEntryLayout(contentOrType: string | ContentModel): StreamEntryLayout {
+  const contentTypeOptions = getContentTypeOptions(contentOrType);
+  const streamEntryOptions = (<IDefaultStreamEntryOptions>contentTypeOptions?.interfaces?.stream)
+    ?.entryOptions;
+  if (streamEntryOptions?.layout) return streamEntryOptions?.layout;
+  if (contentTypeOptions?.meta?.isCollaborative === false) return StreamEntryLayout.Message;
+  return StreamEntryLayout.Collaborative;
+}
+
+/**
  * Returns the create model for a specified content type.
  *
  *
- * @return {Type<CreateContentModel> | undefined} - The create model for the specified content type, or undefined if it is not found.
+ * @return {Type<CreateBaseContentModel> | undefined} - The create model for the specified content type, or undefined if it is not found.
  * @param contentOrType
  */
 export function getContentCreateModel(
   contentOrType: string | ContentModel
-): Type<CreateContentModel> | undefined {
+): Type<CreateBaseContentModel> | undefined {
   const upsertOptions = getContentTypeOptions(contentOrType)?.interfaces?.upsert;
   if (!upsertOptions || !('createModel' in upsertOptions)) return undefined;
   return upsertOptions.createModel;

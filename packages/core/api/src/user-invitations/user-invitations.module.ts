@@ -1,4 +1,3 @@
-import { Module } from '@nestjs/common';
 import { InvitationsController } from './controllers/invitations.controller';
 import { ProfilesModule } from '@/profiles';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -20,8 +19,12 @@ import {
 } from './schemas';
 import { JwtModule } from '@nestjs/jwt';
 import { NotificationsModule } from '@/notifications';
+import { LyvelyModule } from '@/core';
+import { USER_INVITATIONS_MODULE_ID } from '@lyvely/interface';
 
-@Module({
+@LyvelyModule({
+  id: USER_INVITATIONS_MODULE_ID,
+  path: __dirname,
   imports: [
     MongooseModule.forFeature([
       {

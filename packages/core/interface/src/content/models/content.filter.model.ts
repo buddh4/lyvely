@@ -1,20 +1,12 @@
 import { escapeRegExp, Filter, FilterConstructorOptions, IFilter } from '@lyvely/common';
 import { TagModel } from '@/profiles';
-import { IContent } from '../interfaces';
-
-export interface IContentFilterOptions {
-  tagId?: string;
-  archived?: boolean;
-  query?: string;
-  type?: string;
-  includeOnFilter?: boolean;
-}
+import { IContent, type IContentSearchQuery } from '../interfaces';
 
 type TagProvider = () => TagModel[];
 
 export interface IContentFilter<
   TModel extends IContent<string> = IContent<string>,
-  TOptions extends IContentFilterOptions = IContentFilterOptions,
+  TOptions extends IContentSearchQuery = IContentSearchQuery,
 > extends IFilter<TModel, TOptions> {
   setTagProvider(provider: TagProvider): void;
   tagProvider?: () => TagModel[];
@@ -22,7 +14,7 @@ export interface IContentFilter<
 
 export class ContentFilter<
   TModel extends IContent<string> = IContent<string>,
-  TOptions extends IContentFilterOptions = IContentFilterOptions,
+  TOptions extends IContentSearchQuery = IContentSearchQuery,
   TFilter extends IContentFilter<TModel, TOptions> = IContentFilter<TModel, TOptions>,
 > extends Filter<TModel, TOptions, TFilter> {
   tagProvider?: () => TagModel[];

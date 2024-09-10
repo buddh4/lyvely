@@ -1,4 +1,9 @@
-import { DataPointValueType, ITimerDataPointConfig, useDataPointStrategyFacade } from '../index';
+import {
+  DataPointValueType,
+  ITimerDataPointConfig,
+  TimerDataPointStrategy,
+  useDataPointStrategyFacade
+} from '../index';
 import { CalendarInterval, isToday, toTimingId } from '@lyvely/dates';
 import { TimerDataPointModel } from '../models';
 import { TimerModel } from '@lyvely/interface';
@@ -73,6 +78,83 @@ describe('TimerDataPointStrategy', () => {
       expect(dataPoint.value).toEqual(value);
       expect(dataPoint.interval).toEqual(CalendarInterval.Daily);
       expect(isToday(dataPoint.date)).toEqual(true);
+    });
+  });
+
+  describe('prepareConfig', () => {
+    const timerStrategy = new TimerDataPointStrategy();
+    it('min > max', () => {
+      const config = {
+        min: 20_000,
+        max: 10_000,
+        optimal: 15_000,
+      } as any;
+      timerStrategy.prepareConfig(config);
+      expect(config).toEqual({
+        min: 20_000,
+        max: 20_000,
+        optimal: 20_000,
+      })
+    });
+
+    it('max > min', () => {
+      const config = {
+        max: 20_000,
+        min: 10_000,
+        optimal: 15_000,
+      } as any;
+      timerStrategy.prepareConfig(config);
+      expect(config).toEqual({
+        max: 20_000,
+        min: 10_000,
+        optimal: 15_000,
+      })
+    });
+
+    it('min > optiomal', () => {
+      const config = {
+        min: 20_000,
+        optimal: 15_000,
+      } as any;
+      timerStrategy.prepareConfig(config);
+      expect(config).toEqual({
+        min: 20_000,
+        max: 20_000,
+        optimal: 20_000,
+      })
+    });
+
+    it('max < min', () => {
+      const config = {
+        min: 10_000,
+        max: 20_000,
+      } as any;
+      timerStrategy.prepareConfig(config);
+      expect(config).toEqual({
+        min: 10_000,
+        max: 20_000,
+      })
+    });
+
+    it('max < min', () => {
+      const config = {
+        min: 10_000,
+        max: 20_000,
+      } as any;
+      timerStrategy.prepareConfig(config);
+      expect(config).toEqual({
+        min: 10_000,
+        max: 20_000,
+      })
+    });
+
+    it('min < MIN_VALUE', () => {
+      const config = { min: 3 } as any;
+      timerStrategy.prepareConfig(config);
+      expect(config).toEqual({
+        min: 10_000,
+        max: 10_000,
+      })
     });
   });
 });

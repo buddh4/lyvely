@@ -5,6 +5,8 @@ import {
   registerContentType,
   translation,
   useProfileFeatureStore,
+  IContentSearchQuery,
+  getProfileFeature,
 } from '@lyvely/web';
 import { registerMenuEntry } from '@lyvely/ui';
 import {
@@ -14,11 +16,14 @@ import {
   HabitsFeature,
   ActivityHabitsFeature,
   HabitPermissions,
+  CHART_SERIES_HABIT_VALUE,
 } from '@lyvely/habits-interface';
 import { habitRoutes } from '@/routes';
 import { calendarPlanModule } from '@lyvely/calendar-plan-web';
-import { timeSeriesModule } from '@lyvely/time-series-web';
+import { timeSeriesModule, TimeSeriesChartForm } from '@lyvely/time-series-web';
+import { registerCharts } from '@lyvely/analytics-web';
 import { ROUTES_HABITS_HOME } from '@/habits.constants';
+import { computed } from 'vue';
 
 export default () => {
   return {
@@ -40,7 +45,12 @@ export default () => {
         sortOrder: 1520,
         feature: HabitsFeature.id,
         icon: 'habit',
-        condition: !useProfileFeatureStore().isFeatureEnabled(ActivityHabitsFeature.id),
+        condition: computed(() => {
+          return (
+            !getProfileFeature('activities') ||
+            !useProfileFeatureStore().isFeatureEnabled(ActivityHabitsFeature.id)
+          );
+        }),
         to: { name: 'Habits' },
       }));
       registerMenuEntry(MENU_PROFILE_MOBILE_FOOTER, () => {
@@ -51,10 +61,26 @@ export default () => {
           sortOrder: 1520,
           feature: HabitsFeature.id,
           icon: 'habit',
-          condition: !useProfileFeatureStore().isFeatureEnabled(ActivityHabitsFeature.id),
+          condition: computed(() => {
+            return (
+              !getProfileFeature('activities') ||
+              !useProfileFeatureStore().isFeatureEnabled(ActivityHabitsFeature.id)
+            );
+          }),
           to: { name: 'Habits' },
         };
       });
+      registerCharts([
+        {
+          type: CHART_SERIES_HABIT_VALUE,
+          label: 'habits.charts.value.label',
+          description: 'habits.charts.value.info',
+          form: TimeSeriesChartForm,
+          formProps: {
+            filter: { type: HabitModel.contentType } satisfies IContentSearchQuery,
+          },
+        },
+      ]);
       registerContentType({
         type: HabitModel.contentType,
         moduleId: HABITS_MODULE_ID,

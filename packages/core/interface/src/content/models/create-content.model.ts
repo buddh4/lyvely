@@ -1,21 +1,18 @@
-import { Expose } from 'class-transformer';
-import { MaxLength, IsArray, IsOptional, IsString, IsMongoId } from 'class-validator';
-import { BaseModel, type BaseModelData } from '@lyvely/common';
+import { MaxLength, IsOptional, IsString, IsNotEmpty, Length } from 'class-validator';
+import { Trim } from '@lyvely/common';
+import { MAX_CONTENT_TITLE_LENGTH } from '../content.constants';
+import { CreateBaseContentModel } from './create-base-content.model';
 
-export class CreateContentModel {
-  @Expose()
-  @IsArray()
-  @MaxLength(50, { each: true })
-  @IsOptional()
-  tagNames?: string[] = [];
+export class CreateContentModel extends CreateBaseContentModel {
+  @IsString()
+  @IsNotEmpty()
+  @Trim()
+  @MaxLength(MAX_CONTENT_TITLE_LENGTH)
+  title: string;
 
-  @Expose()
   @IsString()
   @IsOptional()
-  @IsMongoId()
-  parentId?: string;
-
-  constructor(data: BaseModelData<CreateContentModel>) {
-    BaseModel.init(this, data);
-  }
+  @Trim()
+  @Length(0, 2500)
+  text?: string;
 }

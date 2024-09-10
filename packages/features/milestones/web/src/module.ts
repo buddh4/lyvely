@@ -7,6 +7,7 @@ import {
   MENU_PROFILE_DRAWER,
   MENU_PROFILE_MOBILE_FOOTER,
   useProfileFeatureStore,
+  getProfileFeature,
 } from '@lyvely/web';
 import { registerComponentStackEntry, registerMenuEntry } from '@lyvely/ui';
 import {
@@ -20,11 +21,13 @@ import {
 import { milestoneRoutes } from '@/routes';
 import { calendarPlanModule } from '@lyvely/calendar-plan-web';
 import { ROUTE_MILESTONES_HOME } from '@/milestones.constants';
+import { computed } from 'vue';
 
 export default () => {
   return {
     id: 'milestones',
     icon: 'target',
+    // TODO: optionally add activity feature
     features: [MilestonesFeature, ActivityMilestonesFeature],
     routes: milestoneRoutes,
     permissions: MilestonePermissions,
@@ -41,7 +44,12 @@ export default () => {
         sortOrder: 1530,
         feature: MilestonesFeature.id,
         icon: 'target',
-        condition: !useProfileFeatureStore().isFeatureEnabled(ActivityMilestonesFeature.id),
+        condition: computed(() => {
+          return (
+            !getProfileFeature('activities') ||
+            !useProfileFeatureStore().isFeatureEnabled(ActivityMilestonesFeature.id)
+          );
+        }),
         to: { name: 'Milestones' },
       }));
 
@@ -52,7 +60,12 @@ export default () => {
         sortOrder: 1530,
         feature: MilestonesFeature.id,
         icon: 'target',
-        condition: !useProfileFeatureStore().isFeatureEnabled(ActivityMilestonesFeature.id),
+        condition: computed(() => {
+          return (
+            !getProfileFeature('activities') ||
+            !useProfileFeatureStore().isFeatureEnabled(ActivityMilestonesFeature.id)
+          );
+        }),
         to: { name: 'Milestones' },
       }));
 

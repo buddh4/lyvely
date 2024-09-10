@@ -27,16 +27,6 @@ within our interface package.
 ```typescript title=polls/packages/interface/src/models/create-poll.model.ts
 @Exclude()
 export class CreatePollModel extends CreateContentModel<CreatePollModel> {
-  @Expose()  
-  @IsString()
-  @MaxLength(200)
-  title: string;
-
-  @Expose()
-  @IsString()
-  @MaxLength(10_000)
-  text: string;
-
   @Expose() 
   @IsDate()
   expiresAt: Date;
@@ -54,9 +44,15 @@ export class CreatePollModel extends CreateContentModel<CreatePollModel> {
 
 The `CreateContentModel` class comes with default support for the following fields:
 
+- `title`: A required content title.
+- `text`: An optional content text like a description.
 - `tagNames`: Allows attaching tag names to a content instance.
 - `parentId`: Used to specify the parent ID of a content instance. This field is typically populated by default when 
 creating a content instance within a content-details discussion.
+
+:::tip
+In the rare case your content does not support `title` and `text` use the `CreateBaseContentModel` instead.
+:::
 
 ### Update Content Model
 

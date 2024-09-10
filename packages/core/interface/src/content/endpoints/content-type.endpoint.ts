@@ -1,12 +1,12 @@
 import { Endpoint } from '@/endpoints';
 import { IEditModelClient } from '@/common';
-import { ContentUpdateResponse, CreateContentModel } from '../models';
+import { ContentUpdateResponse, CreateBaseContentModel } from '../models';
 import { IContent } from '../interfaces';
 
 export interface IContentTypeClient<
   TModel extends IContent<string>,
-  TCreateModel extends CreateContentModel,
-  TUpdateModel extends Partial<CreateContentModel> = Partial<TCreateModel>,
+  TCreateModel extends CreateBaseContentModel,
+  TUpdateModel extends Partial<CreateBaseContentModel> = Partial<TCreateModel>,
   TResponse extends ContentUpdateResponse<TModel> = ContentUpdateResponse<TModel>,
 > extends IEditModelClient<TResponse, TCreateModel, TUpdateModel> {
   create(model: TCreateModel): Promise<TResponse>;
@@ -15,6 +15,6 @@ export interface IContentTypeClient<
 
 export type ContentTypeEndpoint<
   TModel extends IContent<string>,
-  TCreateModel extends CreateContentModel,
-  TUpdateModel extends Partial<CreateContentModel> = Partial<TCreateModel>,
+  TCreateModel extends CreateBaseContentModel,
+  TUpdateModel extends Partial<CreateBaseContentModel> = Partial<TCreateModel>,
 > = Endpoint<IContentTypeClient<TModel, TCreateModel, TUpdateModel>>;

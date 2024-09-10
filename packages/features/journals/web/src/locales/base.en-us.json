@@ -1,5 +1,7 @@
 {
   "journals": {
+    "title": "Journals",
+    "name": "Journal",
     "profile_drawer": {
       "title": "Journals"
     },
@@ -7,8 +9,12 @@
       "empty-create": "Create Your First Journal!",
       "empty": "No Journals Found!"
     },
-    "title": "Journals",
-    "name": "Journal",
+    "charts": {
+      "value": {
+        "label": "Journal Value",
+        "info": "Visualizes the progression of a journal value over time."
+      }
+    },
     "stream_entry": {
       "text": "New journal item"
     },

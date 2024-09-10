@@ -18,7 +18,7 @@ import {
   MaxLength,
   Min,
 } from 'class-validator';
-import { UserAssignmentStrategy } from '@lyvely/interface';
+import { UserAssignmentStrategy, MAX_CONTENT_TITLE_LENGTH } from '@lyvely/interface';
 import { BaseModel, type BaseModelData, Gte, Lte, Trim } from '@lyvely/common';
 
 @Expose()
@@ -26,7 +26,7 @@ export class CreateHabitModel implements INumberDataPointSettings, ITimerDataPoi
   @IsString()
   @IsNotEmpty()
   @Trim()
-  @MaxLength(250)
+  @MaxLength(MAX_CONTENT_TITLE_LENGTH)
   title: string;
 
   @IsString()
@@ -93,7 +93,7 @@ export class CreateHabitModel implements INumberDataPointSettings, ITimerDataPoi
       optimal: 0,
       min: 0,
       max: 3,
-      score: 2,
+      score: 1,
     };
   }
 }
