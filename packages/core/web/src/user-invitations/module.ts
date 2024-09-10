@@ -5,6 +5,9 @@ import { MENU_ACCOUNT_DRAWER } from '@/user-account';
 import { useSendInviteUsersStore } from '@/user-invitations/stores';
 import { useAuthStore } from '@/auth';
 import { userInvitationRoutes } from './routes';
+import { computed } from 'vue';
+import { useAppConfigStore } from '@/app-config';
+import type { IModule } from '@/core';
 
 export default () => {
   return {
@@ -26,7 +29,13 @@ export default () => {
         sortOrder: 4000,
         moduleId: USER_INVITATIONS_MODULE_ID,
         icon: 'paper-plane',
-        condition: useAuthStore().isAuthenticated,
+        condition: computed(() => {
+          // TODO: Use a policy here
+          return (
+            useAuthStore().isAuthenticated &&
+            useAppConfigStore().getModuleConfig('user-registration', 'registrationMode') !== 'none'
+          );
+        }),
         iconBindings: { autoScale: true },
         click: () => (useSendInviteUsersStore().showModal = true),
         text: 'invitations.account.title',

@@ -59,7 +59,11 @@ export const loadConfigs = (
     );
 
     return Promise.all(configPromises)
-      .then((configs) => configs.reduce((acc, config) => merge(acc, config), {}))
+      .then((configs) =>
+        configs.reduce((acc, config) => {
+          return merge(acc, config);
+        }, {})
+      )
       .then((mergedConfig) =>
         withDbConfig
           ? loadDbConfig(mergedConfig).then((dbConfig) => ({ dbConfig, mergedConfig }))
