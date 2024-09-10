@@ -30,22 +30,6 @@ export class NumberDataPointStrategy extends DataPointStrategy<
   }
 
   prepareConfig(config: INumberDataPointSettings) {
-    if (isNil(config.max) && config.inputType === DataPointInputType.Range) {
-      config.max = 10;
-    }
-
-    if (isNotNil(config.max) && config.inputType === DataPointInputType.Range) {
-      config.max = Math.min(10, config.max);
-    }
-
-    if (isNotNil(config.min) && config.inputType === DataPointInputType.Range) {
-      config.min = Math.min(10, config.min);
-    }
-
-    if (isNotNil(config.optimal) && config.inputType === DataPointInputType.Range) {
-      config.optimal = Math.min(10, config.optimal);
-    }
-
     if (isNotNil(config.max) && config.inputType === DataPointInputType.Checkbox) {
       config.max = Math.min(8, config.max);
     }
@@ -68,6 +52,10 @@ export class NumberDataPointStrategy extends DataPointStrategy<
 
     if (isNil(config.max) && config.inputType === DataPointInputType.Checkbox) {
       config.max = 1;
+    }
+
+    if (isNil(config.max) && config.inputType === DataPointInputType.Range) {
+      config.max = 10;
     }
   }
 
