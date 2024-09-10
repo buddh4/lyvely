@@ -22,6 +22,14 @@
   display: none;
 }
 
+.dark .introjs-tooltip {
+    @apply bg-body border border-divide
+}
+
+.dark .introjs-arrow {
+    @apply border-b-divide
+}
+
 /* Size < Small */
 @media screen and (max-width: 768px) {
   .introjs-tooltip {
