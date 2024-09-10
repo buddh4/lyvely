@@ -30,23 +30,44 @@ export class NumberDataPointStrategy extends DataPointStrategy<
   }
 
   prepareConfig(config: INumberDataPointSettings) {
-    if (isNotNil(config.optimal) && isNotNil(config.max) && config.optimal! > config.max!)
+    if (isNil(config.max) && config.inputType === DataPointInputType.Range) {
+      config.max = 10;
+    }
+
+    if (isNotNil(config.max) && config.inputType === DataPointInputType.Range) {
+      config.max = Math.min(10, config.max);
+    }
+
+    if (isNotNil(config.min) && config.inputType === DataPointInputType.Range) {
+      config.min = Math.min(10, config.min);
+    }
+
+    if (isNotNil(config.optimal) && config.inputType === DataPointInputType.Range) {
+      config.optimal = Math.min(10, config.optimal);
+    }
+
+    if (isNotNil(config.max) && config.inputType === DataPointInputType.Checkbox) {
+      config.max = Math.min(8, config.max);
+    }
+
+    if (config.min && config.inputType === DataPointInputType.Checkbox) {
+      config.min = Math.min(8, config.min);
+    }
+
+    if (config.optimal && config.inputType === DataPointInputType.Checkbox) {
+      config.optimal = Math.min(8, config.optimal);
+    }
+
+    if (isNotNil(config.min) && isNil(config.max)) config.max = config.min;
+    if (isNotNil(config.min) && isNotNil(config.max) && config.min > config.max)
+      config.max = config.min;
+    if (isNotNil(config.optimal) && isNotNil(config.max) && config.optimal > config.max)
       config.optimal = config.max;
-    if (isNotNil(config.min) && isNotNil(config.max) && config.min! > config.max!)
-      config.min = config.max;
-    if (isNotNil(config.min) && isNotNil(config.optimal) && config.min! > config.optimal!)
+    if (isNotNil(config.min) && isNotNil(config.optimal) && config.min > config.optimal)
       config.optimal = config.min;
 
     if (isNil(config.max) && config.inputType === DataPointInputType.Checkbox) {
       config.max = 1;
-    }
-
-    if (config.max && config.inputType === DataPointInputType.Checkbox) {
-      config.max = Math.min(8, config.max);
-    }
-
-    if (isNil(config.max) && config.inputType === DataPointInputType.Range) {
-      config.max = 10;
     }
   }
 

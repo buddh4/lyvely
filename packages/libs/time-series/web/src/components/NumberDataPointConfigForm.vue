@@ -81,29 +81,16 @@ function setInputType(inputType: DataPointInputType) {
         <ly-time-number-input
           v-if="modelValue.inputType === DataPointInputType.Timer"
           property="min"
-          label="time-series.fields.min"
-          :max="modelValue.max" />
-        <ly-number-field
-          v-else
-          property="min"
-          label="time-series.fields.min"
-          :min="0"
-          :max="modelValue.max" />
+          label="time-series.fields.min" />
+        <ly-number-field v-else property="min" label="time-series.fields.min" :min="0" />
       </div>
 
       <div>
         <ly-time-number-input
           v-if="modelValue.inputType === DataPointInputType.Timer"
           property="optimal"
-          label="time-series.fields.optimal"
-          :min="modelValue.min"
-          :max="modelValue.max" />
-        <ly-number-field
-          v-else
-          property="optimal"
-          label="time-series.fields.optimal"
-          :min="modelValue.min"
-          :max="modelValue.max" />
+          label="time-series.fields.optimal" />
+        <ly-number-field v-else property="optimal" label="time-series.fields.optimal" :min="0" />
       </div>
 
       <div>
@@ -125,7 +112,7 @@ function setInputType(inputType: DataPointInputType) {
           property="score"
           label="time-series.fields.score"
           :mb="0"
-          :steps="2"
+          :steps="1"
           :max="100"
           :min="-100" />
         <div
