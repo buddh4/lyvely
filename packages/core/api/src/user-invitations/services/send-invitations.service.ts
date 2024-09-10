@@ -21,6 +21,7 @@ import { ProfileInvitationNotification } from '../notifications';
 import { MultiUserSubscription } from '@/user-subscriptions';
 import { LyvelyConfigService } from '@/config';
 import type { UserInvitationsConfig } from '@/user-invitations/interfaces';
+import { I18n } from '@/i18n';
 
 const JWT_USER_INVITE_TOKEN = 'invitation_token';
 
@@ -33,7 +34,8 @@ export class SendInvitationsService {
     private jwtService: JwtService,
     private configService: LyvelyConfigService<UserInvitationsConfig & AuthModuleConfig>,
     private inviteDao: InvitationDao,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private i18n: I18n
   ) {}
 
   public async sendInvitations(host: User, inviteRequest: InvitationRequest) {
@@ -179,9 +181,18 @@ export class SendInvitationsService {
       query: { t: token },
     });
 
+    const i18n = this.i18n.translation('user-invitations', host);
+
     const subject = profile
-      ? `${host.getDisplayName()} invited you to join ${profile.name}`
-      : `${host.getDisplayName()} invited you to join ${appName}`;
+      ? i18n.t('send-invitations.subject-profile', {
+          host: host.getDisplayName(),
+          profile: profile.name,
+          appName,
+        })
+      : i18n.t('send-invitations.subject-global', {
+          host: host.getDisplayName(),
+          appName,
+        });
 
     await this.mailService.sendMail({
       to,
@@ -194,7 +205,7 @@ export class SendInvitationsService {
                       <td align="center" width="100" height="40" bgcolor="#047857" style="-webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; color: #ffffff; display: block;">
                         <a href="${inviteUrl}" target="_blank" style="font-size:16px; font-weight: bold; font-family:sans-serif; text-decoration: none; line-height:40px; width:100%; display:inline-block">
                         <span style="color: #ffffff;">
-                            Join Now
+                            ${i18n.t('send-invitations.join')}
                         </span>
                         </a>
                       </td> 
@@ -202,7 +213,7 @@ export class SendInvitationsService {
                   </table> 
                   <![endif]>
                 </div>
-                <p>This link is only valid for 1 day.</p>`,
+                <p>${i18n.t('send-invitations.link-info')}</p>`,
       },
     });
   }

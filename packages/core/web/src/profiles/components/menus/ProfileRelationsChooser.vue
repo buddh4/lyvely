@@ -100,7 +100,7 @@ const { isAllowed: canCreateOrganization } = useGlobalPermissions(
         <ly-add-button
           v-if="canCreateOrganization"
           data-id="btn-create-organization"
-          class="m-auto"
+          class="ml-auto"
           @click="createOrganization" />
       </div>
     </li>
@@ -116,7 +116,7 @@ const { isAllowed: canCreateOrganization } = useGlobalPermissions(
           v-if="canCreateProfile"
           :title="t('profiles.titles.add-orga')"
           data-id="btn-create-profile"
-          class="m-auto"
+          class="ml-auto"
           @click="showCreateProfile = true" />
       </div>
     </li>

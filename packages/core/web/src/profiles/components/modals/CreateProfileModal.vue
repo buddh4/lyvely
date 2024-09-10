@@ -10,7 +10,7 @@ import {
 } from '@lyvely/interface';
 import { translate } from '@/i18n';
 import { useRouter } from 'vue-router';
-import { profileRoute } from '@/profiles/routes/profile-route.helper';
+import { profileIdPath, profilePath, profileRoute } from '@/profiles/routes/profile-route.helper';
 import { useGlobalPermissions } from '@/common/composables';
 import { isTouchScreen } from '@lyvely/ui';
 
@@ -25,7 +25,11 @@ const { reset, submit } = createProfileStore;
 const router = useRouter();
 
 const createProfile = () =>
-  submit(props.oid).then((profile) => router.push(profileRoute('stream', profile.handle)));
+  submit(props.oid).then((profile) => {
+    // TODO: We do a full refresh in order to reconnect to live, move to router after the live handling is fixed
+    document.location = profilePath(undefined, profile.handle);
+    //router.push(profileRoute('stream', profile.handle));
+  });
 
 const usageOptions = [
   ProfileUsage.Business,

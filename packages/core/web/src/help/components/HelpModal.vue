@@ -36,7 +36,12 @@ function toDocs() {
 </script>
 
 <template>
-  <ly-modal v-model="showModal" icon="help" icon-class="text-info-dark" title="help.modal.title">
+  <ly-modal
+    v-model="showModal"
+    icon="help"
+    icon-class="text-info-dark"
+    title="help.modal.title"
+    cancel-button-text="common.close">
     <template #title>
       {{ t(title, { appName: appName || 'lyvely' }) }}
     </template>
