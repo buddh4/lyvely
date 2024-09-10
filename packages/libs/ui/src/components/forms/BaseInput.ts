@@ -212,7 +212,6 @@ export function useBaseInputSetup<T extends AllowedInputValueTypes = any>(
       }
     },
     onFocusOut: () => {
-      debugger;
       if (props.trim) {
         const model = formModelData?.model;
         const property = props.property;
