@@ -9,8 +9,8 @@ export default [
       i18n: {
         load: ['user-invitations'],
       },
+      isPublic: true,
       title: () => translate('invitations.title'),
-      visibility: true,
       layout: LAYOUT_INTRO,
     },
     component: () => import('../views/MailInvitationView.vue'),
