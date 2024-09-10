@@ -183,7 +183,8 @@ export abstract class DataPointService<
     const { profile, user } = context;
     let dataPoint = await this.findDataPointByDate(context, content, date);
 
-    if (dataPoint) return { dataPoint, isNew: false, oldValue: dataPoint.value };
+    if (dataPoint && dataPoint?.valueType === content.timeSeriesConfig.valueType)
+      return { dataPoint, isNew: false, oldValue: dataPoint.value };
 
     const DataPointConstructor =
       DataPointSchemaFactory.getModelType(content.timeSeriesConfig.valueType) || DataPoint;
