@@ -17,12 +17,13 @@ import {
   IFetchQueryOptions,
 } from '@/core';
 import { DEFAULT_BATCH_SIZE } from '../stream.constants';
+import type { IOptionalUserContext } from '@/users';
 
 @Injectable()
 export abstract class AbstractStreamService<
   TModel extends BaseDocument,
   TFilter extends IStreamFilter = any,
-  TContext = any,
+  TContext extends IOptionalUserContext = IOptionalUserContext,
 > {
   protected abstract streamEntryDao: AbstractDao<TModel>;
   protected abstract logger: Logger;
