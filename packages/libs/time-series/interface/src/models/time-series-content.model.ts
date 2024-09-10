@@ -50,7 +50,7 @@ export class TimeSeriesContentModel<
   implements ISortable, ICalendarPlanEntry<TID>, ITimeSeriesContent<TID, TConfig, TState, TData>
 {
   @PropertyType(TimeSeriesStateModel)
-  override state: TimeSeriesStateModel;
+  override state: TState;
 
   constructor(
     data?: BaseModelData<TimeSeriesContentModel<TID, TConfig, TState, TData>>,
