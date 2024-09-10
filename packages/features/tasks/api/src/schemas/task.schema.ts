@@ -133,10 +133,8 @@ export class Task
   }
 
   getTimer(uid?: DocumentIdentity<User>): Timer | undefined {
-    if (this.config.userStrategy === UserAssignmentStrategy.Shared) {
-      return this.state.timers.length ? this.state.timers[0] : undefined;
-    }
-
+    // In an older version we distinguished between shared ad per-user timer, but its better to always
+    // use per-user timer for both user strategies.
     if (!uid) return;
 
     return this.state.timers?.find((t) => t.uid?.equals(assureObjectId(uid))) || undefined;
