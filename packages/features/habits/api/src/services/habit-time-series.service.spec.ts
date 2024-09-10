@@ -9,6 +9,7 @@ import { Habit } from '../schemas';
 import { HabitTimeSeriesService } from './habit-time-series.service';
 import { ILyvelyTestingModule } from '@lyvely/api';
 import { ProtectedProfileContentContext } from '@lyvely/api';
+import { HabitValueAggregationService } from "./habit-value-aggregation.service";
 
 describe('HabitTimeSeriesService', () => {
   let habitsTimeSeriesService: HabitTimeSeriesService;
@@ -23,6 +24,7 @@ describe('HabitTimeSeriesService', () => {
       .providers([
         HabitsDao,
         HabitDataPointDao,
+        HabitValueAggregationService,
         HabitTimeSeriesService,
         HabitDataPointService,
         HabitsService,

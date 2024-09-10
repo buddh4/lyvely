@@ -93,6 +93,7 @@ describe('TimerDataPointStrategy', () => {
       expect(config).toEqual({
         min: 20_000,
         max: 20_000,
+        optimal: 20_000,
       })
     });
 

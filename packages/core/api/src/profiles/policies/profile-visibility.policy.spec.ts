@@ -1,5 +1,5 @@
 import { ILyvelyTestingModule } from '@/testing';
-import { ProfileVisibilityLevel } from '@lyvely/interface';
+//import { ProfileVisibilityLevel } from '@lyvely/interface';
 import { buildProfileTest, ProfileTestDataUtils } from '../testing';
 import { LyvelyModule } from '@/core';
 import { ProfileVisibilityPolicy } from './profile-visibility.policy';
@@ -36,14 +36,14 @@ describe('ProfileVisibilityPolicy', () => {
 
   describe('canActivate()', () => {
     it('owner can see member profile', async () => {
-      const { owner, profile } = await testData.createSimpleGroup(ProfileVisibilityLevel.Member);
+      const { owner, profile } = await testData.createSimpleGroup(0); // Member
       const context = await profilesService.findProfileContext(owner, profile);
       const canSee = await profileVisibilityPolicy.verify(context);
       expect(canSee).toEqual(true);
     });
 
     it('member can see member profile', async () => {
-      const { member, profile } = await testData.createSimpleGroup(ProfileVisibilityLevel.Member);
+      const { member, profile } = await testData.createSimpleGroup(0); // Member
       const context = await profilesService.findProfileContext(member, profile);
       const canSee = await profileVisibilityPolicy.verify(context);
       expect(canSee).toEqual(true);
@@ -51,27 +51,27 @@ describe('ProfileVisibilityPolicy', () => {
 
     it('user can not see member profile', async () => {
       const user = await testData.createUser('guest');
-      const { profile } = await testData.createSimpleGroup(ProfileVisibilityLevel.Member);
+      const { profile } = await testData.createSimpleGroup(0); // Member
       const context = await profilesService.findProfileContext(user, profile);
       const canSee = await profileVisibilityPolicy.verify(context);
       expect(canSee).toEqual(false);
     });
 
     it('visitor can not see member profile', async () => {
-      const { profile } = await testData.createSimpleGroup(ProfileVisibilityLevel.Member);
+      const { profile } = await testData.createSimpleGroup(0); // Member
       const canSee = await profileVisibilityPolicy.verify(new ProfileContext({ profile: profile }));
       expect(canSee).toEqual(false);
     });
 
     it('owner can see protected profile', async () => {
-      const { owner, profile } = await testData.createSimpleGroup(ProfileVisibilityLevel.User);
+      const { owner, profile } = await testData.createSimpleGroup(3); // User
       const context = await profilesService.findProfileContext(owner, profile);
       const canSee = await profileVisibilityPolicy.verify(context);
       expect(canSee).toEqual(true);
     });
 
     it('member can see protected profile', async () => {
-      const { member, profile } = await testData.createSimpleGroup(ProfileVisibilityLevel.User);
+      const { member, profile } = await testData.createSimpleGroup(3); // User
       const context = await profilesService.findProfileContext(member, profile);
       const canSee = await profileVisibilityPolicy.verify(context);
       expect(canSee).toEqual(true);
@@ -79,27 +79,27 @@ describe('ProfileVisibilityPolicy', () => {
 
     it('user can see protected profile', async () => {
       const user = await testData.createUser('guest');
-      const { profile } = await testData.createSimpleGroup(ProfileVisibilityLevel.User);
+      const { profile } = await testData.createSimpleGroup(3); // User
       const context = await profilesService.findProfileContext(user, profile);
       const canSee = await profileVisibilityPolicy.verify(context);
       expect(canSee).toEqual(true);
     });
 
     it('guest can not see protected profile', async () => {
-      const { profile } = await testData.createSimpleGroup(ProfileVisibilityLevel.User);
+      const { profile } = await testData.createSimpleGroup(3); // User
       const canSee = await profileVisibilityPolicy.verify(new ProfileContext({ profile: profile }));
       expect(canSee).toEqual(false);
     });
 
     it('owner can see public profile', async () => {
-      const { owner, profile } = await testData.createSimpleGroup(ProfileVisibilityLevel.Visitor);
+      const { owner, profile } = await testData.createSimpleGroup(4); // Visitor
       const context = await profilesService.findProfileContext(owner, profile);
       const canSee = await profileVisibilityPolicy.verify(context);
       expect(canSee).toEqual(true);
     });
 
     it('member can see protected profile', async () => {
-      const { member, profile } = await testData.createSimpleGroup(ProfileVisibilityLevel.Visitor);
+      const { member, profile } = await testData.createSimpleGroup(4); // Visitor
       const context = await profilesService.findProfileContext(member, profile);
       const canSee = await profileVisibilityPolicy.verify(context);
       expect(canSee).toEqual(true);
@@ -107,14 +107,14 @@ describe('ProfileVisibilityPolicy', () => {
 
     it('user can see protected profile', async () => {
       const user = await testData.createUser('guest');
-      const { profile } = await testData.createSimpleGroup(ProfileVisibilityLevel.Visitor);
+      const { profile } = await testData.createSimpleGroup(4); // Visitor
       const context = await profilesService.findProfileContext(user, profile);
       const canSee = await profileVisibilityPolicy.verify(context);
       expect(canSee).toEqual(true);
     });
 
     it('guest can not see protected profile', async () => {
-      const { profile } = await testData.createSimpleGroup(ProfileVisibilityLevel.Visitor);
+      const { profile } = await testData.createSimpleGroup(4); // Visitor
       const canSee = await profileVisibilityPolicy.verify(new ProfileContext({ profile: profile }));
       expect(canSee).toEqual(true);
     });
