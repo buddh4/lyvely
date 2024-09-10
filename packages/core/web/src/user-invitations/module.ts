@@ -1,10 +1,10 @@
-import { IModule } from '@/core';
 import { USER_INVITATIONS_MODULE_ID } from '@lyvely/interface';
 import { registerComponentStackEntries, registerMenuEntry } from '@lyvely/ui';
 import { STACK_PROFILE_LAYOUT } from '@/profiles';
 import { MENU_ACCOUNT_DRAWER } from '@/user-account';
 import { useSendInviteUsersStore } from '@/user-invitations/stores';
 import { useAuthStore } from '@/auth';
+import { userInvitationRoutes } from './routes';
 
 export default () => {
   return {
@@ -13,6 +13,7 @@ export default () => {
       base: (locale: string) => import(`./locales/base.${locale}.json`),
       locale: (locale: string) => import(`./locales/${locale}.json`),
     },
+    routes: userInvitationRoutes,
     init() {
       registerComponentStackEntries(STACK_PROFILE_LAYOUT, [
         {
