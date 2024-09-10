@@ -1,7 +1,7 @@
 export const lyvelyDevConfig = {
   appName: 'lyvely.app',
   operationMode: 'standalone',
-  docUrl: 'https://docs.lyvely.app',
+  docUrl: 'https://lyvelyjs.com',
   contactMail: 'help@lyvely.app',
   redis: {
     host: 'localhost',

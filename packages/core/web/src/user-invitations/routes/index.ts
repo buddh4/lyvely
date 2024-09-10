@@ -1,1 +1,1 @@
-export * as UserInvitationsRoutes from './user-invitations.routes';
+export { default as userInvitationRoutes } from './user-invitations.routes';

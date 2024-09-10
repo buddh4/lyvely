@@ -27,7 +27,7 @@ function startIntroTour() {
   introductionTourStore.startTour();
 }
 
-const docUrl = computed(() => appConfigStore.get('docUrl', 'https://docs.lyvely.app'));
+const docUrl = computed(() => appConfigStore.get('docUrl', 'https://lyvelyjs.com'));
 
 function toDocs() {
   showModal.value = false;
