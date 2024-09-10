@@ -93,7 +93,7 @@ export class CreateHabitModel implements INumberDataPointSettings, ITimerDataPoi
       optimal: 0,
       min: 0,
       max: 3,
-      score: 2,
+      score: 1,
     };
   }
 }
