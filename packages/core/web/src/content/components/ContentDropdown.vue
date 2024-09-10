@@ -2,6 +2,7 @@
 import { ContentModel } from '@lyvely/interface';
 import { useProfileMenu } from '@/profiles';
 import { MENU_CONTENT_DROPDOWN } from '@/content/content.constants';
+import { ref, watch } from 'vue';
 
 export interface IProps {
   content: ContentModel;
@@ -9,7 +10,14 @@ export interface IProps {
 
 const props = withDefaults(defineProps<IProps>(), {});
 
-const { enabledMenuEntries } = useProfileMenu(MENU_CONTENT_DROPDOWN, props.content);
+let { enabledMenuEntries } = useProfileMenu(MENU_CONTENT_DROPDOWN, props.content);
+
+watch(
+  () => props.content,
+  () => {
+    enabledMenuEntries = useProfileMenu(MENU_CONTENT_DROPDOWN, props.content).enabledMenuEntries;
+  }
+);
 </script>
 
 <template>
