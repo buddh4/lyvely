@@ -70,7 +70,10 @@ export abstract class AbstractContentTypeController<
   }
 
   private transformUpdateModel(raw: PropertiesOf<TUpdateModel>): TUpdateModel {
-    return createBaseModelAndInit(this.updateModelType, raw);
+    return createBaseModelAndInit(this.updateModelType, raw, {
+      skipGetDefaults: true,
+      skipAfterInit: true,
+    });
   }
 
   protected async createUpdateResponse(
