@@ -8,7 +8,7 @@ import { ChartSeriesConfigModel } from './chart-series-config.model';
 export class TimeSeriesConfigModel extends ChartSeriesConfigModel {
   @Expose()
   @IsEnum(TimeSeriesChartType)
-  @PropertyType(String, { default: TimeSeriesChartType.Line })
+  @PropertyType(String, { default: TimeSeriesChartType.Bar })
   chartType: TimeSeriesChartType;
 
   constructor(data: BaseModelData<TimeSeriesConfigModel>) {

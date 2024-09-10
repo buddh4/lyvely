@@ -13,8 +13,8 @@ import {
   DataPointInputType,
   ITimeSeriesContentConfig,
   DataPointValueType,
+  TimeSeriesContentModel,
 } from '@lyvely/time-series-interface';
-import { TimeSeriesContentModel } from '@lyvely/time-series-interface/src';
 
 type TestDataPointConfig =
   | CheckboxNumberDataPointConfig

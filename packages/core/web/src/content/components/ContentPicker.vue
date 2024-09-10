@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { type IAvatar, IPickerOption, type Translatable } from '@lyvely/ui';
+import { type IAvatar, IPickerOption, LyPicker, type Translatable } from '@lyvely/ui';
 import { uniqueId } from '@lyvely/common';
 import { translation } from '@/i18n';
-import type { IContentPickerProvider, IContentSearchQuery } from '@lyvely/interface';
-import { ContentModel, useContentClient } from '@lyvely/interface';
+import type { IContentPickerProvider, IContentSearchQuery, IContentInfo } from '@lyvely/interface';
+import { useContentClient } from '@lyvely/interface';
 import { getContentTypeIcon, getStreamEntryLayout } from '@/content/registries';
 import { StreamEntryLayout } from '@/content/interfaces';
 import { useUserInfo } from '@/profiles';
@@ -34,34 +34,40 @@ const defaultProvider = async (query: string) => {
   return infos;
 };
 
-const contentProvider = async (search?: string) => {
+const toPickerOption = (contentInfo: IContentInfo): IPickerOption => {
+  const layout = getStreamEntryLayout(contentInfo.type);
+  const userInfo = useUserInfo(contentInfo.createdBy).value;
+  const showAvatar = userInfo && layout === StreamEntryLayout.Message;
+  const icon = getContentTypeIcon(contentInfo.type);
+  const avatar: IAvatar | undefined = showAvatar
+    ? {
+        guid: userInfo.guid!,
+        name: userInfo.displayName,
+      }
+    : undefined;
+
+  return {
+    key: contentInfo.id,
+    label: contentInfo.title,
+    description: contentInfo.text,
+    icon,
+    avatar,
+  } satisfies IPickerOption;
+};
+
+const contentProvider = async (search?: string): Promise<IPickerOption[]> => {
   if (!search?.length) {
-    return props.modelValue?.length ? useContentClient().getInfos({ cids: props.modelValue }) : [];
+    return props.modelValue?.length
+      ? useContentClient()
+          .getInfos({ ...props.filter, cids: props.modelValue })
+          .then((result) => result.infos.map(toPickerOption))
+      : [];
   }
 
   const provider = props.provider || defaultProvider;
 
   const result = await provider(search);
-  return result.map((contentInfo) => {
-    const layout = getStreamEntryLayout(contentInfo.type);
-    const userInfo = useUserInfo(contentInfo.createdBy).value;
-    const showAvatar = userInfo && layout === StreamEntryLayout.Message;
-    const icon = getContentTypeIcon(contentInfo.type);
-    const avatar: IAvatar | undefined = showAvatar
-      ? {
-          guid: userInfo.guid!,
-          name: userInfo.displayName,
-        }
-      : undefined;
-
-    return {
-      key: contentInfo.id,
-      label: contentInfo.title,
-      description: contentInfo.text,
-      icon,
-      avatar,
-    } satisfies IPickerOption;
-  });
+  return result.map(toPickerOption);
 };
 
 const model = computed({

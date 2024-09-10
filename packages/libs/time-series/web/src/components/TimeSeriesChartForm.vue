@@ -18,7 +18,7 @@ const emit = defineEmits(['update:modelValue']);
 const { formValue } = useModel(props.modelValue!, emit);
 
 const cid = computed({
-  get: () => [formValue.value.cid],
+  get: () => (formValue.value.cid ? [formValue.value.cid] : []),
   set: (value: string[]) => {
     formValue.value.cid = value[0];
   },

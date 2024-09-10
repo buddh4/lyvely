@@ -33,6 +33,7 @@
     "@lyvely/common": "workspace:*",
     "@lyvely/interface": "workspace:*",
     "@lyvely/dates": "workspace:*",
+    "@lyvely/analytics-interface": "workspace:*",
     "@lyvely/time-series-interface": "workspace:*",
     "@lyvely/calendar-plan-interface": "workspace:*",
     "@buddh4/mapped-types": "^1.2.1",

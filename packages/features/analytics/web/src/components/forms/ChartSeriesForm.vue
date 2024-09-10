@@ -2,7 +2,7 @@
 import { type CreateChartModel, type UpdateChartModel } from '@lyvely/analytics-interface';
 import { LyAlert, LySelect, LyFormModel, LyTextField, useModel } from '@lyvely/ui';
 import { useChartTemplates } from '@/composables';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
 const props = withDefaults(
   defineProps<{
@@ -38,9 +38,10 @@ const {
 <template>
   <fieldset>
     <div
-      :class="{
-        'flex flex-col gap-2 rounded border border-divide bg-highlight p-3 dark:bg-main': embedded,
-      }">
+      :class="[
+        'flex flex-col gap-2',
+        { 'rounded border border-divide bg-highlight p-3 dark:bg-main': embedded },
+      ]">
       <ly-form-model v-if="seriesConfigModel" v-model="seriesConfigModel" :validator="validator">
         <ly-text-field
           property="name"
