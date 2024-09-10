@@ -18,6 +18,26 @@
         "description": "If disabled, adds a dedicated habits menu entry."
       }
     },
+    "permissions": {
+      "habit": {
+        "manage": {
+          "name": "Manage Habits",
+          "description": "Allows users to read, write, delete and manage habits."
+        },
+        "write": {
+          "name": "Write Habits",
+          "description": "Allows users to update habits."
+        },
+        "delete": {
+          "name": "Delete Habits",
+          "description": "Allows users to delete & archive habits."
+        },
+        "create": {
+          "name": "Create Habits",
+          "description": "Allows users to create habits."
+        }
+      }
+    },
     "calendar-plan": {
       "empty-create": "Create Your First Habit!",
       "empty": "No Habits Found!"

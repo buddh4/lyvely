@@ -53,7 +53,7 @@ export const profileRoutes = [
         path: profilePath('/settings/features'),
         name: 'ProfileFeaturesSettings',
         meta: {
-          title: translation('features.settings.features.title'),
+          title: translation('profile.settings.features.title'),
           role: ProfileRelationRole.Admin,
         },
         component: () => import('../views/ProfileFeaturesSettings.vue'),

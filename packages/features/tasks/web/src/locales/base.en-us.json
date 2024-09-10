@@ -3,13 +3,33 @@
     "title": "Tasks",
     "name": "Task",
     "features": {
-      "journals": {
+      "tasks": {
         "name": "Tasks",
         "description": "If disabled, the Tasks view and content type will be unavailable."
       },
       "tasks-activities": {
         "name": "Activity Tasks",
         "description": "If disabled, adds a dedicated tasks menu entry."
+      }
+    },
+    "permissions": {
+      "task": {
+        "manage": {
+          "name": "Manage Tasks",
+          "description": "Allows users to read, write, delete and manage tasks."
+        },
+        "write": {
+          "name": "Write Tasks",
+          "description": "Allows users to update tasks."
+        },
+        "delete": {
+          "name": "Delete Tasks",
+          "description": "Allows users to delete & archive tasks."
+        },
+        "create": {
+          "name": "Create Tasks",
+          "description": "Allows users to create tasks."
+        }
       }
     },
     "state": {

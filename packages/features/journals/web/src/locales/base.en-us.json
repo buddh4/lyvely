@@ -30,6 +30,24 @@
         "description": "If disabled, the Journals view and content type will be unavailable."
       }
     },
+    "journal": {
+      "manage": {
+        "name": "Manage Journals",
+        "description": "Allows users to read, write, delete and manage journals."
+      },
+      "write": {
+        "name": "Write Journals",
+        "description": "Allows users to update journals."
+      },
+      "delete": {
+        "name": "Delete Journals",
+        "description": "Allows users to delete & archive journals."
+      },
+      "create": {
+        "name": "Create Journals",
+        "description": "Allows users to create journals."
+      }
+    },
     "fields": {
       "title": "Title",
       "interval": "Plan",

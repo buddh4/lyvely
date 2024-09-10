@@ -16,6 +16,26 @@
         "description": "If disabled, adds a dedicated milestones menu entry."
       }
     },
+    "permissions": {
+      "milestone": {
+        "manage": {
+          "name": "Manage Milestones",
+          "description": "Allows users to read, write, delete and manage milestones."
+        },
+        "write": {
+          "name": "Write Milestones",
+          "description": "Allows users to update milestones."
+        },
+        "delete": {
+          "name": "Delete Milestones",
+          "description": "Allows users to delete & archive milestones."
+        },
+        "create": {
+          "name": "Create Milestones",
+          "description": "Allows users to create milestones."
+        }
+      }
+    },
     "chooser": {
       "empty": "No milestones found for this project."
     },
