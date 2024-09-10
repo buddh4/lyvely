@@ -4,6 +4,7 @@ import {
   MENU_PROFILE_DRAWER,
   useProfileFeatureStore,
   MENU_PROFILE_MOBILE_FOOTER,
+  getProfileFeature,
 } from '@lyvely/web';
 import { registerMenuEntry } from '@lyvely/ui';
 import {
@@ -17,6 +18,7 @@ import {
 import { calendarPlanModule } from '@lyvely/calendar-plan-web';
 import { tasksRoutes } from '@/routes';
 import { ROUTE_TASKS_HOME_NAME } from '@/tasks.constants';
+import { computed } from 'vue';
 
 export default () => {
   return {
@@ -38,7 +40,12 @@ export default () => {
         sortOrder: 1520,
         icon: 'task',
         iconBindings: { class: 'w-6' },
-        condition: !useProfileFeatureStore().isFeatureEnabled(ActivityTasksFeature.id),
+        condition: computed(() => {
+          return (
+            !getProfileFeature('activities') ||
+            !useProfileFeatureStore().isFeatureEnabled(ActivityTasksFeature.id)
+          );
+        }),
         to: { name: 'Tasks' },
       }));
 
@@ -50,7 +57,12 @@ export default () => {
         sortOrder: 1520,
         icon: 'task',
         iconBindings: { class: 'w-6' },
-        condition: !useProfileFeatureStore().isFeatureEnabled(ActivityTasksFeature.id),
+        condition: computed(() => {
+          return (
+            !getProfileFeature('activities') ||
+            !useProfileFeatureStore().isFeatureEnabled(ActivityTasksFeature.id)
+          );
+        }),
         to: { name: 'Tasks' },
       }));
 

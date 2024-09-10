@@ -6,6 +6,7 @@ import {
   translation,
   useProfileFeatureStore,
   IContentSearchQuery,
+  getProfileFeature,
 } from '@lyvely/web';
 import { registerMenuEntry } from '@lyvely/ui';
 import {
@@ -22,6 +23,7 @@ import { calendarPlanModule } from '@lyvely/calendar-plan-web';
 import { timeSeriesModule, TimeSeriesChartForm } from '@lyvely/time-series-web';
 import { registerCharts } from '@lyvely/analytics-web';
 import { ROUTES_HABITS_HOME } from '@/habits.constants';
+import { computed } from 'vue';
 
 export default () => {
   return {
@@ -43,7 +45,12 @@ export default () => {
         sortOrder: 1520,
         feature: HabitsFeature.id,
         icon: 'habit',
-        condition: !useProfileFeatureStore().isFeatureEnabled(ActivityHabitsFeature.id),
+        condition: computed(() => {
+          return (
+            !getProfileFeature('activities') ||
+            !useProfileFeatureStore().isFeatureEnabled(ActivityHabitsFeature.id)
+          );
+        }),
         to: { name: 'Habits' },
       }));
       registerMenuEntry(MENU_PROFILE_MOBILE_FOOTER, () => {
@@ -54,7 +61,12 @@ export default () => {
           sortOrder: 1520,
           feature: HabitsFeature.id,
           icon: 'habit',
-          condition: !useProfileFeatureStore().isFeatureEnabled(ActivityHabitsFeature.id),
+          condition: computed(() => {
+            return (
+              !getProfileFeature('activities') ||
+              !useProfileFeatureStore().isFeatureEnabled(ActivityHabitsFeature.id)
+            );
+          }),
           to: { name: 'Habits' },
         };
       });
