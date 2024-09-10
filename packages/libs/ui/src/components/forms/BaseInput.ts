@@ -49,15 +49,11 @@ function getComputedInputValue<T extends AllowedInputValueTypes = any>(
   return model && property
     ? computed<T>({
         get: () => model[property],
-        set: (val: T) =>
-          setTimeout(
-            () => (model[property] = typeof val === 'string' && props.trim ? val.trim() : val)
-          ),
+        set: (val: T) => (model[property] = val),
       })
     : computed<T>({
         get: () => props.modelValue,
-        set: (val: T) =>
-          emit('update:modelValue', typeof val === 'string' && props.trim ? val.trim() : val),
+        set: (val: T) => emit('update:modelValue', val),
       });
 }
 
@@ -216,6 +212,20 @@ export function useBaseInputSetup<T extends AllowedInputValueTypes = any>(
       }
     },
     onFocusOut: () => {
+      debugger;
+      if (props.trim) {
+        const model = formModelData?.model;
+        const property = props.property;
+
+        const val = model && property ? model[property] : props.modelValue;
+        if (typeof val === 'string') {
+          if (model && property) {
+            model[property] = val.trim();
+          } else {
+            emit('update:modelValue', val.trim());
+          }
+        }
+      }
       if (useAutoValidation) {
         setTimeout(() => validator.validateField(props.property!), 50);
       }
