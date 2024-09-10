@@ -32,6 +32,7 @@ export class HabitDataPointService extends DataPointService<Habit, HabitDataPoin
     if (event.isSeriesType<HabitValueChartSeriesConfig>(config, CHART_SERIES_HABIT_VALUE.id)) {
       event.setResult(
         this.aggregationService.aggregateTimeSeriesValues(context, {
+          cid: config.cid,
           name: config.name,
           color: config.color,
           interval: isTimeSeriesAggregationInterval(query?.interval) ? query?.interval : undefined,

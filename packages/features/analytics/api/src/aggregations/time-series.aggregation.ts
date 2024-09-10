@@ -72,7 +72,7 @@ function transformToKeyValueData(
   data: TimeSeriesAggregationResult,
   options: IntervalAggregationOptions
 ): TimeSeriesChartData<string>[] {
-  if (options.filter?.uids?.length) {
+  if (options.filter?.uids?.length && options.groupByUid !== false) {
     return groupByUid(data, options);
   }
 

@@ -27,6 +27,7 @@ export class JournalDataPointService extends DataPointService<Journal, JournalDa
     if (event.isSeriesType<JournalValueChartSeriesConfig>(config, CHART_SERIES_JOURNAL_VALUE.id)) {
       event.setResult(
         this.aggregationService.aggregateTimeSeriesValues(context, {
+          cid: config.cid,
           name: config.name,
           color: config.color,
           interval: isTimeSeriesAggregationInterval(query?.interval) ? query?.interval : undefined,

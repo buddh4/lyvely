@@ -32,7 +32,14 @@ export abstract class TimeSeriesValueAggregationService {
         cid: options?.cid,
         oid: profile.oid,
         pid: profile._id,
+        /**
+         *  TODO: This is a workaround since we do not know the user strategy at this point
+         *  We could either load the content
+         */
+
+        uids: context.user ? [context.user, null] : [null],
       },
+      groupByUid: false,
       timezone: profile.timezone,
       accumulator: ChartSeriesAccumulation.Sum,
       accumulationField: 'value',

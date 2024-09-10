@@ -57,6 +57,7 @@ export const useChartTemplates = (
   watch(
     seriesTypeId,
     () => {
+      debugger;
       if (!seriesTypeDefinition.value) {
         seriesConfigModel.value = undefined;
       } else if (seriesTypeDefinition.value?.initModel) {

@@ -4,7 +4,7 @@ import {
   ContentDataTypeModel,
   UserAssignmentStrategy,
 } from '@lyvely/interface';
-import { PropertyType } from '@lyvely/common';
+import { PropertyType, TransformObjectId, BaseModel, type BaseModelData } from '@lyvely/common';
 import {
   type ITimeSeriesContent,
   ITimeSeriesContentConfig,
@@ -15,7 +15,6 @@ import {
 import { Expose } from 'class-transformer';
 import { ICalendarPlanEntry } from '@lyvely/calendar-plan-interface';
 import { CalendarInterval } from '@lyvely/dates';
-import { BaseModel, type BaseModelData } from '@lyvely/common';
 
 export class TimeSeriesSummaryWindowEntryModel implements ITimeSeriesSummaryWindowEntry {
   @Expose()
@@ -26,6 +25,7 @@ export class TimeSeriesSummaryWindowEntryModel implements ITimeSeriesSummaryWind
 
 export class TimeSeriesSummaryModel<TID = string> implements ITimeSeriesSummary<TID> {
   @Expose()
+  @TransformObjectId()
   uid: TID | null;
 
   @Expose()

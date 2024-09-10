@@ -30,14 +30,14 @@ const validator = computed(() => new I18nModelValidator(formValue.value));
 <template>
   <div>
     <ly-form-model v-model="formValue" :validator="validator">
-      <ly-color-picker v-model="formValue.color" label="common.fields.color" />
-      <time-series-chart-type-selection v-model="formValue.chartType" />
       <content-picker
         v-model="cid"
         :filter="filter"
         :title="pickerTitle"
         :provider="provider"
         :max="1" />
+      <ly-color-picker v-model="formValue.color" label="common.fields.color" />
+      <time-series-chart-type-selection v-model="formValue.chartType" />
     </ly-form-model>
   </div>
 </template>
