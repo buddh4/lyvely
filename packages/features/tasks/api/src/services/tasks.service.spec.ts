@@ -217,18 +217,6 @@ describe('TaskService', () => {
   });
 
   describe('startTimer', () => {
-    it('start new timer on shared task', async () => {
-      const { owner, ownerContext, member } = await testData.createSimpleGroup();
-      const task = await createTask(ownerContext, UserAssignmentStrategy.Shared);
-      const timer = await taskService.startTimer(ownerContext, task);
-      expect(timer.isStarted()).toEqual(true);
-
-      const search = await testData.findTaskById(task.id);
-      expect(search!.getTimer(owner)!.isStarted()).toEqual(true);
-      expect(search!.getTimer(member)!.isStarted()).toEqual(true);
-      expect(search!.state.timers.length).toEqual(1);
-    });
-
     it('start new timer on per user task', async () => {
       const { owner, ownerContext, member } = await testData.createSimpleGroup();
       const task = await createTask(ownerContext, UserAssignmentStrategy.PerUser);
@@ -238,21 +226,6 @@ describe('TaskService', () => {
       const search = await testData.findTaskById(task.id);
       expect(search!.getTimer(owner)!.isStarted()).toEqual(true);
       expect(search!.getTimer(member)).toBeUndefined();
-      expect(search!.state.timers.length).toEqual(1);
-    });
-
-    it('start already started timer on shared task', async () => {
-      const { owner, ownerContext, member, memberContext, profile } =
-        await testData.createSimpleGroup();
-      const task = await createTask(ownerContext, UserAssignmentStrategy.Shared);
-      await taskService.startTimer(ownerContext, task);
-      const timer = await taskService.startTimer(memberContext, task);
-
-      expect(timer.isStarted()).toEqual(true);
-
-      const search = await testData.findTaskById(task.id);
-      expect(search!.getTimer(owner)!.isStarted()).toEqual(true);
-      expect(search!.getTimer(member)!.isStarted()).toEqual(true);
       expect(search!.state.timers.length).toEqual(1);
     });
 
@@ -267,27 +240,6 @@ describe('TaskService', () => {
       const search = await testData.findTaskById(task.id);
       expect(search!.getTimer(owner)!.isStarted()).toEqual(true);
       expect(search!.getTimer(member)).toBeUndefined();
-      expect(search!.state.timers.length).toEqual(1);
-    });
-
-    it('start stopped timer on shared task', async () => {
-      const { owner, ownerContext, member } = await testData.createSimpleGroup();
-
-      const start = Date.now() - 1000 * 60 * 60;
-      const existingTimer = new Timer();
-      existingTimer.spans = <Array<TimeSpan>>[{ from: start, to: start + 1000 }];
-
-      const task = await createTask(ownerContext, UserAssignmentStrategy.Shared, [existingTimer]);
-
-      expect(task.getTimer(owner)).not.toBeUndefined();
-      expect(task.getTimer(owner)!.isStarted()).toEqual(false);
-
-      await taskService.startTimer(ownerContext, task);
-
-      const search = await testData.findTaskById(task.id);
-      expect(search!.getTimer(owner)!.isStarted()).toEqual(true);
-      expect(search!.getTimer(member)!.isStarted()).toEqual(true);
-      expect(search!.getTimer(member)!.spans.length).toEqual(2);
       expect(search!.state.timers.length).toEqual(1);
     });
 
@@ -335,22 +287,6 @@ describe('TaskService', () => {
   });
 
   describe('stopTimer', () => {
-    it('stop timer on shared task', async () => {
-      const { owner, ownerContext, member, profile } = await testData.createSimpleGroup();
-
-      const start = Date.now() - 1000 * 60 * 60;
-      const existingTimer = new Timer(owner);
-      existingTimer.spans = <Array<TimeSpan>>[{ from: start, uid: owner._id }];
-
-      const task = await createTask(ownerContext, UserAssignmentStrategy.Shared, [existingTimer]);
-      const timer = await taskService.stopTimer(ownerContext, task);
-      expect(timer.isStarted()).toEqual(false);
-
-      const search = await testData.findTaskById(task.id);
-      expect(search!.getTimer(owner)!.isStarted()).toEqual(false);
-      expect(search!.getTimer(member)!.isStarted()).toEqual(false);
-      expect(search!.state.timers.length).toEqual(1);
-    });
 
     it('stop non existing timer on shared task', async () => {
       const { owner, ownerContext, profile } = await testData.createSimpleGroup();

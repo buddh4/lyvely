@@ -103,10 +103,11 @@ describe('TimeSeriesService', () => {
       await service.upsertDataPoint(context, content, date, 5);
       const updatedContent = await contentDao.reload(content);
 
-      expect(updatedContent!.timeSeriesSummary).toBeDefined();
-      expect(updatedContent!.timeSeriesSummary.window?.length).toEqual(1);
-      expect(updatedContent!.timeSeriesSummary.window[0].value).toEqual(5);
-      expect(updatedContent!.timeSeriesSummary.window[0].tid).toEqual(
+      const summary = updatedContent!.getSummary(user._id);
+      expect(summary).toBeDefined();
+      expect(summary!.window?.length).toEqual(1);
+      expect(summary!.window[0].value).toEqual(5);
+      expect(summary!.window[0].tid).toEqual(
         toTimingId(date, CalendarInterval.Daily)
       );
     });
@@ -119,8 +120,8 @@ describe('TimeSeriesService', () => {
       await service.upsertDataPoint(context, content, date, 5);
       const updatedContent = await contentDao.reload(content);
 
-      expect(updatedContent!.timeSeriesSummary).toBeDefined();
-      expect(updatedContent!.timeSeriesSummary.window?.length).toEqual(0);
+      const summary = updatedContent!.getSummary(user._id);
+      expect(summary).toBeUndefined();
     });
 
     it('boundary of window update creates new summary entry', async () => {
@@ -131,10 +132,11 @@ describe('TimeSeriesService', () => {
       await service.upsertDataPoint(context, content, date, 5);
       const updatedContent = await contentDao.reload(content);
 
-      expect(updatedContent!.timeSeriesSummary).toBeDefined();
-      expect(updatedContent!.timeSeriesSummary.window?.length).toEqual(1);
-      expect(updatedContent!.timeSeriesSummary.window[0].value).toEqual(5);
-      expect(updatedContent!.timeSeriesSummary.window[0].tid).toEqual(
+      const summary = updatedContent!.getSummary(user._id);
+      expect(summary).toBeDefined();
+      expect(summary!.window?.length).toEqual(1);
+      expect(summary!.window[0].value).toEqual(5);
+      expect(summary!.window[0].tid).toEqual(
         toTimingId(date, CalendarInterval.Daily)
       );
     });
@@ -149,11 +151,12 @@ describe('TimeSeriesService', () => {
       await service.upsertDataPoint(context, content, yesterday, 3);
       const updatedContent = await contentDao.reload(content);
 
-      expect(updatedContent!.timeSeriesSummary.window?.length).toEqual(2);
-      expect(updatedContent!.timeSeriesSummary.window[0].tid).toEqual(
+      const summary = updatedContent!.getSummary(user._id);
+      expect(summary!.window?.length).toEqual(2);
+      expect(summary!.window[0].tid).toEqual(
         toTimingId(yesterday, CalendarInterval.Daily)
       );
-      expect(updatedContent!.timeSeriesSummary.window[1].tid).toEqual(
+      expect(summary!.window[1].tid).toEqual(
         toTimingId(today, CalendarInterval.Daily)
       );
     });

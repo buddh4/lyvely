@@ -49,6 +49,9 @@ export class TimeSeriesContentModel<
   extends ContentModel<TID, TConfig, TState, TData>
   implements ISortable, ICalendarPlanEntry<TID>, ITimeSeriesContent<TID, TConfig, TState, TData>
 {
+  @PropertyType(TimeSeriesStateModel)
+  override state: TimeSeriesStateModel;
+
   constructor(
     data?: BaseModelData<TimeSeriesContentModel<TID, TConfig, TState, TData>>,
     uid?: string
