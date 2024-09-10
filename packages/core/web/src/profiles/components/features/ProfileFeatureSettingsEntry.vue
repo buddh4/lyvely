@@ -32,8 +32,7 @@ const padding = 'py-2 md:py-4';
   <tr
     :class="[
       { 'border-b border-divide last:border-0': !isSelected },
-      { 'bg-gray-50 dark:bg-gray-700': isSelected },
-      { 'border-gray-60 border-r dark:border-gray-700': !isMainFeature },
+      { 'border-gray-60 dark:border-gray-700': !isMainFeature },
     ]">
     <th
       scope="row"
@@ -41,7 +40,7 @@ const padding = 'py-2 md:py-4';
       @click="hasSubFeatures ? $emit('toggle', feature) : ''">
       <div
         :class="[
-          `${padding} border-divide`,
+          `${padding} border-divide pl-2`,
           { 'border-gray-60 dark:border-gray-700': !isMainFeature },
         ]"
         :style="{ 'border-left-width': !isMainFeature ? '20px' : '0px' }">
