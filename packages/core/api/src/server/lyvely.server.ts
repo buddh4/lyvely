@@ -158,11 +158,24 @@ export class LyvelyServer {
     const host = this.configService.get('http.host');
     const port = this.configService.get('http.port');
     const mongodb_uri = this.configService.get('mongodb.uri');
+    const mailHost = this.configService.get('mail')?.transport?.host;
 
     this.logger.log(`Using host '${host}'`);
     this.logger.log(`Using port '${port}'`);
     this.logger.log(`Using mongodb uri '${mongodb_uri}'`);
     this.logger.log(`Using NODE_ENV '${process.env.NODE_ENV}'`);
+
+    this.logger.log(`Using host '${host}'`);
+    this.logger.log(`Using port '${port}'`);
+    this.logger.log(`Using mongodb uri '${mongodb_uri}'`);
+    this.logger.log(`Using NODE_ENV '${process.env.NODE_ENV}'`);
+
+    this.logger.log(`Using host '${host}'`);
+    this.logger.log(`Using port '${port}'`);
+    this.logger.log(`Using mongodb uri '${mongodb_uri}'`);
+    this.logger.log(`Using NODE_ENV '${process.env.NODE_ENV}'`);
+
+    this.logger.log(`Using mail host '${mailHost}'`);
   }
 
   private initGuards() {
