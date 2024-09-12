@@ -20,6 +20,7 @@ export type IHttpOptions = {
   compression?: CompressionOptions | boolean;
   cors?: CorsOptions;
   tls?: ServerOptions;
+  debug?: boolean;
   trustProxy?: boolean | string | number | ((ip: string) => boolean);
   rateLimit?: {
     skipIf?: () => boolean;

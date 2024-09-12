@@ -6,6 +6,8 @@ import {
   Global,
   Module,
   Logger,
+  type NestModule,
+  type MiddlewareConsumer,
 } from '@nestjs/common';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { I18nModule, I18nModuleLoader } from '@/i18n';
@@ -15,6 +17,7 @@ import {
   type ServerConfiguration,
   setTransactionSupport,
 } from '@/core';
+import { RequestLoggerMiddleware } from '@/logging';
 import { loadConfigs, LyvelyConfigModule, LyvelyConfigService } from '@/config';
 import { AppConfigModule } from '@/app-config';
 import { AuthModule } from '@/auth';
@@ -287,7 +290,11 @@ export class AppModuleBuilder {
       imports: this.imports,
       providers: this.providers,
     })
-    class AppModule {}
+    class AppModule implements NestModule {
+      configure(consumer: MiddlewareConsumer): void {
+        consumer.apply(RequestLoggerMiddleware).forRoutes('*');
+      }
+    }
     return AppModule;
   }
 }
