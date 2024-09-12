@@ -20,9 +20,9 @@ const props = defineProps<{
 
 const createProfileStore = useCreateProfileStore();
 const { show, model, validator, error, isOrganization } = storeToRefs(createProfileStore);
-const { reset, submit } = createProfileStore;
+const { reset, submit, status } = createProfileStore;
 
-const router = useRouter();
+//const router = useRouter();
 
 const createProfile = () =>
   submit(props.oid).then((profile) => {
@@ -52,6 +52,7 @@ const { isAllowed: canCreateUserProfile } = useGlobalPermissions(CreateUserProfi
   <ly-modal
     v-model="show"
     title="profiles.create.title"
+    :is-loading="status.isStatusLoading()"
     @cancel="reset"
     @close="reset"
     @submit="createProfile">

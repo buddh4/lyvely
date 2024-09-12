@@ -3,6 +3,8 @@ import { ref } from 'vue';
 import { CreateProfileModel, ProfileRelationInfo, useProfilesClient } from '@lyvely/interface';
 import { useProfileRelationInfosStore } from '@/profiles/stores/profile-relation-infos.store';
 import { I18nModelValidator } from '@/i18n';
+import { loadingStatus, useStatus } from '@/core';
+import { ModelValidator } from '@lyvely/common';
 
 export const useCreateProfileStore = defineStore('create-profile', () => {
   const show = ref(false);
@@ -11,6 +13,7 @@ export const useCreateProfileStore = defineStore('create-profile', () => {
   const validator = ref(new I18nModelValidator(model.value));
   const error = ref('');
   const profilesClient = useProfilesClient();
+  const status = useStatus();
 
   function reset() {
     model.value = new CreateProfileModel();
@@ -20,7 +23,11 @@ export const useCreateProfileStore = defineStore('create-profile', () => {
 
   async function submit(oid?: string) {
     if (await validator.value.validate()) {
-      const relation = await profilesClient.create({ ...model.value, oid });
+      const relation = await loadingStatus(
+        () => profilesClient.create({ ...model.value, oid }),
+        status,
+        validator.value as ModelValidator
+      );
       useProfileRelationInfosStore().addRelation(new ProfileRelationInfo(relation));
       show.value = false;
       reset();
@@ -36,6 +43,7 @@ export const useCreateProfileStore = defineStore('create-profile', () => {
     submit,
     error,
     reset,
+    status,
     isOrganization,
   };
 });
