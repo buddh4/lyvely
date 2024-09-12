@@ -18,11 +18,11 @@ export function getProfileVisibilityOptions(options?: IProfileVisibilityOptions)
   const type = options?.type || profile?.type;
   const hasOrg = options?.hasOrg || profile?.hasOrg;
 
-  const memberVisibilityLable =
+  const memberVisibilityLabel =
     type === ProfileType.User ? 'profiles.visibility.me' : 'profiles.visibility.member';
 
   const visibilityOptions: ISelectOptions = [
-    { label: memberVisibilityLable, value: ProfileVisibilityLevel.Member },
+    { label: memberVisibilityLabel, value: ProfileVisibilityLevel.Member },
     { label: 'profiles.visibility.user', value: ProfileVisibilityLevel.User },
   ];
 

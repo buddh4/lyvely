@@ -17,6 +17,7 @@ import {
   CreateGroupProfilePermission,
   CreateOrganizationProfilePermission,
   UserStatus,
+  VisitorMode,
 } from '@lyvely/interface';
 import { MembershipsDao, ProfilesDao } from '../daos';
 import { ProfileContext, ProtectedProfileContext } from '../contexts';
@@ -386,13 +387,46 @@ export class ProfilesService {
   }
 
   /**
-   * Updates the profile details with the provided update data.
+   * Updates the profile details with the provided update data. This function supports updating the following fields:
+   *
+   * - name: The profile name
+   * - description: The profile description
+   * - visibility: The profile visibility
+   *
    * @param profile The profile to be updated.
    * @param update The update data containing the fields to be updated.
    * @returns A Promise resolving to a boolean value indicating whether the update was successful.
    */
   async updateProfile(profile: Profile, update: UpdateProfileModel): Promise<boolean> {
-    return this.profileDao.updateOneSetById(profile, pick(update, 'name', 'description'));
+    update = pick(update, 'name', 'description', 'visibility');
+
+    if (!this.validateProfileVisibilitySetting(profile, update.visibility)) {
+      delete update.visibility;
+    }
+
+    return this.profileDao.updateOneSetById(profile, update);
+  }
+
+  /**
+   * Validates the profile visibility level based on the provided profile and visibility setting.
+   *
+   * @param {Profile} profile - The profile to validate visibility for.
+   * @param {ProfileVisibilityLevel} [visibility] - The desired visibility level to validate against; optional.
+   * @return {boolean} - Returns true if the visibility is valid for the given profile, otherwise false.
+   */
+  private validateProfileVisibilitySetting(profile: Profile, visibility?: ProfileVisibilityLevel) {
+    const visitorStrategy = this.configService.getModuleConfig('permissions', 'visitorStrategy');
+
+    if (!visibility) return true;
+    if (!profile.hasOrg && visibility === ProfileVisibilityLevel.Organization) return false;
+    if (
+      visibility === ProfileVisibilityLevel.Visitor &&
+      visitorStrategy.visitorStrategy.mode !== VisitorMode.Enabled
+    ) {
+      return false;
+    }
+
+    return true;
   }
 
   /**
