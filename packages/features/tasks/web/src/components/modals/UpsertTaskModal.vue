@@ -5,6 +5,8 @@ import {
   ContentEditModalEmits,
   useContentUpsertModal,
   ICreateContentInitOptions,
+  getUserStrategyOptions,
+  useProfileStore,
 } from '@lyvely/web';
 import {
   isTouchScreen,
@@ -22,6 +24,7 @@ import {
   useTasksClient,
 } from '@lyvely/tasks-interface';
 import { getCalendarPlanOptions } from '@lyvely/calendar-plan-web';
+import { storeToRefs } from 'pinia';
 
 export interface IProps {
   modelValue: boolean;
@@ -37,6 +40,10 @@ const store = useContentUpsertModal<TaskModel, CreateTaskModel, UpdateTaskModel>
 });
 
 const { showModal, isCreate, model, validator, submit, status } = store;
+
+const userStrategyOptions = computed(() => getUserStrategyOptions());
+
+const { isMultiUserProfile } = storeToRefs(useProfileStore());
 
 const modalTitle = computed(() => {
   return isCreate.value ? `tasks.create.title` : `tasks.edit.title`;
@@ -70,6 +77,14 @@ const modalTitle = computed(() => {
             :options="getCalendarPlanOptions('plural')" />
           <ly-number-field property="score" :mb="0" :steps="2" :max="100" :min="-100" />
         </div>
+      </fieldset>
+
+      <fieldset v-if="isMultiUserProfile">
+        <ly-select
+          property="userStrategy"
+          type="number"
+          :required="true"
+          :options="userStrategyOptions" />
       </fieldset>
 
       <fieldset>

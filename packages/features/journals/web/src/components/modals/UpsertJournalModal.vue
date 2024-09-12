@@ -19,6 +19,8 @@ import {
   ICreateContentInitOptions,
   useContentUpsertModal,
   t,
+  getUserStrategyOptions,
+  useProfileStore,
 } from '@lyvely/web';
 import {
   isTouchScreen,
@@ -30,6 +32,7 @@ import {
   LyTextarea,
 } from '@lyvely/ui';
 import { getCalendarPlanOptions } from '@lyvely/calendar-plan-web';
+import { storeToRefs } from 'pinia';
 
 export interface IProps {
   modelValue: boolean;
@@ -63,6 +66,13 @@ function setValueType(valueType: CreateJournalModel['valueType']) {
 }
 
 const calendarPlanOptions = computed(() => getCalendarPlanOptions());
+const userStrategyOptions = computed(() => getUserStrategyOptions());
+
+const { isMultiUserProfile } = storeToRefs(useProfileStore());
+
+const strategySectionClass = computed(() =>
+  isMultiUserProfile.value ? 'grid grid-cols-2 grid-rows-1 gap-2' : ''
+);
 
 const modalTitle = computed(() => {
   return isCreate.value ? `journals.create.title` : `journals.edit.title`;
@@ -83,11 +93,22 @@ const modalTitle = computed(() => {
           :required="true"
           :autofocus="isCreate || !isTouchScreen()"
           :auto-validation="false" />
-        <ly-select
-          property="interval"
-          type="number"
-          :required="true"
-          :options="calendarPlanOptions" />
+      </fieldset>
+
+      <fieldset>
+        <div :class="strategySectionClass">
+          <ly-select
+            property="interval"
+            type="number"
+            :required="true"
+            :options="calendarPlanOptions" />
+          <ly-select
+            v-if="isMultiUserProfile"
+            property="userStrategy"
+            type="number"
+            :required="true"
+            :options="userStrategyOptions" />
+        </div>
       </fieldset>
 
       <fieldset>

@@ -19,7 +19,7 @@ export class CreateTaskModel extends CreateContentModel {
   @IsInt()
   @Max(100)
   @Min(-100)
-  score = 2;
+  score = 1;
 
   constructor(data: StrictBaseModelData<CreateTaskModel>) {
     super(false);

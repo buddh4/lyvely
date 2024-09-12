@@ -13,9 +13,11 @@ import {
   useContentUpsertModal,
   ICreateContentInitOptions,
   getUserStrategyOptions,
+  useProfileStore,
 } from '@lyvely/web';
 import { getCalendarPlanOptions } from '@lyvely/calendar-plan-web';
 import { LyModal, LyFormModel, LyTextField, LySelect, LyTextarea, isTouchScreen } from '@lyvely/ui';
+import { storeToRefs } from 'pinia';
 
 export interface IProps {
   modelValue: boolean;
@@ -42,6 +44,12 @@ function adjustAndSubmit() {
 
 const calendarPlanOptions = computed(() => getCalendarPlanOptions());
 const userStrategyOptions = computed(() => getUserStrategyOptions());
+
+const { isMultiUserProfile } = storeToRefs(useProfileStore());
+
+const strategySectionClass = computed(() =>
+  isMultiUserProfile.value ? 'grid grid-cols-2 grid-rows-1 gap-2' : ''
+);
 
 const modalTitle = computed(() => {
   return isCreate.value ? `habits.create.title` : `habits.edit.title`;
@@ -70,13 +78,14 @@ const modalTitle = computed(() => {
       </fieldset>
 
       <fieldset>
-        <div class="grid grid-cols-2 grid-rows-1 gap-2">
+        <div :class="strategySectionClass">
           <ly-select
             property="interval"
             type="number"
             :required="true"
             :options="calendarPlanOptions" />
           <ly-select
+            v-if="isMultiUserProfile"
             property="userStrategy"
             type="number"
             :required="true"
