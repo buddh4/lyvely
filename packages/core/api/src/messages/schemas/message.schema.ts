@@ -9,7 +9,7 @@ import { PropertiesOf, Type } from '@lyvely/common';
 export class Message extends ContentType implements PropertiesOf<MessageModel<TObjectId>> {
   constructor(context: ProtectedProfileContext, text: string) {
     super(context, {
-      content: new ContentDataType({ text, renderType: RenderableType.translation }),
+      content: new ContentDataType({ text, renderType: RenderableType.markdown }),
     });
   }
 
