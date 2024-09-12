@@ -10,7 +10,7 @@ import {
 } from '@lyvely/interface';
 import { translate } from '@/i18n';
 import { useRouter } from 'vue-router';
-import { profileIdPath, profilePath, profileRoute } from '@/profiles/routes/profile-route.helper';
+import { profileIdPath, profilePath } from '@/profiles/routes/profile-route.helper';
 import { useGlobalPermissions } from '@/common/composables';
 import { isTouchScreen } from '@lyvely/ui';
 
