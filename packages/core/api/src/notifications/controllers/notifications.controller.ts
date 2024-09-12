@@ -5,6 +5,7 @@ import {
   IWebNotification,
   NotificationEndpoints,
   UserRole,
+  StreamRequest,
 } from '@lyvely/interface';
 import { UserNotificationsService, NotificationService } from '../services';
 import { IUserContext, UserInfo, UserRequest, UserRoleAccess } from '@/users';
@@ -25,6 +26,8 @@ export class NotificationsController
 
   @Inject()
   protected notificationsService: NotificationService;
+
+  protected requestModelType = StreamRequest;
 
   protected async mapToResultModel(userNotifications: UserNotification[], context: IUserContext) {
     return this.streamEntryService.mapToResultModel(userNotifications, context);

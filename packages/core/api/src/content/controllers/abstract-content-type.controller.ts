@@ -46,8 +46,8 @@ export abstract class AbstractContentTypeController<
   }
 
   private transformCreateModel(raw: PropertiesOf<TCreateModel>): TCreateModel {
-    const test = plainToInstance(this.createModelType, raw);
-    return createBaseModelAndInit(this.createModelType, test);
+    const instance = plainToInstance(this.createModelType, raw);
+    return createBaseModelAndInit(this.createModelType, instance);
   }
 
   @Put(':cid')

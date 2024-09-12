@@ -4,6 +4,7 @@ export * from './content.filter.model';
 export * from './content-search-result.model';
 export * from './create-base-content.model';
 export * from './create-content.model';
+export * from './content-stream-request.model';
 export * from './content-update-response.model';
 export * from './set-milestone.model';
 export * from './content-request.filter';

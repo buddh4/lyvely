@@ -1,4 +1,4 @@
-import { Expose } from 'class-transformer';
+import { Exclude, Expose } from 'class-transformer';
 import { BaseModel, hasIntersection, type PropertiesOf } from '@lyvely/common';
 import { IsBoolean, IsMongoId, IsOptional, IsString } from 'class-validator';
 import { IStreamFilter } from '@/streams';
@@ -10,13 +10,14 @@ import { ContentModel } from './content.model';
  *
  * @template T - The type of the content model.
  */
-@Expose()
+@Exclude()
 export class ContentRequestFilter implements IStreamFilter<ContentModel> {
   /**
    * Filter by parent content id.
    *
    * @typedef {string} ParentId
    */
+  @Expose()
   @IsMongoId()
   @IsOptional()
   parentId?: string;
@@ -26,6 +27,7 @@ export class ContentRequestFilter implements IStreamFilter<ContentModel> {
    *
    * @type {boolean}
    */
+  @Expose()
   @IsBoolean()
   @IsOptional()
   archived?: boolean;
@@ -35,6 +37,7 @@ export class ContentRequestFilter implements IStreamFilter<ContentModel> {
    *
    * @type {boolean}
    */
+  @Expose()
   @IsBoolean()
   @IsOptional()
   deleted?: boolean;
@@ -44,6 +47,7 @@ export class ContentRequestFilter implements IStreamFilter<ContentModel> {
    *
    * @type {string}
    */
+  @Expose()
   @IsString()
   @IsOptional()
   query?: string;
@@ -53,6 +57,7 @@ export class ContentRequestFilter implements IStreamFilter<ContentModel> {
    *
    * @type {Array<string>}
    */
+  @Expose()
   @IsMongoId({ each: true })
   @IsOptional()
   tagIds?: Array<string>;

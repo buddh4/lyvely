@@ -1,4 +1,9 @@
-import { ContentModel, ContentRequestFilter, API_CONTENT_STREAM } from '@lyvely/interface';
+import {
+  ContentModel,
+  ContentRequestFilter,
+  API_CONTENT_STREAM,
+  ContentStreamRequestModel,
+} from '@lyvely/interface';
 import { Inject } from '@nestjs/common';
 import { AbstractStreamController } from '@/streams';
 import { Content } from '../schemas';
@@ -14,6 +19,8 @@ export class ContentStreamController extends AbstractStreamController<
 > {
   @Inject()
   protected streamEntryService: ContentStreamService;
+
+  protected override requestModelType = ContentStreamRequestModel;
 
   protected async mapToResultModel(
     models: Content[],

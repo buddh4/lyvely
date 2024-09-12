@@ -1,15 +1,18 @@
-import { Post, Req, Param, Get, NotFoundException } from '@nestjs/common';
+import { Post, Req, Param, Get, NotFoundException, Body } from '@nestjs/common';
 import {
   IStreamFilter,
   IStreamResponse,
   StreamEndpoints,
   StreamRequest,
   StreamResponse,
+  FieldValidationException,
 } from '@lyvely/interface';
 import { AbstractStreamService } from '../service';
-import { BaseDocument, ValidBody } from '@/core';
-import { PropertiesOf } from '@lyvely/common';
+import { BaseDocument } from '@/core';
+import { PropertiesOf, type Type, createBaseModelAndInit } from '@lyvely/common';
 import type { IOptionalUserContext, UserRequest } from '@/users';
+import { plainToInstance } from 'class-transformer';
+import { validate } from 'class-validator';
 
 export abstract class AbstractStreamController<
   TModel extends BaseDocument,
@@ -19,19 +22,31 @@ export abstract class AbstractStreamController<
 > {
   protected abstract streamEntryService: AbstractStreamService<TModel, TFilter>;
 
+  protected abstract requestModelType: Type<StreamRequest<TFilter>>;
+
   protected abstract mapToResultModel(models: TModel[], context: TContext): Promise<TResult[]>;
 
   @Post(StreamEndpoints.TAIL)
   async loadTail(
-    @ValidBody() streamRequest: StreamRequest<TFilter>,
+    @Body() streamRequest: StreamRequest<TFilter>,
     @Req() req: UserRequest & { context: TContext }
   ): Promise<StreamResponse<TResult>> {
     const context = req.context || { user: req.user };
-    const response = await this.streamEntryService.loadTail(
-      context,
-      new StreamRequest(streamRequest)
-    );
+
+    streamRequest = await this.transformAndValidateRequest(streamRequest);
+
+    const response = await this.streamEntryService.loadTail(context, streamRequest);
     return this.mapResponse(response, context);
+  }
+
+  private async transformAndValidateRequest(
+    raw: PropertiesOf<StreamRequest<TFilter>>
+  ): Promise<StreamRequest<TFilter>> {
+    const instance = plainToInstance(this.requestModelType, raw);
+    const requestModel = createBaseModelAndInit(this.requestModelType, instance);
+    const errors = await validate(requestModel);
+    if (errors.length) throw new FieldValidationException(errors);
+    return requestModel;
   }
 
   private async mapResponse(
@@ -48,21 +63,21 @@ export abstract class AbstractStreamController<
 
   @Post(StreamEndpoints.HEAD)
   async loadHead(
-    @ValidBody() streamRequest: StreamRequest,
+    @Body() streamRequest: StreamRequest<TFilter>,
     @Req() req: { context: TContext }
   ): Promise<IStreamResponse<TResult>> {
     const context = req.context;
-    const response = await this.streamEntryService.loadHead(
-      context,
-      new StreamRequest(streamRequest as PropertiesOf<StreamRequest>)
-    );
+
+    streamRequest = await this.transformAndValidateRequest(streamRequest);
+
+    const response = await this.streamEntryService.loadHead(context, streamRequest);
     return this.mapResponse(response, context);
   }
 
   @Get(':eid')
   async loadEntry(@Param('eid') eid: string, @Req() req: { context: TContext }): Promise<TResult> {
     const context = req.context;
-    if (!eid) throw new NotFoundException();
+    if (typeof eid !== 'string') throw new NotFoundException();
     const entry = await this.streamEntryService.loadEntry(context, eid);
     return (await this.mapToResultModel([entry], context))[0];
   }

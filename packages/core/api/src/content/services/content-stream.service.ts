@@ -6,6 +6,7 @@ import { Content } from '../schemas';
 import { ProfileContext } from '@/profiles';
 import { FilterQuery } from '@/core';
 import { ContentPolicyService } from './content-policy.service';
+import { pick } from '@lyvely/common';
 
 @Injectable()
 export class ContentStreamService extends AbstractStreamService<
@@ -41,12 +42,13 @@ export class ContentStreamService extends AbstractStreamService<
   }
 
   createQueryFilter(context: ProfileContext, filter?: ContentRequestFilter): FilterQuery<Content> {
+    const safeFilter = pick(filter, 'parentId', 'archived', 'deleted', 'query', 'tagIds');
     return buildContentFilterQuery({
-      pid: context.pid,
-      oid: context.oid,
       archived: false,
       deleted: false,
-      ...filter,
+      ...safeFilter,
+      pid: context.pid,
+      oid: context.oid,
     });
   }
 
