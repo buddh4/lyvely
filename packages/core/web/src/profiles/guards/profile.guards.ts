@@ -97,6 +97,14 @@ const loadProfileByHandle = async (
   next: NavigationGuardNext
 ) => {
   const profileStore = useProfileStore();
+  const profile = profileStore.profile;
+
+  // Used for example when navigating from account settings to a profile view
+  if (/^\/p\/:handle\/.*$/.test(to.path) && profile) {
+    const path = `/p/${profile.handle}` + to.path.substring(10, to.path.length);
+    return next(path);
+  }
+
   if ((!to.params.handle && to.path === '/') || to.params.handle === ':handle') {
     const profile = await profileStore.loadProfile();
     const { help } = to.query;
