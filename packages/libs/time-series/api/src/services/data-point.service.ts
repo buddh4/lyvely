@@ -4,6 +4,7 @@ import {
   useDataPointStrategyFacade,
   InvalidDataPointValueTypeException,
   DatapointUpdateLiveEvent,
+  PerUserDatapointUpdateLiveEvent,
 } from '@lyvely/time-series-interface';
 import {
   UserAssignmentStrategy,
@@ -19,7 +20,6 @@ import { useDataPointStrategyRegistry } from '../strategies';
 import { IDataPointUpdateResult } from '../interfaces';
 import { DataPointSchemaFactory } from '../schemas/data-points/data-point-schema.factory';
 import { Inject } from '@nestjs/common';
-import { PerUserDatapointUpdateLiveEvent } from '@lyvely/time-series-interface/src';
 
 /**
  * This class represents a service class for managing and manipulating data points.
@@ -115,7 +115,7 @@ export abstract class DataPointService<
   ): Promise<void> {
     newValue = await this.prepareAndValidateValue(model, dataPoint, newValue);
     if (isEqual(dataPoint.value, newValue)) return;
-    await this.dataPointDao.updateDataPointValue(context.user, dataPoint, newValue);
+    await this.dataPointDao.updateDataPointValue(dataPoint, newValue);
   }
 
   /**

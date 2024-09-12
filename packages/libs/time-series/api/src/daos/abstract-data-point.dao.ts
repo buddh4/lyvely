@@ -21,15 +21,14 @@ export abstract class AbstractDataPointDao<
   /**
    * Update the value of a data point for a given user.
    *
-   * @param {DocumentIdentity<User>} uid - The identifier of the user.
    * @param {T} dataPoint - The data point to update.
    * @param {T['value']} value - The new value for the data point.
    *
    * @returns {Promise<any>} - A Promise that resolves when the data point value is updated.
    */
-  async updateDataPointValue(uid: DocumentIdentity<User>, dataPoint: T, value: T['value']) {
+  async updateDataPointValue(dataPoint: T, value: T['value']) {
     return await this.updateOneSetById(
-      dataPoint as DocumentIdentity<T>,
+      dataPoint,
       {
         valueType: dataPoint.valueType,
         value,
@@ -120,7 +119,7 @@ export abstract class AbstractDataPointDao<
     }
 
     conditions.push(this.buildTimingIntervalFilter(profile, filter));
-    return this.findAll({ $or: conditions });
+    return this.findAll({ $and: conditions });
   }
 
   /**

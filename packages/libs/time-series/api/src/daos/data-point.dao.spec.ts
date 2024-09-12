@@ -120,7 +120,7 @@ describe('DataPointDao', () => {
       const date = new Date('2022-02-20');
       // eslint-disable-next-line prefer-const
       const { dataPoint, uid } = await createEntity(date, CalendarInterval.Daily);
-      await dao.updateDataPointValue(uid, dataPoint, 3);
+      await dao.updateDataPointValue(dataPoint, 3);
       const updated = await dao.reload(dataPoint);
       expect(updated!.value).toEqual(3);
     });
