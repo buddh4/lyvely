@@ -19,6 +19,7 @@ import {
   t,
   translation,
   useProfileStore,
+  MENU_PROFILE_MOBILE_FOOTER,
 } from '@lyvely/web';
 import { analyticsRoutes } from '@/routes/analytics.routes';
 import { registerCharts, registerChartCategories } from '@/registries';
@@ -70,6 +71,16 @@ export default () => {
         text: 'analytics.title',
         sortOrder: 1550,
         feature: AnalyticsFeature.id,
+        icon: 'statistics',
+        to: { name: 'Analytics' },
+      }));
+
+      registerMenuEntry(MENU_PROFILE_MOBILE_FOOTER, () => ({
+        id: 'profile-analytics-footer',
+        moduleId: ANALYTICS_MODULE_ID,
+        text: 'analytics.title',
+        feature: AnalyticsFeature.id,
+        sortOrder: 1550,
         icon: 'statistics',
         to: { name: 'Analytics' },
       }));
