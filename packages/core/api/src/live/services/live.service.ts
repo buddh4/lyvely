@@ -64,7 +64,7 @@ export class LiveService {
         await this.verifyNonRelationAccess(user, pid);
       }
 
-      if (pid) pids.push(pid);
+      if (pid && !pids.find((id) => assureStringId(id) === pid)) pids.push(pid);
 
       const observables = new Set(
         pids.map((profileId) =>
