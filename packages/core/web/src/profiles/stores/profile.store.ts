@@ -244,9 +244,7 @@ export const useProfileStore = defineStore('profile', () => {
     return 'stream';
   }
 
-  function isMultiUserProfile() {
-    return profile.value && _isMultiUserProfile(profile.value);
-  }
+  const isMultiUserProfile = computed(() => profile.value && _isMultiUserProfile(profile.value));
 
   return {
     profile,

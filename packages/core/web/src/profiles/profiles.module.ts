@@ -68,7 +68,7 @@ export const profilesModule = () => {
           icon: 'users',
           sortOrder: 3000,
           text: 'profiles.users.label',
-          condition: useProfileStore().isMultiUserProfile(),
+          condition: useProfileStore().isMultiUserProfile,
         }),
         () => ({
           id: 'profileSettings',
