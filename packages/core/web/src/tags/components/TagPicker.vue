@@ -25,11 +25,13 @@ const { profile } = storeToRefs(useProfileStore());
 
 const options = computed(
   () =>
-    profile.value!.tags?.map((tag: TagModel) => ({
-      key: props.optionKey === 'id' ? tag.id : tag.name,
-      label: tag.name,
-      color: tag.color,
-    })) || []
+    profile
+      .value!.tags?.filter((tag: TagModel) => !tag.archived)
+      .map((tag: TagModel) => ({
+        key: props.optionKey === 'id' ? tag.id : tag.name,
+        label: tag.name,
+        color: tag.color,
+      })) || []
 );
 
 const emit = defineEmits(['update:modelValue']);
