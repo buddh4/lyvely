@@ -2,6 +2,7 @@
 import { useRegisterSW } from 'virtual:pwa-register/vue';
 import { LyButton } from '@lyvely/ui';
 import { t } from '@lyvely/web';
+import { ref, watch } from 'vue';
 
 const intervalMS = 60 * 60 * 1000;
 
@@ -26,10 +27,21 @@ const { offlineReady, needRefresh, updateServiceWorker } = useRegisterSW({
   },
 });
 
+const isLoading = ref(false);
+
+const update = () => {
+  isLoading.value = true;
+  updateServiceWorker();
+};
+
 const close = async () => {
   offlineReady.value = false;
   needRefresh.value = false;
 };
+
+watch(needRefresh, (newVal) => {
+  if (newVal) isLoading.value = false;
+});
 </script>
 
 <template>
@@ -46,7 +58,7 @@ const close = async () => {
       <ly-button class="secondary" @click="close">
         {{ t('common.close') }}
       </ly-button>
-      <ly-button v-if="needRefresh" class="primary" @click="updateServiceWorker()">
+      <ly-button v-if="needRefresh" class="primary" :loading="isLoading" @click="update">
         {{ t('common.reload') }}
       </ly-button>
     </div>
