@@ -33,6 +33,7 @@
     "vue": "^3.4",
     "@vueuse/core": "^10.9",
     "pinia": "^2.0",
+    "@lyvely/common": "workspace:*",
     "@lyvely/interface": "workspace:*",
     "@lyvely/time-series-interface": "workspace:*",
     "@lyvely/ui": "workspace:*",

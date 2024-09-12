@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { Habit, type HabitDataPoint, HabitScore, HabitValueChartSeriesConfig } from '../schemas';
 import { DataPointService, IDataPointUpdateResult, TimerDataPointValue } from '@lyvely/time-series';
 import { HabitDataPointDao } from '../daos';
-import { ContentScoreService, ProtectedProfileContext } from '@lyvely/api';
+import { ContentScoreService, ProtectedProfileContext, LiveService } from '@lyvely/api';
 import { CalendarDate, getFullDayTZDate } from '@lyvely/dates';
 import { isNotNil } from '@lyvely/common';
 import {

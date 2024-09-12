@@ -4,16 +4,21 @@ import {
   TimeSeriesStore,
   ITimeSeriesCalendarPlanResponse,
   ITimeSeriesCalendarPlanClient,
+  buildDataPointUpdateEventName,
+  DatapointUpdateLiveEvent,
+  DataPointValueType,
+  TimerDataPointValueModel,
 } from '@lyvely/time-series-interface';
 import { formatDate, toTimingId } from '@lyvely/dates';
-import { ContentFilter } from '@lyvely/interface';
+import { type PropertiesOf } from '@lyvely/common';
+import { ContentFilter, TimerModel } from '@lyvely/interface';
 import {
   ICalendarPlanOptions,
   useCalendarPlan,
   useCalendarPlanStore,
 } from '@lyvely/calendar-plan-web';
 import { storeToRefs } from 'pinia';
-import { useProfileStore, useGlobalDialogStore, useContentStore } from '@lyvely/web';
+import { useProfileStore, useGlobalDialogStore, useContentStore, useLiveStore } from '@lyvely/web';
 import { isDefined } from 'class-validator';
 import { useDebounceFn } from '@vueuse/core';
 
@@ -37,6 +42,7 @@ export interface ITimeSeriesCalendarPlanOptions<
   > = ITimeSeriesCalendarPlanClient<TModel, TDataPoint, TResponse>,
 > extends ICalendarPlanOptions<TModel, TFilter, TResponse, TStore, TClient> {
   onDataPointUpdated?: (response: Awaited<ReturnType<TClient['updateDataPoint']>>) => void;
+  type: string;
 }
 
 export function useTimeSeriesCalendarPlan<
@@ -65,8 +71,23 @@ export function useTimeSeriesCalendarPlan<
   const calendarPlanStore = useCalendarPlanStore();
   const calendarPlan = useCalendarPlan<TModel, TFilter, TResponse, TStore, TClient>(options);
   const dialog = useGlobalDialogStore();
+  const live = useLiveStore();
 
   const { cache, client } = calendarPlan;
+
+  live.on(
+    'time-series',
+    buildDataPointUpdateEventName(options.type),
+    (event: DatapointUpdateLiveEvent) => {
+      const dataPoint = cache.value.getDataPoint(event.cid, event.tid, false);
+      if (!dataPoint || dataPoint.valueType !== event.valueType) return;
+      // TODO: How to handle timer?
+      dataPoint.value =
+        event.valueType === DataPointValueType.Timer
+          ? new TimerDataPointValueModel(event.value as PropertiesOf<TimerDataPointValueModel>)
+          : event.value;
+    }
+  );
 
   function getDataPoint(model: TimeSeriesContentModel) {
     const timingId = toTimingId(

@@ -3,14 +3,23 @@ import { CalendarPlanFilter } from '@lyvely/calendar-plan';
 import {
   useDataPointStrategyFacade,
   InvalidDataPointValueTypeException,
+  DatapointUpdateLiveEvent,
 } from '@lyvely/time-series-interface';
-import { UserAssignmentStrategy, ProfileContext, ProtectedProfileContext } from '@lyvely/api';
+import {
+  UserAssignmentStrategy,
+  ProfileContext,
+  ProtectedProfileContext,
+  LiveService,
+  assureStringId,
+} from '@lyvely/api';
 import { isPlainObject, isEqual } from '@lyvely/common';
 import { DataPoint, TimeSeriesContent } from '../schemas';
 import { AbstractDataPointDao } from '../daos';
 import { useDataPointStrategyRegistry } from '../strategies';
 import { IDataPointUpdateResult } from '../interfaces';
 import { DataPointSchemaFactory } from '../schemas/data-points/data-point-schema.factory';
+import { Inject } from '@nestjs/common';
+import { PerUserDatapointUpdateLiveEvent } from '@lyvely/time-series-interface/src';
 
 /**
  * This class represents a service class for managing and manipulating data points.
@@ -25,6 +34,14 @@ export abstract class DataPointService<
 > {
   /** The data point dao, responsible for updating and fetching data points. **/
   protected abstract dataPointDao: AbstractDataPointDao<TDataPointModel>;
+
+  /**
+   * @type {LiveService}
+   * @description The instance of the LiveService class responsible for
+   * handling real-time data interactions and communication within the application.
+   */
+  @Inject()
+  protected liveService: LiveService;
 
   constructor(protected dataPointStrategyFacade = useDataPointStrategyFacade()) {}
 
@@ -125,6 +142,22 @@ export abstract class DataPointService<
       if (isPlainObject(update)) {
         await this.dataPointDao.updateOneSetById(dataPoint._id, update);
       }
+    }
+
+    const liveEventOptions = {
+      pid: assureStringId(model.pid),
+      cid: model.id,
+      tid: dataPoint.tid,
+      valueType: model.timeSeriesConfig.valueType,
+      value: dataPoint.value,
+    };
+
+    if (model.timeSeriesConfig.userStrategy === UserAssignmentStrategy.Shared) {
+      this.liveService.emitProfileEvent(new DatapointUpdateLiveEvent(model.type, liveEventOptions));
+    } else {
+      this.liveService.emitUserEvent(
+        new PerUserDatapointUpdateLiveEvent(context.user.id, model.type, liveEventOptions)
+      );
     }
   }
 

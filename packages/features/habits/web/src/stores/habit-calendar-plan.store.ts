@@ -25,6 +25,7 @@ export const useHabitCalendarPlanStore = defineStore('habitCalendarPlan', () => 
   const { createItem } = useCreateCalendarPlanItem(HabitModel.contentType);
 
   const habitPlan = useTimeSeriesCalendarPlan<HabitModel, HabitFilter>({
+    type: HabitModel.contentType,
     filter: new HabitFilter(),
     cache: new TimeSeriesStore<HabitModel>(),
     contentTypes: [HabitModel.contentType],

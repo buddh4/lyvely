@@ -51,6 +51,7 @@ export const useLiveStore = defineStore('live', () => {
     liveEventSource.onopen = () => console.debug('Live connection onopen');
     liveEventSource.onmessage = ({ data }) => {
       const event = JSON.parse(data) as ILiveEvent;
+      console.debug(`Received Live Event:`, event);
       broadCastLiveEvent(event);
     };
 

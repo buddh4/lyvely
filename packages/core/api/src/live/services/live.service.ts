@@ -1,7 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Observable, fromEvent, merge } from 'rxjs';
-import { ConfigService } from '@nestjs/config';
 import { assureStringId, DocumentIdentity, OperationMode } from '@/core';
 import { OptionalUser, User } from '@/users';
 import {

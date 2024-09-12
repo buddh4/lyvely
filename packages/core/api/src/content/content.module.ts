@@ -20,7 +20,6 @@ import {
 } from './policies';
 import { ContentEventPublisher, ContentTypeRegistry } from './components';
 import { DynamicModule } from '@nestjs/common/interfaces/modules/dynamic-module.interface';
-import { LiveModule } from '@/live';
 import { uniqueId } from '@lyvely/common';
 import { ContentController, ContentStreamController } from './controllers';
 import { LyvelyModule } from '@/core';
@@ -56,7 +55,7 @@ const ContentScoreActionModel = MongooseModule.forFeature([
     ContentManagePolicy,
     ContentAuthorPolicy,
   ],
-  imports: [UsersModule, ProfilesModule, ContentModel, ContentScoreActionModel, LiveModule],
+  imports: [UsersModule, ProfilesModule, ContentModel, ContentScoreActionModel],
   controllers: [ContentController, ContentStreamController],
   providers: [
     ContentService,

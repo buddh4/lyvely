@@ -13,6 +13,7 @@ import { useCreateCalendarPlanItem } from '@lyvely/calendar-plan-web';
 
 export const useJournalPlanStore = defineStore('journal-calendar-plan', () => {
   const calendarPlan = useTimeSeriesCalendarPlan<JournalModel, JournalFilter>({
+    type: JournalModel.contentType,
     filter: new JournalFilter(),
     cache: new JournalDataPointStore(),
     contentTypes: [JournalModel.contentType],

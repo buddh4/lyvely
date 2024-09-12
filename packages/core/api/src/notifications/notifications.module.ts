@@ -20,7 +20,6 @@ import { NotificationSenderProcessor } from './processors';
 import { UsersModule } from '@/users';
 import { ProfilesModule } from '@/profiles';
 import { UserSubscriptionsModule } from '@/user-subscriptions';
-import { LiveModule } from '@/live';
 import { LyvelyModule } from '@/core';
 import { NOTIFICATIONS_MODULE_ID } from '@lyvely/interface';
 
@@ -47,7 +46,6 @@ const NotificationQueues = BullModule.registerQueue({ name: QUEUE_NOTIFICATIONS_
     UsersModule,
     ProfilesModule,
     UserSubscriptionsModule,
-    LiveModule,
   ],
   controllers: [NotificationsController],
   providers: [

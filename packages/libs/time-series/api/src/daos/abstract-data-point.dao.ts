@@ -2,7 +2,7 @@ import { User, Profile, AbstractDao, assureObjectId, DocumentIdentity } from '@l
 import { buildDiscriminatorName, DataPoint, TimeSeriesContent } from '../schemas';
 import { CalendarPlanFilter } from '@lyvely/calendar-plan';
 import { getTimingIds, CalendarInterval } from '@lyvely/dates';
-import type { BaseDocument } from '@lyvely/api';
+import type { BaseDocument, FilterQuery } from '@lyvely/api';
 import type { IDataPointDaoMeta } from './data-point-dao-meta.interface';
 type InterValFilter = { interval: CalendarInterval; tid?: string | { $regex: RegExp } };
 
@@ -104,20 +104,23 @@ export abstract class AbstractDataPointDao<
     uid: DocumentIdentity<User> | null | undefined,
     filter: CalendarPlanFilter
   ) {
-    // If no uid is given we assume visitor role
-    const uidFilter = uid
-      ? {
-          $or: [{ uid: assureObjectId(uid) }, { uid: null }],
-        }
-      : { uid: null };
+    const conditions: Array<FilterQuery<T>> = [{ pid: assureObjectId(profile) }];
 
-    return this.findAll({
-      $and: [
-        { pid: assureObjectId(profile) },
-        uidFilter,
-        this.buildTimingIntervalFilter(profile, filter),
-      ],
-    });
+    if (uid) {
+      conditions.push({
+        $or: [{ uid: assureObjectId(uid) }, { uid: null }],
+      });
+    } else {
+      // If no uid is given we assume visitor access
+      conditions.push({ uid: null });
+    }
+
+    if (filter.cid) {
+      conditions.push({ cid: assureObjectId(filter.cid) });
+    }
+
+    conditions.push(this.buildTimingIntervalFilter(profile, filter));
+    return this.findAll({ $or: conditions });
   }
 
   /**

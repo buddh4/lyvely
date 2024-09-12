@@ -1,6 +1,7 @@
 import { BaseModel, PropertyType, TransformObjectId } from '@lyvely/common';
 import { Expose } from 'class-transformer';
 import { ValidateNested } from 'class-validator';
+import type { BaseModelData } from '@lyvely/common';
 
 function compareSpans(a: TimeSpanModel<any>, b: TimeSpanModel<any>) {
   if (a.from < b.from) return -1;
@@ -33,7 +34,7 @@ export class TimerModel<TID = string> {
   @ValidateNested()
   spans: TimeSpanModel<TID>[];
 
-  constructor(data?: TimerModel<any>) {
+  constructor(data?: BaseModelData<TimerModel<any>>) {
     BaseModel.init(this, data);
   }
 
