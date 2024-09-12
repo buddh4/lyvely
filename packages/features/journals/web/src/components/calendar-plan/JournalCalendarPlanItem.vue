@@ -72,6 +72,7 @@ const updateSelection = useDebounceFn((selection: any) => {
         <ly-editable-text
           v-model="selection"
           class="pt-2 text-sm"
+          input-class="w-full"
           :placeholder="t('journals.plan.text.placeholder')" />
       </div>
       <div v-else-if="isSelectionDataPointConfig(model.timeSeriesConfig)">
