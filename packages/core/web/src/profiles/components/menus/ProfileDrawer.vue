@@ -17,7 +17,7 @@ const { profile } = storeToRefs(useProfileStore());
 
 const { enabledMenuEntries } = useProfileMenu(MENU_PROFILE_DRAWER);
 
-const { closeSidebar } = pageStore;
+const { closeSidebar, toggleSidebar } = pageStore;
 const { showSidebar } = storeToRefs(pageStore);
 
 const isSmallView = ref(isMaxViewSize('sm'));
@@ -64,7 +64,7 @@ const { direction } = useSwipe(appDrawer, {
       <div class="w-full px-3 py-2">
         <a
           class="flex h-10 cursor-pointer items-center gap-2 font-extrabold uppercase tracking-wider no-underline"
-          @click="closeSidebar">
+          @click="toggleSidebar">
           <ly-icon name="lyvely" class="w-5 fill-current text-lyvely" />
           <transition name="fade">
             <img v-if="showLabels" class="lyvely-logo-text" alt="Lyvely Logo" :src="imageUrl" />
@@ -76,9 +76,7 @@ const { direction } = useSwipe(appDrawer, {
         <ul data-id="profile-drawer" class="nav flex-column">
           <li class="mb-1">
             <div class="mx-1 rounded bg-slate-800">
-              <div
-                class="flex h-12 select-none items-center gap-2 px-3 text-sm"
-                @click="closeSidebar">
+              <div class="flex h-12 select-none items-center gap-2 px-3 text-sm">
                 <profile-avatar :border="false" />
                 <transition name="fade">
                   <span v-if="showLabels" class="truncate no-underline">{{ profile!.name }}</span>
