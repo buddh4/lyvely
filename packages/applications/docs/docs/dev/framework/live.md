@@ -45,10 +45,7 @@ User events target a specific user. Below is an example of sending a user-specif
 @Injectable()
 export class TestService {
 
-  constructor(
-    private readonly liveService: LiveService
-  ) {
-  }
+  constructor(private readonly liveService: LiveService) {}
 
   async sentUserTestEvent(uid?: DocumentIdentity<User>) {
     this.liveService.emitUserEvent({
@@ -78,10 +75,7 @@ profile subscribers with the roles `Owner`, `Admin` or `Moderator`.
 @Injectable()
 export class TestService {
 
-  constructor(
-    private readonly liveService: LiveService
-  ) {
-  }
+  constructor(private readonly liveService: LiveService) {}
 
   async sentProfileTestEvent(pid?: DocumentIdentity<Profile>) {
     this.liveService.emitProfileEvent({
@@ -119,8 +113,7 @@ export class PollsService {
   constructor(
     private readonly pollsDao: PollsDao,
     private readonly liveService: LiveService
-  ) {
-  }
+  ) {}
 
   async closePoll(context: ProtectedProfileContext, poll: Poll) {
     await this.pollsDao.closePoll(poll);
@@ -143,15 +136,13 @@ contentStore.onContentUpdated<Polls>(PollsModel.contentType, (content: Polls) =>
 For more complex use cases where additional data is needed, you can create custom event classes. Here’s an example:
 
 ```typescript
-export class MyCustomLiveEvent implements ILiveProfileEvent {
+export class MyCustomLiveEvent implements ILiveEvent {
   static eventName = 'customEvent';
   name = MyCustomLiveEvent.eventName;
   module = 'my-module';
   value: string;
 
-  constructor(
-    value: string,
-  ) {
+  constructor(value: string) {
     this.value = value;
   }
 }
