@@ -50,9 +50,11 @@ export class ContentStreamService extends AbstractStreamService<
 
   createQueryFilter(context: ProfileContext, filter?: ContentRequestFilter): FilterQuery<Content> {
     const safeFilter = pick(filter, 'parentId', 'archived', 'deleted', 'query', 'tagIds');
+
+    safeFilter.archived ??= false;
+    safeFilter.deleted ??= false;
+
     return buildContentFilterQuery({
-      archived: false,
-      deleted: false,
       ...safeFilter,
       pid: context.pid,
       oid: context.oid,
