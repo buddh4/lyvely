@@ -51,7 +51,6 @@ const sidebars: SidebarsConfig = {
             label: 'Framework',
             items: [
                 'dev/framework/modules',
-                'dev/framework/i18n',
                 'dev/framework/models',
                 'dev/framework/da',
                 'dev/framework/controllers',
@@ -61,7 +60,9 @@ const sidebars: SidebarsConfig = {
                 'dev/framework/policies',
                 'dev/framework/features',
                 'dev/framework/content',
+                'dev/framework/live',
                 'dev/framework/storage',
+                'dev/framework/i18n',
             ],
         },
         {
