@@ -33,11 +33,18 @@ export class ContentStreamService extends AbstractStreamService<
     context: ProfileContext,
     filter?: ContentRequestFilter
   ): FilterQuery<Content> {
-    const query = this.createQueryFilter(context, filter);
+    const safeFilter = pick(filter, 'parentId', 'archived', 'deleted', 'query', 'tagIds');
+    const query = buildContentFilterQuery({
+      ...safeFilter,
+      pid: context.pid,
+      oid: context.oid,
+    });
+
     // In case we load a single entry we do need to remove the auto parent = null filter
     if (!filter?.parentId) {
       delete query['meta.parentId'];
     }
+
     return query;
   }
 
