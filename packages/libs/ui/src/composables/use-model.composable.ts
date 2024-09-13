@@ -24,5 +24,5 @@ export function useModel<TModel, TModelName extends string = 'modelValue'>(
     { deep: true }
   );
 
-  return { formValue };
+  return { formValue } as { formValue: Ref<UnwrapRef<TModel>> };
 }

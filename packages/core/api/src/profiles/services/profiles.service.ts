@@ -567,7 +567,7 @@ export class ProfilesService {
       const profiles = await this.profileDao.findAllByIds([pid, oid]);
       profile = profiles.find((p) => p._id.equals(assureObjectId(pid)));
       organization = profiles.find(
-        (p) => p.type === ProfileType.Organization && p._id.equals(assureObjectId(oid))
+        (p) => p.type === ProfileType.Organization && p._id.equals(profile?.oid)
       );
     } else if (pid instanceof Profile && oid instanceof Profile) {
       // Both already instances

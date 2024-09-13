@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3';
 
 import LyCenteredPanel from './LyCenteredPanel.vue';
 
-const meta = {
+const meta: Meta<typeof LyCenteredPanel> = {
   title: 'Example/Layouts',
   component: LyCenteredPanel,
   // This component will have an automatically generated docsPage entry: https://storybook.js.org/docs/vue/writing-docs/autodocs
@@ -18,7 +18,7 @@ const meta = {
     body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla metus libero, vestibulum quis libero a, pulvinar feugiat massa. Nam ipsum ante, vehicula id lorem in, posuere malesuada velit. ',
     icon: 'lyvely',
   },
-} satisfies Meta<typeof LyCenteredPanel>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;

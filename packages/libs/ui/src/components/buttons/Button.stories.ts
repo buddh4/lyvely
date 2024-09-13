@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3';
 
 import LyButton from './LyButton.vue';
 
-const meta = {
+const meta: Meta<typeof LyButton & { outlined?: boolean }> = {
   title: 'Example/Button',
   component: LyButton,
   // This component will have an automatically generated docsPage entry: https://storybook.js.org/docs/vue/writing-docs/autodocs
@@ -15,7 +15,7 @@ const meta = {
     disabled: false,
     loading: false,
   },
-} satisfies Meta<typeof LyButton & { outlined?: boolean }>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta & { outlined?: boolean }>;

@@ -11,7 +11,7 @@ import {
 } from '@lyvely/time-series-interface';
 import { formatDate, toTimingId } from '@lyvely/dates';
 import { type PropertiesOf } from '@lyvely/common';
-import { ContentFilter, TimerModel } from '@lyvely/interface';
+import { ContentFilter } from '@lyvely/interface';
 import {
   ICalendarPlanOptions,
   useCalendarPlan,

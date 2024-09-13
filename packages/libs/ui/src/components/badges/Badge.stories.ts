@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3';
 
 import LyBadge from './LyBadge.vue';
 
-const meta = {
+const meta: Meta<typeof LyBadge> = {
   title: 'Example/Badges',
   component: LyBadge,
   tags: [],
@@ -17,7 +17,7 @@ const meta = {
     clickable: false,
     closable: false,
   },
-} satisfies Meta<typeof LyBadge>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;

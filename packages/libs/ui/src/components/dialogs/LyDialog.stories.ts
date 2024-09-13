@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3';
 
 import LyDialog from './LyDialog.vue';
 
-const meta = {
+const meta: Meta<typeof LyDialog> = {
   title: 'Dialogs/Dialog',
   component: LyDialog,
   // This component will have an automatically generated docsPage entry: https://storybook.js.org/docs/vue/writing-docs/autodocs
@@ -19,7 +19,7 @@ const meta = {
     buttonText: 'Close',
     modelValue: true,
   },
-} satisfies Meta<typeof LyDialog>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;

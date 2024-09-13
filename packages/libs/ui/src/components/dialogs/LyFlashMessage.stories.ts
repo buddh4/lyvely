@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3';
 
 import LyFlashMessage from './LyFlashMessage.vue';
 
-const meta = {
+const meta: Meta<typeof LyFlashMessage> = {
   title: 'Dialogs/FlashMessage',
   component: LyFlashMessage,
   tags: [],
@@ -15,7 +15,7 @@ const meta = {
     modelValue: true,
     manual: true,
   },
-} satisfies Meta<typeof LyFlashMessage>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;

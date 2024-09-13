@@ -41,7 +41,7 @@
     "@types/jest": "^29.5.12",
     "ts-jest": "^29.1.4",
     "rollup": "^4.18",
-    "typescript": "^5.4",
+    "typescript": "5.5",
     "tscpaths": "^0.0.9",
     "@rollup/plugin-typescript": "^11.1",
     "@rollup/plugin-commonjs": "^25.0",

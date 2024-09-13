@@ -38,13 +38,13 @@ const argTypes = {
   helpText: { table: { disable: true } },
 };
 
-const meta = {
+const meta: Meta<typeof LyTextarea> = {
   title: 'Forms/Textarea',
   component: LyTextarea,
   // This component will have an automatically generated docsPage entry: https://storybook.js.org/docs/vue/writing-docs/autodocs
   tags: [],
   argTypes,
-} satisfies Meta<typeof LyTextarea>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;

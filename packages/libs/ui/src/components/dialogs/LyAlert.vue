@@ -8,7 +8,7 @@ import { getTextSizeClass, TextSize } from '@/types';
 export interface IProps {
   modelValue?: boolean;
   text?: Translatable;
-  textSize: TextSize;
+  textSize?: TextSize;
   type?: 'danger' | 'info' | 'warning' | 'secondary' | 'success';
   icon?: boolean;
   fullWidth?: boolean;

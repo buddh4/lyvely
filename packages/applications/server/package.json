@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "@lyvely/devtools": "workspace:*",
-    "typescript": "^5.4",
+    "typescript": "5.5",
     "tsc-alias": "^1.8.10",
     "rimraf": "^5.0",
     "depcheck": "^1.4",

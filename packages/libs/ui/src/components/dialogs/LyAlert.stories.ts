@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3';
 
 import LyAlert from './LyAlert.vue';
 
-const meta = {
+const meta: Meta<typeof LyAlert> = {
   title: 'Dialogs/Alert',
   component: LyAlert,
   tags: [],
@@ -21,7 +21,7 @@ const meta = {
     modelValue: true,
     closable: false,
   },
-} satisfies Meta<typeof LyAlert>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;

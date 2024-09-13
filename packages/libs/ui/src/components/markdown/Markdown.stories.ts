@@ -2,12 +2,12 @@ import type { Meta, StoryObj } from '@storybook/vue3';
 
 import MarkdownView from './LyMarkdownView.vue';
 
-const meta = {
+const meta: Meta<typeof MarkdownView> = {
   title: 'Example/Markdown',
   component: MarkdownView,
   // This component will have an automatically generated docsPage entry: https://storybook.js.org/docs/vue/writing-docs/autodocs
   tags: [],
-} satisfies Meta<typeof MarkdownView>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;

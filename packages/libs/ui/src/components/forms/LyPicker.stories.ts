@@ -12,12 +12,12 @@ setTranslationProvider((test: any) => {
 
 const argTypes = {};
 
-const meta = {
+const meta: Meta<typeof LyPicker> = {
   title: 'Forms/BadgeChooser',
   component: LyPicker as any,
   tags: [],
   argTypes,
-} satisfies Meta<typeof LyPicker>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -26,6 +26,9 @@ export const Picker: Story = {
   args: {
     label: 'Badges',
     modelValue: ['BadgeA'],
-    options: ['BadgeA', 'BadgeB'],
+    provider: [
+      { key: 'BadgeA', label: 'BadgeA' },
+      { key: 'BadgeB', label: 'BadgeB' },
+    ],
   },
 };

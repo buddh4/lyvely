@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3';
 
 import LyDrawer from './LyDrawer.vue';
 
-const meta = {
+const meta: Meta<typeof LyDrawer> = {
   title: 'Example/Drawer',
   component: LyDrawer,
   // This component will have an automatically generated docsPage entry: https://storybook.js.org/docs/vue/writing-docs/autodocs
@@ -12,7 +12,7 @@ const meta = {
     modelValue: true,
     title: 'This is Drawer',
   },
-} satisfies Meta<typeof LyDrawer>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;

@@ -44,13 +44,13 @@ const argTypes = {
   helpText: { table: { disable: true } },
 };
 
-const meta = {
+const meta: Meta<typeof LyCheckbox> = {
   title: 'Forms/Checkbox',
   component: LyCheckbox,
   // This component will have an automatically generated docsPage entry: https://storybook.js.org/docs/vue/writing-docs/autodocs
   tags: [],
   argTypes,
-} satisfies Meta<typeof LyCheckbox>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
