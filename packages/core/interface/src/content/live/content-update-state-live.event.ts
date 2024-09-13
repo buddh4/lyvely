@@ -1,11 +1,8 @@
 import { ILiveProfileEvent } from '@/live';
+import {ContentModel} from "../models";
 
 export interface IContentUpdateStateEventOptions {
-  pid: string;
   updatesAvailable: boolean;
-  cid?: string;
-  parentId?: string;
-  streamSort?: number;
 }
 
 export class ContentUpdateStateLiveEvent implements ILiveProfileEvent {
@@ -18,11 +15,11 @@ export class ContentUpdateStateLiveEvent implements ILiveProfileEvent {
   parentId?: string;
   streamSort?: number;
 
-  constructor(options: IContentUpdateStateEventOptions) {
-    this.pid = options.pid;
+  constructor(content: ContentModel, options: IContentUpdateStateEventOptions) {
+    this.pid = content.pid;
+    this.cid = content.id;
+    this.parentId = content.meta.parentId;
+    this.streamSort = content.meta.streamSort;
     this.updatesAvailable = options.updatesAvailable;
-    this.cid = options.cid;
-    this.parentId = options.parentId;
-    this.streamSort = options.streamSort;
   }
 }

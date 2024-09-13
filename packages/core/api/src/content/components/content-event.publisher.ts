@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Content } from '../schemas';
+import { Content, ContentType } from '../schemas';
 import { LiveService } from '@/live';
 import { assureStringId, Model } from '@/core';
 import { InjectModel } from '@nestjs/mongoose';
@@ -36,14 +36,10 @@ export class ContentEventPublisher {
     }
   }
 
-  emitContentUpdated(content: Content) {
+  emitContentUpdated(content: ContentType) {
     this.liveService.emitProfileEvent(
-      new ContentUpdateStateLiveEvent({
+      new ContentUpdateStateLiveEvent(content.toModel(), {
         updatesAvailable: true,
-        pid: assureStringId(content.pid),
-        parentId: content.getParentId() ? assureStringId(content.getParentId()) : undefined,
-        streamSort: content.meta.streamSort,
-        cid: content.id,
       })
     );
   }
