@@ -34,9 +34,15 @@ export async function abortTransaction(transaction: Transaction) {
   }
 }
 
+export async function endTransaction(transaction: Transaction) {
+  if (transactionSupport && transaction.session) {
+    await transaction.session.endSession();
+  }
+}
+
 export async function withTransaction<T>(
   connection: Connection,
-  handler: (transaction: Transaction) => Promise<T>,
+  handler: (transaction?: Transaction) => Promise<T>,
   options?: TransactionOptions
 ): Promise<T> {
   const transaction = await startTransaction(connection, options);
@@ -47,5 +53,7 @@ export async function withTransaction<T>(
   } catch (e) {
     await abortTransaction(transaction);
     throw e;
+  } finally {
+    await endTransaction(transaction);
   }
 }
