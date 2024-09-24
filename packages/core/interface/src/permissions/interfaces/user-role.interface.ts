@@ -9,6 +9,16 @@ export enum UserRole {
 }
 
 /**
+ * Enum representing different user role levels within the platform.
+ */
+export enum UserRoleLevel {
+  Admin,
+  Moderator,
+  User,
+  Visitor,
+}
+
+/**
  * Defines a flat hierarchy of global user roles. This is used for permissions and access rules in which a
  * role with a lower level e.g. an admin includes permissions and access rights of higher levels e.g. user.
  */

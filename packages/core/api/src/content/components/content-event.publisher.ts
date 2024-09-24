@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Content, ContentType } from '../schemas';
-import { LiveService } from '@/live';
-import { assureStringId, Model } from '@/core';
+import { LiveService } from '@/live/services';
+import { Model } from '@/core';
 import { InjectModel } from '@nestjs/mongoose';
 import { ContentUpdateStateLiveEvent } from '@lyvely/interface';
 import { LyvelyConfigService } from '@/config';

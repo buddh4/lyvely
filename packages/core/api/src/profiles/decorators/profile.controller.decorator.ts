@@ -32,6 +32,7 @@ export const ProfileEndpoint = (
   return function (target: any, key?: string | symbol, descriptor?: TypedPropertyDescriptor<any>) {
     if (key && descriptor) {
       profileGuard(target, key, descriptor);
+      return;
     }
     profileGuard(target);
   };

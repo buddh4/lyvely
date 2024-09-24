@@ -1,5 +1,5 @@
-import { ILiveProfileEvent } from '@/live';
-import {ContentModel} from "../models";
+import { ILiveProfileEvent } from '@/live/interfaces';
+import { ContentModel } from '../models';
 
 export interface IContentUpdateStateEventOptions {
   updatesAvailable: boolean;

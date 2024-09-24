@@ -114,7 +114,7 @@ export const useProfileStore = defineStore('profile', () => {
     profile.value = activeProfile;
     latestProfileHandle.setValue(activeProfile.handle);
 
-    useLiveStore().connectUser(profile.value.id);
+    useLiveStore().init();
 
     status.setStatus(Status.SUCCESS);
   }

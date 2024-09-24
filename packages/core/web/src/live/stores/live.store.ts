@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { useEventBus } from '@/core';
 import { createApiUrl, ILiveEvent } from '@lyvely/interface';
+import { API_LIVE_INIT } from '@lyvely/interface/src';
 
 export const useLiveStore = defineStore('live', () => {
   const channel = initBroadcastChannel();
@@ -19,31 +20,28 @@ export const useLiveStore = defineStore('live', () => {
     return !!window.BroadcastChannel && !!navigator.locks;
   }
 
-  function connectUser(pid?: string) {
+  function init() {
     if (isBroadcastEventsEnabled()) {
       navigator.locks.request(
         `live_master`,
         async () =>
           new Promise((resolve) => {
             console.debug(`Connect to user event source`);
-            connectUserEventSource(pid);
+            connectEventSource();
             window.addEventListener('beforeunload', resolve);
           })
       );
     } else {
-      connectUserEventSource(pid);
+      connectEventSource();
     }
   }
 
   let liveEventSource: EventSource | undefined;
-  let livePid: string | undefined;
-  function connectUserEventSource(pid?: string) {
+  function connectEventSource() {
     if (liveEventSource && pid === livePid) return;
     else if (liveEventSource) liveEventSource.close();
 
-    livePid = pid;
-
-    liveEventSource = new EventSource(createApiUrl('/live/user', pid ? { pid } : undefined), {
+    liveEventSource = new EventSource(createApiUrl(API_LIVE_INIT), {
       withCredentials: true,
     });
 
@@ -91,7 +89,7 @@ export const useLiveStore = defineStore('live', () => {
   }
 
   return {
-    connectUser,
+    init,
     on,
     off,
   };

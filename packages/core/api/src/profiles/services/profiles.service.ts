@@ -337,7 +337,7 @@ export class ProfilesService {
    * could not be found.
    * @param identity the identity of the profile.
    * @param throwsException if set to true, throws an exception in case the profile could not be found.
-   * @throws DocumentNotFoundException if throwsExceptio is set to true and the profile could not be found.
+   * @throws DocumentNotFoundException if throwsException is set to true and the profile could not be found.
    */
   async findProfileById(
     identity: DocumentIdentity<Profile> | null | undefined,

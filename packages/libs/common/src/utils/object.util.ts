@@ -399,3 +399,20 @@ export function merge(object: any, ...otherArgs: any[]): any;
 export function merge(object: any, ...otherArgs: any[]): any {
   return _.merge(object, ...otherArgs);
 }
+
+/**
+ * TODO: Replace with Object.groupBy in TS 5.4
+ * Groups the elements of an iterable based on the given function.
+ *
+ * @param {Iterable<T>} iterable - The iterable to be grouped.
+ * @param {function(T): (string | number)} fn - The function used to determine the group key for each element.
+ * @return {Record<string, T[]>} An object where the keys are the group identifiers returned by the function, and the values are arrays of elements that belong to each group.
+ */
+export function groupBy<T>(iterable: Iterable<T>, fn: (item: T) => string | number) {
+  return [...iterable].reduce<Record<string, T[]>>((groups, curr) => {
+    const key = fn(curr);
+    const group: any = groups[key] ?? [];
+    group.push(curr);
+    return { ...groups, [key]: group };
+  }, {});
+}

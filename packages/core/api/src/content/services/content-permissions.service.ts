@@ -1,4 +1,3 @@
-import { ConfigService } from '@nestjs/config';
 import { Injectable } from '@nestjs/common';
 import { ProfileContentContext } from '../schemas';
 import {
@@ -10,11 +9,7 @@ import {
   isProfilePermission,
   IntegrityException,
 } from '@lyvely/interface';
-import {
-  CONFIG_PATH_PERMISSIONS,
-  GlobalPermissionsService,
-  type PermissionConfig,
-} from '@/permissions';
+import { GlobalPermissionsService, type PermissionConfig } from '@/permissions';
 import { ProfilePermissionsService } from '@/profiles';
 import { LyvelyConfigService } from '@/config';
 

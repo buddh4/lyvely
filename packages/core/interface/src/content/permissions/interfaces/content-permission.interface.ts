@@ -38,6 +38,27 @@ export enum ContentUserRole {
 }
 
 /**
+ * Enum representing different user role levels for content management.
+ *
+ * @enum {number}
+ * @readonly
+ */
+export enum ContentUserRoleLevel {
+  Owner,
+  Admin,
+  Manager,
+  Author,
+  Assignee,
+  Moderator,
+  Member,
+  Guest,
+  Organization,
+  Follower,
+  User,
+  Visitor,
+}
+
+/**
  * Defines a flat hierarchy of content user roles. This is used for permissions and access rules in which a
  * role with a lower level e.g. an admin includes permissions and access rights of higher levels e.g. members.
  */
