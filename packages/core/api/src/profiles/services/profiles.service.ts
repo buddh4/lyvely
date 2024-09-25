@@ -503,10 +503,7 @@ export class ProfilesService {
       const organizationContext = organization
         ? new ProfileContext<Organization>({ profile: organization })
         : undefined;
-      return new ProfileContext({
-        profile,
-        organizationContext,
-      });
+      return new ProfileContext({ profile, organizationContext });
     }
 
     const organizationContext = organization

@@ -1,4 +1,4 @@
-import { Body, Param, Post, Put, Request } from '@nestjs/common';
+import { Param, Post, Put, Request } from '@nestjs/common';
 import { Content } from '../schemas';
 import { ContentTypeService } from '../services';
 import { ProtectedProfileContentRequest } from '../types';

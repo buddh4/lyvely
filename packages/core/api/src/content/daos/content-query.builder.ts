@@ -1,4 +1,4 @@
-import { FilterQuery, assureObjectId, DocumentIdentity, DBQuery } from '@/core';
+import { FilterQuery, assureObjectId, DocumentIdentity, DBQuery, assureStringId } from '@/core';
 import { Content } from '../schemas/content.schema';
 import { ProfileRoleLevel } from '@lyvely/interface';
 import { IContentSearchFilter } from './content-search-filter.interface';
@@ -13,14 +13,18 @@ export class ContentCondition {
    * @type {FilterQuery<Content>}
    * @constant
    */
-  static ARCHIVED: FilterQuery<Content> = { 'meta.archived': true };
+  static ARCHIVED(): FilterQuery<Content> {
+    return { 'meta.archived': true };
+  }
 
   /**
    * Represents a filter query for non-archived content.
    *
    * @type {FilterQuery<Content>}
    */
-  static NOT_ARCHIVED: FilterQuery<Content> = { 'meta.archived': { $ne: true } };
+  static NOT_ARCHIVED(): FilterQuery<Content> {
+    return { 'meta.archived': { $ne: true } };
+  }
 
   /**
    * Represents a filter query for retrieving deleted content.
@@ -28,14 +32,18 @@ export class ContentCondition {
    * @type {FilterQuery<Content>}
    * @constant
    */
-  static DELETED: FilterQuery<Content> = { 'meta.deleted': true };
+  static DELETED(): FilterQuery<Content> {
+    return { 'meta.deleted': true };
+  }
 
   /**
    * Represents a filter query for non-deleted content.
    *
    * @type {FilterQuery<Content>}
    */
-  static NOT_DELETED: FilterQuery<Content> = { 'meta.deleted': { $in: [null, false] } };
+  static NOT_DELETED(): FilterQuery<Content> {
+    return { 'meta.deleted': { $in: [null, false] } };
+  }
 
   /**
    * Represents a filter to only include content visible by the given profile role level.
@@ -43,11 +51,11 @@ export class ContentCondition {
    * @param {ProfileRoleLevel} level - The profile role level to use for filtering.
    * @returns {FilterQuery<Content>} - The search filter query.
    */
-  static VISIBILITY: (level: ProfileRoleLevel) => FilterQuery<Content> = (
-    level: ProfileRoleLevel
-  ) => ({
-    'meta.visibility': { $gte: level },
-  });
+  static VISIBILITY(level: ProfileRoleLevel): FilterQuery<Content> {
+    return {
+      'meta.visibility': { $gte: level },
+    };
+  }
 
   /**
    * Filters the content based on the provided profile id.
@@ -56,7 +64,7 @@ export class ContentCondition {
    * @returns {FilterQuery<Content>} - The filter query object with the specified pid.
    */
   static pid(pid: DocumentIdentity<Profile>): FilterQuery<Content> {
-    return { pid: assureObjectId(pid) };
+    return { pid: assureStringId(pid) };
   }
 
   /**
@@ -116,7 +124,7 @@ export class ContentCondition {
    * @return {FilterQuery<Content>} The filter query condition based on the archived flag. If archived is true, it returns the condition for archived content, otherwise it returns the condition for not archived content.
    */
   static archived(archived: boolean): FilterQuery<Content> {
-    return archived ? ContentCondition.ARCHIVED : ContentCondition.NOT_ARCHIVED;
+    return archived ? ContentCondition.ARCHIVED() : ContentCondition.NOT_ARCHIVED();
   }
 
   /**
@@ -126,7 +134,7 @@ export class ContentCondition {
    * @return {FilterQuery<Content>} The filter query condition based on the deleted flag. If deleted is true, it returns the condition for deleted content, otherwise it returns the condition for not deleted content.
    */
   static deleted(deleted: boolean): FilterQuery<Content> {
-    return deleted ? ContentCondition.DELETED : ContentCondition.NOT_DELETED;
+    return deleted ? ContentCondition.DELETED() : ContentCondition.NOT_DELETED();
   }
 
   /**
@@ -202,6 +210,8 @@ export function buildContentFilterQuery<T extends Content = Content>(
     delete filter.query;
   }
 
+  const pid = assureStringId(filter.pid, true);
+
   const conditions = [
     isNotNil(filter.pid) ? ContentCondition.pid(filter.pid) : null,
     isNotNil(filter.oid) ? ContentCondition.oid(filter.oid) : null,
@@ -217,7 +227,7 @@ export function buildContentFilterQuery<T extends Content = Content>(
   ].filter(isNotNil);
 
   if (isNotNil(filter.conditions)) {
-    conditions.push(...filter.conditions.filter((c) => isNotNil(c)));
+    conditions.push(...filter.conditions.filter(isNotNil));
   }
 
   return DBQuery.and(conditions);
