@@ -7,6 +7,7 @@ import {
   UserStatus,
   OtpInfo,
   VerifyEmailDto,
+  USER_REGISTRATION_MODULE_ID,
 } from '@lyvely/interface';
 import { escapeHTML, isNil } from '@lyvely/common';
 import { OtpService } from '@/otp';
@@ -19,7 +20,6 @@ import { validate } from 'class-validator';
 import { I18n } from '@/i18n';
 import { LyvelyConfigService } from '@/config';
 import type { UserRegistrationConfig } from '@/user-registration/interfaces';
-import { USER_REGISTRATION_MODULE_ID } from '@lyvely/interface/src';
 
 const OTP_PURPOSE_VERIFY_REGISTRATION_EMAIL = 'verify-registration-email';
 
