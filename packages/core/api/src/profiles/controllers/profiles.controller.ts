@@ -43,7 +43,7 @@ import {
 import { ProfileVisibilityPolicy } from '../policies';
 import { InjectPolicy } from '@/policies';
 import { ProfileMembershipRequest, ProfileRequest } from '../types';
-import { ProfileEndpoint, ProfileRoleAccess } from '../decorators';
+import { ProfileAccess, ProfileRoleAccess } from '../decorators';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AvatarUploadPipe } from '@/avatars';
 import type { IFileInfo } from '@/files';
@@ -104,7 +104,7 @@ export class ProfilesController implements ProfilesEndpoint {
   }
 
   @Get(ProfilesEndpoints.BY_HANDLE(':handle'))
-  @ProfileEndpoint()
+  @ProfileAccess()
   async getProfileByHandle(
     @Param('handle') handle: string,
     @Request() req: ProfileRequest
@@ -114,14 +114,14 @@ export class ProfilesController implements ProfilesEndpoint {
   }
 
   @Get(':pid')
-  @ProfileEndpoint()
+  @ProfileAccess()
   async getProfileById(@Request() req: ProfileRequest): Promise<ProfileWithRelationsModel> {
     const { context } = req;
     return this.mapAndPopulateProfileWithRelations(context);
   }
 
   @Put(':pid')
-  @ProfileEndpoint()
+  @ProfileAccess()
   @ProfileRoleAccess(ProfileRelationRole.Admin)
   async update(
     @ValidBody() model: UpdateProfileModel,
@@ -133,7 +133,7 @@ export class ProfilesController implements ProfilesEndpoint {
   }
 
   @Put(ProfilesEndpoints.ARCHIVE)
-  @ProfileEndpoint()
+  @ProfileAccess()
   @ProfileRoleAccess(ProfileRelationRole.Owner)
   @HttpCode(HttpStatus.NO_CONTENT)
   async archive(@Request() req: ProfileMembershipRequest): Promise<void> {
@@ -141,7 +141,7 @@ export class ProfilesController implements ProfilesEndpoint {
   }
 
   @Put(ProfilesEndpoints.RESTORE)
-  @ProfileEndpoint()
+  @ProfileAccess()
   @ProfileRoleAccess(ProfileRelationRole.Owner)
   @HttpCode(HttpStatus.NO_CONTENT)
   async restore(@Request() req: ProfileMembershipRequest): Promise<void> {
@@ -149,7 +149,7 @@ export class ProfilesController implements ProfilesEndpoint {
   }
 
   @Put(ProfilesEndpoints.UPDATE_AVATAR)
-  @ProfileEndpoint()
+  @ProfileAccess()
   @ProfileRoleAccess(ProfileRelationRole.Admin)
   @UseGuards(UserThrottlerGuard)
   @UserThrottle(20, 60_000)
@@ -162,7 +162,7 @@ export class ProfilesController implements ProfilesEndpoint {
     return new AvatarModel(avatar);
   }
 
-  @ProfileEndpoint()
+  @ProfileAccess()
   @ProfileRoleAccess(ProfileRelationRole.Admin)
   @Post(ProfilesEndpoints.SET_CALENDAR_PREFERENCES)
   async setCalendarPreferences(

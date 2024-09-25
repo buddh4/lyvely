@@ -13,7 +13,7 @@ export const ProfileController = (
   const controller = Controller(prefix);
   const useClassSerializer = UseClassSerializer();
   const guards = options?.guards || [];
-  const profileGuard = ProfileEndpoint(...guards);
+  const profileGuard = ProfileAccess(...guards);
 
   return function (target: any) {
     controller(target);
@@ -24,7 +24,7 @@ export const ProfileController = (
   };
 };
 
-export const ProfileEndpoint = (
+export const ProfileAccess = (
   ...guards: (CanActivate | Function)[]
 ): MethodDecorator & ClassDecorator => {
   const profileGuard = UseGuards(ProfileGuard, PolicyGuard, ...guards);

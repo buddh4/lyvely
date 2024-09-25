@@ -7,7 +7,6 @@ import { PolicyGuard } from '@/policies/guards';
 import type { IControllerOptions } from '@/common';
 import { UseClassSerializer } from '@/core';
 import { CanActivate } from '@nestjs/common/interfaces';
-import { ProfileGuard } from '@/profiles';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const ContentTypeController = (
@@ -18,24 +17,18 @@ export const ContentTypeController = (
   const controller = Controller(prefix);
   const useClassSerializer = UseClassSerializer();
   const guards = options?.guards || [];
-  const profileGuard = UseGuards(ContentGuard, PolicyGuard, ...guards);
-  const contentTypeGuard = contentType ? StrictContentType(contentType) : false;
+  const contentGuard = ContentAccess(contentType, ...guards);
 
   return function (target: any) {
     controller(target);
-    profileGuard(target);
-
-    if (contentTypeGuard) {
-      contentTypeGuard(target);
-    }
-
+    contentGuard(target);
     if (options?.serialize !== false) {
       useClassSerializer(target);
     }
   };
 };
 
-export const ContentEndpoint = (
+export const ContentAccess = (
   contentType?: string | Type<Content>,
   ...guards: (CanActivate | Function)[]
 ): MethodDecorator & ClassDecorator => {

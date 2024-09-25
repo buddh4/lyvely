@@ -60,10 +60,16 @@ You may want to use the `@Public` decorator in some cases when using custom [JWT
 the default jwt authentication.
 :::
 
-### `@ProfileEndpoint`
+### `@ProfileAccess`
 
-The `@ProfileEndpoint` can be used to add profile guard support on `@GlobalController` controller functions. This may be used
+The `@ProfileAccess` can be used to add profile guard support on `@GlobalController` controller functions. This may be used
 if you need to mix global and profile controller logic within a single controller. Note mixing global and profile context
+is usually not recommended since it increases the complexity of your controller and therefore is prone to errors.
+
+### `@ContentAccess`
+
+The `@ContentAccess` can be used to add content guard support on `@GlobalController` controller functions. This may be used
+if you need to mix global and content controller logic within a single controller. Note mixing global and content context
 is usually not recommended since it increases the complexity of your controller and therefore is prone to errors.
 
 ### `@UserRoleAccess`

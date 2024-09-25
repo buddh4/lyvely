@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia';
 import { useEventBus } from '@/core';
-import { createApiUrl, ILiveEvent } from '@lyvely/interface';
-import { API_LIVE_INIT } from '@lyvely/interface/src';
+import { createApiUrl, ILiveEvent, API_LIVE_INIT } from '@lyvely/interface';
 
 export const useLiveStore = defineStore('live', () => {
   const channel = initBroadcastChannel();

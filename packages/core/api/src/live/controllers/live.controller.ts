@@ -2,9 +2,9 @@ import { Sse, Req, Query, Post } from '@nestjs/common';
 import { type OptionalUserRequest } from '@/users';
 import { LiveService } from '../services';
 import { GlobalController } from '@/common';
-import { ProfileEndpoint, ProfileRoleAccess, type ProtectedProfileRequest } from '@/profiles';
+import { ProfileAccess, ProfileRoleAccess, type ProtectedProfileRequest } from '@/profiles';
 import { ProfileRelationRole, LiveEndpoints } from '@lyvely/interface';
-import { ContentEndpoint } from '@/content/decorators';
+import { ContentAccess } from '@/content/decorators';
 import { type ProtectedProfileContentRequest } from '@/content/types';
 
 @GlobalController('/live')
@@ -35,7 +35,7 @@ export class LiveController {
   }
 
   @Post(LiveEndpoints.PROFILE(':pid'))
-  @ProfileEndpoint()
+  @ProfileAccess()
   @ProfileRoleAccess(ProfileRelationRole.User)
   async subscribeToProfile(
     @Req() request: ProtectedProfileRequest,
@@ -46,7 +46,7 @@ export class LiveController {
   }
 
   @Post(LiveEndpoints.CONTENT(':pid', ':cid'))
-  @ContentEndpoint()
+  @ContentAccess()
   @ProfileRoleAccess(ProfileRelationRole.User)
   async subscribeToContent(
     @Req() request: ProtectedProfileContentRequest,
