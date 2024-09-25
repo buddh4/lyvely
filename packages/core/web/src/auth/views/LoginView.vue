@@ -20,10 +20,11 @@ const router = useRouter();
 const showRememberInfo = ref(false);
 const { loginModel, validator, stage } = storeToRefs(loginStore);
 
-const isPublicRegistration = useAppConfigStore().getModuleConfig<
-  IUserRegistrationAppConfig,
-  UserRegistrationMode
->(USER_REGISTRATION_MODULE_ID, 'registrationMode');
+const isPublicRegistration =
+  useAppConfigStore().getModuleConfig<IUserRegistrationAppConfig, UserRegistrationMode>(
+    USER_REGISTRATION_MODULE_ID,
+    'registrationMode'
+  ) === UserRegistrationMode.PUBLIC;
 
 watch(stage, () => {
   // When moving between stages we want to clear the errors

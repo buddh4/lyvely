@@ -8,7 +8,7 @@ import {
   OtpInfo,
   VerifyEmailDto,
 } from '@lyvely/interface';
-import { escapeHTML } from '@lyvely/common';
+import { escapeHTML, isNil } from '@lyvely/common';
 import { OtpService } from '@/otp';
 import { UserDao, User, UsersService } from '@/users';
 import { ProfilesService } from '@/profiles';
@@ -92,7 +92,7 @@ export class UserRegistrationService {
    */
   private validateRegistrationMode() {
     const registrationMode = this.getRegistrationMode();
-    if (registrationMode === 'none') throw new ForbiddenServiceException();
+    if (registrationMode === UserRegistrationMode.None) throw new ForbiddenServiceException();
   }
 
   /**
@@ -193,6 +193,13 @@ export class UserRegistrationService {
    * @private
    */
   private async getAndValidateInvitation(userRegistration: UserRegistration) {
+    const registrationMode = this.getRegistrationMode();
+    if (registrationMode === UserRegistrationMode.INVITE && isNil(userRegistration.inviteToken)) {
+      throw new ForbiddenServiceException();
+    }
+
+    if (isNil(userRegistration.inviteToken)) return;
+
     const invitationContext = await this.invitationsService.getMailInvitationContext(
       userRegistration.inviteToken!
     );
