@@ -19,6 +19,7 @@ import { validate } from 'class-validator';
 import { I18n } from '@/i18n';
 import { LyvelyConfigService } from '@/config';
 import type { UserRegistrationConfig } from '@/user-registration/interfaces';
+import { USER_REGISTRATION_MODULE_ID } from '@lyvely/interface/src';
 
 const OTP_PURPOSE_VERIFY_REGISTRATION_EMAIL = 'verify-registration-email';
 
@@ -181,7 +182,11 @@ export class UserRegistrationService {
    * @private
    */
   private getRegistrationMode(): UserRegistrationMode {
-    return this.configService.get('modules.user-registration.mode', UserRegistrationMode.PUBLIC);
+    return this.configService.getModuleConfig(
+      USER_REGISTRATION_MODULE_ID,
+      'mode',
+      UserRegistrationMode.PUBLIC
+    );
   }
 
   /**
