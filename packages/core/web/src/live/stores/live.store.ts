@@ -20,6 +20,7 @@ export const useLiveStore = defineStore('live', () => {
   }
 
   function init() {
+    if (liveEventSource) return;
     if (isBroadcastEventsEnabled()) {
       navigator.locks.request(
         `live_master`,
@@ -37,8 +38,7 @@ export const useLiveStore = defineStore('live', () => {
 
   let liveEventSource: EventSource | undefined;
   function connectEventSource() {
-    if (liveEventSource && pid === livePid) return;
-    else if (liveEventSource) liveEventSource.close();
+    if (liveEventSource) liveEventSource.close();
 
     liveEventSource = new EventSource(createApiUrl(API_LIVE_INIT), {
       withCredentials: true,
