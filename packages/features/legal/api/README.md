@@ -1,7 +1,28 @@
-## Lyvely Legal
+# Lyvely Legal
 
 This module can be used to add legal links to the account bar and login section of the platform. It allows you to
 configure translatable legal texts as for example privacy policies and terms of service.
+
+## Configuration
+
+```json
+{
+  "legal": {
+    "sections": {
+      "imprint": {
+        "label": "Imprint",
+        "content": "## Imprint bla bla bla",
+        "locales": {
+          "de": {
+            "label": "Impressum",
+            "content": "## Impressum"
+          }
+        }
+      }
+    }
+  }
+}
+```
 
 ## License
 
