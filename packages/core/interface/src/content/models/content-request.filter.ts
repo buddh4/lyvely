@@ -20,7 +20,7 @@ export class ContentRequestFilter implements IStreamFilter<ContentModel> {
   @Expose()
   @IsMongoId()
   @IsOptional()
-  parentId?: string;
+  parentId?: string | null;
 
   /**
    * Include or exclude archived entries.

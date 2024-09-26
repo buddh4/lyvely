@@ -113,8 +113,10 @@ export class ContentCondition {
    * @param {DocumentIdentity<Content>} parentId - The DocumentIdentity of the parent content document.
    * @returns {FilterQuery<Content>} - The filter query object with the specified 'parentId' filter.
    */
-  static parentId(parentId: DocumentIdentity<Content>): FilterQuery<Content> {
-    return { 'meta.parentId': assureObjectId(parentId) };
+  static parentId(parentId: DocumentIdentity<Content> | null): FilterQuery<Content> {
+    return parentId === null
+      ? { 'meta.parentId': { $exists: 0 } }
+      : { 'meta.parentId': assureObjectId(parentId) };
   }
 
   /**
@@ -219,7 +221,7 @@ export function buildContentFilterQuery<T extends Content = Content>(
     filter.cids?.length ? ContentCondition.cids(filter.cids) : null,
     isNotNil(filter.type) ? ContentCondition.type(filter.type) : null,
     filter.tagIds?.length ? ContentCondition.tagIds(filter.tagIds) : null,
-    isNotNil(filter.parentId) ? ContentCondition.parentId(filter.parentId) : null,
+    typeof filter.parentId !== 'undefined' ? ContentCondition.parentId(filter.parentId) : null,
     isNotNil(filter.archived) ? ContentCondition.archived(filter.archived) : null,
     isNotNil(filter.deleted) ? ContentCondition.deleted(filter.deleted) : null,
     isNotNil(filter.query) ? ContentCondition.query(filter.query) : null,

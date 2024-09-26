@@ -20,7 +20,7 @@ export interface IContentSearchFilter {
   cids?: Array<DocumentIdentity<Content>>;
 
   /** Filter by parent content. **/
-  parentId?: DocumentIdentity<Content>;
+  parentId?: DocumentIdentity<Content> | null;
 
   /** Filter by tags. **/
   tagIds?: DocumentIdentity<Tag>[];

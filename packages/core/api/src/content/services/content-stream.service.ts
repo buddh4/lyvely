@@ -53,6 +53,7 @@ export class ContentStreamService extends AbstractStreamService<
 
     safeFilter.archived ??= false;
     safeFilter.deleted ??= false;
+    safeFilter.parentId ??= null;
 
     return buildContentFilterQuery({
       ...safeFilter,
