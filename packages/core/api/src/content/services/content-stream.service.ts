@@ -57,6 +57,7 @@ export class ContentStreamService extends AbstractStreamService<
 
     return buildContentFilterQuery({
       ...safeFilter,
+      parentId: safeFilter.parentId ?? null,
       pid: context.pid,
       oid: context.oid,
     });
