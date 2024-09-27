@@ -50,6 +50,7 @@ const sidebars: SidebarsConfig = {
             type: 'category',
             label: 'Framework',
             items: [
+                'dev/framework/application',
                 'dev/framework/modules',
                 'dev/framework/models',
                 'dev/framework/da',
@@ -63,6 +64,7 @@ const sidebars: SidebarsConfig = {
                 'dev/framework/live',
                 'dev/framework/storage',
                 'dev/framework/i18n',
+                'dev/framework/testing'
             ],
         },
         {

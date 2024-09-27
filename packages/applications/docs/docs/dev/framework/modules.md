@@ -29,7 +29,7 @@ The following section outlines the fundamental structure and responsibilities of
 Detailed instructions for implementing various aspects of a module are provided later in this documentation.
 :::
 
-## The Interface Package
+## Interface Package
 
 The primary role of the `interface` package is to define endpoint interfaces and model
 classes. In certain instances, it also houses shared domain logic used between the API and web layers. 
@@ -63,7 +63,7 @@ The interface package is responsible for:
 - [Permissions definitions](permissions.md)
 - [Features definitions](features.md)
 
-## The API Package
+## API Package
 
 The `api` package is responsible for implementing the backend API and other backend services, such as queues, 
 workers, and scheduled jobs. The `api` package is essentially a [NestJS](https://nestjs.com/) module, complete with its own dedicated 
@@ -141,25 +141,7 @@ by incorporating Lyvely-specific configuration options. This decorator offers th
 export class ContentCoreModule {}
 ```
 
-### API Testing
-
-To initiate the test environment for an `api` package, run one of the following commands: 
-
-- `rush run -t <api-package> -s dev`: Runs a test api server of the selected package.
-- `rush run -t <api-package> -s dev:debug`: Runs a test api server in debug mode of the selected package.
-
-Just replace the `<api-package>` with the api package you want to test. This will launch a Lyvely API server with the 
-default test configuration on `127.0.0.1:8080`. 
-
-For some core packages the monorepo provides a more convenient way of running a test server:
-
-- `rush api`: Runs the core api test server.
-- `rush api:debug`: Runs the core api test server in debug mode.
-
-- `rush server`: Runs a test server for the server application, which includes all feature modules.
-- `rush server:debug`: Runs a test server for the server application including all feature modules in debug mode.
-
-## The Web Package
+## Web Package
 
 The `web` package is essentially a `VueJs` library, responsible for implementing the modules user interface and
 includes its own dedicated test environment. 
@@ -198,6 +180,74 @@ A frontend module consists of the following properties:
 | init         | An initializer function for manual installation logic.  |
 | install      | Can be used to install vue app extensions and plugins.  |
 
+The following example shows the web module of the journal module:
+
+````typescript
+export const journalsModule = () => {
+  return {
+    id: JOURNALS_MODULE_ID,
+    features: [JournalsFeature],
+    routes: journalRoutes,
+    icon: 'journal',
+    permissions: JournalPermissions,
+    dependencies: [calendarPlanModule(), timeSeriesModule()],
+    i18n: {
+      base: (locale: string) => import(`./locales/base.${locale}.json`),
+      locale: (locale: string) => import(`./locales/${locale}.json`),
+    },
+    init: () => {
+      registerMenuEntries(MENU_PROFILE_DRAWER, [
+        {
+          id: 'journals',
+          moduleId: JOURNALS_MODULE_ID,
+          text: 'journals.profile_drawer.title',
+          sortOrder: 1540,
+          feature: JournalsFeature.id,
+          icon: 'journal',
+          to: { name: 'Journals' },
+        },
+      ]);
+      registerMenuEntries(MENU_PROFILE_MOBILE_FOOTER, [
+        {
+          id: 'journals-footer',
+          moduleId: JOURNALS_MODULE_ID,
+          text: 'journals.profile_drawer.title',
+          sortOrder: 1540,
+          feature: JournalsFeature.id,
+          icon: 'journal',
+          to: { name: 'Journals' },
+        },
+      ]);
+      registerCharts([
+        {
+          type: CHART_SERIES_JOURNAL_VALUE,
+          label: 'journals.charts.value.label',
+          description: 'journals.charts.value.info',
+          form: TimeSeriesChartForm,
+          formProps: {
+            filter: { type: JournalModel.contentType } satisfies IContentSearchQuery,
+          },
+        },
+      ]);
+      registerContentType({
+        type: JournalModel.contentType,
+        modelClass: JournalModel,
+        moduleId: JOURNALS_MODULE_ID,
+        route: ROUTE_JOURNALS_HOME,
+        name: translation('journals.name'),
+        feature: 'journals',
+        interfaces: {
+          upsert: {
+            createModel: CreateJournalModel,
+            component: () => import('./components/modals/UpsertJournalModal.vue'),
+          },
+        },
+      });
+    },
+  } as IModule;
+};
+````
+
 #### Module `init`
 
 The `init` function can be used to manually initialize aspects of your module as for example registering menu entries,
@@ -212,13 +262,3 @@ use any pinia stores directly within this function. (This may change in the futu
 Please refer to the [i18n guide](i18n.md#locale-handling-in-the-frontend) for information about handling locales and
 translations in the frontend.
 :::
-
-### Web Testing
-
-To initiate the test environment for a `web` package, run the `rush -t <web-package> -s dev` command.
-This will launch a Lyvely test web server with default test configuration on `127.0.0.1:3000`.
-
-For testing the core or pwa packages there are more convenient ways of starting a web server:
-
-- `rush web`: Runs a test web server for the core web package.
-- `rush pwa`: Runs a test web server for the pwa application, which includes all features.
