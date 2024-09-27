@@ -54,18 +54,16 @@ import { resolve } from 'node:path';
 type TModule = Type | DynamicModule | Promise<DynamicModule> | ForwardReference;
 
 export interface IAppModuleBuilderOptions {
-  useRecommended?: boolean;
   configFiles?: Array<string> | false;
   loadDefaultConfig?: boolean;
   loadDBConfig?: boolean;
-  config?: DeepPartial<ServerConfiguration<{}>> | null;
+  config?: DeepPartial<ServerConfiguration> | null;
   serveStatic?: boolean;
   manual?: boolean;
   modules?: TModule[];
 }
 
 const defaultOptions: Required<IAppModuleBuilderOptions> = {
-  useRecommended: true,
   configFiles: false,
   loadDefaultConfig: true,
   loadDBConfig: true,
@@ -94,6 +92,8 @@ export class AppModuleBuilder {
         .importMongooseModule()
         .importRecommendedModules()
         .importModules(...this.options.modules);
+    } else {
+      this.importModules(...this.options.modules);
     }
   }
 
@@ -120,7 +120,7 @@ export class AppModuleBuilder {
       configs.push(this.options.config as Partial<ServerConfiguration>);
     }
 
-    const config = await loadConfigs(configs)();
+    const config = await loadConfigs(configs, this.options.loadDBConfig)();
 
     return this.importModules(
       ConfigModule.forRoot({
@@ -255,10 +255,6 @@ export class AppModuleBuilder {
   }
 
   public importRecommendedModules() {
-    if (this.options.useRecommended === false) {
-      return this;
-    }
-
     return this.importModules(
       AvatarsModule,
       MessageModule,

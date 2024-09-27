@@ -22,10 +22,11 @@ export class LyvelyWebApp implements ILyvelyWebApp {
 
   constructor(options: ILyvelyWebAppOptions = {}) {
     // Note the defaults are set at build time of @lyvely/web and not the runtime
+    const baseUrl = import.meta.env.VITE_APP_BASEURL || window.location.origin;
     this.options = {
       env: import.meta.env.VITE_APP_ENV || 'production',
-      baseUrl: import.meta.env.VITE_APP_BASEURL || window.location.origin,
-      apiUrl: import.meta.env.VITE_APP_API_URL || `${window.location.origin}/api`,
+      baseUrl,
+      apiUrl: import.meta.env.VITE_APP_API_URL || `${baseUrl}/api`,
       fallbackLocale: DEFAULT_FALLBACK_LOCALE,
       modules: [],
       ...options,
