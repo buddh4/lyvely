@@ -1,10 +1,10 @@
 import type { StrictEndpoint } from '@/endpoints';
 
 export interface ILiveEndpoint {
-  subscribeToProfile(topic?: string): Promise<void>;
-  subscribeToUser(topic?: string): Promise<void>;
-  subscribeToContent(topic?: string): Promise<void>;
   subscribeToGlobal(topic?: string): Promise<void>;
+  subscribeToUser(topic?: string): Promise<void>;
+  subscribeToProfile(pid: string, topic?: string): Promise<void>;
+  subscribeToContent(pid: string, cid: string, topic?: string): Promise<void>;
 }
 
 export type LiveEndpoint = StrictEndpoint<ILiveEndpoint>;

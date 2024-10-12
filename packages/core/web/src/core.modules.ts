@@ -15,6 +15,7 @@ import userRegistrationModule from './user-registration/module';
 import userInvitationsModule from './user-invitations/module';
 import systemMessagesModule from './system-messages/module';
 import { registerModules } from '@/core';
+import { useLiveModule } from '@/live';
 
 export const registerCoreModules = () => {
   registerModules(
@@ -33,6 +34,7 @@ export const registerCoreModules = () => {
     notificationsModule(),
     userInvitationsModule(),
     userRegistrationModule(),
+    useLiveModule(),
     captchaModule()
   );
 };

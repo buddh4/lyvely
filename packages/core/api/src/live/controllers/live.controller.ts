@@ -1,4 +1,5 @@
-import { Sse, Req, Query, Post } from '@nestjs/common';
+import { Sse, Req, Query, Post, Res, Logger } from '@nestjs/common';
+import { Response } from 'express';
 import { type OptionalUserRequest } from '@/users';
 import { LiveService } from '../services';
 import { GlobalController } from '@/common';
@@ -9,10 +10,17 @@ import { type ProtectedProfileContentRequest } from '@/content/types';
 
 @GlobalController('/live')
 export class LiveController {
+  private readonly logger: Logger = new Logger(LiveController.name);
+
   constructor(private readonly liveService: LiveService) {}
 
   @Sse(LiveEndpoints.INIT)
-  async init(@Req() request: OptionalUserRequest) {
+  async init(@Req() request: OptionalUserRequest, @Res() res: Response) {
+    res.on('close', () => {
+      // TODO: Clean up state for vid
+      this.logger.log(`Closed connection: ${request.user?.id}`);
+    });
+
     return this.liveService.subscribeUser(request.user);
   }
 

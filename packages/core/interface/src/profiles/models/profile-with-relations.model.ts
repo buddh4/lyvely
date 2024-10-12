@@ -42,6 +42,10 @@ export class ProfileWithRelationsModel<TID = string>
     super(obj as Partial<ProfileModel<TID>>);
   }
 
+  isMember(): boolean {
+    return !!this.getMembership();
+  }
+
   getMembership(): MembershipModel | null {
     const result = this.userRelations.find((relation) => isMembershipRelation(relation));
     if (!result) return null;
