@@ -28,3 +28,7 @@ export interface ILiveContentEvent extends ILiveEvent {
 export interface ILiveUserEvent extends ILiveEvent {
   uid: string;
 }
+
+export interface ILiveSubscriptionState {
+  subIds: string[];
+}

@@ -13,9 +13,11 @@ import {
   getUserRole,
   getUserRoleLevelByRole,
   getContentUserRoleLevel,
+  LiveState,
 } from '@lyvely/interface';
 import {
   Profile,
+  ProfileContext,
   ProfileRelationsService,
   ProfilesService,
   ProfileVisibilityPolicy,
@@ -24,7 +26,7 @@ import {
 import { InjectPolicy } from '@/policies';
 import { LyvelyConfigService } from '@/config';
 import { isNil, groupBy } from '@lyvely/common';
-import { type ProtectedProfileContentContext } from '@/content/schemas';
+import { Content, type ProtectedProfileContentContext } from '@/content/schemas';
 import type { ILiveContentEvent } from '@lyvely/interface';
 
 interface UserTopic {
@@ -198,7 +200,7 @@ export class LiveService {
    * @param {OptionalUser} user - The user whose subscriptions are to be initialized.
    * @return {Promise<void>} A promise that resolves when the subscriptions have been initialized.
    */
-  private async initUserSubscriptions(user: OptionalUser) {
+  async initUserSubscriptions(user: OptionalUser) {
     if (!user) return;
 
     const uid = assureStringId(user);
@@ -225,6 +227,7 @@ export class LiveService {
     topics.push({ topic: this.buildLiveGlobalTopic(), visibility: userRoleLevel });
 
     this.subscribe(uid, ...topics);
+    return pids.map((pid) => LiveState.buildProfileSubId(pid));
   }
 
   /**
@@ -249,6 +252,15 @@ export class LiveService {
   }
 
   /**
+   * Unsubscribes from a specific profile topic.
+   * @param context
+   * @param suffix
+   */
+  async removeProfileSubscription(user: User, pid: DocumentIdentity<Profile>, suffix?: string) {
+    this.unsubscribe(user, this.buildLiveProfileTopic(pid, suffix));
+  }
+
+  /**
    * Adds a global subscription for a user by constructing a topic
    * with an optional suffix and setting visibility based on user role.
    *
@@ -261,6 +273,15 @@ export class LiveService {
       topic: this.buildLiveGlobalTopic(suffix),
       visibility: getUserRoleLevelByRole(getUserRole(user)),
     });
+  }
+
+  /**
+   * Unsubscribes from a specific global topic.
+   * @param user
+   * @param suffix
+   */
+  async removeGlobalSubscription(user: User, suffix?: string) {
+    this.unsubscribe(user, this.buildLiveGlobalTopic(suffix));
   }
 
   /**
@@ -280,6 +301,16 @@ export class LiveService {
   }
 
   /**
+   * Unsubscribes from a specific content topic.
+   * @param user
+   * @param cid
+   * @param suffix
+   */
+  async removeContentSubscription(user: User, cid: DocumentIdentity<Content>, suffix?: string) {
+    this.unsubscribe(user, this.buildLiveContentTopic(cid, suffix));
+  }
+
+  /**
    * Subscribes a user to a particular user topic with a specified visibility level.
    *
    * @param {ProtectedProfileContentContext} context - The context containing user and content information.
@@ -291,6 +322,17 @@ export class LiveService {
       topic: this.buildLiveUserTopic(user, suffix),
       visibility: getUserRoleLevelByRole(getUserRole(user)),
     });
+  }
+
+  /**
+   * Unsubscribes a user from a particular user topic.
+   *
+   * @param {ProtectedProfileContentContext} context - The context containing user and content information.
+   * @param {string} [suffix] - An optional string to append to the topic.
+   * @return {Promise<void>} A promise that resolves when the subscription is successfully added.
+   */
+  async removeUserSubscription(user: User, suffix?: string) {
+    this.unsubscribe(user, this.buildLiveUserTopic(user, suffix));
   }
 
   /**

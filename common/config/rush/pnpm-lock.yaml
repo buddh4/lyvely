@@ -665,6 +665,9 @@ importers:
       tslib:
         specifier: ^2.6.2
         version: 2.6.3
+      uuid:
+        specifier: ^9.0
+        version: 9.0.1
       vue:
         specifier: ^3.4
         version: 3.4.31(typescript@5.5.2)

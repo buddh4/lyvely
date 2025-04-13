@@ -40,6 +40,21 @@ export class ContentService {
   }
 
   /**
+   * Retrieves a Content based on the given profile context and
+   * identity, populates policies, and filters them by read access.
+   *
+   * @param {ProfileContext} context - The profile context containing user details and settings.
+   * @param {DocumentIdentity<Content>} cid - An array of document identities to be fetched.
+   * @return {Promise<Content[]>} A promise that resolves to an array of Content objects that the user has read access to.
+   */
+  async findById(context: ProfileContext, cid: DocumentIdentity<Content>): Promise<Content | null> {
+    const content = await this.contentDao.findByProfileAndId(context.profile, cid);
+    if (!content) return null;
+    await this.contentPolicyService.populateContentPolicies(context, content);
+    return content.policies.canRead ? content : null;
+  }
+
+  /**
    * Retrieves a list of Content objects based on the given profile context and
    * document identities, populates their policies, and filters them by read access.
    *

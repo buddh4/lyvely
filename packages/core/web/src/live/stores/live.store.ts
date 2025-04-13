@@ -1,45 +1,61 @@
 import { defineStore } from 'pinia';
 import { useEventBus } from '@/core';
-import { createApiUrl, ILiveEvent, API_LIVE_INIT, useLiveClient } from '@lyvely/interface';
+import {
+  createApiUrl,
+  ILiveEvent,
+  API_LIVE_INIT,
+  useLiveClient,
+  LiveState,
+  type ILiveState,
+} from '@lyvely/interface';
 import { useProfileStore } from '@/profiles';
+import { v4 as uuidV4 } from 'uuid';
 
-type LiveSubscriptionState = {
-  profile: Record<string, string[]>;
-  content: Record<string, string[]>;
-  global: string[];
-  user: string[];
-};
+const tabId = uuidV4();
 
 type LiveSubscriptionEvent = {
-  type: 'profile' | 'content' | 'global' | 'user' | 'state';
-  pid?: string;
-  cid?: string;
-  state?: LiveSubscriptionState;
-  topic?: string;
+  command: 'subscribe' | 'unsubscribe' | 'update';
+  subscription?: AnySubscriptionData;
+  state?: ILiveState;
 };
+
+type LiveSubscriptionScope = 'global' | 'user' | 'profile' | 'content';
+
+interface SubscriptionData {
+  subId: string;
+  topic?: string;
+  tabId: string;
+  scope: LiveSubscriptionScope;
+}
+
+interface GlobalSubscriptionData extends SubscriptionData {
+  topic: string;
+}
+
+interface UserSubscriptionData extends SubscriptionData {
+  topic: string;
+}
+
+interface ProfileSubscriptionData extends SubscriptionData {
+  pid: string;
+}
+
+interface ContentSubscriptionData extends SubscriptionData {
+  pid: string;
+  cid: string;
+}
+
+type AnySubscriptionData =
+  | GlobalSubscriptionData
+  | UserSubscriptionData
+  | ProfileSubscriptionData
+  | ContentSubscriptionData;
 
 export const useLiveStore = defineStore('live', () => {
   const channel = initBroadcastChannel();
   const client = useLiveClient();
   let isMaster = !isBroadcastEventsEnabled();
-
-  /**
-   * Represents the state of a live subscription.
-   * This state is only managed broadcast to other tabs by the master tab.
-   *
-   * @typedef {Object} LiveSubscriptionState
-   * @property {boolean} initialized - Indicates whether the subscription has been initialized.
-   * @property {Object} profile - Contains user profile information.
-   * @property {Object} content - Holds the content related to the subscription.
-   * @property {string[]} global - List of global identifiers related to the subscription.
-   * @property {string[]} user - List of user-specific identifiers related to the subscription.
-   */
-  const state: LiveSubscriptionState = {
-    profile: {},
-    content: {},
-    global: [''],
-    user: [''],
-  };
+  const state = new LiveState();
 
   /**
    * On profile changes, we subscribe to the default topic of this profile if this is not a member profile, since we
@@ -47,124 +63,181 @@ export const useLiveStore = defineStore('live', () => {
    */
   useProfileStore().onSwitchProfile((newProfile, oldProfile) => {
     if (!newProfile.isMember()) {
-      client.subscribeToProfile(newProfile.id);
+      return addProfileSubscription(newProfile.id);
     }
 
     if (oldProfile && !oldProfile.isMember()) {
-      // TODO: unsubscribe
+      return removeProfileSubscription(oldProfile.id);
     }
   });
 
   function addGlobalSubscription(topic: string) {
-    if (!isMaster && channel) {
-      channel.postMessage({
-        type: 'global',
+    return handleSubscriptionEvent({
+      command: 'subscribe',
+      subscription: {
+        subId: LiveState.buildGlobalSubId(topic),
+        scope: 'global',
         topic,
-      } satisfies LiveSubscriptionEvent);
-    } else {
-      _subscribeToGlobal(topic);
-    }
+        tabId,
+      },
+    });
   }
 
-  function _subscribeToGlobal(topic: string) {
-    if (state.global.includes(topic)) return;
-    client
-      .subscribeToGlobal(topic)
-      .then(() => {
-        state.global.push(topic);
-        broadcastState();
-      })
-      .catch((e) => console.error(e));
+  function removeGlobalSubscription(topic: string) {
+    return handleSubscriptionEvent({
+      command: 'unsubscribe',
+      subscription: {
+        subId: LiveState.buildGlobalSubId(topic),
+        scope: 'global',
+        topic,
+        tabId,
+      },
+    });
   }
 
   function addUserSubscription(topic: string) {
-    if (!isMaster && channel) {
-      channel.postMessage({
-        type: 'user',
+    return handleSubscriptionEvent({
+      command: 'subscribe',
+      subscription: {
+        subId: LiveState.buildUserSubId(topic),
+        scope: 'user',
         topic,
-      } satisfies LiveSubscriptionEvent);
-    } else {
-      _subscribeToUser(topic);
-    }
+        tabId,
+      },
+    });
   }
 
-  function _subscribeToUser(topic: string) {
-    if (state.user.includes(topic)) return;
-    client
-      .subscribeToUser(topic)
-      .then(() => {
-        state.user.push(topic);
-        broadcastState();
-      })
-      .catch((e) => console.error(e));
+  function removeUserSubscription(topic: string) {
+    return handleSubscriptionEvent({
+      command: 'unsubscribe',
+      subscription: {
+        subId: LiveState.buildUserSubId(topic),
+        scope: 'user',
+        topic,
+        tabId,
+      },
+    });
   }
 
   function addProfileSubscription(pid: string, topic?: string) {
-    if (!isMaster && channel) {
-      channel.postMessage({
-        type: 'profile',
+    return handleSubscriptionEvent({
+      command: 'subscribe',
+      subscription: {
+        subId: LiveState.buildProfileSubId(pid, topic),
+        scope: 'profile',
         pid,
         topic,
-      } satisfies LiveSubscriptionEvent);
-    } else {
-      _subscribeToProfile(pid, topic);
-    }
+        tabId,
+      },
+    });
   }
 
-  function _subscribeToProfile(pid: string, topic?: string) {
-    const subscriptions = state.profile[pid] || [];
-    if (subscriptions.includes(topic || '')) return Promise.resolve();
-    client
-      .subscribeToProfile(pid, topic)
-      .then(() => {
-        subscriptions.push(topic || '');
-        state.profile[pid] = subscriptions;
-        broadcastState();
-      })
-      .catch((e) => console.error(e));
+  function removeProfileSubscription(pid: string, topic?: string) {
+    return handleSubscriptionEvent({
+      command: 'unsubscribe',
+      subscription: {
+        subId: LiveState.buildProfileSubId(pid, topic),
+        scope: 'profile',
+        topic,
+        pid,
+        tabId,
+      },
+    });
   }
 
   function addContentSubscription(pid: string, cid: string, topic?: string) {
-    if (!isMaster && channel) {
-      channel.postMessage({
-        type: 'content',
+    return handleSubscriptionEvent({
+      command: 'subscribe',
+      subscription: {
+        subId: LiveState.buildContentSubId(pid, cid, topic),
+        scope: 'profile',
         pid,
+        cid,
         topic,
-      } satisfies LiveSubscriptionEvent);
-    } else {
-      _subscribeToContent(pid, cid, topic);
+        tabId,
+      },
+    });
+  }
+
+  function removeContentSubscription(pid: string, cid: string, topic?: string) {
+    return handleSubscriptionEvent({
+      command: 'unsubscribe',
+      subscription: {
+        subId: LiveState.buildContentSubId(pid, cid, topic),
+        scope: 'profile',
+        topic,
+        pid,
+        cid,
+        tabId,
+      },
+    });
+  }
+
+  async function handleSubscriptionEvent(event: LiveSubscriptionEvent) {
+    const { command, state, subscription } = event;
+    if (command === 'update' && isMaster) return;
+    if (command === 'update') {
+      this.state = new LiveState(state);
+      return;
+    }
+    if (!isMaster && channel) {
+      channel.postMessage(event);
+    } else if (command === 'subscribe' && subscription) {
+      await subscribe(subscription);
+    } else if (command === 'unsubscribe' && subscription) {
+      await unsubscribe(subscription);
     }
   }
 
-  function _subscribeToContent(pid: string, cid: string, topic?: string) {
-    const key = `${pid}-${cid}`;
-    const subscriptions = state.content[key] || [];
-    if (subscriptions.includes(topic || '')) return Promise.resolve();
-    client
-      .subscribeToContent(pid, cid, topic)
-      .then(() => {
-        subscriptions.push(topic || '');
-        state.content[key] = subscriptions;
-        broadcastState();
-      })
+  async function subscribe(subscription: AnySubscriptionData) {
+    const { subId, tabId } = subscription;
+    state.addSubscription(tabId, subId);
+    if (state.isSubscribedTo(subId)) return;
+    await subscribeClient(subscription)
+      .then(broadcastState)
       .catch((e) => console.error(e));
   }
 
+  async function unsubscribe(subscription: AnySubscriptionData) {
+    const { subId, tabId } = subscription;
+    state.removeSubscription(tabId, subId);
+    if (!state.isSubscribedTo(subId)) {
+      await unsubscribeClient(subscription)
+        .then(broadcastState)
+        .catch((e) => console.error(e));
+    }
+  }
+
+  async function subscribeClient(subscription: AnySubscriptionData) {
+    switch (subscription.scope) {
+      case 'global':
+        return client.subscribeToGlobal(subscription.topic);
+      case 'user':
+        return client.subscribeToUser(subscription.topic);
+    }
+  }
+
+  async function unsubscribeClient(subscription: AnySubscriptionData) {
+    switch (subscription.scope) {
+      case 'global':
+        return client.unsubscribeFromGlobal(subscription.topic);
+      case 'user':
+        return client.unsubscribeFromUser(subscription.topic);
+    }
+  }
+
   function broadcastState() {
-    if (!isMaster || !channel) return;
-    channel.postMessage({
-      type: 'state',
-      state: state,
+    if (!isMaster) return;
+    channel?.postMessage({
+      command: 'update',
+      state: state.toPlainObject(),
     } satisfies LiveSubscriptionEvent);
   }
 
   function initBroadcastChannel() {
-    const channel = isBroadcastEventsEnabled() ? new BroadcastChannel('live_channel') : null;
-
-    if (!channel) return null;
-
+    if (!isBroadcastEventsEnabled()) return null;
+    const channel = new BroadcastChannel('live_channel');
     channel.onmessage = (event) => emitLocalLiveEvent(event.data);
-
     return channel;
   }
 
@@ -229,26 +302,12 @@ export const useLiveStore = defineStore('live', () => {
     }
   }
 
-  /**
-   * Handles subscription events based on the event type and details.
-   *
-   * Only the master holding the lock is responsible for subscribing to new topics and broadcasting the state.
-   *
-   * @param {LiveSubscriptionEvent} event - The subscription event to handle.
-   * @return {void} This function does not return a value.
-   */
-  function handleSubscriptionEvent(event: LiveSubscriptionEvent) {
-    if (event.state && !isMaster) this.state = event.state;
-    else if (!isMaster) return;
-    else if (event.type === 'global' && event.topic) _subscribeToGlobal(event.topic);
-    else if (event.type === 'user' && event.topic) _subscribeToUser(event.topic);
-    else if (event.type === 'profile' && event.pid) _subscribeToProfile(event.pid, event.topic);
-    else if (event.type === 'content' && event.pid && event.cid)
-      _subscribeToContent(event.pid, event.cid, event.topic);
-  }
-
   function isSubscriptionEvent(evt: any): evt is LiveSubscriptionEvent {
-    return 'scope' in evt;
+    return (
+      (evt.command === 'update' && evt.sate) ||
+      (evt.command === 'subscribe' && evt.subscription) ||
+      (evt.command === 'unsubscribe' && evt.subscription)
+    );
   }
 
   function createLiveEventType(module: string, name: string) {
@@ -276,8 +335,12 @@ export const useLiveStore = defineStore('live', () => {
     on,
     off,
     addGlobalSubscription,
+    removeGlobalSubscription,
     addUserSubscription,
+    removeUserSubscription,
     addProfileSubscription,
+    removeProfileSubscription,
     addContentSubscription,
+    removeContentSubscription,
   };
 });

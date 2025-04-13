@@ -1,11 +1,13 @@
 import { ILyvelyTestingModule } from '@/testing';
 import { buildProfileTest, ProfileTestDataUtils } from '@/profiles';
 import { LiveService } from './live.service';
-import { assureStringId } from '@/core';
+import {assureStringId, createObjectId} from '@/core';
 import { firstValueFrom } from 'rxjs';
 import { ILiveProfileEvent, ILiveUserEvent } from '@lyvely/interface';
 import type { ILiveEvent } from "@lyvely/interface";
 import { ProfileRoleLevel } from "@lyvely/interface";
+import type {ILiveContentEvent} from "@lyvely/interface/src";
+import {ProtectedProfileContentContext, TestContent} from "../../content";
 
 describe('LiveService', () => {
   let testingModule: ILyvelyTestingModule;
@@ -68,6 +70,62 @@ describe('LiveService', () => {
       await expect(userPromise).rejects.toEqual('failed');
     });
   });
+
+  describe('addUserSubscription()', () => {
+    it('subscribe to user events with suffix', async () => {
+      const { member, owner } = await testData.createSimpleGroup();
+
+      const event: ILiveUserEvent = {
+        name: 'testEvent',
+        uid: assureStringId(member),
+        module: 'test',
+      };
+      const memberPromise = firstValueFrom(await liveService.subscribeUser(member));
+      await liveService.addUserSubscription(member, "testSuffix");
+      liveService.emitUserEvent(event, "testSuffix");
+      expect(await memberPromise).toEqual({ data: event });
+    })
+  })
+
+  describe('addProfileSubscription()', () => {
+    it('subscribe to user events with suffix', async () => {
+      const { member, profile, memberContext } = await testData.createSimpleGroup();
+
+      const event: ILiveProfileEvent = {
+        name: 'testEvent',
+        pid: assureStringId(profile),
+        module: 'test',
+      };
+      const memberPromise = firstValueFrom(await liveService.subscribeUser(member));
+      await liveService.addProfileSubscription(memberContext, "testSuffix");
+      liveService.emitProfileEvent(event, "testSuffix");
+      expect(await memberPromise).toEqual({ data: event });
+    })
+  })
+
+  describe('addContentSubscription()', () => {
+    it('subscribe to user events with suffix', async () => {
+      const { member, profile, memberContext } = await testData.createSimpleGroup();
+      const cid = createObjectId()
+
+      const event: ILiveContentEvent = {
+        name: 'testEvent',
+        pid: assureStringId(profile),
+        cid: assureStringId(cid),
+        module: 'test',
+      };
+
+      const contentContext = new ProtectedProfileContentContext({
+        ...memberContext,
+        content: new TestContent(memberContext, { _id: cid })
+      })
+
+      const memberPromise = firstValueFrom(await liveService.subscribeUser(member));
+      await liveService.addContentSubscription(contentContext, "testSuffix");
+      liveService.emitContentEvent(event, "testSuffix");
+      expect(await memberPromise).toEqual({ data: event });
+    })
+  })
 
   describe('subscribeUser()', () => {
     describe('emitProfileEvent()', () => {
