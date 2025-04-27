@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { localStorageManager, sessionStorageManager } from '@/core';
 import { usePageStore } from '@/ui';
 import { useI18nStore } from '@/i18n';
-import { computed, ref } from 'vue';
+import { computed, nextTick, ref, watch } from 'vue';
 import {
   ILoginResponse,
   useAuthClient,
@@ -38,6 +38,12 @@ export const useAuthStore = defineStore('user-auth', () => {
     authTokenExpiration.value = token_expiration || authTokenExpiration.value;
   }
 
+  function onSwitchAuthState(handler: (isAuthenticated: boolean) => void) {
+    watch(isAuthenticated, (isAuthenticated, wasAuthenticated) => {
+      if (isAuthenticated !== wasAuthenticated) handler(isAuthenticated);
+    });
+  }
+
   async function loadUser() {
     const { user, token_expiration } = await authClient.loadUser();
     await setUser(user);
@@ -59,6 +65,7 @@ export const useAuthStore = defineStore('user-auth', () => {
 
     if (redirect) {
       // We use document.location instead of router here in order to force all stores to be cleared
+      await nextTick();
       document.location = '/';
     }
   }
@@ -150,5 +157,6 @@ export const useAuthStore = defineStore('user-auth', () => {
     handleLogin,
     logout,
     loadUser,
+    onSwitchAuthState,
   };
 });

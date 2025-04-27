@@ -1,19 +1,50 @@
 import type { ILiveEndpoint } from './live.endpoint';
+import { useSingleton } from '@lyvely/common';
+import repository from './live.repository';
+import { unwrapResponse } from '@/endpoints';
+import type { ILiveSubscriptionState } from '../interfaces';
 
 export class LiveClient implements ILiveEndpoint {
-  subscribeToContent(suffix?: string): Promise<void> {
-    return Promise.resolve(undefined);
+  resumeState(state: ILiveSubscriptionState) {
+    return unwrapResponse(repository.resumeState(state));
   }
 
-  subscribeToGlobal(suffix?: string): Promise<void> {
-    return Promise.resolve(undefined);
+  subscribeToGlobal(connectId: string, topic?: string): Promise<void> {
+    return unwrapResponse(repository.subscribeToGlobal(connectId, topic));
   }
 
-  subscribeToProfile(suffix?: string): Promise<void> {
-    return Promise.resolve(undefined);
+  unsubscribeFromGlobal(connectId: string, topic?: string): Promise<void> {
+    return unwrapResponse(repository.unsubscribeToGlobal(connectId, topic));
   }
 
-  subscribeToUser(suffix?: string): Promise<void> {
-    return Promise.resolve(undefined);
+  subscribeToUser(connectId: string, topic?: string): Promise<void> {
+    return unwrapResponse(repository.subscribeToUser(connectId, topic));
+  }
+
+  unsubscribeFromUser(connectId: string, topic?: string): Promise<void> {
+    return unwrapResponse(repository.unsubscribeToUser(connectId, topic));
+  }
+
+  subscribeToProfile(pid: string, connectId: string, topic?: string): Promise<void> {
+    return unwrapResponse(repository.subscribeToProfile(pid, connectId, topic));
+  }
+
+  unsubscribeFromProfile(pid: string, connectId: string, topic?: string): Promise<void> {
+    return unwrapResponse(repository.unsubscribeToProfile(pid, connectId, topic));
+  }
+
+  subscribeToContent(pid: string, cid: string, connectId: string, topic?: string): Promise<void> {
+    return unwrapResponse(repository.subscribeToContent(pid, cid, connectId, topic));
+  }
+
+  unsubscribeFromContent(
+    pid: string,
+    cid: string,
+    connectId: string,
+    topic?: string
+  ): Promise<void> {
+    return unwrapResponse(repository.unsubscribeToContent(pid, cid, connectId, topic));
   }
 }
+
+export const useLiveClient = useSingleton(() => new LiveClient());

@@ -74,7 +74,7 @@
     "rxjs": "^7.8.1",
     "slugify": "^1.6",
     "file-type": "^19.0.0",
-    "uuid": "^9.0",
+    "uuid": "^11.0",
     "mongo-seeding": "^4.0",
     "rimraf": "^5.0",
     "mongodb-memory-server": "^8.13.0",

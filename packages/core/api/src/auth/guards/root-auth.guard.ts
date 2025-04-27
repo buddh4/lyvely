@@ -89,7 +89,14 @@ export class RootAuthGuard extends AuthGuard(JWT_ACCESS_TOKEN) {
   }
 
   private isVisitorRequest(request: Request) {
+    if (this.isSSERequest(request) && request.query['visitorAccess'] === '1') {
+      return true;
+    }
     return request.header(Headers.X_VISITOR_ACCESS) === '1';
+  }
+
+  private isSSERequest(request: Request): boolean {
+    return request.headers.accept === 'text/event-stream';
   }
 
   async handleGuestAccess() {

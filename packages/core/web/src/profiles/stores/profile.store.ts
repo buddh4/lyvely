@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { loadingStatus, localStorageManager, Status, useStatus } from '@/core';
+import { loadingStatus, localStorageManager, Status, useStatus, useEventBus } from '@/core';
 import {
   DocumentNotFoundException,
   isMultiUserProfile as _isMultiUserProfile,
@@ -15,21 +15,26 @@ import {
 import { computed, ref, watch } from 'vue';
 import { usePageStore } from '@/ui';
 import { findByPath } from '@lyvely/common';
-import { useLiveStore } from '@/live';
 import { profileRoute } from '@/profiles/routes/profile-route.helper';
 import { LocationQueryRaw } from 'vue-router';
-import { useAuthStore } from '../../auth';
+import { useAuthStore } from '@/auth';
 import { loadDateTimeLocale } from '@lyvely/dates';
 
 const LATEST_PROFILE_HANDLE = 'latest_profile_handle';
 const LATEST_PROFILE_FEATURES = 'latest_profile_features';
 export const latestProfileHandle = localStorageManager.getStoredValue(LATEST_PROFILE_HANDLE);
+export const PROFILE_CHANGE_EVENT = 'profile.store.change';
+
+export type ProfileStoreEvents = {
+  [PROFILE_CHANGE_EVENT]: [ProfileWithRelationsModel, ProfileWithRelationsModel | null];
+};
 
 export const useProfileStore = defineStore('profile', () => {
   const profile = ref<ProfileWithRelationsModel>();
   const locale = computed(() => profile.value?.locale);
   const status = useStatus();
   const profileClient = useProfilesClient();
+  const events = useEventBus<ProfileStoreEvents>();
 
   /** If set to true, the next profile path will fall back to the default profile. **/
   const resetFlag = ref(false);
@@ -49,12 +54,11 @@ export const useProfileStore = defineStore('profile', () => {
     await setActiveProfile(result);
     status.setStatus(Status.SUCCESS);
 
+    resetFlag.value = false;
     return profile.value!;
   }
 
   async function loadProfile(handle?: string | false): Promise<ProfileWithRelationsModel> {
-    status.setStatus(Status.LOADING);
-
     if (handle !== false && !resetFlag.value) {
       handle ??= latestProfileHandle.getValue() || undefined;
     } else {
@@ -69,7 +73,6 @@ export const useProfileStore = defineStore('profile', () => {
         status
       );
       await setActiveProfile(loadedProfile);
-      status.setStatus(Status.SUCCESS);
       resetFlag.value = false;
     } catch (err: any) {
       // Probably an error with latestProfileHandle e.g. profile got deleted
@@ -82,12 +85,12 @@ export const useProfileStore = defineStore('profile', () => {
     return profile.value;
   }
 
-  function isCurrentProfileHandle(handle?: string) {
-    return handle && profile.value?.handle === handle;
+  function isCurrentProfileHandle(handle?: string): boolean {
+    return !!handle && profile.value?.handle === handle;
   }
 
-  function isCurrentProfileId(id?: string) {
-    return id && profile.value?.id === id;
+  function isCurrentProfileId(id?: string): boolean {
+    return !!id && profile.value?.id === id;
   }
 
   function setActiveFeature(featureId: string) {
@@ -111,10 +114,13 @@ export const useProfileStore = defineStore('profile', () => {
   async function setActiveProfile(activeProfile: ProfileWithRelationsModel) {
     await loadDateTimeLocale(activeProfile.locale);
 
+    const oldProfile = profile.value;
+    const sentUpdateEvent = !isCurrentProfileHandle(activeProfile.handle);
+
     profile.value = activeProfile;
     latestProfileHandle.setValue(activeProfile.handle);
 
-    useLiveStore().init();
+    if (sentUpdateEvent) events.emit(PROFILE_CHANGE_EVENT, [activeProfile, oldProfile || null]);
 
     status.setStatus(Status.SUCCESS);
   }
