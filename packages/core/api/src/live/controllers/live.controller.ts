@@ -1,15 +1,14 @@
 import { Sse, Req, Query, Post, Res, Logger, Param, Body } from '@nestjs/common';
 import { Response } from 'express';
-import { type OptionalUserRequest, User } from '@/users';
+import { type OptionalUserRequest, User, UserRequest, UserRoleAccess } from '@/users';
 import { LiveService } from '../services';
 import { GlobalController } from '@/common';
 import {
   ProfileAccess,
-  ProfileRoleAccess,
   ProfilesService,
   type ProtectedProfileRequest,
 } from '@/profiles';
-import { ProfileRelationRole, LiveEndpoints } from '@lyvely/interface';
+import { LiveEndpoints, UserRole } from '@lyvely/interface';
 import { ContentAccess } from '@/content/decorators';
 import { type ProtectedProfileContentRequest } from '@/content/types';
 import type { ILiveSubscriptionState } from '@lyvely/interface';
@@ -26,8 +25,6 @@ export class LiveController {
     private readonly contentService: ContentService
   ) {}
 
-  // TODO: The state needs to be managed on a client level not a user level, this allows guest user support + multiple clients per users
-
   @Sse(LiveEndpoints.INIT)
   async init(
     @Req() request: OptionalUserRequest,
@@ -40,13 +37,19 @@ export class LiveController {
     return this.liveService.subscribeClient(request.user, connectId);
   }
 
-  @Post(LiveEndpoints.RESUME)
+  /**
+   * Currently not in use, but maybe helpful in the future...
+   * @param request
+   * @param state
+   * @param connectId
+   */
+  //@Post(LiveEndpoints.RESUME)
   async resumeState(
     @Req() request: OptionalUserRequest,
     @Body() state: ILiveSubscriptionState,
     @Query('connectId') connectId: string
   ) {
-    const subIds = await this.liveService.initUserSubscriptions(request.user, connectId);
+    const subIds = await this.liveService.initClientSubscriptions(request.user, connectId);
     for (const subId of state.subIds) {
       const subIdParts = subId.split(':');
       switch (subIdParts[0]) {
@@ -85,9 +88,9 @@ export class LiveController {
   }
 
   @Post(LiveEndpoints.USER)
-  @ProfileRoleAccess(ProfileRelationRole.User)
+  @UserRoleAccess(UserRole.User)
   async subscribeToUser(
-    @Req() request: ProtectedProfileContentRequest,
+    @Req() request: UserRequest,
     @Query('connectId') connectId: string,
     @Query('topic') topic?: string
   ) {
@@ -95,9 +98,9 @@ export class LiveController {
   }
 
   @Post(LiveEndpoints.UNUSER)
-  @ProfileRoleAccess(ProfileRelationRole.User)
+  @UserRoleAccess(UserRole.User)
   async unsubscribeFromUser(
-    @Req() request: ProtectedProfileContentRequest,
+    @Req() request: UserRequest,
     @Query('connectId') connectId: string,
     @Query('topic') topic?: string
   ) {
@@ -105,7 +108,6 @@ export class LiveController {
   }
 
   @Post(LiveEndpoints.GLOBAL)
-  @ProfileRoleAccess(ProfileRelationRole.User)
   async subscribeToGlobal(
     @Req() request: ProtectedProfileContentRequest,
     @Query('connectId') connectId: string,
@@ -115,7 +117,6 @@ export class LiveController {
   }
 
   @Post(LiveEndpoints.UNGLOBAL)
-  @ProfileRoleAccess(ProfileRelationRole.User)
   async unsubscribeFromGlobal(
     @Req() request: ProtectedProfileContentRequest,
     @Query('connectId') connectId: string,
@@ -126,7 +127,6 @@ export class LiveController {
 
   @Post(LiveEndpoints.PROFILE(':pid'))
   @ProfileAccess()
-  @ProfileRoleAccess(ProfileRelationRole.User)
   async subscribeToProfile(
     @Req() req: ProtectedProfileRequest,
     @Query('connectId') connectId: string,
@@ -136,7 +136,6 @@ export class LiveController {
   }
 
   @Post(LiveEndpoints.UNPROFILE(':pid'))
-  @ProfileRoleAccess(ProfileRelationRole.User)
   async unsubscribeFromProfile(
     @Req() req: ProtectedProfileRequest,
     @Param('pid') pid: string,
@@ -148,7 +147,6 @@ export class LiveController {
 
   @Post(LiveEndpoints.CONTENT(':pid', ':cid'))
   @ContentAccess()
-  @ProfileRoleAccess(ProfileRelationRole.User)
   async subscribeToContent(
     @Req() req: ProtectedProfileContentRequest,
     @Query('connectId') connectId: string,
@@ -158,7 +156,6 @@ export class LiveController {
   }
 
   @Post(LiveEndpoints.UNCONTENT(':pid', ':cid'))
-  @ProfileRoleAccess(ProfileRelationRole.User)
   async subscribeFromContent(
     @Req() req: ProtectedProfileContentRequest,
     @Param('cid') cid: string,

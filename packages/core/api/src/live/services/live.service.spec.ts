@@ -7,7 +7,7 @@ import { ILiveProfileEvent, ILiveUserEvent } from '@lyvely/interface';
 import type { ILiveEvent } from "@lyvely/interface";
 import { ProfileRoleLevel } from "@lyvely/interface";
 import type {ILiveContentEvent} from "@lyvely/interface/src";
-import {ProtectedProfileContentContext, TestContent} from "../../content";
+import {ProtectedProfileContentContext, TestContent} from "@/content";
 
 describe('LiveService', () => {
   let testingModule: ILyvelyTestingModule;

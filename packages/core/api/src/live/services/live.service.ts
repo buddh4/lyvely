@@ -9,6 +9,7 @@ import {
   BehaviorSubject,
   EMPTY,
   from,
+  concat,
 } from 'rxjs';
 import { assureStringId, DocumentIdentity, OperationMode } from '@/core';
 import { OptionalUser, User } from '@/users';
@@ -36,7 +37,6 @@ import { LyvelyConfigService } from '@/config';
 import { isNil, groupBy } from '@lyvely/common';
 import { Content, type ProfileContentContext } from '@/content/schemas';
 import type { ILiveContentEvent } from '@lyvely/interface';
-import type { IGlobalLiveEvent } from '@lyvely/interface/src';
 
 interface ClientTopic {
   topic: string;
@@ -211,7 +211,7 @@ export class LiveService {
     this.ensureValidConnectId(user, connectId);
 
     if (!this.topicsSubjects.has(connectId)) {
-      await this.initUserSubscriptions(user, connectId);
+      await this.initClientSubscriptions(user, connectId);
     }
 
     const topicsSubject = this.topicsSubjects.get(connectId);
@@ -232,17 +232,9 @@ export class LiveService {
         );
       })
     );
-
-    const testEvent: IGlobalLiveEvent = {
-      name: 'test-event',
-      module: 'test',
-    };
-    const testEvent$ = from([{ data: testEvent }]);
-
     const cachedEvents = this.cachedEvents.get(connectId) ?? [];
     const cachedEvents$ = from(cachedEvents.map((e) => ({ data: e })));
-
-    const combinedEvents$ = merge(testEvent$, cachedEvents$, liveEvents$);
+    const combinedEvents$ = concat(cachedEvents$, liveEvents$);
 
     this.cachedEvents.delete(connectId);
     if (this.reconnectTimers.has(connectId)) {
@@ -254,7 +246,7 @@ export class LiveService {
 
   disconnect(user: OptionalUser, connectId: string) {
     const disconnectTs = Date.now();
-    this.logger.log(`Graceful live disconnect: ${user?.id} - ${connectId}`);
+    this.logger.log(`Graceful live disconnect: ${user?.id ?? 'Guest'} - ${connectId}`);
     const timer = setTimeout(() => {
       const connectInfos = this.connectIds.get(connectId);
       if (!connectInfos) return;
@@ -264,7 +256,7 @@ export class LiveService {
       this.clientTopics.delete(connectId);
       this.cachedEvents.delete(connectId);
       this.reconnectTimers.delete(connectId);
-      this.logger.log(`Disconnected live client: ${user?.id} - ${connectId}`);
+      this.logger.log(`Disconnected live client: ${user?.id ?? 'Guest'} - ${connectId}`);
     }, 10_000);
     this.reconnectTimers.set(connectId, timer);
   }
@@ -272,7 +264,7 @@ export class LiveService {
   ensureValidConnectId(user: OptionalUser, connectId: string) {
     const connectInfos = this.connectIds.get(connectId);
     if (!connectInfos) return;
-    if (connectInfos.userId != assureStringId(user, true)) {
+    if (connectInfos.userId !== assureStringId(user, true)) {
       throw new ForbiddenServiceException('Invalid connectId');
     }
   }
@@ -284,7 +276,8 @@ export class LiveService {
    * @param connectId
    * @return {Promise<void>} A promise that resolves when the subscriptions have been initialized.
    */
-  async initUserSubscriptions(user: OptionalUser, connectId: string) {
+  async initClientSubscriptions(user: OptionalUser, connectId: string) {
+    this.logger.log(`Init live subscription: ${user?.id ?? 'Guest'} - ${connectId}`);
     this.connectIds.set(connectId, { userId: assureStringId(user, true), connectTs: Date.now() });
     const profileRelations = await this.profileRelationsService.findAllProfileRelationsByUser(user);
     const pids: string[] = Array.from(

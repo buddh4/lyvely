@@ -34,5 +34,4 @@ export const LiveEndpoints = {
   UNGLOBAL: 'unsubscribe/global',
 };
 
-export const API_LIVE_INIT = (connectId: string) =>
-  `/live/${LiveEndpoints.INIT}?connectId=${connectId}`;
+export const API_LIVE_INIT = `/live/${LiveEndpoints.INIT}`;

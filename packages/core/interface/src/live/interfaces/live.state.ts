@@ -21,11 +21,11 @@ export class LiveState {
   }
 
   static buildProfileSubId(pid: string, topic?: string) {
-    return `profile:${pid}` + topic ? `:${topic}` : '';
+    return ['profile', pid, topic].filter(Boolean).join(':');
   }
 
   static buildContentSubId(pid: string, cid: string, topic?: string) {
-    return `content:${pid}:${cid}:` + topic ? `:${topic}` : '';
+    return ['content', pid, cid, topic].filter(Boolean).join(':');
   }
 
   constructor(data?: ILiveState | PropertiesOf<LiveState>) {
@@ -50,7 +50,7 @@ export class LiveState {
   }
 
   removeSubscription(tabId: string, subId: string) {
-    this.tabSubscriptions.add(`${subId}:${tabId}`);
+    this.tabSubscriptions.delete(`${subId}:${tabId}`);
     const tabSubscriptionArr = Array.from(this.tabSubscriptions);
     const stillSubscribed = tabSubscriptionArr.find((tabSubId) => tabSubId.startsWith(`${subId}:`));
     if (!stillSubscribed) {
