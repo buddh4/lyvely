@@ -51,6 +51,8 @@ type AnySubscriptionData =
   | ProfileSubscriptionData
   | ContentSubscriptionData;
 
+// TODO: Reconnect on auth changes
+
 export const useLiveStore = defineStore('live', () => {
   const channel = initBroadcastChannel();
   const client = useLiveClient();

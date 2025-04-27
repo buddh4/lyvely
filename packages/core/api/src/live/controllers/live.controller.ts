@@ -35,18 +35,18 @@ export class LiveController {
     @Query('connectId') connectId: string
   ) {
     res.on('close', () => {
-      const disconnectTs = Date.now();
-      // We delay the disconnection to enable reconnections e.g., by other browser tabs
-      setTimeout(() => this.liveService.disconnect(connectId, disconnectTs), 10_000);
-      this.logger.log(`Closed connection: ${request.user?.id} ${connectId}`);
+      this.liveService.disconnect(request.user, connectId);
     });
-
-    return this.liveService.subscribeUser(request.user, connectId);
+    return this.liveService.subscribeClient(request.user, connectId);
   }
 
   @Post(LiveEndpoints.RESUME)
-  async resumeState(@Req() request: OptionalUserRequest, @Body() state: ILiveSubscriptionState) {
-    const subIds = await this.liveService.initUserSubscriptions(request.user);
+  async resumeState(
+    @Req() request: OptionalUserRequest,
+    @Body() state: ILiveSubscriptionState,
+    @Query('connectId') connectId: string
+  ) {
+    const subIds = await this.liveService.initUserSubscriptions(request.user, connectId);
     for (const subId of state.subIds) {
       const subIdParts = subId.split(':');
       switch (subIdParts[0]) {
@@ -88,43 +88,51 @@ export class LiveController {
   @ProfileRoleAccess(ProfileRelationRole.User)
   async subscribeToUser(
     @Req() request: ProtectedProfileContentRequest,
+    @Query('connectId') connectId: string,
     @Query('topic') topic?: string
   ) {
-    await this.liveService.addUserSubscription(request.user, topic);
+    await this.liveService.addUserSubscription(request.user, connectId, topic);
   }
 
   @Post(LiveEndpoints.UNUSER)
   @ProfileRoleAccess(ProfileRelationRole.User)
   async unsubscribeFromUser(
     @Req() request: ProtectedProfileContentRequest,
+    @Query('connectId') connectId: string,
     @Query('topic') topic?: string
   ) {
-    await this.liveService.removeUserSubscription(request.user, topic);
+    await this.liveService.removeUserSubscription(request.user, connectId, topic);
   }
 
   @Post(LiveEndpoints.GLOBAL)
   @ProfileRoleAccess(ProfileRelationRole.User)
   async subscribeToGlobal(
     @Req() request: ProtectedProfileContentRequest,
+    @Query('connectId') connectId: string,
     @Query('topic') topic?: string
   ) {
-    await this.liveService.addGlobalSubscription(request.user, topic);
+    await this.liveService.addGlobalSubscription(request.user, connectId, topic);
   }
 
   @Post(LiveEndpoints.UNGLOBAL)
   @ProfileRoleAccess(ProfileRelationRole.User)
   async unsubscribeFromGlobal(
     @Req() request: ProtectedProfileContentRequest,
+    @Query('connectId') connectId: string,
     @Query('topic') topic?: string
   ) {
-    await this.liveService.addGlobalSubscription(request.user, topic);
+    await this.liveService.addGlobalSubscription(request.user, connectId, topic);
   }
 
   @Post(LiveEndpoints.PROFILE(':pid'))
   @ProfileAccess()
   @ProfileRoleAccess(ProfileRelationRole.User)
-  async subscribeToProfile(@Req() req: ProtectedProfileRequest, @Query('topic') topic?: string) {
-    await this.liveService.addProfileSubscription(req.context, topic);
+  async subscribeToProfile(
+    @Req() req: ProtectedProfileRequest,
+    @Query('connectId') connectId: string,
+    @Query('topic') topic?: string
+  ) {
+    await this.liveService.addProfileSubscription(req.context, connectId, topic);
   }
 
   @Post(LiveEndpoints.UNPROFILE(':pid'))
@@ -132,9 +140,10 @@ export class LiveController {
   async unsubscribeFromProfile(
     @Req() req: ProtectedProfileRequest,
     @Param('pid') pid: string,
+    @Query('connectId') connectId: string,
     @Query('topic') topic?: string
   ) {
-    await this.liveService.removeProfileSubscription(req.user, pid, topic);
+    await this.liveService.removeProfileSubscription(req.user, pid, connectId, topic);
   }
 
   @Post(LiveEndpoints.CONTENT(':pid', ':cid'))
@@ -142,9 +151,10 @@ export class LiveController {
   @ProfileRoleAccess(ProfileRelationRole.User)
   async subscribeToContent(
     @Req() req: ProtectedProfileContentRequest,
+    @Query('connectId') connectId: string,
     @Query('topic') topic?: string
   ) {
-    await this.liveService.addContentSubscription(req.context, topic);
+    await this.liveService.addContentSubscription(req.context, connectId, topic);
   }
 
   @Post(LiveEndpoints.UNCONTENT(':pid', ':cid'))
@@ -152,8 +162,9 @@ export class LiveController {
   async subscribeFromContent(
     @Req() req: ProtectedProfileContentRequest,
     @Param('cid') cid: string,
+    @Query('connectId') connectId: string,
     @Query('topic') topic?: string
   ) {
-    await this.liveService.removeContentSubscription(req.user, cid, topic);
+    await this.liveService.removeContentSubscription(req.user, cid, connectId, topic);
   }
 }
