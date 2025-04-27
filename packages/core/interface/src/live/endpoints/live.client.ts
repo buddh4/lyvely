@@ -9,36 +9,41 @@ export class LiveClient implements ILiveEndpoint {
     return unwrapResponse(repository.resumeState(state));
   }
 
-  subscribeToGlobal(topic?: string): Promise<void> {
-    return unwrapResponse(repository.subscribeToGlobal(topic));
+  subscribeToGlobal(connectId: string, topic?: string): Promise<void> {
+    return unwrapResponse(repository.subscribeToGlobal(connectId, topic));
   }
 
-  unsubscribeFromGlobal(topic?: string): Promise<void> {
-    return unwrapResponse(repository.unsubscribeToGlobal(topic));
+  unsubscribeFromGlobal(connectId: string, topic?: string): Promise<void> {
+    return unwrapResponse(repository.unsubscribeToGlobal(connectId, topic));
   }
 
-  subscribeToUser(topic?: string): Promise<void> {
-    return unwrapResponse(repository.subscribeToUser(topic));
+  subscribeToUser(connectId: string, topic?: string): Promise<void> {
+    return unwrapResponse(repository.subscribeToUser(connectId, topic));
   }
 
-  unsubscribeFromUser(topic?: string): Promise<void> {
-    return unwrapResponse(repository.unsubscribeToUser(topic));
+  unsubscribeFromUser(connectId: string, topic?: string): Promise<void> {
+    return unwrapResponse(repository.unsubscribeToUser(connectId, topic));
   }
 
-  subscribeToProfile(pid: string, topic?: string): Promise<void> {
-    return unwrapResponse(repository.subscribeToProfile(pid, topic));
+  subscribeToProfile(pid: string, connectId: string, topic?: string): Promise<void> {
+    return unwrapResponse(repository.subscribeToProfile(pid, connectId, topic));
   }
 
-  unsubscribeFromProfile(pid: string, topic?: string): Promise<void> {
-    return unwrapResponse(repository.unsubscribeToProfile(pid, topic));
+  unsubscribeFromProfile(pid: string, connectId: string, topic?: string): Promise<void> {
+    return unwrapResponse(repository.unsubscribeToProfile(pid, connectId, topic));
   }
 
-  subscribeToContent(pid: string, cid: string, topic?: string): Promise<void> {
-    return unwrapResponse(repository.subscribeToContent(pid, cid, topic));
+  subscribeToContent(pid: string, cid: string, connectId: string, topic?: string): Promise<void> {
+    return unwrapResponse(repository.subscribeToContent(pid, cid, connectId, topic));
   }
 
-  unsubscribeFromContent(pid: string, cid: string, topic?: string): Promise<void> {
-    return unwrapResponse(repository.unsubscribeToContent(pid, cid, topic));
+  unsubscribeFromContent(
+    pid: string,
+    cid: string,
+    connectId: string,
+    topic?: string
+  ): Promise<void> {
+    return unwrapResponse(repository.unsubscribeToContent(pid, cid, connectId, topic));
   }
 }
 

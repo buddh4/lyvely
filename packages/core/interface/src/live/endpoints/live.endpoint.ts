@@ -3,14 +3,19 @@ import type { ILiveSubscriptionState } from '../interfaces';
 
 export interface ILiveEndpoint {
   resumeState(state: ILiveSubscriptionState): Promise<void>;
-  subscribeToGlobal(topic?: string): Promise<void>;
-  unsubscribeFromGlobal(topic?: string): Promise<void>;
-  subscribeToUser(topic?: string): Promise<void>;
-  unsubscribeFromUser(topic?: string): Promise<void>;
-  subscribeToProfile(pid: string, topic?: string): Promise<void>;
-  unsubscribeFromProfile(pid: string, topic?: string): Promise<void>;
-  subscribeToContent(pid: string, cid: string, topic?: string): Promise<void>;
-  unsubscribeFromContent(pid: string, cid: string, topic?: string): Promise<void>;
+  subscribeToGlobal(connectId: string, topic?: string): Promise<void>;
+  unsubscribeFromGlobal(connectId: string, topic?: string): Promise<void>;
+  subscribeToUser(connectId: string, topic?: string): Promise<void>;
+  unsubscribeFromUser(connectId: string, topic?: string): Promise<void>;
+  subscribeToProfile(pid: string, connectId: string, topic?: string): Promise<void>;
+  unsubscribeFromProfile(pid: string, connectId: string, topic?: string): Promise<void>;
+  subscribeToContent(pid: string, cid: string, connectId: string, topic?: string): Promise<void>;
+  unsubscribeFromContent(
+    pid: string,
+    cid: string,
+    connectId: string,
+    topic?: string
+  ): Promise<void>;
 }
 
 export type LiveEndpoint = StrictEndpoint<ILiveEndpoint>;
@@ -29,4 +34,5 @@ export const LiveEndpoints = {
   UNGLOBAL: 'unsubscribe/global',
 };
 
-export const API_LIVE_INIT = `/live/${LiveEndpoints.INIT}`;
+export const API_LIVE_INIT = (connectId: string) =>
+  `/live/${LiveEndpoints.INIT}?connectId=${connectId}`;

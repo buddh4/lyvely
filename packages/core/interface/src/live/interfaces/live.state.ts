@@ -1,11 +1,14 @@
 import type { PropertiesOf } from '@lyvely/common';
+import { v4 as uuidV4 } from 'uuid';
 
 export interface ILiveState {
+  connectId: string;
   tabSubscriptions?: string[];
   topicSubscriptions?: string[];
 }
 
 export class LiveState {
+  connectId: string = uuidV4();
   tabSubscriptions: Set<string> = new Set();
   topicSubscriptions: Set<string> = new Set();
 
@@ -32,6 +35,9 @@ export class LiveState {
     if (data?.topicSubscriptions) {
       this.topicSubscriptions = new Set(data.topicSubscriptions);
     }
+    if (data?.connectId) {
+      this.connectId = data.connectId;
+    }
   }
 
   isSubscribedTo(subId: string) {
@@ -54,6 +60,7 @@ export class LiveState {
 
   toPlainObject(): ILiveState {
     return {
+      connectId: this.connectId,
       tabSubscriptions: Array.from(this.tabSubscriptions),
       topicSubscriptions: Array.from(this.topicSubscriptions),
     };

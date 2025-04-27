@@ -34,6 +34,11 @@ interface UserTopic {
   visibility: number;
 }
 
+interface ConnectInfos {
+  userId?: string;
+  connectTs: number;
+}
+
 /**
  * A service responsible for managing subscription to live events and emitting those events.
  * The service handles the subscription and event emission logic for different scopes: global, user,
@@ -50,8 +55,14 @@ export class LiveService {
   private userTopics: Map<string, Map<string, UserTopic>> = new Map();
 
   /**
+   * Keep track of connectIds related to users.
+   * @private
+   */
+  private connectIds: Map<string, ConnectInfos> = new Map();
+
+  /**
    * A map storing a collection of BehaviorSubject objects keyed by a string.
-   * Each key represents a unique user id, and the corresponding value is a BehaviorSubject
+   * Each key represents a unique connectId, and the corresponding value is a BehaviorSubject
    * that holds an array of UserTopic objects.
    *
    * BehaviorSubjects are used to emit and observe the current value and any subsequent updates to the array of UserTopic objects.
@@ -162,22 +173,20 @@ export class LiveService {
   /**
    * Subscribes the user or visitor to initial global live events or base profile live events as well as
    * user specific live events.
-   *
-   * @param user
-   * @param pid
    */
-  async subscribeUser(user: OptionalUser): Promise<Observable<ILiveEvent>> {
+  async subscribeUser(user: OptionalUser, connectId: string): Promise<Observable<ILiveEvent>> {
     // TODO: filter by visibility or permission
     // TODO: reconnect on visibility change
-    if (!user) return this.subscribeVisitor();
+    this.ensureValidConnectId(user, connectId);
 
-    await this.initUserSubscriptions(user);
+    if (!this.topicsSubjects.has(connectId)) {
+      await this.initUserSubscriptions(user, connectId);
+    }
 
-    const topicsSubject = this.topicsSubjects.get(assureStringId(user));
+    const topicsSubject = this.topicsSubjects.get(connectId);
     if (!topicsSubject) {
       throw new Error('Topics subject not initialized correctly');
     }
-
     return topicsSubject.pipe(
       switchMap((userTopics) => {
         if (!userTopics) return EMPTY;
@@ -194,16 +203,31 @@ export class LiveService {
     );
   }
 
+  async disconnect(connectId: string, disconnectTs: number) {
+    const connectInfos = this.connectIds.get(connectId);
+    if (!connectInfos) return;
+    if (connectInfos.connectTs > disconnectTs) return;
+    this.connectIds.delete(connectId);
+    this.topicsSubjects.delete(connectId);
+  }
+
+  ensureValidConnectId(user: OptionalUser, connectId: string) {
+    const connectInfos = this.connectIds.get(connectId);
+    if (!connectInfos) return;
+    if (connectInfos.userId != assureStringId(user, true)) {
+      throw new ForbiddenServiceException('Invalid connectId');
+    }
+  }
+
   /**
    * Initializes user subscriptions based on their profile relations and roles.
    *
    * @param {OptionalUser} user - The user whose subscriptions are to be initialized.
+   * @param connectId
    * @return {Promise<void>} A promise that resolves when the subscriptions have been initialized.
    */
-  async initUserSubscriptions(user: OptionalUser) {
-    if (!user) return;
-
-    const uid = assureStringId(user);
+  async initUserSubscriptions(user: OptionalUser, connectId: string) {
+    this.connectIds.set(connectId, { userId: assureStringId(user, true), connectTs: Date.now() });
     const profileRelations = await this.profileRelationsService.findAllProfileRelationsByUser(user);
     const pids: string[] = Array.from(
       new Set(profileRelations.map((relation) => assureStringId(relation.pid)))
@@ -226,7 +250,7 @@ export class LiveService {
     topics.push({ topic: this.buildLiveUserTopic(user), visibility: userRoleLevel });
     topics.push({ topic: this.buildLiveGlobalTopic(), visibility: userRoleLevel });
 
-    this.subscribe(uid, ...topics);
+    this.subscribe(connectId, ...topics);
     return pids.map((pid) => LiveState.buildProfileSubId(pid));
   }
 
@@ -342,37 +366,35 @@ export class LiveService {
    * @param {...UserTopic} newTopics - The new topics to be added to the user's topics.
    * @return {void} This method does not return a value.
    */
-  subscribe(uid: DocumentIdentity<User>, ...newTopics: UserTopic[]) {
+  subscribe(connectId: string, ...newTopics: UserTopic[]) {
     if (!newTopics.length) return;
 
-    uid = assureStringId(uid);
-    const topics = this.userTopics.get(uid) || new Map<string, UserTopic>();
+    const topics = this.userTopics.get(connectId) || new Map<string, UserTopic>();
     newTopics.forEach(({ topic, visibility }) => topics.set(topic, { topic, visibility }));
-    this.userTopics.set(uid, topics);
+    this.userTopics.set(connectId, topics);
 
-    if (!this.topicsSubjects.has(uid)) {
-      this.topicsSubjects.set(uid, new BehaviorSubject<UserTopic[]>(Array.from(topics.values())));
+    if (!this.topicsSubjects.has(connectId)) {
+      this.topicsSubjects.set(
+        connectId,
+        new BehaviorSubject<UserTopic[]>(Array.from(topics.values()))
+      );
     } else {
-      this.topicsSubjects.get(uid)!.next(Array.from(topics.values()));
+      this.topicsSubjects.get(connectId)!.next(Array.from(topics.values()));
     }
   }
 
   /**
    * Unsubscribes a user from the specified topics.
-   *
-   * @param tag uid - The unique identifier of the user.
-   * @param tag topicsToRemove - An array of topics from which the user will be unsubscribed.
-   * @return tag void
+   * @return void
    */
-  unsubscribe(uid: DocumentIdentity<User>, ...topicsToRemove: string[]) {
-    uid = assureStringId(uid);
-    const topics = this.userTopics.get(uid);
+  unsubscribe(connectId: string, ...topicsToRemove: string[]) {
+    const topics = this.userTopics.get(connectId);
     if (!topics) return;
 
     topicsToRemove.forEach((topic) => topics.delete(topic));
 
-    if (this.topicsSubjects.has(uid)) {
-      this.topicsSubjects.get(uid)!.next(Array.from(topics.values()));
+    if (this.topicsSubjects.has(connectId)) {
+      this.topicsSubjects.get(connectId)!.next(Array.from(topics.values()));
     }
   }
 
@@ -381,7 +403,7 @@ export class LiveService {
    *
    * @return {Promise<Observable<any>>} A promise that resolves to an observable which emits events from the subscribed sources.
    */
-  private async subscribeVisitor(): Promise<Observable<any>> {
+  private async subscribeVisitor(connectId: string): Promise<Observable<any>> {
     const observables = new Set<Observable<any>>();
     observables.add(fromEvent(this.eventEmitter, this.buildLiveGlobalTopic()));
     return merge(...observables);

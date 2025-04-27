@@ -10,43 +10,59 @@ export default {
     return api.post<'subscribeToUser'>(LiveEndpoints.RESUME, state);
   },
 
-  async subscribeToUser(topic?: string) {
-    return api.post<'subscribeToUser'>(LiveEndpoints.USER, {}, { params: { topic } });
+  async subscribeToUser(connectId: string, topic?: string) {
+    return api.post<'subscribeToUser'>(LiveEndpoints.USER, {}, { params: { connectId, topic } });
   },
 
-  async unsubscribeToUser(topic?: string) {
-    return api.post<'subscribeToUser'>(LiveEndpoints.UNUSER, {}, { params: { topic } });
+  async unsubscribeToUser(connectId: string, topic?: string) {
+    return api.post<'subscribeToUser'>(LiveEndpoints.UNUSER, {}, { params: { connectId, topic } });
   },
 
-  async subscribeToGlobal(topic?: string) {
-    return api.post<'subscribeToGlobal'>(LiveEndpoints.GLOBAL, {}, { params: { topic } });
-  },
-
-  async unsubscribeToGlobal(topic?: string) {
-    return api.post<'subscribeToGlobal'>(LiveEndpoints.UNGLOBAL, {}, { params: { topic } });
-  },
-
-  async subscribeToProfile(pid: string, topic?: string) {
-    return api.post<'subscribeToProfile'>(LiveEndpoints.PROFILE(pid), {}, { params: { topic } });
-  },
-
-  async unsubscribeToProfile(pid: string, topic?: string) {
-    return api.post<'subscribeToProfile'>(LiveEndpoints.UNPROFILE(pid), {}, { params: { topic } });
-  },
-
-  async subscribeToContent(pid: string, cid: string, topic?: string) {
-    return api.post<'subscribeToContent'>(
-      LiveEndpoints.CONTENT(pid, cid),
+  async subscribeToGlobal(connectId: string, topic?: string) {
+    return api.post<'subscribeToGlobal'>(
+      LiveEndpoints.GLOBAL,
       {},
-      { params: { topic } }
+      { params: { connectId, topic } }
     );
   },
 
-  async unsubscribeToContent(pid: string, cid: string, topic?: string) {
+  async unsubscribeToGlobal(connectId: string, topic?: string) {
+    return api.post<'subscribeToGlobal'>(
+      LiveEndpoints.UNGLOBAL,
+      {},
+      { params: { connectId, topic } }
+    );
+  },
+
+  async subscribeToProfile(pid: string, connectId: string, topic?: string) {
+    return api.post<'subscribeToProfile'>(
+      LiveEndpoints.PROFILE(pid),
+      {},
+      { params: { connectId, topic } }
+    );
+  },
+
+  async unsubscribeToProfile(pid: string, connectId: string, topic?: string) {
+    return api.post<'subscribeToProfile'>(
+      LiveEndpoints.UNPROFILE(pid),
+      {},
+      { params: { connectId, topic } }
+    );
+  },
+
+  async subscribeToContent(pid: string, cid: string, connectId: string, topic?: string) {
+    return api.post<'subscribeToContent'>(
+      LiveEndpoints.CONTENT(pid, cid),
+      {},
+      { params: { connectId, topic } }
+    );
+  },
+
+  async unsubscribeToContent(pid: string, cid: string, connectId: string, topic?: string) {
     return api.post<'subscribeToContent'>(
       LiveEndpoints.UNCONTENT(pid, cid),
       {},
-      { params: { topic } }
+      { params: { connectId, topic } }
     );
   },
 };

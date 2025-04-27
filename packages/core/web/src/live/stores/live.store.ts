@@ -59,7 +59,7 @@ export const useLiveStore = defineStore('live', () => {
 
   /**
    * On profile changes, we subscribe to the default topic of this profile if this is not a member profile, since we
-   * are automatically subscribed to all member profiles default topics.
+   * are automatically subscribed to all member profile default topics.
    */
   useProfileStore().onSwitchProfile((newProfile, oldProfile) => {
     if (!newProfile.isMember()) {
@@ -211,18 +211,18 @@ export const useLiveStore = defineStore('live', () => {
   async function subscribeClient(subscription: AnySubscriptionData) {
     switch (subscription.scope) {
       case 'global':
-        return client.subscribeToGlobal(subscription.topic);
+        return client.subscribeToGlobal(state.connectId, subscription.topic);
       case 'user':
-        return client.subscribeToUser(subscription.topic);
+        return client.subscribeToUser(state.connectId, subscription.topic);
     }
   }
 
   async function unsubscribeClient(subscription: AnySubscriptionData) {
     switch (subscription.scope) {
       case 'global':
-        return client.unsubscribeFromGlobal(subscription.topic);
+        return client.unsubscribeFromGlobal(state.connectId, subscription.topic);
       case 'user':
-        return client.unsubscribeFromUser(subscription.topic);
+        return client.unsubscribeFromUser(state.connectId, subscription.topic);
     }
   }
 
@@ -271,7 +271,7 @@ export const useLiveStore = defineStore('live', () => {
   function connectEventSource() {
     if (liveEventSource) liveEventSource.close();
 
-    liveEventSource = new EventSource(createApiUrl(API_LIVE_INIT), {
+    liveEventSource = new EventSource(createApiUrl(API_LIVE_INIT(state.connectId)), {
       withCredentials: true,
     });
 

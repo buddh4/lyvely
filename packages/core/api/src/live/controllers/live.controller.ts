@@ -26,14 +26,22 @@ export class LiveController {
     private readonly contentService: ContentService
   ) {}
 
+  // TODO: The state needs to be managed on a client level not a user level, this allows guest user support + multiple clients per users
+
   @Sse(LiveEndpoints.INIT)
-  async init(@Req() request: OptionalUserRequest, @Res() res: Response) {
+  async init(
+    @Req() request: OptionalUserRequest,
+    @Res() res: Response,
+    @Query('connectId') connectId: string
+  ) {
     res.on('close', () => {
-      // TODO: Clean up state for vid
-      this.logger.log(`Closed connection: ${request.user?.id}`);
+      const disconnectTs = Date.now();
+      // We delay the disconnection to enable reconnections e.g., by other browser tabs
+      setTimeout(() => this.liveService.disconnect(connectId, disconnectTs), 10_000);
+      this.logger.log(`Closed connection: ${request.user?.id} ${connectId}`);
     });
 
-    return this.liveService.subscribeUser(request.user);
+    return this.liveService.subscribeUser(request.user, connectId);
   }
 
   @Post(LiveEndpoints.RESUME)
