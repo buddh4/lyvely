@@ -7,19 +7,72 @@ import {
   ContentSearchResult,
   ContentInfoResultModel,
 } from '@lyvely/interface';
-import { Post, HttpCode, HttpStatus, Param, Request, Put, Get, Query } from '@nestjs/common';
+import {
+  Post,
+  HttpCode,
+  HttpStatus,
+  Param,
+  Request,
+  Put,
+  Get,
+  Query,
+  UseInterceptors,
+  UploadedFile,
+  Req,
+  Header,
+  Res,
+  NotFoundException,
+} from '@nestjs/common';
 import { Policies } from '@/policies';
 import { ContentService } from '../services';
 import { ContentDeletePolicy, ContentWritePolicy } from '../policies';
 import { ProtectedProfileContentRequest } from '../types';
 import { ContentTypeController } from '../decorators';
-import { ValidBody } from '@/core';
-import { ProfileContext, type ProfileRequest } from '@/profiles';
+import { assureObjectId, ValidBody } from '@/core';
+import { ProfileContext, type ProfileRequest, STORAGE_BUCKET_PROFILE_FILES } from '@/profiles';
 import type { IContentInfoResult, IContentSearchQuery } from '@lyvely/interface';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { FileUpload, type IFileInfo, StorageService } from '@/files';
+import { Response } from 'express';
 
 @ContentTypeController(API_CONTENT)
 export class ContentController implements ContentEndpoint {
-  constructor(private contentService: ContentService) {}
+  constructor(
+    private contentService: ContentService,
+    private storageService: StorageService
+  ) {}
+
+  @Post(ContentEndpoints.ATTACH_FILE(':cid'))
+  @UseInterceptors(FileInterceptor('file'))
+  @Policies(ContentWritePolicy)
+  async uploadImage(
+    // TODO: Implement file upload pipe
+    @UploadedFile() file: IFileInfo,
+    @Req() req: ProtectedProfileContentRequest
+  ): Promise<any> {
+    // TODO: Crete db file entry
+    return await this.storageService.upload(
+      new FileUpload({
+        file,
+        bucket: STORAGE_BUCKET_PROFILE_FILES,
+        createdBy: assureObjectId(req.user),
+      })
+    );
+  }
+
+  @Get(':guid')
+  @Header('Cross-Origin-Resource-Policy', 'cross-origin')
+  public async download(@Param('guid') guid, @Res() res: Response) {
+    const fileStream = await this.storageService.download({
+      guid,
+      bucket: STORAGE_BUCKET_PROFILE_FILES,
+    });
+
+    if (!fileStream) throw new NotFoundException();
+
+    //res.set({ 'Content-Type': 'image/jpeg' });
+    fileStream.pipe(res);
+  }
 
   @Get(ContentEndpoints.SEARCH)
   async search(

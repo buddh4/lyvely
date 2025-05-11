@@ -24,4 +24,5 @@ export const ContentEndpoints = {
   SET_MILESTONE: (cid: string) => `${cid}/set-milestone`,
   UNSET_MILESTONE: (cid: string) => `${cid}/unset-milestone`,
   UPDATE_TASK_LIST_ITEM: (cid: string) => `${cid}/update-task-list-item`,
+  ATTACH_FILE: (cid: string) => `${cid}/attach-file`,
 };
