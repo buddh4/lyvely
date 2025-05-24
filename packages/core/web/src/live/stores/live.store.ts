@@ -82,6 +82,7 @@ export const useLiveStore = defineStore('live', () => {
   });
 
   authStore.onSwitchAuthState(() => {
+    // TODO: Not sure if this is the best approach, too lazy to think about it right now.
     channel?.postMessage({ command: 'reconnect', tabId });
   });
 
