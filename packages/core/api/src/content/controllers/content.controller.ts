@@ -25,43 +25,54 @@ import {
 } from '@nestjs/common';
 import { Policies } from '@/policies';
 import { ContentService } from '../services';
-import { ContentDeletePolicy, ContentWritePolicy } from '../policies';
-import { ProtectedProfileContentRequest } from '../types';
+import { ContentDeletePolicy, ContentWritePolicy, ContentReadPolicy } from '../policies';
+import { ProfileContentRequest, ProtectedProfileContentRequest } from '../types';
 import { ContentTypeController } from '../decorators';
-import { ValidBody } from '@/core';
-import { ProfileContext, type ProfileRequest } from '@/profiles';
-import type { IContentInfoResult, IContentSearchQuery } from '@lyvely/interface';
+import { assureStringId, ValidBody } from '@/core';
+import { ProfileContext, type ProfileRequest, STORAGE_BUCKET_PROFILE_FILES } from '@/profiles';
+import type { IContentInfoResult, IContentSearchQuery, IFileSummary } from '@lyvely/interface';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { type IFileInfo } from '@/files';
+import { ConfigurableFileValidationPipe, type IFileInfo, StorageService } from '@/files';
 import { Response } from 'express';
 
 @ContentTypeController(API_CONTENT)
 export class ContentController implements ContentEndpoint {
-  constructor(private contentService: ContentService) {}
+  constructor(
+    private contentService: ContentService,
+    private storageService: StorageService
+  ) {}
 
   @Put(ContentEndpoints.ATTACH_FILE(':cid'))
   @UseInterceptors(FileInterceptor('file'))
   @Policies(ContentWritePolicy)
   async attachFile(
     // TODO: Implement file upload pipe
-    @UploadedFile() file: IFileInfo,
+    @UploadedFile(ConfigurableFileValidationPipe) file: IFileInfo,
     @Req() req: ProtectedProfileContentRequest
   ): Promise<any> {
     return await this.contentService.attachFile(req.context, file);
   }
 
-  @Get(':guid')
+  @Get(ContentEndpoints.DOWNLOAD_ATTACHED_FILE(':cid', ':fileId'))
   @Header('Cross-Origin-Resource-Policy', 'cross-origin')
-  public async downloadAttachment(@Param('guid') guid, @Res() res: Response) {
-    /*const fileStream = await this.storageService.download({
-      guid,
+  public async downloadAttachedFile(
+    @Request() req: ProfileContentRequest,
+    @Param('fileId') fileId,
+    @Res() res: Response
+  ): Promise<any> {
+    // TODO: This does not seem to work for guest users
+    const file = await this.contentService.getAttachedFileInfo(req.context, fileId);
+    if (!file) throw new NotFoundException();
+    const fileStream = await this.storageService.download({
+      guid: file.guid,
       bucket: STORAGE_BUCKET_PROFILE_FILES,
     });
-
     if (!fileStream) throw new NotFoundException();
-
-    //res.set({ 'Content-Type': 'image/jpeg' });
-    fileStream.pipe(res);*/
+    res.set({
+      'Content-Type': file.meta.mimeType,
+      'Content-Disposition': `attachment; filename="${file.meta.name}"`,
+    });
+    fileStream.pipe(res);
   }
 
   @Get(ContentEndpoints.SEARCH)
@@ -82,6 +93,19 @@ export class ContentController implements ContentEndpoint {
     const contents = await this.findContent(filter, req.context);
     const infos = contents.map((content) => content.getInfo());
     return new ContentInfoResultModel({ infos });
+  }
+
+  @Get(ContentEndpoints.ATTACHED_FILE_INFOS(':cid'))
+  @Policies(ContentReadPolicy)
+  async getAttachedFileInfos(
+    @Request() req: ProfileContentRequest
+  ): Promise<{ files: IFileSummary[] }> {
+    const fileInfos = await this.contentService.getAttachedFileInfos(req.context);
+    const files: IFileSummary[] = fileInfos.map((file) => ({
+      id: assureStringId(file),
+      ...file.meta,
+    }));
+    return { files };
   }
 
   /**

@@ -55,6 +55,26 @@ export const useApi = <TClient>(resource: string, version?: string) => {
       }
     },
 
+    download: async <
+      T extends ResultType<TClient>,
+      R = AxiosResponse<ApiResponse<T, TClient>>,
+      D = any,
+    >(
+      path?: string | ApiRequestConfig<D>,
+      config?: ApiRequestConfig<D>
+    ) => {
+      try {
+        config = (isPlainObject(path) ? path : config) || {};
+        path = typeof path === 'string' ? path : undefined;
+        return await useApiRepository().get<T, R, D>(
+          createPath(resource, path, config),
+          prepareConfig({ ...config, responseType: 'blob' }, version)
+        );
+      } catch (e) {
+        throw errorToServiceException(e);
+      }
+    },
+
     /**
      * Sends a delete request to the endpoint.
      *

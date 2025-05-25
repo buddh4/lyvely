@@ -14,7 +14,7 @@ export class ConfigurableFileValidationPipe implements PipeTransform {
       throw new BadRequestException('File is required');
     }
 
-    const { upload } = this.configService.getModuleConfig('files');
+    const upload = this.configService.getModuleConfig('files', 'upload');
 
     if (!upload) {
       this.logger.warn('No upload configuration found. Skipping file validation...');

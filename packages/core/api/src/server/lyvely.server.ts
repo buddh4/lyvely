@@ -208,7 +208,7 @@ export class LyvelyServer {
 
     cors.credentials = cors.credentials !== false;
     cors.methods ||= ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
-    cors.exposedHeaders ||= ['set-cookie'];
+    cors.exposedHeaders ||= ['set-cookie', 'content-disposition'];
 
     cors.allowedHeaders ||= [
       'Accept-Language',

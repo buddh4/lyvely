@@ -1,5 +1,5 @@
 import { Content, ProfileContentContext } from '../schemas';
-import { ConflictException, Injectable, Logger } from '@nestjs/common';
+import { ConflictException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { ContentDao, IContentSearchFilter } from '../daos';
 import {
   DocumentNotFoundException,
@@ -9,6 +9,7 @@ import {
 import { ProfileContext, STORAGE_BUCKET_PROFILE_FILES } from '@/profiles';
 import {
   assureObjectId,
+  assureStringId,
   DocumentIdentity,
   IBaseFetchQueryOptions,
   IFetchQueryOptions,
@@ -211,11 +212,28 @@ export class ContentService {
         file,
         bucket: STORAGE_BUCKET_PROFILE_FILES,
         createdBy: assureObjectId(context.user),
+        context: {
+          oid: context.oid,
+          pid: context.pid,
+        },
       })
     );
     await this.fileDao.save(storedFile);
     await this.contentDao.updateOneByProfileAndId(context.profile, context.content, {
       $addToSet: { 'meta.attachedFileIds': storedFile.id },
     });
+  }
+
+  async getAttachedFileInfos(context: ProfileContentContext) {
+    if (!context.content.meta.attachedFileIds?.length) return [];
+    const fileIds = context.content.meta.attachedFileIds;
+    return await this.fileDao.findAllByShardAndIds(context, fileIds);
+  }
+
+  async getAttachedFileInfo(context: ProfileContentContext, fileId: string) {
+    if (!context.content.meta.attachedFileIds?.map((fid) => assureStringId(fid).includes(fileId))) {
+      return null;
+    }
+    return await this.fileDao.findOneByShardAndId(context, fileId);
   }
 }

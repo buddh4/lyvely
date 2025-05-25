@@ -14,7 +14,7 @@ import {
   BaseDocument,
   UpdateOptions,
 } from '@/core';
-import { ProfileShard, Profile } from '../schemas';
+import { ProfileShard, Profile, OptionalProfileShard } from '../schemas';
 
 /**
  * This type is used as compound type for different kinds of profile relation on DAO level.
@@ -31,7 +31,7 @@ export type ProfileShardData =
  * Collections of this type share similar access pattern and may contain similar indexes or shard strategies.
  */
 export abstract class ProfileShardDao<
-  T extends ProfileShard,
+  T extends OptionalProfileShard,
   TVersions extends BaseDocument = T,
 > extends AbstractDao<T, TVersions> {
   /**

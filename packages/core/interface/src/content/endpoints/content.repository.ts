@@ -46,6 +46,16 @@ export default {
     return api.put<'attachFile'>(ContentEndpoints.ATTACH_FILE(cid), formData);
   },
 
+  downloadAttachedFile(cid: string, fileId: string) {
+    return api.download<'downloadAttachedFile'>(
+      ContentEndpoints.DOWNLOAD_ATTACHED_FILE(cid, fileId)
+    );
+  },
+
+  getAttachedFileInfos(cid: string) {
+    return api.get<'getAttachedFileInfos'>(ContentEndpoints.ATTACHED_FILE_INFOS(cid));
+  },
+
   updateTaskListItem(
     cid: string,
     update: UpdateTaskListItemModel,

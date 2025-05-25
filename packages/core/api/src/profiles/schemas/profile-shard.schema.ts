@@ -15,3 +15,18 @@ export abstract class ProfileShard {
 
   id: string;
 }
+
+export abstract class OptionalProfileShard {
+  @ObjectIdProp({ required: true })
+  oid?: TObjectId;
+
+  @ObjectIdProp({ required: true })
+  pid?: TObjectId;
+
+  @Prop({ required: true, default: DEFAULT_REGION })
+  region?: string;
+
+  _id: TObjectId;
+
+  id: string;
+}

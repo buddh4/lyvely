@@ -45,6 +45,15 @@ export class ContentClient implements IContentClient {
     return unwrapResponse(repository.attachFile(cid, formData));
   }
 
+  async downloadAttachedFile(cid: string, fileId: string) {
+    const response = await repository.downloadAttachedFile(cid, fileId);
+    return new Blob([response.data as Blob]);
+  }
+
+  async getAttachedFileInfos(cid: string) {
+    return unwrapResponse(repository.getAttachedFileInfos(cid));
+  }
+
   async updateTaskListItem(
     cid: string,
     update: UpdateTaskListItemModel,
