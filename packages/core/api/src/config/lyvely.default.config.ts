@@ -74,6 +74,34 @@ export default {
     uri: process.env.MONGODB_URI || 'mongodb://localhost:27017/lyvely',
     debug: false,
   },
+  file: {
+    maxSizeInBytes: 1024 * 1024 * 1024,
+    allowedMimeTypes: [
+      // Images
+      'image/jpeg',
+      'image/png',
+      'image/gif',
+      'image/webp',
+      'image/svg+xml',
+
+      // Documents
+      'application/pdf',
+      'application/msword', // .doc
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
+      'application/vnd.ms-excel', // .xls
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // .xlsx
+      'application/vnd.ms-powerpoint', // .ppt
+      'application/vnd.openxmlformats-officedocument.presentationml.presentation', // .pptx
+      'text/plain',
+
+      // Media
+      'video/mp4',
+      'audio/mpeg',
+      'audio/ogg',
+      'video/ogg',
+      'audio/wav',
+    ],
+  },
   mail,
   helmet: {
     contentSecurityPolicy: {

@@ -19,10 +19,10 @@ export interface IFilesOptions {
   upload?: {
     /** Used for file uploads, this should be a temporary folder (Default: storage.local.dest/tmp) **/
     dest?: string;
-    limits?: {
-      /** For multipart forms, the max file size (in bytes)(Default: Infinity) */
-      fileSize?: number;
-    };
+    /** For multipart forms, the max file size (in bytes)(Default: Infinity) */
+    maxSizeInBytes?: number;
+    /** For this the ConfigurableFileValidationPipe needs to be used. **/
+    allowedMimeTypes?: string[];
   };
 }
 

@@ -201,10 +201,8 @@ The `files` configuration can be used to configure different storage providers a
     upload: {
       // Used for file uploads, this should be a temporary folder (Default: storage.local.dest/tmp).
       dest: '/my/upload/path',
-      limits: {
-        // For multipart forms, the max file size (in bytes)(Default: Infinity).
-        fileSize: number
-      }
+      // For multipart forms, the max file size (in bytes)(Default: Infinity).
+      maxSizeInBytes: number,
     },
     storage: {
       // Here we configure our custom storage provider and set it as default.

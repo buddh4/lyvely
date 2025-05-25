@@ -31,7 +31,7 @@ export class MulterConfigFactory implements MulterOptionsFactory {
     return {
       fileSize: this.configService.getModuleConfig(
         'files',
-        'upload.limits.fileSize',
+        'upload.maxSizeInBytes',
         1024 * 1024 * 1024
       ),
       files: 1,
