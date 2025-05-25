@@ -9,3 +9,4 @@ export * from './models';
 export * from './registries';
 export * from './files.module';
 export * from './files.constants';
+export * from './daos';

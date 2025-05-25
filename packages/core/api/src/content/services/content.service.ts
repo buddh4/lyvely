@@ -6,7 +6,7 @@ import {
   FieldValidationException,
   UpdateTaskListItemModel,
 } from '@lyvely/interface';
-import { ProfileContext } from '@/profiles';
+import { ProfileContext, STORAGE_BUCKET_PROFILE_FILES } from '@/profiles';
 import {
   assureObjectId,
   DocumentIdentity,
@@ -17,6 +17,7 @@ import {
 import { User } from '@/users';
 import { ContentPolicyService } from './content-policy.service';
 import { updateMarkdownTaskListItem } from '@/markdown';
+import { FileDao, type IFileInfo, StorageService, FileUpload } from '@/files';
 
 @Injectable()
 export class ContentService {
@@ -24,7 +25,9 @@ export class ContentService {
 
   constructor(
     private contentDao: ContentDao,
-    protected contentPolicyService: ContentPolicyService
+    protected contentPolicyService: ContentPolicyService,
+    private storageService: StorageService,
+    private fileDao: FileDao
   ) {}
 
   /**
@@ -200,5 +203,19 @@ export class ContentService {
       content,
       await updateMarkdownTaskListItem(content.content.getTextContent(), position, checked)
     );
+  }
+
+  async attachFile(context: ProfileContentContext, file: IFileInfo) {
+    const storedFile = await this.storageService.upload(
+      new FileUpload({
+        file,
+        bucket: STORAGE_BUCKET_PROFILE_FILES,
+        createdBy: assureObjectId(context.user),
+      })
+    );
+    await this.fileDao.save(storedFile);
+    await this.contentDao.updateOneByProfileAndId(context.profile, context.content, {
+      $addToSet: { 'meta.attachedFileIds': storedFile.id },
+    });
   }
 }

@@ -11,7 +11,7 @@ import { IModule } from '@/core';
 import { MENU_CONTENT_DROPDOWN } from '@/content/content.constants';
 import { useContentEditStore } from '@/content/stores';
 import { getContentTypeOptions } from '@/content/registries';
-import { useContentArchive } from '@/content/composables';
+import { useContentArchive, useContentAttachments } from '@/content/composables';
 import { useConfirm } from '@/ui';
 
 export default () => {
@@ -47,6 +47,15 @@ export default () => {
         sortOrder: 1000,
         icon: 'edit',
         text: 'common.edit',
+      }));
+      registerMenuEntry<ContentModel>(MENU_CONTENT_DROPDOWN, (content: ContentModel) => ({
+        id: 'content-upload-attachment',
+        moduleId: CONTENT_MODULE_ID,
+        click: () => useContentAttachments(content).uploadAttachment(),
+        condition: content.policies.canWrite,
+        sortOrder: 1100,
+        icon: 'attachment',
+        text: 'content.stream.attach-file',
       }));
       registerMenuEntry<ContentModel>(MENU_CONTENT_DROPDOWN, (content: ContentModel) => ({
         id: 'content-archive',

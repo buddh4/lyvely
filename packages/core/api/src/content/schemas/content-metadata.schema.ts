@@ -34,6 +34,9 @@ export class ContentMetadata implements IContentMetadata {
   @ObjectIdArrayProp()
   managers?: TObjectId[];
 
+  @ObjectIdArrayProp()
+  attachedFileIds?: TObjectId[];
+
   @Prop()
   @PropertyType(Number, { default: 0 })
   childCount: number;

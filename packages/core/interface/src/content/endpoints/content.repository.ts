@@ -42,6 +42,10 @@ export default {
     return api.post<'restore'>(ContentEndpoints.RESTORE(cid), {}, options);
   },
 
+  attachFile(cid: string, formData: any) {
+    return api.put<'attachFile'>(ContentEndpoints.ATTACH_FILE(cid), formData);
+  },
+
   updateTaskListItem(
     cid: string,
     update: UpdateTaskListItemModel,

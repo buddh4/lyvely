@@ -41,6 +41,10 @@ export class ContentClient implements IContentClient {
     return unwrapResponse(repository.restore(cid, options));
   }
 
+  async attachFile(cid: string, formData: any) {
+    return unwrapResponse(repository.attachFile(cid, formData));
+  }
+
   async updateTaskListItem(
     cid: string,
     update: UpdateTaskListItemModel,

@@ -12,6 +12,7 @@ export interface IContentClient {
   setMilestone: (cid: string, mid: string) => Promise<void>;
   unsetMilestone: (cid: string) => Promise<void>;
   updateTaskListItem: (cid: string, update: UpdateTaskListItemModel) => Promise<ContentModel>;
+  attachFile: (cid: string, file: any) => Promise<void>;
 }
 
 export type ContentEndpoint = Endpoint<IContentClient>;

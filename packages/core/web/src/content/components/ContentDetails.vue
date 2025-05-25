@@ -7,6 +7,7 @@ import { useRouter } from 'vue-router';
 import ContentMarkdown from './ContentMarkdown.vue';
 import { LyIcon } from '@lyvely/ui';
 import { useContentStreamEntryInfo } from './content-stream-entry-info.composable';
+import ContentAttachments from './ContentAttachments.vue';
 
 export interface IProps {
   model: ContentModel;
@@ -74,6 +75,7 @@ function selectTag(tagId: string) {
       <slot name="body">
         <content-markdown :model="model" />
       </slot>
+      <content-attachments :model="model" />
     </div>
     <div v-if="$slots.footer" class="rounded-b border-t border-divide bg-main p-2.5 md:p-4">
       <slot name="footer" />

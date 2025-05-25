@@ -12,6 +12,7 @@ import {
   ImageFileSchema,
 } from './schemas';
 import { FileMimeTypeRegistry, FileTypeRegistry } from './registries';
+import { FileDao } from './daos';
 
 @Global()
 @LyvelyModule({
@@ -29,7 +30,7 @@ import { FileMimeTypeRegistry, FileTypeRegistry } from './registries';
       },
     ]),
   ],
-  providers: [StorageService, FileMimeTypeRegistry, FileTypeRegistry],
-  exports: [StorageService],
+  providers: [StorageService, FileMimeTypeRegistry, FileTypeRegistry, FileDao],
+  exports: [StorageService, FileDao],
 })
 export class FilesModule {}

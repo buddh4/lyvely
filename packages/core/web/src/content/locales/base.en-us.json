@@ -2,6 +2,7 @@
   "content": {
     "stream": {
       "no-content": "No Content",
+      "attach-file": "Attach File",
       "empty": "No content has been added yet.",
       "empty-filter": "No content found matching this filter.",
       "filter": {

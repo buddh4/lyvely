@@ -52,6 +52,7 @@ export interface IContentMetadata<TID = any> {
   archived?: boolean;
   deleted?: boolean;
   locked?: boolean;
+  attachedFileIds?: TID[];
 }
 
 /**

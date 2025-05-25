@@ -75,6 +75,9 @@ export class ContentMetadataModel<TID = string> implements IContentMetadata<TID>
   @TransformObjectId()
   parentId?: TID;
 
+  @TransformObjectIds()
+  attachedFileIds?: TID[];
+
   streamSort: number;
   sortOrder?: number;
   visibility: ProfileRoleLevel;
